@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /images/signatures/signature.html
+
+Sitemap: https://www.quartzsales.com/sitemap.xml
