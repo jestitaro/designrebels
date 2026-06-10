@@ -1,0 +1,124 @@
+<div class="p-5 bg-[var(--surface-50)] min-h-screen">
+  <div class="bg-[var(--surface-0)] border border-[var(--border)] rounded-[var(--border-radius)] shadow-card p-5">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <h2 class="text-lg font-bold text-[var(--text-900)] m-0">Título</h2>
+      <div class="flex items-center gap-2">
+        <p-button label="Acción primaria" icon="pi pi-plus" />
+        <p-button label="Acción secundaria" icon="pi pi-check" severity="secondary" [outlined]="true" />
+      </div>
+    </div>
+
+    <!-- Toolbar: search + advanced search + filters/export -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+      <div class="relative">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            pInputText
+            class="w-72"
+            placeholder="Search Tenant name/code..."
+            [(ngModel)]="searchTerm"
+            (focus)="openAdvancedSearch($event, advancedSearch)"
+          />
+        </span>
+        <button class="ml-2 text-sm font-semibold text-primary hover:underline focus:outline-none" type="button" (click)="onSearch()">
+          Buscar
+        </button>
+
+        <!-- Advanced search panel, shown when the search input is focused -->
+        <p-overlayPanel #advancedSearch styleClass="w-[420px]">
+          <div class="p-1">
+            <h4 class="text-sm font-bold text-[var(--text-900)] mb-3">Búsqueda avanzada</h4>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="flex flex-col gap-1 col-span-2">
+                <label class="text-xs font-semibold text-[var(--text-500)]">Tenant name</label>
+                <input type="text" pInputText placeholder="Tenant name" [(ngModel)]="filters.tenantName" />
+              </div>
+
+              <div class="flex flex-col gap-1 col-span-2">
+                <label class="text-xs font-semibold text-[var(--text-500)]">Tenancy code name</label>
+                <input type="text" pInputText placeholder="Tenancy code name" [(ngModel)]="filters.tenancyCodeName" />
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[var(--text-500)]">Edition</label>
+                <p-dropdown
+                  [options]="editions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Todas"
+                  [showClear]="true"
+                  [(ngModel)]="filters.edition"
+                  styleClass="w-full"
+                />
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-semibold text-[var(--text-500)]">Active</label>
+                <p-dropdown
+                  [options]="activeOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Todos"
+                  [showClear]="true"
+                  [(ngModel)]="filters.active"
+                  styleClass="w-full"
+                />
+              </div>
+            </div>
+
+            <div class="flex justify-end gap-2 mt-4">
+              <p-button label="Limpiar" severity="secondary" [text]="true" (onClick)="clearFilters()" />
+              <p-button label="Buscar" icon="pi pi-search" (onClick)="onSearch(advancedSearch)" />
+            </div>
+          </div>
+        </p-overlayPanel>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <p-button label="Filtrar" icon="pi pi-filter" severity="secondary" [outlined]="true" badge="3" />
+        <p-button label="Exportar excel" icon="pi pi-file-export" severity="secondary" [outlined]="true" />
+      </div>
+    </div>
+
+    <!-- Results table -->
+    <p-table [value]="tenants" [paginator]="true" [rows]="10" [totalRecords]="2"
+             styleClass="p-datatable-sm" [rowHover]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="tenancyCodeName">Tenancy code name <p-sortIcon field="tenancyCodeName" /></th>
+          <th pSortableColumn="tenantName">Tenant name <p-sortIcon field="tenantName" /></th>
+          <th>Edition</th>
+          <th pSortableColumn="subsEndDate">Subs. end date (UTC) <p-sortIcon field="subsEndDate" /></th>
+          <th pSortableColumn="active">Active <p-sortIcon field="active" /></th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-tenant>
+        <tr>
+          <td>{{ tenant.tenancyCodeName }}</td>
+          <td>{{ tenant.tenantName }}</td>
+          <td>{{ tenant.edition }}</td>
+          <td>{{ tenant.subsEndDate ?? '-' }}</td>
+          <td>
+            <p-tag *ngIf="tenant.active" value="YES" severity="success" />
+            <p-tag *ngIf="!tenant.active" value="NO" severity="danger" />
+          </td>
+          <td>
+            <div class="inline-flex">
+              <p-button label="Editar" icon="pi pi-pencil" severity="secondary" [outlined]="true" size="small"
+                        styleClass="rounded-r-none" />
+              <p-button icon="pi pi-chevron-down" severity="secondary" [outlined]="true" size="small"
+                        styleClass="rounded-l-none border-l-0" (onClick)="rowMenu.toggle($event)" />
+              <p-menu #rowMenu [model]="rowActions" [popup]="true" />
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

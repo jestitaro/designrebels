@@ -1,0 +1,15 @@
+:host ::ng-deep {
+  .p-button {
+    font-weight: 600;
+  }
+
+  .p-inputtext {
+    border-radius: 8px;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+    background: var(--surface-50);
+    color: var(--text-900);
+    font-weight: 700;
+  }
+}
