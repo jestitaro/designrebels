@@ -1,0 +1,10 @@
+{
+  "name": "quartzprode-sync",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sync World Cup 2026 results from ESPN to Firestore",
+  "main": "sync-results.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

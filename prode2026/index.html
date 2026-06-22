@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuartzProde 2026 · Mundial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/css/flag-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="screen-login" class="screen active">
+  <div class="login-card">
+
+    <!-- columna izquierda: logo + form -->
+    <div class="login-left">
+      <div class="login-logo">
+        <img src="https://www.quartzsales.com/images/svg_qs/logo-qs-fullcolor-negativo.svg" alt="QuartzSales"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+        <span class="logo-fallback">QuartzSales</span>
+      </div>
+      <div class="login-title-block">
+        <h1>QuartzProde</h1>
+        <p>Predecí el futuro. Ganá y llevá tu equipo a la cima.</p>
+      </div>
+      <div class="login-form">
+        <label>¿Quién sos?</label>
+        <div class="name-picker" id="name-picker">
+          <select id="login-name-search" disabled>
+            <option value="">Cargando integrantes…</option>
+          </select>
+        </div>
+
+        <label for="login-password">Contraseña</label>
+        <div class="password-field">
+          <input type="password" id="login-password"
+                 placeholder="Tu contraseña"
+                 autocomplete="current-password" />
+          <button type="button" class="toggle-pass" id="toggle-pass" tabindex="-1" aria-label="Ver contraseña">
+            <i class="fa-regular fa-eye" id="toggle-pass-icon"></i>
+          </button>
+        </div>
+        <p class="login-pass-hint">Esta contraseña es exclusiva para QuartzProde. Guardala bien: no tiene recupero automático. Si tu memoria anda modo Dory 🐟, escribile a Jesi.</p>
+
+        <button class="btn-primary" id="btn-login" type="button">
+          Entrar al prode <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- columna derecha: imagen sin fondo -->
+    <div class="login-right">
+      <img class="login-hero-img"
+           src="trofeo-sombrero.png"
+           alt="Trofeo QuartzProde" />
+    </div>
+
+  </div>
+</div>
+
+<!-- APP -->
+<div id="screen-app" class="screen">
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <img src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="QS" class="header-iso" onerror="this.style.display='none'" />
+        <span class="header-title">QuartzProde <span class="header-year">2026</span></span>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn active" data-view="partidos"><i class="fa-solid fa-futbol"></i> <span>Partidos</span></button>
+        <button class="nav-btn" data-view="ranking"><i class="fa-solid fa-trophy"></i> <span>Ranking</span></button>
+      </nav>
+      <div class="header-user">
+        <div class="user-casa-badge" id="user-casa-badge"></div>
+        <span class="user-name" id="user-name-display"></span>
+        <button class="btn-logout" id="btn-logout" title="Salir">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <div id="view-partidos" class="view active">
+      <div class="view-header">
+        <h2>Tus predicciones</h2>
+        <div class="fase-filter" id="fase-filter"></div>
+      </div>
+      <div class="partidos-grid" id="partidos-grid"></div>
+    </div>
+
+    <div id="view-ranking" class="view">
+      <div class="view-header">
+        <h2>Ranking</h2>
+        <p class="view-subtitle">
+          <span class="pts-chip acierto"><strong>1</strong> acierto</span>
+          <span class="pts-chip nada"><strong>0</strong> sin acierto</span>
+        </p>
+      </div>
+
+      <div class="ranking-split">
+        <!-- Participantes -->
+        <section class="ranking-col">
+          <div class="ranking-col-header">
+            <h3><i class="fa-solid fa-user"></i> Participantes</h3>
+          </div>
+          <div class="ranking-table-wrap">
+            <table class="ranking-table" id="ranking-table">
+              <thead>
+                <tr><th>#</th><th>Jugador</th><th>Casa</th><th>Pts</th><th title="Aciertos"><i class="fa-solid fa-check"></i></th></tr>
+              </thead>
+              <tbody id="ranking-tbody"></tbody>
+            </table>
+            <div class="ranking-empty" id="ranking-empty" style="display:none">Todavía no hay predicciones cargadas.</div>
+          </div>
+        </section>
+
+        <!-- Casas -->
+        <section class="ranking-col">
+          <div class="ranking-col-header">
+            <h3><i class="fa-solid fa-shield-halved"></i> Casas</h3>
+          </div>
+          <div class="casas-grid" id="casas-grid"></div>
+          <div class="ranking-table-wrap">
+            <table class="ranking-table">
+              <thead>
+                <tr><th>#</th><th>Casa</th><th title="Miembros"><i class="fa-solid fa-users"></i></th><th>Pts</th><th title="Promedio"><i class="fa-solid fa-chart-line"></i></th></tr>
+              </thead>
+              <tbody id="casas-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-partido">
+    <button class="modal-close" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-match-header" id="modal-match-header"></div>
+    <div class="modal-body">
+      <p class="modal-label">Tu predicción</p>
+      <div class="modal-signo-btns" id="modal-signo-btns">
+        <button class="signo-btn" id="modal-btn-a" data-signo="A">
+          <span class="signo-flag" id="modal-flag-a"></span>
+          <span class="signo-team" id="modal-team-a"></span>
+          <span class="signo-label">Gana</span>
+        </button>
+        <button class="signo-btn signo-empate" id="modal-btn-x" data-signo="X">
+          <span class="signo-icon">＝</span>
+          <span class="signo-label">Empate</span>
+        </button>
+        <button class="signo-btn" id="modal-btn-b" data-signo="B">
+          <span class="signo-flag" id="modal-flag-b"></span>
+          <span class="signo-team" id="modal-team-b"></span>
+          <span class="signo-label">Gana</span>
+        </button>
+      </div>
+      <div class="modal-result-real" id="modal-result-real" style="display:none">
+        <p class="modal-label">Resultado real</p>
+        <div class="modal-score-real" id="modal-score-real"></div>
+        <div class="modal-puntos-badge" id="modal-puntos-badge"></div>
+      </div>
+      <button class="btn-primary" id="modal-save">Guardar predicción</button>
+      <p class="modal-note" id="modal-note"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Efectos visuales login -->
+<canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none"></canvas>
+
+<!-- Firebase SDK compat -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script src="firebase.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

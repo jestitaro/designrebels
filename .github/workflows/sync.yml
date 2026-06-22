@@ -1,0 +1,81 @@
+name: Sync QuartzProde Results
+
+on:
+  schedule:
+    # Cada 30 minutos durante todo el Mundial (UTC)
+    - cron: '*/30 * * * *'
+  # Trigger manual desde la UI de GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Fetch ESPN → Firestore
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install firebase-admin
+        run: npm install firebase-admin
+        working-directory: scripts
+
+      - name: Run sync
+        run: node scripts/sync-results.js
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # Opcional: URL de webhook para notificaciones (Slack, Discord, etc.)
+          # NOTIFY_URL: ${{ secrets.NOTIFY_URL }}
+
+  sync-bracket:
+    name: ESPN standings → bracket
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      # Corre SOLO el fin de la Fase de Grupos (27 y 28 jun 2026) o manualmente.
+      # GitHub Actions no permite filtrar cron por fecha calendario, así que el
+      # filtro se hace acá: si no es la fecha indicada y no es manual, se saltea.
+      - name: Gate por fecha
+        id: gate
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || \
+             [ "$TODAY" = "2026-06-27" ] || [ "$TODAY" = "2026-06-28" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Ejecutando sync-bracket (fecha=$TODAY, evento=${{ github.event_name }})"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "Hoy ($TODAY) no es cierre de Fase de Grupos — skip."
+          fi
+
+      - name: Checkout
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install firebase-admin
+        if: steps.gate.outputs.run == 'true'
+        run: npm install firebase-admin
+        working-directory: scripts
+
+      - name: Run sync-bracket
+        if: steps.gate.outputs.run == 'true'
+        run: node scripts/sync-bracket.js
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # Opcional: override del endpoint de standings de ESPN
+          # STANDINGS_URL: ${{ secrets.STANDINGS_URL }}
+          # Opcional: URL de webhook para notificaciones (Slack, Discord, etc.)
+          # NOTIFY_URL: ${{ secrets.NOTIFY_URL }}
