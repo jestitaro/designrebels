@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · QuartzProde 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --qs-dark: #130D5D;
+      --accent:  #7025E0;
+      --border:  #e2e8f0;
+      --surface: #f1f5f9;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Nunito',sans-serif; background:var(--surface); color:#1e293b; }
+
+    header {
+      background: var(--qs-dark);
+      padding: 16px 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    header h1 { color:#fff; font-size:18px; font-weight:800; }
+    header .badge {
+      background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.7);
+      font-size:12px; font-weight:700;
+      padding: 3px 10px; border-radius:999px;
+    }
+
+    .admin-body {
+      max-width: 900px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    .notice {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 24px;
+    }
+
+    .fase-section { margin-bottom: 40px; }
+    .fase-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--qs-dark);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 12px;
+    }
+
+    .result-row {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .result-row.saved { border-color: #10b981; }
+
+    .r-id { font-family:'Roboto',sans-serif; font-size:12px; color:#94a3b8; min-width:28px; }
+    .r-teams { flex:1; font-size:14px; font-weight:700; color:var(--qs-dark); }
+    .r-teams small { display:block; font-size:11px; font-weight:400; color:#64748b; margin-top:2px; }
+
+    .r-inputs { display:flex; align-items:center; gap:6px; }
+    .r-signo-btn {
+      height: 40px; padding: 0 12px;
+      font-family:'Nunito',sans-serif;
+      font-size: 13px; font-weight: 800;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      background: #fff; color: #64748b;
+      cursor: pointer; transition: all .15s;
+    }
+    .r-signo-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .r-signo-btn.selected-A { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+    .r-signo-btn.selected-X { background: #fef9c3; border-color: #ca8a04; color: #854d0e; }
+    .r-signo-btn.selected-B { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+
+    .r-save {
+      background: var(--qs-dark);
+      color:#fff;
+      border:none; border-radius:8px;
+      padding: 8px 14px;
+      font-family:'Nunito',sans-serif;
+      font-size:13px; font-weight:800;
+      cursor:pointer;
+      transition: opacity .2s;
+    }
+    .r-save:hover { opacity:.85; }
+    .r-save.saved-btn {
+      background:#10b981;
+    }
+
+    .toast {
+      position:fixed; bottom:24px; left:50%;
+      transform:translateX(-50%) translateY(80px);
+      background:var(--qs-dark); color:#fff;
+      padding:10px 20px; border-radius:999px;
+      font-size:14px; font-weight:700;
+      box-shadow:0 4px 20px rgba(0,0,0,.2);
+      transition:transform .3s; z-index:99;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* ── Gestor de fases ── */
+    .section-title {
+      font-size: 15px; font-weight: 800; color: var(--qs-dark);
+      margin: 0 0 12px;
+    }
+    .fases-manager {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 40px;
+    }
+    .fase-toggle-item {
+      background: #fff; border: 2px solid var(--border);
+      border-radius: 10px; padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: border-color .2s;
+    }
+    .fase-toggle-item.enabled { border-color: #10b981; }
+    .fase-toggle-name { font-size: 14px; font-weight: 700; color: var(--qs-dark); }
+    .fase-toggle-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px; font-weight: 800;
+      padding: 6px 14px; border-radius: 8px;
+      border: none; cursor: pointer; transition: all .2s;
+    }
+    .fase-toggle-btn.on  { background: #10b981; color: #fff; }
+    .fase-toggle-btn.off { background: var(--surface); color: #64748b; border: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⚙ Admin · QuartzProde 2026</h1>
+  <span class="badge">Solo uso interno</span>
+</header>
+
+<div class="admin-body">
+  <div class="notice">
+    ⚠ Esta página es solo para cargar resultados reales. Guardá el acceso para vos o quien administre el prode. No la compartás con los participantes.
+  </div>
+
+  <p class="section-title">🔓 Habilitación de fases</p>
+  <div class="fases-manager" id="fases-manager"></div>
+
+  <p class="section-title">⚽ Resultados</p>
+  <div id="admin-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK compat -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="data.js"></script>
+<script>
+let _resultados        = {};
+let _fasesHabilitadas  = ["Fase de Grupos"];
+
+async function initAdmin() {
+  [_resultados, _fasesHabilitadas] = await Promise.all([
+    window.dbGetResultados(),
+    window.dbGetFasesHabilitadas()
+  ]);
+  renderFasesManager();
+  renderAdmin();
+}
+
+// init directo — firebase.js ya cargó antes
+  initAdmin();
+  if (false) {
+  initAdmin();
+} else {
+  document.addEventListener('firebaseReady', initAdmin);
+}
+
+function renderFasesManager() {
+  const container = document.getElementById('fases-manager');
+  container.innerHTML = '';
+  FASES_ORDEN.forEach(fase => {
+    const habilitada = _fasesHabilitadas.includes(fase);
+    const item = document.createElement('div');
+    item.className = 'fase-toggle-item' + (habilitada ? ' enabled' : '');
+    item.id = 'fase-item-' + fase.replace(/\s/g, '_');
+    item.innerHTML = `
+      <span class="fase-toggle-name">${escHtml(fase)}</span>
+      <button class="fase-toggle-btn ${habilitada ? 'on' : 'off'}"
+              onclick="toggleFase('${fase.replace(/'/g, "\\'")}')">
+        ${habilitada ? '🔓 Habilitada' : '🔒 Bloqueada'}
+      </button>
+    `;
+    container.appendChild(item);
+  });
+}
+
+async function toggleFase(fase) {
+  const idx = _fasesHabilitadas.indexOf(fase);
+  if (idx > -1) {
+    _fasesHabilitadas.splice(idx, 1);
+  } else {
+    _fasesHabilitadas.push(fase);
+  }
+  try {
+    await window.dbSetFasesHabilitadas(_fasesHabilitadas);
+    renderFasesManager();
+    const estado = _fasesHabilitadas.includes(fase) ? 'habilitada' : 'bloqueada';
+    showToast(`✓ "${fase}" ${estado}`);
+  } catch(e) {
+    console.error(e);
+    showToast('❌ Error al guardar');
+  }
+}
+
+function renderAdmin() {
+  const container = document.getElementById('admin-content');
+  container.innerHTML = '';
+
+  FASES_ORDEN.forEach(fase => {
+    const partidos = PARTIDOS.filter(p => p.fase === fase);
+    if (!partidos.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'fase-section';
+    section.innerHTML = `<div class="fase-title">${fase} (${partidos.length} partidos)</div>`;
+
+    const grid = document.createElement('div');
+    grid.className = 'results-grid';
+
+    partidos.forEach(p => {
+      const res = _resultados[p.id];
+      const saved = res?.estado === 'Finalizado';
+      const savedSigno = res?.signo || '';
+      const sinEmpate = FASES_SIN_EMPATE.includes(p.fase);
+
+      const row = document.createElement('div');
+      row.className = 'result-row' + (saved ? ' saved' : '');
+      row.id = 'row-' + p.id;
+
+      const empateBtn = sinEmpate ? '' : `
+        <button class="r-signo-btn ${savedSigno==='X'?'selected-X':''}"
+          id="rbx-${p.id}" onclick="selectSigno(${p.id},'X')">Empate</button>`;
+
+      row.innerHTML = `
+        <span class="r-id">#${p.id}</span>
+        <div class="r-teams">
+          ${escHtml(p.equipoA)} vs ${escHtml(p.equipoB)}
+          <small>${p.ciudad} · ${p.fecha}</small>
+        </div>
+        <div class="r-inputs">
+          <button class="r-signo-btn ${savedSigno==='A'?'selected-A':''}"
+            id="rba-${p.id}" onclick="selectSigno(${p.id},'A')">${escHtml(p.equipoA)}</button>
+          ${empateBtn}
+          <button class="r-signo-btn ${savedSigno==='B'?'selected-B':''}"
+            id="rbb-${p.id}" onclick="selectSigno(${p.id},'B')">${escHtml(p.equipoB)}</button>
+        </div>
+        <button class="r-save ${saved ? 'saved-btn' : ''}"
+          id="btn-${p.id}"
+          onclick="saveResult(${p.id})">
+          ${saved ? '✓' : 'OK'}
+        </button>
+      `;
+      grid.appendChild(row);
+    });
+
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+}
+
+// Signo seleccionado por partido
+const _selectedSigno = {};
+
+function selectSigno(matchId, signo) {
+  _selectedSigno[matchId] = signo;
+  // Actualizar estilos
+  ['A','X','B'].forEach(s => {
+    const btn = document.getElementById('rb' + s.toLowerCase() + '-' + matchId);
+    if (!btn) return;
+    btn.className = 'r-signo-btn' + (signo === s ? ` selected-${s}` : '');
+  });
+}
+
+async function saveResult(matchId) {
+  const signo = _selectedSigno[matchId] || _resultados[matchId]?.signo;
+  if (!signo) return showToast('⚠ Seleccioná un resultado');
+
+  const btn = document.getElementById('btn-' + matchId);
+  btn.textContent = '…';
+  btn.disabled = true;
+
+  try {
+    await window.dbSaveResultado(matchId, signo);
+    _resultados[matchId] = { signo, estado: 'Finalizado' };
+    document.getElementById('row-' + matchId).classList.add('saved');
+    btn.classList.add('saved-btn');
+    btn.textContent = '✓';
+    showToast(`✓ Partido #${matchId} guardado`);
+  } catch(e) {
+    console.error(e);
+    showToast('❌ Error al guardar');
+    btn.textContent = 'OK';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
