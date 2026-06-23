@@ -119,7 +119,7 @@
     .map-stage {
       position: absolute;
       left: -60%;
-      bottom: 8%;
+      bottom: -8%;
       width: 240%;
       opacity: 0;
       transform: translateY(22px) scale(1.015);
@@ -136,7 +136,8 @@
 
     .roads-fill {
       fill: rgba(255,255,255,var(--map-opacity));
-      opacity: .18;
+      fill-rule: nonzero;
+      opacity: .5;
     }
 
     .roads-stroke {
@@ -180,7 +181,7 @@
       fill: none;
       stroke: rgba(255,255,255,.8);
       stroke-width: 11;
-      transform-origin: 1654.71px 236.02px;
+      transform-origin: 1602.67px 379.223px;
       animation: pulsePoint 900ms ease-out var(--pulse-delay, 1800ms) forwards;
     }
 
@@ -392,14 +393,12 @@
               <path class="roads-fill" d="M10.5846 557.784L0.000132302 580.767L1105.2 707.175L710.043 1337.44L768.258 1337.44L1050.51 873.361L1777.31 967.062L1663.53 1337.44L1721.74 1337.44L1826.71 973.25L2313.59 1036.01C2559.68 1067.83 2804.01 1157.12 3011.29 1295.9L3073.03 1337.44L3043.92 1272.03C2826.94 1129.71 2572.91 1038.66 2317.12 1005.96L1834.65 944.079L1879.63 789.384L2710.51 877.781C2780.19 928.167 2857.81 981.205 2937.2 1031.59L2912.5 976.786C2857.81 941.427 2804.89 905.184 2755.5 870.709C2774.9 863.638 2809.3 851.262 2849.88 835.351L2836.64 805.296C2796.95 819.439 2758.14 833.583 2722.86 846.842C2680.52 815.903 2642.6 785.848 2609.08 757.561C2542.04 700.103 2482.95 648.833 2430.91 602.867L2707.87 515.354L2697.28 492.371L2407.97 582.536C2370.04 548.945 2336.53 518.89 2306.54 492.371C2272.14 461.432 2243.03 435.797 2218.33 414.582C2201.57 399.554 2186.58 387.179 2175.11 377.455C2154.83 360.66 2108.96 340.328 2055.16 319.113L2130.13 220.109C2262.44 255.467 2400.92 297.014 2486.47 335.024C2537.63 357.124 2599.38 386.295 2665.53 419.002L2652.3 388.947C2600.26 364.195 2551.75 342.096 2510.29 324.417C2355.93 258.119 2042.81 179.446 1878.75 141.435C1817.89 127.292 1749.97 118.452 1681.17 116.684L257.556 4.50325e-05L251.382 13.2596L1677.64 129.944C1742.03 131.712 1804.66 139.667 1861.11 153.811C1924.61 168.838 2008.41 189.17 2097.49 213.037L2023.4 308.505C1952.84 282.87 1875.22 257.235 1819.65 239.556C1792.31 231.6 1761.44 226.296 1728.8 224.528L215.218 96.3526L209.044 111.38L1620.31 235.136L1572.68 358.891L162.296 217.456L154.357 234.252L1565.62 376.571L1515.35 503.862L1267.49 480.879L99.6708 355.355L90.8504 374.803L1234.86 498.558L1120.19 683.308L10.5846 557.784ZM2570.27 768.169C2599.38 793.804 2632.01 820.323 2668.17 846.842L1886.69 764.633L1944.02 564.856L2386.8 605.519C2439.73 652.369 2500.59 707.175 2570.27 768.169ZM2189.23 427.841C2212.16 448.172 2239.5 472.924 2271.26 501.211C2297.72 525.078 2326.82 551.597 2359.46 580.768L1950.19 543.641L1988.12 411.046L2189.23 427.841ZM2041.93 336.792C2092.2 357.124 2127.48 373.919 2141.6 386.295C2148.65 392.482 2156.59 399.554 2166.29 407.51L1999.59 394.25L2041.93 336.792ZM1654.71 236.02L1724.39 239.556C1750.85 240.44 1776.43 244.86 1798.48 251.931C1880.51 277.566 1952.84 302.318 2010.17 324.417L1959.01 389.83L1607.96 361.543L1654.71 236.02ZM1602.67 379.223L1949.31 407.51L1908.74 539.221L1555.04 506.514L1602.67 379.223ZM1275.43 502.094L1902.56 559.552L1840.82 758.445L1162.53 686.844L1275.43 502.094ZM1832.88 784.964L1785.25 938.775L1065.51 846.842L1147.54 712.479L1832.88 784.964Z" />
               <path class="roads-stroke" d="M10.5846 557.784L0.000132302 580.767L1105.2 707.175L710.043 1337.44L768.258 1337.44L1050.51 873.361L1777.31 967.062L1663.53 1337.44L1721.74 1337.44L1826.71 973.25L2313.59 1036.01C2559.68 1067.83 2804.01 1157.12 3011.29 1295.9L3073.03 1337.44L3043.92 1272.03C2826.94 1129.71 2572.91 1038.66 2317.12 1005.96L1834.65 944.079L1879.63 789.384L2710.51 877.781C2780.19 928.167 2857.81 981.205 2937.2 1031.59L2912.5 976.786C2857.81 941.427 2804.89 905.184 2755.5 870.709C2774.9 863.638 2809.3 851.262 2849.88 835.351L2836.64 805.296C2796.95 819.439 2758.14 833.583 2722.86 846.842C2680.52 815.903 2642.6 785.848 2609.08 757.561C2542.04 700.103 2482.95 648.833 2430.91 602.867L2707.87 515.354L2697.28 492.371L2407.97 582.536C2370.04 548.945 2336.53 518.89 2306.54 492.371C2272.14 461.432 2243.03 435.797 2218.33 414.582C2201.57 399.554 2186.58 387.179 2175.11 377.455C2154.83 360.66 2108.96 340.328 2055.16 319.113L2130.13 220.109C2262.44 255.467 2400.92 297.014 2486.47 335.024C2537.63 357.124 2599.38 386.295 2665.53 419.002L2652.3 388.947C2600.26 364.195 2551.75 342.096 2510.29 324.417C2355.93 258.119 2042.81 179.446 1878.75 141.435C1817.89 127.292 1749.97 118.452 1681.17 116.684L257.556 4.50325e-05L251.382 13.2596L1677.64 129.944C1742.03 131.712 1804.66 139.667 1861.11 153.811C1924.61 168.838 2008.41 189.17 2097.49 213.037L2023.4 308.505C1952.84 282.87 1875.22 257.235 1819.65 239.556C1792.31 231.6 1761.44 226.296 1728.8 224.528L215.218 96.3526L209.044 111.38L1620.31 235.136L1572.68 358.891L162.296 217.456L154.357 234.252L1565.62 376.571L1515.35 503.862L1267.49 480.879L99.6708 355.355L90.8504 374.803L1234.86 498.558L1120.19 683.308L10.5846 557.784ZM2570.27 768.169C2599.38 793.804 2632.01 820.323 2668.17 846.842L1886.69 764.633L1944.02 564.856L2386.8 605.519C2439.73 652.369 2500.59 707.175 2570.27 768.169ZM2189.23 427.841C2212.16 448.172 2239.5 472.924 2271.26 501.211C2297.72 525.078 2326.82 551.597 2359.46 580.768L1950.19 543.641L1988.12 411.046L2189.23 427.841ZM2041.93 336.792C2092.2 357.124 2127.48 373.919 2141.6 386.295C2148.65 392.482 2156.59 399.554 2166.29 407.51L1999.59 394.25L2041.93 336.792ZM1654.71 236.02L1724.39 239.556C1750.85 240.44 1776.43 244.86 1798.48 251.931C1880.51 277.566 1952.84 302.318 2010.17 324.417L1959.01 389.83L1607.96 361.543L1654.71 236.02ZM1602.67 379.223L1949.31 407.51L1908.74 539.221L1555.04 506.514L1602.67 379.223ZM1275.43 502.094L1902.56 559.552L1840.82 758.445L1162.53 686.844L1275.43 502.094ZM1832.88 784.964L1785.25 938.775L1065.51 846.842L1147.54 712.479L1832.88 784.964Z" />
 
-              <!-- Ruta sobre calles reales del mapa: recorrido largo "en escalera"
-                   que encadena bordes reales de las manzanas (no atraviesa por el medio).
-                   Secuencia: der → arriba → izq → arriba → der → arriba → izq → arriba.
+              <!-- Ruta breve sobre calles reales del mapa: encadena bordes reales de
+                   manzanas (der → arriba → izq → arriba). Sin "track" previo: solo se
+                   dibuja la línea, sin mostrar el recorrido de antemano.
                    Editar este path para cambiar el recorrido. -->
-              <path class="route-track" d="M1065.51 846.842 L1785.25 938.775 L1832.88 784.964 L1840.82 758.445 L1162.53 686.844 L1275.43 502.094 L1902.56 559.552 L1908.74 539.221 L1949.31 407.51 L1959.01 389.83 L1607.96 361.543 L1654.71 236.02" />
-              <path id="routePath" class="route-active" d="M1065.51 846.842 L1785.25 938.775 L1832.88 784.964 L1840.82 758.445 L1162.53 686.844 L1275.43 502.094 L1902.56 559.552 L1908.74 539.221 L1949.31 407.51 L1959.01 389.83 L1607.96 361.543 L1654.71 236.02" />
-              <circle class="destination-pulse" cx="1654.71" cy="236.02" r="22" />
-              <circle id="routeDot" class="route-dot" cx="1065.51" cy="846.842" r="22" />
+              <path id="routePath" class="route-active" d="M1162.53 686.844 L1840.82 758.445 L1902.56 559.552 L1555.04 506.514 L1602.67 379.223" />
+              <circle class="destination-pulse" cx="1602.67" cy="379.223" r="22" />
             </svg>
           </div>
 
@@ -422,13 +421,12 @@
   <script>
     const splash = document.getElementById('splash');
     const routePath = document.getElementById('routePath');
-    const routeDot = document.getElementById('routeDot');
     const replayBtn = document.getElementById('replayBtn');
     const slowBtn = document.getElementById('slowBtn');
 
-    const ROUTE_DELAY = 620;
+    // Animación muy breve: poca espera + dibujado rápido y fluido.
+    const ROUTE_DELAY = 320;
     let isSlow = false;
-    let activeAnimation = null;
 
     function setupRoute() {
       const length = routePath.getTotalLength();
@@ -438,57 +436,26 @@
       return length;
     }
 
-    function animateDot(length, duration) {
-      if (activeAnimation) cancelAnimationFrame(activeAnimation);
-      routeDot.style.opacity = '0';
-
-      const startAt = performance.now() + ROUTE_DELAY;
-
-      function frame(now) {
-        const elapsed = now - startAt;
-        const progress = Math.min(Math.max(elapsed / duration, 0), 1);
-
-        if (elapsed >= 0) {
-          const point = routePath.getPointAtLength(length * easeOutCubic(progress));
-          routeDot.setAttribute('cx', point.x);
-          routeDot.setAttribute('cy', point.y);
-          routeDot.style.opacity = progress < 1 ? '1' : '0';
-        }
-
-        if (progress < 1) {
-          activeAnimation = requestAnimationFrame(frame);
-        }
-      }
-
-      activeAnimation = requestAnimationFrame(frame);
-    }
-
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
     function playSplash() {
-      const length = setupRoute();
-      // recorrido más largo → más duración para que se dibuje a un ritmo cómodo
-      const duration = isSlow ? 3600 : 2150;
+      setupRoute();
+      const duration = isSlow ? 1700 : 900;
 
+      document.documentElement.style.setProperty('--route-delay', ROUTE_DELAY + 'ms');
       document.documentElement.style.setProperty('--route-duration', duration + 'ms');
-      document.documentElement.style.setProperty('--logo-delay', (ROUTE_DELAY + duration - 180) + 'ms');
+      document.documentElement.style.setProperty('--logo-delay', (ROUTE_DELAY + duration - 120) + 'ms');
       // el pulso de destino aparece justo cuando la ruta llega al final
-      document.documentElement.style.setProperty('--pulse-delay', (ROUTE_DELAY + duration - 120) + 'ms');
+      document.documentElement.style.setProperty('--pulse-delay', (ROUTE_DELAY + duration - 80) + 'ms');
 
       splash.classList.remove('is-replaying');
       void splash.offsetWidth;
-      animateDot(length, duration);
 
       window.setTimeout(() => {
         window.dispatchEvent(new CustomEvent('psmob:splash-complete'));
-      }, ROUTE_DELAY + duration + 600);
+      }, ROUTE_DELAY + duration + 500);
     }
 
     window.replayPSMobSplash = function replayPSMobSplash() {
       splash.classList.add('is-replaying');
-      routeDot.style.opacity = '0';
       void splash.offsetWidth;
       playSplash();
     };
