@@ -25,6 +25,7 @@ let fasesHabilitadas  = [];
 let bracket           = {}; // { slot: equipo } resuelto desde Firestore
 let currentFase       = "Fase de Grupos";
 let currentModal      = null;
+let countdownTimer    = null; // intervalo que refresca los contadores de las cards
 
 const CASA_COLORS = {
   Gryffindor: "#E11D48",
@@ -233,6 +234,7 @@ async function initApp() {
     currentFase = (fasesHabilitadas && fasesHabilitadas[0]) || 'Fase de Grupos';
     renderFaseFilter();
     renderPartidos();
+    startCountdownTicker();
   } catch(e) {
     console.error('initApp error:', e);
     document.getElementById('partidos-grid').innerHTML =
@@ -429,6 +431,16 @@ function buildCard(p, faseHabilitada) {
     ? `<div class="partido-real-score">Real: <span class="real-badge">${escHtml(realLabel)}</span></div>`
     : '';
 
+  // Contador "cuánto falta" hasta el cierre de edición (kickoff - 2 h).
+  // Solo en cards editables; el ticker (updateCountdowns) lo refresca en vivo.
+  const cierre = window.getCierreEdicion(p);
+  const countdownHtml = (!fin && !locked && cierre)
+    ? `<div class="partido-countdown" data-deadline="${cierre.getTime()}">
+         <i class="fa-regular fa-clock"></i>
+         <span class="cd-text">Cierra en ${window.formatRestante(cierre.getTime() - Date.now())}</span>
+       </div>`
+    : '';
+
   card.innerHTML = `
     <div class="partido-fase">${p.fase} · #${p.id}</div>
     <div class="partido-matchup">
@@ -443,14 +455,37 @@ function buildCard(p, faseHabilitada) {
       </div>
     </div>
     <div class="partido-meta">
-      <span><i class="fa-regular fa-calendar"></i> ${formatFecha(p.fecha)}</span>
+      <span><i class="fa-regular fa-calendar"></i> ${formatFecha(p.fecha)} · ${p.hora}</span>
       <span><i class="fa-solid fa-location-dot"></i> ${p.ciudad}</span>
     </div>
-    ${realHtml}${predHtml}
+    ${realHtml}${countdownHtml}${predHtml}
   `;
 
   if (!locked) card.addEventListener('click', () => openModal(p.id));
   return card;
+}
+
+// Refresca en vivo los contadores "Cierra en …" de cada card sin re-render.
+function updateCountdowns() {
+  const now = Date.now();
+  document.querySelectorAll('.partido-countdown[data-deadline]').forEach(el => {
+    const deadline = Number(el.dataset.deadline);
+    const restante = deadline - now;
+    const txt = el.querySelector('.cd-text');
+    if (restante <= 0) {
+      if (txt) txt.textContent = 'Edición cerrada';
+      el.classList.add('cerrado');
+      el.classList.remove('urgente');
+    } else {
+      if (txt) txt.textContent = 'Cierra en ' + window.formatRestante(restante);
+      el.classList.toggle('urgente', restante < 60 * 60 * 1000); // <1 h
+    }
+  });
+}
+
+function startCountdownTicker() {
+  if (countdownTimer) return;
+  countdownTimer = setInterval(updateCountdowns, 30000); // cada 30 s
 }
 
 function renderPartidos() {
@@ -513,6 +548,8 @@ function renderPartidos() {
     }
     lista.forEach(p => grid.appendChild(buildCard(p, faseHabilitada)));
   }
+
+  updateCountdowns(); // deja los contadores con el texto correcto al instante
 }
 
 // ── MODAL ─────────────────────────────────────
@@ -595,7 +632,11 @@ function openModal(matchId) {
     saveBtn.textContent = pred ? 'Actualizar predicción' : 'Guardar predicción';
     // Disabled hasta que elijan una opción (si no hay pred previa)
     saveBtn.disabled = !pred;
-    noteEl.textContent = '';
+    // Recordatorio del cierre de edición (2 h antes del inicio).
+    const cierre = window.getCierreEdicion(p);
+    noteEl.textContent = cierre
+      ? `Podés editar hasta 2 h antes del partido — cierra en ${window.formatRestante(cierre.getTime() - Date.now())}.`
+      : '';
   }
 
   const resEl = document.getElementById('modal-result-real');

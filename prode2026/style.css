@@ -646,6 +646,18 @@ body {
   font-size: 13px;
 }
 
+/* Contador "Cierra en …" por card */
+.partido-countdown {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12px; font-weight: 800;
+  color: var(--qs-accent);
+}
+.partido-countdown i { font-size: 11px; }
+.partido-countdown.urgente { color: #dc2626; }              /* falta menos de 1 h */
+.partido-countdown.cerrado { color: var(--text-muted); font-weight: 700; }
+
 /* ═══════════════════════════════ RANKING SPLIT */
 .ranking-split {
   display: grid;

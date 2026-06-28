@@ -386,11 +386,12 @@ async function main() {
         continue;
       }
 
-      // Calcular signo (en eliminatorias no hay empate: gana quien pasa de fase)
-      const isSinEmpate = FASES_SIN_EMPATE.includes(partido.fase);
+      // Regla QuartzProde: en TODAS las fases se evalúa el resultado a los 120'
+      // (90' + alargue), donde el empate es válido. NO se usa el ganador por
+      // penales. Por eso siempre se calcula por el marcador (isSinEmpate=false).
       const equipoAName = partido.equipoA; // ya es un nombre real en ambas fases
 
-      const signo = getSigno(competition, isSinEmpate, equipoAName);
+      const signo = getSigno(competition, false, equipoAName);
       if (!signo) {
         console.log(`  → No se pudo calcular signo para #${partido.id}`);
         continue;

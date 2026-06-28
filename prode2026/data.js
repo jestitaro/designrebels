@@ -206,25 +206,39 @@ window.getKickoff = function(p) {
   return isNaN(d.getTime()) ? null : d;
 };
 
+// Momento en que se cierra la edición de un partido (kickoff - 2 h), o null.
+window.getCierreEdicion = function(p) {
+  const kickoff = window.getKickoff(p);
+  if (!kickoff) return null;
+  return new Date(kickoff.getTime() - LOCK_MINUTOS_ANTES * 60 * 1000);
+};
+
 // true si faltan menos de LOCK_MINUTOS_ANTES para el kickoff de ESE partido
 // (o si ya empezó). No conoce el resultado: el caso "Finalizado" se maneja
 // aparte en app.js (la card finalizada no es editable).
 window.isPartidoLocked = function(p) {
-  const kickoff = window.getKickoff(p);
-  if (!kickoff) return false; // sin fecha/hora válida → no bloquear por tiempo
-  const cierre = new Date(kickoff.getTime() - LOCK_MINUTOS_ANTES * 60 * 1000);
+  const cierre = window.getCierreEdicion(p);
+  if (!cierre) return false; // sin fecha/hora válida → no bloquear por tiempo
   return new Date() > cierre;
 };
 
-// Fases sin empate posible
-window.FASES_SIN_EMPATE = [
-  "Dieciseisavos de Final",
-  "Octavos de Final",
-  "Cuartos de Final",
-  "Semifinales",
-  "Tercer puesto",
-  "Final"
-];
+// Formatea una duración (en ms) como "2d 3h", "5h 20m", "45m" o "1m".
+window.formatRestante = function(ms) {
+  if (ms <= 0) return '0m';
+  const totalMin = Math.floor(ms / 60000);
+  const d = Math.floor(totalMin / 1440);
+  const h = Math.floor((totalMin % 1440) / 60);
+  const m = totalMin % 60;
+  if (d > 0) return `${d}d ${h}h`;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${Math.max(1, m)}m`;
+};
+
+// Fases sin empate posible.
+// Regla QuartzProde: en eliminatorias se predice el resultado a los 120 minutos,
+// donde el empate SÍ es posible (igual que en Fase de Grupos). Por eso la lista
+// queda vacía: todas las fases ofrecen Gana / Empate / Gana.
+window.FASES_SIN_EMPATE = [];
 
 /**
  * Calcular puntos de una predicción vs resultado real.
