@@ -193,6 +193,26 @@ window.isFaseCerrada = function(fase) {
   return new Date() > deadline;
 };
 
+// Cierre por partido: se puede editar la predicción hasta N minutos antes del
+// inicio del partido; pasado ese momento, ese partido queda bloqueado.
+window.MINUTOS_CIERRE_ANTES = 120; // 2 horas
+
+// Fecha/hora de inicio del partido como Date. 'fecha' (YYYY-MM-DD) y 'hora'
+// (HH:MM) están en horario de Argentina (UTC-3).
+window.getFechaInicio = function(p) {
+  if (!p || !p.fecha || !p.hora) return null;
+  const d = new Date(`${p.fecha}T${p.hora}:00-03:00`);
+  return isNaN(d.getTime()) ? null : d;
+};
+
+// true si ya pasó el momento de cierre (2 h antes del inicio) de ESE partido.
+window.isPartidoCerrado = function(p) {
+  const inicio = window.getFechaInicio(p);
+  if (!inicio) return false; // sin fecha/hora válida → no bloquear por tiempo
+  const cierre = new Date(inicio.getTime() - MINUTOS_CIERRE_ANTES * 60 * 1000);
+  return new Date() > cierre;
+};
+
 // Fases sin empate posible
 window.FASES_SIN_EMPATE = [
   "Dieciseisavos de Final",

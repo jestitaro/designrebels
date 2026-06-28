@@ -322,12 +322,14 @@ function setFlagOnSpan(spanId, equipo) {
 }
 
 // ── PARTIDOS ──────────────────────────────────
-function buildCard(p, faseLocked) {
-  const pred   = myPreds[p.id];
-  const res    = resultados[p.id];
-  const fin    = res && res.estado === 'Finalizado';
-  const ptInfo = (fin && pred) ? calcularPuntos(pred.signo, res.signo) : null;
-  const locked = faseLocked && !fin;
+function buildCard(p, faseHabilitada) {
+  const pred       = myPreds[p.id];
+  const res        = resultados[p.id];
+  const fin        = res && res.estado === 'Finalizado';
+  const ptInfo     = (fin && pred) ? calcularPuntos(pred.signo, res.signo) : null;
+  // Cerrado por tiempo: pasaron <2 h para el inicio de ESTE partido.
+  const cerradoPorTiempo = window.isPartidoCerrado(p);
+  const locked     = (!faseHabilitada || cerradoPorTiempo) && !fin;
 
   const card = document.createElement('div');
   card.className = 'partido-card'
@@ -353,15 +355,15 @@ function buildCard(p, faseLocked) {
          </div>`
       : `<div class="partido-prediction"><span>Sin predicción · 0 puntos</span></div>`;
   } else if (locked) {
-    const cerrada = window.isFaseCerrada(p.fase);
+    // cerradoPorTiempo → ya pasó el límite de edición; si no, la fase aún no se habilitó.
     predHtml = pred
       ? `<div class="partido-prediction">
            <span>Tu pred:</span>
            <span class="pred-score">${escHtml(signoLabel(pred.signo, p.equipoA, p.equipoB))}</span>
          </div>`
       : `<div class="partido-prediction locked-pred">
-           <i class="fa-solid fa-${cerrada ? 'lock' : 'clock'}"></i>
-           <span>${cerrada ? 'Sin predicción' : 'Disponible próximamente'}</span>
+           <i class="fa-solid fa-${cerradoPorTiempo ? 'lock' : 'clock'}"></i>
+           <span>${cerradoPorTiempo ? 'Edición cerrada' : 'Disponible próximamente'}</span>
          </div>`;
   } else {
     predHtml = pred
@@ -410,7 +412,8 @@ function renderPartidos() {
     grid.innerHTML = '<p style="color:red;padding:40px">Error: datos no cargados. Recargá la página.</p>';
     return;
   }
-  const faseLocked = !fasesHabilitadas.includes(currentFase) || window.isFaseCerrada(currentFase);
+  // La fase está habilitada por el admin; el cierre fino es por partido (2 h antes).
+  const faseHabilitada = fasesHabilitadas.includes(currentFase);
   grid.innerHTML  = '';
 
   if (currentFase === 'Fase de Grupos') {
@@ -446,7 +449,7 @@ function renderPartidos() {
       subGrid.className = 'partidos-grid';
       (GRUPOS_MAPA[g] || []).forEach(id => {
         const p = PARTIDOS.find(x => x.id === id);
-        if (p) subGrid.appendChild(buildCard(p, faseLocked));
+        if (p) subGrid.appendChild(buildCard(p, faseHabilitada));
       });
       section.appendChild(subGrid);
       grid.appendChild(section);
@@ -459,7 +462,7 @@ function renderPartidos() {
       grid.innerHTML = '<p style="color:var(--text-muted);padding:40px;text-align:center;font-weight:600">No hay partidos en esta fase.</p>';
       return;
     }
-    lista.forEach(p => grid.appendChild(buildCard(p, faseLocked)));
+    lista.forEach(p => grid.appendChild(buildCard(p, faseHabilitada)));
   }
 }
 
@@ -489,8 +492,12 @@ function openModal(matchId) {
   const res  = resultados[matchId];
   const fin  = res && res.estado === 'Finalizado';
 
-  if ((!fasesHabilitadas.includes(p.fase) || window.isFaseCerrada(p.fase)) && !fin) {
-    showToast('Las predicciones de esta fase están cerradas', 'warn');
+  if (!fin && !fasesHabilitadas.includes(p.fase)) {
+    showToast('Las predicciones de esta fase todavía no están disponibles', 'warn');
+    return;
+  }
+  if (!fin && window.isPartidoCerrado(p)) {
+    showToast('La edición de este partido cerró (2 h antes del inicio)', 'warn');
     return;
   }
 
@@ -575,6 +582,15 @@ function closeModal() {
 async function savePred() {
   const signo = document.querySelector('#modal-signo-btns .signo-btn.selected')?.dataset.signo;
   if (!signo) return showToast('Elegí un resultado', 'warn');
+
+  // Revalidar el cierre por las dudas el modal haya quedado abierto pasado el límite.
+  const p = PARTIDOS.find(x => x.id === currentModal);
+  if (p && window.isPartidoCerrado(p)) {
+    showToast('La edición de este partido cerró (2 h antes del inicio)', 'warn');
+    closeModal();
+    renderPartidos();
+    return;
+  }
 
   const btn = document.getElementById('modal-save');
   btn.textContent = 'Guardando…';

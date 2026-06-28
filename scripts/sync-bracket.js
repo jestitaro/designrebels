@@ -73,7 +73,7 @@ function slotDocId(slot) {
 // ─── Fetch ESPN standings ───────────────────────────────────────────────────
 function fetchStandings() {
   const url = process.env.STANDINGS_URL
-    || 'https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/standings';
+    || 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
   return new Promise((resolve, reject) => {
     https.get(url, res => {
       let raw = '';
