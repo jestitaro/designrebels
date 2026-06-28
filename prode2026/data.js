@@ -77,46 +77,46 @@ window.PARTIDOS = [
   { id:72, fecha:"2026-06-27", hora:"02:00", fase:"Fase de Grupos", equipoA:"Jordan",       equipoB:"Argentina",     estadio:"AT&T Stadium",                ciudad:"Dallas" },
 
   // ── DIECISEISAVOS ──
-  { id:73,  fecha:"2026-06-28", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"2A",  equipoB:"2B",       estadio:"TBD", ciudad:"TBD" },
-  { id:74,  fecha:"2026-06-29", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1E",  equipoB:"3A/B/C/D/F", estadio:"TBD", ciudad:"TBD" },
-  { id:75,  fecha:"2026-06-29", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1F",  equipoB:"2C",       estadio:"TBD", ciudad:"TBD" },
-  { id:76,  fecha:"2026-06-29", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1C",  equipoB:"2F",       estadio:"TBD", ciudad:"TBD" },
-  { id:77,  fecha:"2026-06-30", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"2E",  equipoB:"2I",       estadio:"TBD", ciudad:"TBD" },
-  { id:78,  fecha:"2026-06-30", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1I",  equipoB:"3C/D/F/G/H", estadio:"TBD", ciudad:"TBD" },
-  { id:79,  fecha:"2026-06-30", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1A",  equipoB:"3C/E/F/H/I", estadio:"TBD", ciudad:"TBD" },
-  { id:80,  fecha:"2026-07-01", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1L",  equipoB:"3E/H/I/J/K", estadio:"TBD", ciudad:"TBD" },
-  { id:81,  fecha:"2026-07-01", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1D",  equipoB:"3B/E/F/I/J", estadio:"TBD", ciudad:"TBD" },
-  { id:82,  fecha:"2026-07-01", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1G",  equipoB:"3A/E/H/I/J", estadio:"TBD", ciudad:"TBD" },
-  { id:83,  fecha:"2026-07-02", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"2K",  equipoB:"2L",       estadio:"TBD", ciudad:"TBD" },
-  { id:84,  fecha:"2026-07-02", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1H",  equipoB:"2J",       estadio:"TBD", ciudad:"TBD" },
-  { id:85,  fecha:"2026-07-03", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1B",  equipoB:"3E/F/G/I/J", estadio:"TBD", ciudad:"TBD" },
-  { id:86,  fecha:"2026-07-03", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1J",  equipoB:"2H",       estadio:"TBD", ciudad:"TBD" },
-  { id:87,  fecha:"2026-07-03", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"1K",  equipoB:"3D/E/I/J/L", estadio:"TBD", ciudad:"TBD" },
-  { id:88,  fecha:"2026-07-03", hora:"12:00", fase:"Dieciseisavos de Final", equipoA:"2D",  equipoB:"2G",       estadio:"TBD", ciudad:"TBD" },
+  { id:73,  fecha:"2026-06-28", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"2A",  equipoB:"2B",       estadio:"TBD", ciudad:"TBD" },
+  { id:74,  fecha:"2026-06-29", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1E",  equipoB:"3A/B/C/D/F", estadio:"TBD", ciudad:"TBD" },
+  { id:75,  fecha:"2026-06-29", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1F",  equipoB:"2C",       estadio:"TBD", ciudad:"TBD" },
+  { id:76,  fecha:"2026-06-29", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1C",  equipoB:"2F",       estadio:"TBD", ciudad:"TBD" },
+  { id:77,  fecha:"2026-06-30", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"2E",  equipoB:"2I",       estadio:"TBD", ciudad:"TBD" },
+  { id:78,  fecha:"2026-06-30", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1I",  equipoB:"3C/D/F/G/H", estadio:"TBD", ciudad:"TBD" },
+  { id:79,  fecha:"2026-06-30", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1A",  equipoB:"3C/E/F/H/I", estadio:"TBD", ciudad:"TBD" },
+  { id:80,  fecha:"2026-07-01", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1L",  equipoB:"3E/H/I/J/K", estadio:"TBD", ciudad:"TBD" },
+  { id:81,  fecha:"2026-07-01", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1D",  equipoB:"3B/E/F/I/J", estadio:"TBD", ciudad:"TBD" },
+  { id:82,  fecha:"2026-07-01", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1G",  equipoB:"3A/E/H/I/J", estadio:"TBD", ciudad:"TBD" },
+  { id:83,  fecha:"2026-07-02", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"2K",  equipoB:"2L",       estadio:"TBD", ciudad:"TBD" },
+  { id:84,  fecha:"2026-07-02", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1H",  equipoB:"2J",       estadio:"TBD", ciudad:"TBD" },
+  { id:85,  fecha:"2026-07-03", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1B",  equipoB:"3E/F/G/I/J", estadio:"TBD", ciudad:"TBD" },
+  { id:86,  fecha:"2026-07-03", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1J",  equipoB:"2H",       estadio:"TBD", ciudad:"TBD" },
+  { id:87,  fecha:"2026-07-03", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1K",  equipoB:"3D/E/I/J/L", estadio:"TBD", ciudad:"TBD" },
+  { id:88,  fecha:"2026-07-03", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"2D",  equipoB:"2G",       estadio:"TBD", ciudad:"TBD" },
 
   // ── OCTAVOS ──
-  { id:89,  fecha:"2026-07-04", hora:"12:00", fase:"Octavos de Final", equipoA:"G73", equipoB:"G76", estadio:"TBD", ciudad:"TBD" },
-  { id:90,  fecha:"2026-07-04", hora:"12:00", fase:"Octavos de Final", equipoA:"G74", equipoB:"G77", estadio:"TBD", ciudad:"TBD" },
-  { id:91,  fecha:"2026-07-05", hora:"12:00", fase:"Octavos de Final", equipoA:"G75", equipoB:"G78", estadio:"TBD", ciudad:"TBD" },
-  { id:92,  fecha:"2026-07-05", hora:"12:00", fase:"Octavos de Final", equipoA:"G79", equipoB:"G80", estadio:"TBD", ciudad:"TBD" },
-  { id:93,  fecha:"2026-07-06", hora:"12:00", fase:"Octavos de Final", equipoA:"G83", equipoB:"G84", estadio:"TBD", ciudad:"TBD" },
-  { id:94,  fecha:"2026-07-06", hora:"12:00", fase:"Octavos de Final", equipoA:"G81", equipoB:"G82", estadio:"TBD", ciudad:"TBD" },
-  { id:95,  fecha:"2026-07-07", hora:"12:00", fase:"Octavos de Final", equipoA:"G86", equipoB:"G88", estadio:"TBD", ciudad:"TBD" },
-  { id:96,  fecha:"2026-07-07", hora:"12:00", fase:"Octavos de Final", equipoA:"G85", equipoB:"G87", estadio:"TBD", ciudad:"TBD" },
+  { id:89,  fecha:"2026-07-04", hora:"16:00", fase:"Octavos de Final", equipoA:"G73", equipoB:"G76", estadio:"TBD", ciudad:"TBD" },
+  { id:90,  fecha:"2026-07-04", hora:"20:00", fase:"Octavos de Final", equipoA:"G74", equipoB:"G77", estadio:"TBD", ciudad:"TBD" },
+  { id:91,  fecha:"2026-07-05", hora:"16:00", fase:"Octavos de Final", equipoA:"G75", equipoB:"G78", estadio:"TBD", ciudad:"TBD" },
+  { id:92,  fecha:"2026-07-05", hora:"20:00", fase:"Octavos de Final", equipoA:"G79", equipoB:"G80", estadio:"TBD", ciudad:"TBD" },
+  { id:93,  fecha:"2026-07-06", hora:"16:00", fase:"Octavos de Final", equipoA:"G83", equipoB:"G84", estadio:"TBD", ciudad:"TBD" },
+  { id:94,  fecha:"2026-07-06", hora:"20:00", fase:"Octavos de Final", equipoA:"G81", equipoB:"G82", estadio:"TBD", ciudad:"TBD" },
+  { id:95,  fecha:"2026-07-07", hora:"16:00", fase:"Octavos de Final", equipoA:"G86", equipoB:"G88", estadio:"TBD", ciudad:"TBD" },
+  { id:96,  fecha:"2026-07-07", hora:"20:00", fase:"Octavos de Final", equipoA:"G85", equipoB:"G87", estadio:"TBD", ciudad:"TBD" },
 
   // ── CUARTOS ──
-  { id:97,  fecha:"2026-07-09", hora:"12:00", fase:"Cuartos de Final", equipoA:"G89", equipoB:"G90", estadio:"TBD", ciudad:"TBD" },
-  { id:98,  fecha:"2026-07-10", hora:"12:00", fase:"Cuartos de Final", equipoA:"G93", equipoB:"G94", estadio:"TBD", ciudad:"TBD" },
-  { id:99,  fecha:"2026-07-11", hora:"12:00", fase:"Cuartos de Final", equipoA:"G91", equipoB:"G92", estadio:"TBD", ciudad:"TBD" },
-  { id:100, fecha:"2026-07-11", hora:"12:00", fase:"Cuartos de Final", equipoA:"G95", equipoB:"G96", estadio:"TBD", ciudad:"TBD" },
+  { id:97,  fecha:"2026-07-09", hora:"20:00", fase:"Cuartos de Final", equipoA:"G89", equipoB:"G90", estadio:"TBD", ciudad:"TBD" },
+  { id:98,  fecha:"2026-07-10", hora:"20:00", fase:"Cuartos de Final", equipoA:"G93", equipoB:"G94", estadio:"TBD", ciudad:"TBD" },
+  { id:99,  fecha:"2026-07-11", hora:"16:00", fase:"Cuartos de Final", equipoA:"G91", equipoB:"G92", estadio:"TBD", ciudad:"TBD" },
+  { id:100, fecha:"2026-07-11", hora:"20:00", fase:"Cuartos de Final", equipoA:"G95", equipoB:"G96", estadio:"TBD", ciudad:"TBD" },
 
   // ── SEMIFINALES ──
-  { id:101, fecha:"2026-07-14", hora:"12:00", fase:"Semifinales", equipoA:"G97",  equipoB:"G98",  estadio:"AT&T Stadium",         ciudad:"Dallas" },
-  { id:102, fecha:"2026-07-15", hora:"12:00", fase:"Semifinales", equipoA:"G99",  equipoB:"G100", estadio:"Mercedes-Benz Stadium", ciudad:"Atlanta" },
+  { id:101, fecha:"2026-07-14", hora:"16:00", fase:"Semifinales", equipoA:"G97",  equipoB:"G98",  estadio:"AT&T Stadium",         ciudad:"Dallas" },
+  { id:102, fecha:"2026-07-15", hora:"20:00", fase:"Semifinales", equipoA:"G99",  equipoB:"G100", estadio:"Mercedes-Benz Stadium", ciudad:"Atlanta" },
 
   // ── 3ER LUGAR + FINAL ──
-  { id:103, fecha:"2026-07-18", hora:"12:00", fase:"Tercer puesto", equipoA:"P101", equipoB:"P102", estadio:"Hard Rock Stadium",  ciudad:"Miami" },
-  { id:104, fecha:"2026-07-19", hora:"12:00", fase:"Final",         equipoA:"G101", equipoB:"G102", estadio:"MetLife Stadium",     ciudad:"New York/NJ" }
+  { id:103, fecha:"2026-07-18", hora:"21:00", fase:"Tercer puesto", equipoA:"P101", equipoB:"P102", estadio:"Hard Rock Stadium",  ciudad:"Miami" },
+  { id:104, fecha:"2026-07-19", hora:"21:00", fase:"Final",         equipoA:"G101", equipoB:"G102", estadio:"MetLife Stadium",     ciudad:"New York/NJ" }
 ];
 
 // Orden de fases para el filtro
