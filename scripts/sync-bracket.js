@@ -38,6 +38,22 @@ const THIRD_PLACE_SLOTS = [
   { slot: "3D/E/I/J/L", grupos: ["D","E","I","J","L"] }, // partido 87
 ];
 
+// ─── Asignación FINAL de mejores terceros (manual y definitiva) ────────────
+// IMPORTANTE: la tabla oficial de FIFA que asigna los 8 mejores terceros a cada
+// cruce NO se puede deducir solo con las restricciones de grupo (hay varias
+// combinaciones válidas). Por eso NO la calculamos por algoritmo: se fija a mano
+// acá. Cada slot listado se ESCRIBE SIEMPRE con este valor (idempotente, se
+// autocorrige en cada corrida). Los slots que NO estén acá no se tocan: se dejan
+// tal cual estén en Firestore.
+const THIRD_PLACE_FINAL = {
+  "3A/B/C/D/F": { equipo: "Paraguay", grupo: "D" }, // partido 74 — 3º Grupo D
+  "3C/D/F/G/H": { equipo: "Sweden",   grupo: "F" }, // partido 78 — 3º Grupo F
+  "3B/E/F/I/J": { equipo: "Bosnia",   grupo: "B" }, // partido 81 — 3º Grupo B
+  // Los otros 5 slots (3C/E/F/H/I, 3E/H/I/J/K, 3A/E/H/I/J, 3E/F/G/I/J,
+  // 3D/E/I/J/L) ya están correctos en Firestore y no se sobrescriben.
+  // Si querés fijarlos también acá, agregá: "slot": { equipo, grupo }.
+};
+
 const GROUP_LETTERS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
 // ─── Normalización de nombres de equipos (ESPN → data.js) ─────────────────
@@ -133,44 +149,9 @@ function parseGroups(data) {
   return grupos;
 }
 
-// ─── Asignación de los 8 mejores terceros a sus slots ──────────────────────
-// 1) Rankea los 12 terceros (pts → gd → gf) y toma los 8 mejores.
-// 2) Asigna cada grupo clasificado a un slot que lo admita (backtracking).
-// NOTA: respeta las restricciones de grupo de cada slot pero la tabla oficial
-// de FIFA podría elegir otra combinación válida en casos límite. El log avisa.
-function assignThirds(grupos) {
-  const terceros = GROUP_LETTERS
-    .map(g => {
-      const t = grupos[g] && grupos[g][2];
-      return t ? { grupo: g, equipo: t.equipo, pts: t.pts, gd: t.gd, gf: t.gf } : null;
-    })
-    .filter(Boolean)
-    .sort((a, b) => (b.pts - a.pts) || (b.gd - a.gd) || (b.gf - a.gf));
-
-  const clasificados = terceros.slice(0, 8);
-  const gruposClasif = clasificados.map(t => t.grupo);
-
-  // Backtracking: slots en orden fijo, probando grupos en orden fijo.
-  const slots = THIRD_PLACE_SLOTS;
-  const used = new Set();
-  const result = {}; // slot -> grupo
-
-  function bt(i) {
-    if (i === slots.length) return true;
-    for (const g of slots[i].grupos) {
-      if (used.has(g) || !gruposClasif.includes(g)) continue;
-      used.add(g);
-      result[slots[i].slot] = g;
-      if (bt(i + 1)) return true;
-      used.delete(g);
-      delete result[slots[i].slot];
-    }
-    return false;
-  }
-
-  const ok = bt(0);
-  return { ok, asignacion: result, clasificados, gruposClasif };
-}
+// (La asignación automática de mejores terceros por backtracking se eliminó:
+//  no reproducía la tabla oficial de FIFA y pisaba las correcciones manuales.
+//  Ahora los terceros se fijan a mano en THIRD_PLACE_FINAL.)
 
 // ─── Notificación opcional (webhook Slack/Discord) ────────────────────────
 async function notify(message) {
@@ -228,22 +209,11 @@ async function main() {
     }
   }
 
-  // 2) Mejores terceros → slots con barra
-  const { ok, asignacion, clasificados, gruposClasif } = assignThirds(grupos);
-  if (clasificados.length) {
-    console.log(`Mejores terceros (orden): ${clasificados.map(t => `${t.grupo}:${t.equipo}`).join(', ')}`);
-  }
-  if (!ok) {
-    console.warn('⚠ No se pudo asignar los terceros a todos los slots (faltan grupos o restricciones incompatibles).');
-  }
-  for (const { slot, grupos: permitidos } of THIRD_PLACE_SLOTS) {
-    const g = asignacion[slot];
-    if (!g) {
-      console.log(`  → Sin asignar ${slot} (admite ${permitidos.join('/')})`);
-      continue;
-    }
-    const t = grupos[g][2];
-    docs.push({ slot, equipo: t.equipo, grupo: g, posicion: 3 });
+  // 2) Mejores terceros → asignación manual definitiva (THIRD_PLACE_FINAL).
+  // No se recalcula por algoritmo: se escriben SIEMPRE los slots fijados a mano.
+  // Los slots no listados se dejan como estén (no se sobrescriben).
+  for (const [slot, info] of Object.entries(THIRD_PLACE_FINAL)) {
+    docs.push({ slot, equipo: info.equipo, grupo: info.grupo, posicion: 3 });
   }
 
   // Escritura en Firestore (batch)
