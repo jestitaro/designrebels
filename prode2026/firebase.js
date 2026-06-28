@@ -44,11 +44,13 @@ window.dbGetUser = async function(email) {
 
 window.dbGetMyPreds = async function(emailRaw) {
   const email = emailRaw.trim().toLowerCase();
-  const snaps = await db.collection("predicciones").get();
+  // Lee SOLO las predicciones de este usuario (no toda la colección) para no
+  // gastar lecturas de Firestore de más.
+  const snaps = await db.collection("predicciones").where("email", "==", email).get();
   const result = {};
   snaps.forEach(s => {
     const d = s.data();
-    if (d.email === email) result[Number(d.matchId)] = { signo: d.signo };
+    result[Number(d.matchId)] = { signo: d.signo };
   });
   return result;
 };

@@ -26,6 +26,7 @@ let bracket           = {}; // { slot: equipo } resuelto desde Firestore
 let currentFase       = "Fase de Grupos";
 let currentModal      = null;
 let countdownTimer    = null; // intervalo que refresca los contadores de las cards
+let rankingLoaded     = false; // si ya se cargaron allUsers/allPreds para el ranking
 
 const CASA_COLORS = {
   Gryffindor: "#E11D48",
@@ -244,18 +245,17 @@ async function initApp() {
 
 async function refreshData() {
   try {
-    const [preds, res, users, apreds, fases, brk] = await Promise.all([
+    // Solo lo necesario para ver/cargar predicciones. El ranking (que lee TODAS
+    // las predicciones y usuarios) se carga aparte, recién al abrir esa pestaña,
+    // para no agotar la cuota de lecturas de Firebase.
+    const [preds, res, fases, brk] = await Promise.all([
       window.dbGetMyPreds(currentUser.email),
       window.dbGetResultados(),
-      window.dbGetAllUsers(),
-      window.dbGetAllPreds(),
       window.dbGetFasesHabilitadas(),
       window.dbGetBracket()
     ]);
     myPreds          = preds   || {};
     resultados       = res     || {};
-    allUsers         = users   || [];
-    allPreds         = apreds  || [];
     fasesHabilitadas = fases   || [];
     bracket          = brk     || {};
     // Reemplazar los placeholders (1A, 3A/B/C/D/F, G73, P101…) por equipos reales
@@ -264,6 +264,26 @@ async function refreshData() {
     console.error('refreshData error:', e);
     fasesHabilitadas = [];
     showToast('Error al cargar datos de Firebase', 'error');
+  }
+}
+
+// Carga (una sola vez) los datos pesados del ranking: todas las predicciones y
+// todos los usuarios. Se invoca al abrir la pestaña Ranking.
+async function ensureRankingData() {
+  if (rankingLoaded) return true;
+  try {
+    const [users, apreds] = await Promise.all([
+      window.dbGetAllUsers(),
+      window.dbGetAllPreds()
+    ]);
+    allUsers      = users  || [];
+    allPreds      = apreds || [];
+    rankingLoaded = true;
+    return true;
+  } catch(e) {
+    console.error('ensureRankingData error:', e);
+    showToast('Error al cargar el ranking', 'error');
+    return false;
   }
 }
 
@@ -319,8 +339,10 @@ function setupNav() {
       const view = btn.dataset.view;
       document.getElementById('view-' + view).classList.add('active');
       if (view === 'ranking') {
-        renderRanking();
-        renderCasas();
+        ensureRankingData().then(() => {
+          renderRanking();
+          renderCasas();
+        });
       }
     });
   });
@@ -689,6 +711,7 @@ async function savePred() {
   try {
     await window.dbSavePred(currentModal, signo);
     myPreds[Number(currentModal)] = { signo };
+    rankingLoaded = false; // el ranking se recargará la próxima vez que se abra
     showToast('Predicción guardada', 'ok');
     closeModal();
     renderPartidos();
