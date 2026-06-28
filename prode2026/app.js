@@ -22,6 +22,7 @@ let resultados        = {};
 let allUsers          = [];
 let allPreds          = [];
 let fasesHabilitadas  = [];
+let bracket           = {}; // { slot: equipo } resuelto desde Firestore
 let currentFase       = "Fase de Grupos";
 let currentModal      = null;
 
@@ -241,23 +242,69 @@ async function initApp() {
 
 async function refreshData() {
   try {
-    const [preds, res, users, apreds, fases] = await Promise.all([
+    const [preds, res, users, apreds, fases, brk] = await Promise.all([
       window.dbGetMyPreds(currentUser.email),
       window.dbGetResultados(),
       window.dbGetAllUsers(),
       window.dbGetAllPreds(),
-      window.dbGetFasesHabilitadas()
+      window.dbGetFasesHabilitadas(),
+      window.dbGetBracket()
     ]);
     myPreds          = preds   || {};
     resultados       = res     || {};
     allUsers         = users   || [];
     allPreds         = apreds  || [];
-    fasesHabilitadas = fases || [];
+    fasesHabilitadas = fases   || [];
+    bracket          = brk     || {};
+    // Reemplazar los placeholders (1A, 3A/B/C/D/F, G73, P101…) por equipos reales
+    resolveBracket();
   } catch(e) {
     console.error('refreshData error:', e);
     fasesHabilitadas = [];
     showToast('Error al cargar datos de Firebase', 'error');
   }
+}
+
+// ── RESOLUCIÓN DE PLACEHOLDERS DEL BRACKET ────────────────────
+// Un placeholder NO es un nombre de país real: empieza con dígito ("1A","2B"),
+// contiene "/" ("3A/B/C/D/F"), o es "G"/"P" + número ("G73","P101").
+function isPlaceholder(token) {
+  if (!token) return false;
+  return /^\d/.test(token) || token.includes('/') || /^[GP]\d+$/.test(token);
+}
+
+// Resuelve un token a nombre de equipo real, o lo deja igual si todavía no se puede.
+function resolveToken(token) {
+  if (!isPlaceholder(token)) return token; // ya es un país real
+
+  // Ganador / perdedor de un partido eliminatorio previo (G73 / P101)
+  const m = /^([GP])(\d+)$/.exec(token);
+  if (m) {
+    const tipo  = m[1];                  // 'G' ganador | 'P' perdedor
+    const refId = Number(m[2]);
+    const ref   = PARTIDOS.find(x => x.id === refId);
+    if (!ref) return token;
+    // El cruce referido debe estar ya resuelto a equipos reales
+    if (isPlaceholder(ref.equipoA) || isPlaceholder(ref.equipoB)) return token;
+    const res = resultados[refId];
+    if (!res || res.estado !== 'Finalizado' || (res.signo !== 'A' && res.signo !== 'B')) return token;
+    const ganador  = res.signo === 'A' ? ref.equipoA : ref.equipoB;
+    const perdedor = res.signo === 'A' ? ref.equipoB : ref.equipoA;
+    return tipo === 'G' ? ganador : perdedor;
+  }
+
+  // Slot de grupo / mejor tercero (1A, 2B, 3A/B/C/D/F): viene del bracket
+  return bracket[token] || token;
+}
+
+// Recorre PARTIDOS en orden de id (rondas tempranas primero, así G73/P101
+// pueden apoyarse en cruces ya resueltos) y reemplaza los placeholders.
+function resolveBracket() {
+  if (!window.PARTIDOS) return;
+  PARTIDOS.forEach(p => {
+    if (isPlaceholder(p.equipoA)) p.equipoA = resolveToken(p.equipoA);
+    if (isPlaceholder(p.equipoB)) p.equipoB = resolveToken(p.equipoB);
+  });
 }
 
 // ── NAV ───────────────────────────────────────
@@ -323,13 +370,14 @@ function setFlagOnSpan(spanId, equipo) {
 
 // ── PARTIDOS ──────────────────────────────────
 function buildCard(p, faseHabilitada) {
-  const pred       = myPreds[p.id];
-  const res        = resultados[p.id];
-  const fin        = res && res.estado === 'Finalizado';
-  const ptInfo     = (fin && pred) ? calcularPuntos(pred.signo, res.signo) : null;
-  // Cerrado por tiempo: pasaron <2 h para el inicio de ESTE partido.
-  const cerradoPorTiempo = window.isPartidoCerrado(p);
-  const locked     = (!faseHabilitada || cerradoPorTiempo) && !fin;
+  const pred   = myPreds[p.id];
+  const res    = resultados[p.id];
+  const fin    = res && res.estado === 'Finalizado';
+  const ptInfo = (fin && pred) ? calcularPuntos(pred.signo, res.signo) : null;
+  // Cerrado por tiempo: faltan <2 h para ESTE partido.
+  const cerradoPorTiempo = window.isPartidoLocked(p);
+  // Bloqueado para editar = (fase no habilitada o ya cerrado por tiempo) y no finalizado.
+  const locked = (!faseHabilitada || cerradoPorTiempo) && !fin;
 
   const card = document.createElement('div');
   card.className = 'partido-card'
@@ -355,7 +403,7 @@ function buildCard(p, faseHabilitada) {
          </div>`
       : `<div class="partido-prediction"><span>Sin predicción · 0 puntos</span></div>`;
   } else if (locked) {
-    // cerradoPorTiempo → ya pasó el límite de edición; si no, la fase aún no se habilitó.
+    // cerradoPorTiempo → ya pasó el límite de edición (lock); si no, la fase aún no se habilitó (clock).
     predHtml = pred
       ? `<div class="partido-prediction">
            <span>Tu pred:</span>
@@ -412,7 +460,8 @@ function renderPartidos() {
     grid.innerHTML = '<p style="color:red;padding:40px">Error: datos no cargados. Recargá la página.</p>';
     return;
   }
-  // La fase está habilitada por el admin; el cierre fino es por partido (2 h antes).
+  // La fase debe estar habilitada por el admin; dentro de ella, cada partido
+  // se bloquea individualmente 2 h antes de su kickoff (ver buildCard).
   const faseHabilitada = fasesHabilitadas.includes(currentFase);
   grid.innerHTML  = '';
 
@@ -496,7 +545,7 @@ function openModal(matchId) {
     showToast('Las predicciones de esta fase todavía no están disponibles', 'warn');
     return;
   }
-  if (!fin && window.isPartidoCerrado(p)) {
+  if (!fin && window.isPartidoLocked(p)) {
     showToast('La edición de este partido cerró (2 h antes del inicio)', 'warn');
     return;
   }
@@ -583,9 +632,9 @@ async function savePred() {
   const signo = document.querySelector('#modal-signo-btns .signo-btn.selected')?.dataset.signo;
   if (!signo) return showToast('Elegí un resultado', 'warn');
 
-  // Revalidar el cierre por las dudas el modal haya quedado abierto pasado el límite.
+  // Revalidar el cierre por si el modal quedó abierto pasado el límite de 2 h.
   const p = PARTIDOS.find(x => x.id === currentModal);
-  if (p && window.isPartidoCerrado(p)) {
+  if (p && window.isPartidoLocked(p)) {
     showToast('La edición de este partido cerró (2 h antes del inicio)', 'warn');
     closeModal();
     renderPartidos();

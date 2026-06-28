@@ -187,29 +187,32 @@ window.FASE_DEADLINES = {
   'Final':                  new Date('2026-07-19T02:59:00Z'), // 18 jul 23:59 ART
 };
 
+// Fallback: bloqueo por fase completa. Se mantiene por compatibilidad; el
+// bloqueo fino ahora es por partido (ver isPartidoLocked más abajo).
 window.isFaseCerrada = function(fase) {
   const deadline = FASE_DEADLINES[fase];
   if (!deadline) return false;
   return new Date() > deadline;
 };
 
-// Cierre por partido: se puede editar la predicción hasta N minutos antes del
-// inicio del partido; pasado ese momento, ese partido queda bloqueado.
-window.MINUTOS_CIERRE_ANTES = 120; // 2 horas
+// ── Lock por partido (se edita hasta N minutos antes del kickoff) ──
+window.LOCK_MINUTOS_ANTES = 120; // 2 horas
 
-// Fecha/hora de inicio del partido como Date. 'fecha' (YYYY-MM-DD) y 'hora'
-// (HH:MM) están en horario de Argentina (UTC-3).
-window.getFechaInicio = function(p) {
+// Kickoff del partido como Date. fecha (YYYY-MM-DD) + hora (HH:MM) están en
+// horario de Argentina (ART, UTC-3).
+window.getKickoff = function(p) {
   if (!p || !p.fecha || !p.hora) return null;
   const d = new Date(`${p.fecha}T${p.hora}:00-03:00`);
   return isNaN(d.getTime()) ? null : d;
 };
 
-// true si ya pasó el momento de cierre (2 h antes del inicio) de ESE partido.
-window.isPartidoCerrado = function(p) {
-  const inicio = window.getFechaInicio(p);
-  if (!inicio) return false; // sin fecha/hora válida → no bloquear por tiempo
-  const cierre = new Date(inicio.getTime() - MINUTOS_CIERRE_ANTES * 60 * 1000);
+// true si faltan menos de LOCK_MINUTOS_ANTES para el kickoff de ESE partido
+// (o si ya empezó). No conoce el resultado: el caso "Finalizado" se maneja
+// aparte en app.js (la card finalizada no es editable).
+window.isPartidoLocked = function(p) {
+  const kickoff = window.getKickoff(p);
+  if (!kickoff) return false; // sin fecha/hora válida → no bloquear por tiempo
+  const cierre = new Date(kickoff.getTime() - LOCK_MINUTOS_ANTES * 60 * 1000);
   return new Date() > cierre;
 };
 

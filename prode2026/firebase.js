@@ -75,6 +75,19 @@ window.dbGetResultados = async function() {
   return result;
 };
 
+// Lee la colección `bracket` y devuelve { slot: equipo }.
+// El doc id sanitiza las barras ("3A/B/C/D/F" → "3A_B_C_D_F"), pero el campo
+// `slot` guarda el valor original, así que usamos ese como clave.
+window.dbGetBracket = async function() {
+  const snaps = await db.collection("bracket").get();
+  const result = {};
+  snaps.forEach(s => {
+    const d = s.data();
+    if (d && d.slot && d.equipo) result[d.slot] = d.equipo;
+  });
+  return result;
+};
+
 window.dbSaveResultado = async function(matchId, signo) {
   await db.collection("resultados").doc(String(matchId)).set(
     { signo, estado: "Finalizado", timestamp: Date.now() }
