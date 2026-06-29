@@ -319,7 +319,7 @@ function renderTracker() {
     const email = u.id || u.email;
     const preds = predsByUser[email] || new Set();
     const missing = matchesHabilitados.filter(p => !preds.has(p.id));
-    return { nombre: u.nombre, email, total: preds.size, missing };
+    return { nombre: u.nombre, email, password: u.password || '', total: preds.size, missing };
   }).sort((a, b) => a.missing.length - b.missing.length);
 
   const complete   = userData.filter(u => u.missing.length === 0);
@@ -374,7 +374,7 @@ function renderTracker() {
       <div class="tracker-header">
         <span>
           <span class="tracker-name">${escHtml(u.nombre)}</span>
-          <span class="tracker-email">${escHtml(u.email)}</span>
+          <span class="tracker-email">${escHtml(u.email)} · 🔑 ${escHtml(u.password)}</span>
         </span>
         <span class="tracker-badge ${isComplete ? 'ok' : 'pending'}">
           ${isComplete ? '✓ Completo' : `${u.total}/${totalMatches}`}
