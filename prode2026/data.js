@@ -91,7 +91,7 @@ window.PARTIDOS = [
   { id:84,  fecha:"2026-07-02", hora:"16:00", fase:"Dieciseisavos de Final", equipoA:"1H",  equipoB:"2J",       estadio:"SoFi Stadium",                ciudad:"Los Angeles" },
   { id:85,  fecha:"2026-07-03", hora:"00:00", fase:"Dieciseisavos de Final", equipoA:"1B",  equipoB:"3E/F/G/I/J", estadio:"BC Place",                  ciudad:"Vancouver" },
   { id:86,  fecha:"2026-07-03", hora:"19:00", fase:"Dieciseisavos de Final", equipoA:"1J",  equipoB:"2H",       estadio:"Hard Rock Stadium",           ciudad:"Miami" },
-  { id:87,  fecha:"2026-07-03", hora:"20:00", fase:"Dieciseisavos de Final", equipoA:"1K",  equipoB:"3D/E/I/J/L", estadio:"GEHA Field Arrowhead",      ciudad:"Kansas City" },
+  { id:87,  fecha:"2026-07-03", hora:"22:30", fase:"Dieciseisavos de Final", equipoA:"1K",  equipoB:"3D/E/I/J/L", estadio:"GEHA Field Arrowhead",      ciudad:"Kansas City" },
   { id:88,  fecha:"2026-07-03", hora:"15:00", fase:"Dieciseisavos de Final", equipoA:"2D",  equipoB:"2G",       estadio:"AT&T Stadium",                ciudad:"Dallas" },
 
   // ── OCTAVOS ──
