@@ -167,6 +167,43 @@
     }
     .override-btn.unlock { background: #f59e0b; color: #fff; }
     .override-btn.lock   { background: var(--surface); color: #64748b; border: 1px solid var(--border); }
+
+    /* ── Seguimiento de predicciones ── */
+    .tracker-tabs { display:flex; gap:6px; margin-bottom:16px; }
+    .tracker-tab {
+      font-family:'Nunito',sans-serif; font-size:13px; font-weight:800;
+      padding:6px 14px; border-radius:8px; border:2px solid var(--border);
+      background:#fff; color:#64748b; cursor:pointer; transition:all .2s;
+    }
+    .tracker-tab.active { background:var(--qs-dark); color:#fff; border-color:var(--qs-dark); }
+    .tracker-tab .tab-count {
+      display:inline-block; margin-left:5px; padding:1px 7px;
+      border-radius:999px; font-size:11px;
+    }
+    .tracker-tab.active .tab-count { background:rgba(255,255,255,.2); color:#fff; }
+    .tracker-tab:not(.active) .tab-count { background:var(--surface); color:#64748b; }
+
+    .tracker-list { display:flex; flex-direction:column; gap:8px; margin-bottom:32px; }
+    .tracker-user {
+      background:#fff; border:2px solid var(--border); border-radius:10px;
+      padding:12px 16px; transition: border-color .2s;
+    }
+    .tracker-user.complete { border-color:#10b981; }
+    .tracker-user.incomplete { border-color:#f59e0b; }
+    .tracker-header {
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .tracker-name { font-size:14px; font-weight:800; color:var(--qs-dark); }
+    .tracker-email { font-size:11px; color:#94a3b8; margin-left:8px; font-weight:400; }
+    .tracker-badge {
+      font-size:12px; font-weight:800; padding:3px 10px; border-radius:999px;
+    }
+    .tracker-badge.ok { background:#dcfce7; color:#15803d; }
+    .tracker-badge.pending { background:#fef3c7; color:#92400e; }
+    .tracker-missing {
+      margin-top:8px; font-size:12px; color:#64748b; line-height:1.6;
+    }
+    .tracker-missing strong { color:var(--qs-dark); }
   </style>
 </head>
 <body>
@@ -183,6 +220,9 @@
 
   <p class="section-title">🔓 Habilitación de fases</p>
   <div class="fases-manager" id="fases-manager"></div>
+
+  <p class="section-title">📋 Seguimiento de predicciones</p>
+  <div id="tracker-content"><p style="font-size:13px;color:#64748b;">Cargando…</p></div>
 
   <p class="section-title">🔑 Excepciones de bloqueo (desbloquear partidos cerrados)</p>
   <div id="override-content"></div>
@@ -202,14 +242,19 @@
 let _resultados        = {};
 let _fasesHabilitadas  = ["Fase de Grupos"];
 let _lockOverrides     = [];
+let _allUsers          = [];
+let _allPreds          = [];
 
 async function initAdmin() {
-  [_resultados, _fasesHabilitadas, _lockOverrides] = await Promise.all([
+  [_resultados, _fasesHabilitadas, _lockOverrides, _allUsers, _allPreds] = await Promise.all([
     window.dbGetResultados(),
     window.dbGetFasesHabilitadas(),
-    window.dbGetLockOverrides()
+    window.dbGetLockOverrides(),
+    window.dbGetAllUsers(),
+    window.dbGetAllPreds()
   ]);
   renderFasesManager();
+  renderTracker();
   renderOverrides();
   renderAdmin();
 }
@@ -251,6 +296,101 @@ async function toggleFase(fase) {
     console.error(e);
     showToast('❌ Error al guardar');
   }
+}
+
+let _trackerFilter = 'incomplete';
+
+function renderTracker() {
+  const container = document.getElementById('tracker-content');
+  container.innerHTML = '';
+
+  const matchesHabilitados = PARTIDOS.filter(p => _fasesHabilitadas.includes(p.fase));
+  const matchIds = new Set(matchesHabilitados.map(p => p.id));
+  const totalMatches = matchIds.size;
+
+  const predsByUser = {};
+  _allPreds.forEach(pr => {
+    if (!matchIds.has(pr.matchId)) return;
+    if (!predsByUser[pr.email]) predsByUser[pr.email] = new Set();
+    predsByUser[pr.email].add(pr.matchId);
+  });
+
+  const userData = _allUsers.map(u => {
+    const email = u.id || u.email;
+    const preds = predsByUser[email] || new Set();
+    const missing = matchesHabilitados.filter(p => !preds.has(p.id));
+    return { nombre: u.nombre, email, total: preds.size, missing };
+  }).sort((a, b) => a.missing.length - b.missing.length);
+
+  const complete   = userData.filter(u => u.missing.length === 0);
+  const incomplete = userData.filter(u => u.missing.length > 0);
+
+  const tabs = document.createElement('div');
+  tabs.className = 'tracker-tabs';
+  tabs.innerHTML = `
+    <button class="tracker-tab ${_trackerFilter==='incomplete'?'active':''}" onclick="setTrackerFilter('incomplete')">
+      Faltan <span class="tab-count">${incomplete.length}</span>
+    </button>
+    <button class="tracker-tab ${_trackerFilter==='complete'?'active':''}" onclick="setTrackerFilter('complete')">
+      Completos <span class="tab-count">${complete.length}</span>
+    </button>
+  `;
+  container.appendChild(tabs);
+
+  const list = document.createElement('div');
+  list.className = 'tracker-list';
+
+  const showing = _trackerFilter === 'complete' ? complete : incomplete;
+
+  if (!showing.length) {
+    list.innerHTML = `<p style="font-size:13px;color:#64748b;">${
+      _trackerFilter === 'complete'
+        ? 'Nadie completó todas las predicciones todavía.'
+        : '¡Todos completaron sus predicciones!'
+    }</p>`;
+  }
+
+  showing.forEach(u => {
+    const isComplete = u.missing.length === 0;
+    const div = document.createElement('div');
+    div.className = 'tracker-user ' + (isComplete ? 'complete' : 'incomplete');
+
+    let missingHtml = '';
+    if (!isComplete) {
+      const byFase = {};
+      u.missing.forEach(p => {
+        if (!byFase[p.fase]) byFase[p.fase] = [];
+        byFase[p.fase].push(p);
+      });
+      missingHtml = '<div class="tracker-missing">';
+      for (const [fase, partidos] of Object.entries(byFase)) {
+        const items = partidos.map(p => `#${p.id} ${escHtml(p.equipoA)} vs ${escHtml(p.equipoB)}`).join(', ');
+        missingHtml += `<strong>${escHtml(fase)}:</strong> ${items}<br>`;
+      }
+      missingHtml += '</div>';
+    }
+
+    div.innerHTML = `
+      <div class="tracker-header">
+        <span>
+          <span class="tracker-name">${escHtml(u.nombre)}</span>
+          <span class="tracker-email">${escHtml(u.email)}</span>
+        </span>
+        <span class="tracker-badge ${isComplete ? 'ok' : 'pending'}">
+          ${isComplete ? '✓ Completo' : `${u.total}/${totalMatches}`}
+        </span>
+      </div>
+      ${missingHtml}
+    `;
+    list.appendChild(div);
+  });
+
+  container.appendChild(list);
+}
+
+function setTrackerFilter(filter) {
+  _trackerFilter = filter;
+  renderTracker();
 }
 
 function renderOverrides() {
