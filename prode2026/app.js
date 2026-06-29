@@ -248,16 +248,18 @@ async function refreshData() {
     // Solo lo necesario para ver/cargar predicciones. El ranking (que lee TODAS
     // las predicciones y usuarios) se carga aparte, recién al abrir esa pestaña,
     // para no agotar la cuota de lecturas de Firebase.
-    const [preds, res, fases, brk] = await Promise.all([
+    const [preds, res, fases, brk, overrides] = await Promise.all([
       window.dbGetMyPreds(currentUser.email),
       window.dbGetResultados(),
       window.dbGetFasesHabilitadas(),
-      window.dbGetBracket()
+      window.dbGetBracket(),
+      window.dbGetLockOverrides()
     ]);
-    myPreds          = preds   || {};
-    resultados       = res     || {};
-    fasesHabilitadas = fases   || [];
-    bracket          = brk     || {};
+    myPreds          = preds      || {};
+    resultados       = res        || {};
+    fasesHabilitadas = fases      || [];
+    bracket          = brk        || {};
+    window._lockOverrides = overrides || [];
     // Reemplazar los placeholders (1A, 3A/B/C/D/F, G73, P101…) por equipos reales
     resolveBracket();
   } catch(e) {

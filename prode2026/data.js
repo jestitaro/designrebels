@@ -213,12 +213,12 @@ window.getCierreEdicion = function(p) {
   return new Date(kickoff.getTime() - LOCK_MINUTOS_ANTES * 60 * 1000);
 };
 
-// true si faltan menos de LOCK_MINUTOS_ANTES para el kickoff de ESE partido
-// (o si ya empezó). No conoce el resultado: el caso "Finalizado" se maneja
-// aparte en app.js (la card finalizada no es editable).
+window._lockOverrides = [];
+
 window.isPartidoLocked = function(p) {
+  if (window._lockOverrides.includes(p.id)) return false;
   const cierre = window.getCierreEdicion(p);
-  if (!cierre) return false; // sin fecha/hora válida → no bloquear por tiempo
+  if (!cierre) return false;
   return new Date() > cierre;
 };
 

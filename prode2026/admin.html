@@ -142,6 +142,31 @@
     }
     .fase-toggle-btn.on  { background: #10b981; color: #fff; }
     .fase-toggle-btn.off { background: var(--surface); color: #64748b; border: 1px solid var(--border); }
+
+    /* ── Excepciones de bloqueo ── */
+    .override-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 8px;
+    }
+    .override-row {
+      background: #fff; border: 2px solid var(--border);
+      border-radius: 10px; padding: 10px 14px;
+      display: flex; align-items: center; gap: 10px;
+      transition: border-color .2s;
+    }
+    .override-row.overridden { border-color: #f59e0b; background: #fffbeb; }
+    .override-row .o-id { font-family:'Roboto',sans-serif; font-size:12px; color:#94a3b8; min-width:28px; }
+    .override-row .o-teams { flex:1; font-size:13px; font-weight:700; color:var(--qs-dark); }
+    .override-row .o-teams small { display:block; font-size:11px; font-weight:400; color:#64748b; margin-top:1px; }
+    .override-row .o-status { font-size:11px; font-weight:700; color:#64748b; }
+    .override-btn {
+      font-family:'Nunito',sans-serif; font-size:12px; font-weight:800;
+      padding: 5px 12px; border-radius: 8px;
+      border: none; cursor: pointer; transition: all .2s;
+    }
+    .override-btn.unlock { background: #f59e0b; color: #fff; }
+    .override-btn.lock   { background: var(--surface); color: #64748b; border: 1px solid var(--border); }
   </style>
 </head>
 <body>
@@ -159,6 +184,9 @@
   <p class="section-title">🔓 Habilitación de fases</p>
   <div class="fases-manager" id="fases-manager"></div>
 
+  <p class="section-title">🔑 Excepciones de bloqueo (desbloquear partidos cerrados)</p>
+  <div id="override-content"></div>
+
   <p class="section-title">⚽ Resultados</p>
   <div id="admin-content"></div>
 </div>
@@ -173,23 +201,20 @@
 <script>
 let _resultados        = {};
 let _fasesHabilitadas  = ["Fase de Grupos"];
+let _lockOverrides     = [];
 
 async function initAdmin() {
-  [_resultados, _fasesHabilitadas] = await Promise.all([
+  [_resultados, _fasesHabilitadas, _lockOverrides] = await Promise.all([
     window.dbGetResultados(),
-    window.dbGetFasesHabilitadas()
+    window.dbGetFasesHabilitadas(),
+    window.dbGetLockOverrides()
   ]);
   renderFasesManager();
+  renderOverrides();
   renderAdmin();
 }
 
-// init directo — firebase.js ya cargó antes
-  initAdmin();
-  if (false) {
-  initAdmin();
-} else {
-  document.addEventListener('firebaseReady', initAdmin);
-}
+initAdmin();
 
 function renderFasesManager() {
   const container = document.getElementById('fases-manager');
@@ -222,6 +247,68 @@ async function toggleFase(fase) {
     renderFasesManager();
     const estado = _fasesHabilitadas.includes(fase) ? 'habilitada' : 'bloqueada';
     showToast(`✓ "${fase}" ${estado}`);
+  } catch(e) {
+    console.error(e);
+    showToast('❌ Error al guardar');
+  }
+}
+
+function renderOverrides() {
+  const container = document.getElementById('override-content');
+  container.innerHTML = '';
+
+  const now = new Date();
+  const locked = PARTIDOS.filter(p => {
+    const res = _resultados[p.id];
+    if (res && res.estado === 'Finalizado') return false;
+    const cierre = window.getCierreEdicion(p);
+    return cierre && now > cierre;
+  });
+
+  if (!locked.length) {
+    container.innerHTML = '<p style="font-size:13px;color:#64748b;margin-bottom:24px;">No hay partidos con edición cerrada en este momento.</p>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'override-grid';
+  grid.style.marginBottom = '32px';
+
+  locked.forEach(p => {
+    const isOverridden = _lockOverrides.includes(p.id);
+    const row = document.createElement('div');
+    row.className = 'override-row' + (isOverridden ? ' overridden' : '');
+    row.id = 'override-' + p.id;
+    row.innerHTML = `
+      <span class="o-id">#${p.id}</span>
+      <div class="o-teams">
+        ${escHtml(p.equipoA)} vs ${escHtml(p.equipoB)}
+        <small>${p.fecha} · ${p.hora} hs</small>
+      </div>
+      <span class="o-status">${isOverridden ? '🔓 Desbloqueado' : '🔒 Cerrado'}</span>
+      <button class="override-btn ${isOverridden ? 'lock' : 'unlock'}"
+              onclick="toggleOverride(${p.id})">
+        ${isOverridden ? 'Volver a cerrar' : 'Desbloquear'}
+      </button>
+    `;
+    grid.appendChild(row);
+  });
+
+  container.appendChild(grid);
+}
+
+async function toggleOverride(matchId) {
+  const idx = _lockOverrides.indexOf(matchId);
+  if (idx > -1) {
+    _lockOverrides.splice(idx, 1);
+  } else {
+    _lockOverrides.push(matchId);
+  }
+  try {
+    await window.dbSetLockOverrides(_lockOverrides);
+    renderOverrides();
+    const estado = _lockOverrides.includes(matchId) ? 'desbloqueado' : 'cerrado';
+    showToast(`✓ Partido #${matchId} ${estado}`);
   } catch(e) {
     console.error(e);
     showToast('❌ Error al guardar');

@@ -113,6 +113,23 @@ window.dbSetFasesHabilitadas = async function(fases) {
   });
 };
 
+window.dbGetLockOverrides = async function() {
+  try {
+    const snap = await db.collection("config").doc("lockOverrides").get();
+    if (snap.exists && snap.data().matchIds) return snap.data().matchIds;
+  } catch(e) {
+    console.warn('Error cargando lockOverrides:', e);
+  }
+  return [];
+};
+
+window.dbSetLockOverrides = async function(matchIds) {
+  await db.collection("config").doc("lockOverrides").set({
+    matchIds: matchIds,
+    updatedAt: Date.now()
+  });
+};
+
 window.dbGetAllUsers = async function() {
   const snaps = await db.collection("usuarios").get();
   const result = [];
