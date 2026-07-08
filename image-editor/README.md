@@ -21,6 +21,7 @@ Opción B — arrastrar y soltar:
 - Deshacer / rehacer (botones o Ctrl+Z / Ctrl+Shift+Z), duplicar (Ctrl+D), borrar (Supr), mover con flechas.
 - Avisos de diseño (se corta, fuera del área segura, texto chico, bajo contraste WCAG) en el ícono de estado del preview, no en un panel fijo.
 - Ayuda y atajos en el ícono "?" del header.
-- Zoom, dos formatos (1:1 y 9:16), fondos predefinidos o imagen propia, capas.
+- Zoom, dos formatos (1:1 y 9:16), fondos predefinidos, color personalizado o imagen propia, capas.
+- Colores de la empresa: guardar colores con nombre (por ejemplo, uno por categoría de noticia) y reutilizarlos con un clic en el fondo o en cualquier texto, tag o placa.
 - Exportar PNG en tamaño real.
-- El diseño se autoguarda en el navegador (localStorage).
+- El diseño se autoguarda en el navegador (localStorage); los colores guardados persisten aparte, incluso si se reinicia el diseño.

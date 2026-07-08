@@ -149,12 +149,31 @@ if (window.tailwind) {
 
           <div class="bg-presets" id="bgPresets"></div>
 
+          <div class="bg-custom-color">
+            <input type="color" id="bgColorPicker" class="color-dot-input" value="#130D5D" title="Elegir color personalizado" aria-label="Color de fondo personalizado">
+            <span class="bg-custom-color-label">Color personalizado</span>
+          </div>
+
           <div class="bg-actions">
             <button class="btn btn-secondary btn-block" id="btnUploadBg">
               <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
               Subir imagen de fondo
             </button>
             <input type="file" id="inputBgImage" accept="image/*" hidden>
+          </div>
+        </div>
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Colores de la empresa</h3>
+          <p class="panel-group-hint">Guardá colores con nombre (por categoría, por marca) y usalos en el fondo, textos, tags o placas.</p>
+
+          <div class="brand-colors" id="brandColors"></div>
+          <p class="muted brand-colors-empty" id="brandColorsEmpty">Todavía no guardaste ninguno. Elegí un color abajo, ponele un nombre y guardalo.</p>
+
+          <div class="brand-color-add">
+            <input type="color" id="brandColorPicker" class="color-dot-input" value="#6366f1" title="Elegir color a guardar" aria-label="Color a guardar">
+            <input type="text" id="brandColorName" placeholder="Nombre (ej: Deportes)" maxlength="24" aria-label="Nombre del color">
+            <button type="button" class="btn btn-secondary" id="btnAddBrandColor">Guardar</button>
           </div>
         </div>
 
@@ -302,6 +321,7 @@ if (window.tailwind) {
         <li><b>Cambiar tamaño:</b> seleccioná un elemento y arrastrá los nodos del borde. En textos, los nodos de las esquinas también escalan la letra; en imágenes mantienen la proporción.</li>
         <li><b>Editar texto:</b> doble clic sobre un texto para escribir directamente en el lienzo.</li>
         <li><b>Avisos:</b> el ícono de estado (arriba a la derecha del preview) muestra si algo se corta, queda fuera del área segura o tiene bajo contraste. Tocá un aviso para ir al elemento.</li>
+        <li><b>Colores de la empresa:</b> en la pestaña "Elementos" podés guardar colores con nombre (por ejemplo, uno por categoría de noticia) y después reutilizarlos en el fondo, en cualquier texto, tag o placa.</li>
         <li><b>Exportar:</b> "Exportar PNG" descarga la imagen en tamaño real (1080 px de ancho).</li>
       </ul>
       <h3>Atajos de teclado</h3>

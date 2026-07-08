@@ -17,6 +17,7 @@ const MIN_CONTRAST = 4.5;    // WCAG AA texto normal
 const MIN_W = 40;            // tamaño mínimo de un elemento (px reales)
 const MIN_H = 24;
 const STORAGE_KEY = 'qs-image-editor-v1';
+const BRAND_COLORS_KEY = 'qs-image-editor-brand-colors-v1'; // paleta de la empresa: persiste aparte del diseño
 
 const BG_PRESETS = [
   { id: 'p1', type: 'color', value: '#130D5D' },
@@ -35,6 +36,8 @@ const state = {
   nextZ: 1,
   background: { type: 'color', value: '#130D5D' }
 };
+
+let brandColors = []; // [{id, name, value}]
 
 let fitScale = 1;   // escala para que el lienzo entre en el viewport
 let zoom = 1;       // multiplicador elegido por el usuario
@@ -329,6 +332,7 @@ function renderBgPresets() {
     });
     wrap.appendChild(b);
   });
+  syncBgColorPicker();
 }
 
 function setBackgroundImage(src) {
@@ -356,6 +360,148 @@ function renderCanvasBackground() {
   } else {
     stage.style.background = state.background.value;
   }
+}
+
+// color personalizado del fondo (además de los presets)
+$('#bgColorPicker').addEventListener('input', e => {
+  state.background = { type: 'color', value: e.target.value };
+  renderCanvasBackground();
+  renderValidations(); // el contraste puede cambiar en vivo
+});
+$('#bgColorPicker').addEventListener('change', () => {
+  renderBgPresets();
+  render();
+  commit();
+});
+
+function syncBgColorPicker() {
+  if (state.background.type === 'color') $('#bgColorPicker').value = state.background.value;
+}
+
+// ---------- colores de la empresa (paleta con nombre, ej. por categoría) ----------
+function loadBrandColors() {
+  try {
+    const raw = localStorage.getItem(BRAND_COLORS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    brandColors = Array.isArray(parsed) ? parsed.filter(c => c && c.name && /^#[0-9a-f]{6}$/i.test(c.value)) : [];
+  } catch (e) { brandColors = []; }
+}
+
+function persistBrandColors() {
+  try { localStorage.setItem(BRAND_COLORS_KEY, JSON.stringify(brandColors)); } catch (e) { /* cuota llena: seguimos sin guardar */ }
+}
+
+function renderBrandColors() {
+  const wrap = $('#brandColors');
+  const empty = $('#brandColorsEmpty');
+  wrap.innerHTML = '';
+  empty.hidden = brandColors.length > 0;
+
+  brandColors.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'brand-color-item';
+
+    const swatch = document.createElement('button');
+    swatch.type = 'button';
+    swatch.className = 'brand-color-swatch';
+    swatch.style.background = c.value;
+    swatch.title = `Usar "${c.name}" como fondo del lienzo`;
+    swatch.addEventListener('click', () => {
+      state.background = { type: 'color', value: c.value };
+      renderBgPresets();
+      renderCanvasBackground();
+      render();
+      commit();
+      toast(`Fondo: ${c.name}`, 'success');
+    });
+
+    const label = document.createElement('span');
+    label.className = 'brand-color-name';
+    label.textContent = c.name;
+
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'brand-color-delete';
+    del.title = 'Eliminar color';
+    del.setAttribute('aria-label', `Eliminar color ${c.name}`);
+    del.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    del.addEventListener('click', ev => { ev.stopPropagation(); removeBrandColor(c.id); });
+
+    item.appendChild(swatch);
+    item.appendChild(label);
+    item.appendChild(del);
+    wrap.appendChild(item);
+  });
+}
+
+function addBrandColor(name, value) {
+  const id = 'bc_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  brandColors.push({ id, name, value });
+  persistBrandColors();
+  renderBrandColors();
+  renderProps(); // refresca las mini paletas del panel de propiedades, si hay uno abierto
+}
+
+function removeBrandColor(id) {
+  const idx = brandColors.findIndex(c => c.id === id);
+  if (idx === -1) return;
+  const [removed] = brandColors.splice(idx, 1);
+  persistBrandColors();
+  renderBrandColors();
+  renderProps();
+  toast(`Color "${removed.name}" eliminado`, 'info', {
+    actionLabel: 'Deshacer',
+    onAction: () => {
+      brandColors.splice(idx, 0, removed);
+      persistBrandColors();
+      renderBrandColors();
+      renderProps();
+    }
+  });
+}
+
+$('#btnAddBrandColor').addEventListener('click', () => {
+  const nameInput = $('#brandColorName');
+  const name = nameInput.value.trim();
+  const value = $('#brandColorPicker').value;
+  if (!name) {
+    toast('Poné un nombre para el color (ej: Deportes)', 'error');
+    nameInput.focus();
+    return;
+  }
+  if (brandColors.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+    toast('Ya existe un color guardado con ese nombre', 'error');
+    return;
+  }
+  addBrandColor(name, value);
+  nameInput.value = '';
+  toast(`Color "${name}" guardado`, 'success');
+});
+$('#brandColorName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); $('#btnAddBrandColor').click(); }
+});
+
+// debajo de cada input de color del panel de propiedades, ofrece la paleta de la empresa
+function attachBrandSwatches(container) {
+  if (!brandColors.length) return;
+  $$('input[type="color"][data-prop]', container).forEach(input => {
+    const row = document.createElement('div');
+    row.className = 'brand-swatch-row';
+    brandColors.forEach(c => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'brand-swatch-mini';
+      b.style.background = c.value;
+      b.title = c.name;
+      b.setAttribute('aria-label', `Usar color ${c.name}`);
+      b.addEventListener('click', () => {
+        input.value = c.value;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      row.appendChild(b);
+    });
+    input.closest('.field').appendChild(row);
+  });
 }
 
 // ---------- layout del canvas (tamaño real vs escala visual) ----------
@@ -1151,6 +1297,8 @@ function renderProps() {
       input.click();
     });
   }
+
+  attachBrandSwatches(form);
 }
 
 function field(label, inner, small) {
@@ -1426,6 +1574,8 @@ function seedTemplate() {
 }
 
 function init() {
+  loadBrandColors();
+  renderBrandColors();
   renderBgPresets();
   layoutCanvas();
 
