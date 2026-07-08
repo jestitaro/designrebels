@@ -741,30 +741,63 @@ function renderElements(retry) {
   });
 
   // overflow de texto: comparar scrollHeight vs clientHeight ya renderizados.
-  // el texto nunca debería quedar cortado en silencio por el overflow:hidden
-  // de la caja: si no entra, agrandamos la caja para que entre. Si eso la saca
-  // del área segura o del lienzo, esas validaciones (ya visibles) avisan.
+  // el texto nunca debería quedar cortado en silencio: si no entra, primero
+  // agrandamos la caja; si agrandarla la sacaría del lienzo (esa parte
+  // quedaría igual de cortada, sólo que por el borde del lienzo en vez de
+  // por la caja), la topeamos ahí y en cambio achicamos la letra hasta que
+  // entre. Si ni así entra, queda el aviso visible de siempre.
   let grew = false;
+  const f = fmt();
   sorted.forEach(el => {
     if (!TEXT_TYPES.includes(el.type)) { el._overflow = false; return; }
-    const node = stage.querySelector(`.canvas-element[data-id="${el.id}"] .el-content`);
-    const overflowing = node ? node.scrollHeight > node.clientHeight + 1 : false;
+    const content = stage.querySelector(`.canvas-element[data-id="${el.id}"] .el-content`);
+    if (!content) { el._overflow = false; return; }
+
+    const overflowing = content.scrollHeight > content.clientHeight + 1;
     el._overflow = overflowing;
-    if (overflowing && node) {
-      const needed = Math.ceil(node.scrollHeight) + 2; // pequeño margen por redondeo
-      if (needed > el.h) {
-        el.h = needed;
-        el._overflow = false;
-        grew = true;
-      }
+    if (!overflowing) return;
+
+    const maxH = Math.max(MIN_H, f.h - el.y); // más allá de esto, ya no lo vería nadie
+    const needed = Math.ceil(content.scrollHeight) + 2;
+
+    if (needed <= maxH) {
+      el.h = needed;
+      el._overflow = false;
+      grew = true;
+      return;
     }
+
+    // ni llenando el lienzo entra: probamos achicar la letra hasta que entre
+    const outer = content.parentElement;
+    outer.style.height = maxH + 'px';
+    const textNode = content.querySelector('.el-text');
+    if (textNode) {
+      let fs = el.fontSize;
+      while (fs > 10 && content.scrollHeight > content.clientHeight + 1) {
+        fs -= 1;
+        textNode.style.fontSize = fs + 'px';
+      }
+      if (fs !== el.fontSize) { el.fontSize = fs; grew = true; }
+    }
+    el.h = maxH;
+    el._overflow = content.scrollHeight > content.clientHeight + 1;
+    if (el._overflow) grew = true; // nos quedamos con el mejor esfuerzo (h tope + letra mínima) y refrescamos
   });
 
-  // las cajas cambiaron de tamaño: volvemos a renderizar una vez más con las
-  // medidas correctas (se corta después de 3 vueltas por las dudas, no debería pasar)
-  if (grew && (retry || 0) < 3) {
+  // las cajas y/o tamaños de letra cambiaron: volvemos a renderizar una vez
+  // más con las medidas correctas (se corta después de unas vueltas por las
+  // dudas, no debería hacer falta más de una o dos)
+  if (grew && (retry || 0) < 4) {
     renderElements((retry || 0) + 1);
     return;
+  }
+
+  // si el auto-ajuste cambió el tamaño de letra del elemento seleccionado,
+  // reflejarlo en el input sin reconstruir el panel entero (no perder el foco)
+  const selFsInput = $('#propsForm [data-prop="fontSize"]');
+  const selEl = getEl(state.selectedId);
+  if (selFsInput && selEl && Number(selFsInput.value) !== selEl.fontSize) {
+    selFsInput.value = selEl.fontSize;
   }
 
   // marcar con aviso los que se cortan / desbordan
