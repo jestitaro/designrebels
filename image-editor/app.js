@@ -708,7 +708,7 @@ $('#helpModal').addEventListener('click', e => {
 });
 
 // ---------- render de elementos en el canvas ----------
-function renderElements() {
+function renderElements(retry) {
   const stage = $('#canvasStage');
   $$('.canvas-element', stage).forEach(n => n.remove());
 
@@ -740,12 +740,32 @@ function renderElements() {
     stage.appendChild(node);
   });
 
-  // overflow de texto: comparar scrollHeight vs clientHeight ya renderizados
+  // overflow de texto: comparar scrollHeight vs clientHeight ya renderizados.
+  // el texto nunca debería quedar cortado en silencio por el overflow:hidden
+  // de la caja: si no entra, agrandamos la caja para que entre. Si eso la saca
+  // del área segura o del lienzo, esas validaciones (ya visibles) avisan.
+  let grew = false;
   sorted.forEach(el => {
     if (!TEXT_TYPES.includes(el.type)) { el._overflow = false; return; }
     const node = stage.querySelector(`.canvas-element[data-id="${el.id}"] .el-content`);
-    el._overflow = node ? node.scrollHeight > node.clientHeight + 1 : false;
+    const overflowing = node ? node.scrollHeight > node.clientHeight + 1 : false;
+    el._overflow = overflowing;
+    if (overflowing && node) {
+      const needed = Math.ceil(node.scrollHeight) + 2; // pequeño margen por redondeo
+      if (needed > el.h) {
+        el.h = needed;
+        el._overflow = false;
+        grew = true;
+      }
+    }
   });
+
+  // las cajas cambiaron de tamaño: volvemos a renderizar una vez más con las
+  // medidas correctas (se corta después de 3 vueltas por las dudas, no debería pasar)
+  if (grew && (retry || 0) < 3) {
+    renderElements((retry || 0) + 1);
+    return;
+  }
 
   // marcar con aviso los que se cortan / desbordan
   sorted.forEach(el => {
