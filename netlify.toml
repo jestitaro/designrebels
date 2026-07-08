@@ -1,0 +1,9 @@
+# Sitio estático: se publica todo el repo tal cual.
+# El editor de imágenes vive en /image-editor/ y es la home del sitio.
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/"
+  to = "/image-editor/"
+  status = 302
