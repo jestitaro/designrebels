@@ -1,0 +1,55 @@
+name: Sync competitor LinkedIn metrics
+
+on:
+  schedule:
+    # Todos los días a las 09:00 UTC. El propio script decide qué grupo
+    # (A/B/C) le toca sincronizar hoy — ver scripts/sync.js.
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    inputs:
+      group:
+        description: 'Grupo a sincronizar (auto = cadencia A/B/C del día, ALL = todos los competidores)'
+        type: choice
+        options:
+          - auto
+          - A
+          - B
+          - C
+          - ALL
+        default: auto
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: LinkedIn (Apify) → data/competitors.json
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run sync
+        run: node scripts/sync.js
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          SYNC_GROUP: ${{ github.event.inputs.group == 'auto' && '' || github.event.inputs.group }}
+
+      - name: Commit data si cambió
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/competitors.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios en data/competitors.json"
+          else
+            git commit -m "chore: sync competitor LinkedIn metrics"
+            git push
+          fi

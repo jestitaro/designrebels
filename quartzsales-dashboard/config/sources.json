@@ -1,0 +1,155 @@
+{
+  "_note": "URLs de LinkedIn tomadas a partir del handle de cada empresa. VERIFICAR MANUALMENTE cada linkedinUrl antes de la primera corrida del sync (ver README, sección 'Antes de la primera corrida'). Un slug incorrecto hace que Apify devuelva 0 resultados para ese competidor sin romper el resto del sync.",
+
+  "own": {
+    "id": "quartzsales",
+    "name": "QuartzSales",
+    "linkedinUrl": "https://www.linkedin.com/company/quartz-sales/"
+  },
+
+  "competitors": [
+    {
+      "id": "involves",
+      "name": "Involves",
+      "linkedinUrl": "https://www.linkedin.com/company/involves/",
+      "group": "A",
+      "location": "Brasil · 2009",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#0ea5e9",
+      "gradEnd": "#6366f1",
+      "size": "251-500",
+      "funding": "~$13M",
+      "tags": ["LATAM", "SaaS", "Brasil", "Series B"]
+    },
+    {
+      "id": "ailet",
+      "name": "Ailet",
+      "linkedinUrl": "https://www.linkedin.com/company/ailet/",
+      "group": "A",
+      "location": "Argentina · 2013",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#22c55e",
+      "gradEnd": "#0ea5e9",
+      "size": "50-100",
+      "funding": "Sin datos",
+      "tags": ["LATAM", "Argentina", "IA imagen"]
+    },
+    {
+      "id": "checkpos",
+      "name": "CheckPOS",
+      "linkedinUrl": "https://www.linkedin.com/company/checkpos/",
+      "group": "A",
+      "location": "Argentina / Miami",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#f59e0b",
+      "gradEnd": "#ef4444",
+      "size": "11-50",
+      "funding": "Sin datos",
+      "tags": ["LATAM", "Argentina", "PDV"]
+    },
+    {
+      "id": "storecheck",
+      "name": "Storecheck",
+      "linkedinUrl": "https://www.linkedin.com/company/storecheck/",
+      "group": "A",
+      "location": "México · LATAM",
+      "category": "Directo",
+      "gradStart": "#f472b6",
+      "gradEnd": "#f59e0b",
+      "size": "101-250",
+      "funding": "Sin datos",
+      "tags": ["México", "LATAM", "Auditoría"]
+    },
+    {
+      "id": "repsly",
+      "name": "Repsly",
+      "linkedinUrl": "https://www.linkedin.com/company/repsly/",
+      "group": "B",
+      "location": "EE. UU. · 2011",
+      "category": "Directo",
+      "gradStart": "#fb923c",
+      "gradEnd": "#ef4444",
+      "size": "150-250",
+      "funding": "~$18M",
+      "tags": ["EE. UU.", "CPG", "Field Sales"]
+    },
+    {
+      "id": "trax-retail",
+      "name": "Trax Retail",
+      "linkedinUrl": "https://www.linkedin.com/company/traxretail/",
+      "group": "B",
+      "location": "Singapur · 2010",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#8b5cf6",
+      "gradEnd": "#ec4899",
+      "size": "500-1000",
+      "funding": "~$800M",
+      "tags": ["Global", "Visión IA", "SoftBank"]
+    },
+    {
+      "id": "frogmi",
+      "name": "Frogmi",
+      "linkedinUrl": "https://www.linkedin.com/company/frogmi/",
+      "group": "B",
+      "location": "Chile · 2011",
+      "category": "Adyacente",
+      "gradStart": "#34d399",
+      "gradEnd": "#059669",
+      "size": "11-50",
+      "funding": "Sin datos",
+      "tags": ["Chile", "LATAM", "Operación tienda"]
+    },
+    {
+      "id": "persat",
+      "name": "Persat",
+      "linkedinUrl": "https://www.linkedin.com/company/persat/",
+      "group": "B",
+      "location": "Argentina · 2015",
+      "category": "Adyacente",
+      "gradStart": "#60a5fa",
+      "gradEnd": "#3b82f6",
+      "size": "11-50",
+      "funding": "Sin datos",
+      "tags": ["Argentina", "Equipos campo", "LATAM"]
+    },
+    {
+      "id": "pitcher",
+      "name": "Pitcher",
+      "linkedinUrl": "https://www.linkedin.com/company/pitcher-ag/",
+      "group": "C",
+      "location": "Suiza · 2014",
+      "category": "Adyacente",
+      "gradStart": "#a78bfa",
+      "gradEnd": "#3C9FF1",
+      "size": "50-100",
+      "funding": "~$12M",
+      "tags": ["Europa", "Sales Enablement", "CPG"]
+    },
+    {
+      "id": "retail-velocity",
+      "name": "Retail Velocity",
+      "linkedinUrl": "https://www.linkedin.com/company/retail-velocity/",
+      "group": "C",
+      "location": "EE. UU.",
+      "category": "Adyacente",
+      "gradStart": "#fbbf24",
+      "gradEnd": "#d97706",
+      "size": "11-50",
+      "funding": "Sin datos",
+      "tags": ["EE. UU.", "CPG", "Analytics"]
+    },
+    {
+      "id": "shelf-track",
+      "name": "Shelf Track",
+      "linkedinUrl": "https://www.linkedin.com/company/shelftrack/",
+      "group": "C",
+      "location": "EE. UU. · 2014",
+      "category": "Adyacente",
+      "gradStart": "#94a3b8",
+      "gradEnd": "#64748b",
+      "size": "11-50",
+      "funding": "Sin datos",
+      "tags": ["EE. UU.", "Góndola", "Auditoría"]
+    }
+  ]
+}

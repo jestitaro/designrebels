@@ -1,0 +1,216 @@
+{
+  "generatedAt": null,
+  "group": null,
+  "own": null,
+  "competitors": [
+    {
+      "id": "involves",
+      "name": "Involves",
+      "location": "Brasil · 2009",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#0ea5e9",
+      "gradEnd": "#6366f1",
+      "size": "251-500",
+      "stats": { "followers": "12.4K", "posts_mes": 18, "engagement": "3.2", "funding": "~$13M" },
+      "bars": [
+        { "label": "Actividad LI", "val": 82 },
+        { "label": "Engagement", "val": 58 },
+        { "label": "Frecuencia post", "val": 75 }
+      ],
+      "tags": ["LATAM", "SaaS", "Brasil", "Series B"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "ailet",
+      "name": "Ailet",
+      "location": "Argentina · 2013",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#22c55e",
+      "gradEnd": "#0ea5e9",
+      "size": "50-100",
+      "stats": { "followers": "2.3K", "posts_mes": 6, "engagement": "4.1", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 30 },
+        { "label": "Engagement", "val": 65 },
+        { "label": "Frecuencia post", "val": 28 }
+      ],
+      "tags": ["LATAM", "Argentina", "IA imagen"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "checkpos",
+      "name": "CheckPOS",
+      "location": "Argentina / Miami",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#f59e0b",
+      "gradEnd": "#ef4444",
+      "size": "11-50",
+      "stats": { "followers": "300", "posts_mes": 4, "engagement": "3.8", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 22 },
+        { "label": "Engagement", "val": 60 },
+        { "label": "Frecuencia post", "val": 20 }
+      ],
+      "tags": ["LATAM", "Argentina", "PDV"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "storecheck",
+      "name": "Storecheck",
+      "location": "México · LATAM",
+      "category": "Directo",
+      "gradStart": "#f472b6",
+      "gradEnd": "#f59e0b",
+      "size": "101-250",
+      "stats": { "followers": "5.6K", "posts_mes": 10, "engagement": "2.5", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 48 },
+        { "label": "Engagement", "val": 42 },
+        { "label": "Frecuencia post", "val": 44 }
+      ],
+      "tags": ["México", "LATAM", "Auditoría"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "repsly",
+      "name": "Repsly",
+      "location": "EE. UU. · 2011",
+      "category": "Directo",
+      "gradStart": "#fb923c",
+      "gradEnd": "#ef4444",
+      "size": "150-250",
+      "stats": { "followers": "8.1K", "posts_mes": 12, "engagement": "2.1", "funding": "~$18M" },
+      "bars": [
+        { "label": "Actividad LI", "val": 60 },
+        { "label": "Engagement", "val": 38 },
+        { "label": "Frecuencia post", "val": 52 }
+      ],
+      "tags": ["EE. UU.", "CPG", "Field Sales"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "trax-retail",
+      "name": "Trax Retail",
+      "location": "Singapur · 2010",
+      "category": "Directo · IA/Imagen",
+      "gradStart": "#8b5cf6",
+      "gradEnd": "#ec4899",
+      "size": "500-1000",
+      "stats": { "followers": "24.7K", "posts_mes": 22, "engagement": "2.8", "funding": "~$800M" },
+      "bars": [
+        { "label": "Actividad LI", "val": 90 },
+        { "label": "Engagement", "val": 52 },
+        { "label": "Frecuencia post", "val": 88 }
+      ],
+      "tags": ["Global", "Visión IA", "SoftBank"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "frogmi",
+      "name": "Frogmi",
+      "location": "Chile · 2011",
+      "category": "Adyacente",
+      "gradStart": "#34d399",
+      "gradEnd": "#059669",
+      "size": "11-50",
+      "stats": { "followers": "1.8K", "posts_mes": 5, "engagement": "3.1", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 28 },
+        { "label": "Engagement", "val": 50 },
+        { "label": "Frecuencia post", "val": 25 }
+      ],
+      "tags": ["Chile", "LATAM", "Operación tienda"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "persat",
+      "name": "Persat",
+      "location": "Argentina · 2015",
+      "category": "Adyacente",
+      "gradStart": "#60a5fa",
+      "gradEnd": "#3b82f6",
+      "size": "11-50",
+      "stats": { "followers": "900", "posts_mes": 3, "engagement": "2.8", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 18 },
+        { "label": "Engagement", "val": 45 },
+        { "label": "Frecuencia post", "val": 15 }
+      ],
+      "tags": ["Argentina", "Equipos campo", "LATAM"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "pitcher",
+      "name": "Pitcher",
+      "location": "Suiza · 2014",
+      "category": "Adyacente",
+      "gradStart": "#a78bfa",
+      "gradEnd": "#3C9FF1",
+      "size": "50-100",
+      "stats": { "followers": "6.8K", "posts_mes": 14, "engagement": "2.2", "funding": "~$12M" },
+      "bars": [
+        { "label": "Actividad LI", "val": 65 },
+        { "label": "Engagement", "val": 35 },
+        { "label": "Frecuencia post", "val": 60 }
+      ],
+      "tags": ["Europa", "Sales Enablement", "CPG"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "retail-velocity",
+      "name": "Retail Velocity",
+      "location": "EE. UU.",
+      "category": "Adyacente",
+      "gradStart": "#fbbf24",
+      "gradEnd": "#d97706",
+      "size": "11-50",
+      "stats": { "followers": "1.2K", "posts_mes": 4, "engagement": "1.8", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 20 },
+        { "label": "Engagement", "val": 30 },
+        { "label": "Frecuencia post", "val": 18 }
+      ],
+      "tags": ["EE. UU.", "CPG", "Analytics"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    },
+    {
+      "id": "shelf-track",
+      "name": "Shelf Track",
+      "location": "EE. UU. · 2014",
+      "category": "Adyacente",
+      "gradStart": "#94a3b8",
+      "gradEnd": "#64748b",
+      "size": "11-50",
+      "stats": { "followers": "800", "posts_mes": 2, "engagement": "1.5", "funding": "Sin datos" },
+      "bars": [
+        { "label": "Actividad LI", "val": 15 },
+        { "label": "Engagement", "val": 25 },
+        { "label": "Frecuencia post", "val": 12 }
+      ],
+      "tags": ["EE. UU.", "Góndola", "Auditoría"],
+      "lastSynced": null,
+      "syncStatus": "pending",
+      "syncError": null
+    }
+  ]
+}
