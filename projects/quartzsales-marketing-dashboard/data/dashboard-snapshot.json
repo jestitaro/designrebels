@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-14T03:20:29.442Z",
-  "group": "A",
+  "generatedAt": "2026-07-14T03:23:10.453Z",
+  "group": "ALL",
   "own": {
     "linkedin": {
       "followers": 2875,
       "employees": 8,
-      "lastSynced": "2026-07-14T03:19:56.491Z",
+      "lastSynced": "2026-07-14T03:21:44.271Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-07-14T03:20:03.005Z",
+      "lastSynced": "2026-07-14T03:21:51.492Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -91,7 +91,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-07-14T03:20:12.936Z",
+      "lastSynced": "2026-07-14T03:22:01.101Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -178,7 +178,7 @@
       "gradEnd": "#ef4444",
       "size": "150-250",
       "stats": {
-        "followers": "8.1K",
+        "followers": "8.6K",
         "posts_mes": 12,
         "engagement": "2.1",
         "funding": "~$18M"
@@ -202,8 +202,8 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-07-14T03:22:24.362Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -240,8 +240,8 @@
         "SoftBank"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "frogmi",
@@ -252,7 +252,7 @@
       "gradEnd": "#059669",
       "size": "11-50",
       "stats": {
-        "followers": "1.8K",
+        "followers": "6.9K",
         "posts_mes": 5,
         "engagement": "3.1",
         "funding": "Sin datos"
@@ -276,8 +276,8 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-07-14T03:22:45.004Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -314,8 +314,8 @@
         "LATAM"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "pitcher",
@@ -351,8 +351,8 @@
         "CPG"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "retail-velocity",
@@ -363,7 +363,7 @@
       "gradEnd": "#d97706",
       "size": "11-50",
       "stats": {
-        "followers": "1.2K",
+        "followers": "537",
         "posts_mes": 4,
         "engagement": "1.8",
         "funding": "Sin datos"
@@ -387,8 +387,8 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-07-14T03:23:04.625Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -425,8 +425,8 @@
         "Auditoría"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     }
   ]
 }
