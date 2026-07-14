@@ -1,4 +1,4 @@
-name: QuartzSales dashboard — Sync competitor LinkedIn metrics
+name: QuartzSales dashboard — Sync diario (LinkedIn + YouTube + competidores)
 
 on:
   schedule:
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   sync:
-    name: LinkedIn (Apify) → data/competitors.json
+    name: Apify + YouTube → data/dashboard-snapshot.json
     runs-on: ubuntu-latest
     timeout-minutes: 10
     defaults:
@@ -43,16 +43,17 @@ jobs:
         run: node scripts/sync.js
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           SYNC_GROUP: ${{ github.event.inputs.group == 'auto' && '' || github.event.inputs.group }}
 
       - name: Commit data si cambió
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/competitors.json
+          git add data/dashboard-snapshot.json
           if git diff --cached --quiet; then
-            echo "Sin cambios en data/competitors.json"
+            echo "Sin cambios en data/dashboard-snapshot.json"
           else
-            git commit -m "chore: sync competitor LinkedIn metrics"
+            git commit -m "chore: sync daily dashboard snapshot"
             git push
           fi

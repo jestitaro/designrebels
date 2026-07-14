@@ -1,9 +1,11 @@
 # QuartzSales Marketing Dashboard
 
-Dashboard estático (HTML/CSS/JS sin build, sin frameworks) para el equipo de
-contenido de QuartzSales: métricas propias de LinkedIn/YouTube, research de
-tendencias, pipeline de ideas (kanban) y radar de competidores de trade
-marketing / retail execution.
+Demo funcional de costo casi cero para el equipo de contenido de QuartzSales:
+métricas propias de LinkedIn/YouTube, research de tendencias, pipeline de
+ideas (kanban), radar de competidores, y un generador de posts con IA
+controlado por cupo diario. Diseñada para abrir y navegarse completa **sin
+ningún secreto configurado**, mostrando datos de demostración realistas
+hasta que se conectan las integraciones reales.
 
 ## Ruta del proyecto
 
@@ -14,216 +16,367 @@ Todo el código del dashboard queda autocontenido en esta carpeta.
 projects/quartzsales-marketing-dashboard/
 ├── index.html                    # el dashboard (HTML + CSS + JS inline, sin build)
 ├── functions/
-│   ├── _utils.js                 # helpers de respuesta JSON compartidos
+│   ├── _utils.js                 # JSON helpers + cupo diario en Cloudflare KV
 │   └── api/
-│       ├── linkedin.js           # GET  /api/linkedin?handle=...   (usa APIFY_TOKEN)
-│       ├── youtube.js            # GET  /api/youtube?handle=...    (usa YOUTUBE_API_KEY)
-│       └── generate-script.js    # POST /api/generate-script       (usa ANTHROPIC_API_KEY)
+│       └── generate-script.js    # GET (cupo restante) / POST (generar) — usa ANTHROPIC_API_KEY
 ├── config/
 │   └── sources.json              # competidores a monitorear + URL de LinkedIn + grupo A/B/C
 ├── data/
-│   └── competitors.json          # generado/actualizado por scripts/sync.js
+│   └── dashboard-snapshot.json   # generado/actualizado por scripts/sync.js — 1 vez por día
 ├── scripts/
-│   └── sync.js                   # sync Node.js (sin deps) de métricas de LinkedIn vía Apify
+│   └── sync.js                   # sync Node.js (sin deps): LinkedIn + YouTube + competidores
 └── .gitignore
 ```
 
 El workflow que corre `scripts/sync.js` vive en
 `.github/workflows/quartzsales-sync.yml` (en la raíz del repo, porque GitHub
-Actions sólo lee workflows desde ahí — no se puede anidar dentro del
-proyecto). Está configurado con `working-directory:
-projects/quartzsales-marketing-dashboard` para operar sobre esta carpeta sin
-tocar otros proyectos del monorepo (`prode2026`, etc.).
+Actions sólo lee workflows desde ahí). Usa `working-directory:
+projects/quartzsales-marketing-dashboard` para no tocar otros proyectos del
+monorepo (`prode2026`, etc.).
 
-`functions/` en cambio sí lo levanta Cloudflare Pages automáticamente por
-convención de carpeta: cualquier archivo bajo `functions/api/` se publica
-como ruta `/api/...` del propio sitio, siempre que el **Root directory** del
-proyecto de Pages sea `projects/quartzsales-marketing-dashboard` (ver deploy
-más abajo).
+`functions/` lo levanta Cloudflare Pages automáticamente por convención de
+carpeta: cualquier archivo bajo `functions/api/` se publica como ruta
+`/api/...` del propio sitio, siempre que el **Root directory** del proyecto
+de Pages sea `projects/quartzsales-marketing-dashboard`.
 
-## Estructura esperada vs. estado actual
+---
 
-La convención del monorepo para este proyecto separa `css/`, `js/` y
-`functions/`. Ya existe `functions/` (con las tres integraciones que
-necesitaban secretos). Lo que sigue pendiente, y no es un problema de
-seguridad sino de organización de archivos, es separar el `<style>`/
-`<script>` inline de `index.html` en `css/`/`js/` — es un refactor cosmético,
-no bloqueante.
+## Arquitectura de la demo
 
-## Deploy en Cloudflare Pages
+```text
+GitHub Actions (1 vez por día)
+  → Apify (LinkedIn propio + competidores) + YouTube Data API
+  → escribe data/dashboard-snapshot.json
+  → commit + push automático
+
+index.html
+  → fetch('data/dashboard-snapshot.json') al cargar
+  → si no existe o falla: usa datos de demostración embebidos
+  → "Actualizar métricas" vuelve a leer el mismo archivo — NO llama a
+    Apify/YouTube desde el navegador
+
+functions/api/generate-script.js (Cloudflare Pages Function)
+  → único endpoint que sigue llamando a un proveedor de pago (Anthropic)
+  → protegido con cupo diario en Cloudflare KV (por IP y global)
+  → si no hay ANTHROPIC_API_KEY, se agotó el cupo, o Anthropic falla:
+    el usuario puede usar 3 ejemplos pre-generados en vez de generar
+```
+
+Ninguna acción del usuario (abrir el dashboard, tocar "Actualizar
+métricas", navegar a Competidores) dispara una llamada paga. La única
+llamada paga posible es generar un post con IA, y esa está limitada a 5
+veces por IP y 30 veces en total por día.
+
+### Qué funciona sin ningún secreto configurado
+
+Todo el dashboard abre y se navega igual: Overview, Research (usa GitHub y
+Hacker News, APIs públicas gratuitas), Pipeline, y Competidores — con datos
+de demostración marcados como "Modo demo". El generador de posts también
+funciona sin secretos: ofrece los 3 ejemplos pre-generados aunque no haya
+`ANTHROPIC_API_KEY`.
+
+### Qué requiere secretos
+
+| Funcionalidad | Requiere | Sin eso... |
+|---|---|---|
+| Sync diario de LinkedIn/YouTube/competidores | `APIFY_TOKEN` (+ `YOUTUBE_API_KEY` opcional) en GitHub Actions | El dashboard sigue mostrando el último snapshot generado, o datos de demo si nunca corrió |
+| Generación de posts en vivo con Claude | `ANTHROPIC_API_KEY` en Cloudflare Pages | El botón "✨ Generar" devuelve un error amigable; los 3 ejemplos pre-generados siguen disponibles |
+| Cupo diario del generador | binding de KV `DEMO_USAGE_KV` en Cloudflare Pages | La Function sigue funcionando (útil en desarrollo local) pero sin aplicar el límite — ver advertencia más abajo |
+
+---
+
+## 1. Datos: snapshot diario en vez de llamadas en vivo
+
+`scripts/sync.js` corre 1 vez por día desde GitHub Actions y actualiza en una
+sola corrida:
+
+- LinkedIn propio de QuartzSales (seguidores, empleados).
+- YouTube propio (suscriptores, videos, vistas).
+- Competidores, con cadencia **A/B/C**: cada uno tiene un `group` en
+  `config/sources.json`, y cada corrida sólo sincroniza el grupo del día
+  (rotando A → B → C → A... según el día del año) para no gastar de más la
+  cuota de Apify con 11 empresas todos los días. LinkedIn/YouTube propios se
+  actualizan **todos los días** (son 1-2 llamadas extra, no 11).
+- `generatedAt`: fecha/hora de esa corrida.
+
+Todo se escribe en `data/dashboard-snapshot.json`, que el frontend lee por
+`fetch()`. Podés forzar un grupo puntual o sincronizar todo de una desde el
+input `group` del `workflow_dispatch`: `auto` (default), `A`, `B`, `C`, o
+`ALL` (todos, ideal para la primera corrida).
+
+### Qué muestra el frontend
+
+- **Datos actualizados** (verde): el snapshot tiene menos de 36 horas.
+- **Datos almacenados** (amarillo): hay un snapshot real, pero más viejo
+  (por ejemplo, si el workflow dejó de correr) — sigue siendo un dato real,
+  no inventado.
+- **Modo demo** (violeta): no hay snapshot todavía, o esa métrica puntual
+  nunca se sincronizó con éxito. Se muestran los datos de referencia
+  embebidos en `index.html` (`DEMO_OWN_LINKEDIN`, `DEMO_OWN_YOUTUBE`,
+  `DEMO_COMPETITORS`).
+
+Cada tarjeta de LinkedIn/YouTube en Overview, y el radar de Competidores,
+muestran su propio estado y un "Última actualización: ..." — o el aviso
+"Todavía no corrió ninguna actualización automática — mostrando datos de
+demostración" si nunca hubo sync.
+
+### El botón "Actualizar métricas"
+
+No dispara ninguna llamada a Apify/YouTube. Vuelve a leer
+`data/dashboard-snapshot.json` (con `cache: 'no-store'`) y refresca la
+vista, mostrando un toast con la fecha de la última sync real disponible.
+La actualización real de los datos sigue pasando 1 vez por día, en GitHub
+Actions.
+
+---
+
+## 2. Datos de respaldo (demo)
+
+Overview, Pipeline y Research nunca se ven vacíos ni muestran errores
+técnicos:
+
+- **LinkedIn/YouTube propios y Competidores**: fallback embebido en
+  `index.html`, activado automáticamente si `data/dashboard-snapshot.json`
+  no existe o el fetch falla.
+- **Pipeline**: en la primera visita (sin nada guardado en `localStorage`)
+  se pre-cargan 4 ideas de ejemplo distribuidas en las columnas del kanban,
+  para que Overview y Pipeline tengan datos desde el primer segundo. A
+  partir de ahí es 100% editable por quien lo usa.
+- **Research**: usa GitHub y Hacker News (APIs públicas, sin costo ni
+  secreto). Si ambas fuentes fallan al mismo tiempo (por ejemplo, sin salida
+  de red), muestra 3 resultados de ejemplo en vez de un error o una pantalla
+  vacía, marcados como ejemplos.
+- **Generador de posts**: 3 ejemplos pre-generados (ver sección 4).
+
+---
+
+## 3. Generador de posts con IA — controlado y de costo acotado
+
+`functions/api/generate-script.js`:
+
+- Usa el modelo **Haiku** (la línea más económica de Claude) por defecto:
+  `claude-haiku-4-5-20251001`. Se puede pisar sin tocar código con la
+  variable de entorno `ANTHROPIC_MODEL` en Cloudflare Pages.
+- Limita la respuesta a `max_tokens: 350` — corto a propósito para acotar el
+  costo por generación. Los formatos ofrecidos (post corto, post largo,
+  carrusel de 4 slides, guión breve) están redactados como "versión breve de
+  demo" para que el largo pedido sea consistente con ese límite.
+- El prompt del sistema (reglas de tono, contexto de marca) se arma
+  enteramente en el servidor — el navegador sólo manda `{ topic, channel,
+  format }`.
+- Valida el payload: `topic` no puede estar vacío ni superar 300
+  caracteres; `channel` y `format` se validan contra una lista cerrada de
+  valores permitidos (cualquier otro valor cae a un default seguro).
+- Nunca expone `ANTHROPIC_API_KEY`, ni reenvía al cliente el cuerpo de la
+  respuesta de error de Anthropic (evita filtrar cualquier detalle interno
+  del proveedor); los logs del lado servidor sólo registran el status HTTP,
+  nunca la API key ni el cuerpo completo.
+- Sólo responde a `GET` (consultar cupo) y `POST` (generar) — cualquier
+  otro método HTTP recibe 405 automáticamente (comportamiento por defecto de
+  Cloudflare Pages Functions cuando no se define ese handler).
+
+### Cupo diario (Cloudflare KV)
+
+- **5 generaciones por día por IP** y **30 generaciones por día en total**
+  (lo que se alcance primero).
+- Contador en el binding de KV `DEMO_USAGE_KV`, con una clave por día UTC
+  (`ip:<fecha>:<ip>` y `global:<fecha>`) y `expirationTtl` de 48 horas — las
+  claves se autolimpian, no hace falta ningún job de mantenimiento.
+- Sólo se descuenta cupo en una generación **exitosa**: un error temporal
+  de Anthropic no le gasta el cupo al usuario.
+- `GET /api/generate-script` consulta el cupo restante sin gastarlo (lo usa
+  el modal para mostrar "Te quedan N generaciones hoy" antes de generar).
+- `POST /api/generate-script` responde:
+  ```json
+  { "success": true, "content": "...", "remaining": 3 }
+  ```
+  y al agotar el cupo, HTTP 429:
+  ```json
+  { "success": false, "error": "La cuota diaria de la demo fue alcanzada. Podés seguir recorriendo el dashboard y usar los ejemplos disponibles." }
+  ```
+- **Si `DEMO_USAGE_KV` no está vinculado** (típicamente sólo en desarrollo
+  local sin Wrangler configurado), la Function sigue respondiendo
+  normalmente pero sin aplicar el límite, y devuelve un `devWarning` en el
+  JSON que el modal muestra como aviso amarillo. En producción (Cloudflare
+  Pages con el binding configurado) esto no debería verse nunca.
+
+---
+
+## 4. Ejemplos pre-generados
+
+El modal del generador siempre muestra 3 botones — **Institucional**,
+**Caso de éxito** y **Producto** — con contenido ya escrito
+(`DEMO_SCRIPT_EXAMPLES` en `index.html`). Están disponibles sin importar el
+estado de Anthropic: con o sin `ANTHROPIC_API_KEY`, con cupo agotado, o con
+Anthropic caído. Al usarlos, el label del resultado cambia a "Ejemplo de
+demostración — ... (no generado en vivo)" — nunca se presentan como si
+hubieran sido generados en el momento.
+
+---
+
+## 5. Seguridad
+
+- Cero tokens, API keys o cookies en `localStorage` — sólo se guardan ahí
+  dos identificadores no sensibles (`liHandle`, `ytHandle`, qué canal
+  consultar) y el estado del kanban.
+- No se usa ni se pide la cookie `li_at` de LinkedIn — el actor de Apify
+  (`harvestapi~linkedin-company`) no la necesita.
+- Ninguna API key aparece en el HTML ni en el JavaScript público: viven
+  exclusivamente en variables de entorno del lado servidor
+  (`context.env` en Cloudflare Pages Functions, secrets en GitHub Actions).
+- Los errores de proveedores externos (Anthropic, Apify, YouTube) nunca se
+  reenvían tal cual al cliente ni a los logs — sólo un mensaje genérico y,
+  como mucho, el status HTTP.
+- Validación de parámetros en toda Function: método HTTP, presencia y
+  longitud máxima del `topic`, valores permitidos de `channel`/`format`.
+
+---
+
+## 6. Configuración — secretos por plataforma
+
+### GitHub Actions (repo `designrebels` → Settings → Secrets and variables → Actions)
+
+| Secret | Obligatorio | Para qué |
+|---|---|---|
+| `APIFY_TOKEN` | Sí | `scripts/sync.js`: LinkedIn propio + competidores |
+| `YOUTUBE_API_KEY` | No (recomendado) | `scripts/sync.js`: YouTube propio. Si falta, esa parte del snapshot queda en `syncStatus: "skipped"` sin romper el resto de la corrida |
+
+### Cloudflare Pages (proyecto → Settings → Environment variables / Functions → KV bindings)
+
+| Variable / binding | Obligatorio | Para qué |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Sí, para generación en vivo | `functions/api/generate-script.js` |
+| `ANTHROPIC_MODEL` | No (default: `claude-haiku-4-5-20251001`) | Pisar el modelo sin tocar código |
+| Binding de KV `DEMO_USAGE_KV` | Sí, para que el límite diario se aplique | Cupo de generaciones por IP/global |
+
+Cloudflare Pages **no** necesita `APIFY_TOKEN` ni `YOUTUBE_API_KEY`: esas
+integraciones se retiraron de las Functions (ya no hay `functions/api/
+linkedin.js` ni `youtube.js`) porque las métricas ahora se generan
+exclusivamente desde GitHub Actions, no on-demand desde el navegador.
+
+### Cómo crear y vincular `DEMO_USAGE_KV`
+
+1. Cloudflare Dashboard → **Workers & Pages** → **KV** → **Create a
+   namespace**. Nombre sugerido: `quartzsales-demo-usage`.
+2. En el proyecto de Cloudflare Pages → **Settings** → **Functions** → **KV
+   namespace bindings** → **Add binding**.
+3. Variable name: `DEMO_USAGE_KV` (tiene que ser exactamente ese nombre,
+   es el que usa `functions/api/generate-script.js`). Namespace: el que
+   creaste en el paso 1.
+4. Guardar y volver a desplegar (o esperar al próximo deploy) para que el
+   binding quede activo.
+
+### Deploy — configuración exacta de Cloudflare Pages
 
 - Repository: `jestitaro/designrebels`
 - Production branch: `main`
 - Root directory: `projects/quartzsales-marketing-dashboard`
-- Build command: vacío (HTML/CSS/JS sin framework, no hay build)
+- Build command: vacío
 - Build output directory: `.`
 
-Como el repo es un monorepo con varios proyectos, este debe configurarse como
-su **propio proyecto de Cloudflare Pages** apuntando al mismo repo con este
-Root directory — no reutilizar el proyecto de Pages de otro subdirectorio si
-existiera uno.
+Como el repo es un monorepo con varios proyectos, este debe ser su **propio
+proyecto de Cloudflare Pages** con este Root directory — no reutilizar el
+proyecto de Pages de otro subdirectorio si existiera uno.
 
-### Variables de entorno / secrets — quién necesita qué
-
-Hay dos sistemas de secretos independientes, cada uno alimenta un proceso
-distinto. No son intercambiables ni se leen entre sí:
-
-| Secreto | Dónde se configura | Quién lo lee | Para qué |
-|---|---|---|---|
-| `APIFY_TOKEN` | GitHub → repo `designrebels` → Settings → Secrets and variables → **Actions** | `scripts/sync.js` (workflow `quartzsales-sync.yml`) | Sincronizar seguidores de los competidores en `data/competitors.json` |
-| `APIFY_TOKEN` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/linkedin.js` | Métricas propias de LinkedIn (botón "Actualizar métricas") |
-| `YOUTUBE_API_KEY` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/youtube.js` | Métricas propias de YouTube |
-| `ANTHROPIC_API_KEY` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/generate-script.js` | Generador de posts (✨ Generar) |
-
-`APIFY_TOKEN` aparece dos veces porque son dos plataformas distintas
-(GitHub Actions y Cloudflare Pages) que no comparten secretos entre sí —
-hay que cargarlo en las dos si querés ambas cosas funcionando (el sync
-automático de competidores y el botón de métricas propias). Puede ser el
-mismo valor de token en los dos lados.
-
-Ninguna de las cuatro es obligatoria para que el sitio **cargue** — sin
-ellas, el HTML/CSS/JS estático y la pestaña Competidores (que lee
-`data/competitors.json`) funcionan igual; sólo fallan con un toast de error
-las acciones que dependen de esa integración puntual (botón "Actualizar
-métricas" o "✨ Generar").
-
-## Seguridad
-
-Ninguna integración guarda tokens en el navegador. Los tres endpoints bajo
-`functions/api/` corren server-side en Cloudflare Pages Functions y leen sus
-credenciales de variables de entorno (`context.env`), nunca del cliente:
-
-- **`functions/api/linkedin.js`**: usa `APIFY_TOKEN` para pedirle a Apify
-  (`harvestapi~linkedin-company`) los seguidores/empleados de un handle de
-  LinkedIn. No usa ni pide cookies de sesión (`li_at`) — el actor de Apify
-  no las necesita.
-- **`functions/api/youtube.js`**: usa `YOUTUBE_API_KEY` contra la API de
-  YouTube Data v3.
-- **`functions/api/generate-script.js`**: usa `ANTHROPIC_API_KEY` para
-  generar el post con Claude, con el prompt armado enteramente en el
-  servidor.
-
-El modal ⚙️ Configuración del dashboard sólo guarda dos identificadores no
-sensibles en `localStorage` (`liHandle`, `ytHandle`: qué empresa/canal
-consultar) — cero tokens, cero claves, cero cookies.
-
-`scripts/sync.js` (el sync de competidores) sigue el mismo principio: corre
-en GitHub Actions, lee `APIFY_TOKEN` de un secret y nunca lo expone —
-`data/competitors.json` sólo contiene números de seguidores, nunca el token.
-
-## Qué hace cada parte
-
-- **`index.html`**: sólo guarda en `localStorage` los handles de LinkedIn/
-  YouTube a consultar (no son secretos). El botón "Actualizar métricas"
-  llama a `/api/linkedin` y `/api/youtube`; "✨ Generar" llama a
-  `/api/generate-script`. Ninguno de los tres requiere configuración previa
-  en el navegador — dependen de que Cloudflare Pages tenga cargadas sus
-  variables de entorno (ver tabla arriba).
-- **`functions/api/*.js`**: las tres integraciones que antes vivían en el
-  navegador. Devuelven JSON (`{ ... }` en éxito, `{ error: "..." }` con
-  status ≥ 400 en falla) para que el frontend muestre un toast claro en vez
-  de romperse.
-- **La pestaña "Competidores"** carga `data/competitors.json` por `fetch()`
-  al iniciar (ruta relativa, funciona sin importar en qué carpeta del sitio
-  viva `index.html`). Si el archivo no existe o el fetch falla, usa datos de
-  referencia embebidos como fallback, así el panel nunca se ve vacío.
-- **`scripts/sync.js`** mantiene `data/competitors.json` al día: corre en
-  GitHub Actions, no en el navegador, y no expone ningún token en el
-  frontend.
-
-### Cadencia de sync (grupos A/B/C)
-
-Para no gastar de más la cuota de Apify, cada competidor en
-`config/sources.json` tiene un `group: "A" | "B" | "C"`. Cada corrida del
-workflow sólo sincroniza el grupo que le toca según el día del año
-(`día_del_año % 3`), rotando A → B → C → A... Cada competidor se actualiza
-entonces aproximadamente 1 vez cada 3 días. Podés forzar un grupo puntual o
-sincronizar todo de una desde el input `group` del `workflow_dispatch`:
-`auto` (default), `A`, `B`, `C`, o `ALL` (todos, ideal para la primera
-corrida).
+---
 
 ## Setup paso a paso
 
-### 1. Agregar el secret `APIFY_TOKEN` en GitHub Actions
+### 1. Agregar los secrets en GitHub Actions
 
-1. Conseguí tu token en [Apify Console → Settings → Integrations](https://console.apify.com/account/integrations).
+1. Conseguí tu token en [Apify Console → Settings → Integrations](https://console.apify.com/account/integrations)
+   y (opcional) una API key en [Google Cloud Console → YouTube Data API v3](https://console.cloud.google.com/apis/library/youtube.googleapis.com).
 2. En `jestitaro/designrebels` → **Settings** → **Secrets and variables** →
    **Actions** → **New repository secret**.
-3. Nombre: `APIFY_TOKEN` — Valor: el token de Apify.
+3. Cargá `APIFY_TOKEN` (obligatorio) y `YOUTUBE_API_KEY` (opcional).
 
 ### 2. Conectar (o confirmar) el proyecto en Cloudflare Pages
 
-Ver la sección "Deploy en Cloudflare Pages" arriba. Si ya existe el
-proyecto de Pages para este repo, sólo hace falta confirmar que su **Root
-directory** sea `projects/quartzsales-marketing-dashboard` (no la raíz del
-repo, porque conviven otros proyectos como `prode2026` y el hub de
-`designrebels`).
+Ver "Deploy — configuración exacta" arriba. Si ya existe el proyecto de
+Pages para este repo, confirmá que su **Root directory** sea
+`projects/quartzsales-marketing-dashboard`.
 
-### 3. Cargar las variables de entorno en Cloudflare Pages
+### 3. Cargar las variables de entorno y el binding de KV en Cloudflare Pages
 
 En el proyecto de Cloudflare Pages → **Settings** → **Environment
-variables** → agregar (como *secret*, no como texto plano) para el entorno
-de **Production**:
+variables**, para **Production**:
 
-- `APIFY_TOKEN`
-- `YOUTUBE_API_KEY`
-- `ANTHROPIC_API_KEY`
+- `ANTHROPIC_API_KEY` (secret)
+- `ANTHROPIC_MODEL` (opcional; texto plano, ej. `claude-haiku-4-5-20251001`)
 
-Sin esto, el sitio sigue sirviendo normalmente — sólo el botón "Actualizar
-métricas" y "✨ Generar" muestran un toast de error indicando qué variable
-falta.
+Y en **Settings** → **Functions** → **KV namespace bindings**: el binding
+`DEMO_USAGE_KV` (ver instrucciones arriba). Sin esto, el sitio sigue
+sirviendo normal — sólo el generador de posts en vivo no funciona (los
+ejemplos pre-generados siguen disponibles).
 
 ### 4. Disparar la primera sync manual desde GitHub Actions
 
 1. En el repo → pestaña **Actions** → workflow **QuartzSales dashboard —
-   Sync competitor LinkedIn metrics**.
+   Sync diario (LinkedIn + YouTube + competidores)**.
 2. **Run workflow** → rama `main` → input `group`: elegí **ALL** para la
    primera corrida (así se completan los 11 competidores de una).
 3. **Run workflow**. Al final vas a ver un resumen `OK=X ERROR=Y` en el log.
 4. Si todo salió bien, el job hace commit y push de
-   `projects/quartzsales-marketing-dashboard/data/competitors.json`
-   automáticamente.
+   `data/dashboard-snapshot.json` automáticamente.
 
-### 5. Verificar los primeros datos en `data/competitors.json`
+### 5. Verificar los primeros datos
 
-1. Después de que el workflow termine, abrí
-   `projects/quartzsales-marketing-dashboard/data/competitors.json` en
-   GitHub — debería tener un commit nuevo de `github-actions[bot]`.
-2. Revisá, por competidor, `lastSynced` / `syncStatus`:
-   - `"syncStatus": "ok"` → se actualizó `stats.followers` con el dato real.
-   - `"syncStatus": "error"` → revisá `syncError`; el motivo más común es una
-     URL de LinkedIn mal escrita (ver nota abajo) o rate-limit de Apify.
-3. Abrí el sitio publicado en Cloudflare Pages → pestaña **Competidores** —
-   debería reflejar esos mismos `followers` actualizados.
+1. Abrí `projects/quartzsales-marketing-dashboard/data/dashboard-snapshot.json`
+   en GitHub — debería tener un commit nuevo de `github-actions[bot]`.
+2. Revisá `own.linkedin` / `own.youtube` y, por competidor, `lastSynced` /
+   `syncStatus`:
+   - `"ok"` → se actualizó con el dato real.
+   - `"error"` → revisá `syncError` (URL de LinkedIn mal escrita — ver nota
+     abajo — o rate-limit de Apify/YouTube).
+   - `"skipped"` (sólo YouTube propio) → falta `YOUTUBE_API_KEY`.
+3. Abrí el sitio publicado en Cloudflare Pages — Overview y Competidores
+   deberían mostrar "Datos actualizados" en vez de "Modo demo".
 
 ### Nota importante: verificar los LinkedIn URLs antes de la primera corrida
 
 Los `linkedinUrl` en `config/sources.json` son **slugs inferidos** a partir
-del nombre de cada empresa (ej. `linkedin.com/company/involves/`), no están
-verificados uno por uno contra el perfil real de LinkedIn de cada
-competidor. Antes de correr el sync por primera vez, abrí cada URL en el
-navegador y corregí el slug si hace falta (el segmento entre `/company/` y
-la barra final). Un slug incorrecto no rompe el resto del sync: ese
-competidor puntual queda con `syncStatus: "error"` y el resto sigue.
+del nombre de cada empresa, no están verificados uno por uno contra el
+perfil real de LinkedIn de cada competidor. Antes de correr el sync por
+primera vez, abrí cada URL en el navegador y corregí el slug si hace falta
+(el segmento entre `/company/` y la barra final). Un slug incorrecto no
+rompe el resto del sync: ese competidor puntual queda con
+`syncStatus: "error"`.
 
-## Correr el sync localmente (opcional, para debug)
+---
+
+## Cómo ejecutar localmente
+
+### El sync (Node, sin dependencias)
 
 ```bash
 cd projects/quartzsales-marketing-dashboard
-APIFY_TOKEN=tu_token SYNC_GROUP=ALL node scripts/sync.js
+APIFY_TOKEN=tu_token YOUTUBE_API_KEY=tu_key SYNC_GROUP=ALL node scripts/sync.js
 ```
 
-No requiere `npm install`: el script usa sólo `fetch`, `fs` y `path`
-nativos de Node 18+.
-
-## Probar las Functions localmente (opcional)
-
-Con [Wrangler](https://developers.cloudflare.com/workers/wrangler/) instalado:
+### El sitio + la Function del generador (con Wrangler)
 
 ```bash
 cd projects/quartzsales-marketing-dashboard
-APIFY_TOKEN=tu_token YOUTUBE_API_KEY=tu_key ANTHROPIC_API_KEY=tu_key \
+ANTHROPIC_API_KEY=tu_key ANTHROPIC_MODEL=claude-haiku-4-5-20251001 \
   npx wrangler pages dev . --compatibility-date=2024-01-01
 ```
 
-Esto sirve `index.html` y las rutas `/api/*` juntas, igual que en producción.
+Sin pasarle un binding de KV real, vas a ver el `devWarning` de
+`DEMO_USAGE_KV no está vinculado` en el modal del generador — es esperado
+en local. Para probar el cupo real localmente, agregá `--kv DEMO_USAGE_KV`
+al comando de Wrangler (crea un namespace de KV local de prueba).
+
+## Cómo inspeccionar o reiniciar los límites de uso
+
+- **Ver el uso de hoy**: `GET /api/generate-script` devuelve `remaining`
+  sin gastar cupo — es lo mismo que usa el modal.
+- **Inspeccionar el detalle**: Cloudflare Dashboard → **Workers & Pages** →
+  **KV** → el namespace vinculado a `DEMO_USAGE_KV` → ahí están las claves
+  `ip:<fecha>:<ip>` y `global:<fecha>` con su conteo.
+- **Reiniciar el cupo antes de que expire solo**: borrá manualmente esas
+  claves desde el mismo panel de KV, o esperá a que expiren solas (48h).
+- **Qué pasa al agotar la cuota**: el generador devuelve HTTP 429 con el
+  mensaje "La cuota diaria de la demo fue alcanzada. Podés seguir
+  recorriendo el dashboard y usar los ejemplos disponibles." — el resto del
+  dashboard (Overview, Research, Pipeline, Competidores, y los 3 ejemplos
+  pre-generados) sigue funcionando normalmente.

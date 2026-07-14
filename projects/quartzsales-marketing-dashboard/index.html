@@ -311,7 +311,23 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 }
 .status-dot.live { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
 .status-dot.stale { background: var(--yellow); }
+.status-dot.demo { background: var(--accent); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-data);
+  width: fit-content;
+}
 
 .metrics-grid-inner {
   display: grid;
@@ -1096,6 +1112,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
             <span class="refresh-icon">↻</span> Actualizar métricas
           </button>
         </div>
+        <div class="demo-banner">🧪 <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
         <div class="pipeline-stats">
           <div class="pipeline-stat">
             <div class="pipeline-stat-label">Ideas</div>
@@ -1268,6 +1285,10 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <div class="comp-header">
         <h2>Competidores</h2>
         <p>Monitoreo del ecosistema de trade marketing y retail execution en LATAM y global</p>
+        <div class="demo-banner" style="margin-top:12px;">
+          <div class="status-dot" id="comp-dot"></div>
+          <span id="comp-status-text">Modo demo</span>
+        </div>
       </div>
       <div class="comp-content">
         <div class="section-title">Radar de mercado</div>
@@ -1331,25 +1352,35 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <div class="form-group">
         <label class="form-label">Formato</label>
         <select class="form-select" id="script-format">
-          <option value="post_corto">Post corto (LinkedIn — 300 palabras)</option>
-          <option value="post_largo">Post largo con storytelling (LinkedIn)</option>
-          <option value="carrusel">Carrusel (5-7 slides)</option>
-          <option value="video_corto">Script video corto (YouTube 3-5 min)</option>
+          <option value="post_corto">Post corto (LinkedIn — versión breve de demo)</option>
+          <option value="post_largo">Post con storytelling (LinkedIn — versión breve de demo)</option>
+          <option value="carrusel">Carrusel de 4 slides (versión breve de demo)</option>
+          <option value="video_corto">Guión breve para YouTube (versión de demo)</option>
         </select>
       </div>
+      <div id="script-quota-line" style="font-size:11.5px; color:var(--text-3); font-family:var(--font-data); margin-bottom:4px;"></div>
+      <div id="script-dev-warning" style="display:none; font-size:11.5px; color:var(--yellow); font-family:var(--font-data); margin-bottom:10px;"></div>
       <div id="script-loading" class="script-loading" style="display:none;">
         <div class="script-spinner"></div>
         <span>Generando con Claude...</span>
       </div>
       <div id="script-result-wrap" class="form-group" style="display:none;">
-        <label class="form-label">Post generado (editá libremente)</label>
+        <label class="form-label" id="script-result-label">Post generado (editá libremente)</label>
         <textarea class="form-textarea" id="script-result" style="min-height:200px;"></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">¿Preferís ver un ejemplo ya armado?</label>
+        <div style="display:flex; gap:7px; flex-wrap:wrap;">
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('institucional')">Institucional</button>
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('caso_exito')">Caso de éxito</button>
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('producto')">Producto</button>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modal-script')">Cancelar</button>
       <button class="btn-secondary" id="btn-save-pipeline" onclick="saveScriptToPipeline()" style="display:none;">📋 Guardar en Pipeline</button>
-      <button class="btn-primary" onclick="generateScript()">✨ Generar</button>
+      <button class="btn-primary" id="btn-generate-script" onclick="generateScript()">✨ Generar</button>
     </div>
   </div>
 </div>
@@ -1432,30 +1463,42 @@ function init() {
   updateGreeting();
   updatePipelineStats();
   renderKanban();
-  renderCompetitors();
-  loadCompetitors();
+  renderDashboard(); // pinta al instante con datos de demo mientras se carga el snapshot real
+  loadDashboardData();
   updateConfigUI();
+  refreshQuotaDisplay();
+}
+
+// Ideas de ejemplo para que el Pipeline nunca se vea vacío en la primera
+// visita. Sólo se usan si todavía no hay nada guardado en localStorage — a
+// partir de ahí el Pipeline es 100% de quien lo usa.
+function demoPipelineSeed() {
+  return {
+    ideas: [
+      { id: 1, title: 'Cómo QuartzSales reduce los quiebres de stock en PDV', channel: 'linkedin', source: 'manual', script: null },
+      { id: 2, title: '3 señales de que tu ejecución en góndola necesita IA', channel: 'linkedin', source: 'manual', script: null },
+    ],
+    ready: [
+      { id: 3, title: 'Caso de éxito: cliente CPG reduce roturas 18% en 2 meses', channel: 'linkedin', source: 'manual', script: null },
+    ],
+    edit: [],
+    done: [
+      { id: 4, title: 'Producto: cómo funciona el módulo de auditoría de PDV', channel: 'youtube', source: 'manual', script: null },
+    ],
+    published: [],
+  };
 }
 
 function loadFromStorage() {
   const savedCfg = localStorage.getItem('qs_cfg');
   if (savedCfg) CFG = { ...CFG, ...JSON.parse(savedCfg) };
   const savedPipeline = localStorage.getItem('qs_pipeline');
-  if (savedPipeline) PIPELINE = JSON.parse(savedPipeline);
-  const savedMetrics = localStorage.getItem('qs_metrics');
-  if (savedMetrics) {
-    METRICS = JSON.parse(savedMetrics);
-    renderSavedMetrics();
-  }
+  PIPELINE = savedPipeline ? JSON.parse(savedPipeline) : demoPipelineSeed();
 }
 
 function savePipeline() {
   localStorage.setItem('qs_pipeline', JSON.stringify(PIPELINE));
   updatePipelineStats();
-}
-
-function saveMetrics() {
-  localStorage.setItem('qs_metrics', JSON.stringify(METRICS));
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -1500,420 +1543,10 @@ function updatePipelineStats() {
 // ─────────────────────────────────────────────────────────────
 // METRICS REFRESH
 // ─────────────────────────────────────────────────────────────
-async function refreshMetrics() {
-  const btn = document.getElementById('btn-refresh');
-  btn.classList.add('loading');
-  btn.disabled = true;
-
-  await Promise.allSettled([fetchLinkedIn(), fetchYouTube()]);
-  saveMetrics();
-  toast('Métricas actualizadas', 'success');
-
-  btn.classList.remove('loading');
-  btn.disabled = false;
-}
-
-// Las métricas de LinkedIn/YouTube se piden a las Cloudflare Pages Functions
-// en /functions/api — ahí viven APIFY_TOKEN y YOUTUBE_API_KEY como variables
-// de entorno del lado del servidor. El navegador nunca ve esos tokens.
-async function fetchLinkedIn() {
-  const dot = document.getElementById('li-dot');
-  dot.className = 'status-dot stale';
-  document.getElementById('li-status-text').textContent = 'Actualizando...';
-
-  try {
-    const res = await fetch(`/api/linkedin?handle=${encodeURIComponent(CFG.liHandle)}`);
-    const payload = await res.json();
-    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
-
-    const liData = {
-      followers: payload.followers || '—',
-      employees: payload.employees || '—',
-      posts30d: 0,
-      er: 0,
-      ts: Date.now()
-    };
-
-    if (payload.followers) {
-      const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
-      hist.push({ ts: Date.now(), n: payload.followers });
-      if (hist.length > 60) hist.shift();
-      localStorage.setItem('qs_li_hist', JSON.stringify(hist));
-    }
-
-    METRICS.linkedin = liData;
-    renderLinkedInMetrics(liData);
-    dot.className = 'status-dot live';
-    document.getElementById('li-status-text').textContent = 'Live';
-  } catch(e) {
-    dot.className = 'status-dot';
-    document.getElementById('li-status-text').textContent = 'Error';
-    toast('Error LinkedIn: ' + e.message, 'error');
-    console.error('LinkedIn error:', e);
-  }
-}
-
-async function fetchYouTube() {
-  const dot = document.getElementById('yt-dot');
-  dot.className = 'status-dot stale';
-  document.getElementById('yt-status-text').textContent = 'Actualizando...';
-
-  try {
-    const res = await fetch(`/api/youtube?handle=${encodeURIComponent(CFG.ytHandle)}`);
-    const payload = await res.json();
-    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
-
-    const ytData = {
-      subs: payload.subs,
-      videos: payload.videos,
-      views: payload.views,
-      avgViews: payload.avgViews,
-      ts: Date.now()
-    };
-    METRICS.youtube = ytData;
-    renderYouTubeMetrics(ytData);
-    dot.className = 'status-dot live';
-    document.getElementById('yt-status-text').textContent = 'Live';
-  } catch(e) {
-    dot.className = 'status-dot';
-    document.getElementById('yt-status-text').textContent = 'Error';
-    toast('Error YouTube: ' + e.message, 'error');
-  }
-}
-
-function formatNum(n) {
-  if (!n || n === '—') return '—';
-  n = parseInt(n);
-  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
-  return n.toLocaleString('es-AR');
-}
-
-function renderLinkedInMetrics(d) {
-  document.getElementById('li-followers').textContent = formatNum(d.followers);
-  document.getElementById('li-employees').textContent = formatNum(d.employees);
-  document.getElementById('li-posts30').textContent = d.posts30d;
-  document.getElementById('li-er').textContent = d.er + '%';
-  document.getElementById('li-er-bar').style.width = Math.min(d.er * 20, 100) + '%';
-  document.getElementById('li-footer').textContent = '⏱ Actualizado hace un momento';
-
-  // Crecimiento
-  const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
-  if (hist.length >= 2) {
-    const oldest = hist[0];
-    const diff = d.followers - oldest.n;
-    const pct = oldest.n > 0 ? ((diff / oldest.n) * 100).toFixed(1) : 0;
-    const growth = document.getElementById('li-growth');
-    growth.textContent = `${diff > 0 ? '+' : ''}${pct}%`;
-    growth.className = 'metric-growth ' + (diff >= 0 ? 'pos' : 'neg');
-  }
-}
-
-function renderYouTubeMetrics(d) {
-  document.getElementById('yt-subs').textContent = formatNum(d.subs);
-  document.getElementById('yt-videos').textContent = d.videos;
-  document.getElementById('yt-views').textContent = formatNum(d.views);
-  document.getElementById('yt-avgviews').textContent = formatNum(d.avgViews);
-  document.getElementById('yt-footer').textContent = '⏱ Actualizado hace un momento';
-}
-
-function renderSavedMetrics() {
-  if (METRICS.linkedin) renderLinkedInMetrics(METRICS.linkedin);
-  if (METRICS.youtube) renderYouTubeMetrics(METRICS.youtube);
-}
-
-// ─────────────────────────────────────────────────────────────
-// RESEARCH
-// ─────────────────────────────────────────────────────────────
-function setPill(el, query) {
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('research-input').value = query;
-  doResearch();
-}
-
-async function doResearch() {
-  const query = document.getElementById('research-input').value.trim();
-  if (!query) return;
-
-  const container = document.getElementById('results-container');
-  container.innerHTML = '<div class="card-loading"><div class="mini-spinner"></div> Buscando en GitHub y Hacker News...</div>';
-  document.getElementById('results-count').textContent = '';
-
-  const since = new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString().slice(0,10);
-
-  const [ghResult, hnResult] = await Promise.allSettled([
-    fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+created:>${since}&sort=stars&order=desc&per_page=8`)
-      .then(r => r.json()),
-    fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=15&numericFilters=created_at_i>${Math.floor((Date.now()-60*24*3600*1000)/1000)}`)
-      .then(r => r.json()),
-  ]);
-
-  const results = [];
-
-  if (ghResult.status === 'fulfilled' && ghResult.value.items) {
-    ghResult.value.items.slice(0,6).forEach(r => results.push({
-      type: 'github',
-      title: r.full_name,
-      desc: r.description || 'Sin descripción',
-      author: r.owner?.login,
-      stars: r.stargazers_count,
-      url: r.html_url,
-      idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} ⭐ que puede transformar cómo trabajamos en PDV`,
-    }));
-  }
-
-  if (hnResult.status === 'fulfilled' && hnResult.value.hits) {
-    hnResult.value.hits
-      .filter(h => (h.points || 0) > 10)
-      .slice(0,6)
-      .forEach(h => results.push({
-        type: 'hn',
-        title: h.title,
-        desc: h.story_text ? h.story_text.slice(0,120) + '...' : 'Ver en Hacker News',
-        author: h.author,
-        points: h.points,
-        url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
-        idea: `Mi opinión sobre: ${h.title}`,
-      }));
-  }
-
-  if (results.length === 0) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="empty-state-icon">🤷</div>
-      <div class="empty-state-text">Sin resultados para "${query}"</div>
-      <div class="empty-state-sub">Probá con otro término</div>
-    </div>`;
-    return;
-  }
-
-  document.getElementById('results-count').textContent = `${results.length} resultados`;
-
-  const grid = document.createElement('div');
-  grid.className = 'results-grid';
-  results.forEach(r => {
-    const card = document.createElement('div');
-    card.className = 'result-card';
-    card.innerHTML = `
-      <div class="result-card-top">
-        <div class="result-badges">
-          <span class="source-badge ${r.type === 'github' ? 'badge-gh' : 'badge-hn'}">${r.type === 'github' ? 'GitHub' : 'Hacker News'}</span>
-          ${r.stars !== undefined ? `<span class="source-badge badge-li-post">⭐ ${r.stars >= 1000 ? (r.stars/1000).toFixed(1)+'k' : r.stars}</span>` : ''}
-          ${r.points !== undefined ? `<span class="source-badge badge-li-post">▲ ${r.points}</span>` : ''}
-        </div>
-        <a href="${r.url}" target="_blank" class="result-link">↗</a>
-      </div>
-      <div class="result-author">${r.author || ''}</div>
-      <div class="result-title">${r.title}</div>
-      <div class="result-desc">${r.desc}</div>
-      <div class="result-idea">💡 <strong>Idea de post:</strong> ${r.idea}</div>
-      <div class="result-actions">
-        <button class="btn-add-pipeline" onclick="addFromResearch(${JSON.stringify(r).replace(/"/g,'&quot;')})">+ Agregar al Pipeline</button>
-        <button class="btn-gen-script" onclick="openScriptModal('${r.idea.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}')">✨ Post</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  container.innerHTML = '';
-  container.appendChild(grid);
-}
-
-function addFromResearch(r) {
-  const card = {
-    id: Date.now(),
-    title: r.idea,
-    channel: 'linkedin',
-    source: r.type === 'github' ? 'github' : 'hn',
-    script: null,
-    url: r.url,
-  };
-  PIPELINE.ideas.push(card);
-  savePipeline();
-  renderKanban();
-  toast('Agregado al Pipeline ✓', 'success');
-}
-
-// ─────────────────────────────────────────────────────────────
-// KANBAN
-// ─────────────────────────────────────────────────────────────
-function renderKanban() {
-  const board = document.getElementById('kanban-board');
-  board.innerHTML = '';
-
-  COLS.forEach(col => {
-    const cards = PIPELINE[col.id] || [];
-    const colEl = document.createElement('div');
-    colEl.className = 'kanban-col';
-    colEl.dataset.col = col.id;
-
-    colEl.addEventListener('dragover', e => { e.preventDefault(); colEl.classList.add('drag-over'); });
-    colEl.addEventListener('dragleave', () => colEl.classList.remove('drag-over'));
-    colEl.addEventListener('drop', e => {
-      e.preventDefault();
-      colEl.classList.remove('drag-over');
-      const { cardId, fromCol } = JSON.parse(e.dataTransfer.getData('text/plain'));
-      moveCard(cardId, fromCol, col.id);
-    });
-
-    colEl.innerHTML = `
-      <div class="kanban-col-header">
-        <div class="kanban-col-title">${col.label} <span class="col-count">${cards.length}</span></div>
-      </div>
-      <div class="kanban-cards" id="col-${col.id}">
-        ${cards.map(c => renderCard(c, col.id)).join('')}
-      </div>
-      ${col.id === 'ideas' ? `<div class="kanban-col-footer"><button class="btn-col-add" onclick="openAddIdea()">+ Agregar idea</button></div>` : ''}
-    `;
-    board.appendChild(colEl);
-  });
-
-  // drag events on cards
-  board.querySelectorAll('.kanban-card').forEach(card => {
-    card.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', JSON.stringify({ cardId: card.dataset.id, fromCol: card.dataset.col }));
-      card.classList.add('dragging');
-    });
-    card.addEventListener('dragend', () => card.classList.remove('dragging'));
-  });
-}
-
-function renderCard(c, colId) {
-  const channelBadge = c.channel === 'youtube'
-    ? '<span class="kbadge kbadge-yt">YouTube</span>'
-    : '<span class="kbadge kbadge-li">LinkedIn</span>';
-  const sourceBadge = c.source === 'github' ? '<span class="kbadge kbadge-gh">GitHub</span>'
-    : c.source === 'hn' ? '<span class="kbadge kbadge-hn">HN</span>'
-    : '<span class="kbadge kbadge-manual">Manual</span>';
-  const scriptBadge = c.script ? '<span class="kbadge kbadge-script">✓ Post</span>' : '';
-
-  return `<div class="kanban-card" draggable="true" data-id="${c.id}" data-col="${colId}">
-    <div class="kanban-card-title">${c.title}</div>
-    <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}</div>
-    <div class="kanban-card-actions">
-      <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post">✨</button>
-      ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post">👁</button>` : ''}
-      <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar">🗑</button>
-    </div>
-  </div>`;
-}
-
-function moveCard(cardId, fromCol, toCol) {
-  cardId = parseInt(cardId);
-  const idx = PIPELINE[fromCol].findIndex(c => c.id === cardId);
-  if (idx === -1) return;
-  const [card] = PIPELINE[fromCol].splice(idx, 1);
-  PIPELINE[toCol].push(card);
-  savePipeline();
-  renderKanban();
-}
-
-function deleteCard(id, col) {
-  PIPELINE[col] = PIPELINE[col].filter(c => c.id !== id);
-  savePipeline();
-  renderKanban();
-  toast('Idea eliminada', 'info');
-}
-
-function viewScript(id) {
-  const card = Object.values(PIPELINE).flat().find(c => c.id === id);
-  if (!card?.script) return;
-  openScriptModal(card.title, id);
-  setTimeout(() => {
-    document.getElementById('script-result').value = card.script;
-    document.getElementById('script-result-wrap').style.display = 'block';
-    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
-  }, 100);
-}
-
-function openAddIdea(col = 'ideas') {
-  document.getElementById('new-idea-title').value = '';
-  document.getElementById('new-idea-col').value = col;
-  openModal('modal-add-idea');
-}
-
-function addNewIdea() {
-  const title = document.getElementById('new-idea-title').value.trim();
-  if (!title) { toast('Escribí un título para la idea', 'error'); return; }
-  const channel = document.getElementById('new-idea-channel').value;
-  const col = document.getElementById('new-idea-col').value;
-  PIPELINE[col].push({ id: Date.now(), title, channel, source: 'manual', script: null });
-  savePipeline();
-  renderKanban();
-  closeModal('modal-add-idea');
-  toast('Idea agregada ✓', 'success');
-}
-
-// ─────────────────────────────────────────────────────────────
-// SCRIPT GENERATOR
-// ─────────────────────────────────────────────────────────────
-function openScriptModal(topic = '', cardId = null) {
-  currentScriptTopic = topic;
-  currentScriptCardId = cardId;
-  document.getElementById('script-topic').value = topic;
-  document.getElementById('script-loading').style.display = 'none';
-  document.getElementById('script-result-wrap').style.display = 'none';
-  document.getElementById('btn-save-pipeline').style.display = 'none';
-  openModal('modal-script');
-}
-
-// El prompt y la llamada a la API de Claude viven en
-// /functions/api/generate-script.js — ahí está ANTHROPIC_API_KEY como
-// variable de entorno de Cloudflare Pages, nunca en este archivo.
-async function generateScript() {
-  const topic = document.getElementById('script-topic').value.trim();
-  const channel = document.getElementById('script-channel').value;
-  const format = document.getElementById('script-format').value;
-
-  if (!topic) { toast('Escribí un tema primero', 'error'); return; }
-
-  document.getElementById('script-loading').style.display = 'flex';
-  document.getElementById('script-result-wrap').style.display = 'none';
-
-  try {
-    const res = await fetch('/api/generate-script', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ topic, channel, format })
-    });
-    const payload = await res.json();
-    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
-
-    document.getElementById('script-result').value = payload.text;
-    document.getElementById('script-result-wrap').style.display = 'block';
-    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
-    toast('Post generado ✓', 'success');
-  } catch(e) {
-    toast('Error al generar: ' + e.message, 'error');
-  } finally {
-    document.getElementById('script-loading').style.display = 'none';
-  }
-}
-
-function saveScriptToPipeline() {
-  const script = document.getElementById('script-result').value;
-  const topic = document.getElementById('script-topic').value;
-
-  if (currentScriptCardId) {
-    // Actualizar card existente
-    for (const col of Object.keys(PIPELINE)) {
-      const card = PIPELINE[col].find(c => c.id === currentScriptCardId);
-      if (card) { card.script = script; break; }
-    }
-  } else {
-    // Crear nueva card en Ideas
-    PIPELINE.ideas.push({ id: Date.now(), title: topic, channel: document.getElementById('script-channel').value, source: 'manual', script });
-  }
-
-  savePipeline();
-  renderKanban();
-  closeModal('modal-script');
-  toast('Guardado en Pipeline ✓', 'success');
-}
-
-// ─────────────────────────────────────────────────────────────
-// COMPETITORS
-// ─────────────────────────────────────────────────────────────
-let COMPETITORS = [
+// Datos de referencia: se usan como "Modo demo" cuando todavía no corrió
+// ningún sync automático o cuando data/dashboard-snapshot.json no está
+// disponible. loadDashboardData() los reemplaza por datos reales si existen.
+const DEMO_COMPETITORS = [
   // ── DIRECTOS ──────────────────────────────────
   {
     name: 'Involves',
@@ -2072,6 +1705,590 @@ let COMPETITORS = [
   },
 ];
 
+let COMPETITORS = DEMO_COMPETITORS;
+
+// ─────────────────────────────────────────────────────────────
+// DASHBOARD DATA — snapshot diario (GitHub Actions) + fallback de demo
+// ─────────────────────────────────────────────────────────────
+// Nada de esto le pega a Apify/YouTube desde el navegador: eso costaría cada
+// vez que alguien abre el dashboard. Un workflow de GitHub Actions corre 1
+// vez por día, consulta las APIs y escribe data/dashboard-snapshot.json; acá
+// sólo lo leemos por fetch(). "Actualizar métricas" vuelve a leer ese mismo
+// archivo, no dispara ninguna llamada nueva a un proveedor pago.
+const SNAPSHOT_URL = 'data/dashboard-snapshot.json';
+const LIVE_FRESHNESS_HOURS = 36; // más viejo que esto se muestra como "almacenado", no "live".
+
+const DEMO_OWN_LINKEDIN = { followers: 3100, employees: 22 };
+const DEMO_OWN_YOUTUBE = { subs: 1200, videos: 28, views: 85000, avgViews: 3036 };
+
+let DASHBOARD = { generatedAt: null, own: { linkedin: null, youtube: null }, competitors: DEMO_COMPETITORS };
+
+function sourceLabel(source) {
+  if (source === 'live') return 'Datos actualizados';
+  if (source === 'cached') return 'Datos almacenados';
+  return 'Modo demo';
+}
+
+function computeSnapshotSource(generatedAt) {
+  if (!generatedAt) return 'demo';
+  const ageHours = (Date.now() - new Date(generatedAt).getTime()) / 3600000;
+  return ageHours <= LIVE_FRESHNESS_HOURS ? 'live' : 'cached';
+}
+
+// Cada canal puede tener su propio estado: si Apify anduvo pero YouTube no
+// (o viceversa), no queremos que uno "contamine" al otro con la misma
+// etiqueta.
+function resolveChannelSource(entry, key) {
+  if (!entry || entry[key] === null || entry[key] === undefined) return 'demo';
+  return computeSnapshotSource(DASHBOARD.generatedAt);
+}
+
+function formatUpdatedAt(generatedAt) {
+  if (!generatedAt) return 'Todavía no corrió ninguna actualización automática — mostrando datos de demostración.';
+  const d = new Date(generatedAt);
+  return '⏱ Última actualización: ' + d.toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+async function loadDashboardData(showToast) {
+  const btn = document.getElementById('btn-refresh');
+  if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+
+  try {
+    const res = await fetch(SNAPSHOT_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`No se pudo leer ${SNAPSHOT_URL} (status ${res.status})`);
+    const data = await res.json();
+    DASHBOARD = {
+      generatedAt: data.generatedAt || null,
+      own: { linkedin: data.own?.linkedin || null, youtube: data.own?.youtube || null },
+      competitors: (Array.isArray(data.competitors) && data.competitors.length) ? data.competitors : DEMO_COMPETITORS,
+    };
+  } catch (e) {
+    console.warn('No se pudo cargar el snapshot diario, usando datos de demostración.', e);
+    DASHBOARD = { generatedAt: null, own: { linkedin: null, youtube: null }, competitors: DEMO_COMPETITORS };
+  }
+
+  renderDashboard();
+
+  if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+
+  if (showToast) {
+    if (DASHBOARD.generatedAt) {
+      toast('Mostrando la última sync disponible (' + new Date(DASHBOARD.generatedAt).toLocaleString('es-AR') + ')', 'success');
+    } else {
+      toast('Todavía no hay una sync automática — mostrando datos de demostración. La sync corre 1 vez por día.', 'info');
+    }
+  }
+}
+
+// El botón "Actualizar métricas" NO dispara llamadas a Apify/YouTube: sólo
+// vuelve a leer el snapshot diario y refresca la vista.
+async function refreshMetrics() {
+  await loadDashboardData(true);
+}
+
+function renderDashboard() {
+  COMPETITORS = DASHBOARD.competitors;
+
+  const liSource = resolveChannelSource(DASHBOARD.own.linkedin, 'followers');
+  const ytSource = resolveChannelSource(DASHBOARD.own.youtube, 'subs');
+  renderLinkedInMetrics(DASHBOARD.own.linkedin || DEMO_OWN_LINKEDIN, liSource);
+  renderYouTubeMetrics(DASHBOARD.own.youtube || DEMO_OWN_YOUTUBE, ytSource);
+
+  renderCompetitors();
+  const compSource = DASHBOARD.generatedAt ? computeSnapshotSource(DASHBOARD.generatedAt) : 'demo';
+  const compDot = document.getElementById('comp-dot');
+  const compText = document.getElementById('comp-status-text');
+  if (compDot && compText) {
+    compDot.className = 'status-dot ' + (compSource === 'live' ? 'live' : compSource === 'cached' ? 'stale' : 'demo');
+    compText.textContent = sourceLabel(compSource) + ' · ' + formatUpdatedAt(DASHBOARD.generatedAt).replace('⏱ ', '');
+  }
+}
+
+function formatNum(n) {
+  if (n === null || n === undefined || n === '—') return '—';
+  n = parseInt(n);
+  if (Number.isNaN(n)) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n.toLocaleString('es-AR');
+}
+
+function renderLinkedInMetrics(d, source) {
+  document.getElementById('li-followers').textContent = formatNum(d.followers);
+  document.getElementById('li-employees').textContent = formatNum(d.employees);
+  document.getElementById('li-posts30').textContent = d.posts30d ?? 0;
+  document.getElementById('li-er').textContent = (d.er ?? 0) + '%';
+  document.getElementById('li-er-bar').style.width = Math.min((d.er ?? 0) * 20, 100) + '%';
+
+  const dot = document.getElementById('li-dot');
+  dot.className = 'status-dot ' + (source === 'live' ? 'live' : source === 'cached' ? 'stale' : 'demo');
+  document.getElementById('li-status-text').textContent = sourceLabel(source);
+  document.getElementById('li-footer').textContent = formatUpdatedAt(source === 'demo' ? null : DASHBOARD.generatedAt);
+
+  // Crecimiento: sólo se registra con datos reales, para no mezclar la
+  // tendencia con los números de referencia del modo demo.
+  const growth = document.getElementById('li-growth');
+  if (source === 'demo' || typeof d.followers !== 'number') {
+    growth.textContent = 'Modo demo';
+    growth.className = 'metric-growth neutral';
+    return;
+  }
+
+  const lastGen = localStorage.getItem('qs_li_hist_last_gen');
+  if (DASHBOARD.generatedAt && lastGen !== DASHBOARD.generatedAt) {
+    const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
+    hist.push({ ts: Date.now(), n: d.followers });
+    if (hist.length > 60) hist.shift();
+    localStorage.setItem('qs_li_hist', JSON.stringify(hist));
+    localStorage.setItem('qs_li_hist_last_gen', DASHBOARD.generatedAt);
+  }
+
+  const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
+  if (hist.length >= 2) {
+    const oldest = hist[0];
+    const diff = d.followers - oldest.n;
+    const pct = oldest.n > 0 ? ((diff / oldest.n) * 100).toFixed(1) : 0;
+    growth.textContent = `${diff > 0 ? '+' : ''}${pct}%`;
+    growth.className = 'metric-growth ' + (diff >= 0 ? 'pos' : 'neg');
+  } else {
+    growth.textContent = 'Acumulando...';
+    growth.className = 'metric-growth neutral';
+  }
+}
+
+function renderYouTubeMetrics(d, source) {
+  document.getElementById('yt-subs').textContent = formatNum(d.subs);
+  document.getElementById('yt-videos').textContent = d.videos ?? '—';
+  document.getElementById('yt-views').textContent = formatNum(d.views);
+  document.getElementById('yt-avgviews').textContent = formatNum(d.avgViews);
+
+  const dot = document.getElementById('yt-dot');
+  dot.className = 'status-dot ' + (source === 'live' ? 'live' : source === 'cached' ? 'stale' : 'demo');
+  document.getElementById('yt-status-text').textContent = sourceLabel(source);
+  document.getElementById('yt-footer').textContent = formatUpdatedAt(source === 'demo' ? null : DASHBOARD.generatedAt);
+}
+
+// ─────────────────────────────────────────────────────────────
+// RESEARCH
+// ─────────────────────────────────────────────────────────────
+// GitHub y Hacker News son APIs públicas y gratuitas (no requieren secretos),
+// pero si la red no está disponible igual mostramos ejemplos para que la
+// sección nunca se vea rota.
+const DEMO_RESEARCH_RESULTS = [
+  {
+    type: 'github', title: 'retail-execution/shelf-audit-toolkit',
+    desc: 'Toolkit open source para auditorías de góndola con visión por computadora.',
+    author: 'retail-execution', stars: 842,
+    url: 'https://github.com', demo: true,
+    idea: '¿Qué es shelf-audit-toolkit? El proyecto open source que muestra hacia dónde va la auditoría de PDV con IA',
+  },
+  {
+    type: 'hn', title: 'Show HN: We built a CV model to detect stockouts from shelf photos',
+    desc: 'Ver en Hacker News', author: 'foundercpg', points: 214,
+    url: 'https://news.ycombinator.com', demo: true,
+    idea: 'Mi opinión sobre: detectar quiebres de stock con fotos de góndola',
+  },
+  {
+    type: 'github', title: 'cpg-analytics/sellout-dashboards',
+    desc: 'Dashboards de referencia para sell-out analytics en consumo masivo.',
+    author: 'cpg-analytics', stars: 356,
+    url: 'https://github.com', demo: true,
+    idea: '3 ideas de sell-out analytics que todo trade marketing manager debería conocer',
+  },
+];
+
+function setPill(el, query) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('research-input').value = query;
+  doResearch();
+}
+
+async function doResearch() {
+  const query = document.getElementById('research-input').value.trim();
+  if (!query) return;
+
+  const container = document.getElementById('results-container');
+  container.innerHTML = '<div class="card-loading"><div class="mini-spinner"></div> Buscando en GitHub y Hacker News...</div>';
+  document.getElementById('results-count').textContent = '';
+
+  const since = new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString().slice(0,10);
+
+  const [ghResult, hnResult] = await Promise.allSettled([
+    fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+created:>${since}&sort=stars&order=desc&per_page=8`)
+      .then(r => r.json()),
+    fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=15&numericFilters=created_at_i>${Math.floor((Date.now()-60*24*3600*1000)/1000)}`)
+      .then(r => r.json()),
+  ]);
+
+  const results = [];
+
+  if (ghResult.status === 'fulfilled' && ghResult.value.items) {
+    ghResult.value.items.slice(0,6).forEach(r => results.push({
+      type: 'github',
+      title: r.full_name,
+      desc: r.description || 'Sin descripción',
+      author: r.owner?.login,
+      stars: r.stargazers_count,
+      url: r.html_url,
+      idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} ⭐ que puede transformar cómo trabajamos en PDV`,
+    }));
+  }
+
+  if (hnResult.status === 'fulfilled' && hnResult.value.hits) {
+    hnResult.value.hits
+      .filter(h => (h.points || 0) > 10)
+      .slice(0,6)
+      .forEach(h => results.push({
+        type: 'hn',
+        title: h.title,
+        desc: h.story_text ? h.story_text.slice(0,120) + '...' : 'Ver en Hacker News',
+        author: h.author,
+        points: h.points,
+        url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+        idea: `Mi opinión sobre: ${h.title}`,
+      }));
+  }
+
+  const bothFailed = ghResult.status === 'rejected' && hnResult.status === 'rejected';
+  let usingDemo = false;
+
+  if (bothFailed) {
+    // Sin red hacia GitHub/HN (ej. entorno restringido): mostramos ejemplos
+    // en vez de un error técnico o una pantalla vacía.
+    results.push(...DEMO_RESEARCH_RESULTS);
+    usingDemo = true;
+  } else if (results.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-state-icon">🤷</div>
+      <div class="empty-state-text">Sin resultados para "${query}"</div>
+      <div class="empty-state-sub">Probá con otro término</div>
+    </div>`;
+    return;
+  }
+
+  document.getElementById('results-count').textContent = usingDemo
+    ? `${results.length} ejemplos de demostración (sin conexión a GitHub/Hacker News)`
+    : `${results.length} resultados`;
+
+  const grid = document.createElement('div');
+  grid.className = 'results-grid';
+  results.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="result-card-top">
+        <div class="result-badges">
+          <span class="source-badge ${r.type === 'github' ? 'badge-gh' : 'badge-hn'}">${r.type === 'github' ? 'GitHub' : 'Hacker News'}</span>
+          ${r.stars !== undefined ? `<span class="source-badge badge-li-post">⭐ ${r.stars >= 1000 ? (r.stars/1000).toFixed(1)+'k' : r.stars}</span>` : ''}
+          ${r.points !== undefined ? `<span class="source-badge badge-li-post">▲ ${r.points}</span>` : ''}
+          ${r.demo ? `<span class="source-badge kbadge-manual">Ejemplo de demostración</span>` : ''}
+        </div>
+        <a href="${r.url}" target="_blank" class="result-link">↗</a>
+      </div>
+      <div class="result-author">${r.author || ''}</div>
+      <div class="result-title">${r.title}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="result-idea">💡 <strong>Idea de post:</strong> ${r.idea}</div>
+      <div class="result-actions">
+        <button class="btn-add-pipeline" onclick="addFromResearch(${JSON.stringify(r).replace(/"/g,'&quot;')})">+ Agregar al Pipeline</button>
+        <button class="btn-gen-script" onclick="openScriptModal('${r.idea.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}')">✨ Post</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+function addFromResearch(r) {
+  const card = {
+    id: Date.now(),
+    title: r.idea,
+    channel: 'linkedin',
+    source: r.type === 'github' ? 'github' : 'hn',
+    script: null,
+    url: r.url,
+  };
+  PIPELINE.ideas.push(card);
+  savePipeline();
+  renderKanban();
+  toast('Agregado al Pipeline ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// KANBAN
+// ─────────────────────────────────────────────────────────────
+function renderKanban() {
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = '';
+
+  COLS.forEach(col => {
+    const cards = PIPELINE[col.id] || [];
+    const colEl = document.createElement('div');
+    colEl.className = 'kanban-col';
+    colEl.dataset.col = col.id;
+
+    colEl.addEventListener('dragover', e => { e.preventDefault(); colEl.classList.add('drag-over'); });
+    colEl.addEventListener('dragleave', () => colEl.classList.remove('drag-over'));
+    colEl.addEventListener('drop', e => {
+      e.preventDefault();
+      colEl.classList.remove('drag-over');
+      const { cardId, fromCol } = JSON.parse(e.dataTransfer.getData('text/plain'));
+      moveCard(cardId, fromCol, col.id);
+    });
+
+    colEl.innerHTML = `
+      <div class="kanban-col-header">
+        <div class="kanban-col-title">${col.label} <span class="col-count">${cards.length}</span></div>
+      </div>
+      <div class="kanban-cards" id="col-${col.id}">
+        ${cards.map(c => renderCard(c, col.id)).join('')}
+      </div>
+      ${col.id === 'ideas' ? `<div class="kanban-col-footer"><button class="btn-col-add" onclick="openAddIdea()">+ Agregar idea</button></div>` : ''}
+    `;
+    board.appendChild(colEl);
+  });
+
+  // drag events on cards
+  board.querySelectorAll('.kanban-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ cardId: card.dataset.id, fromCol: card.dataset.col }));
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+
+function renderCard(c, colId) {
+  const channelBadge = c.channel === 'youtube'
+    ? '<span class="kbadge kbadge-yt">YouTube</span>'
+    : '<span class="kbadge kbadge-li">LinkedIn</span>';
+  const sourceBadge = c.source === 'github' ? '<span class="kbadge kbadge-gh">GitHub</span>'
+    : c.source === 'hn' ? '<span class="kbadge kbadge-hn">HN</span>'
+    : '<span class="kbadge kbadge-manual">Manual</span>';
+  const scriptBadge = c.script ? '<span class="kbadge kbadge-script">✓ Post</span>' : '';
+
+  return `<div class="kanban-card" draggable="true" data-id="${c.id}" data-col="${colId}">
+    <div class="kanban-card-title">${c.title}</div>
+    <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}</div>
+    <div class="kanban-card-actions">
+      <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post">✨</button>
+      ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post">👁</button>` : ''}
+      <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar">🗑</button>
+    </div>
+  </div>`;
+}
+
+function moveCard(cardId, fromCol, toCol) {
+  cardId = parseInt(cardId);
+  const idx = PIPELINE[fromCol].findIndex(c => c.id === cardId);
+  if (idx === -1) return;
+  const [card] = PIPELINE[fromCol].splice(idx, 1);
+  PIPELINE[toCol].push(card);
+  savePipeline();
+  renderKanban();
+}
+
+function deleteCard(id, col) {
+  PIPELINE[col] = PIPELINE[col].filter(c => c.id !== id);
+  savePipeline();
+  renderKanban();
+  toast('Idea eliminada', 'info');
+}
+
+function viewScript(id) {
+  const card = Object.values(PIPELINE).flat().find(c => c.id === id);
+  if (!card?.script) return;
+  openScriptModal(card.title, id);
+  setTimeout(() => {
+    document.getElementById('script-result').value = card.script;
+    document.getElementById('script-result-wrap').style.display = 'block';
+    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+  }, 100);
+}
+
+function openAddIdea(col = 'ideas') {
+  document.getElementById('new-idea-title').value = '';
+  document.getElementById('new-idea-col').value = col;
+  openModal('modal-add-idea');
+}
+
+function addNewIdea() {
+  const title = document.getElementById('new-idea-title').value.trim();
+  if (!title) { toast('Escribí un título para la idea', 'error'); return; }
+  const channel = document.getElementById('new-idea-channel').value;
+  const col = document.getElementById('new-idea-col').value;
+  PIPELINE[col].push({ id: Date.now(), title, channel, source: 'manual', script: null });
+  savePipeline();
+  renderKanban();
+  closeModal('modal-add-idea');
+  toast('Idea agregada ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// SCRIPT GENERATOR — demo controlada (cupo diario + ejemplos pre-generados)
+// ─────────────────────────────────────────────────────────────
+// El prompt y la llamada a la API de Claude viven en
+// /functions/api/generate-script.js — ahí está ANTHROPIC_API_KEY como
+// variable de entorno de Cloudflare Pages, nunca en este archivo. Esta
+// Function también limita el uso diario (por IP y global) con Cloudflare KV.
+let isGeneratingScript = false;
+
+// Al menos 3 ejemplos pre-generados para que el generador se pueda mostrar
+// aunque falte ANTHROPIC_API_KEY, se agote el cupo diario, o falle Anthropic.
+// Nunca se presentan como generados en vivo.
+const DEMO_SCRIPT_EXAMPLES = {
+  institucional: {
+    label: 'Institucional',
+    text: `QuartzSales existe por un problema muy simple: en LATAM, 1 de cada 5 productos que debería estar en la góndola, no está.
+
+No es falta de stock en el depósito. Es falta de visibilidad en el punto de venta.
+
+Hace 4 años empezamos a construir QuartzSales para que los equipos de trade marketing y ventas de campo dejen de operar "a ciegas": auditorías de PDV, ejecución de campañas y datos de góndola, todo en una sola plataforma.
+
+Hoy trabajamos con equipos comerciales de consumo masivo en toda la región que dejaron de perseguir Excels y empezaron a tomar decisiones con datos del punto de venta en tiempo real.
+
+Si tu equipo de campo todavía reporta en papel o en planillas sueltas, hablemos.`,
+  },
+  caso_exito: {
+    label: 'Caso de éxito',
+    text: `Un cliente de consumo masivo nos pidió ayuda con algo puntual: sus quiebres de stock en autoservicios independientes rondaban el 22%.
+
+En 8 semanas de trabajo con QuartzSales:
+— Digitalizamos las auditorías de PDV de todo su equipo de campo.
+— Cruzamos ejecución en góndola con datos de sell-out.
+— El equipo comercial pasó a priorizar visitas según riesgo real de quiebre, no por intuición.
+
+Resultado: quiebres de stock del 22% al 14% en dos meses, sin sumar una sola persona al equipo de campo.
+
+La ejecución en el punto de venta no se arregla con más gente. Se arregla con mejor información.`,
+  },
+  producto: {
+    label: 'Producto',
+    text: `¿Cómo audita hoy tu equipo de campo el punto de venta?
+
+Si la respuesta incluye "planilla", "foto por WhatsApp" o "a ojo", este post es para vos.
+
+El módulo de auditoría de PDV de QuartzSales le da a cada promotor o supervisor una checklist digital adaptada a cada cadena, con fotos georreferenciadas y alertas automáticas de quiebre de stock o falta de exhibición.
+
+Todo eso se junta en un solo tablero para el equipo comercial: qué puntos de venta necesitan atención hoy, no la semana que viene.
+
+Menos reportes manuales, más decisiones a tiempo.`,
+  },
+};
+
+function openScriptModal(topic = '', cardId = null) {
+  currentScriptTopic = topic;
+  currentScriptCardId = cardId;
+  document.getElementById('script-topic').value = topic;
+  document.getElementById('script-loading').style.display = 'none';
+  document.getElementById('script-result-wrap').style.display = 'none';
+  document.getElementById('script-result-label').textContent = 'Post generado (editá libremente)';
+  document.getElementById('btn-save-pipeline').style.display = 'none';
+  openModal('modal-script');
+  refreshQuotaDisplay();
+}
+
+// Consulta cuántas generaciones quedan hoy sin gastar cupo (GET, sólo lectura).
+async function refreshQuotaDisplay() {
+  const line = document.getElementById('script-quota-line');
+  const devWarningEl = document.getElementById('script-dev-warning');
+  if (!line) return;
+
+  try {
+    const res = await fetch('/api/generate-script');
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
+
+    line.textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
+    if (payload.devWarning) {
+      devWarningEl.textContent = '⚠ ' + payload.devWarning;
+      devWarningEl.style.display = 'block';
+    } else {
+      devWarningEl.style.display = 'none';
+    }
+  } catch (e) {
+    line.textContent = 'No se pudo consultar el cupo de generaciones — podés usar los ejemplos de abajo.';
+  }
+}
+
+async function generateScript() {
+  if (isGeneratingScript) return; // evita envíos duplicados por doble click
+  const topic = document.getElementById('script-topic').value.trim();
+  const channel = document.getElementById('script-channel').value;
+  const format = document.getElementById('script-format').value;
+
+  if (!topic) { toast('Escribí un tema primero', 'error'); return; }
+
+  isGeneratingScript = true;
+  const btn = document.getElementById('btn-generate-script');
+  btn.disabled = true;
+  document.getElementById('script-loading').style.display = 'flex';
+  document.getElementById('script-result-wrap').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/generate-script', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, channel, format })
+    });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
+
+    document.getElementById('script-result-label').textContent = 'Post generado (editá libremente)';
+    document.getElementById('script-result').value = payload.content;
+    document.getElementById('script-result-wrap').style.display = 'block';
+    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+    document.getElementById('script-quota-line').textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
+    toast('Post generado ✓', 'success');
+  } catch(e) {
+    toast(e.message + ' — podés usar un ejemplo de abajo mientras tanto.', 'error');
+  } finally {
+    document.getElementById('script-loading').style.display = 'none';
+    btn.disabled = false;
+    isGeneratingScript = false;
+  }
+}
+
+// Carga uno de los 3 ejemplos pre-generados. Se marca explícitamente como
+// demostración: nunca se presenta como si Claude lo hubiera generado ahora.
+function useDemoExample(key) {
+  const example = DEMO_SCRIPT_EXAMPLES[key];
+  if (!example) return;
+
+  document.getElementById('script-result-label').textContent = `Ejemplo de demostración — ${example.label} (no generado en vivo)`;
+  document.getElementById('script-result').value = example.text;
+  document.getElementById('script-result-wrap').style.display = 'block';
+  document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+  toast('Mostrando ejemplo de demostración', 'info');
+}
+
+function saveScriptToPipeline() {
+  const script = document.getElementById('script-result').value;
+  const topic = document.getElementById('script-topic').value;
+
+  if (currentScriptCardId) {
+    // Actualizar card existente
+    for (const col of Object.keys(PIPELINE)) {
+      const card = PIPELINE[col].find(c => c.id === currentScriptCardId);
+      if (card) { card.script = script; break; }
+    }
+  } else {
+    // Crear nueva card en Ideas
+    PIPELINE.ideas.push({ id: Date.now(), title: topic, channel: document.getElementById('script-channel').value, source: 'manual', script });
+  }
+
+  savePipeline();
+  renderKanban();
+  closeModal('modal-script');
+  toast('Guardado en Pipeline ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// COMPETITORS
+// ─────────────────────────────────────────────────────────────
+
 function renderCompetitors() {
   const container = document.getElementById('comp-grid').parentElement;
   const grid = document.getElementById('comp-grid');
@@ -2139,23 +2356,6 @@ function renderCompetitors() {
     <div class="section-title" style="margin-top:28px;margin-bottom:16px">Competidores adyacentes</div>
     <div class="comp-grid">${adyacentes.map(renderCard).join('')}</div>
   `;
-}
-
-// Carga data/competitors.json (generado por scripts/sync.js vía GitHub Actions).
-// Si todavía no corrió ningún sync o el fetch falla, se queda con los datos de
-// referencia hardcodeados arriba para que el panel nunca quede vacío.
-async function loadCompetitors() {
-  try {
-    const res = await fetch('data/competitors.json', { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (Array.isArray(data.competitors) && data.competitors.length) {
-      COMPETITORS = data.competitors;
-      renderCompetitors();
-    }
-  } catch (e) {
-    console.warn('No se pudo cargar data/competitors.json, usando datos de referencia.', e);
-  }
 }
 
 // ─────────────────────────────────────────────────────────────
