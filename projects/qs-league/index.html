@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
-  <link rel="stylesheet" href="assets/semester.css" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="assets/app.js" defer></script>
 </head>
@@ -23,9 +22,9 @@
       <h1>La competencia interna más jurásica de QS.</h1>
       <p>DinoCoins, Kahoots, equipos, podios, desafíos y un poco de teoría del caos para ver quién domina la isla.</p>
       <div class="mini-podium" aria-hidden="true">
-        <article><span>🥈</span><strong>Nico</strong><small>4 victorias</small></article>
-        <article class="winner"><span>🥇</span><strong>Hero</strong><small>5 victorias</small></article>
-        <article><span>🥉</span><strong>Jesi</strong><small>3 victorias</small></article>
+        <article><span>🥈</span><strong>Plata</strong><small>+2 coins</small></article>
+        <article class="winner"><span>🥇</span><strong>Oro</strong><small>+3 coins</small></article>
+        <article><span>🥉</span><strong>Bronce</strong><small>+1 coin</small></article>
       </div>
     </section>
 
@@ -70,8 +69,8 @@
         <div class="hero-card">
           <div>
             <span class="badge">Live MVP</span>
-            <h2>DinoCoins, podio y equipos en una sola landing.</h2>
-            <p>El primer semestre queda cargado como historial por ganadores. Desde ahora el ranking nuevo puede sumar oro, plata y bronce por cada Kahoot.</p>
+            <h2>La arena nueva arranca limpia.</h2>
+            <p>Acá el podio es simbólico y animado: sirve para mostrar cómo puntúa la nueva etapa. El podio real del primer semestre está adentro de Semestre 1.</p>
             <div class="stats">
               <article><strong id="totalCoins">0</strong><span>DinoCoins</span></article>
               <article><strong id="totalPlayers">0</strong><span>jugadores</span></article>
@@ -82,11 +81,11 @@
         </div>
 
         <div class="grid two">
-          <article class="panel"><div class="panel-head"><p class="eyebrow">Podio actual</p><button class="ghost small" data-tab="ranking">Ver todo</button></div><div class="podium" id="podium"></div></article>
+          <article class="panel"><div class="panel-head"><p class="eyebrow">Podio simbólico</p><button class="ghost small" data-tab="semester">Ver podio real</button></div><div class="podium" id="podium"></div></article>
           <article class="panel"><p class="eyebrow">Actividad</p><div class="timeline" id="timeline"></div></article>
         </div>
 
-        <article class="panel"><p class="eyebrow">Ranking grupal</p><div class="teams" id="teams"></div></article>
+        <article class="panel"><p class="eyebrow">Ranking grupal nueva etapa</p><div class="teams" id="teams"></div></article>
       </section>
 
       <section class="tab" id="semester">
@@ -132,9 +131,9 @@
               <div class="kahoot-step"><span>1</span><strong>Jugar</strong><small>Entren con nombres estables: Jesi, Nico, Ale, etc.</small></div>
               <div class="kahoot-step"><span>2</span><strong>Exportar</strong><small>Reports → Download report. Si es anual, bajalos de a uno.</small></div>
               <div class="kahoot-step"><span>3</span><strong>Subir en lote</strong><small>Seleccioná varios XLSX/CSV a la vez o arrastralos juntos.</small></div>
-              <div class="kahoot-step"><span>4</span><strong>Aplicar</strong><small>Desde ahora cada reporte puede repartir oro +3, plata +2 y bronce +1.</small></div>
+              <div class="kahoot-step"><span>4</span><strong>Aplicar</strong><small>Cada reporte nuevo reparte oro +3, plata +2 y bronce +1.</small></div>
             </div>
-            <div class="kahoot-hint"><b>Regla histórica</b><span>El primer semestre queda cerrado contando solo ganadores. Los meteoritos salen de la columna de ausentes.</span></div>
+            <div class="kahoot-hint"><b>Tip</b><span>El importador detecta hojas tipo <strong>Final Scores</strong> aunque el encabezado empiece en la fila 3.</span></div>
             <div class="secondary-actions">
               <button class="ghost" id="downloadTemplate" type="button">Descargar CSV demo</button>
               <button class="ghost" id="resetLocal" type="button">Reset local</button>
@@ -159,9 +158,9 @@
 
       <section class="tab" id="rules">
         <article class="panel"><p class="eyebrow">Manual E-saurio</p><div class="rules">
-          <article><span>01</span><h3>Primer semestre</h3><p>Histórico cerrado: enero a junio 2026 cuenta solo ganadores por fecha.</p></article>
+          <article><span>01</span><h3>Preguntas</h3><p>12 a 16 preguntas. Ideal: 2 por participante y hasta 2 generales.</p></article>
           <article><span>02</span><h3>Nueva etapa</h3><p>Desde ahora: oro +3, plata +2, bronce +1 para ranking individual y grupal.</p></article>
-          <article><span>03</span><h3>Meteoritos</h3><p>Cada ausencia detectada suma un meteorito visual en el historial.</p></article>
+          <article><span>03</span><h3>Semestre 1</h3><p>El histórico enero-junio cuenta solo ganadores y muestra ausencias como meteoritos.</p></article>
           <article><span>04</span><h3>Desafíos</h3><p>El 1 vs 1 se fija antes de jugar. Gana quien quede mejor rankeado.</p></article>
         </div></article>
       </section>
