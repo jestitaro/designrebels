@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=20260714-5" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260714-6" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -19,7 +19,7 @@
     <section class="login-copy">
       <span class="badge">🦖 QS League</span>
       <h1>La competencia interna más jurásica de QS.</h1>
-      <p>DinoCoins, Kahoots, temporadas, leyendas y meteoritos desde la temporada actual para ver quién domina la isla.</p>
+      <p>DinoCoins, Kahoots, temporadas, leyendas y ajustes admin con motivo obligatorio para ver quién domina la isla.</p>
       <div class="mini-podium" aria-hidden="true">
         <article><span>🥈</span><strong>Plata</strong><small>+2 coins</small></article>
         <article class="winner"><span>🥇</span><strong>Oro</strong><small>+3 coins</small></article>
@@ -67,43 +67,34 @@
           <div>
             <span class="badge">Season 02 · segundo semestre</span>
             <h2>La arena actual vive acá.</h2>
-            <p>Ranking individual y grupal de la temporada en curso. Cada nuevo reporte de Kahoot se carga desde esta misma pantalla.</p>
+            <p>Ranking individual de la temporada en curso. Cada informe nuevo de Kahoot actualiza esta arena.</p>
             <div class="stats">
               <article><strong id="totalCoins">0</strong><span>DinoCoins</span></article>
               <article><strong id="totalPlayers">0</strong><span>jugadores</span></article>
-              <article><strong id="totalTeams">0</strong><span>equipos</span></article>
+              <article><strong id="totalTeams">0</strong><span>equipos pausados</span></article>
             </div>
           </div>
           <div class="coin-core">🦖</div>
         </div>
 
-        <div class="grid two">
-          <article class="panel">
+        <div class="grid two arena-main-grid">
+          <article class="panel ranking-panel">
             <div class="panel-head">
-              <div><p class="eyebrow">Temporada actual</p><h2>Ranking</h2></div>
-              <div class="switch"><button class="active" data-mode="teams">Equipos</button><button data-mode="players">Individual</button></div>
+              <div><p class="eyebrow">Temporada actual</p><h2>Ranking individual</h2></div>
             </div>
-            <input class="search" id="search" placeholder="Buscar nombre, alias o equipo" />
+            <input class="search" id="search" placeholder="Buscar nombre o alias" />
             <div class="ranking" id="rankingList"></div>
           </article>
 
-          <article class="panel">
+          <article class="panel upload-panel">
             <div class="panel-head"><div><p class="eyebrow">Último Kahoot</p><h2>Actualizar arena</h2></div></div>
-            <p>Subí el XLSX/CSV del último Kahoot para sumar oro, plata y bronce a la temporada actual.</p>
-            <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
-            <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong>Soltá o elegí archivos</strong><span>Uno o varios XLSX / CSV</span></div>
-            <div class="actions"><button class="ghost" id="demoImport" type="button">Usar demo</button><button class="primary" id="applyImport" disabled type="button">Aplicar puntos</button></div>
-            <div class="secondary-actions"><button class="ghost" id="downloadTemplate" type="button">Descargar CSV demo</button><button class="ghost" id="resetLocal" type="button">Reset local</button></div>
+            <p>Subí el informe del último Kahoot. Antes de aplicar, vas a ver un preview con participantes detectados y mapeos pendientes.</p>
+            <button class="primary" id="openUploadModal" type="button">Subir informe del último Kahoot</button>
           </article>
         </div>
 
-        <article class="panel preview-panel">
-          <div class="panel-head"><div><p class="eyebrow">Preview</p><h2>Resultado detectado</h2></div></div>
-          <div id="preview" class="preview empty">Todavía no hay archivo cargado.</div>
-        </article>
-
         <div class="grid two">
-          <article class="panel admin-adjustment">
+          <article class="panel">
             <div class="panel-head"><div><p class="eyebrow">Admin</p><h2>Ajuste manual</h2></div></div>
             <p>Para DinoCoins extra, quitas o meteoritos de ausencia. Siempre queda registrado con explicación.</p>
             <div class="admin-form">
@@ -136,12 +127,12 @@
           </div>
         </div>
 
-        <div class="grid two">
-          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Enero-junio 2026</p><h2>Podio histórico</h2></div></div><div class="semester-podium" id="semesterPodium"></div></article>
-          <article class="panel"><p class="eyebrow">Tabla general · solo ganadores</p><div class="semester-ranking" id="semesterRanking"></div></article>
-        </div>
+        <article class="panel legend-podium-panel"><div class="panel-head"><div><p class="eyebrow">Enero-junio 2026</p><h2>Podio histórico</h2></div></div><div class="semester-podium" id="semesterPodium"></div></article>
 
-        <article class="panel"><p class="eyebrow">Fechas cargadas</p><div class="semester-history" id="semesterHistory"></div></article>
+        <div class="grid two">
+          <article class="panel"><p class="eyebrow">Tabla general · solo ganadores</p><div class="semester-ranking" id="semesterRanking"></div></article>
+          <article class="panel"><p class="eyebrow">Fechas cargadas</p><div class="semester-history" id="semesterHistory"></div></article>
+        </div>
       </section>
 
       <section class="tab" id="rules">
@@ -153,6 +144,20 @@
         </article>
       </section>
     </section>
+  </div>
+
+  <div class="modal hidden" id="uploadModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="panel-head">
+        <div><p class="eyebrow">Último Kahoot</p><h2>Subir informe</h2></div>
+        <button class="ghost small" id="cancelUploadTop" type="button">Cerrar</button>
+      </div>
+      <p>Elegí o arrastrá el XLSX/CSV exportado de Kahoot. Luego revisá el preview y actualizá el ranking.</p>
+      <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
+      <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong>Arrastrá el informe acá</strong><span>o tocá para elegir XLSX / CSV</span></div>
+      <div id="preview" class="preview empty">Todavía no hay informe cargado.</div>
+      <div class="modal-actions"><button class="ghost" id="cancelUpload" type="button">Cancelar</button><button class="primary" id="applyImport" disabled type="button">Actualizar ranking</button></div>
+    </div>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -185,6 +190,6 @@
       if(localStorage.getItem(SESSION)) window.qsLeagueDemoLogin();
     })();
   </script>
-  <script src="assets/app.js?v=20260714-5" defer></script>
+  <script src="assets/app.js?v=20260714-6" defer></script>
 </body>
 </html>
