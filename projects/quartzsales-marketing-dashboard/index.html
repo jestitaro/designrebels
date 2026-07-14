@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuartzSales · Content Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0a0820;
+  --surface:     #110e35;
+  --surface-2:   #17144a;
+  --surface-3:   #1e1a5e;
+  --border:      #1f1c52;
+  --border-2:    #2a2770;
+  --qs-dark:     #130D5D;
+  --grad-start:  #3C9FF1;
+  --grad-end:    #7025E0;
+  --accent:      #7025E0;
+  --accent-2:    #3C9FF1;
+  --accent-glow: rgba(112,37,224,0.15);
+  --cyan:        #3C9FF1;
+  --green:       #22c55e;
+  --green-glow:  rgba(34,197,94,0.1);
+  --yellow:      #f59e0b;
+  --red:         #f87171;
+  --text-1:      #e8ecf5;
+  --text-2:      #8896b0;
+  --text-3:      #4a5578;
+  --sidebar-w:   240px;
+  --font:        'Nunito', sans-serif;
+  --font-data:   'Roboto', sans-serif;
+}
+
+html, body { height: 100%; background: var(--bg); color: var(--text-1); font-family: var(--font); overflow: hidden; }
+
+/* ── LAYOUT ─────────────────────────────────── */
+.app { display: flex; height: 100vh; }
+
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.sidebar::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -80px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(60,159,241,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo img {
+  height: 28px;
+  width: auto;
+}
+.sidebar-logo-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: var(--font-data);
+  margin-top: 2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-section {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  padding: 12px 8px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  user-select: none;
+}
+.nav-item:hover { background: var(--surface-2); color: var(--text-1); }
+.nav-item.active {
+  background: var(--accent-glow);
+  border-color: rgba(112,37,224,0.25);
+  color: var(--text-1);
+}
+.nav-item.active .nav-icon { color: var(--grad-end); }
+.nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid var(--border);
+}
+.btn-config {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--border-2);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-config:hover { background: var(--surface-2); color: var(--text-1); border-color: var(--border-2); }
+
+/* ── MAIN ─────────────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page { display: none; flex-direction: column; min-height: 100%; }
+.page.active { display: flex; }
+
+/* ── OVERVIEW ─────────────────────────────────── */
+.briefing {
+  background: linear-gradient(135deg, var(--qs-dark) 0%, #1a1260 50%, #0e1a4a 100%);
+  padding: 28px 32px 24px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.briefing::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(60,159,241,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.briefing-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.briefing-greeting h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.briefing-greeting .date {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  font-family: var(--font-data);
+}
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-refresh:hover { background: rgba(255,255,255,0.14); }
+.btn-refresh.loading .refresh-icon { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.pipeline-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pipeline-stat {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 16px;
+  min-width: 100px;
+}
+.pipeline-stat-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 4px;
+  font-family: var(--font-data);
+}
+.pipeline-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  font-family: var(--font-data);
+  line-height: 1;
+}
+
+.page-content { padding: 28px 32px; flex: 1; }
+
+.section-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 16px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.metric-card:hover { border-color: var(--border-2); }
+.metric-card-topline {
+  height: 3px;
+  background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+}
+.metric-card-topline.yt { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.metric-card-body { padding: 18px; }
+.metric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.metric-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.metric-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-family: var(--font-data);
+}
+.badge-li { background: rgba(60,159,241,0.12); color: var(--cyan); }
+.badge-yt { background: rgba(245,158,11,0.12); color: var(--yellow); }
+
+.metric-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+.status-dot.live { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+.status-dot.stale { background: var(--yellow); }
+.status-dot.demo { background: var(--accent); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+.demo-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  font-family: var(--font-data);
+  width: fit-content;
+}
+
+.metrics-grid-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.metrics-grid-inner.two-col { grid-template-columns: 1fr 1fr; }
+.metric-item-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 4px;
+  font-family: var(--font-data);
+}
+.metric-item-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-1);
+  font-family: var(--font-data);
+  line-height: 1;
+}
+.metric-item-value.accent { color: var(--grad-end); }
+.metric-item-value.cyan { color: var(--cyan); }
+.metric-growth {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-data);
+  margin-top: 2px;
+}
+.metric-growth.pos { color: var(--green); }
+.metric-growth.neg { color: var(--red); }
+.metric-growth.neutral { color: var(--text-3); }
+
+.engagement-bar-wrap {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.engagement-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+  font-family: var(--font-data);
+}
+.engagement-bar {
+  height: 5px;
+  background: var(--surface-3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.engagement-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--grad-start), var(--grad-end));
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.metric-card-footer {
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-data);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── RESEARCH ─────────────────────────────────── */
+.research-toolbar {
+  padding: 24px 32px 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.research-toolbar-top {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.search-input-wrap {
+  flex: 1;
+  position: relative;
+}
+.search-input-wrap input {
+  width: 100%;
+  padding: 10px 14px 10px 36px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input-wrap input:focus { border-color: var(--accent); }
+.search-input-wrap input::placeholder { color: var(--text-3); }
+.search-input-icon {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  font-size: 14px;
+  pointer-events: none;
+}
+.btn-search {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.btn-search:hover { opacity: 0.88; }
+
+.pills-row {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.pills-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-data);
+  margin-right: 4px;
+}
+.pill {
+  padding: 5px 12px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.pill:hover { background: var(--accent-glow); border-color: rgba(112,37,224,0.3); color: var(--text-1); }
+.pill.active { background: var(--accent-glow); border-color: rgba(112,37,224,0.4); color: var(--text-1); }
+
+.research-results { padding: 24px 32px; }
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.results-count {
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.result-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s;
+}
+.result-card:hover { border-color: var(--border-2); }
+.result-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.result-badges { display: flex; gap: 5px; }
+.source-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-family: var(--font-data);
+}
+.badge-gh { background: rgba(34,197,94,0.12); color: var(--green); }
+.badge-hn { background: rgba(245,158,11,0.12); color: var(--yellow); }
+.badge-li-post { background: rgba(60,159,241,0.12); color: var(--cyan); }
+.result-link {
+  font-size: 12px;
+  color: var(--text-3);
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.result-link:hover { color: var(--text-1); }
+.result-author {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+.result-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.4;
+}
+.result-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+.result-idea {
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.result-idea strong { color: var(--text-1); }
+.result-actions { display: flex; gap: 7px; }
+.btn-add-pipeline {
+  flex: 1;
+  padding: 8px;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 7px;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-add-pipeline:hover { background: rgba(34,197,94,0.18); }
+.btn-gen-script {
+  padding: 8px 12px;
+  background: rgba(60,159,241,0.1);
+  border: 1px solid rgba(60,159,241,0.25);
+  border-radius: 7px;
+  color: var(--cyan);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-gen-script:hover { background: rgba(60,159,241,0.18); }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-3);
+}
+.empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state-text { font-size: 14px; font-weight: 600; }
+.empty-state-sub { font-size: 12px; margin-top: 6px; color: var(--text-3); }
+
+/* ── PIPELINE ─────────────────────────────────── */
+.pipeline-header {
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pipeline-header h2 { font-size: 18px; font-weight: 800; }
+.btn-add-idea {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-add-idea:hover { opacity: 0.88; }
+
+.kanban-wrap {
+  flex: 1;
+  overflow-x: auto;
+  padding: 24px 32px;
+}
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  gap: 14px;
+  min-width: 1100px;
+  height: 100%;
+}
+
+.kanban-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 200px);
+}
+.kanban-col.drag-over { border-color: var(--accent); background: var(--accent-glow); }
+
+.kanban-col-header {
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kanban-col-title {
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.col-count {
+  background: var(--surface-3);
+  border-radius: 10px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+
+.kanban-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kanban-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: grab;
+  transition: all 0.15s;
+  user-select: none;
+}
+.kanban-card:hover { border-color: var(--border-2); background: var(--surface-3); }
+.kanban-card.dragging { opacity: 0.4; cursor: grabbing; }
+
+.kanban-card-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.kanban-card-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.kbadge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-data);
+}
+.kbadge-li { background: rgba(60,159,241,0.12); color: var(--cyan); }
+.kbadge-yt { background: rgba(245,158,11,0.12); color: var(--yellow); }
+.kbadge-gh { background: rgba(34,197,94,0.12); color: var(--green); }
+.kbadge-hn { background: rgba(245,158,11,0.12); color: var(--yellow); }
+.kbadge-manual { background: rgba(112,37,224,0.12); color: var(--accent); }
+.kbadge-script { background: rgba(34,197,94,0.12); color: var(--green); }
+
+.kanban-card-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.kaction {
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  transition: all 0.12s;
+}
+.kaction:hover { background: var(--surface-3); color: var(--text-1); }
+.kaction.delete:hover { color: var(--red); }
+
+.kanban-col-footer {
+  padding: 10px;
+  border-top: 1px solid var(--border);
+}
+.btn-col-add {
+  width: 100%;
+  padding: 7px;
+  background: transparent;
+  border: 1px dashed var(--border-2);
+  border-radius: 7px;
+  color: var(--text-3);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-col-add:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+
+/* ── COMPETITORS ─────────────────────────────────── */
+.comp-header {
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.comp-header h2 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.comp-header p { font-size: 13px; color: var(--text-2); }
+
+.comp-content { padding: 24px 32px; }
+
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.comp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.comp-card:hover { border-color: var(--border-2); }
+.comp-card-topline { height: 3px; }
+
+.comp-card-body { padding: 16px; }
+.comp-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.comp-avatar {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.comp-name { font-size: 14px; font-weight: 800; color: var(--text-1); }
+.comp-location { font-size: 11px; color: var(--text-3); font-family: var(--font-data); margin-top: 1px; }
+
+.comp-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.comp-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 3px;
+  font-family: var(--font-data);
+}
+.comp-stat-value {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-1);
+  font-family: var(--font-data);
+  line-height: 1;
+}
+
+.comp-progress-bars { display: flex; flex-direction: column; gap: 8px; }
+.comp-bar-row { }
+.comp-bar-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 4px;
+  font-family: var(--font-data);
+}
+.comp-bar {
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.comp-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.comp-card-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 6px;
+}
+.comp-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--surface-3);
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+
+/* ── MODALS ─────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+.modal-header {
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title { font-size: 16px; font-weight: 800; }
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--text-1); }
+.modal-body { padding: 24px; }
+
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-data);
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-textarea { resize: vertical; min-height: 160px; font-family: var(--font-data); font-size: 13px; line-height: 1.6; }
+.form-select { cursor: pointer; }
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn-primary {
+  padding: 9px 20px;
+  background: linear-gradient(135deg, var(--grad-start), var(--grad-end));
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-secondary {
+  padding: 9px 16px;
+  background: transparent;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { background: var(--surface-2); color: var(--text-1); }
+
+.script-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 30px;
+  color: var(--text-3);
+}
+.script-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border-2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── TOASTS ─────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-width: 260px;
+  max-width: 360px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: slideIn 0.2s ease;
+  border-left: 3px solid;
+}
+.toast.success { border-left-color: var(--green); }
+.toast.error   { border-left-color: var(--red); }
+.toast.info    { border-left-color: var(--accent); }
+@keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ── ADD IDEA MODAL ─────────────────────────────────── */
+.modal.narrow { max-width: 420px; }
+
+/* ── SCROLLBARS ─────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 10px; }
+
+/* ── LOADING OVERLAY ─────────────────────────────────── */
+.card-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: var(--text-3);
+  gap: 10px;
+  font-size: 13px;
+}
+.mini-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border-2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://www.quartzsales.com/images/svg_qs/logo-qs-fullcolor-negativo.svg"
+           alt="QuartzSales"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span style="display:none; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:#fff;">QuartzSales</span>
+      <div class="sidebar-logo-label">Content</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">Panel</div>
+      <div class="nav-item active" data-page="overview">
+        <span class="nav-icon">⬡</span> Overview
+      </div>
+      <div class="nav-item" data-page="research">
+        <span class="nav-icon">🔍</span> Research
+      </div>
+      <div class="nav-item" data-page="pipeline">
+        <span class="nav-icon">🎬</span> Pipeline
+      </div>
+      <div class="nav-section">Mercado</div>
+      <div class="nav-item" data-page="competitors">
+        <span class="nav-icon">📊</span> Competidores
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-config" onclick="openModal('modal-config')">
+        <span>⚙️</span> Configuración
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE: OVERVIEW -->
+    <section class="page active" id="page-overview">
+      <div class="briefing">
+        <div class="briefing-top">
+          <div class="briefing-greeting">
+            <h1 id="greeting-text">Buen día</h1>
+            <div class="date" id="date-text"></div>
+          </div>
+          <button class="btn-refresh" id="btn-refresh" onclick="refreshMetrics()">
+            <span class="refresh-icon">↻</span> Actualizar métricas
+          </button>
+        </div>
+        <div class="demo-banner">🧪 <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
+        <div class="pipeline-stats">
+          <div class="pipeline-stat">
+            <div class="pipeline-stat-label">Ideas</div>
+            <div class="pipeline-stat-value" id="stat-ideas">0</div>
+          </div>
+          <div class="pipeline-stat">
+            <div class="pipeline-stat-label">Listos</div>
+            <div class="pipeline-stat-value" id="stat-ready">0</div>
+          </div>
+          <div class="pipeline-stat">
+            <div class="pipeline-stat-label">En edición</div>
+            <div class="pipeline-stat-value" id="stat-edit">0</div>
+          </div>
+          <div class="pipeline-stat">
+            <div class="pipeline-stat-label">Total</div>
+            <div class="pipeline-stat-value" id="stat-total">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div class="section-title">Métricas de canales</div>
+        <div class="metrics-grid" id="metrics-grid">
+
+          <!-- LinkedIn QS -->
+          <div class="metric-card">
+            <div class="metric-card-topline"></div>
+            <div class="metric-card-body">
+              <div class="metric-card-header">
+                <div class="metric-card-title">
+                  <span class="metric-card-badge badge-li">LinkedIn</span>
+                  QuartzSales
+                </div>
+                <div class="metric-status">
+                  <div class="status-dot" id="li-dot"></div>
+                  <span id="li-status-text">Sin datos</span>
+                </div>
+              </div>
+              <div class="metrics-grid-inner" id="li-metrics">
+                <div>
+                  <div class="metric-item-label">Seguidores</div>
+                  <div class="metric-item-value accent" id="li-followers">—</div>
+                  <div class="metric-growth neutral" id="li-growth">Acumulando...</div>
+                </div>
+                <div>
+                  <div class="metric-item-label">Empleados</div>
+                  <div class="metric-item-value" id="li-employees">—</div>
+                </div>
+                <div>
+                  <div class="metric-item-label">Posts 30d</div>
+                  <div class="metric-item-value cyan" id="li-posts30">—</div>
+                </div>
+              </div>
+              <div class="engagement-bar-wrap">
+                <div class="engagement-bar-label">
+                  <span>Engagement rate</span>
+                  <span id="li-er">—%</span>
+                </div>
+                <div class="engagement-bar">
+                  <div class="engagement-bar-fill" id="li-er-bar" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card-footer" id="li-footer">Nunca actualizado</div>
+          </div>
+
+          <!-- YouTube -->
+          <div class="metric-card">
+            <div class="metric-card-topline yt"></div>
+            <div class="metric-card-body">
+              <div class="metric-card-header">
+                <div class="metric-card-title">
+                  <span class="metric-card-badge badge-yt">YouTube</span>
+                  E-Saurio / QS
+                </div>
+                <div class="metric-status">
+                  <div class="status-dot" id="yt-dot"></div>
+                  <span id="yt-status-text">Sin datos</span>
+                </div>
+              </div>
+              <div class="metrics-grid-inner two-col" id="yt-metrics">
+                <div>
+                  <div class="metric-item-label">Suscriptores</div>
+                  <div class="metric-item-value accent" id="yt-subs">—</div>
+                </div>
+                <div>
+                  <div class="metric-item-label">Videos</div>
+                  <div class="metric-item-value" id="yt-videos">—</div>
+                </div>
+                <div>
+                  <div class="metric-item-label">Vistas totales</div>
+                  <div class="metric-item-value cyan" id="yt-views">—</div>
+                </div>
+                <div>
+                  <div class="metric-item-label">Vistas / video</div>
+                  <div class="metric-item-value" id="yt-avgviews">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="metric-card-footer" id="yt-footer">Nunca actualizado</div>
+          </div>
+
+          <!-- Placeholder -->
+          <div class="metric-card" style="opacity:0.4; pointer-events:none;">
+            <div class="metric-card-topline" style="background: var(--border-2)"></div>
+            <div class="metric-card-body">
+              <div class="metric-card-header">
+                <div class="metric-card-title" style="color:var(--text-3)">Próximo canal</div>
+              </div>
+              <div style="text-align:center; padding: 30px 0; color: var(--text-3); font-size:13px;">
+                Configurá más canales<br>desde ⚙️ Configuración
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: RESEARCH -->
+    <section class="page" id="page-research">
+      <div class="research-toolbar">
+        <div class="research-toolbar-top">
+          <div class="search-input-wrap">
+            <span class="search-input-icon">🔍</span>
+            <input type="text" id="research-input" placeholder="Buscá tendencias de trade marketing, retail execution..." value="trade marketing retail execution">
+          </div>
+          <button class="btn-search" onclick="doResearch()">Buscar</button>
+        </div>
+        <div class="pills-row">
+          <span class="pills-label">Temas:</span>
+          <div class="pill active" onclick="setPill(this, 'trade marketing retail execution')">Trade Marketing</div>
+          <div class="pill" onclick="setPill(this, 'retail execution field force')">Retail Execution</div>
+          <div class="pill" onclick="setPill(this, 'AI retail store audit')">IA en Retail</div>
+          <div class="pill" onclick="setPill(this, 'planograma gondola optimizacion')">Planograma</div>
+          <div class="pill" onclick="setPill(this, 'sell-out analytics CPG')">Sell-out Analytics</div>
+          <div class="pill" onclick="setPill(this, 'field merchandising software')">Merchandising</div>
+        </div>
+      </div>
+      <div class="research-results">
+        <div class="results-header">
+          <div class="section-title" style="margin:0">Resultados</div>
+          <div class="results-count" id="results-count"></div>
+        </div>
+        <div id="results-container">
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-text">Hacé una búsqueda para ver tendencias</div>
+            <div class="empty-state-sub">GitHub + Hacker News en tiempo real</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: PIPELINE -->
+    <section class="page" id="page-pipeline">
+      <div class="pipeline-header">
+        <h2>Pipeline de contenido</h2>
+        <button class="btn-add-idea" onclick="openAddIdea()">+ Nueva idea</button>
+      </div>
+      <div class="kanban-wrap">
+        <div class="kanban" id="kanban-board">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: COMPETITORS -->
+    <section class="page" id="page-competitors">
+      <div class="comp-header">
+        <h2>Competidores</h2>
+        <p>Monitoreo del ecosistema de trade marketing y retail execution en LATAM y global</p>
+        <div class="demo-banner" style="margin-top:12px;">
+          <div class="status-dot" id="comp-dot"></div>
+          <span id="comp-status-text">Modo demo</span>
+        </div>
+      </div>
+      <div class="comp-content">
+        <div class="section-title">Radar de mercado</div>
+        <div class="comp-grid" id="comp-grid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODAL: CONFIG -->
+<div class="modal-overlay" id="modal-config">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">⚙️ Configuración</div>
+      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12.5px; color:var(--text-3); margin-bottom:18px; line-height:1.5;">
+        Los handles de abajo sólo identifican qué canal consultar — no son
+        secretos. Los tokens de Apify, YouTube y Claude viven como variables
+        de entorno en Cloudflare Pages, nunca en este navegador.
+      </p>
+      <div class="form-group">
+        <label class="form-label">LinkedIn Company Handle</label>
+        <input type="text" class="form-input" id="cfg-li-handle" value="quartz-sales" placeholder="quartz-sales">
+      </div>
+      <div class="form-group">
+        <label class="form-label">YouTube Handle</label>
+        <input type="text" class="form-input" id="cfg-yt-handle" value="esaurio1591" placeholder="esaurio1591">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-config')">Cancelar</button>
+      <button class="btn-primary" onclick="saveConfig()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SCRIPT GENERATOR -->
+<div class="modal-overlay" id="modal-script">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">✨ Generador de post</div>
+      <button class="modal-close" onclick="closeModal('modal-script')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Tema del post</label>
+        <input type="text" class="form-input" id="script-topic" placeholder="Ej: Cómo la IA mejora la ejecución en PDV">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Canal</label>
+        <select class="form-select" id="script-channel">
+          <option value="linkedin">LinkedIn · QuartzSales</option>
+          <option value="youtube">YouTube · E-Saurio / QS</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Formato</label>
+        <select class="form-select" id="script-format">
+          <option value="post_corto">Post corto (LinkedIn — versión breve de demo)</option>
+          <option value="post_largo">Post con storytelling (LinkedIn — versión breve de demo)</option>
+          <option value="carrusel">Carrusel de 4 slides (versión breve de demo)</option>
+          <option value="video_corto">Guión breve para YouTube (versión de demo)</option>
+        </select>
+      </div>
+      <div id="script-quota-line" style="font-size:11.5px; color:var(--text-3); font-family:var(--font-data); margin-bottom:4px;"></div>
+      <div id="script-dev-warning" style="display:none; font-size:11.5px; color:var(--yellow); font-family:var(--font-data); margin-bottom:10px;"></div>
+      <div id="script-loading" class="script-loading" style="display:none;">
+        <div class="script-spinner"></div>
+        <span>Generando con Claude...</span>
+      </div>
+      <div id="script-result-wrap" class="form-group" style="display:none;">
+        <label class="form-label" id="script-result-label">Post generado (editá libremente)</label>
+        <textarea class="form-textarea" id="script-result" style="min-height:200px;"></textarea>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">¿Preferís ver un ejemplo ya armado?</label>
+        <div style="display:flex; gap:7px; flex-wrap:wrap;">
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('institucional')">Institucional</button>
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('caso_exito')">Caso de éxito</button>
+          <button type="button" class="btn-secondary" style="flex:1; font-size:12px;" onclick="useDemoExample('producto')">Producto</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-script')">Cancelar</button>
+      <button class="btn-secondary" id="btn-save-pipeline" onclick="saveScriptToPipeline()" style="display:none;">📋 Guardar en Pipeline</button>
+      <button class="btn-primary" id="btn-generate-script" onclick="generateScript()">✨ Generar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD IDEA -->
+<div class="modal-overlay" id="modal-add-idea">
+  <div class="modal narrow">
+    <div class="modal-header">
+      <div class="modal-title">+ Nueva idea</div>
+      <button class="modal-close" onclick="closeModal('modal-add-idea')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Título de la idea</label>
+        <input type="text" class="form-input" id="new-idea-title" placeholder="Ej: Cómo QuartzSales reduce los quiebres de stock">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Canal</label>
+        <select class="form-select" id="new-idea-channel">
+          <option value="linkedin">LinkedIn</option>
+          <option value="youtube">YouTube</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Columna inicial</label>
+        <select class="form-select" id="new-idea-col">
+          <option value="ideas">💡 Ideas</option>
+          <option value="ready">🎬 Listo p/grabar</option>
+          <option value="edit">✂️ En edición</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-add-idea')">Cancelar</button>
+      <button class="btn-primary" onclick="addNewIdea()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// CONFIG & STATE
+// ─────────────────────────────────────────────────────────────
+// Sólo identificadores de canal, nunca secretos: los tokens de Apify,
+// YouTube y Claude viven exclusivamente como variables de entorno en las
+// Cloudflare Pages Functions de /functions/api, no en el navegador.
+let CFG = {
+  ytHandle: 'esaurio1591',
+  liHandle: 'quartz-sales',
+};
+
+let PIPELINE = {
+  ideas: [],
+  ready: [],
+  edit: [],
+  done: [],
+  published: []
+};
+
+let METRICS = {};
+let currentScriptTopic = '';
+let currentScriptCardId = null;
+
+const COLS = [
+  { id: 'ideas',     label: '💡 Ideas' },
+  { id: 'ready',     label: '🎬 Listo p/grabar' },
+  { id: 'edit',      label: '✂️ En edición' },
+  { id: 'done',      label: '✅ Terminado' },
+  { id: 'published', label: '🚀 Subido' },
+];
+
+// ─────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────
+function init() {
+  loadFromStorage();
+  updateGreeting();
+  updatePipelineStats();
+  renderKanban();
+  renderDashboard(); // pinta al instante con datos de demo mientras se carga el snapshot real
+  loadDashboardData();
+  updateConfigUI();
+  refreshQuotaDisplay();
+}
+
+// Ideas de ejemplo para que el Pipeline nunca se vea vacío en la primera
+// visita. Sólo se usan si todavía no hay nada guardado en localStorage — a
+// partir de ahí el Pipeline es 100% de quien lo usa.
+function demoPipelineSeed() {
+  return {
+    ideas: [
+      { id: 1, title: 'Cómo QuartzSales reduce los quiebres de stock en PDV', channel: 'linkedin', source: 'manual', script: null },
+      { id: 2, title: '3 señales de que tu ejecución en góndola necesita IA', channel: 'linkedin', source: 'manual', script: null },
+    ],
+    ready: [
+      { id: 3, title: 'Caso de éxito: cliente CPG reduce roturas 18% en 2 meses', channel: 'linkedin', source: 'manual', script: null },
+    ],
+    edit: [],
+    done: [
+      { id: 4, title: 'Producto: cómo funciona el módulo de auditoría de PDV', channel: 'youtube', source: 'manual', script: null },
+    ],
+    published: [],
+  };
+}
+
+function loadFromStorage() {
+  const savedCfg = localStorage.getItem('qs_cfg');
+  if (savedCfg) CFG = { ...CFG, ...JSON.parse(savedCfg) };
+  const savedPipeline = localStorage.getItem('qs_pipeline');
+  PIPELINE = savedPipeline ? JSON.parse(savedPipeline) : demoPipelineSeed();
+}
+
+function savePipeline() {
+  localStorage.setItem('qs_pipeline', JSON.stringify(PIPELINE));
+  updatePipelineStats();
+}
+
+// ─────────────────────────────────────────────────────────────
+// GREETING & DATE
+// ─────────────────────────────────────────────────────────────
+function updateGreeting() {
+  const now = new Date();
+  const h = now.getHours();
+  let greeting = h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches';
+  document.getElementById('greeting-text').textContent = greeting;
+  
+  const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const dateStr = `${days[now.getDay()]} ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+  document.getElementById('date-text').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+}
+
+// ─────────────────────────────────────────────────────────────
+// NAVIGATION
+// ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('page-' + page).classList.add('active');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────
+// PIPELINE STATS
+// ─────────────────────────────────────────────────────────────
+function updatePipelineStats() {
+  document.getElementById('stat-ideas').textContent = PIPELINE.ideas.length;
+  document.getElementById('stat-ready').textContent = PIPELINE.ready.length;
+  document.getElementById('stat-edit').textContent = PIPELINE.edit.length;
+  const total = Object.values(PIPELINE).reduce((a, c) => a + c.length, 0);
+  document.getElementById('stat-total').textContent = total;
+}
+
+// ─────────────────────────────────────────────────────────────
+// METRICS REFRESH
+// ─────────────────────────────────────────────────────────────
+// Datos de referencia: se usan como "Modo demo" cuando todavía no corrió
+// ningún sync automático o cuando data/dashboard-snapshot.json no está
+// disponible. loadDashboardData() los reemplaza por datos reales si existen.
+const DEMO_COMPETITORS = [
+  // ── DIRECTOS ──────────────────────────────────
+  {
+    name: 'Involves',
+    location: 'Brasil · 2009',
+    category: 'Directo · IA/Imagen',
+    gradStart: '#0ea5e9', gradEnd: '#6366f1',
+    size: '251-500',
+    stats: { followers: '12.4K', posts_mes: 18, engagement: '3.2', funding: '~$13M' },
+    bars: [
+      { label: 'Actividad LI', val: 82 },
+      { label: 'Engagement', val: 58 },
+      { label: 'Frecuencia post', val: 75 },
+    ],
+    tags: ['LATAM', 'SaaS', 'Brasil', 'Series B'],
+  },
+  {
+    name: 'Ailet',
+    location: 'Argentina · 2013',
+    category: 'Directo · IA/Imagen',
+    gradStart: '#22c55e', gradEnd: '#0ea5e9',
+    size: '50-100',
+    stats: { followers: '2.3K', posts_mes: 6, engagement: '4.1', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 30 },
+      { label: 'Engagement', val: 65 },
+      { label: 'Frecuencia post', val: 28 },
+    ],
+    tags: ['LATAM', 'Argentina', 'IA imagen'],
+  },
+  {
+    name: 'CheckPOS',
+    location: 'Argentina / Miami',
+    category: 'Directo · IA/Imagen',
+    gradStart: '#f59e0b', gradEnd: '#ef4444',
+    size: '11-50',
+    stats: { followers: '300', posts_mes: 4, engagement: '3.8', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 22 },
+      { label: 'Engagement', val: 60 },
+      { label: 'Frecuencia post', val: 20 },
+    ],
+    tags: ['LATAM', 'Argentina', 'PDV'],
+  },
+  {
+    name: 'Storecheck',
+    location: 'México · LATAM',
+    category: 'Directo',
+    gradStart: '#f472b6', gradEnd: '#f59e0b',
+    size: '101-250',
+    stats: { followers: '5.6K', posts_mes: 10, engagement: '2.5', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 48 },
+      { label: 'Engagement', val: 42 },
+      { label: 'Frecuencia post', val: 44 },
+    ],
+    tags: ['México', 'LATAM', 'Auditoría'],
+  },
+  {
+    name: 'Repsly',
+    location: 'EE. UU. · 2011',
+    category: 'Directo',
+    gradStart: '#fb923c', gradEnd: '#ef4444',
+    size: '150-250',
+    stats: { followers: '8.1K', posts_mes: 12, engagement: '2.1', funding: '~$18M' },
+    bars: [
+      { label: 'Actividad LI', val: 60 },
+      { label: 'Engagement', val: 38 },
+      { label: 'Frecuencia post', val: 52 },
+    ],
+    tags: ['EE. UU.', 'CPG', 'Field Sales'],
+  },
+  {
+    name: 'Trax Retail',
+    location: 'Singapur · 2010',
+    category: 'Directo · IA/Imagen',
+    gradStart: '#8b5cf6', gradEnd: '#ec4899',
+    size: '500-1000',
+    stats: { followers: '24.7K', posts_mes: 22, engagement: '2.8', funding: '~$800M' },
+    bars: [
+      { label: 'Actividad LI', val: 90 },
+      { label: 'Engagement', val: 52 },
+      { label: 'Frecuencia post', val: 88 },
+    ],
+    tags: ['Global', 'Visión IA', 'SoftBank'],
+  },
+  // ── ADYACENTES ──────────────────────────────────
+  {
+    name: 'Frogmi',
+    location: 'Chile · 2011',
+    category: 'Adyacente',
+    gradStart: '#34d399', gradEnd: '#059669',
+    size: '11-50',
+    stats: { followers: '1.8K', posts_mes: 5, engagement: '3.1', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 28 },
+      { label: 'Engagement', val: 50 },
+      { label: 'Frecuencia post', val: 25 },
+    ],
+    tags: ['Chile', 'LATAM', 'Operación tienda'],
+  },
+  {
+    name: 'Persat',
+    location: 'Argentina · 2015',
+    category: 'Adyacente',
+    gradStart: '#60a5fa', gradEnd: '#3b82f6',
+    size: '11-50',
+    stats: { followers: '900', posts_mes: 3, engagement: '2.8', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 18 },
+      { label: 'Engagement', val: 45 },
+      { label: 'Frecuencia post', val: 15 },
+    ],
+    tags: ['Argentina', 'Equipos campo', 'LATAM'],
+  },
+  {
+    name: 'Pitcher',
+    location: 'Suiza · 2014',
+    category: 'Adyacente',
+    gradStart: '#a78bfa', gradEnd: '#3C9FF1',
+    size: '50-100',
+    stats: { followers: '6.8K', posts_mes: 14, engagement: '2.2', funding: '~$12M' },
+    bars: [
+      { label: 'Actividad LI', val: 65 },
+      { label: 'Engagement', val: 35 },
+      { label: 'Frecuencia post', val: 60 },
+    ],
+    tags: ['Europa', 'Sales Enablement', 'CPG'],
+  },
+  {
+    name: 'Retail Velocity',
+    location: 'EE. UU.',
+    category: 'Adyacente',
+    gradStart: '#fbbf24', gradEnd: '#d97706',
+    size: '11-50',
+    stats: { followers: '1.2K', posts_mes: 4, engagement: '1.8', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 20 },
+      { label: 'Engagement', val: 30 },
+      { label: 'Frecuencia post', val: 18 },
+    ],
+    tags: ['EE. UU.', 'CPG', 'Analytics'],
+  },
+  {
+    name: 'Shelf Track',
+    location: 'EE. UU. · 2014',
+    category: 'Adyacente',
+    gradStart: '#94a3b8', gradEnd: '#64748b',
+    size: '11-50',
+    stats: { followers: '800', posts_mes: 2, engagement: '1.5', funding: 'Sin datos' },
+    bars: [
+      { label: 'Actividad LI', val: 15 },
+      { label: 'Engagement', val: 25 },
+      { label: 'Frecuencia post', val: 12 },
+    ],
+    tags: ['EE. UU.', 'Góndola', 'Auditoría'],
+  },
+];
+
+let COMPETITORS = DEMO_COMPETITORS;
+
+// ─────────────────────────────────────────────────────────────
+// DASHBOARD DATA — snapshot diario (GitHub Actions) + fallback de demo
+// ─────────────────────────────────────────────────────────────
+// Nada de esto le pega a Apify/YouTube desde el navegador: eso costaría cada
+// vez que alguien abre el dashboard. Un workflow de GitHub Actions corre 1
+// vez por día, consulta las APIs y escribe data/dashboard-snapshot.json; acá
+// sólo lo leemos por fetch(). "Actualizar métricas" vuelve a leer ese mismo
+// archivo, no dispara ninguna llamada nueva a un proveedor pago.
+const SNAPSHOT_URL = 'data/dashboard-snapshot.json';
+const LIVE_FRESHNESS_HOURS = 36; // más viejo que esto se muestra como "almacenado", no "live".
+
+const DEMO_OWN_LINKEDIN = { followers: 3100, employees: 22 };
+const DEMO_OWN_YOUTUBE = { subs: 1200, videos: 28, views: 85000, avgViews: 3036 };
+
+let DASHBOARD = { generatedAt: null, own: { linkedin: null, youtube: null }, competitors: DEMO_COMPETITORS };
+
+function sourceLabel(source) {
+  if (source === 'live') return 'Datos actualizados';
+  if (source === 'cached') return 'Datos almacenados';
+  return 'Modo demo';
+}
+
+function computeSnapshotSource(generatedAt) {
+  if (!generatedAt) return 'demo';
+  const ageHours = (Date.now() - new Date(generatedAt).getTime()) / 3600000;
+  return ageHours <= LIVE_FRESHNESS_HOURS ? 'live' : 'cached';
+}
+
+// Cada canal puede tener su propio estado: si Apify anduvo pero YouTube no
+// (o viceversa), no queremos que uno "contamine" al otro con la misma
+// etiqueta.
+function resolveChannelSource(entry, key) {
+  if (!entry || entry[key] === null || entry[key] === undefined) return 'demo';
+  return computeSnapshotSource(DASHBOARD.generatedAt);
+}
+
+function formatUpdatedAt(generatedAt) {
+  if (!generatedAt) return 'Todavía no corrió ninguna actualización automática — mostrando datos de demostración.';
+  const d = new Date(generatedAt);
+  return '⏱ Última actualización: ' + d.toLocaleString('es-AR', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+async function loadDashboardData(showToast) {
+  const btn = document.getElementById('btn-refresh');
+  if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+
+  try {
+    const res = await fetch(SNAPSHOT_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`No se pudo leer ${SNAPSHOT_URL} (status ${res.status})`);
+    const data = await res.json();
+    DASHBOARD = {
+      generatedAt: data.generatedAt || null,
+      own: { linkedin: data.own?.linkedin || null, youtube: data.own?.youtube || null },
+      competitors: (Array.isArray(data.competitors) && data.competitors.length) ? data.competitors : DEMO_COMPETITORS,
+    };
+  } catch (e) {
+    console.warn('No se pudo cargar el snapshot diario, usando datos de demostración.', e);
+    DASHBOARD = { generatedAt: null, own: { linkedin: null, youtube: null }, competitors: DEMO_COMPETITORS };
+  }
+
+  renderDashboard();
+
+  if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+
+  if (showToast) {
+    if (DASHBOARD.generatedAt) {
+      toast('Mostrando la última sync disponible (' + new Date(DASHBOARD.generatedAt).toLocaleString('es-AR') + ')', 'success');
+    } else {
+      toast('Todavía no hay una sync automática — mostrando datos de demostración. La sync corre 1 vez por día.', 'info');
+    }
+  }
+}
+
+// El botón "Actualizar métricas" NO dispara llamadas a Apify/YouTube: sólo
+// vuelve a leer el snapshot diario y refresca la vista.
+async function refreshMetrics() {
+  await loadDashboardData(true);
+}
+
+function renderDashboard() {
+  COMPETITORS = DASHBOARD.competitors;
+
+  const liSource = resolveChannelSource(DASHBOARD.own.linkedin, 'followers');
+  const ytSource = resolveChannelSource(DASHBOARD.own.youtube, 'subs');
+  renderLinkedInMetrics(DASHBOARD.own.linkedin || DEMO_OWN_LINKEDIN, liSource);
+  renderYouTubeMetrics(DASHBOARD.own.youtube || DEMO_OWN_YOUTUBE, ytSource);
+
+  renderCompetitors();
+  const compSource = DASHBOARD.generatedAt ? computeSnapshotSource(DASHBOARD.generatedAt) : 'demo';
+  const compDot = document.getElementById('comp-dot');
+  const compText = document.getElementById('comp-status-text');
+  if (compDot && compText) {
+    compDot.className = 'status-dot ' + (compSource === 'live' ? 'live' : compSource === 'cached' ? 'stale' : 'demo');
+    compText.textContent = sourceLabel(compSource) + ' · ' + formatUpdatedAt(DASHBOARD.generatedAt).replace('⏱ ', '');
+  }
+}
+
+function formatNum(n) {
+  if (n === null || n === undefined || n === '—') return '—';
+  n = parseInt(n);
+  if (Number.isNaN(n)) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n.toLocaleString('es-AR');
+}
+
+function renderLinkedInMetrics(d, source) {
+  document.getElementById('li-followers').textContent = formatNum(d.followers);
+  document.getElementById('li-employees').textContent = formatNum(d.employees);
+  document.getElementById('li-posts30').textContent = d.posts30d ?? 0;
+  document.getElementById('li-er').textContent = (d.er ?? 0) + '%';
+  document.getElementById('li-er-bar').style.width = Math.min((d.er ?? 0) * 20, 100) + '%';
+
+  const dot = document.getElementById('li-dot');
+  dot.className = 'status-dot ' + (source === 'live' ? 'live' : source === 'cached' ? 'stale' : 'demo');
+  document.getElementById('li-status-text').textContent = sourceLabel(source);
+  document.getElementById('li-footer').textContent = formatUpdatedAt(source === 'demo' ? null : DASHBOARD.generatedAt);
+
+  // Crecimiento: sólo se registra con datos reales, para no mezclar la
+  // tendencia con los números de referencia del modo demo.
+  const growth = document.getElementById('li-growth');
+  if (source === 'demo' || typeof d.followers !== 'number') {
+    growth.textContent = 'Modo demo';
+    growth.className = 'metric-growth neutral';
+    return;
+  }
+
+  const lastGen = localStorage.getItem('qs_li_hist_last_gen');
+  if (DASHBOARD.generatedAt && lastGen !== DASHBOARD.generatedAt) {
+    const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
+    hist.push({ ts: Date.now(), n: d.followers });
+    if (hist.length > 60) hist.shift();
+    localStorage.setItem('qs_li_hist', JSON.stringify(hist));
+    localStorage.setItem('qs_li_hist_last_gen', DASHBOARD.generatedAt);
+  }
+
+  const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
+  if (hist.length >= 2) {
+    const oldest = hist[0];
+    const diff = d.followers - oldest.n;
+    const pct = oldest.n > 0 ? ((diff / oldest.n) * 100).toFixed(1) : 0;
+    growth.textContent = `${diff > 0 ? '+' : ''}${pct}%`;
+    growth.className = 'metric-growth ' + (diff >= 0 ? 'pos' : 'neg');
+  } else {
+    growth.textContent = 'Acumulando...';
+    growth.className = 'metric-growth neutral';
+  }
+}
+
+function renderYouTubeMetrics(d, source) {
+  document.getElementById('yt-subs').textContent = formatNum(d.subs);
+  document.getElementById('yt-videos').textContent = d.videos ?? '—';
+  document.getElementById('yt-views').textContent = formatNum(d.views);
+  document.getElementById('yt-avgviews').textContent = formatNum(d.avgViews);
+
+  const dot = document.getElementById('yt-dot');
+  dot.className = 'status-dot ' + (source === 'live' ? 'live' : source === 'cached' ? 'stale' : 'demo');
+  document.getElementById('yt-status-text').textContent = sourceLabel(source);
+  document.getElementById('yt-footer').textContent = formatUpdatedAt(source === 'demo' ? null : DASHBOARD.generatedAt);
+}
+
+// ─────────────────────────────────────────────────────────────
+// RESEARCH
+// ─────────────────────────────────────────────────────────────
+// GitHub y Hacker News son APIs públicas y gratuitas (no requieren secretos),
+// pero si la red no está disponible igual mostramos ejemplos para que la
+// sección nunca se vea rota.
+const DEMO_RESEARCH_RESULTS = [
+  {
+    type: 'github', title: 'retail-execution/shelf-audit-toolkit',
+    desc: 'Toolkit open source para auditorías de góndola con visión por computadora.',
+    author: 'retail-execution', stars: 842,
+    url: 'https://github.com', demo: true,
+    idea: '¿Qué es shelf-audit-toolkit? El proyecto open source que muestra hacia dónde va la auditoría de PDV con IA',
+  },
+  {
+    type: 'hn', title: 'Show HN: We built a CV model to detect stockouts from shelf photos',
+    desc: 'Ver en Hacker News', author: 'foundercpg', points: 214,
+    url: 'https://news.ycombinator.com', demo: true,
+    idea: 'Mi opinión sobre: detectar quiebres de stock con fotos de góndola',
+  },
+  {
+    type: 'github', title: 'cpg-analytics/sellout-dashboards',
+    desc: 'Dashboards de referencia para sell-out analytics en consumo masivo.',
+    author: 'cpg-analytics', stars: 356,
+    url: 'https://github.com', demo: true,
+    idea: '3 ideas de sell-out analytics que todo trade marketing manager debería conocer',
+  },
+];
+
+function setPill(el, query) {
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('research-input').value = query;
+  doResearch();
+}
+
+async function doResearch() {
+  const query = document.getElementById('research-input').value.trim();
+  if (!query) return;
+
+  const container = document.getElementById('results-container');
+  container.innerHTML = '<div class="card-loading"><div class="mini-spinner"></div> Buscando en GitHub y Hacker News...</div>';
+  document.getElementById('results-count').textContent = '';
+
+  const since = new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString().slice(0,10);
+
+  const [ghResult, hnResult] = await Promise.allSettled([
+    fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(query)}+created:>${since}&sort=stars&order=desc&per_page=8`)
+      .then(r => r.json()),
+    fetch(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(query)}&tags=story&hitsPerPage=15&numericFilters=created_at_i>${Math.floor((Date.now()-60*24*3600*1000)/1000)}`)
+      .then(r => r.json()),
+  ]);
+
+  const results = [];
+
+  if (ghResult.status === 'fulfilled' && ghResult.value.items) {
+    ghResult.value.items.slice(0,6).forEach(r => results.push({
+      type: 'github',
+      title: r.full_name,
+      desc: r.description || 'Sin descripción',
+      author: r.owner?.login,
+      stars: r.stargazers_count,
+      url: r.html_url,
+      idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} ⭐ que puede transformar cómo trabajamos en PDV`,
+    }));
+  }
+
+  if (hnResult.status === 'fulfilled' && hnResult.value.hits) {
+    hnResult.value.hits
+      .filter(h => (h.points || 0) > 10)
+      .slice(0,6)
+      .forEach(h => results.push({
+        type: 'hn',
+        title: h.title,
+        desc: h.story_text ? h.story_text.slice(0,120) + '...' : 'Ver en Hacker News',
+        author: h.author,
+        points: h.points,
+        url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+        idea: `Mi opinión sobre: ${h.title}`,
+      }));
+  }
+
+  const bothFailed = ghResult.status === 'rejected' && hnResult.status === 'rejected';
+  let usingDemo = false;
+
+  if (bothFailed) {
+    // Sin red hacia GitHub/HN (ej. entorno restringido): mostramos ejemplos
+    // en vez de un error técnico o una pantalla vacía.
+    results.push(...DEMO_RESEARCH_RESULTS);
+    usingDemo = true;
+  } else if (results.length === 0) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-state-icon">🤷</div>
+      <div class="empty-state-text">Sin resultados para "${query}"</div>
+      <div class="empty-state-sub">Probá con otro término</div>
+    </div>`;
+    return;
+  }
+
+  document.getElementById('results-count').textContent = usingDemo
+    ? `${results.length} ejemplos de demostración (sin conexión a GitHub/Hacker News)`
+    : `${results.length} resultados`;
+
+  const grid = document.createElement('div');
+  grid.className = 'results-grid';
+  results.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <div class="result-card-top">
+        <div class="result-badges">
+          <span class="source-badge ${r.type === 'github' ? 'badge-gh' : 'badge-hn'}">${r.type === 'github' ? 'GitHub' : 'Hacker News'}</span>
+          ${r.stars !== undefined ? `<span class="source-badge badge-li-post">⭐ ${r.stars >= 1000 ? (r.stars/1000).toFixed(1)+'k' : r.stars}</span>` : ''}
+          ${r.points !== undefined ? `<span class="source-badge badge-li-post">▲ ${r.points}</span>` : ''}
+          ${r.demo ? `<span class="source-badge kbadge-manual">Ejemplo de demostración</span>` : ''}
+        </div>
+        <a href="${r.url}" target="_blank" class="result-link">↗</a>
+      </div>
+      <div class="result-author">${r.author || ''}</div>
+      <div class="result-title">${r.title}</div>
+      <div class="result-desc">${r.desc}</div>
+      <div class="result-idea">💡 <strong>Idea de post:</strong> ${r.idea}</div>
+      <div class="result-actions">
+        <button class="btn-add-pipeline" onclick="addFromResearch(${JSON.stringify(r).replace(/"/g,'&quot;')})">+ Agregar al Pipeline</button>
+        <button class="btn-gen-script" onclick="openScriptModal('${r.idea.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}')">✨ Post</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  container.innerHTML = '';
+  container.appendChild(grid);
+}
+
+function addFromResearch(r) {
+  const card = {
+    id: Date.now(),
+    title: r.idea,
+    channel: 'linkedin',
+    source: r.type === 'github' ? 'github' : 'hn',
+    script: null,
+    url: r.url,
+  };
+  PIPELINE.ideas.push(card);
+  savePipeline();
+  renderKanban();
+  toast('Agregado al Pipeline ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// KANBAN
+// ─────────────────────────────────────────────────────────────
+function renderKanban() {
+  const board = document.getElementById('kanban-board');
+  board.innerHTML = '';
+
+  COLS.forEach(col => {
+    const cards = PIPELINE[col.id] || [];
+    const colEl = document.createElement('div');
+    colEl.className = 'kanban-col';
+    colEl.dataset.col = col.id;
+
+    colEl.addEventListener('dragover', e => { e.preventDefault(); colEl.classList.add('drag-over'); });
+    colEl.addEventListener('dragleave', () => colEl.classList.remove('drag-over'));
+    colEl.addEventListener('drop', e => {
+      e.preventDefault();
+      colEl.classList.remove('drag-over');
+      const { cardId, fromCol } = JSON.parse(e.dataTransfer.getData('text/plain'));
+      moveCard(cardId, fromCol, col.id);
+    });
+
+    colEl.innerHTML = `
+      <div class="kanban-col-header">
+        <div class="kanban-col-title">${col.label} <span class="col-count">${cards.length}</span></div>
+      </div>
+      <div class="kanban-cards" id="col-${col.id}">
+        ${cards.map(c => renderCard(c, col.id)).join('')}
+      </div>
+      ${col.id === 'ideas' ? `<div class="kanban-col-footer"><button class="btn-col-add" onclick="openAddIdea()">+ Agregar idea</button></div>` : ''}
+    `;
+    board.appendChild(colEl);
+  });
+
+  // drag events on cards
+  board.querySelectorAll('.kanban-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ cardId: card.dataset.id, fromCol: card.dataset.col }));
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+}
+
+function renderCard(c, colId) {
+  const channelBadge = c.channel === 'youtube'
+    ? '<span class="kbadge kbadge-yt">YouTube</span>'
+    : '<span class="kbadge kbadge-li">LinkedIn</span>';
+  const sourceBadge = c.source === 'github' ? '<span class="kbadge kbadge-gh">GitHub</span>'
+    : c.source === 'hn' ? '<span class="kbadge kbadge-hn">HN</span>'
+    : '<span class="kbadge kbadge-manual">Manual</span>';
+  const scriptBadge = c.script ? '<span class="kbadge kbadge-script">✓ Post</span>' : '';
+
+  return `<div class="kanban-card" draggable="true" data-id="${c.id}" data-col="${colId}">
+    <div class="kanban-card-title">${c.title}</div>
+    <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}</div>
+    <div class="kanban-card-actions">
+      <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post">✨</button>
+      ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post">👁</button>` : ''}
+      <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar">🗑</button>
+    </div>
+  </div>`;
+}
+
+function moveCard(cardId, fromCol, toCol) {
+  cardId = parseInt(cardId);
+  const idx = PIPELINE[fromCol].findIndex(c => c.id === cardId);
+  if (idx === -1) return;
+  const [card] = PIPELINE[fromCol].splice(idx, 1);
+  PIPELINE[toCol].push(card);
+  savePipeline();
+  renderKanban();
+}
+
+function deleteCard(id, col) {
+  PIPELINE[col] = PIPELINE[col].filter(c => c.id !== id);
+  savePipeline();
+  renderKanban();
+  toast('Idea eliminada', 'info');
+}
+
+function viewScript(id) {
+  const card = Object.values(PIPELINE).flat().find(c => c.id === id);
+  if (!card?.script) return;
+  openScriptModal(card.title, id);
+  setTimeout(() => {
+    document.getElementById('script-result').value = card.script;
+    document.getElementById('script-result-wrap').style.display = 'block';
+    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+  }, 100);
+}
+
+function openAddIdea(col = 'ideas') {
+  document.getElementById('new-idea-title').value = '';
+  document.getElementById('new-idea-col').value = col;
+  openModal('modal-add-idea');
+}
+
+function addNewIdea() {
+  const title = document.getElementById('new-idea-title').value.trim();
+  if (!title) { toast('Escribí un título para la idea', 'error'); return; }
+  const channel = document.getElementById('new-idea-channel').value;
+  const col = document.getElementById('new-idea-col').value;
+  PIPELINE[col].push({ id: Date.now(), title, channel, source: 'manual', script: null });
+  savePipeline();
+  renderKanban();
+  closeModal('modal-add-idea');
+  toast('Idea agregada ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// SCRIPT GENERATOR — demo controlada (cupo diario + ejemplos pre-generados)
+// ─────────────────────────────────────────────────────────────
+// El prompt y la llamada a la API de Claude viven en
+// /functions/api/generate-script.js — ahí está ANTHROPIC_API_KEY como
+// variable de entorno de Cloudflare Pages, nunca en este archivo. Esta
+// Function también limita el uso diario (por IP y global) con Cloudflare KV.
+let isGeneratingScript = false;
+
+// Al menos 3 ejemplos pre-generados para que el generador se pueda mostrar
+// aunque falte ANTHROPIC_API_KEY, se agote el cupo diario, o falle Anthropic.
+// Nunca se presentan como generados en vivo.
+const DEMO_SCRIPT_EXAMPLES = {
+  institucional: {
+    label: 'Institucional',
+    text: `QuartzSales existe por un problema muy simple: en LATAM, 1 de cada 5 productos que debería estar en la góndola, no está.
+
+No es falta de stock en el depósito. Es falta de visibilidad en el punto de venta.
+
+Hace 4 años empezamos a construir QuartzSales para que los equipos de trade marketing y ventas de campo dejen de operar "a ciegas": auditorías de PDV, ejecución de campañas y datos de góndola, todo en una sola plataforma.
+
+Hoy trabajamos con equipos comerciales de consumo masivo en toda la región que dejaron de perseguir Excels y empezaron a tomar decisiones con datos del punto de venta en tiempo real.
+
+Si tu equipo de campo todavía reporta en papel o en planillas sueltas, hablemos.`,
+  },
+  caso_exito: {
+    label: 'Caso de éxito',
+    text: `Un cliente de consumo masivo nos pidió ayuda con algo puntual: sus quiebres de stock en autoservicios independientes rondaban el 22%.
+
+En 8 semanas de trabajo con QuartzSales:
+— Digitalizamos las auditorías de PDV de todo su equipo de campo.
+— Cruzamos ejecución en góndola con datos de sell-out.
+— El equipo comercial pasó a priorizar visitas según riesgo real de quiebre, no por intuición.
+
+Resultado: quiebres de stock del 22% al 14% en dos meses, sin sumar una sola persona al equipo de campo.
+
+La ejecución en el punto de venta no se arregla con más gente. Se arregla con mejor información.`,
+  },
+  producto: {
+    label: 'Producto',
+    text: `¿Cómo audita hoy tu equipo de campo el punto de venta?
+
+Si la respuesta incluye "planilla", "foto por WhatsApp" o "a ojo", este post es para vos.
+
+El módulo de auditoría de PDV de QuartzSales le da a cada promotor o supervisor una checklist digital adaptada a cada cadena, con fotos georreferenciadas y alertas automáticas de quiebre de stock o falta de exhibición.
+
+Todo eso se junta en un solo tablero para el equipo comercial: qué puntos de venta necesitan atención hoy, no la semana que viene.
+
+Menos reportes manuales, más decisiones a tiempo.`,
+  },
+};
+
+function openScriptModal(topic = '', cardId = null) {
+  currentScriptTopic = topic;
+  currentScriptCardId = cardId;
+  document.getElementById('script-topic').value = topic;
+  document.getElementById('script-loading').style.display = 'none';
+  document.getElementById('script-result-wrap').style.display = 'none';
+  document.getElementById('script-result-label').textContent = 'Post generado (editá libremente)';
+  document.getElementById('btn-save-pipeline').style.display = 'none';
+  openModal('modal-script');
+  refreshQuotaDisplay();
+}
+
+// Consulta cuántas generaciones quedan hoy sin gastar cupo (GET, sólo lectura).
+async function refreshQuotaDisplay() {
+  const line = document.getElementById('script-quota-line');
+  const devWarningEl = document.getElementById('script-dev-warning');
+  if (!line) return;
+
+  try {
+    const res = await fetch('/api/generate-script');
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
+
+    line.textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
+    if (payload.devWarning) {
+      devWarningEl.textContent = '⚠ ' + payload.devWarning;
+      devWarningEl.style.display = 'block';
+    } else {
+      devWarningEl.style.display = 'none';
+    }
+  } catch (e) {
+    line.textContent = 'No se pudo consultar el cupo de generaciones — podés usar los ejemplos de abajo.';
+  }
+}
+
+async function generateScript() {
+  if (isGeneratingScript) return; // evita envíos duplicados por doble click
+  const topic = document.getElementById('script-topic').value.trim();
+  const channel = document.getElementById('script-channel').value;
+  const format = document.getElementById('script-format').value;
+
+  if (!topic) { toast('Escribí un tema primero', 'error'); return; }
+
+  isGeneratingScript = true;
+  const btn = document.getElementById('btn-generate-script');
+  btn.disabled = true;
+  document.getElementById('script-loading').style.display = 'flex';
+  document.getElementById('script-result-wrap').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/generate-script', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, channel, format })
+    });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
+
+    document.getElementById('script-result-label').textContent = 'Post generado (editá libremente)';
+    document.getElementById('script-result').value = payload.content;
+    document.getElementById('script-result-wrap').style.display = 'block';
+    document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+    document.getElementById('script-quota-line').textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
+    toast('Post generado ✓', 'success');
+  } catch(e) {
+    toast(e.message + ' — podés usar un ejemplo de abajo mientras tanto.', 'error');
+  } finally {
+    document.getElementById('script-loading').style.display = 'none';
+    btn.disabled = false;
+    isGeneratingScript = false;
+  }
+}
+
+// Carga uno de los 3 ejemplos pre-generados. Se marca explícitamente como
+// demostración: nunca se presenta como si Claude lo hubiera generado ahora.
+function useDemoExample(key) {
+  const example = DEMO_SCRIPT_EXAMPLES[key];
+  if (!example) return;
+
+  document.getElementById('script-result-label').textContent = `Ejemplo de demostración — ${example.label} (no generado en vivo)`;
+  document.getElementById('script-result').value = example.text;
+  document.getElementById('script-result-wrap').style.display = 'block';
+  document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
+  toast('Mostrando ejemplo de demostración', 'info');
+}
+
+function saveScriptToPipeline() {
+  const script = document.getElementById('script-result').value;
+  const topic = document.getElementById('script-topic').value;
+
+  if (currentScriptCardId) {
+    // Actualizar card existente
+    for (const col of Object.keys(PIPELINE)) {
+      const card = PIPELINE[col].find(c => c.id === currentScriptCardId);
+      if (card) { card.script = script; break; }
+    }
+  } else {
+    // Crear nueva card en Ideas
+    PIPELINE.ideas.push({ id: Date.now(), title: topic, channel: document.getElementById('script-channel').value, source: 'manual', script });
+  }
+
+  savePipeline();
+  renderKanban();
+  closeModal('modal-script');
+  toast('Guardado en Pipeline ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// COMPETITORS
+// ─────────────────────────────────────────────────────────────
+
+function renderCompetitors() {
+  const container = document.getElementById('comp-grid').parentElement;
+  const grid = document.getElementById('comp-grid');
+
+  const directos = COMPETITORS.filter(c => c.category.startsWith('Directo'));
+  const adyacentes = COMPETITORS.filter(c => c.category === 'Adyacente');
+
+  const renderCard = c => `
+    <div class="comp-card">
+      <div class="comp-card-topline" style="background: linear-gradient(90deg, ${c.gradStart}, ${c.gradEnd})"></div>
+      <div class="comp-card-body">
+        <div class="comp-card-header">
+          <div class="comp-avatar" style="background: linear-gradient(135deg, ${c.gradStart}, ${c.gradEnd})">
+            ${c.name.slice(0,2).toUpperCase()}
+          </div>
+          <div>
+            <div class="comp-name">${c.name}</div>
+            <div class="comp-location">${c.location} · ${c.size} emp.</div>
+          </div>
+        </div>
+        <div class="comp-stats">
+          <div>
+            <div class="comp-stat-label">Seguidores LI</div>
+            <div class="comp-stat-value">${c.stats.followers}</div>
+          </div>
+          <div>
+            <div class="comp-stat-label">Posts / mes</div>
+            <div class="comp-stat-value">${c.stats.posts_mes}</div>
+          </div>
+          <div>
+            <div class="comp-stat-label">Engagement %</div>
+            <div class="comp-stat-value">${c.stats.engagement}%</div>
+          </div>
+          <div>
+            <div class="comp-stat-label">Funding</div>
+            <div class="comp-stat-value" style="font-size:13px">${c.stats.funding}</div>
+          </div>
+        </div>
+        <div class="comp-progress-bars">
+          ${c.bars.map(b => `
+            <div class="comp-bar-row">
+              <div class="comp-bar-label-row"><span>${b.label}</span><span>${b.val}%</span></div>
+              <div class="comp-bar"><div class="comp-bar-fill" style="width:${b.val}%; background: linear-gradient(90deg, ${c.gradStart}, ${c.gradEnd})"></div></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <div class="comp-card-footer">
+        <span class="comp-tag" style="${c.category.includes('IA') ? 'background:rgba(112,37,224,0.15);color:#a78bfa' : c.category === 'Adyacente' ? 'background:rgba(100,116,139,0.15);color:#94a3b8' : 'background:rgba(34,197,94,0.1);color:#22c55e'}">${c.category}</span>
+        ${c.tags.map(t => `<span class="comp-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `;
+
+  grid.innerHTML = directos.map(renderCard).join('');
+
+  // Sección adyacentes
+  let adjSection = document.getElementById('comp-adjacent');
+  if (!adjSection) {
+    adjSection = document.createElement('div');
+    adjSection.id = 'comp-adjacent';
+    grid.parentElement.appendChild(adjSection);
+  }
+  adjSection.innerHTML = `
+    <div class="section-title" style="margin-top:28px;margin-bottom:16px">Competidores adyacentes</div>
+    <div class="comp-grid">${adyacentes.map(renderCard).join('')}</div>
+  `;
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONFIG MODAL
+// ─────────────────────────────────────────────────────────────
+function updateConfigUI() {
+  document.getElementById('cfg-li-handle').value = CFG.liHandle;
+  document.getElementById('cfg-yt-handle').value = CFG.ytHandle;
+}
+
+function saveConfig() {
+  CFG.liHandle = document.getElementById('cfg-li-handle').value.trim() || 'quartz-sales';
+  CFG.ytHandle = document.getElementById('cfg-yt-handle').value.trim() || 'esaurio1591';
+  localStorage.setItem('qs_cfg', JSON.stringify(CFG));
+  updateConfigUI();
+  closeModal('modal-config');
+  toast('Configuración guardada ✓', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// MODALS
+// ─────────────────────────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ─────────────────────────────────────────────────────────────
+// TOASTS
+// ─────────────────────────────────────────────────────────────
+function toast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ─────────────────────────────────────────────────────────────
+// KEYBOARD
+// ─────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    const scriptModal = document.getElementById('modal-script');
+    if (scriptModal.classList.contains('open')) generateScript();
+  }
+});
+
+// ─────────────────────────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>
