@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/styles.css" />
-  <link rel="stylesheet" href="assets/kahoot.css" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="assets/app.js" defer></script>
 </head>
@@ -101,14 +100,14 @@
           <article class="panel connection-card">
             <p class="eyebrow">Conexión Kahoot</p>
             <h2>Del reporte al ranking</h2>
-            <p>Para este MVP la conexión es por archivo exportado. Bajás el reporte desde Kahoot, lo subís acá, resolvés nicknames y aplicás DinoCoins.</p>
+            <p>Kahoot Bronze no permite exportar todo el año junto. Bajás los reportes de a uno, pero acá podés subir varios archivos juntos para reconstruir el historial.</p>
             <div class="kahoot-steps">
               <div class="kahoot-step"><span>1</span><strong>Jugar</strong><small>Terminá el Kahoot con nicknames estables o Player Identifier.</small></div>
-              <div class="kahoot-step"><span>2</span><strong>Exportar</strong><small>Reports → Download report. Ideal: XLSX con Final Scores.</small></div>
-              <div class="kahoot-step"><span>3</span><strong>Mapear</strong><small>QS League detecta jugadores y marca los que no encuentra.</small></div>
-              <div class="kahoot-step"><span>4</span><strong>Aplicar</strong><small>Oro +3, plata +2, bronce +1 y ranking actualizado.</small></div>
+              <div class="kahoot-step"><span>2</span><strong>Exportar</strong><small>Reports → Download report. Si es anual, bajalos de a uno.</small></div>
+              <div class="kahoot-step"><span>3</span><strong>Subir en lote</strong><small>Seleccioná varios XLSX/CSV a la vez o arrastralos juntos.</small></div>
+              <div class="kahoot-step"><span>4</span><strong>Aplicar</strong><small>Cada reporte reparte oro +3, plata +2 y bronce +1.</small></div>
             </div>
-            <div class="kahoot-hint"><b>Tip</b><span>Si no tienen Player Identifier, pidan siempre el mismo nickname. Ej: <strong>Nombre Apellido</strong> o <strong>nombre.apellido@quartzsales.com</strong>.</span></div>
+            <div class="kahoot-hint"><b>Tip</b><span>El archivo que subiste de ejemplo usa la hoja <strong>Final Scores</strong>. El importador detecta esa estructura aunque el encabezado empiece en la fila 3.</span></div>
             <div class="secondary-actions">
               <button class="ghost" id="downloadTemplate" type="button">Descargar CSV demo</button>
               <button class="ghost" id="resetLocal" type="button">Reset local</button>
@@ -117,14 +116,18 @@
 
           <article class="panel">
             <p class="eyebrow">Importador</p>
-            <h2>Cargar reporte de Kahoot</h2>
-            <p>Soporta XLSX de Kahoot y CSV simple. Detecta columnas tipo nickname/player/name, score/points y rank/position.</p>
+            <h2>Cargar reportes de Kahoot</h2>
+            <p>Soporta uno o varios XLSX/CSV de Kahoot. Detecta columnas tipo player, score, rank y correct answers.</p>
             <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
-            <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" /><strong>Soltá o elegí archivo</strong><span>XLSX / CSV</span></div>
+            <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong>Soltá o elegí archivos</strong><span>Podés seleccionar varios XLSX / CSV</span></div>
             <div class="actions"><button class="ghost" id="demoImport" type="button">Usar demo</button><button class="primary" id="applyImport" disabled type="button">Aplicar puntos</button></div>
           </article>
         </div>
-        <article class="panel"><p class="eyebrow">Preview de importación</p><div id="preview" class="preview empty">Todavía no hay archivo cargado.</div></article>
+
+        <article class="panel preview-panel">
+          <div class="panel-head"><div><p class="eyebrow">Preview</p><h2>Resultado detectado</h2></div></div>
+          <div id="preview" class="preview empty">Todavía no hay archivo cargado.</div>
+        </article>
       </section>
 
       <section class="tab" id="rules">
