@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Visual Editor — QuartzSales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236366f1'/><path d='M30 66l14-28 10 18 6-9 10 19z' fill='white'/></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* Tokens Apollo mapeados a Tailwind (1rem = 12px, Poppins, Indigo).
+   Si la CDN no carga, la UI sigue funcionando: styles.css es autosuficiente. */
+if (window.tailwind) {
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: { DEFAULT: '#6366f1', hover: '#4f46e5', soft: '#eef0fe' },
+          surface: { DEFAULT: '#ffffff', 50: '#fafafb', 100: '#f3f4f6', 200: '#e5e7eb' }
+        },
+        fontFamily: { sans: ['Poppins', 'system-ui', 'sans-serif'] }
+      }
+    }
+  };
+}
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="abm-screen">
+
+  <!-- Header, simulando el header real del ABM de Noticias -->
+  <header class="abm-header">
+    <div class="abm-header-title">
+      <button class="icon-btn" title="Volver" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div>
+        <h1>Nueva noticia</h1>
+        <p>Archivos <span class="crumb-sep">›</span> Imagen <span class="crumb-sep">›</span> Crear imagen desde editor</p>
+      </div>
+    </div>
+    <div class="abm-header-actions">
+      <button class="icon-btn" id="btnHelp" title="Ayuda y atajos" aria-label="Ayuda y atajos" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+      </button>
+      <button class="btn btn-ghost" id="btnCancelEditor">Reiniciar</button>
+      <button class="btn btn-primary" id="btnUseImage">
+        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        Usar esta imagen en la noticia
+      </button>
+    </div>
+  </header>
+
+  <!-- Selector Subir vs Crear -->
+  <div class="source-toggle" role="tablist">
+    <button class="source-tab" data-source="upload" role="tab">
+      <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+      Subir archivo
+    </button>
+    <button class="source-tab is-active" data-source="editor" role="tab">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg>
+      Crear imagen desde editor
+    </button>
+  </div>
+
+  <!-- Vista "Subir archivo" -->
+  <section id="uploadView" class="upload-view" hidden>
+    <div class="upload-dropzone" id="uploadDropzone" tabindex="0" role="button" aria-label="Subir una imagen">
+      <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+      <p class="upload-dropzone-title">Arrastrá una imagen acá o hacé clic para elegirla</p>
+      <p class="upload-dropzone-hint">JPG, PNG o WebP · se recomienda 1080 × 1080 px o más</p>
+    </div>
+    <div class="upload-preview" id="uploadPreview" hidden>
+      <img id="uploadPreviewImg" alt="Vista previa de la imagen subida">
+      <div class="upload-preview-info">
+        <p id="uploadPreviewName" class="upload-preview-name"></p>
+        <p id="uploadPreviewMeta" class="muted"></p>
+        <div class="upload-preview-actions">
+          <button class="btn btn-primary" id="btnUploadAsBg">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            Usar como fondo del lienzo
+          </button>
+          <button class="btn btn-secondary" id="btnUploadAsElement">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12h8M12 8v8"/></svg>
+            Insertar como elemento
+          </button>
+          <button class="btn btn-ghost" id="btnUploadClear">Elegir otra</button>
+        </div>
+      </div>
+    </div>
+    <input type="file" id="inputUploadFile" accept="image/*" hidden>
+  </section>
+
+  <!-- Cuerpo del editor: izquierda controles, derecha preview -->
+  <main class="editor-body" id="editorView">
+
+    <!-- Panel izquierdo -->
+    <aside class="editor-panel">
+
+      <nav class="panel-tabs" id="panelTabs">
+        <button class="panel-tab is-active" data-tab="elementos">Elementos</button>
+        <button class="panel-tab" data-tab="galeria">Galería</button>
+        <button class="panel-tab" data-tab="propiedades">Propiedades</button>
+        <button class="panel-tab" data-tab="capas">Capas</button>
+      </nav>
+
+      <!-- TAB: Elementos -->
+      <section class="panel-tab-content is-active" data-tab-content="elementos">
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Agregar</h3>
+          <div class="add-grid">
+            <button class="add-btn" data-add="title">
+              <svg viewBox="0 0 24 24"><path d="M5 4h14M12 4v16"/></svg>
+              Título
+            </button>
+            <button class="add-btn" data-add="subtitle">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10"/></svg>
+              Bajada
+            </button>
+            <button class="add-btn" data-add="paragraph">
+              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+              Párrafo
+            </button>
+            <button class="add-btn" data-add="tag">
+              <svg viewBox="0 0 24 24"><path d="M20.59 13.41L11 3.83A2 2 0 009.59 3.24L4 3a1 1 0 00-1 1l.24 5.59a2 2 0 00.59 1.41l9.58 9.58a2 2 0 002.83 0l4.35-4.35a2 2 0 000-2.82z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
+              Tag
+            </button>
+            <button class="add-btn" data-add="date">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+              Fecha
+            </button>
+            <button class="add-btn" data-add="plate">
+              <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/></svg>
+              Placa de fondo
+            </button>
+            <button class="add-btn" data-add="image">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              Imagen / recurso
+            </button>
+          </div>
+          <input type="file" id="inputImageElement" accept="image/*" hidden>
+        </div>
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Fondo del lienzo</h3>
+
+          <div class="bg-presets" id="bgPresets"></div>
+
+          <div class="bg-custom-color">
+            <input type="color" id="bgColorPicker" class="color-dot-input" value="#130D5D" title="Elegir color personalizado" aria-label="Color de fondo personalizado">
+            <span class="bg-custom-color-label">Color personalizado</span>
+          </div>
+
+          <div class="bg-actions">
+            <button class="btn btn-secondary btn-block" id="btnUploadBg">
+              <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+              Subir imagen de fondo
+            </button>
+            <input type="file" id="inputBgImage" accept="image/*" hidden>
+          </div>
+        </div>
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Colores de la empresa</h3>
+          <p class="panel-group-hint">Guardá colores con nombre (por categoría, por marca) y usalos en el fondo, textos, tags o placas.</p>
+
+          <div class="brand-colors" id="brandColors"></div>
+          <p class="muted brand-colors-empty" id="brandColorsEmpty">Todavía no guardaste ninguno. Elegí un color abajo, ponele un nombre y guardalo.</p>
+
+          <div class="brand-color-add">
+            <input type="color" id="brandColorPicker" class="color-dot-input" value="#6366f1" title="Elegir color a guardar" aria-label="Color a guardar">
+            <input type="text" id="brandColorName" placeholder="Nombre (ej: Deportes)" maxlength="24" aria-label="Nombre del color">
+            <button type="button" class="btn btn-secondary" id="btnAddBrandColor">Guardar</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB: Galería de imágenes (librería de recursos) -->
+      <section class="panel-tab-content" data-tab-content="galeria">
+        <div class="panel-group">
+          <h3 class="panel-group-title">Galería de imágenes</h3>
+          <p class="panel-group-hint">Los recursos que subís (de fondo, como elemento o acá) quedan guardados en esta galería del navegador para reutilizarlos cuando quieras.</p>
+
+          <p class="library-warning" id="libraryWarning" hidden>
+            <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            Este navegador no permite guardar la galería de forma permanente en este contexto: lo que subas va a estar disponible solo durante esta sesión (se pierde al recargar).
+          </p>
+
+          <button type="button" class="btn btn-secondary btn-block" id="btnLibraryUpload">
+            <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+            Subir recursos a la galería
+          </button>
+          <input type="file" id="inputLibraryUpload" accept="image/*" multiple hidden>
+
+          <div class="library-grid" id="libraryGrid"></div>
+          <div class="empty-state" id="libraryEmpty">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <p>Todavía no hay recursos guardados. Subí una imagen para empezar tu librería.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Propiedades -->
+      <section class="panel-tab-content" data-tab-content="propiedades">
+        <div class="empty-state" id="propsEmpty">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <p>Seleccioná un elemento en la vista previa para editar sus propiedades.</p>
+        </div>
+        <div id="propsForm"></div>
+      </section>
+
+      <!-- TAB: Capas -->
+      <section class="panel-tab-content" data-tab-content="capas">
+        <h3 class="panel-group-title">Capas <span class="muted" id="layerCount"></span></h3>
+        <ul class="layers-list" id="layersList"></ul>
+        <div class="empty-state" id="layersEmpty">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          <p>Todavía no agregaste elementos.</p>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- Panel derecho: preview -->
+    <section class="preview-panel">
+
+      <div class="preview-toolbar">
+        <div class="preview-toolbar-title">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          PREVIEW
+        </div>
+
+        <div class="preview-toolbar-actions">
+          <div class="toolbar-cluster" role="group" aria-label="Deshacer y rehacer">
+            <button class="tool-btn" id="btnUndo" title="Deshacer (Ctrl+Z)" aria-label="Deshacer" disabled>
+              <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 016 6v1"/></svg>
+            </button>
+            <button class="tool-btn" id="btnRedo" title="Rehacer (Ctrl+Shift+Z)" aria-label="Rehacer" disabled>
+              <svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 00-6 6v1"/></svg>
+            </button>
+          </div>
+
+          <div class="toolbar-cluster" role="group" aria-label="Zoom">
+            <button class="tool-btn" id="btnZoomOut" title="Alejar" aria-label="Alejar">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M21 21l-4.35-4.35"/></svg>
+            </button>
+            <button class="tool-btn tool-btn-text" id="btnZoomFit" title="Ajustar a la pantalla">100%</button>
+            <button class="tool-btn" id="btnZoomIn" title="Acercar" aria-label="Acercar">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M8 11h6M11 8v6M21 21l-4.35-4.35"/></svg>
+            </button>
+          </div>
+
+          <div class="format-toggle" id="formatToggle">
+            <button class="format-btn is-active" data-format="square">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+              1:1
+            </button>
+            <button class="format-btn" data-format="story">
+              <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/></svg>
+              9:16
+            </button>
+          </div>
+
+          <!-- Estado de validaciones: un ícono con popover, no un panel fijo -->
+          <div class="status-wrap">
+            <button class="status-chip is-ok" id="statusChip" aria-haspopup="dialog" aria-expanded="false" title="Estado del diseño">
+              <svg class="status-icon-ok" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+              <svg class="status-icon-warn" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+              <span class="status-chip-label" id="statusChipLabel">Todo en orden</span>
+              <span class="status-chip-count" id="statusChipCount" hidden>0</span>
+            </button>
+
+            <div class="status-popover" id="statusPopover" role="dialog" aria-label="Avisos del diseño" hidden>
+              <div class="status-popover-header">
+                <strong>Avisos del diseño</strong>
+                <button class="popover-close" id="statusPopoverClose" aria-label="Cerrar">
+                  <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+              </div>
+              <p class="status-popover-ok" id="statusPopoverOk">
+                <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                Todo en orden. No hay elementos fuera de rango ni con bajo contraste.
+              </p>
+              <ul class="status-popover-list" id="statusPopoverList"></ul>
+              <p class="status-popover-hint">Tocá un aviso para ir al elemento.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-viewport" id="canvasViewport">
+        <div class="canvas-wrap" id="canvasWrap">
+          <div class="canvas-stage" id="canvasStage">
+            <div class="safe-area" id="safeArea"></div>
+            <div class="snap-guide snap-guide-v" id="guideV" hidden></div>
+            <div class="snap-guide snap-guide-h" id="guideH" hidden></div>
+            <!-- los elementos se inyectan acá por JS -->
+          </div>
+          <!-- overlay sin escalar: selección, nodos de resize, toolbar contextual -->
+          <div class="selection-overlay" id="selectionOverlay" hidden>
+            <div class="selection-box"></div>
+            <div class="handle" data-handle="nw"></div>
+            <div class="handle" data-handle="n"></div>
+            <div class="handle" data-handle="ne"></div>
+            <div class="handle" data-handle="e"></div>
+            <div class="handle" data-handle="se"></div>
+            <div class="handle" data-handle="s"></div>
+            <div class="handle" data-handle="sw"></div>
+            <div class="handle" data-handle="w"></div>
+          </div>
+          <div class="element-toolbar" id="elementToolbar" hidden></div>
+          <div class="drag-badge" id="dragBadge" hidden></div>
+        </div>
+      </div>
+
+      <div class="canvas-footer">
+        <span id="canvasDims" class="muted"></span>
+        <button class="btn btn-primary" id="btnExport">
+          <svg viewBox="0 0 24 24"><path d="M12 3v12M12 15l-4-4M12 15l4-4"/><path d="M4 17v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+          Exportar PNG
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<!-- Modal de ayuda -->
+<div class="modal-backdrop" id="helpModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+    <div class="modal-header">
+      <h2 id="helpModalTitle">Ayuda del editor</h2>
+      <button class="popover-close" id="helpModalClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h3>Cómo usar el editor</h3>
+      <ul class="help-list">
+        <li><b>Mover:</b> arrastrá cualquier elemento con el mouse o el dedo. Al acercarte al centro o al área segura, se alinea solo.</li>
+        <li><b>Cambiar tamaño:</b> seleccioná un elemento y arrastrá los nodos del borde. En textos, los nodos de las esquinas también escalan la letra; en imágenes mantienen la proporción.</li>
+        <li><b>Editar texto:</b> doble clic sobre un texto para escribir directamente en el lienzo.</li>
+        <li><b>Los cuadros de texto nunca cortan el texto:</b> si escribís más de lo que entra, la caja se agranda sola para mostrarlo completo, tanto en el editor como al exportar. Si no hay espacio hasta el borde del lienzo, en cambio achica la letra automáticamente para que entre igual.</li>
+        <li><b>Avisos:</b> el ícono de estado (arriba a la derecha del preview) muestra si algo se corta, queda fuera del área segura o tiene bajo contraste. Tocá un aviso para ir al elemento.</li>
+        <li><b>Colores de la empresa:</b> en la pestaña "Elementos" podés guardar colores con nombre (por ejemplo, uno por categoría de noticia) y después reutilizarlos en el fondo, en cualquier texto, tag o placa.</li>
+        <li><b>Exportar:</b> "Exportar PNG" descarga la imagen en tamaño real (1080 px de ancho).</li>
+      </ul>
+      <h3>Atajos de teclado</h3>
+      <table class="help-shortcuts">
+        <tr><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td><td>Deshacer</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd></td><td>Rehacer</td></tr>
+        <tr><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td>Duplicar el elemento seleccionado</td></tr>
+        <tr><td><kbd>Supr</kbd> / <kbd>Backspace</kbd></td><td>Eliminar el elemento seleccionado</td></tr>
+        <tr><td><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></td><td>Mover de a 1 px (con <kbd>Shift</kbd>, de a 10 px)</td></tr>
+        <tr><td><kbd>Shift</kbd> + arrastrar nodo</td><td>Forzar / liberar proporción</td></tr>
+        <tr><td><kbd>Esc</kbd></td><td>Deseleccionar o cerrar ventanas</td></tr>
+      </table>
+      <p class="muted" style="margin-bottom:0">Tu diseño se guarda solo en este navegador: si cerrás la pestaña, al volver lo vas a encontrar como lo dejaste.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
