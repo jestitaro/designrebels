@@ -1,5 +1,5 @@
-const STORAGE = 'qs-league-mvp-v4';
-const LEGACY_STORAGE = 'qs-league-mvp-v3';
+const STORAGE = 'qs-league-mvp-v5';
+const LEGACY_STORAGE = 'qs-league-mvp-v4';
 const SESSION = 'qs-league-session-v2';
 
 const seed = {
@@ -19,7 +19,7 @@ const seed = {
     { id: 'lucre', name: 'Lucre', team: 'bi', aliases: ['Lucre','Lucrecia'], coins: 1, medals: { gold:0, silver:0, bronze:1 }, strikes:1 },
     { id: 'agustin', name: 'Agustin', team: 'ops', aliases: ['Agustin','Agustín','Agus'], coins: 5, medals: { gold:1, silver:1, bronze:0 }, strikes:2 },
     { id: 'euge', name: 'Euge', team: 'design', aliases: ['Euge','Eugenia'], coins: 0, medals: { gold:0, silver:0, bronze:0 }, strikes:0 },
-    { id: 'ale', name: 'Ale', team: 'dev', aliases: ['Ale'], coins: 0, medals: { gold:0, silver:0, bronze:0 }, strikes:1 }
+    { id: 'ale', name: 'Ale', team: 'dev', aliases: ['Ale','8706743'], coins: 0, medals: { gold:0, silver:0, bronze:0 }, strikes:1 }
   ],
   ledger: [
     { id:'l1', player:'jess', delta:5, reason:'Carga inicial desde tabla manual' },
@@ -42,12 +42,16 @@ const norm = s => String(s || '').trim().toLowerCase().normalize('NFD').replace(
 function load(){
   try {
     const current = localStorage.getItem(STORAGE);
-    const legacy = localStorage.getItem(LEGACY_STORAGE) || localStorage.getItem('qs-league-mvp-v2');
+    const legacy = localStorage.getItem(LEGACY_STORAGE) || localStorage.getItem('qs-league-mvp-v3') || localStorage.getItem('qs-league-mvp-v2');
     return normalizeState(JSON.parse(current || legacy) || structuredClone(seed));
   } catch { return structuredClone(seed); }
 }
 function normalizeState(next){
-  return { ...structuredClone(seed), ...next, players: next.players || seed.players, teams: next.teams || seed.teams, ledger: next.ledger || [], imports: next.imports || [], pending: next.pending || null, pendingMeta: next.pendingMeta || null };
+  const mergedPlayers = (next.players || seed.players).map(player => {
+    const seeded = seed.players.find(seedPlayer => seedPlayer.id === player.id);
+    return seeded ? { ...seeded, ...player, aliases: [...new Set([...(seeded.aliases || []), ...(player.aliases || [])])] } : player;
+  });
+  return { ...structuredClone(seed), ...next, players: mergedPlayers, teams: next.teams || seed.teams, ledger: next.ledger || [], imports: next.imports || [], pending: next.pending || null, pendingMeta: next.pendingMeta || null };
 }
 function save(){ localStorage.setItem(STORAGE, JSON.stringify(state)); }
 function team(id){ return state.teams.find(t => t.id === id) || { name:'Sin equipo', icon:'?' }; }
@@ -255,6 +259,6 @@ function downloadTemplate(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'qs-league-kahoot-demo.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
-function resetLocal(){ localStorage.removeItem(STORAGE); localStorage.removeItem(LEGACY_STORAGE); localStorage.removeItem('qs-league-mvp-v2'); state = structuredClone(seed); save(); render(); toast('Datos locales reiniciados.'); }
+function resetLocal(){ localStorage.removeItem(STORAGE); localStorage.removeItem(LEGACY_STORAGE); localStorage.removeItem('qs-league-mvp-v3'); localStorage.removeItem('qs-league-mvp-v2'); state = structuredClone(seed); save(); render(); toast('Datos locales reiniciados.'); }
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),2800); }
 init();
