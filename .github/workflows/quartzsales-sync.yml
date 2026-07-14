@@ -1,4 +1,4 @@
-name: Sync competitor LinkedIn metrics
+name: QuartzSales dashboard — Sync competitor LinkedIn metrics
 
 on:
   schedule:
@@ -26,6 +26,9 @@ jobs:
     name: LinkedIn (Apify) → data/competitors.json
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: projects/quartzsales-marketing-dashboard
 
     steps:
       - name: Checkout
