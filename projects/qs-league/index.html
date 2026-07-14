@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="QS League: ranking interno de DinoCoins, Kahoots y desafíos de equipos." />
+  <title>QS League · DinoCoin Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+
+  <main class="login" id="loginView">
+    <section class="login-copy">
+      <span class="badge">🦖 QS League</span>
+      <h1>La competencia interna más jurásica de QS.</h1>
+      <p>DinoCoins, Kahoots, equipos, podios, desafíos y un poco de teoría del caos para ver quién domina la isla.</p>
+      <div class="mini-podium" aria-hidden="true">
+        <article><span>🥈</span><strong>Nico</strong><small>5 coins</small></article>
+        <article class="winner"><span>🥇</span><strong>Jess</strong><small>5 coins</small></article>
+        <article><span>🥉</span><strong>Agus</strong><small>5 coins</small></article>
+      </div>
+    </section>
+
+    <section class="login-card">
+      <p class="eyebrow">Acceso interno</p>
+      <h2>Entrar a la arena</h2>
+      <p>Login MVP local, preparado para conectar después con Firebase Auth como el Prode.</p>
+      <form id="loginForm">
+        <label>Email<input type="email" id="email" placeholder="jesi@quartzsales.com" required /></label>
+        <label>Password<input type="password" id="password" placeholder="••••••••" required /></label>
+        <button class="primary" type="submit">Ingresar ↗</button>
+      </form>
+      <button class="ghost" id="demoLogin" type="button">Entrar como admin demo</button>
+    </section>
+  </main>
+
+  <div class="app hidden" id="appView">
+    <aside class="sidebar">
+      <a class="brand" href="#arena"><span>QS</span><strong>QS League</strong><small>DinoCoin Arena</small></a>
+      <nav>
+        <button class="active" data-tab="arena">🏟️ Arena</button>
+        <button data-tab="ranking">🏆 Ranking</button>
+        <button data-tab="admin">🧪 Cargar Kahoot</button>
+        <button data-tab="rules">📜 Reglas</button>
+      </nav>
+      <div class="season">
+        <small>Season 01</small>
+        <strong id="seasonTotal">0 DinoCoins</strong>
+        <div><i id="seasonBar"></i></div>
+      </div>
+    </aside>
+
+    <section class="content">
+      <header class="topbar">
+        <button class="menu" id="menuBtn" type="button">☰</button>
+        <div><p class="eyebrow">QuartzSales internal game</p><h2 id="pageTitle">Arena</h2></div>
+        <button class="ghost" id="logoutBtn" type="button">Salir</button>
+      </header>
+
+      <section class="tab active" id="arena">
+        <div class="hero-card">
+          <div>
+            <span class="badge">Live MVP</span>
+            <h2>DinoCoins, podio y equipos en una sola landing.</h2>
+            <p>Primero reemplazamos la tabla manual. Después sumamos Firebase, historial real, canjes y desafíos cerrados por fecha.</p>
+            <div class="stats">
+              <article><strong id="totalCoins">0</strong><span>DinoCoins</span></article>
+              <article><strong id="totalPlayers">0</strong><span>jugadores</span></article>
+              <article><strong id="totalTeams">0</strong><span>equipos</span></article>
+            </div>
+          </div>
+          <div class="coin-core">🦖</div>
+        </div>
+
+        <div class="grid two">
+          <article class="panel"><div class="panel-head"><p class="eyebrow">Podio</p><button class="ghost small" data-tab="ranking">Ver todo</button></div><div class="podium" id="podium"></div></article>
+          <article class="panel"><p class="eyebrow">Actividad</p><div class="timeline" id="timeline"></div></article>
+        </div>
+
+        <article class="panel"><p class="eyebrow">Ranking grupal</p><div class="teams" id="teams"></div></article>
+      </section>
+
+      <section class="tab" id="ranking">
+        <article class="panel">
+          <div class="panel-head"><div><p class="eyebrow">Leaderboard</p><h2>Ranking QS League</h2></div><div class="switch"><button class="active" data-mode="teams">Equipos</button><button data-mode="players">Participantes</button></div></div>
+          <input class="search" id="search" placeholder="Buscar nombre, alias o equipo" />
+          <div class="ranking" id="rankingList"></div>
+        </article>
+      </section>
+
+      <section class="tab" id="admin">
+        <div class="grid two">
+          <article class="panel">
+            <p class="eyebrow">Importador</p>
+            <h2>Cargar reporte de Kahoot</h2>
+            <p>Subí XLSX/CSV exportado desde Kahoot Reports. El MVP detecta nickname, score/rank y propone el mapeo.</p>
+            <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
+            <div class="drop"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" /><strong>Soltá o elegí archivo</strong><span>XLSX / CSV</span></div>
+            <div class="actions"><button class="ghost" id="demoImport" type="button">Usar demo</button><button class="primary" id="applyImport" disabled type="button">Aplicar puntos</button></div>
+          </article>
+          <article class="panel"><p class="eyebrow">Preview</p><div id="preview" class="preview empty">Todavía no hay archivo cargado.</div></article>
+        </div>
+      </section>
+
+      <section class="tab" id="rules">
+        <article class="panel"><p class="eyebrow">Manual E-saurio</p><div class="rules">
+          <article><span>01</span><h3>Preguntas</h3><p>12 a 16 preguntas. Ideal: 2 por participante y hasta 2 generales.</p></article>
+          <article><span>02</span><h3>Podio</h3><p>Oro +3, plata +2, bronce +1. Sirve para ranking individual y grupal.</p></article>
+          <article><span>03</span><h3>Moderador</h3><p>El último queda sugerido como próximo moderador. Si usa supervivencia, pasa al anteúltimo.</p></article>
+          <article><span>04</span><h3>Desafíos</h3><p>El 1 vs 1 se fija antes de jugar. Gana quien quede mejor rankeado.</p></article>
+        </div></article>
+      </section>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</body>
+</html>
