@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=20260714-4" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260714-5" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -19,7 +19,7 @@
     <section class="login-copy">
       <span class="badge">🦖 QS League</span>
       <h1>La competencia interna más jurásica de QS.</h1>
-      <p>DinoCoins, Kahoots, temporadas, leyendas y meteoritos por ausencias para ver quién domina la isla.</p>
+      <p>DinoCoins, Kahoots, temporadas, leyendas y meteoritos desde la temporada actual para ver quién domina la isla.</p>
       <div class="mini-podium" aria-hidden="true">
         <article><span>🥈</span><strong>Plata</strong><small>+2 coins</small></article>
         <article class="winner"><span>🥇</span><strong>Oro</strong><small>+3 coins</small></article>
@@ -103,9 +103,23 @@
         </article>
 
         <div class="grid two">
-          <article class="panel"><div class="panel-head"><p class="eyebrow">Podio simbólico</p><button class="ghost small" data-tab="legends">Ver leyendas</button></div><div class="podium" id="podium"></div></article>
+          <article class="panel admin-adjustment">
+            <div class="panel-head"><div><p class="eyebrow">Admin</p><h2>Ajuste manual</h2></div></div>
+            <p>Para DinoCoins extra, quitas o meteoritos de ausencia. Siempre queda registrado con explicación.</p>
+            <div class="admin-form">
+              <label>Jugador<select id="adjustPlayer"></select></label>
+              <label>Qué ajustar<select id="adjustKind"><option value="dino">DinoCoins</option><option value="meteor">Meteorito</option></select></label>
+              <label>Acción<select id="adjustAction"><option value="add">Sumar / cargar</option><option value="remove">Restar / quitar</option></select></label>
+              <label>Cantidad<input id="adjustAmount" type="number" min="1" value="1" /></label>
+              <label class="wide">Motivo obligatorio<input id="adjustReason" placeholder="Ej: premio extra por organizar / ausencia justificada" /></label>
+              <button class="primary wide" id="applyManualAdjust" type="button">Aplicar ajuste</button>
+            </div>
+          </article>
+
           <article class="panel"><p class="eyebrow">Actividad actual</p><div class="timeline" id="timeline"></div></article>
         </div>
+
+        <article class="panel"><div class="panel-head"><p class="eyebrow">Podio simbólico</p><button class="ghost small" data-tab="legends">Ver leyendas</button></div><div class="podium" id="podium"></div></article>
       </section>
 
       <section class="tab" id="legends">
@@ -113,24 +127,21 @@
           <div>
             <p class="eyebrow">Histórico cerrado</p>
             <h2>Ganadores leyenda</h2>
-            <p>Acá se guardan los semestres cerrados con sus rankings. El primer semestre 2026 cuenta solo ganadores; plata y bronce empiezan desde la temporada actual.</p>
+            <p>Acá se guardan los semestres cerrados con sus rankings. El primer semestre 2026 cuenta solo ganadores. Los meteoritos empiezan desde la temporada actual.</p>
           </div>
           <div class="semester-kpis">
             <article><strong id="semesterDates">0</strong><span>fechas</span></article>
             <article><strong id="semesterWinners">0</strong><span>ganadores</span></article>
-            <article><strong id="semesterMeteorites">0</strong><span>meteoritos</span></article>
+            <article><strong id="semesterSeasons">1</strong><span>semestre cerrado</span></article>
           </div>
         </div>
 
         <div class="grid two">
           <article class="panel"><div class="panel-head"><div><p class="eyebrow">Enero-junio 2026</p><h2>Podio histórico</h2></div></div><div class="semester-podium" id="semesterPodium"></div></article>
-          <article class="panel"><div class="panel-head"><div><p class="eyebrow">Ausencias</p><h2>Meteoritos</h2></div></div><div class="meteor-list" id="meteorList"></div></article>
+          <article class="panel"><p class="eyebrow">Tabla general · solo ganadores</p><div class="semester-ranking" id="semesterRanking"></div></article>
         </div>
 
-        <div class="grid two">
-          <article class="panel"><p class="eyebrow">Tabla general · solo ganadores</p><div class="semester-ranking" id="semesterRanking"></div></article>
-          <article class="panel"><p class="eyebrow">Fechas cargadas</p><div class="semester-history" id="semesterHistory"></div></article>
-        </div>
+        <article class="panel"><p class="eyebrow">Fechas cargadas</p><div class="semester-history" id="semesterHistory"></div></article>
       </section>
 
       <section class="tab" id="rules">
@@ -174,6 +185,6 @@
       if(localStorage.getItem(SESSION)) window.qsLeagueDemoLogin();
     })();
   </script>
-  <script src="assets/app.js?v=20260714-4" defer></script>
+  <script src="assets/app.js?v=20260714-5" defer></script>
 </body>
 </html>
