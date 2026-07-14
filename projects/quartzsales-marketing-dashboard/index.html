@@ -934,17 +934,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .form-textarea { resize: vertical; min-height: 160px; font-family: var(--font-data); font-size: 13px; line-height: 1.6; }
 .form-select { cursor: pointer; }
 
-.key-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-family: var(--font-data);
-  margin-top: 6px;
-}
-.key-status.ok { color: var(--green); }
-.key-status.missing { color: var(--red); }
-
 .modal-footer {
   padding: 16px 24px;
   border-top: 1px solid var(--border);
@@ -1299,26 +1288,11 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Apify Token</label>
-        <input type="password" class="form-input" id="cfg-apify" placeholder="apify_api_...">
-        <div id="cfg-apify-status" class="key-status missing">✗ No configurado</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Claude API Key</label>
-        <input type="password" class="form-input" id="cfg-claude" placeholder="sk-ant-...">
-        <div id="cfg-claude-status" class="key-status missing">✗ No configurado</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">YouTube API Key</label>
-        <input type="password" class="form-input" id="cfg-yt" placeholder="AIza...">
-        <div id="cfg-yt-status" class="key-status missing">✗ No configurado</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">LinkedIn Cookie (li_at)</label>
-        <input type="password" class="form-input" id="cfg-li-cookie" placeholder="AQEDAQRz...">
-        <div id="cfg-li-cookie-status" class="key-status missing">✗ No configurado — necesaria para métricas reales</div>
-      </div>
+      <p style="font-size:12.5px; color:var(--text-3); margin-bottom:18px; line-height:1.5;">
+        Los handles de abajo sólo identifican qué canal consultar — no son
+        secretos. Los tokens de Apify, YouTube y Claude viven como variables
+        de entorno en Cloudflare Pages, nunca en este navegador.
+      </p>
       <div class="form-group">
         <label class="form-label">LinkedIn Company Handle</label>
         <input type="text" class="form-input" id="cfg-li-handle" value="quartz-sales" placeholder="quartz-sales">
@@ -1422,13 +1396,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 // ─────────────────────────────────────────────────────────────
 // CONFIG & STATE
 // ─────────────────────────────────────────────────────────────
+// Sólo identificadores de canal, nunca secretos: los tokens de Apify,
+// YouTube y Claude viven exclusivamente como variables de entorno en las
+// Cloudflare Pages Functions de /functions/api, no en el navegador.
 let CFG = {
-  apifyToken: '',
-  claudeKey: '',
-  ytKey: '',
   ytHandle: 'esaurio1591',
   liHandle: 'quartz-sales',
-  liCookie: '',
 };
 
 let PIPELINE = {
@@ -1532,81 +1505,38 @@ async function refreshMetrics() {
   btn.classList.add('loading');
   btn.disabled = true;
 
-  const promises = [];
-  if (CFG.apifyToken) promises.push(fetchLinkedIn());
-  else { toast('Apify Token no configurado. Abrí ⚙️ Configuración.', 'error'); }
-  if (CFG.ytKey) promises.push(fetchYouTube());
-  else if (!CFG.apifyToken) { /* ya mostró error */ }
-  else { toast('YouTube API Key no configurada. Las métricas de LinkedIn se actualizan igual.', 'info'); }
-
-  if (promises.length > 0) {
-    await Promise.allSettled(promises);
-    saveMetrics();
-    toast('Métricas actualizadas', 'success');
-  }
+  await Promise.allSettled([fetchLinkedIn(), fetchYouTube()]);
+  saveMetrics();
+  toast('Métricas actualizadas', 'success');
 
   btn.classList.remove('loading');
   btn.disabled = false;
 }
 
+// Las métricas de LinkedIn/YouTube se piden a las Cloudflare Pages Functions
+// en /functions/api — ahí viven APIFY_TOKEN y YOUTUBE_API_KEY como variables
+// de entorno del lado del servidor. El navegador nunca ve esos tokens.
 async function fetchLinkedIn() {
   const dot = document.getElementById('li-dot');
   dot.className = 'status-dot stale';
   document.getElementById('li-status-text').textContent = 'Actualizando...';
 
-  if (!CFG.liCookie) {
-    // Sin cookie: solo intenta fallback básico
-    toast('LinkedIn: configurá la cookie li_at en ⚙️ para datos completos', 'info');
-    await tryLinkedInFallback();
-    return;
-  }
-
   try {
-    // harvestapi/linkedin-company: sin cookies, recibe URLs completas
-    const detailRes = await fetch(
-      `https://api.apify.com/v2/acts/harvestapi~linkedin-company/run-sync-get-dataset-items?token=${CFG.apifyToken}&timeout=60&memory=256`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          linkedInUrls: [`https://www.linkedin.com/company/${CFG.liHandle}/`]
-        })
-      }
-    );
-    const detailData = await detailRes.json();
-    console.log('LinkedIn detail raw:', detailData);
-
-    console.log('LinkedIn detail raw (harvestapi):', JSON.stringify(detailData).slice(0, 500));
-
-    const company = Array.isArray(detailData) ? detailData[0] : (detailData || {});
-    const followers = company?.followersCount || company?.followers || company?.followerCount
-      || company?.companyFollowersCount || company?.numberOfFollowers || null;
-    const employees = company?.employeeCount || company?.employees || company?.staffCount
-      || company?.companySize || company?.numberOfEmployees || null;
-
-    console.log('Followers extraído:', followers, '| Employees:', employees);
-    console.log('Keys del objeto company:', Object.keys(company || {}));
-
-    const finalFollowers = followers || null;
-    const finalEmployees = employees || null;
-
-    // Mostrar lo que tenemos aunque sea parcial
-    if (!finalFollowers && !finalEmployees) {
-      console.warn('Sin datos útiles. Objeto completo:', company);
-      // No tiramos error — mostramos lo que hay y seguimos
-    }
+    const res = await fetch(`/api/linkedin?handle=${encodeURIComponent(CFG.liHandle)}`);
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
 
     const liData = {
-      followers: finalFollowers || '—',
-      employees: finalEmployees || '—',
+      followers: payload.followers || '—',
+      employees: payload.employees || '—',
       posts30d: 0,
       er: 0,
       ts: Date.now()
     };
 
-    if (finalFollowers) {
+    if (payload.followers) {
       const hist = JSON.parse(localStorage.getItem('qs_li_hist') || '[]');
-      hist.push({ ts: Date.now(), n: finalFollowers });
+      hist.push({ ts: Date.now(), n: payload.followers });
       if (hist.length > 60) hist.shift();
       localStorage.setItem('qs_li_hist', JSON.stringify(hist));
     }
@@ -1623,66 +1553,21 @@ async function fetchLinkedIn() {
   }
 }
 
-async function tryLinkedInFallback() {
-  const dot = document.getElementById('li-dot');
-  try {
-    const res = await fetch(
-      `https://api.apify.com/v2/acts/apimaestro~linkedin-companies-search-scraper/run-sync-get-dataset-items?token=${CFG.apifyToken}&timeout=90&memory=256`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          searchQueries: ['QuartzSales'],
-          maxResults: 3
-        })
-      }
-    );
-    const data = await res.json();
-    const company = Array.isArray(data) ? data.find(c =>
-      (c.name || '').toLowerCase().includes('quartz') ||
-      (c.url || '').includes(CFG.liHandle)
-    ) || data[0] : null;
-
-    if (!company) throw new Error('No encontrado via búsqueda');
-
-    const liData = {
-      followers: company.followersCount || company.followers || '—',
-      employees: company.employeeCount || company.staffCount || '—',
-      posts30d: 0,
-      er: 0,
-      ts: Date.now()
-    };
-    METRICS.linkedin = liData;
-    renderLinkedInMetrics(liData);
-    dot.className = 'status-dot live';
-    document.getElementById('li-status-text').textContent = 'Live (parcial)';
-    toast('LinkedIn: datos parciales obtenidos via búsqueda', 'info');
-  } catch(e2) {
-    dot.className = 'status-dot';
-    document.getElementById('li-status-text').textContent = 'Error';
-    toast('Error LinkedIn: ' + e2.message + '. Verificá el handle en ⚙️ Configuración.', 'error');
-  }
-}
-
 async function fetchYouTube() {
   const dot = document.getElementById('yt-dot');
   dot.className = 'status-dot stale';
   document.getElementById('yt-status-text').textContent = 'Actualizando...';
 
   try {
-    const searchRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&forHandle=${CFG.ytHandle}&key=${CFG.ytKey}`
-    );
-    const data = await searchRes.json();
-    const ch = data.items?.[0];
-    if (!ch) throw new Error('Canal no encontrado');
+    const res = await fetch(`/api/youtube?handle=${encodeURIComponent(CFG.ytHandle)}`);
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
 
-    const s = ch.statistics;
     const ytData = {
-      subs: parseInt(s.subscriberCount || 0),
-      videos: parseInt(s.videoCount || 0),
-      views: parseInt(s.viewCount || 0),
-      avgViews: s.videoCount > 0 ? Math.round(parseInt(s.viewCount) / parseInt(s.videoCount)) : 0,
+      subs: payload.subs,
+      videos: payload.videos,
+      views: payload.views,
+      avgViews: payload.avgViews,
       ts: Date.now()
     };
     METRICS.youtube = ytData;
@@ -1971,6 +1856,9 @@ function openScriptModal(topic = '', cardId = null) {
   openModal('modal-script');
 }
 
+// El prompt y la llamada a la API de Claude viven en
+// /functions/api/generate-script.js — ahí está ANTHROPIC_API_KEY como
+// variable de entorno de Cloudflare Pages, nunca en este archivo.
 async function generateScript() {
   const topic = document.getElementById('script-topic').value.trim();
   const channel = document.getElementById('script-channel').value;
@@ -1978,58 +1866,19 @@ async function generateScript() {
 
   if (!topic) { toast('Escribí un tema primero', 'error'); return; }
 
-  if (!CFG.claudeKey) {
-    toast('Necesitás una Claude API Key en ⚙️ Configuración para generar posts', 'error');
-    return;
-  }
-
   document.getElementById('script-loading').style.display = 'flex';
   document.getElementById('script-result-wrap').style.display = 'none';
 
-  const formatDescriptions = {
-    post_corto: 'post corto de LinkedIn de ~300 palabras',
-    post_largo: 'post largo de LinkedIn con storytelling de ~600 palabras',
-    carrusel: 'carrusel de LinkedIn con 6 slides: Slide 1 (hook), Slides 2-5 (desarrollo), Slide 6 (CTA)',
-    video_corto: 'script de video para YouTube de 3-5 minutos con secciones INTRO / DESARROLLO / CTA',
-  };
-
-  const channelCtx = channel === 'linkedin'
-    ? 'LinkedIn para QuartzSales, empresa de SaaS de trade marketing y retail execution orientada a LATAM. La voz es profesional pero cercana, orientada a decisores de trade marketing, jefes comerciales y directores de ventas en empresas de consumo masivo.'
-    : 'YouTube de QuartzSales / E-Saurio, orientado a profesionales del retail y trade marketing en Argentina y LATAM.';
-
-  const prompt = `Generá un ${formatDescriptions[format]} para ${channelCtx}
-
-Tema: ${topic}
-
-Reglas:
-- Español rioplatense (vos, no tú)
-- Hook potente en las primeras 2 líneas que frene el scroll
-- Orientado a problemas reales de ejecución en PDV, quiebres de stock, visibilidad de marca, gestión de campo
-- Mencioná QuartzSales de forma natural, no forzada
-- CTA claro al final
-- Para carrusel: indicá claramente "Slide N:" antes de cada slide
-- Sin emojis excesivos, máximo 2-3 por pieza
-- Tono: experto del sector, no genérico ni corporativo frío`;
-
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/api/generate-script', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': CFG.claudeKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ topic, channel, format })
     });
+    const payload = await res.json();
+    if (!res.ok) throw new Error(payload.error || `Error ${res.status}`);
 
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'Sin respuesta';
-    document.getElementById('script-result').value = text;
+    document.getElementById('script-result').value = payload.text;
     document.getElementById('script-result-wrap').style.display = 'block';
     document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
     toast('Post generado ✓', 'success');
@@ -2313,29 +2162,11 @@ async function loadCompetitors() {
 // CONFIG MODAL
 // ─────────────────────────────────────────────────────────────
 function updateConfigUI() {
-  document.getElementById('cfg-apify').value = CFG.apifyToken;
-  document.getElementById('cfg-claude').value = CFG.claudeKey;
-  document.getElementById('cfg-yt').value = CFG.ytKey;
-  document.getElementById('cfg-li-cookie').value = CFG.liCookie;
   document.getElementById('cfg-li-handle').value = CFG.liHandle;
   document.getElementById('cfg-yt-handle').value = CFG.ytHandle;
-
-  const setStatus = (id, val) => {
-    const el = document.getElementById(id);
-    el.className = 'key-status ' + (val ? 'ok' : 'missing');
-    el.textContent = val ? '✓ Configurado' : '✗ No configurado';
-  };
-  setStatus('cfg-apify-status', CFG.apifyToken);
-  setStatus('cfg-claude-status', CFG.claudeKey);
-  setStatus('cfg-yt-status', CFG.ytKey);
-  setStatus('cfg-li-cookie-status', CFG.liCookie);
 }
 
 function saveConfig() {
-  CFG.apifyToken = document.getElementById('cfg-apify').value.trim();
-  CFG.claudeKey = document.getElementById('cfg-claude').value.trim();
-  CFG.ytKey = document.getElementById('cfg-yt').value.trim();
-  CFG.liCookie = document.getElementById('cfg-li-cookie').value.trim();
   CFG.liHandle = document.getElementById('cfg-li-handle').value.trim() || 'quartz-sales';
   CFG.ytHandle = document.getElementById('cfg-yt-handle').value.trim() || 'esaurio1591';
   localStorage.setItem('qs_cfg', JSON.stringify(CFG));

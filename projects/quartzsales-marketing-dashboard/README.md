@@ -13,6 +13,12 @@ Todo el código del dashboard queda autocontenido en esta carpeta.
 ```
 projects/quartzsales-marketing-dashboard/
 ├── index.html                    # el dashboard (HTML + CSS + JS inline, sin build)
+├── functions/
+│   ├── _utils.js                 # helpers de respuesta JSON compartidos
+│   └── api/
+│       ├── linkedin.js           # GET  /api/linkedin?handle=...   (usa APIFY_TOKEN)
+│       ├── youtube.js            # GET  /api/youtube?handle=...    (usa YOUTUBE_API_KEY)
+│       └── generate-script.js    # POST /api/generate-script       (usa ANTHROPIC_API_KEY)
 ├── config/
 │   └── sources.json              # competidores a monitorear + URL de LinkedIn + grupo A/B/C
 ├── data/
@@ -29,15 +35,20 @@ proyecto). Está configurado con `working-directory:
 projects/quartzsales-marketing-dashboard` para operar sobre esta carpeta sin
 tocar otros proyectos del monorepo (`prode2026`, etc.).
 
+`functions/` en cambio sí lo levanta Cloudflare Pages automáticamente por
+convención de carpeta: cualquier archivo bajo `functions/api/` se publica
+como ruta `/api/...` del propio sitio, siempre que el **Root directory** del
+proyecto de Pages sea `projects/quartzsales-marketing-dashboard` (ver deploy
+más abajo).
+
 ## Estructura esperada vs. estado actual
 
-La convención del monorepo para este proyecto (ver commit inicial de
-`projects/quartzsales-marketing-dashboard/`) es separar `css/`, `js/` y
-`functions/`. Hoy el dashboard es un único `index.html` con `<style>`/
-`<script>` inline y sin `functions/` de Cloudflare — heredado de la versión
-original de una sola página. Funciona igual, pero si el equipo quiere que
-converja a esa estructura (útil para el punto de Seguridad de abajo), es un
-refactor pendiente, no incluido en este commit.
+La convención del monorepo para este proyecto separa `css/`, `js/` y
+`functions/`. Ya existe `functions/` (con las tres integraciones que
+necesitaban secretos). Lo que sigue pendiente, y no es un problema de
+seguridad sino de organización de archivos, es separar el `<style>`/
+`<script>` inline de `index.html` en `css/`/`js/` — es un refactor cosmético,
+no bloqueante.
 
 ## Deploy en Cloudflare Pages
 
@@ -52,51 +63,66 @@ su **propio proyecto de Cloudflare Pages** apuntando al mismo repo con este
 Root directory — no reutilizar el proyecto de Pages de otro subdirectorio si
 existiera uno.
 
-### Variables de entorno / secrets que necesita Cloudflare
+### Variables de entorno / secrets — quién necesita qué
 
-- **`APIFY_TOKEN`**: no lo usa Cloudflare Pages en sí — lo consume el
-  workflow `quartzsales-sync.yml` en **GitHub Actions** (Settings → Secrets
-  and variables → Actions del repo `designrebels`), no como env var de
-  Cloudflare. Se necesita para que `scripts/sync.js` pueda pegarle a Apify.
-- **Ninguna otra variable es obligatoria para que el sitio sirva** — es HTML
-  estático, no hay build ni server-side rendering.
-- Si más adelante se migran las integraciones del navegador (ver
-  "Seguridad") a Cloudflare Pages Functions, ahí sí habría que cargar como
-  **variables de entorno del proyecto de Cloudflare Pages** (no como
-  secrets de GitHub): `APIFY_TOKEN`, `ANTHROPIC_API_KEY`, `YOUTUBE_API_KEY`
-  y `LINKEDIN_LI_AT_COOKIE`. Hoy esas cuatro no existen como env vars de
-  Cloudflare porque el usuario las tipea en el modal ⚙️ Configuración y
-  quedan en `localStorage` del navegador (ver limitación de seguridad).
+Hay dos sistemas de secretos independientes, cada uno alimenta un proceso
+distinto. No son intercambiables ni se leen entre sí:
+
+| Secreto | Dónde se configura | Quién lo lee | Para qué |
+|---|---|---|---|
+| `APIFY_TOKEN` | GitHub → repo `designrebels` → Settings → Secrets and variables → **Actions** | `scripts/sync.js` (workflow `quartzsales-sync.yml`) | Sincronizar seguidores de los competidores en `data/competitors.json` |
+| `APIFY_TOKEN` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/linkedin.js` | Métricas propias de LinkedIn (botón "Actualizar métricas") |
+| `YOUTUBE_API_KEY` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/youtube.js` | Métricas propias de YouTube |
+| `ANTHROPIC_API_KEY` | Cloudflare Pages → proyecto → Settings → **Environment variables** | `functions/api/generate-script.js` | Generador de posts (✨ Generar) |
+
+`APIFY_TOKEN` aparece dos veces porque son dos plataformas distintas
+(GitHub Actions y Cloudflare Pages) que no comparten secretos entre sí —
+hay que cargarlo en las dos si querés ambas cosas funcionando (el sync
+automático de competidores y el botón de métricas propias). Puede ser el
+mismo valor de token en los dos lados.
+
+Ninguna de las cuatro es obligatoria para que el sitio **cargue** — sin
+ellas, el HTML/CSS/JS estático y la pestaña Competidores (que lee
+`data/competitors.json`) funcionan igual; sólo fallan con un toast de error
+las acciones que dependen de esa integración puntual (botón "Actualizar
+métricas" o "✨ Generar").
 
 ## Seguridad
 
-**Limitación conocida, no resuelta en este commit:** el modal ⚙️
-Configuración del dashboard guarda el Apify Token, la Claude API Key, la
-YouTube API Key y la cookie `li_at` de LinkedIn en `localStorage` del
-navegador, y el botón "Actualizar métricas" / "Generar post" los usa para
-pegarle *directo desde el navegador* a Apify, YouTube y la API de Anthropic.
-Esto contradice la convención de seguridad de este proyecto (no guardar
-tokens en HTML, JS público ni `localStorage`; esas integraciones deberían
-correr en Cloudflare Pages Functions o un Worker, leyendo secretos desde
-variables de entorno). Es un riesgo bajo mientras el repo sea privado y el
-token quede sólo en el navegador de quien lo carga manualmente, pero no
-cumple la política documentada acá. Queda como refactor pendiente: mover
-`fetchLinkedIn`, `fetchYouTube` y `generateScript` (dentro de `index.html`) a
-funciones en `functions/api/*.js` que lean los secretos de variables de
-entorno de Cloudflare Pages en vez de pedirlos al usuario.
+Ninguna integración guarda tokens en el navegador. Los tres endpoints bajo
+`functions/api/` corren server-side en Cloudflare Pages Functions y leen sus
+credenciales de variables de entorno (`context.env`), nunca del cliente:
 
-`scripts/sync.js` (el sync de competidores) **sí** cumple la convención: corre
-en GitHub Actions, lee `APIFY_TOKEN` de un secret y nunca lo expone en el
-frontend — `data/competitors.json` sólo contiene números de seguidores, nunca
-el token.
+- **`functions/api/linkedin.js`**: usa `APIFY_TOKEN` para pedirle a Apify
+  (`harvestapi~linkedin-company`) los seguidores/empleados de un handle de
+  LinkedIn. No usa ni pide cookies de sesión (`li_at`) — el actor de Apify
+  no las necesita.
+- **`functions/api/youtube.js`**: usa `YOUTUBE_API_KEY` contra la API de
+  YouTube Data v3.
+- **`functions/api/generate-script.js`**: usa `ANTHROPIC_API_KEY` para
+  generar el post con Claude, con el prompt armado enteramente en el
+  servidor.
+
+El modal ⚙️ Configuración del dashboard sólo guarda dos identificadores no
+sensibles en `localStorage` (`liHandle`, `ytHandle`: qué empresa/canal
+consultar) — cero tokens, cero claves, cero cookies.
+
+`scripts/sync.js` (el sync de competidores) sigue el mismo principio: corre
+en GitHub Actions, lee `APIFY_TOKEN` de un secret y nunca lo expone —
+`data/competitors.json` sólo contiene números de seguidores, nunca el token.
 
 ## Qué hace cada parte
 
-- **`index.html`**: los tokens propios de QuartzSales (Apify, Claude,
-  YouTube, cookie `li_at`) se guardan en `localStorage` del navegador de
-  quien los carga — ver limitación de seguridad arriba. El botón "Actualizar
-  métricas" pega directo a Apify/YouTube desde el browser para las métricas
-  *propias* de QuartzSales.
+- **`index.html`**: sólo guarda en `localStorage` los handles de LinkedIn/
+  YouTube a consultar (no son secretos). El botón "Actualizar métricas"
+  llama a `/api/linkedin` y `/api/youtube`; "✨ Generar" llama a
+  `/api/generate-script`. Ninguno de los tres requiere configuración previa
+  en el navegador — dependen de que Cloudflare Pages tenga cargadas sus
+  variables de entorno (ver tabla arriba).
+- **`functions/api/*.js`**: las tres integraciones que antes vivían en el
+  navegador. Devuelven JSON (`{ ... }` en éxito, `{ error: "..." }` con
+  status ≥ 400 en falla) para que el frontend muestre un toast claro en vez
+  de romperse.
 - **La pestaña "Competidores"** carga `data/competitors.json` por `fetch()`
   al iniciar (ruta relativa, funciona sin importar en qué carpeta del sitio
   viva `index.html`). Si el archivo no existe o el fetch falla, usa datos de
@@ -133,7 +159,21 @@ directory** sea `projects/quartzsales-marketing-dashboard` (no la raíz del
 repo, porque conviven otros proyectos como `prode2026` y el hub de
 `designrebels`).
 
-### 3. Disparar la primera sync manual desde GitHub Actions
+### 3. Cargar las variables de entorno en Cloudflare Pages
+
+En el proyecto de Cloudflare Pages → **Settings** → **Environment
+variables** → agregar (como *secret*, no como texto plano) para el entorno
+de **Production**:
+
+- `APIFY_TOKEN`
+- `YOUTUBE_API_KEY`
+- `ANTHROPIC_API_KEY`
+
+Sin esto, el sitio sigue sirviendo normalmente — sólo el botón "Actualizar
+métricas" y "✨ Generar" muestran un toast de error indicando qué variable
+falta.
+
+### 4. Disparar la primera sync manual desde GitHub Actions
 
 1. En el repo → pestaña **Actions** → workflow **QuartzSales dashboard —
    Sync competitor LinkedIn metrics**.
@@ -144,7 +184,7 @@ repo, porque conviven otros proyectos como `prode2026` y el hub de
    `projects/quartzsales-marketing-dashboard/data/competitors.json`
    automáticamente.
 
-### 4. Verificar los primeros datos en `data/competitors.json`
+### 5. Verificar los primeros datos en `data/competitors.json`
 
 1. Después de que el workflow termine, abrí
    `projects/quartzsales-marketing-dashboard/data/competitors.json` en
@@ -175,3 +215,15 @@ APIFY_TOKEN=tu_token SYNC_GROUP=ALL node scripts/sync.js
 
 No requiere `npm install`: el script usa sólo `fetch`, `fs` y `path`
 nativos de Node 18+.
+
+## Probar las Functions localmente (opcional)
+
+Con [Wrangler](https://developers.cloudflare.com/workers/wrangler/) instalado:
+
+```bash
+cd projects/quartzsales-marketing-dashboard
+APIFY_TOKEN=tu_token YOUTUBE_API_KEY=tu_key ANTHROPIC_API_KEY=tu_key \
+  npx wrangler pages dev . --compatibility-date=2024-01-01
+```
+
+Esto sirve `index.html` y las rutas `/api/*` juntas, igual que en producción.
