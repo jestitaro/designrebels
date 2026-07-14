@@ -1,5 +1,5 @@
-const STORAGE = 'qs-league-mvp-v3';
-const LEGACY_STORAGE = 'qs-league-mvp-v2';
+const STORAGE = 'qs-league-mvp-v4';
+const LEGACY_STORAGE = 'qs-league-mvp-v3';
 const SESSION = 'qs-league-session-v2';
 
 const seed = {
@@ -13,8 +13,8 @@ const seed = {
     { id: 'javi', name: 'Javi', team: 'dev', aliases: ['Javi','Javier'], coins: 2, medals: { gold:0, silver:1, bronze:0 }, strikes:0 },
     { id: 'nico', name: 'Nico', team: 'ops', aliases: ['Nico','Nicolas','Nicolás'], coins: 5, medals: { gold:1, silver:1, bronze:0 }, strikes:1 },
     { id: 'pablo', name: 'Pablo', team: 'dev', aliases: ['Pablo'], coins: 2, medals: { gold:0, silver:0, bronze:2 }, strikes:1 },
-    { id: 'mayra', name: 'Mayra', team: 'bi', aliases: ['Mayra'], coins: 1, medals: { gold:0, silver:0, bronze:1 }, strikes:0 },
-    { id: 'seba', name: 'Seba', team: 'ops', aliases: ['Seba','Sebastian','Sebastián'], coins: 2, medals: { gold:0, silver:1, bronze:0 }, strikes:0 },
+    { id: 'mayra', name: 'Mayra', team: 'bi', aliases: ['Mayra','May'], coins: 1, medals: { gold:0, silver:0, bronze:1 }, strikes:0 },
+    { id: 'seba', name: 'Seba', team: 'ops', aliases: ['Seba','Sebas','Sebastian','Sebastián'], coins: 2, medals: { gold:0, silver:1, bronze:0 }, strikes:0 },
     { id: 'jess', name: 'Jess', team: 'design', aliases: ['Jess','Jesi','Jesica'], coins: 5, medals: { gold:1, silver:0, bronze:2 }, strikes:3 },
     { id: 'lucre', name: 'Lucre', team: 'bi', aliases: ['Lucre','Lucrecia'], coins: 1, medals: { gold:0, silver:0, bronze:1 }, strikes:1 },
     { id: 'agustin', name: 'Agustin', team: 'ops', aliases: ['Agustin','Agustín','Agus'], coins: 5, medals: { gold:1, silver:1, bronze:0 }, strikes:2 },
@@ -42,7 +42,7 @@ const norm = s => String(s || '').trim().toLowerCase().normalize('NFD').replace(
 function load(){
   try {
     const current = localStorage.getItem(STORAGE);
-    const legacy = localStorage.getItem(LEGACY_STORAGE);
+    const legacy = localStorage.getItem(LEGACY_STORAGE) || localStorage.getItem('qs-league-mvp-v2');
     return normalizeState(JSON.parse(current || legacy) || structuredClone(seed));
   } catch { return structuredClone(seed); }
 }
@@ -53,6 +53,7 @@ function save(){ localStorage.setItem(STORAGE, JSON.stringify(state)); }
 function team(id){ return state.teams.find(t => t.id === id) || { name:'Sin equipo', icon:'?' }; }
 function player(id){ return state.players.find(p => p.id === id); }
 function initials(name){ return name.split(' ').map(x => x[0]).join('').slice(0,2).toUpperCase(); }
+function fileBaseName(name){ return String(name || 'Kahoot QS League').replace(/\.(xlsx|xls|csv)$/i,''); }
 
 function init(){ bind(); if(localStorage.getItem(SESSION)) showApp(); render(); }
 
@@ -66,13 +67,13 @@ function bind(){
   $('#search').addEventListener('input', renderRanking);
   $('#demoImport').addEventListener('click', demoImport);
   $('#applyImport').addEventListener('click', applyImport);
-  $('#fileInput').addEventListener('change', e => e.target.files[0] && readFile(e.target.files[0]));
+  $('#fileInput').addEventListener('change', e => readFiles([...e.target.files]));
   $('#downloadTemplate').addEventListener('click', downloadTemplate);
   $('#resetLocal').addEventListener('click', resetLocal);
   const drop = $('#dropZone');
   drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
   drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
-  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag'); const file = e.dataTransfer.files[0]; if(file) readFile(file); });
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag'); readFiles([...e.dataTransfer.files]); });
 }
 
 function showApp(){ $('#loginView').classList.add('hidden'); $('#appView').classList.remove('hidden'); render(); }
@@ -119,21 +120,36 @@ function findPlayer(nick){ const n = norm(nick); return state.players.find(p => 
 function findHeader(headers, names){ return headers.find(h => names.some(n => norm(h).includes(n))); }
 function cleanNumber(value){ return Number(String(value ?? '').replace(/[^0-9.,-]/g,'').replace(',','.')) || 0; }
 
-async function readFile(file){
-  try{
-    const parsed = file.name.toLowerCase().endsWith('.csv') ? await csv(file) : await xlsx(file);
-    buildPreview(parsed.rows, { fileName:file.name, source:parsed.source || 'CSV', sheet:parsed.sheet || 'CSV' });
-  }catch(e){ console.error(e); toast('No pude leer el archivo. Probá con XLSX o CSV exportado de Kahoot.'); }
+async function readFiles(files){
+  const validFiles = files.filter(file => /\.(xlsx|xls|csv)$/i.test(file.name));
+  if(!validFiles.length){ toast('Elegí reportes XLSX, XLS o CSV de Kahoot.'); return; }
+  const imported = [];
+  const failed = [];
+  for(const file of validFiles){
+    try{
+      const parsed = file.name.toLowerCase().endsWith('.csv') ? await csv(file) : await xlsx(file);
+      const preview = parseKahootRows(parsed.rows, { fileName:file.name, source:parsed.source || 'CSV', sheet:parsed.sheet || 'CSV' });
+      if(preview.rows.length) imported.push(preview); else failed.push(file.name);
+    }catch(e){ console.error(e); failed.push(file.name); }
+  }
+  if(!imported.length){ toast('No pude leer ningún reporte. Probá con XLSX de Kahoot Reports.'); return; }
+  buildBatchPreview(imported, failed);
 }
 function csv(file){ return file.text().then(text => ({ rows: parseCsvText(text), source:'CSV', sheet:'CSV' })); }
 function parseCsvText(text){
-  const lines = text.split(/\r?\n/).filter(line => line.trim());
-  const header = splitCsv(lines.shift() || '').map(x=>x.trim());
-  return lines.map(line => Object.fromEntries(splitCsv(line).map((v,i)=>[header[i],v.trim()])));
+  const matrix = text.split(/\r?\n/).filter(line => line.trim()).map(line => splitCsv(line));
+  const parsed = rowsFromMatrix(matrix);
+  return parsed.rows;
 }
 function splitCsv(line){
   const out=[]; let cur=''; let quoted=false;
-  for(let i=0;i<line.length;i++){ const c=line[i]; if(c==='"') quoted=!quoted; else if(c===',' && !quoted){ out.push(cur.replace(/^"|"$/g,'')); cur=''; } else cur+=c; }
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"' && line[i+1]==='"'){ cur+='"'; i++; }
+    else if(c==='"') quoted=!quoted;
+    else if(c===',' && !quoted){ out.push(cur.replace(/^"|"$/g,'')); cur=''; }
+    else cur+=c;
+  }
   out.push(cur.replace(/^"|"$/g,'')); return out;
 }
 function xlsx(file){ return file.arrayBuffer().then(buf => {
@@ -142,7 +158,7 @@ function xlsx(file){ return file.arrayBuffer().then(buf => {
   return { rows: candidate.rows, source:'XLSX', sheet:candidate.sheet };
 }); }
 function pickKahootSheet(wb){
-  const preferred = ['Final Scores','Final scores','Scores','Overview','Raw data','RawReportData'];
+  const preferred = ['Final Scores','Final scores','Scores','Overview','Raw Report Data','Raw data','RawReportData'];
   const names = [...preferred.filter(n=>wb.SheetNames.includes(n)), ...wb.SheetNames.filter(n=>!preferred.includes(n))];
   for(const sheet of names){
     const matrix = XLSX.utils.sheet_to_json(wb.Sheets[sheet], { header:1, defval:'' });
@@ -160,22 +176,36 @@ function rowsFromMatrix(matrix){
   const nameKey = findHeader(headers, aliases);
   return { rows, nameKey };
 }
-function buildPreview(rows, meta={}){
+function parseKahootRows(rows, meta={}){
   const hs = Object.keys(rows[0] || {});
   const nameKey = findHeader(hs,['nickname','player','name','nombre','participante','jugador','identifier','email']);
   const scoreKey = findHeader(hs,['score','points','puntos','puntaje','total score','current total']);
   const rankKey = findHeader(hs,['rank','puesto','position','ranking','place']);
-  const correctKey = findHeader(hs,['correct','correctas','correct answers']);
-  if(!nameKey){ toast('No encontré columna de nickname/jugador.'); return; }
+  const correctKey = findHeader(hs,['correct answers','correctas','correct']);
+  if(!nameKey) return { rows:[], meta:{...meta, error:'No se detectó columna de jugador'} };
   const parsed = rows.map((r,i)=>({
     nickname:String(r[nameKey] || '').trim(),
     score:cleanNumber(r[scoreKey]),
     correct: correctKey ? cleanNumber(r[correctKey]) : null,
     rank: rankKey ? cleanNumber(r[rankKey]) : i + 1
-  })).filter(r=>r.nickname && !/average|total|summary/i.test(r.nickname));
-  state.pending = parsed.sort((a,b)=> rankKey ? a.rank-b.rank : b.score-a.score).map((r,i)=>({ ...r, rank:i+1, playerId: findPlayer(r.nickname)?.id || '' }));
-  state.pendingMeta = { ...meta, count: state.pending.length, createdAt: new Date().toISOString(), nameKey, scoreKey, rankKey, correctKey };
-  save(); renderPreview(); $('#applyImport').disabled = false; toast(`Detecté ${state.pending.length} participantes.`);
+  })).filter(r=>r.nickname && !/average|total|summary|final scores/i.test(r.nickname));
+  const rowsWithRank = parsed.sort((a,b)=> rankKey ? a.rank-b.rank : b.score-a.score).map((r,i)=>({
+    ...r,
+    rank:i+1,
+    playerId: findPlayer(r.nickname)?.id || '',
+    reportId: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    reportName: fileBaseName(meta.fileName),
+    sourceFile: meta.fileName || 'Reporte Kahoot',
+    sheet: meta.sheet || '—'
+  }));
+  return { rows: rowsWithRank, meta:{ ...meta, count:rowsWithRank.length, nameKey, scoreKey, rankKey, correctKey } };
+}
+function buildBatchPreview(imported, failed=[]){
+  state.pending = imported.flatMap(item => item.rows.map(row => ({ ...row, batchId:item.meta.fileName || item.meta.sheet || row.reportName })));
+  state.pendingMeta = { files: imported.map(item => item.meta), failed, count:state.pending.length, createdAt:new Date().toISOString(), batch:true };
+  save(); renderPreview(); $('#applyImport').disabled = false;
+  const msg = imported.length === 1 ? `Detecté ${state.pending.length} participantes.` : `Detecté ${imported.length} reportes y ${state.pending.length} filas.`;
+  toast(failed.length ? `${msg} ${failed.length} archivo(s) fallaron.` : msg);
 }
 function renderPreview(){
   if(!state.pending){ $('#preview').className='preview empty'; $('#preview').textContent='Todavía no hay archivo cargado.'; return; }
@@ -183,31 +213,41 @@ function renderPreview(){
   const mapped = state.pending.filter(r=>r.playerId).length;
   const unmapped = state.pending.length - mapped;
   const meta = state.pendingMeta || {};
+  const files = meta.files || [];
+  const reportCount = files.length || 1;
   const opts = ['<option value="">Sin mapear</option>', ...state.players.map(p=>`<option value="${p.id}">${p.name}</option>`)].join('');
   const warning = unmapped ? `<p class="preview-warning">Hay ${unmapped} participante${unmapped>1?'s':''} sin mapear. Podés seleccionarlo manualmente antes de aplicar puntos.</p>` : '';
+  const failed = meta.failed?.length ? `<p class="preview-warning">No pude leer: ${meta.failed.join(', ')}</p>` : '';
+  const fileSummary = files.length ? `<p class="preview-source">Reportes: ${files.map(file => `${file.fileName || 'archivo'} (${file.sheet || 'hoja?'})`).join(' · ')}</p>` : '';
   $('#preview').innerHTML = `
     <div class="import-status">
-      <article><strong>${fmt(state.pending.length)}</strong><span>participantes</span></article>
+      <article><strong>${fmt(reportCount)}</strong><span>reportes</span></article>
+      <article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article>
       <article><strong>${fmt(mapped)}</strong><span>mapeados</span></article>
       <article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article>
-      <article><strong>${meta.sheet || '—'}</strong><span>hoja detectada</span></article>
     </div>
-    ${warning}
-    <table><thead><tr><th>Rank</th><th>Nickname Kahoot</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((r,i)=>`<tr><td>${r.rank}</td><td>${r.nickname}</td><td>${fmt(r.score)}</td><td>${r.correct ?? '—'}</td><td><select data-map="${i}">${opts}</select><div class="${r.playerId?'mapped':'unmapped'}">${r.playerId?'Detectado':'Revisar'}</div></td><td>${award(r.rank).label}</td></tr>`).join('')}</tbody></table>`;
+    ${fileSummary}${warning}${failed}
+    <table><thead><tr><th>Reporte</th><th>Rank</th><th>Nickname Kahoot</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((r,i)=>`<tr><td>${r.reportName || 'Kahoot'}</td><td>${r.rank}</td><td>${r.nickname}</td><td>${fmt(r.score)}</td><td>${r.correct ?? '—'}</td><td><select data-map="${i}">${opts}</select><div class="${r.playerId?'mapped':'unmapped'}">${r.playerId?'Detectado':'Revisar'}</div></td><td>${award(r.rank).label}</td></tr>`).join('')}</tbody></table>`;
   $$('[data-map]').forEach(s=>{ s.value = state.pending[s.dataset.map].playerId; s.addEventListener('change',()=>{ state.pending[s.dataset.map].playerId=s.value; save(); renderPreview(); }); });
 }
-function demoImport(){ buildPreview([
-  { Nickname:'Jess', Score:11250, Correctas:14 }, { Nickname:'Nico', Score:10880, Correctas:13 }, { Nickname:'Agus', Score:10120, Correctas:12 },
-  { Nickname:'Seba', Score:9900, Correctas:12 }, { Nickname:'Javi', Score:9500, Correctas:11 }, { Nickname:'Euge', Score:7400, Correctas:9 }
-], { fileName:'demo-kahoot.csv', source:'Demo', sheet:'Demo' }); }
+function demoImport(){
+  const demoRows = [{ Nickname:'Jess', Score:11250, Rank:1, Correctas:14 }, { Nickname:'Nico', Score:10880, Rank:2, Correctas:13 }, { Nickname:'Agus', Score:10120, Rank:3, Correctas:12 }, { Nickname:'Seba', Score:9900, Rank:4, Correctas:12 }, { Nickname:'Javi', Score:9500, Rank:5, Correctas:11 }, { Nickname:'Euge', Score:7400, Rank:6, Correctas:9 }];
+  buildBatchPreview([parseKahootRows(demoRows, { fileName:'demo-kahoot.csv', source:'Demo', sheet:'Demo' })]);
+}
 function applyImport(){
   const mapped = state.pending?.filter(r=>r.playerId) || []; if(mapped.length < 3){ toast('Mapeá al menos 3 participantes.'); return; }
-  const session = $('#sessionName').value || 'Kahoot QS League';
   const importId = `import-${Date.now()}`;
-  mapped.forEach(r=>{ const a=award(r.rank); const p=player(r.playerId); if(a.delta && p){ p.coins += a.delta; p.medals[a.key] += 1; state.ledger.push({id:`${importId}-${p.id}`, player:p.id, delta:a.delta, reason:`${session}: ${a.label}`}); } });
-  const last = [...mapped].reverse()[0]; if(last) state.nextModerator = last.playerId;
-  state.imports.unshift({ id:importId, session, date:new Date().toISOString(), meta:state.pendingMeta, rows:mapped });
-  state.pending = null; state.pendingMeta = null; save(); $('#applyImport').disabled=true; render(); setTab('arena'); toast('Resultado aplicado. Ranking actualizado.');
+  const grouped = Map.groupBy ? Map.groupBy(mapped, row => row.batchId || row.reportName || 'Kahoot') : mapped.reduce((map,row)=>{ const key=row.batchId || row.reportName || 'Kahoot'; map.set(key,[...(map.get(key)||[]),row]); return map; }, new Map());
+  grouped.forEach((rows, key) => {
+    const session = rows[0]?.reportName || $('#sessionName').value || 'Kahoot QS League';
+    rows.forEach(r=>{
+      const a=award(r.rank); const p=player(r.playerId);
+      if(a.delta && p){ p.coins += a.delta; p.medals[a.key] += 1; state.ledger.push({id:`${importId}-${key}-${p.id}-${r.rank}`, player:p.id, delta:a.delta, reason:`${session}: ${a.label}`}); }
+    });
+    const last = [...rows].sort((a,b)=>a.rank-b.rank).at(-1); if(last) state.nextModerator = last.playerId;
+    state.imports.unshift({ id:`${importId}-${key}`, session, date:new Date().toISOString(), meta:{...state.pendingMeta, file:key}, rows });
+  });
+  state.pending = null; state.pendingMeta = null; save(); $('#applyImport').disabled=true; render(); setTab('arena'); toast('Historial aplicado. Ranking actualizado.');
 }
 function downloadTemplate(){
   const csv = 'Nickname,Score,Rank,Correctas\nJess,11250,1,14\nNico,10880,2,13\nAgus,10120,3,12\nSeba,9900,4,12\nJavi,9500,5,11\nEuge,7400,6,9\n';
@@ -215,6 +255,6 @@ function downloadTemplate(){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'qs-league-kahoot-demo.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
 }
-function resetLocal(){ localStorage.removeItem(STORAGE); localStorage.removeItem(LEGACY_STORAGE); state = structuredClone(seed); save(); render(); toast('Datos locales reiniciados.'); }
+function resetLocal(){ localStorage.removeItem(STORAGE); localStorage.removeItem(LEGACY_STORAGE); localStorage.removeItem('qs-league-mvp-v2'); state = structuredClone(seed); save(); render(); toast('Datos locales reiniciados.'); }
 function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),2800); }
 init();
