@@ -2,12 +2,12 @@ const STORAGE = 'qs-league-mvp-v9';
 const SESSION = 'qs-league-session-v2';
 const RULES_STORAGE = 'qs-league-rules-v2';
 
+const zeroMedals = () => ({ gold: 0, silver: 0, bronze: 0 });
+const clone = value => JSON.parse(JSON.stringify(value));
 const fmt = value => new Intl.NumberFormat('es-AR').format(value || 0);
 const norm = value => String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-const clone = value => JSON.parse(JSON.stringify(value));
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
-const zeroMedals = () => ({ gold: 0, silver: 0, bronze: 0 });
 
 const teams = [
   { id: 'design', name: 'Design Rebels', icon: '🦖' },
@@ -109,14 +109,13 @@ const legends = {
 };
 
 const defaultRules = [
-  { title:'Nueva etapa', body:'Desde Season 02 cada Kahoot suma oro +3, plata +2 y bronce +1.' },
-  { title:'Ajustes admin', body:'Todo ajuste manual de DinoCoins o meteoritos requiere motivo obligatorio.' },
-  { title:'Meteoritos', body:'Los meteoritos empiezan desde la temporada actual y se cargan o quitan manualmente por admin.' },
-  { title:'Leyendas', body:'Los semestres cerrados quedan en Leyendas con su ranking histórico.' }
+  { title:'Puntos por podio', body:'Desde Season 02: oro +3, plata +2 y bronce +1.' },
+  { title:'Ranking actual', body:'La Arena actual muestra el ranking individual. Equipos queda pausado hasta definir la mecánica grupal.' },
+  { title:'Ajustes admin', body:'Se pueden sumar o quitar DinoCoins y meteoritos, siempre explicando el motivo.' },
+  { title:'Leyendas', body:'Los semestres cerrados pasan a Leyendas. El primer semestre 2026 cuenta solo ganadores.' }
 ];
 
 let state = load();
-let mode = 'teams';
 let confettiDone = false;
 
 function load(){
@@ -144,42 +143,43 @@ function mergePlayers(savedPlayers){
       team: saved.team || seedPlayer.team,
       aliases: [...new Set([...(seedPlayer.aliases || []), ...(saved.aliases || [])])],
       medals: { ...seedPlayer.medals, ...(saved.medals || {}) },
-      meteorites: Math.max(0, Number(saved.meteorites ?? seedPlayer.meteorites ?? 0))
+      meteorites: Number(saved.meteorites || seedPlayer.meteorites || 0)
     };
   });
   savedPlayers.forEach(player => { if(player?.id && !merged.some(item => item.id === player.id)) merged.push(player); });
   return merged;
 }
 function save(){ localStorage.setItem(STORAGE, JSON.stringify(state)); }
-function on(selector, event, handler){ const element = $(selector); if(element) element.addEventListener(event, handler); }
-function team(id){ return state.teams.find(item => item.id === id) || { name:'Sin equipo', icon:'?' }; }
 function player(id){ return state.players.find(item => item.id === id); }
+function team(id){ return state.teams.find(item => item.id === id) || { name:'Sin equipo', icon:'?' }; }
+function on(selector,event,handler){ const node = $(selector); if(node) node.addEventListener(event,handler); }
+function initials(name){ return String(name || '').split(' ').map(item => item[0]).join('').slice(0,2).toUpperCase(); }
 function fileBaseName(name){ return String(name || 'Kahoot QS League').replace(/\.(xlsx|xls|csv)$/i,''); }
 
 function init(){
   ensureRuntimeStyles();
   bind();
-  populateAdjustPlayers();
-  renderRules();
-  if(localStorage.getItem(SESSION)) showApp(false);
   render();
+  if(localStorage.getItem(SESSION)) showApp(false);
 }
 function bind(){
-  on('#loginForm','submit', event => { event.preventDefault(); localStorage.setItem(SESSION,'1'); showApp(true); toast('Bienvenida a QS League.'); });
-  on('#demoLogin','click', () => { localStorage.setItem(SESSION,'1'); showApp(true); toast('Modo admin demo activo.'); });
+  on('#loginForm','submit', event => { event.preventDefault(); localStorage.setItem(SESSION,'1'); showApp(true); });
+  on('#demoLogin','click', () => { localStorage.setItem(SESSION,'1'); showApp(true); });
   on('#logoutBtn','click', () => { localStorage.removeItem(SESSION); $('#appView')?.classList.add('hidden'); $('#loginView')?.classList.remove('hidden'); });
   on('#menuBtn','click', () => $('.sidebar')?.classList.toggle('open'));
-  $$('[data-tab]').forEach(button => button.addEventListener('click', event => { event.preventDefault(); setTab(button.dataset.tab); }));
-  $$('[data-mode]').forEach(button => button.addEventListener('click', () => { mode = button.dataset.mode; $$('[data-mode]').forEach(item => item.classList.toggle('active', item === button)); renderRanking(); }));
+  document.addEventListener('click', event => {
+    const tabButton = event.target.closest('[data-tab]');
+    if(tabButton){ event.preventDefault(); setTab(tabButton.dataset.tab); }
+  });
   on('#search','input', renderRanking);
-  on('#demoImport','click', demoImport);
+  on('#openUploadModal','click', openUploadModal);
+  on('#cancelUpload','click', closeUploadModal);
+  on('#cancelUploadTop','click', closeUploadModal);
+  on('#fileInput','change', event => readFiles([...event.target.files]));
   on('#applyImport','click', applyImport);
-  on('#downloadTemplate','click', downloadTemplate);
-  on('#resetLocal','click', resetLocal);
   on('#applyManualAdjust','click', applyManualAdjust);
   on('#saveRules','click', saveRules);
   on('#restoreRules','click', restoreRules);
-  on('#fileInput','change', event => readFiles([...event.target.files]));
   const drop = $('#dropZone');
   if(drop){
     drop.addEventListener('dragover', event => { event.preventDefault(); drop.classList.add('drag'); });
@@ -190,52 +190,48 @@ function bind(){
 function showApp(withConfetti){
   $('#loginView')?.classList.add('hidden');
   $('#appView')?.classList.remove('hidden');
+  setTab('arena');
   render();
   if(withConfetti) dropConfetti();
 }
 function setTab(tab){
-  if(window.qsLeagueSetTab) window.qsLeagueSetTab(tab);
-  else {
-    $$('.tab').forEach(panel => panel.classList.toggle('active', panel.id === tab));
-    $$('.sidebar nav button,[data-tab].ghost').forEach(button => button.classList.toggle('active', button.dataset.tab === tab));
-  }
+  const titles = { arena:'Arena actual', legends:'Leyendas', rules:'Reglas' };
+  $$('.tab').forEach(panel => panel.classList.toggle('active', panel.id === tab));
+  $$('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === tab));
+  if($('#pageTitle')) $('#pageTitle').textContent = titles[tab] || 'QS League';
+  $('.sidebar')?.classList.remove('open');
   if(tab === 'legends') dropConfetti();
 }
+window.qsLeagueDemoLogin = function(){ localStorage.setItem(SESSION,'1'); showApp(true); };
+window.qsLeagueSetTab = setTab;
 
-function standingsPlayers(){ return [...state.players].sort((a,b) => (b.coins || 0) - (a.coins || 0) || (b.medals.gold || 0) - (a.medals.gold || 0) || a.name.localeCompare(b.name)); }
-function standingsTeams(){
-  return state.teams.map(teamItem => {
-    const members = state.players.filter(item => item.team === teamItem.id);
-    return {
-      ...teamItem,
-      members,
-      coins: members.reduce((sum,item) => sum + (item.coins || 0), 0),
-      gold: members.reduce((sum,item) => sum + (item.medals?.gold || 0), 0),
-      meteorites: members.reduce((sum,item) => sum + (item.meteorites || 0), 0)
-    };
-  }).sort((a,b) => b.coins - a.coins || b.gold - a.gold || a.name.localeCompare(b.name));
+function standingsPlayers(){
+  return [...state.players].sort((a,b) =>
+    (b.coins || 0) - (a.coins || 0) ||
+    (b.medals?.gold || 0) - (a.medals?.gold || 0) ||
+    (a.meteorites || 0) - (b.meteorites || 0) ||
+    a.name.localeCompare(b.name)
+  );
 }
-function render(){ renderStats(); renderRanking(); renderArenaPodium(); renderTimeline(); renderPreview(); renderLegends(); }
+function render(){ renderStats(); renderRanking(); renderPodium(); renderTimeline(); renderLegends(); renderRules(); renderAdjustPlayers(); renderPreview(); }
 function renderStats(){
   const total = state.players.reduce((sum,item) => sum + (item.coins || 0), 0);
   if($('#totalCoins')) $('#totalCoins').textContent = fmt(total);
-  if($('#totalPlayers')) $('#totalPlayers').textContent = state.players.length;
+  if($('#totalPlayers')) $('#totalPlayers').textContent = basePlayers.length;
   if($('#totalTeams')) $('#totalTeams').textContent = state.teams.length;
   if($('#seasonTotal')) $('#seasonTotal').textContent = `${fmt(total)} DinoCoins`;
-  if($('#seasonBar')) $('#seasonBar').style.width = Math.min(100, total * 12) + '%';
+  if($('#seasonBar')) $('#seasonBar').style.width = Math.min(100, total * 14) + '%';
 }
 function renderRanking(){
   const container = $('#rankingList');
   if(!container) return;
   const q = norm($('#search')?.value);
-  if(mode === 'teams'){
-    container.innerHTML = standingsTeams().filter(item => norm(item.name + item.members.map(member => member.name).join(' ')).includes(q)).map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div><h3>${item.icon} ${item.name}</h3><small>${item.members.length} integrantes · ${item.gold} oros · ☄️ ${item.meteorites}</small></div><div class="medals"><span>🥇 ${item.gold}</span><span>☄️ ${item.meteorites}</span></div><div class="coins">${fmt(item.coins)} 🪙</div></article>`).join('');
-    return;
-  }
-  container.innerHTML = standingsPlayers().filter(item => norm(item.name + (item.aliases || []).join(' ') + team(item.team).name).includes(q)).map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div><h3>${item.name}</h3><small>${team(item.team).name} · ☄️ ${item.meteorites || 0}</small></div>${medals(item)}<div class="coins">${fmt(item.coins)} 🪙</div></article>`).join('');
+  container.innerHTML = standingsPlayers()
+    .filter(item => norm(item.name + (item.aliases || []).join(' ') + team(item.team).name).includes(q))
+    .map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="rank-main"><h3>${item.name}</h3><small>${team(item.team).name}</small></div>${medals(item)}<div class="coins">${fmt(item.coins)} 🪙</div><div class="meteor-mini">☄️ ${item.meteorites || 0}</div></article>`).join('');
 }
 function medals(item){ return `<div class="medals"><span>🥇 ${item.medals?.gold || 0}</span><span>🥈 ${item.medals?.silver || 0}</span><span>🥉 ${item.medals?.bronze || 0}</span></div>`; }
-function renderArenaPodium(){
+function renderPodium(){
   const container = $('#podium');
   if(!container) return;
   const items = [
@@ -243,24 +239,25 @@ function renderArenaPodium(){
     { medal:'🥈', title:'Plata', text:'+2 DinoCoins', detail:'Segundo puesto' },
     { medal:'🥉', title:'Bronce', text:'+1 DinoCoin', detail:'Tercer puesto' }
   ];
-  container.innerHTML = items.map((item,index) => `<article class="podium-card arena-demo-card"><span class="place">${item.medal} ${index+1}</span><div class="avatar">${item.medal}</div><h3>${item.title}</h3><p>${item.detail}</p><div class="coins">${item.text}</div><small>Ranking real en Arena actual</small></article>`).join('');
+  container.innerHTML = items.map((item,index) => `<article class="podium-card arena-demo-card"><span class="place">${item.medal} ${index+1}</span><div class="avatar">${item.medal}</div><h3>${item.title}</h3><p>${item.detail}</p><div class="coins">${item.text}</div></article>`).join('');
 }
 function renderTimeline(){
   const container = $('#timeline');
   if(!container) return;
-  if(!state.ledger.length){ container.innerHTML = '<article class="activity"><strong>Nueva temporada lista</strong><span>Cargá el último Kahoot o aplicá un ajuste admin con motivo.</span></article>'; return; }
+  if(!state.ledger.length){ container.innerHTML = '<article class="activity"><strong>Nueva temporada lista</strong><span>Cargá el último Kahoot desde Arena para empezar a sumar DinoCoins.</span></article>'; return; }
   container.innerHTML = [...state.ledger].reverse().slice(0,10).map(item => {
-    const target = player(item.player)?.name || 'Sistema';
     const icon = item.type === 'meteor' ? '☄️' : '🪙';
-    const sign = item.delta > 0 ? '+' : '';
-    return `<article class="activity"><strong>${target} ${sign}${item.delta} ${icon}</strong><span>${item.reason}</span></article>`;
+    const delta = item.delta > 0 ? `+${item.delta}` : item.delta;
+    return `<article class="activity"><strong>${player(item.player)?.name || 'Sistema'} ${delta} ${icon}</strong><span>${item.reason}</span></article>`;
   }).join('');
 }
 
-function populateAdjustPlayers(){
+function renderAdjustPlayers(){
   const select = $('#adjustPlayer');
   if(!select) return;
+  const current = select.value;
   select.innerHTML = state.players.map(item => `<option value="${item.id}">${item.name}</option>`).join('');
+  if(current) select.value = current;
 }
 function applyManualAdjust(){
   const playerId = $('#adjustPlayer')?.value;
@@ -271,7 +268,6 @@ function applyManualAdjust(){
   const target = player(playerId);
   if(!target){ toast('Elegí un jugador.'); return; }
   if(!reason){ toast('El motivo es obligatorio.'); return; }
-
   if(kind === 'dino'){
     const delta = action === 'add' ? amount : -Math.min(amount, target.coins || 0);
     if(delta === 0){ toast('No hay DinoCoins para quitar.'); return; }
@@ -283,7 +279,6 @@ function applyManualAdjust(){
     target.meteorites = Math.max(0, (target.meteorites || 0) + delta);
     state.ledger.push({ id:`meteor-${Date.now()}`, type:'meteor', player:target.id, delta, reason:`Meteorito admin: ${reason}` });
   }
-
   $('#adjustReason').value = '';
   $('#adjustAmount').value = 1;
   save(); render(); toast('Ajuste aplicado y registrado.');
@@ -296,18 +291,33 @@ function renderLegends(){
   if($('#semesterDates')) $('#semesterDates').textContent = season.dates;
   if($('#semesterWinners')) $('#semesterWinners').textContent = sorted.filter(item => item.wins > 0).length;
   if($('#semesterSeasons')) $('#semesterSeasons').textContent = legends.seasons.length;
-  $('#semesterPodium').innerHTML = sorted.slice(0,3).map((item,index) => `<article class="semester-winner"><div class="medal">${['🥇','🥈','🥉'][index]}</div><div class="place">#${index+1}</div><h3>${item.name}</h3><strong>${item.wins} victoria${item.wins===1?'':'s'}</strong><small>Histórico: solo ganadores</small></article>`).join('');
-  $('#semesterRanking').innerHTML = sorted.map((item,index) => `<article class="semester-row"><b>${String(index+1).padStart(2,'0')}</b><div><strong>${item.name}</strong><span>${item.wins ? 'Ganó al menos una fecha' : 'Sin victorias en el corte'}</span></div><div class="wins-pill">${item.wins} ${item.wins===1?'victoria':'victorias'}</div></article>`).join('');
+  $('#semesterPodium').innerHTML = sorted.slice(0,3).map((item,index) => `<article class="semester-winner"><div class="medal">${['🥇','🥈','🥉'][index]}</div><div class="place">#${index+1}</div><h3>${item.name}</h3><strong>${item.wins} victoria${item.wins===1?'':'s'}</strong></article>`).join('');
+  $('#semesterRanking').innerHTML = sorted.map((item,index) => `<article class="semester-row"><b>${String(index+1).padStart(2,'0')}</b><div><strong>${item.name}</strong></div><div class="wins-pill">${item.wins} ${item.wins===1?'victoria':'victorias'}</div></article>`).join('');
   $('#semesterHistory').innerHTML = season.history.map(item => `<article class="history-row"><span>${item.date}</span><div><b>${item.winner}</b><span>Moderador: ${item.moderator}</span></div><em class="${item.status === 'Confirmar' ? 'state-confirmar' : ''}">${item.status}</em></article>`).join('');
 }
 
+function openUploadModal(){
+  state.pending = null;
+  state.pendingMeta = null;
+  save();
+  renderPreview();
+  if($('#applyImport')) $('#applyImport').disabled = true;
+  $('#uploadModal')?.classList.remove('hidden');
+  $('#uploadModal')?.setAttribute('aria-hidden','false');
+}
+function closeUploadModal(){
+  $('#uploadModal')?.classList.add('hidden');
+  $('#uploadModal')?.setAttribute('aria-hidden','true');
+  if($('#fileInput')) $('#fileInput').value = '';
+  state.pending = null; state.pendingMeta = null; save(); renderPreview();
+}
 function award(rank){ return rank===1 ? { delta:3, key:'gold', label:'🥇 Oro +3' } : rank===2 ? { delta:2, key:'silver', label:'🥈 Plata +2' } : rank===3 ? { delta:1, key:'bronze', label:'🥉 Bronce +1' } : { delta:0, key:null, label:'—' }; }
 function findPlayer(nick){ const n = norm(nick); return state.players.find(item => [item.name, ...(item.aliases || [])].some(alias => norm(alias) === n)); }
 function findHeader(headers, names){ return headers.find(header => names.some(name => norm(header).includes(name))); }
 function cleanNumber(value){ return Number(String(value ?? '').replace(/[^0-9.,-]/g,'').replace(',','.')) || 0; }
 async function readFiles(files){
   const validFiles = files.filter(file => /\.(xlsx|xls|csv)$/i.test(file.name));
-  if(!validFiles.length){ toast('Elegí reportes XLSX, XLS o CSV de Kahoot.'); return; }
+  if(!validFiles.length){ toast('Elegí un informe XLSX, XLS o CSV de Kahoot.'); return; }
   const imported = [];
   const failed = [];
   for(const file of validFiles){
@@ -317,7 +327,7 @@ async function readFiles(files){
       if(preview.rows.length) imported.push(preview); else failed.push(file.name);
     } catch(error){ console.error(error); failed.push(file.name); }
   }
-  if(!imported.length){ toast('No pude leer ningún reporte. Probá con XLSX de Kahoot Reports.'); return; }
+  if(!imported.length){ toast('No pude leer el informe. Probá con XLSX de Kahoot Reports.'); return; }
   buildBatchPreview(imported, failed);
 }
 function csv(file){ return file.text().then(text => ({ rows: parseCsvText(text), source:'CSV', sheet:'CSV' })); }
@@ -373,6 +383,7 @@ function parseKahootRows(rows, meta={}){
     ...row,
     rank: index + 1,
     playerId: findPlayer(row.nickname)?.id || '',
+    reportId: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
     reportName: fileBaseName(meta.fileName),
     sourceFile: meta.fileName || 'Reporte Kahoot',
     sheet: meta.sheet || '—'
@@ -384,39 +395,27 @@ function buildBatchPreview(imported, failed=[]){
   state.pendingMeta = { files: imported.map(item => item.meta), failed, count:state.pending.length, createdAt:new Date().toISOString(), batch:true };
   save(); renderPreview();
   if($('#applyImport')) $('#applyImport').disabled = false;
-  const msg = imported.length === 1 ? `Detecté ${state.pending.length} participantes.` : `Detecté ${imported.length} reportes y ${state.pending.length} filas.`;
-  toast(failed.length ? `${msg} ${failed.length} archivo(s) fallaron.` : msg);
+  toast(`Informe cargado: ${state.pending.length} filas detectadas.`);
 }
 function renderPreview(){
   const container = $('#preview');
   if(!container) return;
-  if(!state.pending){ container.className = 'preview empty'; container.textContent = 'Todavía no hay archivo cargado.'; return; }
+  if(!state.pending){ container.className = 'preview empty'; container.textContent = 'Todavía no hay informe cargado.'; return; }
   container.className = 'preview';
   const mapped = state.pending.filter(row => row.playerId).length;
   const unmapped = state.pending.length - mapped;
   const meta = state.pendingMeta || {};
   const files = meta.files || [];
   const opts = ['<option value="">Sin mapear</option>', ...state.players.map(item => `<option value="${item.id}">${item.name}</option>`)].join('');
-  const warning = unmapped ? `<p class="preview-warning">Hay ${unmapped} participante${unmapped>1?'s':''} sin mapear. Podés seleccionarlo manualmente antes de aplicar puntos.</p>` : '';
+  const warning = unmapped ? `<p class="preview-warning">Hay ${unmapped} participante${unmapped>1?'s':''} sin mapear. Mapealos antes de actualizar el ranking.</p>` : '';
   const failed = meta.failed?.length ? `<p class="preview-warning">No pude leer: ${meta.failed.join(', ')}</p>` : '';
-  const fileSummary = files.length ? `<p class="preview-source">Reportes: ${files.map(file => `${file.fileName || 'archivo'} (${file.sheet || 'hoja?'})`).join(' · ')}</p>` : '';
-  container.innerHTML = `<div class="import-status"><article><strong>${fmt(files.length || 1)}</strong><span>reportes</span></article><article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article><article><strong>${fmt(mapped)}</strong><span>mapeados</span></article><article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article></div>${fileSummary}${warning}${failed}<table><thead><tr><th>Reporte</th><th>Rank</th><th>Nickname Kahoot</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((row,index) => `<tr><td>${row.reportName || 'Kahoot'}</td><td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td><td><select data-map="${index}">${opts}</select><div class="${row.playerId?'mapped':'unmapped'}">${row.playerId?'Detectado':'Revisar'}</div></td><td>${award(row.rank).label}</td></tr>`).join('')}</tbody></table>`;
+  const fileSummary = files.length ? `<p class="preview-source">Informe: ${files.map(file => `${file.fileName || 'archivo'} (${file.sheet || 'hoja?'})`).join(' · ')}</p>` : '';
+  container.innerHTML = `<div class="import-status"><article><strong>${fmt(files.length || 1)}</strong><span>informes</span></article><article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article><article><strong>${fmt(mapped)}</strong><span>mapeados</span></article><article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article></div>${fileSummary}${warning}${failed}<table><thead><tr><th>Rank</th><th>Nickname</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((row,index) => `<tr><td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td><td><select data-map="${index}">${opts}</select><div class="${row.playerId?'mapped':'unmapped'}">${row.playerId?'Detectado':'Revisar'}</div></td><td>${award(row.rank).label}</td></tr>`).join('')}</tbody></table>`;
   $$('[data-map]').forEach(select => { select.value = state.pending[select.dataset.map].playerId; select.addEventListener('change', () => { state.pending[select.dataset.map].playerId = select.value; save(); renderPreview(); }); });
-}
-function demoImport(){
-  const demoRows = [
-    { Nickname:'Jesi', Score:11250, Rank:1, Correctas:14 },
-    { Nickname:'Nico', Score:10880, Rank:2, Correctas:13 },
-    { Nickname:'Agus', Score:10120, Rank:3, Correctas:12 },
-    { Nickname:'Sebas', Score:9900, Rank:4, Correctas:12 },
-    { Nickname:'Javi', Score:9500, Rank:5, Correctas:11 },
-    { Nickname:'Euge', Score:7400, Rank:6, Correctas:9 }
-  ];
-  buildBatchPreview([parseKahootRows(demoRows, { fileName:'demo-kahoot.csv', source:'Demo', sheet:'Demo' })]);
 }
 function applyImport(){
   const mapped = state.pending?.filter(row => row.playerId) || [];
-  if(mapped.length < 3){ toast('Mapeá al menos 3 participantes.'); return; }
+  if(mapped.length < 3){ toast('Mapeá al menos 3 participantes antes de actualizar.'); return; }
   const importId = `import-${Date.now()}`;
   const grouped = mapped.reduce((map,row) => { const key = row.batchId || row.reportName || 'Kahoot'; map.set(key, [...(map.get(key) || []), row]); return map; }, new Map());
   grouped.forEach((rows,key) => {
@@ -434,23 +433,15 @@ function applyImport(){
     if(last) state.nextModerator = last.playerId;
     state.imports.unshift({ id:`${importId}-${key}`, session, date:new Date().toISOString(), meta:{ ...state.pendingMeta, file:key }, rows });
   });
-  state.pending = null;
-  state.pendingMeta = null;
+  state.pending = null; state.pendingMeta = null;
   save();
-  if($('#applyImport')) $('#applyImport').disabled = true;
-  render(); setTab('arena'); dropConfetti(); toast('Reporte aplicado. Ranking actualizado.');
+  closeUploadModal();
+  render();
+  setTab('arena');
+  dropConfetti();
+  toast('Ranking actualizado.');
 }
-function downloadTemplate(){
-  const csv = 'Nickname,Score,Rank,Correctas\nJesi,11250,1,14\nNico,10880,2,13\nAgus,10120,3,12\nSebas,9900,4,12\nJavi,9500,5,11\nEuge,7400,6,9\n';
-  const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url; link.download = 'qs-league-kahoot-demo.csv'; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
-}
-function resetLocal(){
-  ['qs-league-mvp-v9','qs-league-mvp-v8','qs-league-mvp-v7','qs-league-mvp-v6','qs-league-mvp-v5','qs-league-mvp-v4','qs-league-mvp-v3','qs-league-mvp-v2'].forEach(key => localStorage.removeItem(key));
-  state = clone(seed); populateAdjustPlayers(); save(); render(); toast('Datos locales reiniciados.');
-}
+
 function loadRules(){ try { return JSON.parse(localStorage.getItem(RULES_STORAGE)) || clone(defaultRules); } catch { return clone(defaultRules); } }
 function renderRules(){
   const container = $('#rulesEditor');
@@ -461,22 +452,23 @@ function renderRules(){
 function saveRules(){
   const rules = loadRules().map((rule,index) => ({ title: $(`[data-rule-title="${index}"]`)?.textContent.trim() || rule.title, body: $(`[data-rule-body="${index}"]`)?.textContent.trim() || rule.body }));
   localStorage.setItem(RULES_STORAGE, JSON.stringify(rules));
-  toast('Reglas guardadas en modo admin.');
+  toast('Reglas guardadas.');
 }
 function restoreRules(){ localStorage.removeItem(RULES_STORAGE); renderRules(); toast('Reglas base restauradas.'); }
+
 function toast(message){
-  const toastNode = $('#toast');
-  if(!toastNode) return;
-  toastNode.textContent = message;
-  toastNode.classList.add('show');
+  const node = $('#toast');
+  if(!node) return;
+  node.textContent = message;
+  node.classList.add('show');
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => toastNode.classList.remove('show'), 2800);
+  toast.timer = setTimeout(() => node.classList.remove('show'), 2800);
 }
 function ensureRuntimeStyles(){
   if($('#qsLeagueRuntimeStyles')) return;
   const style = document.createElement('style');
   style.id = 'qsLeagueRuntimeStyles';
-  style.textContent = `.confetti-layer{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:qsConfetti 1.8s ease-in forwards}.arena-demo-card{position:relative;overflow:hidden}.arena-demo-card:after{content:"";position:absolute;inset:auto -30% -40% -30%;height:80%;background:radial-gradient(circle,rgba(183,255,24,.22),transparent 65%);opacity:.75}.semester-podium{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.semester-winner,.semester-row,.history-row{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.06);padding:14px}.semester-winner{text-align:center}.semester-winner .medal{font-size:42px}.semester-row,.history-row{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;margin-bottom:8px}.semester-row span,.history-row span{display:block;color:var(--muted);font-size:12px}.wins-pill{font-weight:950;color:var(--lime)}.state-confirmar{color:var(--gold)}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form select{width:100%;border:1px solid var(--line);border-radius:16px;background:rgba(4,6,14,.72);color:var(--text);padding:14px;outline:none}.secondary-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.preview-warning{color:var(--gold)!important}.preview-source{color:var(--muted)!important}@keyframes qsConfetti{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}@media(max-width:860px){.semester-podium,.admin-form{grid-template-columns:1fr}.semester-row,.history-row{grid-template-columns:36px 1fr}.wins-pill,.history-row em{grid-column:2}}`;
+  style.textContent = `.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:rgba(3,5,15,.72);backdrop-filter:blur(14px)}.modal.hidden{display:none!important}.modal-card{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(31,37,64,.98),rgba(14,18,32,.98));box-shadow:var(--shadow);padding:24px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form select,.preview select{width:100%;border:1px solid var(--line);border-radius:14px;background:#0c1020;color:var(--text);padding:12px}.ranking-panel{min-width:0}.rank-row{grid-template-columns:48px minmax(0,1fr) auto auto auto!important;align-items:center;overflow:visible}.rank-main h3{margin:0}.rank-main small{display:block;color:var(--muted);white-space:normal}.meteor-mini{font-weight:900;color:var(--bronze);white-space:nowrap}.semester-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.semester-winner,.semester-row,.history-row{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.06);padding:14px;min-width:0}.semester-winner{text-align:center}.semester-winner .medal{font-size:42px}.semester-winner h3,.semester-winner strong{display:block;word-break:normal}.semester-row,.history-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:8px}.semester-row span,.history-row span{display:block;color:var(--muted);font-size:12px}.wins-pill{font-weight:950;color:var(--lime);white-space:nowrap}.state-confirmar{color:var(--gold)}.confetti-layer{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:qsConfetti 1.8s ease-in forwards}@keyframes qsConfetti{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}@media(max-width:1100px){.arena-main-grid{grid-template-columns:1fr}.semester-podium{grid-template-columns:1fr}}@media(max-width:860px){.admin-form{grid-template-columns:1fr}.modal-actions{flex-direction:column}.rank-row{grid-template-columns:38px minmax(0,1fr)!important}.rank-row .medals,.rank-row .coins,.rank-row .meteor-mini{grid-column:2}.semester-row,.history-row{grid-template-columns:36px 1fr}.wins-pill,.history-row em{grid-column:2}}`;
   document.head.appendChild(style);
 }
 function dropConfetti(){
@@ -485,7 +477,7 @@ function dropConfetti(){
   const layer = document.createElement('div');
   layer.className = 'confetti-layer';
   const colors = ['#b7ff18','#20f6ff','#ffd15c','#ff4fd8','#7c3cff'];
-  for(let index=0; index<34; index++){
+  for(let index=0; index<30; index++){
     const piece = document.createElement('span');
     piece.className = 'confetti-piece';
     piece.style.left = `${Math.random()*100}%`;
