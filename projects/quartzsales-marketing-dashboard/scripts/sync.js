@@ -52,7 +52,7 @@ function formatFollowers(n) {
 }
 
 function extractFollowers(company) {
-  const followers = company?.followersCount ?? company?.followers ?? company?.followerCount
+  const followers = company?.followerCount ?? company?.followersCount ?? company?.followers
     ?? company?.companyFollowersCount ?? company?.numberOfFollowers ?? null;
   return typeof followers === 'number' ? followers : null;
 }
@@ -68,7 +68,10 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ linkedInUrls: [linkedinUrl] }),
+    // El actor harvestapi~linkedin-company espera `companies` (lista de URLs
+    // o slugs de empresa), no `linkedInUrls` — ese input quedó obsoleto tras
+    // un cambio de esquema del Actor.
+    body: JSON.stringify({ companies: [linkedinUrl] }),
   });
 
   if (!res.ok) {
@@ -78,7 +81,13 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
 
   const data = await res.json();
   const company = Array.isArray(data) ? data[0] : data;
-  if (!company) throw new Error('Apify no devolvió datos para esta URL (¿el slug de LinkedIn es correcto?)');
+  if (!company) {
+    throw new Error(
+      'Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, ' +
+      'o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de ' +
+      'harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).'
+    );
+  }
 
   return { followers: extractFollowers(company), employees: extractEmployees(company) };
 }
