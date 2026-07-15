@@ -438,9 +438,9 @@ button{ font-family: inherit; }
 
 .library-grid{
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.8rem;
 }
 .library-item{
   position: relative;

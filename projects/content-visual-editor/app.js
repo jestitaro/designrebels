@@ -266,6 +266,34 @@ $('#inputOpenDesign').addEventListener('change', e => {
   e.target.value = '';
 });
 
+// ---------- galería de imágenes: recursos predefinidos (categorías) ----------
+// Vienen con el editor (no se suben ni se guardan en IndexedDB) y no se pueden
+// borrar desde la galería: son el punto de partida que da QuartzSales para
+// que cualquier noticia pueda etiquetarse por categoría de producto.
+const DEFAULT_RESOURCES = [
+  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png' },
+  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png' },
+  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png' },
+  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png' },
+  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png' },
+  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png' },
+  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png' },
+  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png' },
+  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png' },
+  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png' },
+  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png' },
+  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png' },
+  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png' },
+  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png' }
+];
+
+function renderDefaultLibrary() {
+  const grid = $('#libraryDefaultGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  DEFAULT_RESOURCES.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
+}
+
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
 // Se guardan como dataURL (igual que el resto de las imágenes del editor) para
 // poder usarse directo como fondo o elemento sin conversiones adicionales.
@@ -377,6 +405,45 @@ function saveToLibrary(file, dataUrl) {
   });
 }
 
+// arma una celda de la galería, para un recurso predefinido (categoría) o uno
+// subido por el usuario; solo los subidos por el usuario se pueden borrar
+function buildLibraryCell(item, opts = {}) {
+  const src = item.src || item.dataUrl;
+  const cell = document.createElement('div');
+  cell.className = 'library-item';
+  cell.innerHTML = `
+    <img src="${src}" alt="${escapeHtml(item.name)}" title="${escapeHtml(item.name)}" loading="lazy">
+    <div class="library-item-actions">
+      <button type="button" data-action="insert" title="Insertar en el lienzo" aria-label="Insertar en el lienzo">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      </button>
+      <button type="button" data-action="bg" title="Usar como fondo del lienzo" aria-label="Usar como fondo del lienzo">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      </button>
+      ${opts.deletable ? `<button type="button" data-action="delete" title="Eliminar de la galería" aria-label="Eliminar de la galería">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>` : ''}
+    </div>
+  `;
+  cell.querySelector('[data-action="insert"]').addEventListener('click', () => {
+    addImageElement(src);
+  });
+  cell.querySelector('[data-action="bg"]').addEventListener('click', () => {
+    setBackgroundImage(src);
+    toast('Fondo actualizado desde la galería', 'success');
+  });
+  if (opts.deletable) {
+    cell.querySelector('[data-action="delete"]').addEventListener('click', async () => {
+      try {
+        await libraryDelete(item.id);
+        renderLibrary();
+        toast(`"${item.name}" eliminado de la galería`, 'info');
+      } catch (e) { toast('No se pudo eliminar ese recurso', 'error'); }
+    });
+  }
+  return cell;
+}
+
 async function renderLibrary() {
   const grid = $('#libraryGrid');
   const empty = $('#libraryEmpty');
@@ -389,40 +456,7 @@ async function renderLibrary() {
   if (warning) warning.hidden = libraryMode !== 'memory';
   empty.style.display = items.length ? 'none' : 'flex';
   grid.innerHTML = '';
-
-  items.forEach(item => {
-    const cell = document.createElement('div');
-    cell.className = 'library-item';
-    cell.innerHTML = `
-      <img src="${item.dataUrl}" alt="${escapeHtml(item.name)}" title="${escapeHtml(item.name)}">
-      <div class="library-item-actions">
-        <button type="button" data-action="insert" title="Insertar en el lienzo" aria-label="Insertar en el lienzo">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </button>
-        <button type="button" data-action="bg" title="Usar como fondo del lienzo" aria-label="Usar como fondo del lienzo">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-        </button>
-        <button type="button" data-action="delete" title="Eliminar de la galería" aria-label="Eliminar de la galería">
-          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-    `;
-    cell.querySelector('[data-action="insert"]').addEventListener('click', () => {
-      addImageElement(item.dataUrl);
-    });
-    cell.querySelector('[data-action="bg"]').addEventListener('click', () => {
-      setBackgroundImage(item.dataUrl);
-      toast('Fondo actualizado desde la galería', 'success');
-    });
-    cell.querySelector('[data-action="delete"]').addEventListener('click', async () => {
-      try {
-        await libraryDelete(item.id);
-        renderLibrary();
-        toast(`"${item.name}" eliminado de la galería`, 'info');
-      } catch (e) { toast('No se pudo eliminar ese recurso', 'error'); }
-    });
-    grid.appendChild(cell);
-  });
+  items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
 }
 
 function readFileAsDataUrl(file) {
@@ -1911,6 +1945,7 @@ function init() {
   loadBrandColors();
   renderBrandColors();
   renderBgPresets();
+  renderDefaultLibrary();
   renderLibrary();
   layoutCanvas();
 

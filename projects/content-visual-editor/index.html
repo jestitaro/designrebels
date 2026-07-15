@@ -182,8 +182,15 @@ if (window.tailwind) {
 
       <!-- TAB: Galería de imágenes (librería de recursos) -->
       <section class="panel-tab-content" data-tab-content="galeria">
+
         <div class="panel-group">
-          <h3 class="panel-group-title">Galería de imágenes</h3>
+          <h3 class="panel-group-title">Categorías</h3>
+          <p class="panel-group-hint">Recursos predefinidos por QuartzSales, listos para insertar o usar como fondo.</p>
+          <div class="library-grid" id="libraryDefaultGrid"></div>
+        </div>
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Tus recursos</h3>
           <p class="panel-group-hint">Los recursos que subís (de fondo, como elemento o acá) quedan guardados en esta galería del navegador para reutilizarlos cuando quieras.</p>
 
           <p class="library-warning" id="libraryWarning" hidden>
