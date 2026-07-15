@@ -525,7 +525,10 @@ function defaultElement(type) {
 function addElement(type, extra = {}) {
   const el = { ...defaultElement(type), ...extra };
   state.elements.push(el);
-  selectElement(el.id);
+  // no cambia de pestaña: si el usuario está agregando varios elementos
+  // seguidos (desde "Elementos" o desde la Galería), lo queremos dejar
+  // donde está en vez de mandarlo a "Propiedades" después de cada uno
+  selectElement(el.id, { switchTab: false });
   render();
   commit();
   return el;
@@ -549,9 +552,13 @@ function addImageElement(src) {
 }
 
 // ---------- selección ----------
-function selectElement(id) {
+// switchTab: false evita el salto a "Propiedades" (usado al agregar elementos,
+// para no interrumpir a quien está agregando varios seguidos); en el resto de
+// los casos (clic en el lienzo, en una capa, o en un aviso) sí conviene saltar,
+// porque ahí seleccionar algo es, justamente, para ir a editarlo.
+function selectElement(id, opts = {}) {
   state.selectedId = id;
-  if (id) switchTab('propiedades');
+  if (id && opts.switchTab !== false) switchTab('propiedades');
   renderSelection();
   renderProps();
   renderLayers();
