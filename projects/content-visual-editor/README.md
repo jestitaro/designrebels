@@ -27,7 +27,8 @@ Proyecto estático, sin build:
 - Capas, duplicado, deshacer y rehacer.
 - Fondos, colores corporativos y galería persistente.
 - Alertas de corte, contraste, tamaño y desborde.
-- Exportación PNG en tamaño real.
+- Guardar/abrir la noticia como archivo `.json` editable, para retomarla en esta computadora o en otra.
+- Exportación PNG en tamaño real (formato final, no editable).
 - Autoguardado local mediante `localStorage` e `IndexedDB`.
 
 ## Privacidad

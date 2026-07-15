@@ -320,10 +320,21 @@ if (window.tailwind) {
 
       <div class="canvas-footer">
         <span id="canvasDims" class="muted"></span>
-        <button class="btn btn-primary" id="btnExport">
-          <svg viewBox="0 0 24 24"><path d="M12 3v12M12 15l-4-4M12 15l4-4"/><path d="M4 17v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-          Exportar PNG
-        </button>
+        <div class="canvas-footer-actions">
+          <button class="btn btn-secondary" id="btnOpenDesign" title="Abrir un diseño guardado antes (.json)">
+            <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+            Abrir diseño
+          </button>
+          <input type="file" id="inputOpenDesign" accept="application/json,.json" hidden>
+          <button class="btn btn-secondary" id="btnSaveDesign" title="Guardar el diseño en un archivo editable para retomarlo después">
+            <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
+            Guardar diseño
+          </button>
+          <button class="btn btn-primary" id="btnExport">
+            <svg viewBox="0 0 24 24"><path d="M12 3v12M12 15l-4-4M12 15l4-4"/><path d="M4 17v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+            Exportar PNG
+          </button>
+        </div>
       </div>
 
     </section>
@@ -349,7 +360,8 @@ if (window.tailwind) {
         <li><b>Los cuadros de texto nunca cortan el texto:</b> si escribís más de lo que entra, la caja se agranda sola para mostrarlo completo, tanto en el editor como al exportar. Si no hay espacio hasta el borde del lienzo, en cambio achica la letra automáticamente para que entre igual.</li>
         <li><b>Avisos:</b> el ícono de estado (arriba a la derecha del preview) muestra si algo se corta, queda fuera del área segura o tiene bajo contraste. Tocá un aviso para ir al elemento.</li>
         <li><b>Colores de la empresa:</b> en la pestaña "Elementos" podés guardar colores con nombre (por ejemplo, uno por categoría de noticia) y después reutilizarlos en el fondo, en cualquier texto, tag o placa.</li>
-        <li><b>Exportar:</b> "Exportar PNG" descarga la imagen en tamaño real (1080 px de ancho).</li>
+        <li><b>Guardar y abrir:</b> "Guardar diseño" descarga un archivo <code>.json</code> editable con la noticia completa (textos, imágenes, fondo, formato). "Abrir diseño" carga uno de esos archivos para seguir editándolo, en esta computadora o en otra.</li>
+        <li><b>Exportar:</b> "Exportar PNG" descarga la imagen final en tamaño real (1080 px de ancho), ya no editable.</li>
       </ul>
       <h3>Atajos de teclado</h3>
       <table class="help-shortcuts">

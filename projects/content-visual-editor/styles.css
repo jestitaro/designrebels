@@ -907,6 +907,9 @@ button{ font-family: inherit; }
 .canvas-footer{
   display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap;
 }
+.canvas-footer-actions{
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+}
 
 /* ========================================================
    Modal de ayuda
@@ -970,6 +973,12 @@ kbd{
   border-bottom-width: 2px;
   border-radius: 0.35rem;
   padding: 0.1rem 0.45rem;
+}
+.help-list code{
+  font-size: 0.85em;
+  background: var(--surface-100);
+  border-radius: 0.3rem;
+  padding: 0.05rem 0.35rem;
 }
 
 /* ========================================================

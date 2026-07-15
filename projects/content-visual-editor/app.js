@@ -188,6 +188,84 @@ function loadPersisted() {
   } catch (e) { return null; }
 }
 
+// ---------- guardar / abrir el diseño como archivo editable ----------
+// A diferencia de "Exportar PNG" (una imagen final, no editable), esto
+// descarga el estado completo de la noticia en JSON para retomarla después,
+// en esta computadora o en otra (el autoguardado en localStorage no viaja).
+const DESIGN_FILE_APP_ID = 'qs-content-visual-editor';
+
+function exportDesignFile() {
+  const data = JSON.parse(snapshot());
+  data.app = DESIGN_FILE_APP_ID;
+  data.version = 1;
+  data.savedAt = new Date().toISOString();
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const f = fmt();
+  link.download = `noticia-${f.w}x${f.h}-editable.json`;
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
+  toast('Diseño guardado como archivo editable', 'success');
+}
+
+// el archivo viene de afuera (pudo haber sido editado a mano): se sanitiza
+// lo mínimo para no romper el render en vez de confiar en su forma
+function sanitizeImportedElements(elements) {
+  return elements
+    .filter(el => el && typeof el === 'object' && typeof el.type === 'string')
+    .map((el, i) => ({
+      ...el,
+      id: (typeof el.id === 'string' && el.id) ? el.id : ('el_' + (i + 1)),
+      x: Number(el.x) || 0,
+      y: Number(el.y) || 0,
+      w: Number(el.w) || MIN_W,
+      h: Number(el.h) || MIN_H,
+      z: Number(el.z) || (i + 1),
+      hidden: !!el.hidden
+    }));
+}
+
+function importDesignFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    let data;
+    try { data = JSON.parse(ev.target.result); }
+    catch (e) { toast('Ese archivo no es un diseño válido para este editor', 'error'); return; }
+
+    if (!data || !Array.isArray(data.elements) || !FORMATS[data.format]) {
+      toast('Ese archivo no es un diseño válido para este editor', 'error');
+      return;
+    }
+
+    const background = (data.background && typeof data.background === 'object' && data.background.type)
+      ? data.background
+      : { type: 'color', value: '#130D5D' };
+
+    history.past = [];
+    history.future = [];
+    restore(JSON.stringify({
+      format: data.format,
+      background,
+      elements: sanitizeImportedElements(data.elements)
+    }));
+    deselect();
+    toast('Diseño cargado desde el archivo', 'success');
+  };
+  reader.onerror = () => toast('No se pudo leer el archivo', 'error');
+  reader.readAsText(file);
+}
+
+$('#btnSaveDesign').addEventListener('click', exportDesignFile);
+$('#btnOpenDesign').addEventListener('click', () => $('#inputOpenDesign').click());
+$('#inputOpenDesign').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) importDesignFile(file);
+  e.target.value = '';
+});
+
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
 // Se guardan como dataURL (igual que el resto de las imágenes del editor) para
 // poder usarse directo como fondo o elemento sin conversiones adicionales.
