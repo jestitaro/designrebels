@@ -10,24 +10,37 @@
 }
 
 .hero-verb-slot {
-  display: inline-block;
+  display: inline-grid;
   position: relative;
-  width: 6.25em;
+  width: var(--verb-slot-width, 4.5em);
   height: 1em;
   line-height: 1;
-  vertical-align: baseline;
-  contain: layout;
+  vertical-align: -.035em;
 }
 
 .hero-verb {
-  position: absolute;
-  inset: 0 auto auto 0;
-  display: block;
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: start;
+  display: inline-block;
   width: max-content;
   max-width: none;
   color: inherit;
   line-height: 1;
   white-space: nowrap;
+  transform: scaleX(var(--verb-scale, 1));
+  transform-origin: left bottom;
+}
+
+.hero-verb-measure {
+  position: absolute !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: none !important;
+}
+
+.hero-verb-measure::after {
+  display: none !important;
 }
 
 .hero-verb::after {
@@ -84,13 +97,15 @@
   .hero-verb-slot {
     display: block;
     width: 100%;
-    height: .84em;
+    height: .86em;
     line-height: 1;
+    vertical-align: initial;
   }
 
   .hero-verb {
     font-size: .82em !important;
     line-height: 1;
+    transform: none;
   }
 
   .hero-title-rest {
