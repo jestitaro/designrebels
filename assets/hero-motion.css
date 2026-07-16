@@ -1,4 +1,4 @@
-/* Movimiento del tablero principal: solo hover en dispositivos con puntero preciso. */
+/* Movimiento permanente y suave del tablero principal. */
 @keyframes hero-float-up {
   0%, 100% { translate: 0 0; }
   50% { translate: 0 -7px; }
@@ -34,50 +34,48 @@
   50% { transform: scale(1.008); }
 }
 
-@media (hover: hover) and (pointer: fine) {
+.hero-board .floating-tag,
+.hero-board .board-title,
+.hero-board .comment-bubble,
+.hero-board .cursor-label,
+.hero-board .selection-box {
+  will-change: translate, transform;
+}
+
+.hero-board .tag-one {
+  animation: hero-float-diagonal 2.15s ease-in-out infinite;
+}
+
+.hero-board .tag-two {
+  animation: hero-float-reverse 2.4s ease-in-out .12s infinite;
+}
+
+.hero-board .tag-three {
+  animation: hero-float-up 1.95s ease-in-out .06s infinite;
+}
+
+.hero-board .board-title {
+  animation: hero-title-breathe 2.65s ease-in-out infinite;
+}
+
+.hero-board .comment-bubble {
+  animation: hero-spark 1.8s ease-in-out .08s infinite;
+}
+
+.hero-board .cursor-label {
+  animation: hero-cursor-drift 2.2s ease-in-out .16s infinite;
+}
+
+.hero-board .selection-box {
+  animation: hero-selection-breathe 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
   .hero-board .floating-tag,
   .hero-board .board-title,
   .hero-board .comment-bubble,
   .hero-board .cursor-label,
   .hero-board .selection-box {
-    will-change: translate, transform;
-  }
-
-  .hero-board:hover .tag-one {
-    animation: hero-float-diagonal 2.15s ease-in-out infinite;
-  }
-
-  .hero-board:hover .tag-two {
-    animation: hero-float-reverse 2.4s ease-in-out .12s infinite;
-  }
-
-  .hero-board:hover .tag-three {
-    animation: hero-float-up 1.95s ease-in-out .06s infinite;
-  }
-
-  .hero-board:hover .board-title {
-    animation: hero-title-breathe 2.65s ease-in-out infinite;
-  }
-
-  .hero-board:hover .comment-bubble {
-    animation: hero-spark 1.8s ease-in-out .08s infinite;
-  }
-
-  .hero-board:hover .cursor-label {
-    animation: hero-cursor-drift 2.2s ease-in-out .16s infinite;
-  }
-
-  .hero-board:hover .selection-box {
-    animation: hero-selection-breathe 2.8s ease-in-out infinite;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-board:hover .floating-tag,
-  .hero-board:hover .board-title,
-  .hero-board:hover .comment-bubble,
-  .hero-board:hover .cursor-label,
-  .hero-board:hover .selection-box {
     animation: none !important;
   }
 }
