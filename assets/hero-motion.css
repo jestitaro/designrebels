@@ -1,37 +1,37 @@
-/* Movimiento permanente y suave del tablero principal. */
+/* Movimiento permanente del tablero principal y guiños interactivos. */
 @keyframes hero-float-up {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -7px; }
+  50% { translate: 0 -14px; }
 }
 
 @keyframes hero-float-diagonal {
   0%, 100% { translate: 0 0; }
-  50% { translate: 5px -6px; }
+  50% { translate: 9px -13px; }
 }
 
 @keyframes hero-float-reverse {
   0%, 100% { translate: 0 0; }
-  50% { translate: -4px -5px; }
+  50% { translate: -9px -11px; }
 }
 
 @keyframes hero-title-breathe {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -4px; }
+  50% { translate: 0 -8px; }
 }
 
 @keyframes hero-spark {
   0%, 100% { translate: 0 0; transform: rotate(0deg) scale(1); }
-  50% { translate: 0 -7px; transform: rotate(8deg) scale(1.06); }
+  50% { translate: 0 -13px; transform: rotate(12deg) scale(1.12); }
 }
 
 @keyframes hero-cursor-drift {
   0%, 100% { translate: 0 0; }
-  50% { translate: -6px -7px; }
+  50% { translate: -10px -12px; }
 }
 
 @keyframes hero-selection-breathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.008); }
+  50% { transform: scale(1.014); }
 }
 
 .hero-board .floating-tag,
@@ -43,31 +43,108 @@
 }
 
 .hero-board .tag-one {
-  animation: hero-float-diagonal 2.15s ease-in-out infinite;
+  animation: hero-float-diagonal 2.35s ease-in-out infinite;
 }
 
 .hero-board .tag-two {
-  animation: hero-float-reverse 2.4s ease-in-out .12s infinite;
+  animation: hero-float-reverse 2.65s ease-in-out .12s infinite;
 }
 
 .hero-board .tag-three {
-  animation: hero-float-up 1.95s ease-in-out .06s infinite;
+  animation: hero-float-up 2.15s ease-in-out .06s infinite;
 }
 
 .hero-board .board-title {
-  animation: hero-title-breathe 2.65s ease-in-out infinite;
+  animation: hero-title-breathe 2.85s ease-in-out infinite;
+  transform-origin: center;
+  transition: transform .28s ease, filter .28s ease;
 }
 
 .hero-board .comment-bubble {
-  animation: hero-spark 1.8s ease-in-out .08s infinite;
+  animation: hero-spark 2s ease-in-out .08s infinite;
 }
 
 .hero-board .cursor-label {
-  animation: hero-cursor-drift 2.2s ease-in-out .16s infinite;
+  animation: hero-cursor-drift 2.4s ease-in-out .16s infinite;
 }
 
 .hero-board .selection-box {
-  animation: hero-selection-breathe 2.8s ease-in-out infinite;
+  animation: hero-selection-breathe 3s ease-in-out infinite;
+}
+
+.text-swap {
+  display: inline-grid;
+  align-items: center;
+}
+
+.text-swap > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.label-default {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.label-hover {
+  opacity: 0;
+  transform: translateY(7px);
+}
+
+.tag-two,
+.cursor-label {
+  overflow: hidden;
+  transition: min-width .25s ease, padding .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.tag-two {
+  min-width: 168px;
+  text-align: center;
+}
+
+.cursor-label {
+  min-width: 205px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.cursor-label .cursor-arrow {
+  margin-right: 6px;
+}
+
+.cursor-label .text-swap,
+.cursor-label .label-default,
+.cursor-label .label-hover {
+  margin-right: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-board .board-title:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 12px 24px rgba(17, 17, 27, .14));
+    z-index: 4;
+  }
+
+  .hero-board .tag-two:hover,
+  .hero-board .cursor-label:hover {
+    transform: scale(1.07) rotate(-1deg);
+    box-shadow: 0 16px 32px rgba(17, 17, 27, .18);
+    z-index: 5;
+  }
+
+  .hero-board .tag-two:hover .label-default,
+  .hero-board .cursor-label:hover .label-default {
+    opacity: 0;
+    transform: translateY(-7px);
+  }
+
+  .hero-board .tag-two:hover .label-hover,
+  .hero-board .cursor-label:hover .label-hover {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -77,5 +154,12 @@
   .hero-board .cursor-label,
   .hero-board .selection-box {
     animation: none !important;
+  }
+
+  .hero-board .board-title,
+  .hero-board .tag-two,
+  .hero-board .cursor-label,
+  .text-swap > span {
+    transition: none !important;
   }
 }
