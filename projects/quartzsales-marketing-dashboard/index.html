@@ -1076,19 +1076,26 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   position: fixed;
   border-radius: 10px;
   border: 2px solid var(--accent);
-  box-shadow: 0 0 0 9999px rgba(4, 2, 20, 0.72), 0 0 24px rgba(112,37,224,0.5);
+  box-shadow: 0 0 0 9999px rgba(4, 2, 20, 0.78), 0 0 24px rgba(112,37,224,0.5);
   pointer-events: none;
   transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+/* Pasos "centrados" (sin elemento puntual que resaltar): se usa el mismo
+   spotlight para oscurecer toda la pantalla detrás de la tarjeta, pero sin
+   el aro/glow de acento — no hay nada específico que remarcar. */
+.onboarding-spotlight.no-ring {
+  border: none;
+  box-shadow: 0 0 0 9999px rgba(4, 2, 20, 0.78);
 }
 .onboarding-card {
   position: fixed;
   width: 340px;
   max-width: calc(100vw - 32px);
-  background: var(--surface);
+  background: var(--surface-3);
   border: 1px solid var(--border-2);
   border-radius: 14px;
   padding: 20px;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6);
   transition: top 0.25s ease, left 0.25s ease;
 }
 .onboarding-card.centered { width: 380px; }
@@ -2586,7 +2593,18 @@ function onboardingBack() {
 }
 
 function positionOnboardingCenter() {
-  document.getElementById('onboarding-spotlight').style.display = 'none';
+  // Sin elemento puntual que resaltar: igual dejamos el spotlight activo,
+  // centrado y sin tamaño, para que su sombra siga oscureciendo toda la
+  // pantalla detrás de la tarjeta (si no, el modal se pierde contra el
+  // dashboard de fondo). Sólo se le saca el aro/glow de acento.
+  const spotlight = document.getElementById('onboarding-spotlight');
+  spotlight.classList.add('no-ring');
+  spotlight.style.display = 'block';
+  spotlight.style.top = '50%';
+  spotlight.style.left = '50%';
+  spotlight.style.width = '0px';
+  spotlight.style.height = '0px';
+
   const card = document.getElementById('onboarding-card');
   card.classList.add('centered');
   card.style.top = '50%';
@@ -2598,6 +2616,7 @@ function positionOnboardingNear(target) {
   const spotlight = document.getElementById('onboarding-spotlight');
   const card = document.getElementById('onboarding-card');
   card.classList.remove('centered');
+  spotlight.classList.remove('no-ring');
 
   const pad = 8;
   const rect = target.getBoundingClientRect();
