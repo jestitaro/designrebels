@@ -315,6 +315,23 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .status-dot.demo { background: var(--accent); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
 
+.demo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding: 4px 11px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.75);
+  font-family: var(--font-data);
+}
+.demo-chip i { font-size: 10px; color: var(--cyan); }
+
 .demo-banner {
   display: flex;
   align-items: center;
@@ -1166,6 +1183,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <div class="briefing">
         <div class="briefing-top">
           <div class="briefing-greeting">
+            <div class="demo-chip"><i class="fa-solid fa-flask"></i> <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
             <h1 id="greeting-text">Buen día</h1>
             <div class="date" id="date-text"></div>
           </div>
@@ -1173,7 +1191,6 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
             <i class="fa-solid fa-arrows-rotate refresh-icon"></i> Actualizar métricas
           </button>
         </div>
-        <div class="demo-banner"><i class="fa-solid fa-flask"></i> <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
         <div class="pipeline-stats">
           <div class="pipeline-stat">
             <div class="pipeline-stat-label">Ideas</div>
