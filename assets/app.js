@@ -38,7 +38,7 @@ if (heroTitle) {
     'aria-label',
     'Diseñamos, prototipamos, planificamos y construimos el cambio antes de que llegue.'
   );
-  heroTitle.innerHTML = '<span class="hero-verb verb-design" aria-hidden="true">Diseñamos</span><span class="hero-title-rest" aria-hidden="true"> el cambio antes de que llegue.</span>';
+  heroTitle.innerHTML = '<span class="hero-verb-slot" aria-hidden="true"><span class="hero-verb verb-design">Diseñamos</span></span><span class="hero-title-rest" aria-hidden="true"> el cambio antes de que llegue.</span>';
 
   const heroVerb = heroTitle.querySelector('.hero-verb');
   let verbIndex = 0;
