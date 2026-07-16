@@ -1,0 +1,193 @@
+/* QS League spacing refinements */
+:root {
+  --space-section: clamp(28px, 4vw, 48px);
+  --space-panel: clamp(24px, 3vw, 34px);
+  --space-card: clamp(18px, 2.4vw, 26px);
+}
+
+.content {
+  padding-top: 34px !important;
+  padding-bottom: 72px !important;
+}
+
+.tab.active {
+  display: grid !important;
+  gap: var(--space-section) !important;
+}
+
+.hero-card,
+.panel,
+.semester-hero,
+.login-card {
+  padding: var(--space-panel) !important;
+}
+
+.grid {
+  gap: 26px !important;
+  margin-top: 0 !important;
+}
+
+.panel + .panel,
+.hero-card + .grid,
+.grid + .grid,
+.grid + .panel,
+.panel + .grid,
+.semester-hero + .legend-podium-panel,
+.legend-podium-panel + .grid {
+  margin-top: 0 !important;
+}
+
+.panel-head {
+  align-items: flex-start !important;
+  gap: 22px !important;
+  margin-bottom: 22px !important;
+}
+
+.panel-head .ghost.small {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.panel p,
+.hero-card p,
+.login-copy p {
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+
+.stats {
+  gap: 16px !important;
+  margin-top: 28px !important;
+}
+
+.ranking,
+.timeline,
+.teams,
+.rules,
+.semester-ranking,
+.semester-history,
+.meteor-list {
+  gap: 14px !important;
+}
+
+.rank-row,
+.activity,
+.team-card,
+.rules article,
+.semester-row,
+.history-row,
+.semester-winner,
+.podium-card {
+  padding: var(--space-card) !important;
+}
+
+.podium {
+  gap: 20px !important;
+  min-height: auto !important;
+  padding-top: 8px !important;
+}
+
+.podium-card:nth-child(n) {
+  min-height: 210px !important;
+}
+
+.semester-podium {
+  gap: 22px !important;
+}
+
+.semester-winner {
+  min-height: 220px !important;
+  display: grid !important;
+  align-content: center !important;
+  gap: 10px !important;
+}
+
+.semester-winner .medal {
+  margin-bottom: 4px !important;
+}
+
+.rules {
+  gap: 22px !important;
+}
+
+.rules article {
+  min-height: 190px !important;
+}
+
+#restoreRules {
+  margin-top: 26px !important;
+  width: auto !important;
+}
+
+.admin-form {
+  gap: 18px !important;
+}
+
+.admin-form .primary,
+.upload-panel .primary {
+  margin-top: 6px !important;
+}
+
+.modal-card {
+  padding: clamp(26px, 4vw, 40px) !important;
+}
+
+.modal-card > p,
+.modal-card label,
+.modal-card .drop,
+.modal-card .preview {
+  margin-bottom: 20px !important;
+}
+
+.drop {
+  margin-top: 18px !important;
+}
+
+.modal-actions {
+  margin-top: 24px !important;
+  gap: 14px !important;
+}
+
+.topbar {
+  margin-bottom: 30px !important;
+}
+
+@media (max-width: 1100px) {
+  .grid.two,
+  .arena-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .content {
+    padding: 22px 16px 84px !important;
+  }
+
+  .tab.active {
+    gap: 24px !important;
+  }
+
+  .panel,
+  .hero-card,
+  .semester-hero,
+  .login-card {
+    padding: 22px !important;
+  }
+
+  .panel-head {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .panel-head .ghost.small {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .semester-winner,
+  .podium-card,
+  .rules article {
+    min-height: auto !important;
+  }
+}
