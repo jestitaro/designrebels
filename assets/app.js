@@ -43,22 +43,38 @@ if (heroTitle) {
   const heroVerb = heroTitle.querySelector('.hero-verb');
   let verbIndex = 0;
 
+  const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+
+  const deleteWord = async () => {
+    while (heroVerb.textContent.length > 0) {
+      heroVerb.textContent = heroVerb.textContent.slice(0, -1);
+      await wait(55);
+    }
+  };
+
+  const typeWord = async (word) => {
+    for (let index = 1; index <= word.length; index += 1) {
+      heroVerb.textContent = word.slice(0, index);
+      await wait(85);
+    }
+  };
+
+  const runTypingCycle = async () => {
+    while (document.body.contains(heroVerb)) {
+      await wait(1650);
+      await deleteWord();
+
+      verbIndex = (verbIndex + 1) % verbs.length;
+      const nextVerb = verbs[verbIndex];
+      heroVerb.className = `hero-verb ${nextVerb.className}`;
+
+      await wait(180);
+      await typeWord(nextVerb.text);
+    }
+  };
+
   if (heroVerb && !prefersReducedMotion) {
-    window.setInterval(() => {
-      heroVerb.classList.add('is-changing');
-
-      window.setTimeout(() => {
-        verbIndex = (verbIndex + 1) % verbs.length;
-        const nextVerb = verbs[verbIndex];
-
-        heroVerb.className = `hero-verb ${nextVerb.className} is-changing`;
-        heroVerb.textContent = nextVerb.text;
-
-        requestAnimationFrame(() => {
-          heroVerb.classList.remove('is-changing');
-        });
-      }, 220);
-    }, 2600);
+    void runTypingCycle();
   }
 }
 
