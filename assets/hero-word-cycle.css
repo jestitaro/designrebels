@@ -1,25 +1,34 @@
-/* Rotación tipográfica del verbo principal. */
+/* Rotación tipográfica del verbo principal con efecto de tipeo. */
 .hero-copy h1,
 .hero-copy h1 em {
   color: var(--ink, #11111b);
+}
+
+@keyframes hero-caret-blink {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0; }
 }
 
 .hero-verb {
   display: inline-block;
   color: inherit;
   transform-origin: left center;
-  transition: opacity .22s ease, transform .22s ease, filter .22s ease;
-  will-change: opacity, transform;
+  white-space: nowrap;
+}
+
+.hero-verb::after {
+  content: "";
+  display: inline-block;
+  width: .055em;
+  height: .78em;
+  margin-left: .07em;
+  background: currentColor;
+  vertical-align: -.03em;
+  animation: hero-caret-blink .8s steps(1, end) infinite;
 }
 
 .hero-title-rest {
   display: inline;
-}
-
-.hero-verb.is-changing {
-  opacity: 0;
-  transform: translateY(-.16em) rotate(-1.5deg) scale(.98);
-  filter: blur(3px);
 }
 
 .hero-verb.verb-design {
@@ -64,16 +73,18 @@
     height: 1.02em;
     line-height: 1;
     font-size: .82em !important;
-    white-space: nowrap;
   }
 
   .hero-title-rest {
     display: block;
+    font-size: .82em;
+    line-height: 1.08;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-verb {
-    transition: none;
+  .hero-verb::after {
+    animation: none;
+    opacity: 1;
   }
 }
