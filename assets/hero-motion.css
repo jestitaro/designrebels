@@ -81,6 +81,73 @@
   transition: transform .25s ease, box-shadow .25s ease;
 }
 
+.tooltip-trigger {
+  cursor: help;
+}
+
+.tooltip-trigger::before,
+.tooltip-trigger::after {
+  position: absolute;
+  left: 50%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+  z-index: 30;
+}
+
+.tooltip-trigger::after {
+  content: attr(data-tooltip);
+  bottom: calc(100% + 14px);
+  min-width: max-content;
+  padding: 10px 13px;
+  border: 1px solid #11111b;
+  border-radius: 8px;
+  background: #fff;
+  color: #11111b;
+  box-shadow: 6px 6px 0 #11111b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  transform: translate(-50%, 8px) scale(.96);
+}
+
+.tooltip-trigger::before {
+  content: "";
+  bottom: calc(100% + 6px);
+  width: 12px;
+  height: 12px;
+  border-right: 1px solid #11111b;
+  border-bottom: 1px solid #11111b;
+  background: #fff;
+  transform: translate(-50%, 5px) rotate(45deg);
+}
+
+.tooltip-trigger:hover::before,
+.tooltip-trigger:hover::after,
+.tooltip-trigger:focus-visible::before,
+.tooltip-trigger:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip-trigger:hover::after,
+.tooltip-trigger:focus-visible::after {
+  transform: translate(-50%, 0) scale(1);
+}
+
+.tooltip-trigger:hover::before,
+.tooltip-trigger:focus-visible::before {
+  transform: translate(-50%, 0) rotate(45deg);
+}
+
+.tooltip-trigger:focus-visible {
+  outline: 3px solid #ffc21c;
+  outline-offset: 4px;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .hero-board .board-big-ideas:hover {
     transform: scale(1.12);
@@ -108,7 +175,9 @@
 
   .hero-board .board-big-ideas,
   .hero-board .tag-two,
-  .hero-board .cursor-label {
+  .hero-board .cursor-label,
+  .tooltip-trigger::before,
+  .tooltip-trigger::after {
     transition: none !important;
   }
 }
