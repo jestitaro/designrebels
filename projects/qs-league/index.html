@@ -8,7 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=20260714-7" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260714-8" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -17,13 +18,13 @@
 
   <main class="login" id="loginView">
     <section class="login-copy">
-      <span class="badge"><span class="brand-mark sm" aria-hidden="true"></span>QS League</span>
+      <span class="badge"><i class="fa-solid fa-dragon" aria-hidden="true"></i> QS League</span>
       <h1>La competencia interna más jurásica de QS.</h1>
       <p>DinoCoins, Kahoots, temporadas, leyendas y ajustes admin con motivo obligatorio para ver quién domina la isla.</p>
       <div class="mini-podium" aria-hidden="true">
-        <article><span class="medal-icon medal-silver"></span><strong>Plata</strong><small>+2 coins</small></article>
-        <article class="winner"><span class="medal-icon medal-gold"></span><strong>Oro</strong><small>+3 coins</small></article>
-        <article><span class="medal-icon medal-bronze"></span><strong>Bronce</strong><small>+1 coin</small></article>
+        <article><i class="fa-solid fa-medal medal-silver"></i><strong>Plata</strong><small>+2 coins</small></article>
+        <article class="winner"><i class="fa-solid fa-medal medal-gold"></i><strong>Oro</strong><small>+3 coins</small></article>
+        <article><i class="fa-solid fa-medal medal-bronze"></i><strong>Bronce</strong><small>+1 coin</small></article>
       </div>
     </section>
 
@@ -34,7 +35,7 @@
       <form id="loginForm">
         <label>Email<input type="email" id="email" placeholder="jesi@quartzsales.com" /></label>
         <label>Password<input type="password" id="password" placeholder="••••••••" /></label>
-        <button class="primary" type="submit">Ingresar</button>
+        <button class="primary" type="submit">Ingresar <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
       </form>
       <button class="ghost" id="demoLogin" type="button" onclick="window.qsLeagueDemoLogin && window.qsLeagueDemoLogin()">Entrar como admin demo</button>
     </section>
@@ -57,7 +58,7 @@
 
     <section class="content">
       <header class="topbar">
-        <button class="menu" id="menuBtn" type="button" aria-label="Abrir menú"><span class="menu-bars" aria-hidden="true"></span></button>
+        <button class="menu" id="menuBtn" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
         <div><p class="eyebrow">QuartzSales internal game</p><h2 id="pageTitle">Arena actual</h2></div>
         <button class="ghost" id="logoutBtn" type="button">Salir</button>
       </header>
@@ -74,7 +75,7 @@
               <article><strong id="totalTeams">0</strong><span>equipos pausados</span></article>
             </div>
           </div>
-          <div class="coin-core"><span class="brand-mark lg" aria-hidden="true"></span></div>
+          <div class="coin-core"><i class="fa-solid fa-dragon" aria-hidden="true"></i></div>
         </div>
 
         <div class="grid two arena-main-grid">
@@ -89,7 +90,7 @@
           <article class="panel upload-panel">
             <div class="panel-head"><div><p class="eyebrow">Último Kahoot</p><h2>Actualizar arena</h2></div></div>
             <p>Subí el informe del último Kahoot. Antes de aplicar, vas a ver un preview con participantes detectados y mapeos pendientes.</p>
-            <button class="primary" id="openUploadModal" type="button">Subir informe del último Kahoot</button>
+            <button class="primary" id="openUploadModal" type="button"><i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i> Subir informe del último Kahoot</button>
           </article>
         </div>
 
@@ -103,7 +104,7 @@
               <label>Acción<select id="adjustAction"><option value="add">Sumar / cargar</option><option value="remove">Restar / quitar</option></select></label>
               <label>Cantidad<input id="adjustAmount" type="number" min="1" value="1" /></label>
               <label class="wide">Motivo obligatorio<input id="adjustReason" placeholder="Ej: premio extra por organizar / ausencia justificada" /></label>
-              <button class="primary wide" id="applyManualAdjust" type="button">Aplicar ajuste</button>
+              <button class="primary wide" id="applyManualAdjust" type="button"><i class="fa-solid fa-check" aria-hidden="true"></i> Aplicar ajuste</button>
             </div>
           </article>
 
@@ -137,10 +138,10 @@
 
       <section class="tab" id="rules">
         <article class="panel">
-          <div class="panel-head"><div><p class="eyebrow">Modo admin</p><h2>Reglas editables</h2></div><button class="primary" id="saveRules" type="button">Guardar reglas</button></div>
+          <div class="panel-head"><div><p class="eyebrow">Modo admin</p><h2>Reglas editables</h2></div><button class="primary" id="saveRules" type="button"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Guardar reglas</button></div>
           <p>Estas reglas son editables en el MVP admin y quedan guardadas en este navegador. Después las pasamos a Firebase.</p>
           <div class="rules editable-rules" id="rulesEditor"></div>
-          <button class="ghost" id="restoreRules" type="button">Restaurar reglas base</button>
+          <button class="ghost" id="restoreRules" type="button"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Restaurar reglas base</button>
         </article>
       </section>
     </section>
@@ -150,13 +151,13 @@
     <div class="modal-card">
       <div class="panel-head">
         <div><p class="eyebrow">Último Kahoot</p><h2>Subir informe</h2></div>
-        <button class="ghost small" id="cancelUploadTop" type="button">Cerrar</button>
+        <button class="ghost small" id="cancelUploadTop" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Cerrar</button>
       </div>
       <p>Elegí o arrastrá el XLSX/CSV exportado de Kahoot. Luego revisá el preview y actualizá el ranking.</p>
       <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
-      <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong>Arrastrá el informe acá</strong><span>o tocá para elegir XLSX / CSV</span></div>
+      <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Arrastrá el informe acá</strong><span>o tocá para elegir XLSX / CSV</span></div>
       <div id="preview" class="preview empty">Todavía no hay informe cargado.</div>
-      <div class="modal-actions"><button class="ghost" id="cancelUpload" type="button">Cancelar</button><button class="primary" id="applyImport" disabled type="button">Actualizar ranking</button></div>
+      <div class="modal-actions"><button class="ghost" id="cancelUpload" type="button">Cancelar</button><button class="primary" id="applyImport" disabled type="button"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar ranking</button></div>
     </div>
   </div>
 
@@ -190,6 +191,6 @@
       if(localStorage.getItem(SESSION)) window.qsLeagueDemoLogin();
     })();
   </script>
-  <script src="assets/app.js?v=20260714-7" defer></script>
+  <script src="assets/app.js?v=20260714-8" defer></script>
 </body>
 </html>
