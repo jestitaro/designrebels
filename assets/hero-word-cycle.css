@@ -1,0 +1,56 @@
+/* Rotación tipográfica del verbo principal. */
+.hero-copy h1,
+.hero-copy h1 em {
+  color: var(--ink, #11111b);
+}
+
+.hero-verb {
+  display: inline-block;
+  color: inherit;
+  transform-origin: left center;
+  transition: opacity .22s ease, transform .22s ease, filter .22s ease;
+  will-change: opacity, transform;
+}
+
+.hero-verb.is-changing {
+  opacity: 0;
+  transform: translateY(-.16em) rotate(-1.5deg) scale(.98);
+  filter: blur(3px);
+}
+
+.hero-verb.verb-design {
+  font-family: "Manrope", sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -.055em;
+}
+
+.hero-verb.verb-prototype {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: .91em;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -.065em;
+}
+
+.hero-verb.verb-plan {
+  font-family: "Courier New", Courier, monospace;
+  font-size: .82em;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -.09em;
+}
+
+.hero-verb.verb-build {
+  font-family: "Arial Rounded MT Bold", "Trebuchet MS", "Manrope", sans-serif;
+  font-size: .91em;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: -.075em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-verb {
+    transition: none;
+  }
+}
