@@ -6,6 +6,7 @@
 <title>QuartzSales · Content Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1030,6 +1031,10 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .toast.success { border-left-color: var(--green); }
 .toast.error   { border-left-color: var(--red); }
 .toast.info    { border-left-color: var(--accent); }
+.toast i { margin-top: 1px; font-size: 13px; flex-shrink: 0; }
+.toast.success i { color: var(--green); }
+.toast.error i   { color: var(--red); }
+.toast.info i    { color: var(--accent); }
 @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ── ADD IDEA MODAL ─────────────────────────────────── */
@@ -1058,6 +1063,52 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   animation: spin 0.7s linear infinite;
   flex-shrink: 0;
 }
+
+/* ── ONBOARDING TOUR ─────────────────────────────────── */
+.onboarding-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+}
+.onboarding-overlay.open { display: block; }
+.onboarding-spotlight {
+  position: fixed;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 9999px rgba(4, 2, 20, 0.72), 0 0 24px rgba(112,37,224,0.5);
+  pointer-events: none;
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+.onboarding-card {
+  position: fixed;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  background: var(--surface);
+  border: 1px solid var(--border-2);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+  transition: top 0.25s ease, left 0.25s ease;
+}
+.onboarding-card.centered { width: 380px; }
+.onboarding-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.onboarding-counter {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-family: var(--font-data);
+}
+.onboarding-title { font-size: 15px; font-weight: 800; color: var(--text-1); margin-bottom: 8px; }
+.onboarding-text { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 18px; }
+.onboarding-actions { display: flex; align-items: center; gap: 8px; }
 </style>
 </head>
 <body>
@@ -1076,23 +1127,26 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
     <nav class="sidebar-nav">
       <div class="nav-section">Panel</div>
       <div class="nav-item active" data-page="overview">
-        <span class="nav-icon">⬡</span> Overview
+        <i class="nav-icon fa-solid fa-gauge-high"></i> Overview
       </div>
       <div class="nav-item" data-page="research">
-        <span class="nav-icon">🔍</span> Research
+        <i class="nav-icon fa-solid fa-magnifying-glass"></i> Research
       </div>
       <div class="nav-item" data-page="pipeline">
-        <span class="nav-icon">🎬</span> Pipeline
+        <i class="nav-icon fa-solid fa-clapperboard"></i> Pipeline
       </div>
       <div class="nav-section">Mercado</div>
       <div class="nav-item" data-page="competitors">
-        <span class="nav-icon">📊</span> Competidores
+        <i class="nav-icon fa-solid fa-chart-column"></i> Competidores
       </div>
     </nav>
 
     <div class="sidebar-footer">
-      <button class="btn-config" onclick="openModal('modal-config')">
-        <span>⚙️</span> Configuración
+      <button class="btn-config" id="btn-help-tour" onclick="startOnboardingTour()">
+        <i class="fa-solid fa-circle-question"></i> Ayuda
+      </button>
+      <button class="btn-config" id="btn-open-config" onclick="openModal('modal-config')" style="margin-top:6px;">
+        <i class="fa-solid fa-gear"></i> Configuración
       </button>
     </div>
   </aside>
@@ -1109,10 +1163,10 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
             <div class="date" id="date-text"></div>
           </div>
           <button class="btn-refresh" id="btn-refresh" onclick="refreshMetrics()">
-            <span class="refresh-icon">↻</span> Actualizar métricas
+            <i class="fa-solid fa-arrows-rotate refresh-icon"></i> Actualizar métricas
           </button>
         </div>
-        <div class="demo-banner">🧪 <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
+        <div class="demo-banner"><i class="fa-solid fa-flask"></i> <span id="demo-banner-text">Demo controlada — datos y generador de IA con límites de uso</span></div>
         <div class="pipeline-stats">
           <div class="pipeline-stat">
             <div class="pipeline-stat-label">Ideas</div>
@@ -1223,7 +1277,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
                 <div class="metric-card-title" style="color:var(--text-3)">Próximo canal</div>
               </div>
               <div style="text-align:center; padding: 30px 0; color: var(--text-3); font-size:13px;">
-                Configurá más canales<br>desde ⚙️ Configuración
+                Configurá más canales<br>desde <i class="fa-solid fa-gear"></i> Configuración
               </div>
             </div>
           </div>
@@ -1237,7 +1291,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <div class="research-toolbar">
         <div class="research-toolbar-top">
           <div class="search-input-wrap">
-            <span class="search-input-icon">🔍</span>
+            <i class="search-input-icon fa-solid fa-magnifying-glass"></i>
             <input type="text" id="research-input" placeholder="Buscá tendencias de trade marketing, retail execution..." value="trade marketing retail execution">
           </div>
           <button class="btn-search" onclick="doResearch()">Buscar</button>
@@ -1259,7 +1313,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
         </div>
         <div id="results-container">
           <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
+            <i class="empty-state-icon fa-solid fa-magnifying-glass"></i>
             <div class="empty-state-text">Hacé una búsqueda para ver tendencias</div>
             <div class="empty-state-sub">GitHub + Hacker News en tiempo real</div>
           </div>
@@ -1305,8 +1359,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 <div class="modal-overlay" id="modal-config">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">⚙️ Configuración</div>
-      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+      <div class="modal-title"><i class="fa-solid fa-gear"></i> Configuración</div>
+      <button class="modal-close" onclick="closeModal('modal-config')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <p style="font-size:12.5px; color:var(--text-3); margin-bottom:18px; line-height:1.5;">
@@ -1334,8 +1388,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 <div class="modal-overlay" id="modal-script">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">✨ Generador de post</div>
-      <button class="modal-close" onclick="closeModal('modal-script')">✕</button>
+      <div class="modal-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Generador de post</div>
+      <button class="modal-close" onclick="closeModal('modal-script')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -1379,8 +1433,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modal-script')">Cancelar</button>
-      <button class="btn-secondary" id="btn-save-pipeline" onclick="saveScriptToPipeline()" style="display:none;">📋 Guardar en Pipeline</button>
-      <button class="btn-primary" id="btn-generate-script" onclick="generateScript()">✨ Generar</button>
+      <button class="btn-secondary" id="btn-save-pipeline" onclick="saveScriptToPipeline()" style="display:none;"><i class="fa-solid fa-clipboard-list"></i> Guardar en Pipeline</button>
+      <button class="btn-primary" id="btn-generate-script" onclick="generateScript()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generar</button>
     </div>
   </div>
 </div>
@@ -1390,7 +1444,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   <div class="modal narrow">
     <div class="modal-header">
       <div class="modal-title">+ Nueva idea</div>
-      <button class="modal-close" onclick="closeModal('modal-add-idea')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-add-idea')"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -1407,15 +1461,34 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
       <div class="form-group">
         <label class="form-label">Columna inicial</label>
         <select class="form-select" id="new-idea-col">
-          <option value="ideas">💡 Ideas</option>
-          <option value="ready">🎬 Listo p/grabar</option>
-          <option value="edit">✂️ En edición</option>
+          <option value="ideas">Ideas</option>
+          <option value="ready">Listo p/grabar</option>
+          <option value="edit">En edición</option>
         </select>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modal-add-idea')">Cancelar</button>
       <button class="btn-primary" onclick="addNewIdea()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING TOUR -->
+<div class="onboarding-overlay" id="onboarding-overlay">
+  <div class="onboarding-spotlight" id="onboarding-spotlight"></div>
+  <div class="onboarding-card" id="onboarding-card">
+    <div class="onboarding-card-header">
+      <span class="onboarding-counter" id="onboarding-counter">1 / 9</span>
+      <button class="modal-close" onclick="endOnboardingTour()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="onboarding-title" id="onboarding-title"></div>
+    <div class="onboarding-text" id="onboarding-text"></div>
+    <div class="onboarding-actions">
+      <button class="btn-secondary" id="onboarding-back" onclick="onboardingBack()">Atrás</button>
+      <div style="flex:1"></div>
+      <button class="btn-secondary" id="onboarding-skip" onclick="endOnboardingTour()">Saltar</button>
+      <button class="btn-primary" id="onboarding-next" onclick="onboardingNext()">Siguiente</button>
     </div>
   </div>
 </div>
@@ -1448,11 +1521,11 @@ let currentScriptTopic = '';
 let currentScriptCardId = null;
 
 const COLS = [
-  { id: 'ideas',     label: '💡 Ideas' },
-  { id: 'ready',     label: '🎬 Listo p/grabar' },
-  { id: 'edit',      label: '✂️ En edición' },
-  { id: 'done',      label: '✅ Terminado' },
-  { id: 'published', label: '🚀 Subido' },
+  { id: 'ideas',     label: '<i class="fa-solid fa-lightbulb"></i> Ideas' },
+  { id: 'ready',     label: '<i class="fa-solid fa-clapperboard"></i> Listo p/grabar' },
+  { id: 'edit',      label: '<i class="fa-solid fa-scissors"></i> En edición' },
+  { id: 'done',      label: '<i class="fa-solid fa-circle-check"></i> Terminado' },
+  { id: 'published', label: '<i class="fa-solid fa-rocket"></i> Subido' },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -1467,6 +1540,7 @@ function init() {
   loadDashboardData();
   updateConfigUI();
   refreshQuotaDisplay();
+  maybeOfferOnboardingTour();
 }
 
 // Ideas de ejemplo para que el Pipeline nunca se vea vacío en la primera
@@ -1931,7 +2005,7 @@ async function doResearch() {
       author: r.owner?.login,
       stars: r.stargazers_count,
       url: r.html_url,
-      idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} ⭐ que puede transformar cómo trabajamos en PDV`,
+      idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} estrellas que puede transformar cómo trabajamos en PDV`,
     }));
   }
 
@@ -1960,7 +2034,7 @@ async function doResearch() {
     usingDemo = true;
   } else if (results.length === 0) {
     container.innerHTML = `<div class="empty-state">
-      <div class="empty-state-icon">🤷</div>
+      <i class="empty-state-icon fa-solid fa-face-frown"></i>
       <div class="empty-state-text">Sin resultados para "${query}"</div>
       <div class="empty-state-sub">Probá con otro término</div>
     </div>`;
@@ -1980,19 +2054,19 @@ async function doResearch() {
       <div class="result-card-top">
         <div class="result-badges">
           <span class="source-badge ${r.type === 'github' ? 'badge-gh' : 'badge-hn'}">${r.type === 'github' ? 'GitHub' : 'Hacker News'}</span>
-          ${r.stars !== undefined ? `<span class="source-badge badge-li-post">⭐ ${r.stars >= 1000 ? (r.stars/1000).toFixed(1)+'k' : r.stars}</span>` : ''}
-          ${r.points !== undefined ? `<span class="source-badge badge-li-post">▲ ${r.points}</span>` : ''}
+          ${r.stars !== undefined ? `<span class="source-badge badge-li-post"><i class="fa-solid fa-star"></i> ${r.stars >= 1000 ? (r.stars/1000).toFixed(1)+'k' : r.stars}</span>` : ''}
+          ${r.points !== undefined ? `<span class="source-badge badge-li-post"><i class="fa-solid fa-caret-up"></i> ${r.points}</span>` : ''}
           ${r.demo ? `<span class="source-badge kbadge-manual">Ejemplo de demostración</span>` : ''}
         </div>
-        <a href="${r.url}" target="_blank" class="result-link">↗</a>
+        <a href="${r.url}" target="_blank" class="result-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
       </div>
       <div class="result-author">${r.author || ''}</div>
       <div class="result-title">${r.title}</div>
       <div class="result-desc">${r.desc}</div>
-      <div class="result-idea">💡 <strong>Idea de post:</strong> ${r.idea}</div>
+      <div class="result-idea"><i class="fa-solid fa-lightbulb"></i> <strong>Idea de post:</strong> ${r.idea}</div>
       <div class="result-actions">
         <button class="btn-add-pipeline" onclick="addFromResearch(${JSON.stringify(r).replace(/"/g,'&quot;')})">+ Agregar al Pipeline</button>
-        <button class="btn-gen-script" onclick="openScriptModal('${r.idea.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}')">✨ Post</button>
+        <button class="btn-gen-script" onclick="openScriptModal('${r.idea.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}')"><i class="fa-solid fa-wand-magic-sparkles"></i> Post</button>
       </div>
     `;
     grid.appendChild(card);
@@ -2013,7 +2087,7 @@ function addFromResearch(r) {
   PIPELINE.ideas.push(card);
   savePipeline();
   renderKanban();
-  toast('Agregado al Pipeline ✓', 'success');
+  toast('Agregado al Pipeline', 'success');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2067,15 +2141,15 @@ function renderCard(c, colId) {
   const sourceBadge = c.source === 'github' ? '<span class="kbadge kbadge-gh">GitHub</span>'
     : c.source === 'hn' ? '<span class="kbadge kbadge-hn">HN</span>'
     : '<span class="kbadge kbadge-manual">Manual</span>';
-  const scriptBadge = c.script ? '<span class="kbadge kbadge-script">✓ Post</span>' : '';
+  const scriptBadge = c.script ? '<span class="kbadge kbadge-script"><i class="fa-solid fa-check"></i> Post</span>' : '';
 
   return `<div class="kanban-card" draggable="true" data-id="${c.id}" data-col="${colId}">
     <div class="kanban-card-title">${c.title}</div>
     <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}</div>
     <div class="kanban-card-actions">
-      <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post">✨</button>
-      ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post">👁</button>` : ''}
-      <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar">🗑</button>
+      <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+      ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post"><i class="fa-solid fa-eye"></i></button>` : ''}
+      <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
     </div>
   </div>`;
 }
@@ -2123,7 +2197,7 @@ function addNewIdea() {
   savePipeline();
   renderKanban();
   closeModal('modal-add-idea');
-  toast('Idea agregada ✓', 'success');
+  toast('Idea agregada', 'success');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2203,7 +2277,7 @@ async function refreshQuotaDisplay() {
 
     line.textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
     if (payload.devWarning) {
-      devWarningEl.textContent = '⚠ ' + payload.devWarning;
+      devWarningEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + escapeHtml(payload.devWarning);
       devWarningEl.style.display = 'block';
     } else {
       devWarningEl.style.display = 'none';
@@ -2241,7 +2315,7 @@ async function generateScript() {
     document.getElementById('script-result-wrap').style.display = 'block';
     document.getElementById('btn-save-pipeline').style.display = 'inline-flex';
     document.getElementById('script-quota-line').textContent = `Te quedan ${payload.remaining} generaciones de IA hoy.`;
-    toast('Post generado ✓', 'success');
+    toast('Post generado', 'success');
   } catch(e) {
     toast(e.message + ' — podés usar un ejemplo de abajo mientras tanto.', 'error');
   } finally {
@@ -2282,7 +2356,7 @@ function saveScriptToPipeline() {
   savePipeline();
   renderKanban();
   closeModal('modal-script');
-  toast('Guardado en Pipeline ✓', 'success');
+  toast('Guardado en Pipeline', 'success');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2372,7 +2446,7 @@ function saveConfig() {
   localStorage.setItem('qs_cfg', JSON.stringify(CFG));
   updateConfigUI();
   closeModal('modal-config');
-  toast('Configuración guardada ✓', 'success');
+  toast('Configuración guardada', 'success');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2393,13 +2467,193 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 // ─────────────────────────────────────────────────────────────
 // TOASTS
 // ─────────────────────────────────────────────────────────────
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+const TOAST_ICONS = {
+  success: 'fa-circle-check',
+  error: 'fa-triangle-exclamation',
+  info: 'fa-circle-info',
+};
+
 function toast(msg, type = 'info') {
   const container = document.getElementById('toast-container');
   const t = document.createElement('div');
   t.className = `toast ${type}`;
-  t.textContent = msg;
+  t.innerHTML = `<i class="fa-solid ${TOAST_ICONS[type] || TOAST_ICONS.info}"></i><span>${escapeHtml(msg)}</span>`;
   container.appendChild(t);
   setTimeout(() => t.remove(), 3500);
+}
+
+// ─────────────────────────────────────────────────────────────
+// ONBOARDING TOUR — recorrido guiado de "para qué sirve y cómo se usa"
+// ─────────────────────────────────────────────────────────────
+// Recorrido breve, paso a paso, que resalta cada sección real del dashboard
+// (no una página aparte): cambia de pestaña solo si hace falta y posiciona
+// una tarjeta con un texto corto al lado del elemento resaltado.
+const ONBOARDING_STEPS = [
+  {
+    center: true,
+    title: 'Bienvenido al Content Dashboard de QuartzSales',
+    text: 'Te mostramos en un minuto para qué sirve cada sección y cómo usarla. Podés saltar el recorrido en cualquier momento y volver a verlo después desde "Ayuda".',
+  },
+  {
+    page: 'overview',
+    selector: '#metrics-grid',
+    title: 'Métricas de tus canales',
+    text: 'Acá ves los seguidores de LinkedIn y de YouTube. Se actualizan solos, una vez por día — no hace falta cargar ninguna clave para verlos.',
+  },
+  {
+    page: 'overview',
+    selector: '#btn-refresh',
+    title: 'Actualizar métricas',
+    text: 'Este botón nunca dispara una llamada paga: sólo vuelve a leer la última sincronización del día. Al lado vas a ver si los datos son reales, guardados o de demostración.',
+  },
+  {
+    page: 'research',
+    selector: '.research-toolbar',
+    title: 'Research de tendencias',
+    text: 'Buscá temas de trade marketing y retail execution en GitHub y Hacker News, y convertí cualquier resultado en una idea de post con un clic.',
+  },
+  {
+    page: 'pipeline',
+    selector: '.kanban-wrap',
+    title: 'Pipeline de contenido',
+    text: 'Cada idea es una tarjeta que arrastrás entre columnas a medida que avanza: de la idea al video subido.',
+  },
+  {
+    page: 'pipeline',
+    selector: '#modal-script .modal',
+    title: 'Generador de posts con IA',
+    text: 'Desde cualquier tarjeta podés generar un post con IA. Tiene un cupo diario limitado — si se agota, o si preferís no esperar, siempre podés usar uno de los 3 ejemplos ya armados.',
+    beforeShow: () => openScriptModal('Ejemplo de tema para el recorrido'),
+    afterLeave: () => closeModal('modal-script'),
+  },
+  {
+    page: 'competitors',
+    selector: '.comp-content',
+    title: 'Radar de competidores',
+    text: 'Seguimiento de competidores directos y adyacentes en trade marketing y retail execution, con su propia sincronización diaria.',
+  },
+  {
+    selector: '#btn-open-config',
+    title: 'Configuración',
+    text: 'Acá sólo se guardan los nombres de canal de LinkedIn y YouTube a consultar — nunca contraseñas, tokens ni claves.',
+  },
+  {
+    center: true,
+    title: 'Listo, ya conocés el dashboard',
+    text: 'Podés repetir este recorrido cuando quieras desde el botón "Ayuda" del menú lateral.',
+  },
+];
+
+let onboardingStepIndex = 0;
+let onboardingActive = false;
+
+function startOnboardingTour() {
+  onboardingStepIndex = 0;
+  onboardingActive = true;
+  document.getElementById('onboarding-overlay').classList.add('open');
+  renderOnboardingStep();
+}
+
+function endOnboardingTour() {
+  if (!onboardingActive) return;
+  const step = ONBOARDING_STEPS[onboardingStepIndex];
+  if (step && step.afterLeave) step.afterLeave();
+  onboardingActive = false;
+  document.getElementById('onboarding-overlay').classList.remove('open');
+  localStorage.setItem('qs_onboarding_seen', '1');
+}
+
+function onboardingNext() {
+  const step = ONBOARDING_STEPS[onboardingStepIndex];
+  if (step && step.afterLeave) step.afterLeave();
+  if (onboardingStepIndex >= ONBOARDING_STEPS.length - 1) { endOnboardingTour(); return; }
+  onboardingStepIndex++;
+  renderOnboardingStep();
+}
+
+function onboardingBack() {
+  if (onboardingStepIndex <= 0) return;
+  const step = ONBOARDING_STEPS[onboardingStepIndex];
+  if (step && step.afterLeave) step.afterLeave();
+  onboardingStepIndex--;
+  renderOnboardingStep();
+}
+
+function positionOnboardingCenter() {
+  document.getElementById('onboarding-spotlight').style.display = 'none';
+  const card = document.getElementById('onboarding-card');
+  card.classList.add('centered');
+  card.style.top = '50%';
+  card.style.left = '50%';
+  card.style.transform = 'translate(-50%, -50%)';
+}
+
+function positionOnboardingNear(target) {
+  const spotlight = document.getElementById('onboarding-spotlight');
+  const card = document.getElementById('onboarding-card');
+  card.classList.remove('centered');
+
+  const pad = 8;
+  const rect = target.getBoundingClientRect();
+  spotlight.style.display = 'block';
+  spotlight.style.top = Math.max(rect.top - pad, 4) + 'px';
+  spotlight.style.left = Math.max(rect.left - pad, 4) + 'px';
+  spotlight.style.width = (rect.width + pad * 2) + 'px';
+  spotlight.style.height = (rect.height + pad * 2) + 'px';
+
+  const cardWidth = card.classList.contains('centered') ? 380 : 340;
+  const cardEstHeight = 220;
+  let top = rect.bottom + 16;
+  if (top + cardEstHeight > window.innerHeight) top = Math.max(rect.top - cardEstHeight - 16, 12);
+  let left = Math.min(Math.max(rect.left, 16), window.innerWidth - cardWidth - 16);
+
+  card.style.transform = 'none';
+  card.style.top = top + 'px';
+  card.style.left = left + 'px';
+}
+
+async function renderOnboardingStep() {
+  const step = ONBOARDING_STEPS[onboardingStepIndex];
+
+  if (step.page) {
+    const navItem = document.querySelector(`.nav-item[data-page="${step.page}"]`);
+    if (navItem && !navItem.classList.contains('active')) navItem.click();
+  }
+  if (step.beforeShow) step.beforeShow();
+
+  document.getElementById('onboarding-counter').textContent = `${onboardingStepIndex + 1} / ${ONBOARDING_STEPS.length}`;
+  document.getElementById('onboarding-title').textContent = step.title;
+  document.getElementById('onboarding-text').textContent = step.text;
+  document.getElementById('onboarding-back').style.visibility = onboardingStepIndex === 0 ? 'hidden' : 'visible';
+  document.getElementById('onboarding-next').textContent = onboardingStepIndex === ONBOARDING_STEPS.length - 1 ? 'Finalizar' : 'Siguiente';
+
+  // Pequeña espera para que la página/el modal terminen de renderizarse
+  // antes de medir la posición del elemento a resaltar.
+  await new Promise(r => setTimeout(r, 70));
+
+  const target = step.selector ? document.querySelector(step.selector) : null;
+  if (step.center || !target) {
+    positionOnboardingCenter();
+  } else {
+    target.scrollIntoView({ block: 'center', behavior: 'instant' });
+    await new Promise(r => setTimeout(r, 30));
+    positionOnboardingNear(target);
+  }
+}
+
+window.addEventListener('resize', () => {
+  if (onboardingActive) renderOnboardingStep();
+});
+
+function maybeOfferOnboardingTour() {
+  if (localStorage.getItem('qs_onboarding_seen')) return;
+  setTimeout(() => startOnboardingTour(), 900);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2407,6 +2661,7 @@ function toast(msg, type = 'info') {
 // ─────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
+    if (onboardingActive) { endOnboardingTour(); return; }
     document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
   }
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
