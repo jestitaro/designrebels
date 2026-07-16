@@ -1,4 +1,4 @@
-/* Rotación tipográfica del verbo principal con efecto de tipeo. */
+/* Rotación tipográfica del verbo principal con efecto de tipeo estable. */
 .hero-copy h1,
 .hero-copy h1 em {
   color: var(--ink, #11111b);
@@ -9,10 +9,24 @@
   47%, 100% { opacity: 0; }
 }
 
-.hero-verb {
+.hero-verb-slot {
   display: inline-block;
+  position: relative;
+  width: 6.25em;
+  height: 1em;
+  line-height: 1;
+  vertical-align: baseline;
+  contain: layout;
+}
+
+.hero-verb {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: block;
+  width: max-content;
+  max-width: none;
   color: inherit;
-  transform-origin: left center;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -67,12 +81,16 @@
     line-height: .98;
   }
 
-  .hero-verb {
+  .hero-verb-slot {
     display: block;
     width: 100%;
-    height: 1.02em;
+    height: .84em;
     line-height: 1;
+  }
+
+  .hero-verb {
     font-size: .82em !important;
+    line-height: 1;
   }
 
   .hero-title-rest {
