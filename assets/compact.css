@@ -200,3 +200,93 @@
     min-height: 190px;
   }
 }
+
+/* Levitar solo durante el hover, sin movimiento permanente ni en pantallas táctiles. */
+@keyframes rebel-float-soft {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
+@keyframes rebel-float-small {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -5px; }
+}
+
+@keyframes rebel-float-side {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 4px -7px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card .score-card,
+  .project-card .score-chip,
+  .project-card .mini-pill,
+  .project-card .dash-shell,
+  .project-card .dash-kpi,
+  .project-card .canvas-card,
+  .project-card .editor-visual span,
+  .project-card .editor-visual b,
+  .project-card .rank-card,
+  .project-card .challenge-pill {
+    will-change: translate;
+  }
+
+  .project-main:hover .score-card {
+    animation: rebel-float-soft 2.1s ease-in-out infinite;
+  }
+
+  .project-main:hover .score-chip {
+    animation: rebel-float-small 1.8s ease-in-out .1s infinite;
+  }
+
+  .project-main:hover .mini-pill {
+    animation: rebel-float-side 2.35s ease-in-out .2s infinite;
+  }
+
+  .project-side.mint:hover .dash-shell {
+    animation: rebel-float-soft 2.2s ease-in-out infinite;
+  }
+
+  .project-side.mint:hover .dash-kpi {
+    animation: rebel-float-small 1.75s ease-in-out .15s infinite;
+  }
+
+  .project-side.coral:hover .canvas-card {
+    animation: rebel-float-soft 2s ease-in-out infinite;
+  }
+
+  .project-side.coral:hover .editor-visual span {
+    animation: rebel-float-small 1.7s ease-in-out .12s infinite;
+  }
+
+  .project-side.coral:hover .editor-visual b {
+    animation: rebel-float-side 2.15s ease-in-out .22s infinite;
+  }
+
+  .project-wide:hover .rank-first {
+    animation: rebel-float-soft 2.15s ease-in-out infinite;
+  }
+
+  .project-wide:hover .rank-second {
+    animation: rebel-float-side 2.45s ease-in-out .18s infinite;
+  }
+
+  .project-wide:hover .challenge-pill {
+    animation: rebel-float-small 1.85s ease-in-out .08s infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover .score-card,
+  .project-card:hover .score-chip,
+  .project-card:hover .mini-pill,
+  .project-card:hover .dash-shell,
+  .project-card:hover .dash-kpi,
+  .project-card:hover .canvas-card,
+  .project-card:hover .editor-visual span,
+  .project-card:hover .editor-visual b,
+  .project-card:hover .rank-card,
+  .project-card:hover .challenge-pill {
+    animation: none !important;
+  }
+}
