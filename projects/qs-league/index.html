@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=20260714-6" />
+  <link rel="stylesheet" href="assets/styles.css?v=20260714-7" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -17,13 +17,13 @@
 
   <main class="login" id="loginView">
     <section class="login-copy">
-      <span class="badge">🦖 QS League</span>
+      <span class="badge"><span class="brand-mark sm" aria-hidden="true"></span>QS League</span>
       <h1>La competencia interna más jurásica de QS.</h1>
       <p>DinoCoins, Kahoots, temporadas, leyendas y ajustes admin con motivo obligatorio para ver quién domina la isla.</p>
       <div class="mini-podium" aria-hidden="true">
-        <article><span>🥈</span><strong>Plata</strong><small>+2 coins</small></article>
-        <article class="winner"><span>🥇</span><strong>Oro</strong><small>+3 coins</small></article>
-        <article><span>🥉</span><strong>Bronce</strong><small>+1 coin</small></article>
+        <article><span class="medal-icon medal-silver"></span><strong>Plata</strong><small>+2 coins</small></article>
+        <article class="winner"><span class="medal-icon medal-gold"></span><strong>Oro</strong><small>+3 coins</small></article>
+        <article><span class="medal-icon medal-bronze"></span><strong>Bronce</strong><small>+1 coin</small></article>
       </div>
     </section>
 
@@ -34,7 +34,7 @@
       <form id="loginForm">
         <label>Email<input type="email" id="email" placeholder="jesi@quartzsales.com" /></label>
         <label>Password<input type="password" id="password" placeholder="••••••••" /></label>
-        <button class="primary" type="submit">Ingresar ↗</button>
+        <button class="primary" type="submit">Ingresar</button>
       </form>
       <button class="ghost" id="demoLogin" type="button" onclick="window.qsLeagueDemoLogin && window.qsLeagueDemoLogin()">Entrar como admin demo</button>
     </section>
@@ -44,9 +44,9 @@
     <aside class="sidebar">
       <a class="brand" href="#arena" data-tab="arena"><span>QS</span><strong>QS League</strong><small>DinoCoin Arena</small></a>
       <nav>
-        <button class="active" data-tab="arena">🏟️ Arena actual</button>
-        <button data-tab="legends">☄️ Leyendas</button>
-        <button data-tab="rules">📜 Reglas</button>
+        <button class="active" data-tab="arena">Arena actual</button>
+        <button data-tab="legends">Leyendas</button>
+        <button data-tab="rules">Reglas</button>
       </nav>
       <div class="season">
         <small>Season 02</small>
@@ -57,7 +57,7 @@
 
     <section class="content">
       <header class="topbar">
-        <button class="menu" id="menuBtn" type="button">☰</button>
+        <button class="menu" id="menuBtn" type="button" aria-label="Abrir menú"><span class="menu-bars" aria-hidden="true"></span></button>
         <div><p class="eyebrow">QuartzSales internal game</p><h2 id="pageTitle">Arena actual</h2></div>
         <button class="ghost" id="logoutBtn" type="button">Salir</button>
       </header>
@@ -74,7 +74,7 @@
               <article><strong id="totalTeams">0</strong><span>equipos pausados</span></article>
             </div>
           </div>
-          <div class="coin-core">🦖</div>
+          <div class="coin-core"><span class="brand-mark lg" aria-hidden="true"></span></div>
         </div>
 
         <div class="grid two arena-main-grid">
@@ -190,6 +190,6 @@
       if(localStorage.getItem(SESSION)) window.qsLeagueDemoLogin();
     })();
   </script>
-  <script src="assets/app.js?v=20260714-6" defer></script>
+  <script src="assets/app.js?v=20260714-7" defer></script>
 </body>
 </html>
