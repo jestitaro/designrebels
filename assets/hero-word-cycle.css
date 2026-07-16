@@ -1,4 +1,4 @@
-/* Rotación tipográfica del verbo principal con efecto de tipeo estable. */
+/* Verbo principal con efecto de tipeo estable y cambio de color. */
 .hero-copy h1,
 .hero-copy h1 em {
   color: var(--ink, #11111b);
@@ -9,38 +9,25 @@
   47%, 100% { opacity: 0; }
 }
 
-.hero-verb-slot {
-  display: inline-grid;
-  position: relative;
-  width: var(--verb-slot-width, 4.5em);
+.hero-verb-line {
+  display: block;
+  min-height: 1em;
   height: 1em;
   line-height: 1;
-  vertical-align: -.035em;
+  overflow: visible;
 }
 
 .hero-verb {
-  grid-area: 1 / 1;
-  align-self: end;
-  justify-self: start;
   display: inline-block;
-  width: max-content;
-  max-width: none;
-  color: inherit;
+  min-height: 1em;
+  font-family: "Manrope", sans-serif;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 800;
   line-height: 1;
+  letter-spacing: -.055em;
   white-space: nowrap;
-  transform: scaleX(var(--verb-scale, 1));
-  transform-origin: left bottom;
-}
-
-.hero-verb-measure {
-  position: absolute !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transform: none !important;
-}
-
-.hero-verb-measure::after {
-  display: none !important;
+  transition: color .2s ease;
 }
 
 .hero-verb::after {
@@ -55,38 +42,28 @@
 }
 
 .hero-title-rest {
-  display: inline;
-}
-
-.hero-verb.verb-design {
-  font-family: "Manrope", sans-serif;
+  display: block;
+  color: var(--ink, #11111b);
+  font: inherit;
   font-style: normal;
-  font-weight: 800;
-  letter-spacing: -.055em;
+  line-height: inherit;
+  letter-spacing: inherit;
 }
 
-.hero-verb.verb-prototype {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: .91em;
-  font-style: italic;
-  font-weight: 700;
-  letter-spacing: -.065em;
+.hero-verb.verb-purple {
+  color: var(--purple, #7025e0);
 }
 
-.hero-verb.verb-plan {
-  font-family: "Courier New", Courier, monospace;
-  font-size: .82em;
-  font-style: normal;
-  font-weight: 700;
-  letter-spacing: -.09em;
+.hero-verb.verb-green {
+  color: var(--green, #173d2a);
 }
 
-.hero-verb.verb-build {
-  font-family: "Arial Rounded MT Bold", "Trebuchet MS", "Manrope", sans-serif;
-  font-size: .91em;
-  font-style: normal;
-  font-weight: 900;
-  letter-spacing: -.075em;
+.hero-verb.verb-violet {
+  color: var(--violet, #a172ff);
+}
+
+.hero-verb.verb-ink {
+  color: var(--ink, #11111b);
 }
 
 @media (max-width: 700px) {
@@ -94,28 +71,25 @@
     line-height: .98;
   }
 
-  .hero-verb-slot {
-    display: block;
-    width: 100%;
-    height: .86em;
-    line-height: 1;
-    vertical-align: initial;
-  }
-
+  .hero-verb-line,
   .hero-verb {
-    font-size: .82em !important;
+    height: .84em;
+    min-height: .84em;
+    font-size: .82em;
     line-height: 1;
-    transform: none;
   }
 
   .hero-title-rest {
-    display: block;
     font-size: .82em;
     line-height: 1.08;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-verb {
+    transition: none;
+  }
+
   .hero-verb::after {
     animation: none;
     opacity: 1;
