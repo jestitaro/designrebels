@@ -8,6 +8,11 @@ const fmt = value => new Intl.NumberFormat('es-AR').format(value || 0);
 const norm = value => String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
+const fa = (name, className='') => `<i class="fa-solid ${name} ${className}" aria-hidden="true"></i>`;
+const medalIcon = key => fa('fa-medal', `league-icon medal-${key}`);
+const coinIcon = () => fa('fa-coins', 'league-icon coin-icon');
+const meteorIcon = () => fa('fa-meteor', 'league-icon meteor-icon');
+const medalClass = key => key === 'gold' ? 'gold' : key === 'silver' ? 'silver' : 'bronze';
 
 const teams = [
   { id: 'design', name: 'Design Rebels' },
@@ -154,8 +159,6 @@ function player(id){ return state.players.find(item => item.id === id); }
 function team(id){ return state.teams.find(item => item.id === id) || { name:'Sin equipo' }; }
 function on(selector,event,handler){ const node = $(selector); if(node) node.addEventListener(event,handler); }
 function fileBaseName(name){ return String(name || 'Kahoot QS League').replace(/\.(xlsx|xls|csv)$/i,''); }
-function icon(type, extra=''){ return `<span class="ui-icon ${type} ${extra}" aria-hidden="true"></span>`; }
-function medalClass(key){ return key === 'gold' ? 'medal-gold' : key === 'silver' ? 'medal-silver' : 'medal-bronze'; }
 
 function init(){
   ensureRuntimeStyles();
@@ -219,7 +222,7 @@ function renderStats(){
   const total = state.players.reduce((sum,item) => sum + (item.coins || 0), 0);
   if($('#totalCoins')) $('#totalCoins').textContent = fmt(total);
   if($('#totalPlayers')) $('#totalPlayers').textContent = basePlayers.length;
-  if($('#totalTeams')) $('#totalTeams').textContent = state.teams.length;
+  if($('#totalTeams')) $('#totalTeams').textContent = 0;
   if($('#seasonTotal')) $('#seasonTotal').textContent = `${fmt(total)} DinoCoins`;
   if($('#seasonBar')) $('#seasonBar').style.width = Math.min(100, total * 14) + '%';
 }
@@ -229,9 +232,9 @@ function renderRanking(){
   const q = norm($('#search')?.value);
   container.innerHTML = standingsPlayers()
     .filter(item => norm(item.name + (item.aliases || []).join(' ') + team(item.team).name).includes(q))
-    .map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="rank-main"><h3>${item.name}</h3><small>${team(item.team).name}</small></div>${medals(item)}<div class="coins">${fmt(item.coins)} ${icon('coin-icon')}</div><div class="meteor-mini">${icon('meteor-icon')} ${item.meteorites || 0}</div></article>`).join('');
+    .map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="rank-main"><h3>${item.name}</h3><small>${team(item.team).name}</small></div>${medals(item)}<div class="coins">${fmt(item.coins)} ${coinIcon()}</div><div class="meteor-mini">${meteorIcon()} ${item.meteorites || 0}</div></article>`).join('');
 }
-function medals(item){ return `<div class="medals"><span>${icon('medal-icon medal-gold')} ${item.medals?.gold || 0}</span><span>${icon('medal-icon medal-silver')} ${item.medals?.silver || 0}</span><span>${icon('medal-icon medal-bronze')} ${item.medals?.bronze || 0}</span></div>`; }
+function medals(item){ return `<div class="medals"><span>${medalIcon('gold')} ${item.medals?.gold || 0}</span><span>${medalIcon('silver')} ${item.medals?.silver || 0}</span><span>${medalIcon('bronze')} ${item.medals?.bronze || 0}</span></div>`; }
 function renderPodium(){
   const container = $('#podium');
   if(!container) return;
@@ -240,19 +243,18 @@ function renderPodium(){
     { key:'silver', title:'Plata', text:'+2 DinoCoins', detail:'Segundo puesto' },
     { key:'bronze', title:'Bronce', text:'+1 DinoCoin', detail:'Tercer puesto' }
   ];
-  container.innerHTML = items.map((item,index) => `<article class="podium-card arena-demo-card"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="avatar icon-avatar">${icon(`medal-icon ${medalClass(item.key)}`)}</div><h3>${item.title}</h3><p>${item.detail}</p><div class="coins">${item.text}</div></article>`).join('');
+  container.innerHTML = items.map((item,index) => `<article class="podium-card arena-demo-card"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="avatar icon-avatar">${medalIcon(item.key)}</div><h3>${item.title}</h3><p>${item.detail}</p><div class="coins">${item.text}</div></article>`).join('');
 }
 function renderTimeline(){
   const container = $('#timeline');
   if(!container) return;
   if(!state.ledger.length){ container.innerHTML = '<article class="activity"><strong>Nueva temporada lista</strong><span>Cargá el último Kahoot desde Arena para empezar a sumar DinoCoins.</span></article>'; return; }
   container.innerHTML = [...state.ledger].reverse().slice(0,10).map(item => {
-    const itemIcon = item.type === 'meteor' ? icon('meteor-icon') : icon('coin-icon');
+    const itemIcon = item.type === 'meteor' ? meteorIcon() : coinIcon();
     const delta = item.delta > 0 ? `+${item.delta}` : item.delta;
     return `<article class="activity"><strong>${player(item.player)?.name || 'Sistema'} ${delta} ${itemIcon}</strong><span>${item.reason}</span></article>`;
   }).join('');
 }
-
 function renderAdjustPlayers(){
   const select = $('#adjustPlayer');
   if(!select) return;
@@ -284,7 +286,6 @@ function applyManualAdjust(){
   $('#adjustAmount').value = 1;
   save(); render(); toast('Ajuste aplicado y registrado.');
 }
-
 function renderLegends(){
   const season = legends.seasons[0];
   if(!season || !$('#semesterPodium')) return;
@@ -292,11 +293,10 @@ function renderLegends(){
   if($('#semesterDates')) $('#semesterDates').textContent = season.dates;
   if($('#semesterWinners')) $('#semesterWinners').textContent = sorted.filter(item => item.wins > 0).length;
   if($('#semesterSeasons')) $('#semesterSeasons').textContent = legends.seasons.length;
-  $('#semesterPodium').innerHTML = sorted.slice(0,3).map((item,index) => `<article class="semester-winner"><div class="medal">${icon(`medal-icon ${['medal-gold','medal-silver','medal-bronze'][index]}`)}</div><div class="place">#${index+1}</div><h3>${item.name}</h3><strong>${item.wins} victoria${item.wins===1?'':'s'}</strong></article>`).join('');
+  $('#semesterPodium').innerHTML = sorted.slice(0,3).map((item,index) => `<article class="semester-winner"><div class="medal">${medalIcon(['gold','silver','bronze'][index])}</div><div class="place">#${index+1}</div><h3>${item.name}</h3><strong>${item.wins} victoria${item.wins===1?'':'s'}</strong></article>`).join('');
   $('#semesterRanking').innerHTML = sorted.map((item,index) => `<article class="semester-row"><b>${String(index+1).padStart(2,'0')}</b><div><strong>${item.name}</strong></div><div class="wins-pill">${item.wins} ${item.wins===1?'victoria':'victorias'}</div></article>`).join('');
   $('#semesterHistory').innerHTML = season.history.map(item => `<article class="history-row"><span>${item.date}</span><div><b>${item.winner}</b><span>Moderador: ${item.moderator}</span></div><em class="${item.status === 'Confirmar' ? 'state-confirmar' : ''}">${item.status}</em></article>`).join('');
 }
-
 function openUploadModal(){
   state.pending = null;
   state.pendingMeta = null;
@@ -411,7 +411,7 @@ function renderPreview(){
   const warning = unmapped ? `<p class="preview-warning">Hay ${unmapped} participante${unmapped>1?'s':''} sin mapear. Mapealos antes de actualizar el ranking.</p>` : '';
   const failed = meta.failed?.length ? `<p class="preview-warning">No pude leer: ${meta.failed.join(', ')}</p>` : '';
   const fileSummary = files.length ? `<p class="preview-source">Informe: ${files.map(file => `${file.fileName || 'archivo'} (${file.sheet || 'hoja?'})`).join(' · ')}</p>` : '';
-  container.innerHTML = `<div class="import-status"><article><strong>${fmt(files.length || 1)}</strong><span>informes</span></article><article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article><article><strong>${fmt(mapped)}</strong><span>mapeados</span></article><article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article></div>${fileSummary}${warning}${failed}<table><thead><tr><th>Rank</th><th>Nickname</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((row,index) => { const prize = award(row.rank); return `<tr><td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td><td><select data-map="${index}">${opts}</select><div class="${row.playerId?'mapped':'unmapped'}">${row.playerId?'Detectado':'Revisar'}</div></td><td>${prize.key ? icon(`medal-icon ${medalClass(prize.key)}`) : ''} ${prize.label}</td></tr>`; }).join('')}</tbody></table>`;
+  container.innerHTML = `<div class="import-status"><article><strong>${fmt(files.length || 1)}</strong><span>informes</span></article><article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article><article><strong>${fmt(mapped)}</strong><span>mapeados</span></article><article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article></div>${fileSummary}${warning}${failed}<table><thead><tr><th>Rank</th><th>Nickname</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((row,index) => { const prize = award(row.rank); return `<tr><td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td><td><select data-map="${index}">${opts}</select><div class="${row.playerId?'mapped':'unmapped'}">${row.playerId?'Detectado':'Revisar'}</div></td><td>${prize.key ? medalIcon(prize.key) : ''} ${prize.label}</td></tr>`; }).join('')}</tbody></table>`;
   $$('[data-map]').forEach(select => { select.value = state.pending[select.dataset.map].playerId; select.addEventListener('change', () => { state.pending[select.dataset.map].playerId = select.value; save(); renderPreview(); }); });
 }
 function applyImport(){
@@ -442,7 +442,6 @@ function applyImport(){
   dropConfetti();
   toast('Ranking actualizado.');
 }
-
 function loadRules(){ try { return JSON.parse(localStorage.getItem(RULES_STORAGE)) || clone(defaultRules); } catch { return clone(defaultRules); } }
 function renderRules(){
   const container = $('#rulesEditor');
@@ -456,7 +455,6 @@ function saveRules(){
   toast('Reglas guardadas.');
 }
 function restoreRules(){ localStorage.removeItem(RULES_STORAGE); renderRules(); toast('Reglas base restauradas.'); }
-
 function toast(message){
   const node = $('#toast');
   if(!node) return;
@@ -469,7 +467,7 @@ function ensureRuntimeStyles(){
   if($('#qsLeagueRuntimeStyles')) return;
   const style = document.createElement('style');
   style.id = 'qsLeagueRuntimeStyles';
-  style.textContent = `.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:rgba(3,5,15,.72);backdrop-filter:blur(14px)}.modal.hidden{display:none!important}.modal-card{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(31,37,64,.98),rgba(14,18,32,.98));box-shadow:var(--shadow);padding:24px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form select,.preview select{width:100%;border:1px solid var(--line);border-radius:14px;background:#0c1020;color:var(--text);padding:12px}.menu-bars,.menu-bars:before,.menu-bars:after{display:block;width:18px;height:2px;border-radius:99px;background:currentColor;content:""}.menu-bars:before{transform:translateY(-6px)}.menu-bars:after{transform:translateY(4px)}.brand-mark{display:inline-grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--cyan));color:#06100e;font-weight:950}.brand-mark:after{content:"QS"}.brand-mark.sm{width:22px;height:22px;font-size:9px;margin-right:6px}.brand-mark.lg{width:96px;height:96px;font-size:26px}.ui-icon,.medal-icon,.coin-icon,.meteor-icon{display:inline-block;vertical-align:-.15em;flex:0 0 auto}.medal-icon{width:22px;height:22px;border-radius:50%;position:relative;border:2px solid rgba(255,255,255,.45);box-shadow:inset 0 0 10px rgba(0,0,0,.25),0 0 18px rgba(255,255,255,.12)}.medal-icon:after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.78);transform:translate(-50%,-50%)}.medal-gold{background:linear-gradient(135deg,#fff4a8,#ffb300)}.medal-silver{background:linear-gradient(135deg,#ffffff,#9aa5c7)}.medal-bronze{background:linear-gradient(135deg,#ffd2a6,#b85c12)}.coin-icon{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffffff,#b7ff18 35%,#56d737 78%);border:2px solid rgba(255,255,255,.45);box-shadow:0 0 14px rgba(183,255,24,.35)}.meteor-icon{width:22px;height:12px;border-radius:999px 60% 60% 999px;background:linear-gradient(90deg,transparent,#ff8f3a 45%,#ffdf70);transform:skewX(-18deg);box-shadow:0 0 14px rgba(255,143,58,.45)}.icon-avatar{display:grid;place-items:center}.icon-avatar .medal-icon{width:46px;height:46px}.ranking-panel{min-width:0}.rank-row{grid-template-columns:48px minmax(0,1fr) auto auto auto!important;align-items:center;overflow:visible}.rank-main h3{margin:0}.rank-main small{display:block;color:var(--muted);white-space:normal}.meteor-mini{font-weight:900;color:var(--bronze);white-space:nowrap;display:flex;gap:6px;align-items:center}.coins{display:flex;gap:6px;align-items:center}.medals{display:flex;gap:6px;flex-wrap:wrap}.medals span{display:inline-flex;gap:4px;align-items:center}.semester-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.semester-winner,.semester-row,.history-row{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.06);padding:14px;min-width:0}.semester-winner{text-align:center}.semester-winner .medal{min-height:46px}.semester-winner h3,.semester-winner strong{display:block;word-break:normal}.semester-row,.history-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:8px}.semester-row span,.history-row span{display:block;color:var(--muted);font-size:12px}.wins-pill{font-weight:950;color:var(--lime);white-space:nowrap}.state-confirmar{color:var(--gold)}.confetti-layer{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:qsConfetti 1.8s ease-in forwards}@keyframes qsConfetti{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}@media(max-width:1100px){.arena-main-grid{grid-template-columns:1fr}.semester-podium{grid-template-columns:1fr}}@media(max-width:860px){.admin-form{grid-template-columns:1fr}.modal-actions{flex-direction:column}.rank-row{grid-template-columns:38px minmax(0,1fr)!important}.rank-row .medals,.rank-row .coins,.rank-row .meteor-mini{grid-column:2}.semester-row,.history-row{grid-template-columns:36px 1fr}.wins-pill,.history-row em{grid-column:2}}`;
+  style.textContent = `.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:rgba(3,5,15,.72);backdrop-filter:blur(14px)}.modal.hidden{display:none!important}.modal-card{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(31,37,64,.98),rgba(14,18,32,.98));box-shadow:var(--shadow);padding:24px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form select,.preview select{width:100%;border:1px solid var(--line);border-radius:14px;background:#0c1020;color:var(--text);padding:12px}.league-icon,.fa-solid{display:inline-flex;align-items:center;justify-content:center;line-height:1}.badge .fa-dragon{color:var(--lime);margin-right:6px}.coin-core .fa-dragon{font-size:54px;color:#06100e}.medal-gold{color:#ffd15c}.medal-silver{color:#d4dced}.medal-bronze{color:#c26a2e}.coin-icon{color:var(--lime)}.meteor-icon{color:#ff8f3a}.icon-avatar .fa-medal{font-size:46px}.mini-podium .fa-medal{font-size:28px}.ranking-panel{min-width:0}.rank-row{grid-template-columns:48px minmax(0,1fr) auto auto auto!important;align-items:center;overflow:visible}.rank-main h3{margin:0}.rank-main small{display:block;color:var(--muted);white-space:normal}.meteor-mini{font-weight:900;color:var(--bronze);white-space:nowrap;display:flex;gap:6px;align-items:center}.coins{display:flex;gap:6px;align-items:center}.medals{display:flex;gap:6px;flex-wrap:wrap}.medals span{display:inline-flex;gap:4px;align-items:center}.semester-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.semester-winner,.semester-row,.history-row{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.06);padding:14px;min-width:0}.semester-winner{text-align:center}.semester-winner .medal{font-size:44px;min-height:50px}.semester-winner h3,.semester-winner strong{display:block;word-break:normal}.semester-row,.history-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:8px}.semester-row span,.history-row span{display:block;color:var(--muted);font-size:12px}.wins-pill{font-weight:950;color:var(--lime);white-space:nowrap}.state-confirmar{color:var(--gold)}.confetti-layer{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:qsConfetti 1.8s ease-in forwards}@keyframes qsConfetti{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}@media(max-width:1100px){.arena-main-grid{grid-template-columns:1fr}.semester-podium{grid-template-columns:1fr}}@media(max-width:860px){.admin-form{grid-template-columns:1fr}.modal-actions{flex-direction:column}.rank-row{grid-template-columns:38px minmax(0,1fr)!important}.rank-row .medals,.rank-row .coins,.rank-row .meteor-mini{grid-column:2}.semester-row,.history-row{grid-template-columns:36px 1fr}.wins-pill,.history-row em{grid-column:2}}`;
   document.head.appendChild(style);
 }
 function dropConfetti(){
