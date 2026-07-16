@@ -24,77 +24,27 @@ if (prefersReducedMotion || !('IntersectionObserver' in window)) {
   revealItems.forEach((item) => observer.observe(item));
 }
 
-const setupHeroTitle = async () => {
+const setupHeroTitle = () => {
   const heroTitle = document.querySelector('.hero-copy h1');
   if (!heroTitle) return;
 
   const verbs = [
-    { text: 'Diseñamos', className: 'verb-design', scale: 1 },
-    { text: 'Prototipamos', className: 'verb-prototype', scale: 1 },
-    { text: 'Planificamos', className: 'verb-plan', scale: 1 },
-    { text: 'Construimos', className: 'verb-build', scale: 1 }
+    { text: 'Diseñamos', className: 'verb-purple' },
+    { text: 'Prototipamos', className: 'verb-green' },
+    { text: 'Planificamos', className: 'verb-violet' },
+    { text: 'Construimos', className: 'verb-ink' }
   ];
 
   heroTitle.setAttribute(
     'aria-label',
     'Diseñamos, prototipamos, planificamos y construimos el cambio antes de que llegue.'
   );
-  heroTitle.innerHTML = '<span class="hero-verb-slot" aria-hidden="true"><span class="hero-verb verb-design">Diseñamos</span></span><span class="hero-title-rest" aria-hidden="true"> el cambio antes de que llegue.</span>';
+  heroTitle.innerHTML = '<span class="hero-verb-line" aria-hidden="true"><span class="hero-verb verb-purple">Diseñamos</span></span><span class="hero-title-rest" aria-hidden="true">el cambio antes de que llegue.</span>';
 
-  const heroVerbSlot = heroTitle.querySelector('.hero-verb-slot');
   const heroVerb = heroTitle.querySelector('.hero-verb');
-  if (!heroVerbSlot || !heroVerb) return;
-
-  try {
-    await document.fonts.ready;
-  } catch {
-    // Continuar con las fuentes disponibles si la API no responde.
-  }
+  if (!heroVerb || prefersReducedMotion) return;
 
   let verbIndex = 0;
-  let resizeTimer;
-
-  const measureVerb = ({ text, className }) => {
-    const probe = document.createElement('span');
-    probe.className = `hero-verb ${className} hero-verb-measure`;
-    probe.textContent = text;
-    heroVerbSlot.append(probe);
-    const width = probe.getBoundingClientRect().width;
-    probe.remove();
-    return width;
-  };
-
-  const updateVerbMetrics = () => {
-    const isMobile = window.matchMedia('(max-width: 700px)').matches;
-
-    if (isMobile) {
-      heroVerbSlot.style.removeProperty('--verb-slot-width');
-      heroVerb.style.setProperty('--verb-scale', '1');
-      return;
-    }
-
-    const widths = verbs.map(measureVerb);
-    const targetWidth = widths[0] || 1;
-
-    heroVerbSlot.style.setProperty('--verb-slot-width', `${Math.ceil(targetWidth)}px`);
-    verbs.forEach((verb, index) => {
-      verb.scale = widths[index] ? targetWidth / widths[index] : 1;
-    });
-    heroVerb.style.setProperty('--verb-scale', String(verbs[verbIndex].scale));
-  };
-
-  const applyVerbStyle = (verb) => {
-    heroVerb.className = `hero-verb ${verb.className}`;
-    heroVerb.style.setProperty('--verb-scale', String(verb.scale));
-  };
-
-  updateVerbMetrics();
-
-  window.addEventListener('resize', () => {
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(updateVerbMetrics, 120);
-  });
-
   const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
   const deleteWord = async () => {
@@ -118,23 +68,21 @@ const setupHeroTitle = async () => {
 
       verbIndex = (verbIndex + 1) % verbs.length;
       const nextVerb = verbs[verbIndex];
-      applyVerbStyle(nextVerb);
+      heroVerb.className = `hero-verb ${nextVerb.className}`;
 
       await wait(180);
       await typeWord(nextVerb.text);
     }
   };
 
-  if (!prefersReducedMotion) {
-    void runTypingCycle();
-  }
+  void runTypingCycle();
 };
 
 if (heroWordStyles.sheet) {
-  void setupHeroTitle();
+  setupHeroTitle();
 } else {
-  heroWordStyles.addEventListener('load', () => void setupHeroTitle(), { once: true });
-  heroWordStyles.addEventListener('error', () => void setupHeroTitle(), { once: true });
+  heroWordStyles.addEventListener('load', setupHeroTitle, { once: true });
+  heroWordStyles.addEventListener('error', setupHeroTitle, { once: true });
 }
 
 const board = document.querySelector('.hero-board');
