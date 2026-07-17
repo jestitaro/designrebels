@@ -5,3 +5,14 @@
 #arena .grid.two:has(#timeline){
   grid-template-columns:1fr !important;
 }
+
+/* Remove login for public MVP access */
+#loginView{
+  display:none !important;
+}
+#appView.hidden{
+  display:grid !important;
+}
+#logoutBtn{
+  display:none !important;
+}
