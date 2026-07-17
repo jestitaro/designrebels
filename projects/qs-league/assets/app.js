@@ -25,18 +25,19 @@ const HOUSES = {
   sincasa: { name: 'Sin casa', color: 'var(--sincasa)' }
 };
 
+/* Houses pulled from quartzsales.com/hogquartz/salacomun/ (screenshots, 2026-07-17). */
 const ROSTER = [
   { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Agustin Goñi Piuma'] },
   { id: 'alejandro', name: 'Ale', fullName: 'Alejandro Frank', role: '', house: 'hufflepuff', aliases: ['Ale', 'Alejandro', 'Alejandro Frank', '8706743-ale'] },
   { id: 'eugenio', name: 'Euge', fullName: 'Eugenio Balbastro Fages', role: 'Líder técnico', house: 'ravenclaw', aliases: ['Euge', 'Eugenio', 'Eugenio Balbastro Fages', '8706743'] },
   { id: 'javi', name: 'Javi', fullName: 'Javier De Vergilio', role: '', house: 'gryffindor', aliases: ['Javi', 'Javier', 'Javier De Vergilio'] },
-  { id: 'jesica', name: 'Jesi', fullName: 'Jesica Titaro', role: 'Rebel Designer', house: 'slytherin', aliases: ['Jesi', 'Jess', 'Jesica', 'Jesica Titaro'] },
-  { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'sincasa', aliases: ['Juli', 'July', 'Picci', 'Juli Piccioni'] },
-  { id: 'lucrecia', name: 'Lucre', fullName: 'Lucrecia Moralejo', role: '', house: 'sincasa', aliases: ['Lucre', 'Luly', 'Luli', 'Lucrecia', 'Lucrecia Moralejo'] },
-  { id: 'mayra', name: 'May', fullName: 'Mayra Milanesio', role: '', house: 'sincasa', aliases: ['May', 'Mayra', 'Mayra Milanesio'] },
-  { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'sincasa', aliases: ['Nico', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
+  { id: 'jesica', name: 'Jesi', fullName: 'Jesica Titaro', role: 'Rebel Designer', house: 'gryffindor', aliases: ['Jesi', 'Jess', 'Jesica', 'Jesica Titaro'] },
+  { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'ravenclaw', aliases: ['Juli', 'July', 'Picci', 'Juli Piccioni'] },
+  { id: 'lucrecia', name: 'Lucre', fullName: 'Lucrecia Moralejo', role: '', house: 'hufflepuff', aliases: ['Lucre', 'Luly', 'Luli', 'Lucrecia', 'Lucrecia Moralejo'] },
+  { id: 'mayra', name: 'May', fullName: 'Mayra Milanesio', role: '', house: 'gryffindor', aliases: ['May', 'Mayra', 'Mayra Milanesio'] },
+  { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'slytherin', aliases: ['Nico', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
   { id: 'pablo', name: 'Pablo', fullName: 'Pablo Hernan Gimenez', role: 'Visionary / CEO', house: 'slytherin', aliases: ['Pablo', 'Hero', 'Heror', 'Pablo Hernan Gimenez', 'Pablo Gimenez'] },
-  { id: 'sebas', name: 'Sebas', fullName: 'Sebastian Carnota', role: '', house: 'sincasa', aliases: ['Sebas', 'Seba', 'Sebastian', 'Sebastian Carnota'] }
+  { id: 'sebas', name: 'Sebas', fullName: 'Sebastian Carnota', role: '', house: 'ravenclaw', aliases: ['Sebas', 'Seba', 'Sebastian', 'Sebastian Carnota'] }
 ];
 
 /* Season 02 base reports — matches REGLAS.md §10 (no retroactive penalties). */
@@ -273,7 +274,7 @@ function rankRow(item, index) {
     </div>
     <div class="mini-medals">${medalIcon('gold')}${item.medals.gold}<span></span>${medalIcon('silver')}${item.medals.silver}<span></span>${medalIcon('bronze')}${item.medals.bronze}</div>
     <div class="rank-coins">${fmt(item.coins)} ${fa('fa-coins')}</div>
-    <div class="rank-meteors ${item.meteorites ? '' : 'zero'}">${fa('fa-meteor')} ${item.meteorites}</div>
+    <div class="rank-meteors tooltip-trigger ${item.meteorites ? '' : 'zero'}" data-tooltip="Ausencias registradas esta temporada" tabindex="0">${fa('fa-meteor')} ${item.meteorites}</div>
   </article>`;
 }
 function renderRanking() {
@@ -641,6 +642,26 @@ function initReveal() {
   targets.forEach(el => observer.observe(el));
 }
 
+/* ---------- hero typewriter word-cycle ---------- */
+function initHeroCycle() {
+  const word = $('#heroCycleWord');
+  if (!word) return;
+  const words = ['DINOCOINS', 'KAHOOTS', 'METEORITOS', 'LEYENDAS'];
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+  let index = 0;
+  (async function loop() {
+    while (document.body.contains(word)) {
+      await wait(1700);
+      while (word.textContent.length > 0) { word.textContent = word.textContent.slice(0, -1); await wait(45); }
+      index = (index + 1) % words.length;
+      await wait(150);
+      const next = words[index];
+      for (let i = 1; i <= next.length; i++) { word.textContent = next.slice(0, i); await wait(75); }
+    }
+  })();
+}
+
 /* ---------- bindings ---------- */
 function bind() {
   $('#rankingSearch')?.addEventListener('input', renderRanking);
@@ -669,5 +690,6 @@ function init() {
   bind();
   render();
   initReveal();
+  initHeroCycle();
 }
 document.addEventListener('DOMContentLoaded', init);
