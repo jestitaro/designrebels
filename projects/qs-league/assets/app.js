@@ -235,7 +235,6 @@ function renderHero() {
   animateNumber($('#statPlayers'), rows.length);
   animateNumber($('#statMeteors'), meteors);
   if ($('#statLastDate')) $('#statLastDate').textContent = lastImport ? lastImport.date.split('-').reverse().join('/') : '—';
-  if ($('#seasonBar')) $('#seasonBar').style.width = `${Math.min(100, total * 2.4)}%`;
 }
 
 function podiumCard(item, rank) {
