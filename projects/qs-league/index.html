@@ -3,200 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="QS League: ranking interno de DinoCoins, Kahoots, temporadas y leyendas." />
+  <meta name="description" content="QS League: ranking interno de DinoCoins de QuartzSales. Subí el informe de Kahoot y la arena se actualiza sola." />
   <title>QS League · DinoCoin Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="assets/styles.css?v=20260714-8" />
-  <link rel="stylesheet" href="assets/spacing-fixes.css?v=20260716-1" />
-  <link rel="stylesheet" href="assets/arena-compact.css?v=20260717-2" />
-  <link rel="stylesheet" href="assets/hide-activity.css?v=20260716-9" />
+  <link rel="stylesheet" href="assets/styles.css?v=3" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
   <div class="bg-orb orb-a"></div>
   <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
 
-  <main class="login" id="loginView">
-    <section class="login-copy">
-      <span class="badge"><i class="fa-solid fa-dragon" aria-hidden="true"></i> QS League</span>
-      <h1>La competencia interna más jurásica de QS.</h1>
-      <p>DinoCoins, Kahoots, temporadas, leyendas y ajustes admin con motivo obligatorio para ver quién domina la isla.</p>
-      <div class="mini-podium" aria-hidden="true">
-        <article><i class="fa-solid fa-medal medal-silver"></i><strong>Plata</strong><small>+2 coins</small></article>
-        <article class="winner"><i class="fa-solid fa-medal medal-gold"></i><strong>Oro</strong><small>+3 coins</small></article>
-        <article><i class="fa-solid fa-medal medal-bronze"></i><strong>Bronce</strong><small>+1 coin</small></article>
+  <header class="nav">
+    <a class="brand" href="#hero">
+      <span class="brand-mark">QS</span>
+      <span><strong>QS League</strong><small>DinoCoin Arena</small></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links">
+      <a class="nav-link" href="#podium">Podio</a>
+      <a class="nav-link" href="#arena">Ranking</a>
+      <a class="nav-link" href="#upload">Subir informe</a>
+      <a class="nav-link" href="#adjust">Ajustes</a>
+      <a class="nav-link" href="#more">Más</a>
+    </nav>
+    <span class="nav-chip"><i class="fa-solid fa-coins"></i> Season 02</span>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="wrap hero-grid">
+        <div class="reveal in-view">
+          <span class="eyebrow"><i class="fa-solid fa-dragon"></i> Season 02 · 2do semestre 2026</span>
+          <h1>La arena interna de <span>QuartzSales</span> corre con DinoCoins.</h1>
+          <p>Subí el informe que exporta Kahoot y la arena actualiza el podio sola. Siempre hay un moderador de la fecha, y si alguien falta, se le carga el meteorito acá mismo.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#upload"><i class="fa-solid fa-file-arrow-up"></i> Subir informe de Kahoot</a>
+            <a class="btn btn-ghost" href="#arena"><i class="fa-solid fa-ranking-star"></i> Ver ranking</a>
+          </div>
+          <div class="stat-row">
+            <article class="stat-chip"><strong id="statCoins" data-value="0">0</strong><span>DinoCoins</span></article>
+            <article class="stat-chip"><strong id="statPlayers" data-value="0">0</strong><span>jugadores</span></article>
+            <article class="stat-chip"><strong id="statMeteors" data-value="0">0</strong><span>meteoritos</span></article>
+            <article class="stat-chip"><strong id="statLastDate">—</strong><span>última fecha</span></article>
+          </div>
+          <div class="season-bar-wrap">
+            <div class="season-bar-track"><div class="season-bar-fill" id="seasonBar"></div></div>
+          </div>
+        </div>
+        <div class="hero-orbit reveal in-view" aria-hidden="true">
+          <span class="orbit-ring r1"></span>
+          <span class="orbit-ring r2"></span>
+          <div class="orbit-core"><i class="fa-solid fa-dragon"></i></div>
+          <span class="orbit-icon" style="top:6%;left:8%"><i class="fa-solid fa-coins" style="color:var(--lime)"></i></span>
+          <span class="orbit-icon" style="top:10%;right:4%"><i class="fa-solid fa-medal" style="color:var(--gold)"></i></span>
+          <span class="orbit-icon" style="bottom:4%;left:2%"><i class="fa-solid fa-meteor" style="color:var(--meteor)"></i></span>
+          <span class="orbit-icon" style="bottom:10%;right:8%"><i class="fa-solid fa-user-shield" style="color:var(--blue)"></i></span>
+        </div>
       </div>
     </section>
 
-    <section class="login-card">
-      <p class="eyebrow">Acceso interno</p>
-      <h2>Entrar a la arena</h2>
-      <p>Login MVP local, preparado para conectar después con Firebase Auth como el Prode.</p>
-      <form id="loginForm">
-        <label>Email<input type="email" id="email" placeholder="jesi@quartzsales.com" /></label>
-        <label>Password<input type="password" id="password" placeholder="••••••••" /></label>
-        <button class="primary" type="submit">Ingresar <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
-      </form>
-      <button class="ghost" id="demoLogin" type="button" onclick="window.qsLeagueDemoLogin && window.qsLeagueDemoLogin()">Entrar como admin demo</button>
+    <section id="podium">
+      <div class="wrap reveal">
+        <div class="section-head">
+          <div><span class="eyebrow">Ranking real</span><h2>Podio actual</h2><p>Los 3 primeros del ranking individual de la temporada en curso, no es simbólico.</p></div>
+        </div>
+        <div id="podiumGrid"></div>
+      </div>
+    </section>
+
+    <section id="arena">
+      <div class="wrap reveal arena-grid">
+        <article class="panel">
+          <div class="section-head">
+            <div><span class="eyebrow">Temporada actual</span><h2>Ranking individual</h2></div>
+          </div>
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="rankingSearch" placeholder="Buscar nombre, alias o casa" />
+          </div>
+          <div id="rankingList"></div>
+        </article>
+
+        <div class="side-stack">
+          <article class="panel">
+            <div class="section-head"><div><span class="eyebrow">En vivo</span><h2>Actividad reciente</h2></div></div>
+            <div id="timeline"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="upload">
+      <div class="wrap reveal panel">
+        <div class="section-head">
+          <div><span class="eyebrow">Último Kahoot</span><h2>Subir informe y actualizar arena</h2><p>Elegí el moderador, arrastrá el XLSX o CSV de Kahoot Reports y revisá el preview antes de aplicar.</p></div>
+        </div>
+
+        <div class="upload-grid">
+          <div class="field">
+            <label for="moderatorSelect">Moderador de la fecha</label>
+            <select id="moderatorSelect">
+              <option value="">Elegir moderador</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sessionDate">Fecha de la sesión</label>
+            <input type="date" id="sessionDate" />
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="sessionName">Nombre de la fecha</label>
+            <input type="text" id="sessionName" placeholder="Ej: Kahoot QS League 23/07" />
+          </div>
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple />
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <strong>Arrastrá el informe acá</strong>
+          <span>o tocá para elegir XLSX / CSV exportado de Kahoot Reports</span>
+        </div>
+
+        <div id="uploadPreview" class="upload-preview empty"></div>
+
+        <div class="upload-footer">
+          <button class="btn btn-ghost" id="resetUploadBtn" type="button"><i class="fa-solid fa-xmark"></i> Descartar</button>
+          <button class="btn btn-primary" id="applyImportBtn" type="button" disabled><i class="fa-solid fa-rotate"></i> Actualizar ranking</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="adjust">
+      <div class="wrap reveal panel">
+        <div class="section-head">
+          <div><span class="eyebrow">Admin</span><h2>Ajuste manual</h2><p>¿Alguien faltó y no querés esperar al próximo informe? Cargale el meteorito acá. También sirve para sumar o restar DinoCoins sueltos — siempre con motivo.</p></div>
+        </div>
+        <div class="adjust-grid">
+          <div class="field"><label for="adjustPlayer">Jugador</label><select id="adjustPlayer"></select></div>
+          <div class="field"><label for="adjustKind">Qué ajustar</label>
+            <select id="adjustKind"><option value="dino">DinoCoins</option><option value="meteor">Meteorito</option></select>
+          </div>
+          <div class="field"><label for="adjustAction">Acción</label>
+            <select id="adjustAction"><option value="add">Sumar / cargar</option><option value="remove">Restar / quitar</option></select>
+          </div>
+          <div class="field"><label for="adjustAmount">Cantidad</label><input type="number" id="adjustAmount" min="1" value="1" /></div>
+          <div class="field wide"><label for="adjustReason">Motivo obligatorio</label><input type="text" id="adjustReason" placeholder="Ej: ausencia sin aviso / premio extra por organizar" /></div>
+          <div class="wide"><button class="btn btn-primary btn-block" id="applyManualAdjust" type="button"><i class="fa-solid fa-check"></i> Aplicar ajuste</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="more">
+      <div class="wrap reveal">
+        <div class="section-head"><div><span class="eyebrow">Más</span><h2>Leyendas, historial y reglas</h2></div></div>
+
+        <details class="accordion">
+          <summary>Actividad completa <i class="fa-solid fa-chevron-down"></i></summary>
+          <div class="accordion-body"><div id="timelineFull"></div></div>
+        </details>
+
+        <details class="accordion">
+          <summary>Leyendas · Enero-junio 2026 <i class="fa-solid fa-chevron-down"></i></summary>
+          <div class="accordion-body">
+            <p class="legend-note">Histórico cerrado. Cuenta solo ganadores de fecha (<span id="legendsDates">0</span> fechas, <span id="legendsWinners">0</span> ganadores). No hay meteoritos retroactivos: empiezan en Season 02.</p>
+            <div class="legend-podium" id="legendsPodium"></div>
+            <div class="legend-two">
+              <div><h3 style="font-size:14px;margin-bottom:8px">Tabla de victorias</h3><div id="legendsRanking"></div></div>
+              <div><h3 style="font-size:14px;margin-bottom:8px">Fechas jugadas</h3><div id="legendsHistory"></div></div>
+            </div>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>Reglas de la liga <i class="fa-solid fa-chevron-down"></i></summary>
+          <div class="accordion-body">
+            <div id="rulesEditor"></div>
+            <div class="rules-actions">
+              <button class="btn btn-primary" id="saveRules" type="button"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
+              <button class="btn btn-ghost" id="restoreRules" type="button"><i class="fa-solid fa-rotate-left"></i> Restaurar reglas base</button>
+            </div>
+          </div>
+        </details>
+      </div>
     </section>
   </main>
 
-  <div class="app hidden" id="appView">
-    <aside class="sidebar">
-      <a class="brand" href="#arena" data-tab="arena"><span>QS</span><strong>QS League</strong><small>DinoCoin Arena</small></a>
-      <nav>
-        <button class="active" data-tab="arena">Arena actual</button>
-        <button data-tab="legends">Leyendas</button>
-        <button data-tab="rules">Reglas</button>
-      </nav>
-      <div class="season">
-        <small>Season 02</small>
-        <strong id="seasonTotal">0 DinoCoins</strong>
-        <div><i id="seasonBar"></i></div>
-      </div>
-    </aside>
-
-    <section class="content">
-      <header class="topbar">
-        <button class="menu" id="menuBtn" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
-        <div><p class="eyebrow">QuartzSales internal game</p><h2 id="pageTitle">Arena actual</h2></div>
-        <button class="ghost" id="logoutBtn" type="button">Salir</button>
-      </header>
-
-      <section class="tab active" id="arena">
-        <div class="hero-card">
-          <div>
-            <span class="badge">Season 02 · segundo semestre</span>
-            <h2>La arena actual vive acá.</h2>
-            <p>Ranking individual de la temporada en curso. Cada informe nuevo de Kahoot actualiza esta arena.</p>
-            <div class="stats">
-              <article><strong id="totalCoins">0</strong><span>DinoCoins</span></article>
-              <article><strong id="totalPlayers">0</strong><span>jugadores</span></article>
-              <article><strong id="totalTeams">0</strong><span>equipos pausados</span></article>
-            </div>
-          </div>
-          <div class="coin-core"><i class="fa-solid fa-dragon" aria-hidden="true"></i></div>
-        </div>
-
-        <div class="grid two arena-main-grid">
-          <article class="panel ranking-panel">
-            <div class="panel-head">
-              <div><p class="eyebrow">Temporada actual</p><h2>Ranking individual</h2></div>
-            </div>
-            <input class="search" id="search" placeholder="Buscar nombre o alias" />
-            <div class="ranking" id="rankingList"></div>
-          </article>
-
-          <article class="panel upload-panel">
-            <div class="panel-head"><div><p class="eyebrow">Último Kahoot</p><h2>Actualizar arena</h2></div></div>
-            <p>Subí el informe del último Kahoot. Antes de aplicar, vas a ver un preview con participantes detectados y mapeos pendientes.</p>
-            <button class="primary" id="openUploadModal" type="button"><i class="fa-solid fa-file-arrow-up" aria-hidden="true"></i> Subir informe del último Kahoot</button>
-          </article>
-        </div>
-
-        <div class="grid two">
-          <article class="panel">
-            <div class="panel-head"><div><p class="eyebrow">Admin</p><h2>Ajuste manual</h2></div></div>
-            <p>Para DinoCoins extra, quitas o meteoritos de ausencia. Siempre queda registrado con explicación.</p>
-            <div class="admin-form">
-              <label>Jugador<select id="adjustPlayer"></select></label>
-              <label>Qué ajustar<select id="adjustKind"><option value="dino">DinoCoins</option><option value="meteor">Meteorito</option></select></label>
-              <label>Acción<select id="adjustAction"><option value="add">Sumar / cargar</option><option value="remove">Restar / quitar</option></select></label>
-              <label>Cantidad<input id="adjustAmount" type="number" min="1" value="1" /></label>
-              <label class="wide">Motivo obligatorio<input id="adjustReason" placeholder="Ej: premio extra por organizar / ausencia justificada" /></label>
-              <button class="primary wide" id="applyManualAdjust" type="button"><i class="fa-solid fa-check" aria-hidden="true"></i> Aplicar ajuste</button>
-            </div>
-          </article>
-
-          <article class="panel"><p class="eyebrow">Actividad actual</p><div class="timeline" id="timeline"></div></article>
-        </div>
-
-        <article class="panel"><div class="panel-head"><p class="eyebrow">Podio simbólico</p><button class="ghost small" data-tab="legends">Ver leyendas</button></div><div class="podium" id="podium"></div></article>
-      </section>
-
-      <section class="tab" id="legends">
-        <div class="semester-hero panel">
-          <div>
-            <p class="eyebrow">Histórico cerrado</p>
-            <h2>Ganadores leyenda</h2>
-            <p>Acá se guardan los semestres cerrados con sus rankings. El primer semestre 2026 cuenta solo ganadores. Los meteoritos empiezan desde la temporada actual.</p>
-          </div>
-          <div class="semester-kpis">
-            <article><strong id="semesterDates">0</strong><span>fechas</span></article>
-            <article><strong id="semesterWinners">0</strong><span>ganadores</span></article>
-            <article><strong id="semesterSeasons">1</strong><span>semestre cerrado</span></article>
-          </div>
-        </div>
-
-        <article class="panel legend-podium-panel"><div class="panel-head"><div><p class="eyebrow">Enero-junio 2026</p><h2>Podio histórico</h2></div></div><div class="semester-podium" id="semesterPodium"></div></article>
-
-        <div class="grid two">
-          <article class="panel"><p class="eyebrow">Tabla general · solo ganadores</p><div class="semester-ranking" id="semesterRanking"></div></article>
-          <article class="panel"><p class="eyebrow">Fechas cargadas</p><div class="semester-history" id="semesterHistory"></div></article>
-        </div>
-      </section>
-
-      <section class="tab" id="rules">
-        <article class="panel">
-          <div class="panel-head"><div><p class="eyebrow">Modo admin</p><h2>Reglas editables</h2></div><button class="primary" id="saveRules" type="button"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Guardar reglas</button></div>
-          <p>Estas reglas son editables en el MVP admin y quedan guardadas en este navegador. Después las pasamos a Firebase.</p>
-          <div class="rules editable-rules" id="rulesEditor"></div>
-          <button class="ghost" id="restoreRules" type="button"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Restaurar reglas base</button>
-        </article>
-      </section>
-    </section>
-  </div>
-
-  <div class="modal hidden" id="uploadModal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="panel-head">
-        <div><p class="eyebrow">Último Kahoot</p><h2>Subir informe</h2></div>
-        <button class="ghost small" id="cancelUploadTop" type="button"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Cerrar</button>
-      </div>
-      <p>Elegí o arrastrá el XLSX/CSV exportado de Kahoot. Luego revisá el preview y actualizá el ranking.</p>
-      <label>Nombre de la fecha<input id="sessionName" value="Kahoot QS League" /></label>
-      <div class="drop" id="dropZone"><input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple /><strong><i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Arrastrá el informe acá</strong><span>o tocá para elegir XLSX / CSV</span></div>
-      <div id="preview" class="preview empty">Todavía no hay informe cargado.</div>
-      <div class="modal-actions"><button class="ghost" id="cancelUpload" type="button">Cancelar</button><button class="primary" id="applyImport" disabled type="button"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar ranking</button></div>
-    </div>
-  </div>
+  <footer>QS League · MVP interno de QuartzSales. Reglas completas en <code>REGLAS.md</code>.</footer>
 
   <div class="toast" id="toast"></div>
-
-  <script>
-    (function(){
-      const SESSION = 'qs-league-session-v2';
-      const titles = { arena:'Arena actual', legends:'Leyendas', rules:'Reglas' };
-      window.qsLeagueSetTab = function(tab){
-        document.querySelectorAll('.tab').forEach(panel => panel.classList.toggle('active', panel.id === tab));
-        document.querySelectorAll('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === tab));
-        const title = document.querySelector('#pageTitle');
-        if(title) title.textContent = titles[tab] || 'QS League';
-        const sidebar = document.querySelector('.sidebar');
-        if(sidebar) sidebar.classList.remove('open');
-      };
-      window.qsLeagueDemoLogin = function(){
-        localStorage.setItem(SESSION,'1');
-        document.querySelector('#loginView')?.classList.add('hidden');
-        document.querySelector('#appView')?.classList.remove('hidden');
-        window.qsLeagueSetTab('arena');
-      };
-      document.addEventListener('click', function(event){
-        const tabButton = event.target.closest('[data-tab]');
-        if(tabButton){ event.preventDefault(); window.qsLeagueSetTab(tabButton.dataset.tab); }
-      });
-      document.addEventListener('submit', function(event){
-        if(event.target && event.target.id === 'loginForm'){ event.preventDefault(); window.qsLeagueDemoLogin(); }
-      });
-      if(localStorage.getItem(SESSION)) window.qsLeagueDemoLogin();
-    })();
-  </script>
-  <script src="assets/app.js?v=20260714-8" defer></script>
-  <script src="assets/qs-league-live-updates.js?v=20260716-3" defer></script>
-  <script src="assets/absence-rules-v2.js?v=20260716-4" defer></script>
-  <script src="assets/season02-canonical.js?v=20260717-1" defer></script>
+  <script src="assets/app.js?v=3" defer></script>
 </body>
 </html>

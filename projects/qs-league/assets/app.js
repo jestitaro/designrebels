@@ -1,492 +1,674 @@
-const STORAGE = 'qs-league-mvp-v10';
-const SESSION = 'qs-league-session-v2';
-const RULES_STORAGE = 'qs-league-rules-v2';
+/* QS League — DinoCoin Arena
+   Single clean state model: roster + imports + manual ledger.
+   Standings are always *derived* (computeStandings), never mutated in place,
+   so there is nothing to reconcile or migrate between sessions. */
 
-const zeroMedals = () => ({ gold: 0, silver: 0, bronze: 0 });
-const clone = value => JSON.parse(JSON.stringify(value));
-const fmt = value => new Intl.NumberFormat('es-AR').format(value || 0);
-const norm = value => String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const STORAGE = 'qs-league-v3';
+const RULES_STORAGE = 'qs-league-rules-v3';
+
+/* ---------- helpers ---------- */
 const $ = selector => document.querySelector(selector);
 const $$ = selector => [...document.querySelectorAll(selector)];
-const fa = (name, className='') => `<i class="fa-solid ${name} ${className}" aria-hidden="true"></i>`;
-const medalIcon = key => fa('fa-medal', `league-icon medal-${key}`);
-const coinIcon = () => fa('fa-coins', 'league-icon coin-icon');
-const meteorIcon = () => fa('fa-meteor', 'league-icon meteor-icon');
-const medalClass = key => key === 'gold' ? 'gold' : key === 'silver' ? 'silver' : 'bronze';
+const fmt = value => new Intl.NumberFormat('es-AR').format(value || 0);
+const norm = value => String(value || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const clone = value => JSON.parse(JSON.stringify(value));
+const fa = (name, className = '') => `<i class="fa-solid ${name} ${className}" aria-hidden="true"></i>`;
+const medalIcon = key => fa('fa-medal', `medal-ico medal-${key}`);
+const initials = value => String(value || 'QS').trim().split(/\s+/).slice(0, 2).map(part => part.charAt(0).toUpperCase()).join('') || 'QS';
 
-const teams = [
-  { id: 'design', name: 'Design Rebels' },
-  { id: 'dev', name: 'Dev Raptors' },
-  { id: 'bi', name: 'BI Saurios' },
-  { id: 'ops', name: 'Ops Rex' }
-];
-
-const basePlayers = [
-  { id: 'ale', name: 'Ale', team: 'dev', aliases: ['Ale','Alejandro','8706743'] },
-  { id: 'euge', name: 'Euge', team: 'design', aliases: ['Euge','Eugenia','Eugenio'] },
-  { id: 'hero', name: 'Hero', team: 'ops', aliases: ['Hero','Heror','Heroe','Héroe'] },
-  { id: 'javi', name: 'Javi', team: 'dev', aliases: ['Javi','Javier','Javu'] },
-  { id: 'jess', name: 'Jesi', team: 'design', aliases: ['Jesi','Jes','Jess','Jesica'] },
-  { id: 'luly', name: 'Luly', team: 'bi', aliases: ['Luly','Luy'] },
-  { id: 'mayra', name: 'May', team: 'bi', aliases: ['May','Mayra','May(Ra)'] },
-  { id: 'nico', name: 'Nico', team: 'ops', aliases: ['Nico','Nicolas','Nicolás'] },
-  { id: 'seba', name: 'Sebas', team: 'ops', aliases: ['Sebas','Seba','Sebastian','Sebastián'] },
-  { id: 'tuki', name: 'Tuki', team: 'design', aliases: ['Tuki'] }
-];
-
-const currentSeedScores = {
-  mayra: { coins: 3, medals: { gold: 1, silver: 0, bronze: 0 } },
-  javi: { coins: 2, medals: { gold: 0, silver: 1, bronze: 0 } },
-  nico: { coins: 1, medals: { gold: 0, silver: 0, bronze: 1 } }
+/* ---------- roster & houses ---------- */
+const HOUSES = {
+  slytherin: { name: 'Slytherin', color: 'var(--slytherin)' },
+  hufflepuff: { name: 'Hufflepuff', color: 'var(--hufflepuff)' },
+  ravenclaw: { name: 'Ravenclaw', color: 'var(--ravenclaw)' },
+  gryffindor: { name: 'Gryffindor', color: 'var(--gryffindor)' },
+  sincasa: { name: 'Sin casa', color: 'var(--sincasa)' }
 };
 
-const seed = {
-  teams,
-  players: basePlayers.map(player => ({
-    ...player,
-    coins: currentSeedScores[player.id]?.coins || 0,
-    medals: currentSeedScores[player.id]?.medals || zeroMedals(),
-    meteorites: 0
-  })),
-  ledger: [
-    { id:'s2-20260702-may', type:'dino', player:'mayra', delta:3, reason:'02 de julio 2026 - Ale: Oro +3' },
-    { id:'s2-20260702-javi', type:'dino', player:'javi', delta:2, reason:'02 de julio 2026 - Ale: Plata +2' },
-    { id:'s2-20260702-nico', type:'dino', player:'nico', delta:1, reason:'02 de julio 2026 - Ale: Bronce +1' }
-  ],
-  imports: [
-    { id:'import-20260702', session:'02 de julio 2026 - Ale', date:'2026-07-02', rows:[
-      { rank:1, playerId:'mayra', nickname:'May', score:13157, correct:15 },
-      { rank:2, playerId:'javi', nickname:'Javi', score:12973, correct:13 },
-      { rank:3, playerId:'nico', nickname:'Nico', score:11460, correct:11 },
-      { rank:4, playerId:'tuki', nickname:'Tuki', score:11097, correct:14 },
-      { rank:5, playerId:'jess', nickname:'Jesi', score:10748, correct:13 },
-      { rank:6, playerId:'seba', nickname:'Sebas', score:10199, correct:12 },
-      { rank:7, playerId:'ale', nickname:'8706743', score:8698, correct:10 }
-    ] }
-  ],
-  pending: null,
-  pendingMeta: null,
-  nextModerator: 'ale'
-};
+const ROSTER = [
+  { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Agustin Goñi Piuma'] },
+  { id: 'alejandro', name: 'Ale', fullName: 'Alejandro Frank', role: '', house: 'hufflepuff', aliases: ['Ale', 'Alejandro', 'Alejandro Frank', '8706743-ale'] },
+  { id: 'eugenio', name: 'Euge', fullName: 'Eugenio Balbastro Fages', role: 'Líder técnico', house: 'ravenclaw', aliases: ['Euge', 'Eugenio', 'Eugenio Balbastro Fages', '8706743'] },
+  { id: 'javi', name: 'Javi', fullName: 'Javier De Vergilio', role: '', house: 'gryffindor', aliases: ['Javi', 'Javier', 'Javier De Vergilio'] },
+  { id: 'jesica', name: 'Jesi', fullName: 'Jesica Titaro', role: 'Rebel Designer', house: 'slytherin', aliases: ['Jesi', 'Jess', 'Jesica', 'Jesica Titaro'] },
+  { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'sincasa', aliases: ['Juli', 'July', 'Picci', 'Juli Piccioni'] },
+  { id: 'lucrecia', name: 'Lucre', fullName: 'Lucrecia Moralejo', role: '', house: 'sincasa', aliases: ['Lucre', 'Luly', 'Luli', 'Lucrecia', 'Lucrecia Moralejo'] },
+  { id: 'mayra', name: 'May', fullName: 'Mayra Milanesio', role: '', house: 'sincasa', aliases: ['May', 'Mayra', 'Mayra Milanesio'] },
+  { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'sincasa', aliases: ['Nico', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
+  { id: 'pablo', name: 'Pablo', fullName: 'Pablo Hernan Gimenez', role: 'Visionary / CEO', house: 'slytherin', aliases: ['Pablo', 'Hero', 'Heror', 'Pablo Hernan Gimenez', 'Pablo Gimenez'] },
+  { id: 'sebas', name: 'Sebas', fullName: 'Sebastian Carnota', role: '', house: 'sincasa', aliases: ['Sebas', 'Seba', 'Sebastian', 'Sebastian Carnota'] }
+];
 
-const legends = {
-  seasons: [
-    {
-      id: '2026-s1',
-      label: 'Enero-junio 2026',
-      dates: 19,
-      note: 'Primer semestre cerrado. Cuenta solo ganadores; no suma plata ni bronce. Los meteoritos empiezan desde Season 02.',
-      winners: [
-        { name:'Hero', wins:5 },
-        { name:'Nico', wins:4 },
-        { name:'Jesi', wins:3 },
-        { name:'Javi', wins:2 },
-        { name:'Tuki', wins:2 },
-        { name:'Sebas', wins:2 },
-        { name:'Luly', wins:1 },
-        { name:'May', wins:0 },
-        { name:'Euge', wins:0 },
-        { name:'Ale', wins:0 }
-      ],
-      history: [
-        { date:'08/01', winner:'Hero', score:6971, moderator:'Lucrecia', status:'Validada' },
-        { date:'29/01', winner:'Javi', score:7491, moderator:'Jesi', status:'Validada' },
-        { date:'05/02', winner:'Tuki', score:15916, moderator:'Sin identificar', status:'Validada' },
-        { date:'12/02', winner:'Hero', score:9969, moderator:'Lucre', status:'Validada' },
-        { date:'26/02', winner:'Jesi', score:12242, moderator:'Euge', status:'Confirmar' },
-        { date:'05/03', winner:'Tuki', score:12950, moderator:'Euge', status:'Validada' },
-        { date:'19/03', winner:'Sebas', score:7682, moderator:'Jesi', status:'Validada' },
-        { date:'26/03', winner:'Javi', score:13041, moderator:'May', status:'Validada' },
-        { date:'09/04', winner:'Luly', score:20642, moderator:'Euge', status:'Validada' },
-        { date:'16/04', winner:'Nico', score:11538, moderator:'Agustín', status:'Validada' },
-        { date:'23/04', winner:'Hero', score:13782, moderator:'Ale', status:'Validada' },
-        { date:'07/05', winner:'Nico', score:5503, moderator:'Jesi', status:'Validada' },
-        { date:'14/05', winner:'Jesi', score:15625, moderator:'Ale', status:'Validada' },
-        { date:'21/05', winner:'Jesi', score:9956, moderator:'Euge', status:'Validada' },
-        { date:'28/05', winner:'Nico', score:16025, moderator:'Sebas', status:'Validada' },
-        { date:'04/06', winner:'Hero', score:11159, moderator:'Sebas', status:'Validada' },
-        { date:'11/06', winner:'Sebas', score:7855, moderator:'May', status:'Validada' },
-        { date:'18/06', winner:'Hero', score:10716, moderator:'Euge', status:'Validada' },
-        { date:'25/06', winner:'Nico', score:9306, moderator:'Sebas', status:'Validada' }
-      ]
-    }
+/* Season 02 base reports — matches REGLAS.md §10 (no retroactive penalties). */
+const SEED_IMPORTS = [
+  {
+    id: 'seed-20260702', session: '02 de julio 2026', date: '2026-07-02', ts: '2026-07-02T12:00:00.000Z', moderator: 'alejandro',
+    rows: [
+      { rank: 1, playerId: 'mayra', nickname: 'May', score: 13157, correct: 15 },
+      { rank: 2, playerId: 'javi', nickname: 'Javi', score: 12973, correct: 13 },
+      { rank: 3, playerId: 'nico', nickname: 'Nico', score: 11460, correct: 11 },
+      { rank: 4, playerId: '', nickname: 'Tuki', score: 11097, correct: 14 },
+      { rank: 5, playerId: 'jesica', nickname: 'Jesi', score: 10748, correct: 13 },
+      { rank: 6, playerId: 'sebas', nickname: 'Sebas', score: 10199, correct: 12 },
+      { rank: 7, playerId: 'eugenio', nickname: '8706743', score: 8698, correct: 10 }
+    ],
+    absences: []
+  },
+  {
+    id: 'seed-20260716', session: '16 de julio 2026', date: '2026-07-16', ts: '2026-07-16T12:00:00.000Z', moderator: 'sebas',
+    rows: [
+      { rank: 1, playerId: 'javi', nickname: 'Javi', score: 9771, correct: 12 },
+      { rank: 2, playerId: 'mayra', nickname: 'May', score: 7485, correct: 10 },
+      { rank: 3, playerId: 'pablo', nickname: 'Heror', score: 6963, correct: 9 },
+      { rank: 4, playerId: '', nickname: 'Tuki', score: 6893, correct: 9 },
+      { rank: 5, playerId: 'lucrecia', nickname: 'Luly', score: 5660, correct: 8 },
+      { rank: 6, playerId: 'juli', nickname: 'Picci', score: 5399, correct: 7 },
+      { rank: 7, playerId: 'nico', nickname: 'Nico', score: 5371, correct: 7 },
+      { rank: 8, playerId: 'alejandro', nickname: 'Ale', score: 3953, correct: 6 }
+    ],
+    absences: []
+  }
+];
+
+const LEGENDS = {
+  label: 'Enero-junio 2026',
+  dates: 19,
+  note: 'Primer semestre cerrado. Cuenta solo ganadores; no suma plata ni bronce. Los meteoritos empiezan desde Season 02.',
+  winners: [
+    { name: 'Pablo', wins: 5 }, { name: 'Nico', wins: 4 }, { name: 'Jesi', wins: 3 },
+    { name: 'Javi', wins: 2 }, { name: 'Tuki', wins: 2 }, { name: 'Sebas', wins: 2 },
+    { name: 'Lucre', wins: 1 }, { name: 'May', wins: 0 }, { name: 'Euge', wins: 0 }, { name: 'Ale', wins: 0 }
+  ],
+  history: [
+    { date: '08/01', winner: 'Pablo', score: 6971, moderator: 'Lucrecia' },
+    { date: '29/01', winner: 'Javi', score: 7491, moderator: 'Jesi' },
+    { date: '05/02', winner: 'Tuki', score: 15916, moderator: 'Sin identificar' },
+    { date: '12/02', winner: 'Pablo', score: 9969, moderator: 'Lucre' },
+    { date: '26/02', winner: 'Jesi', score: 12242, moderator: 'Euge' },
+    { date: '05/03', winner: 'Tuki', score: 12950, moderator: 'Euge' },
+    { date: '19/03', winner: 'Sebas', score: 7682, moderator: 'Jesi' },
+    { date: '26/03', winner: 'Javi', score: 13041, moderator: 'May' },
+    { date: '09/04', winner: 'Lucre', score: 20642, moderator: 'Euge' },
+    { date: '16/04', winner: 'Nico', score: 11538, moderator: 'Agustín' },
+    { date: '23/04', winner: 'Pablo', score: 13782, moderator: 'Ale' },
+    { date: '07/05', winner: 'Nico', score: 5503, moderator: 'Jesi' },
+    { date: '14/05', winner: 'Jesi', score: 15625, moderator: 'Ale' },
+    { date: '21/05', winner: 'Jesi', score: 9956, moderator: 'Euge' },
+    { date: '28/05', winner: 'Nico', score: 16025, moderator: 'Sebas' },
+    { date: '04/06', winner: 'Pablo', score: 11159, moderator: 'Sebas' },
+    { date: '11/06', winner: 'Sebas', score: 7855, moderator: 'May' },
+    { date: '18/06', winner: 'Pablo', score: 10716, moderator: 'Euge' },
+    { date: '25/06', winner: 'Nico', score: 9306, moderator: 'Sebas' }
   ]
 };
 
-const defaultRules = [
-  { title:'Puntos por podio', body:'Desde Season 02: oro +3, plata +2 y bronce +1.' },
-  { title:'Ranking actual', body:'La Arena actual muestra el ranking individual. Equipos queda pausado hasta definir la mecánica grupal.' },
-  { title:'Ajustes admin', body:'Se pueden sumar o quitar DinoCoins y meteoritos, siempre explicando el motivo.' },
-  { title:'Leyendas', body:'Los semestres cerrados pasan a Leyendas. El primer semestre 2026 cuenta solo ganadores.' }
+const DEFAULT_RULES = [
+  { title: 'Puntaje por Kahoot', body: 'Cada informe reparte 1° +3, 2° +2 y 3° +1 DinoCoin. El resto del ranking aparece pero no suma esa fecha.' },
+  { title: 'Moderador', body: 'Cada fecha tiene un moderador que no compite, no suma puntos y no cuenta como ausente esa fecha.' },
+  { title: 'Ausencias y meteoritos', body: 'Cada ausente oficial suma +1 meteorito. Avisando 24 h antes resta 1 DinoCoin; sin aviso resta 3.' },
+  { title: 'Ajustes manuales', body: 'Sumar o restar DinoCoins y meteoritos siempre requiere un motivo, y queda en la actividad.' },
+  { title: 'Leyendas', body: 'Los semestres cerrados pasan a Leyendas contando solo ganadores, sin meteoritos retroactivos.' }
 ];
 
+/* ---------- award table ---------- */
+function award(rank) {
+  if (rank === 1) return { delta: 3, key: 'gold', label: 'Oro +3' };
+  if (rank === 2) return { delta: 2, key: 'silver', label: 'Plata +2' };
+  if (rank === 3) return { delta: 1, key: 'bronze', label: 'Bronce +1' };
+  return { delta: 0, key: null, label: '—' };
+}
+function absencePenalty(kind) { return kind === 'notice' ? 1 : kind === 'no_notice' ? 3 : 0; }
+function absenceLabel(kind) { return kind === 'notice' ? 'Avisó 24 h antes' : kind === 'no_notice' ? 'Sin aviso' : ''; }
+
+/* ---------- state ---------- */
 let state = load();
-let confettiDone = false;
 
-function load(){
-  try { return normalizeState(JSON.parse(localStorage.getItem(STORAGE)) || clone(seed)); }
-  catch { return clone(seed); }
-}
-function normalizeState(next){
-  const normalized = { ...clone(seed), ...next };
-  normalized.teams = Array.isArray(next.teams) ? next.teams : seed.teams;
-  normalized.players = mergePlayers(Array.isArray(next.players) ? next.players : []);
-  normalized.ledger = Array.isArray(next.ledger) ? next.ledger : [];
-  normalized.imports = Array.isArray(next.imports) ? next.imports : [];
-  normalized.pending = Array.isArray(next.pending) ? next.pending : null;
-  normalized.pendingMeta = next.pendingMeta || null;
-  return normalized;
-}
-function mergePlayers(savedPlayers){
-  const savedById = new Map(savedPlayers.map(player => [player.id, player]));
-  const merged = seed.players.map(seedPlayer => {
-    const saved = savedById.get(seedPlayer.id) || {};
+function load() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE)) || {};
     return {
-      ...seedPlayer,
-      ...saved,
-      name: seedPlayer.name,
-      team: saved.team || seedPlayer.team,
-      aliases: [...new Set([...(seedPlayer.aliases || []), ...(saved.aliases || [])])],
-      medals: { ...seedPlayer.medals, ...(saved.medals || {}) },
-      meteorites: Number(saved.meteorites || seedPlayer.meteorites || 0)
+      customPlayers: Array.isArray(saved.customPlayers) ? saved.customPlayers : [],
+      imports: Array.isArray(saved.imports) && saved.imports.length ? saved.imports : clone(SEED_IMPORTS),
+      manual: Array.isArray(saved.manual) ? saved.manual : [],
+      pending: null,
+      pendingMeta: null,
+      pendingAbsenceChoices: {}
     };
-  });
-  savedPlayers.forEach(player => { if(player?.id && !merged.some(item => item.id === player.id)) merged.push(player); });
-  return merged;
-}
-function save(){ localStorage.setItem(STORAGE, JSON.stringify(state)); }
-function player(id){ return state.players.find(item => item.id === id); }
-function team(id){ return state.teams.find(item => item.id === id) || { name:'Sin equipo' }; }
-function on(selector,event,handler){ const node = $(selector); if(node) node.addEventListener(event,handler); }
-function fileBaseName(name){ return String(name || 'Kahoot QS League').replace(/\.(xlsx|xls|csv)$/i,''); }
-
-function init(){
-  ensureRuntimeStyles();
-  bind();
-  render();
-  if(localStorage.getItem(SESSION)) showApp(false);
-}
-function bind(){
-  on('#loginForm','submit', event => { event.preventDefault(); localStorage.setItem(SESSION,'1'); showApp(true); });
-  on('#demoLogin','click', () => { localStorage.setItem(SESSION,'1'); showApp(true); });
-  on('#logoutBtn','click', () => { localStorage.removeItem(SESSION); $('#appView')?.classList.add('hidden'); $('#loginView')?.classList.remove('hidden'); });
-  on('#menuBtn','click', () => $('.sidebar')?.classList.toggle('open'));
-  document.addEventListener('click', event => {
-    const tabButton = event.target.closest('[data-tab]');
-    if(tabButton){ event.preventDefault(); setTab(tabButton.dataset.tab); }
-  });
-  on('#search','input', renderRanking);
-  on('#openUploadModal','click', openUploadModal);
-  on('#cancelUpload','click', closeUploadModal);
-  on('#cancelUploadTop','click', closeUploadModal);
-  on('#fileInput','change', event => readFiles([...event.target.files]));
-  on('#applyImport','click', applyImport);
-  on('#applyManualAdjust','click', applyManualAdjust);
-  on('#saveRules','click', saveRules);
-  on('#restoreRules','click', restoreRules);
-  const drop = $('#dropZone');
-  if(drop){
-    drop.addEventListener('dragover', event => { event.preventDefault(); drop.classList.add('drag'); });
-    drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
-    drop.addEventListener('drop', event => { event.preventDefault(); drop.classList.remove('drag'); readFiles([...event.dataTransfer.files]); });
+  } catch {
+    return { customPlayers: [], imports: clone(SEED_IMPORTS), manual: [], pending: null, pendingMeta: null, pendingAbsenceChoices: {} };
   }
 }
-function showApp(withConfetti){
-  $('#loginView')?.classList.add('hidden');
-  $('#appView')?.classList.remove('hidden');
-  setTab('arena');
-  render();
-  if(withConfetti) dropConfetti();
+function persist() {
+  localStorage.setItem(STORAGE, JSON.stringify({ customPlayers: state.customPlayers, imports: state.imports, manual: state.manual }));
 }
-function setTab(tab){
-  const titles = { arena:'Arena actual', legends:'Leyendas', rules:'Reglas' };
-  $$('.tab').forEach(panel => panel.classList.toggle('active', panel.id === tab));
-  $$('[data-tab]').forEach(button => button.classList.toggle('active', button.dataset.tab === tab));
-  if($('#pageTitle')) $('#pageTitle').textContent = titles[tab] || 'QS League';
-  $('.sidebar')?.classList.remove('open');
-  if(tab === 'legends') dropConfetti();
-}
-window.qsLeagueDemoLogin = function(){ localStorage.setItem(SESSION,'1'); showApp(true); };
-window.qsLeagueSetTab = setTab;
+function players() { return [...ROSTER, ...state.customPlayers]; }
+function player(id) { return players().find(item => item.id === id); }
+function house(id) { return HOUSES[id] || HOUSES.sincasa; }
 
-function standingsPlayers(){
-  return [...state.players].sort((a,b) =>
-    (b.coins || 0) - (a.coins || 0) ||
-    (b.medals?.gold || 0) - (a.medals?.gold || 0) ||
-    (a.meteorites || 0) - (b.meteorites || 0) ||
-    a.name.localeCompare(b.name)
-  );
+/* ---------- pure standings engine ---------- */
+function computeStandings() {
+  const totals = new Map(players().map(p => [p.id, { coins: 0, medals: { gold: 0, silver: 0, bronze: 0 }, meteorites: 0 }]));
+  const ledger = [];
+  const ensure = id => { if (!totals.has(id)) totals.set(id, { coins: 0, medals: { gold: 0, silver: 0, bronze: 0 }, meteorites: 0 }); return totals.get(id); };
+
+  state.imports.forEach(imp => {
+    const rows = (imp.rows || [])
+      .filter(row => row.playerId && row.playerId !== imp.moderator)
+      .sort((a, b) => Number(a.rank || 999) - Number(b.rank || 999))
+      .map((row, index) => ({ ...row, rank: index + 1 }));
+    rows.forEach(row => {
+      const prize = award(row.rank);
+      if (!prize.delta) return;
+      const total = ensure(row.playerId);
+      total.coins += prize.delta;
+      total.medals[prize.key] += 1;
+      ledger.push({ ts: imp.ts, type: 'dino', player: row.playerId, delta: prize.delta, reason: `${imp.session}: ${prize.label}` });
+    });
+    (imp.absences || []).forEach(absence => {
+      const total = ensure(absence.id);
+      total.meteorites += 1;
+      ledger.push({ ts: imp.ts, type: 'meteor', player: absence.id, delta: 1, reason: `Ausencia en ${imp.session} · ${absence.label}. Moderador: ${player(imp.moderator)?.name || '—'}.` });
+      if (absence.penalty) {
+        total.coins -= absence.penalty;
+        ledger.push({ ts: imp.ts, type: 'dino', player: absence.id, delta: -absence.penalty, reason: `Penalización por ausencia en ${imp.session}.` });
+      }
+    });
+  });
+
+  state.manual.forEach(entry => {
+    const total = ensure(entry.player);
+    if (entry.kind === 'meteor') total.meteorites = Math.max(0, total.meteorites + entry.delta);
+    else total.coins += entry.delta;
+    ledger.push({ ts: entry.ts, type: entry.kind === 'meteor' ? 'meteor' : 'dino', player: entry.player, delta: entry.delta, reason: entry.reason });
+  });
+
+  ledger.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+  return { totals, ledger };
 }
-function render(){ renderStats(); renderRanking(); renderPodium(); renderTimeline(); renderLegends(); renderRules(); renderAdjustPlayers(); renderPreview(); }
-function renderStats(){
-  const total = state.players.reduce((sum,item) => sum + (item.coins || 0), 0);
-  if($('#totalCoins')) $('#totalCoins').textContent = fmt(total);
-  if($('#totalPlayers')) $('#totalPlayers').textContent = basePlayers.length;
-  if($('#totalTeams')) $('#totalTeams').textContent = 0;
-  if($('#seasonTotal')) $('#seasonTotal').textContent = `${fmt(total)} DinoCoins`;
-  if($('#seasonBar')) $('#seasonBar').style.width = Math.min(100, total * 14) + '%';
+function standingsPlayers() {
+  const { totals } = computeStandings();
+  return players()
+    .map(p => ({ ...p, ...totals.get(p.id) }))
+    .sort((a, b) => (b.coins - a.coins) || (b.medals.gold - a.medals.gold) || (b.medals.silver - a.medals.silver) || (a.meteorites - b.meteorites) || a.name.localeCompare(b.name, 'es'));
 }
-function renderRanking(){
+function findPlayerByNickname(nick) {
+  const n = norm(nick);
+  if (!n) return null;
+  return players().find(p => [p.id, p.name, p.fullName, ...(p.aliases || [])].some(alias => norm(alias) === n)) || null;
+}
+
+/* ---------- rendering ---------- */
+function render() {
+  renderHero();
+  renderPodium();
+  renderRanking();
+  renderActivity();
+  renderLegends();
+  renderRules();
+  renderAdjustPlayers();
+  renderModeratorOptions();
+  renderPreview();
+}
+
+function animateNumber(el, to) {
+  if (!el) return;
+  const from = Number(el.dataset.value || 0);
+  if (from === to && el.textContent !== '0') { el.dataset.value = to; return; }
+  el.dataset.value = to;
+  const duration = 700;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = fmt(Math.round(from + (to - from) * eased));
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function renderHero() {
+  const rows = standingsPlayers();
+  const total = rows.reduce((sum, item) => sum + item.coins, 0);
+  const meteors = rows.reduce((sum, item) => sum + item.meteorites, 0);
+  const lastImport = [...state.imports].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+  animateNumber($('#statCoins'), total);
+  animateNumber($('#statPlayers'), rows.length);
+  animateNumber($('#statMeteors'), meteors);
+  if ($('#statLastDate')) $('#statLastDate').textContent = lastImport ? lastImport.date.split('-').reverse().join('/') : '—';
+  if ($('#seasonBar')) $('#seasonBar').style.width = `${Math.min(100, total * 2.4)}%`;
+}
+
+function podiumCard(item, rank) {
+  const h = house(item.house);
+  return `<article class="podium-card rank-${rank}" style="--house:${h.color}">
+    <span class="podium-rank">0${rank}</span>
+    <div class="podium-avatar">${initials(item.name)}</div>
+    <h3>${item.name}</h3>
+    <p class="podium-role">${item.role || h.name}</p>
+    <div class="mini-medals">${medalIcon('gold')}${item.medals.gold}<span></span>${medalIcon('silver')}${item.medals.silver}<span></span>${medalIcon('bronze')}${item.medals.bronze}</div>
+    <div class="podium-coins">${fmt(item.coins)} ${fa('fa-coins')}</div>
+  </article>`;
+}
+function renderPodium() {
+  const container = $('#podiumGrid');
+  if (!container) return;
+  const top = standingsPlayers().filter(item => item.coins > 0 || item.medals.gold || item.medals.silver || item.medals.bronze).slice(0, 3);
+  if (!top.length) {
+    container.innerHTML = `<p class="empty-note">Todavía no hay puntajes. Subí el primer informe de Kahoot para inaugurar la arena.</p>`;
+    container.classList.add('empty');
+    return;
+  }
+  container.classList.remove('empty');
+  const order = [1, 0, 2].filter(index => top[index]);
+  container.innerHTML = order.map(index => podiumCard(top[index], index + 1)).join('');
+}
+
+function rankRow(item, index) {
+  const h = house(item.house);
+  return `<article class="rank-row" style="--house:${h.color}; --d:${index * 40}ms">
+    <span class="rank-place">${String(index + 1).padStart(2, '0')}</span>
+    <div class="rank-avatar">${initials(item.name)}</div>
+    <div class="rank-main">
+      <h3>${item.name}</h3>
+      <span class="house-pill">${h.name}${item.role ? ` · ${item.role}` : ''}</span>
+    </div>
+    <div class="mini-medals">${medalIcon('gold')}${item.medals.gold}<span></span>${medalIcon('silver')}${item.medals.silver}<span></span>${medalIcon('bronze')}${item.medals.bronze}</div>
+    <div class="rank-coins">${fmt(item.coins)} ${fa('fa-coins')}</div>
+    <div class="rank-meteors ${item.meteorites ? '' : 'zero'}">${fa('fa-meteor')} ${item.meteorites}</div>
+  </article>`;
+}
+function renderRanking() {
   const container = $('#rankingList');
-  if(!container) return;
-  const q = norm($('#search')?.value);
-  container.innerHTML = standingsPlayers()
-    .filter(item => norm(item.name + (item.aliases || []).join(' ') + team(item.team).name).includes(q))
-    .map((item,index) => `<article class="rank-row"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="rank-main"><h3>${item.name}</h3><small>${team(item.team).name}</small></div>${medals(item)}<div class="coins">${fmt(item.coins)} ${coinIcon()}</div><div class="meteor-mini">${meteorIcon()} ${item.meteorites || 0}</div></article>`).join('');
+  if (!container) return;
+  const query = norm($('#rankingSearch')?.value);
+  const rows = standingsPlayers().filter(item => norm(`${item.name} ${item.fullName} ${(item.aliases || []).join(' ')} ${house(item.house).name}`).includes(query));
+  container.innerHTML = rows.length ? rows.map(rankRow).join('') : `<p class="empty-note">No encontré a nadie con ese nombre.</p>`;
 }
-function medals(item){ return `<div class="medals"><span>${medalIcon('gold')} ${item.medals?.gold || 0}</span><span>${medalIcon('silver')} ${item.medals?.silver || 0}</span><span>${medalIcon('bronze')} ${item.medals?.bronze || 0}</span></div>`; }
-function renderPodium(){
-  const container = $('#podium');
-  if(!container) return;
-  const items = [
-    { key:'gold', title:'Oro', text:'+3 DinoCoins', detail:'Ganador de la fecha' },
-    { key:'silver', title:'Plata', text:'+2 DinoCoins', detail:'Segundo puesto' },
-    { key:'bronze', title:'Bronce', text:'+1 DinoCoin', detail:'Tercer puesto' }
-  ];
-  container.innerHTML = items.map((item,index) => `<article class="podium-card arena-demo-card"><span class="place">${String(index+1).padStart(2,'0')}</span><div class="avatar icon-avatar">${medalIcon(item.key)}</div><h3>${item.title}</h3><p>${item.detail}</p><div class="coins">${item.text}</div></article>`).join('');
-}
-function renderTimeline(){
-  const container = $('#timeline');
-  if(!container) return;
-  if(!state.ledger.length){ container.innerHTML = '<article class="activity"><strong>Nueva temporada lista</strong><span>Cargá el último Kahoot desde Arena para empezar a sumar DinoCoins.</span></article>'; return; }
-  container.innerHTML = [...state.ledger].reverse().slice(0,10).map(item => {
-    const itemIcon = item.type === 'meteor' ? meteorIcon() : coinIcon();
+
+function activityRows(ledger) {
+  return ledger.map(item => {
+    const icon = item.type === 'meteor' ? fa('fa-meteor', 'act-ico meteor') : fa('fa-coins', 'act-ico coin');
     const delta = item.delta > 0 ? `+${item.delta}` : item.delta;
-    return `<article class="activity"><strong>${player(item.player)?.name || 'Sistema'} ${delta} ${itemIcon}</strong><span>${item.reason}</span></article>`;
+    return `<article class="activity-row">${icon}<div><strong>${player(item.player)?.name || '—'} <span class="delta ${item.delta < 0 ? 'neg' : ''}">${delta}</span></strong><small>${item.reason}</small></div></article>`;
   }).join('');
 }
-function renderAdjustPlayers(){
-  const select = $('#adjustPlayer');
-  if(!select) return;
-  const current = select.value;
-  select.innerHTML = state.players.map(item => `<option value="${item.id}">${item.name}</option>`).join('');
-  if(current) select.value = current;
+function renderActivity() {
+  const recent = $('#timeline');
+  const full = $('#timelineFull');
+  if (!recent && !full) return;
+  const { ledger } = computeStandings();
+  const emptyNote = `<p class="empty-note">Sin movimientos todavía. La actividad va a aparecer acá apenas subas un informe.</p>`;
+  if (recent) recent.innerHTML = ledger.length ? activityRows(ledger.slice(0, 8)) : emptyNote;
+  if (full) full.innerHTML = ledger.length ? activityRows(ledger) : emptyNote;
 }
-function applyManualAdjust(){
+
+function renderLegends() {
+  const podium = $('#legendsPodium'), ranking = $('#legendsRanking'), history = $('#legendsHistory');
+  if (!podium) return;
+  const sorted = [...LEGENDS.winners].sort((a, b) => b.wins - a.wins || a.name.localeCompare(b.name, 'es'));
+  if ($('#legendsDates')) $('#legendsDates').textContent = LEGENDS.dates;
+  if ($('#legendsWinners')) $('#legendsWinners').textContent = sorted.filter(item => item.wins > 0).length;
+  podium.innerHTML = sorted.slice(0, 3).map((item, index) => `<article class="legend-card rank-${index + 1}"><span class="podium-rank">0${index + 1}</span>${medalIcon(['gold', 'silver', 'bronze'][index])}<h3>${item.name}</h3><strong>${item.wins} victoria${item.wins === 1 ? '' : 's'}</strong></article>`).join('');
+  ranking.innerHTML = sorted.map((item, index) => `<article class="legend-row"><b>${String(index + 1).padStart(2, '0')}</b><span>${item.name}</span><em>${item.wins} ${item.wins === 1 ? 'victoria' : 'victorias'}</em></article>`).join('');
+  history.innerHTML = LEGENDS.history.map(item => `<article class="legend-row"><b>${item.date}</b><span>${item.winner}</span><em>Mod. ${item.moderator}</em></article>`).join('');
+}
+
+function loadRules() { try { return JSON.parse(localStorage.getItem(RULES_STORAGE)) || clone(DEFAULT_RULES); } catch { return clone(DEFAULT_RULES); } }
+function renderRules() {
+  const container = $('#rulesEditor');
+  if (!container) return;
+  container.innerHTML = loadRules().map((rule, index) => `<article class="rule-card"><span>${String(index + 1).padStart(2, '0')}</span><div><h3 contenteditable="true" data-rule-title="${index}">${rule.title}</h3><p contenteditable="true" data-rule-body="${index}">${rule.body}</p></div></article>`).join('');
+}
+function saveRules() {
+  const rules = loadRules().map((rule, index) => ({ title: $(`[data-rule-title="${index}"]`)?.textContent.trim() || rule.title, body: $(`[data-rule-body="${index}"]`)?.textContent.trim() || rule.body }));
+  localStorage.setItem(RULES_STORAGE, JSON.stringify(rules));
+  toast('Reglas guardadas.');
+}
+function restoreRules() { localStorage.removeItem(RULES_STORAGE); renderRules(); toast('Reglas base restauradas.'); }
+
+function renderAdjustPlayers() {
+  const select = $('#adjustPlayer');
+  if (!select) return;
+  const current = select.value;
+  select.innerHTML = players().map(item => `<option value="${item.id}">${item.name}</option>`).join('');
+  if (current) select.value = current;
+}
+function renderModeratorOptions() {
+  const select = $('#moderatorSelect');
+  if (!select) return;
+  const current = select.value;
+  select.innerHTML = '<option value="">Elegir moderador</option>' + players().map(item => `<option value="${item.id}">${item.name}</option>`).join('');
+  if (current) select.value = current;
+}
+
+/* ---------- manual adjustment ---------- */
+function applyManualAdjust() {
   const playerId = $('#adjustPlayer')?.value;
   const kind = $('#adjustKind')?.value;
   const action = $('#adjustAction')?.value;
   const amount = Math.max(1, Number($('#adjustAmount')?.value || 1));
   const reason = $('#adjustReason')?.value.trim();
   const target = player(playerId);
-  if(!target){ toast('Elegí un jugador.'); return; }
-  if(!reason){ toast('El motivo es obligatorio.'); return; }
-  if(kind === 'dino'){
-    const delta = action === 'add' ? amount : -Math.min(amount, target.coins || 0);
-    if(delta === 0){ toast('No hay DinoCoins para quitar.'); return; }
-    target.coins += delta;
-    state.ledger.push({ id:`manual-${Date.now()}`, type:'dino', player:target.id, delta, reason:`Ajuste admin: ${reason}` });
-  } else {
-    const delta = action === 'add' ? amount : -Math.min(amount, target.meteorites || 0);
-    if(delta === 0){ toast('No hay meteoritos para quitar.'); return; }
-    target.meteorites = Math.max(0, (target.meteorites || 0) + delta);
-    state.ledger.push({ id:`meteor-${Date.now()}`, type:'meteor', player:target.id, delta, reason:`Meteorito admin: ${reason}` });
-  }
+  if (!target) { toast('Elegí un jugador.'); return; }
+  if (!reason) { toast('El motivo es obligatorio.'); shake('#adjustReason'); return; }
+  const delta = action === 'add' ? amount : -amount;
+  state.manual.push({ id: `manual-${Date.now()}`, player: playerId, kind, delta, reason: `${kind === 'meteor' ? 'Meteorito' : 'Ajuste'} admin: ${reason}`, ts: new Date().toISOString() });
   $('#adjustReason').value = '';
   $('#adjustAmount').value = 1;
-  save(); render(); toast('Ajuste aplicado y registrado.');
+  persist(); render();
+  toast(kind === 'meteor' ? `Meteorito ${action === 'add' ? 'cargado' : 'quitado'} para ${target.name}.` : `Ajuste aplicado a ${target.name}.`);
+  if (kind === 'meteor' && action === 'add') pulseMeteor(playerId);
 }
-function renderLegends(){
-  const season = legends.seasons[0];
-  if(!season || !$('#semesterPodium')) return;
-  const sorted = [...season.winners].sort((a,b) => b.wins - a.wins || a.name.localeCompare(b.name));
-  if($('#semesterDates')) $('#semesterDates').textContent = season.dates;
-  if($('#semesterWinners')) $('#semesterWinners').textContent = sorted.filter(item => item.wins > 0).length;
-  if($('#semesterSeasons')) $('#semesterSeasons').textContent = legends.seasons.length;
-  $('#semesterPodium').innerHTML = sorted.slice(0,3).map((item,index) => `<article class="semester-winner"><div class="medal">${medalIcon(['gold','silver','bronze'][index])}</div><div class="place">#${index+1}</div><h3>${item.name}</h3><strong>${item.wins} victoria${item.wins===1?'':'s'}</strong></article>`).join('');
-  $('#semesterRanking').innerHTML = sorted.map((item,index) => `<article class="semester-row"><b>${String(index+1).padStart(2,'0')}</b><div><strong>${item.name}</strong></div><div class="wins-pill">${item.wins} ${item.wins===1?'victoria':'victorias'}</div></article>`).join('');
-  $('#semesterHistory').innerHTML = season.history.map(item => `<article class="history-row"><span>${item.date}</span><div><b>${item.winner}</b><span>Moderador: ${item.moderator}</span></div><em class="${item.status === 'Confirmar' ? 'state-confirmar' : ''}">${item.status}</em></article>`).join('');
-}
-function openUploadModal(){
-  state.pending = null;
-  state.pendingMeta = null;
-  save();
-  renderPreview();
-  if($('#applyImport')) $('#applyImport').disabled = true;
-  $('#uploadModal')?.classList.remove('hidden');
-  $('#uploadModal')?.setAttribute('aria-hidden','false');
-}
-function closeUploadModal(){
-  $('#uploadModal')?.classList.add('hidden');
-  $('#uploadModal')?.setAttribute('aria-hidden','true');
-  if($('#fileInput')) $('#fileInput').value = '';
-  state.pending = null; state.pendingMeta = null; save(); renderPreview();
-}
-function award(rank){ return rank===1 ? { delta:3, key:'gold', label:'Oro +3' } : rank===2 ? { delta:2, key:'silver', label:'Plata +2' } : rank===3 ? { delta:1, key:'bronze', label:'Bronce +1' } : { delta:0, key:null, label:'—' }; }
-function findPlayer(nick){ const n = norm(nick); return state.players.find(item => [item.name, ...(item.aliases || [])].some(alias => norm(alias) === n)); }
-function findHeader(headers, names){ return headers.find(header => names.some(name => norm(header).includes(name))); }
-function cleanNumber(value){ return Number(String(value ?? '').replace(/[^0-9.,-]/g,'').replace(',','.')) || 0; }
-async function readFiles(files){
-  const validFiles = files.filter(file => /\.(xlsx|xls|csv)$/i.test(file.name));
-  if(!validFiles.length){ toast('Elegí un informe XLSX, XLS o CSV de Kahoot.'); return; }
-  const imported = [];
-  const failed = [];
-  for(const file of validFiles){
-    try{
-      const parsed = file.name.toLowerCase().endsWith('.csv') ? await csv(file) : await xlsx(file);
-      const preview = parseKahootRows(parsed.rows, { fileName:file.name, source:parsed.source || 'CSV', sheet:parsed.sheet || 'CSV' });
-      if(preview.rows.length) imported.push(preview); else failed.push(file.name);
-    } catch(error){ console.error(error); failed.push(file.name); }
-  }
-  if(!imported.length){ toast('No pude leer el informe. Probá con XLSX de Kahoot Reports.'); return; }
-  buildBatchPreview(imported, failed);
-}
-function csv(file){ return file.text().then(text => ({ rows: parseCsvText(text), source:'CSV', sheet:'CSV' })); }
-function parseCsvText(text){ return rowsFromMatrix(text.split(/\r?\n/).filter(line => line.trim()).map(line => splitCsv(line))).rows; }
-function splitCsv(line){
+
+/* ---------- Kahoot import: parsing ---------- */
+function fileBaseName(name) { return String(name || 'Kahoot QS League').replace(/\.(xlsx|xls|csv)$/i, ''); }
+function cleanNumber(value) { return Number(String(value ?? '').replace(/[^0-9.,-]/g, '').replace(',', '.')) || 0; }
+function findHeader(headers, names) { return headers.find(header => names.some(name => norm(header).includes(name))); }
+
+function splitCsvLine(line) {
   const output = []; let current = ''; let quoted = false;
-  for(let index=0; index<line.length; index++){
+  for (let index = 0; index < line.length; index++) {
     const char = line[index];
-    if(char === '"' && line[index+1] === '"'){ current += '"'; index++; }
-    else if(char === '"') quoted = !quoted;
-    else if(char === ',' && !quoted){ output.push(current.replace(/^"|"$/g,'')); current = ''; }
+    if (char === '"' && line[index + 1] === '"') { current += '"'; index++; }
+    else if (char === '"') quoted = !quoted;
+    else if (char === ',' && !quoted) { output.push(current.replace(/^"|"$/g, '')); current = ''; }
     else current += char;
   }
-  output.push(current.replace(/^"|"$/g,''));
+  output.push(current.replace(/^"|"$/g, ''));
   return output;
 }
-function xlsx(file){
-  if(!window.XLSX) throw new Error('SheetJS no cargó');
-  return file.arrayBuffer().then(buffer => { const workbook = XLSX.read(buffer); const candidate = pickKahootSheet(workbook); return { rows: candidate.rows, source:'XLSX', sheet:candidate.sheet }; });
-}
-function pickKahootSheet(workbook){
-  const preferred = ['Final Scores','Final scores','Scores','Overview','Raw Report Data','Raw data','RawReportData'];
-  const names = [...preferred.filter(name => workbook.SheetNames.includes(name)), ...workbook.SheetNames.filter(name => !preferred.includes(name))];
-  for(const sheet of names){
-    const matrix = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { header:1, defval:'' });
-    const parsed = rowsFromMatrix(matrix);
-    if(parsed.rows.length && parsed.nameKey) return { sheet, rows: parsed.rows };
-  }
-  return { sheet: workbook.SheetNames[0], rows: XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval:'' }) };
-}
-function rowsFromMatrix(matrix){
-  const aliases = ['nickname','player','name','nombre','participante','jugador','identifier','email'];
+function rowsFromMatrix(matrix) {
+  const aliases = ['nickname', 'player', 'name', 'nombre', 'participante', 'jugador', 'identifier', 'email'];
   const headerIndex = matrix.findIndex(row => row.some(cell => aliases.some(alias => norm(cell).includes(alias))));
-  if(headerIndex < 0) return { rows:[], nameKey:null };
-  const headers = matrix[headerIndex].map((header,index) => String(header || `column_${index}`).trim());
-  const rows = matrix.slice(headerIndex+1).filter(row => row.some(Boolean)).map(row => Object.fromEntries(headers.map((header,index) => [header, row[index] ?? ''])));
+  if (headerIndex < 0) return { rows: [], nameKey: null };
+  const headers = matrix[headerIndex].map((header, index) => String(header || `column_${index}`).trim());
+  const rows = matrix.slice(headerIndex + 1).filter(row => row.some(Boolean)).map(row => Object.fromEntries(headers.map((header, index) => [header, row[index] ?? ''])));
   return { rows, nameKey: findHeader(headers, aliases) };
 }
-function parseKahootRows(rows, meta={}){
+function csvFile(file) { return file.text().then(text => ({ rows: rowsFromMatrix(text.split(/\r?\n/).filter(line => line.trim()).map(splitCsvLine)).rows, source: 'CSV', sheet: 'CSV' })); }
+function pickKahootSheet(workbook) {
+  const preferred = ['Final Scores', 'Final scores', 'Scores', 'Overview', 'Raw Report Data', 'Raw data', 'RawReportData'];
+  const names = [...preferred.filter(name => workbook.SheetNames.includes(name)), ...workbook.SheetNames.filter(name => !preferred.includes(name))];
+  for (const sheet of names) {
+    const matrix = XLSX.utils.sheet_to_json(workbook.Sheets[sheet], { header: 1, defval: '' });
+    const parsed = rowsFromMatrix(matrix);
+    if (parsed.rows.length && parsed.nameKey) return { sheet, rows: parsed.rows };
+  }
+  return { sheet: workbook.SheetNames[0], rows: XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval: '' }) };
+}
+function xlsxFile(file) {
+  if (!window.XLSX) throw new Error('SheetJS no cargó');
+  return file.arrayBuffer().then(buffer => { const workbook = XLSX.read(buffer); const candidate = pickKahootSheet(workbook); return { rows: candidate.rows, source: 'XLSX', sheet: candidate.sheet }; });
+}
+function parseKahootRows(rows, meta = {}) {
   const headers = Object.keys(rows[0] || {});
-  const nameKey = findHeader(headers, ['nickname','player','name','nombre','participante','jugador','identifier','email']);
-  const scoreKey = findHeader(headers, ['score','points','puntos','puntaje','total score','current total']);
-  const rankKey = findHeader(headers, ['rank','puesto','position','ranking','place']);
-  const correctKey = findHeader(headers, ['correct answers','correctas','correct']);
-  if(!nameKey) return { rows:[], meta:{ ...meta, error:'No se detectó columna de jugador' } };
-  const parsed = rows.map((row,index) => ({
+  const nameKey = findHeader(headers, ['nickname', 'player', 'name', 'nombre', 'participante', 'jugador', 'identifier', 'email']);
+  const scoreKey = findHeader(headers, ['score', 'points', 'puntos', 'puntaje', 'total score', 'current total']);
+  const rankKey = findHeader(headers, ['rank', 'puesto', 'position', 'ranking', 'place']);
+  const correctKey = findHeader(headers, ['correct answers', 'correctas', 'correct']);
+  if (!nameKey) return { rows: [], meta: { ...meta, error: 'No se detectó columna de jugador' } };
+  const parsed = rows.map((row, index) => ({
     nickname: String(row[nameKey] || '').trim(),
     score: cleanNumber(row[scoreKey]),
     correct: correctKey ? cleanNumber(row[correctKey]) : null,
     rank: rankKey ? cleanNumber(row[rankKey]) : index + 1
   })).filter(row => row.nickname && !/average|total|summary|final scores/i.test(row.nickname));
-  const rowsWithRank = parsed.sort((a,b) => rankKey ? a.rank - b.rank : b.score - a.score).map((row,index) => ({
-    ...row,
-    rank: index + 1,
-    playerId: findPlayer(row.nickname)?.id || '',
-    reportId: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    reportName: fileBaseName(meta.fileName),
-    sourceFile: meta.fileName || 'Reporte Kahoot',
-    sheet: meta.sheet || '—'
-  }));
-  return { rows: rowsWithRank, meta:{ ...meta, count:rowsWithRank.length, nameKey, scoreKey, rankKey, correctKey } };
+  return {
+    rows: parsed.sort((a, b) => (rankKey ? a.rank - b.rank : b.score - a.score)).map((row, index) => {
+      const match = findPlayerByNickname(row.nickname);
+      return { ...row, rank: index + 1, playerId: match?.id || '', ignored: false, reportName: fileBaseName(meta.fileName) };
+    }),
+    meta: { ...meta, count: parsed.length }
+  };
 }
-function buildBatchPreview(imported, failed=[]){
-  state.pending = imported.flatMap(item => item.rows.map(row => ({ ...row, batchId:item.meta.fileName || item.meta.sheet || row.reportName })));
-  state.pendingMeta = { files: imported.map(item => item.meta), failed, count:state.pending.length, createdAt:new Date().toISOString(), batch:true };
-  save(); renderPreview();
-  if($('#applyImport')) $('#applyImport').disabled = false;
+async function readFiles(files) {
+  const validFiles = files.filter(file => /\.(xlsx|xls|csv)$/i.test(file.name));
+  if (!validFiles.length) { toast('Elegí un informe XLSX, XLS o CSV de Kahoot.'); return; }
+  const imported = []; const failed = [];
+  for (const file of validFiles) {
+    try {
+      const parsed = file.name.toLowerCase().endsWith('.csv') ? await csvFile(file) : await xlsxFile(file);
+      const preview = parseKahootRows(parsed.rows, { fileName: file.name, sheet: parsed.sheet || 'CSV' });
+      if (preview.rows.length) imported.push(preview); else failed.push(file.name);
+    } catch (error) { console.error(error); failed.push(file.name); }
+  }
+  if (!imported.length) { toast('No pude leer el informe. Probá con el XLSX de Kahoot Reports.'); return; }
+  state.pending = imported.flatMap(item => item.rows);
+  state.pendingMeta = { files: imported.map(item => item.meta), failed, createdAt: new Date().toISOString() };
+  state.pendingAbsenceChoices = {};
+  if (!$('#sessionName').value.trim() || $('#sessionName').dataset.auto === '1') {
+    $('#sessionName').value = imported[0]?.meta.fileName ? fileBaseName(imported[0].meta.fileName) : 'Kahoot QS League';
+    $('#sessionName').dataset.auto = '1';
+  }
+  renderPreview();
   toast(`Informe cargado: ${state.pending.length} filas detectadas.`);
 }
-function renderPreview(){
-  const container = $('#preview');
-  if(!container) return;
-  if(!state.pending){ container.className = 'preview empty'; container.textContent = 'Todavía no hay informe cargado.'; return; }
-  container.className = 'preview';
-  const mapped = state.pending.filter(row => row.playerId).length;
+
+/* ---------- Kahoot import: preview + apply ---------- */
+function absentees(moderatorId) {
+  const participating = new Set((state.pending || []).filter(row => row.playerId && row.playerId !== moderatorId && !row.ignored).map(row => row.playerId));
+  return players().map(p => p.id).filter(id => id !== moderatorId && !participating.has(id));
+}
+function sessionAlreadyLoaded(session) { return state.imports.some(item => norm(item.session) === norm(session)); }
+
+function newPlayerRow(index) {
+  const row = state.pending[index];
+  return `<div class="new-player-form" data-new-for="${index}">
+    <input type="text" value="${row.nickname}" placeholder="Nombre para mostrar" data-new-name />
+    <button class="btn btn-ghost btn-xs" type="button" data-confirm-new="${index}">${fa('fa-user-plus')} Agregar</button>
+    <button class="btn btn-ghost btn-xs" type="button" data-cancel-new="${index}">Cancelar</button>
+  </div>`;
+}
+
+function renderPreview() {
+  const container = $('#uploadPreview');
+  if (!container) return;
+  const applyBtn = $('#applyImportBtn');
+  if (!state.pending) {
+    container.className = 'upload-preview empty';
+    container.innerHTML = `<p class="empty-note">Todavía no hay informe cargado. Arrastrá el XLSX o CSV arriba.</p>`;
+    if (applyBtn) applyBtn.disabled = true;
+    return;
+  }
+  container.className = 'upload-preview';
+  const moderatorId = $('#moderatorSelect')?.value || '';
+  const session = $('#sessionName')?.value.trim() || 'Kahoot QS League';
+  const mapped = state.pending.filter(row => row.playerId || row.ignored).length;
   const unmapped = state.pending.length - mapped;
+  const absenteeIds = moderatorId ? absentees(moderatorId) : [];
+  const duplicate = sessionAlreadyLoaded(session);
   const meta = state.pendingMeta || {};
-  const files = meta.files || [];
-  const opts = ['<option value="">Sin mapear</option>', ...state.players.map(item => `<option value="${item.id}">${item.name}</option>`)].join('');
-  const warning = unmapped ? `<p class="preview-warning">Hay ${unmapped} participante${unmapped>1?'s':''} sin mapear. Mapealos antes de actualizar el ranking.</p>` : '';
-  const failed = meta.failed?.length ? `<p class="preview-warning">No pude leer: ${meta.failed.join(', ')}</p>` : '';
-  const fileSummary = files.length ? `<p class="preview-source">Informe: ${files.map(file => `${file.fileName || 'archivo'} (${file.sheet || 'hoja?'})`).join(' · ')}</p>` : '';
-  container.innerHTML = `<div class="import-status"><article><strong>${fmt(files.length || 1)}</strong><span>informes</span></article><article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article><article><strong>${fmt(mapped)}</strong><span>mapeados</span></article><article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article></div>${fileSummary}${warning}${failed}<table><thead><tr><th>Rank</th><th>Nickname</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th></tr></thead><tbody>${state.pending.map((row,index) => { const prize = award(row.rank); return `<tr><td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td><td><select data-map="${index}">${opts}</select><div class="${row.playerId?'mapped':'unmapped'}">${row.playerId?'Detectado':'Revisar'}</div></td><td>${prize.key ? medalIcon(prize.key) : ''} ${prize.label}</td></tr>`; }).join('')}</tbody></table>`;
-  $$('[data-map]').forEach(select => { select.value = state.pending[select.dataset.map].playerId; select.addEventListener('change', () => { state.pending[select.dataset.map].playerId = select.value; save(); renderPreview(); }); });
-}
-function applyImport(){
-  const mapped = state.pending?.filter(row => row.playerId) || [];
-  if(mapped.length < 3){ toast('Mapeá al menos 3 participantes antes de actualizar.'); return; }
-  const importId = `import-${Date.now()}`;
-  const grouped = mapped.reduce((map,row) => { const key = row.batchId || row.reportName || 'Kahoot'; map.set(key, [...(map.get(key) || []), row]); return map; }, new Map());
-  grouped.forEach((rows,key) => {
-    const session = rows[0]?.reportName || $('#sessionName')?.value || 'Kahoot QS League';
-    rows.forEach(row => {
-      const prize = award(row.rank);
-      const target = player(row.playerId);
-      if(prize.delta && target){
-        target.coins += prize.delta;
-        target.medals[prize.key] += 1;
-        state.ledger.push({ id:`${importId}-${key}-${target.id}-${row.rank}`, type:'dino', player:target.id, delta:prize.delta, reason:`${session}: ${prize.label}` });
-      }
-    });
-    const last = [...rows].sort((a,b) => a.rank - b.rank)[rows.length - 1];
-    if(last) state.nextModerator = last.playerId;
-    state.imports.unshift({ id:`${importId}-${key}`, session, date:new Date().toISOString(), meta:{ ...state.pendingMeta, file:key }, rows });
+  const opts = ['<option value="">Sin mapear</option>', ...players().map(item => `<option value="${item.id}">${item.name}</option>`)].join('');
+
+  const chips = `<div class="preview-chips">
+    <article><strong>${fmt(state.pending.length)}</strong><span>filas</span></article>
+    <article><strong>${fmt(mapped)}</strong><span>mapeadas</span></article>
+    <article><strong>${fmt(unmapped)}</strong><span>sin mapear</span></article>
+    <article><strong>${fmt(absenteeIds.length)}</strong><span>ausencias</span></article>
+  </div>`;
+
+  const moderatorWarning = !moderatorId ? `<p class="warn-note">${fa('fa-triangle-exclamation')} Elegí el moderador de la fecha antes de actualizar.</p>` : '';
+  const unmappedWarning = unmapped ? `<p class="warn-note">${fa('fa-triangle-exclamation')} Hay ${unmapped} participante${unmapped > 1 ? 's' : ''} sin resolver. Mapealo, agregalo como nuevo o ignoralo.</p>` : '';
+  const failedWarning = meta.failed?.length ? `<p class="warn-note">${fa('fa-triangle-exclamation')} No pude leer: ${meta.failed.join(', ')}</p>` : '';
+  const duplicateBanner = duplicate ? `<div class="warn-note duplicate-note">${fa('fa-triangle-exclamation')} "${session}" ya parece estar cargado.
+    <label><input type="checkbox" id="confirmDuplicate" /> Sí, quiero cargarlo igual (puede duplicar puntos)</label></div>` : '';
+
+  const absenceChoices = state.pendingAbsenceChoices || (state.pendingAbsenceChoices = {});
+  Object.keys(absenceChoices).forEach(id => { if (!absenteeIds.includes(id)) delete absenceChoices[id]; });
+  const absencePanel = moderatorId ? (absenteeIds.length
+    ? `<div class="absence-panel">
+        <strong>${fa('fa-meteor')} Ausencias detectadas</strong>
+        <p>Elegí el tipo de falta de cada persona antes de actualizar. Cada una suma un meteorito.</p>
+        ${absenteeIds.map(id => `<div class="absence-row"><span>${player(id)?.name || id}</span>
+          <div class="segmented" data-absence="${id}">
+            <button type="button" class="seg-btn ${absenceChoices[id] === 'notice' ? 'active' : ''}" data-value="notice">Avisó 24 h · -1</button>
+            <button type="button" class="seg-btn ${absenceChoices[id] === 'no_notice' ? 'active' : ''}" data-value="no_notice">Sin aviso · -3</button>
+          </div></div>`).join('')}
+      </div>`
+    : `<p class="ok-note">${fa('fa-circle-check')} No hay ausencias: participó todo el roster.</p>`) : '';
+
+  const effectiveRanks = new Map(
+    state.pending
+      .filter(row => row.playerId && row.playerId !== moderatorId && !row.ignored)
+      .sort((a, b) => Number(a.rank || 999) - Number(b.rank || 999))
+      .map((row, index) => [row, index + 1])
+  );
+
+  const rowsHtml = state.pending.map((row, index) => {
+    const isModerator = row.playerId && row.playerId === moderatorId;
+    const prize = award(effectiveRanks.get(row) || 0);
+    const status = isModerator ? '<span class="tag mod">Moderador</span>' : row.ignored ? '<span class="tag ignored">Ignorada</span>' : row.playerId ? '<span class="tag ok">Detectado</span>' : '<span class="tag pending">Revisar</span>';
+    const actions = row.playerId || row.ignored
+      ? (!row.playerId ? '' : `<button class="btn btn-ghost btn-xs" type="button" data-toggle-ignore="${index}">${row.ignored ? 'Restaurar' : 'Ignorar'}</button>`)
+      : `<button class="btn btn-ghost btn-xs" type="button" data-add-new="${index}">${fa('fa-user-plus')} Nueva persona</button><button class="btn btn-ghost btn-xs" type="button" data-toggle-ignore="${index}">Ignorar</button>`;
+    return `<tr class="${isModerator ? 'row-mod' : ''} ${row.ignored ? 'row-ignored' : ''}">
+      <td>${row.rank}</td><td>${row.nickname}</td><td>${fmt(row.score)}</td><td>${row.correct ?? '—'}</td>
+      <td><select data-map="${index}" ${row.ignored ? 'disabled' : ''}>${opts}</select> ${status}${window.__newPlayerOpen === index ? newPlayerRow(index) : ''}</td>
+      <td>${isModerator || row.ignored ? '—' : (prize.key ? medalIcon(prize.key) : '') + ' ' + prize.label}</td>
+      <td class="row-actions">${actions}</td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `${chips}${moderatorWarning}${unmappedWarning}${failedWarning}${duplicateBanner}${absencePanel}
+    <div class="table-scroll"><table><thead><tr><th>Rank</th><th>Nickname</th><th>Score</th><th>Correctas</th><th>Mapeo QS</th><th>Premio</th><th></th></tr></thead><tbody>${rowsHtml}</tbody></table></div>`;
+
+  $$('[data-map]').forEach(select => {
+    select.value = state.pending[select.dataset.map].playerId;
+    select.addEventListener('change', () => { state.pending[select.dataset.map].playerId = select.value; state.pending[select.dataset.map].ignored = false; renderPreview(); });
   });
-  state.pending = null; state.pendingMeta = null;
-  save();
-  closeUploadModal();
-  render();
-  setTab('arena');
-  dropConfetti();
-  toast('Ranking actualizado.');
+  $$('[data-toggle-ignore]').forEach(btn => btn.addEventListener('click', () => {
+    const row = state.pending[btn.dataset.toggleIgnore];
+    row.ignored = !row.ignored;
+    if (row.ignored) row.playerId = '';
+    renderPreview();
+  }));
+  $$('[data-add-new]').forEach(btn => btn.addEventListener('click', () => { window.__newPlayerOpen = Number(btn.dataset.addNew); renderPreview(); }));
+  $$('[data-cancel-new]').forEach(btn => btn.addEventListener('click', () => { window.__newPlayerOpen = null; renderPreview(); }));
+  $$('[data-confirm-new]').forEach(btn => btn.addEventListener('click', () => {
+    const index = Number(btn.dataset.confirmNew);
+    const nameInput = $(`[data-new-for="${index}"] [data-new-name]`);
+    const name = nameInput?.value.trim();
+    if (!name) { toast('Escribí un nombre para la nueva persona.'); return; }
+    const id = norm(name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || `jugador-${Date.now()}`;
+    const uniqueId = players().some(p => p.id === id) ? `${id}-${Date.now().toString(36)}` : id;
+    state.customPlayers.push({ id: uniqueId, name, fullName: name, role: '', house: 'sincasa', aliases: [name, state.pending[index].nickname] });
+    state.pending[index].playerId = uniqueId;
+    window.__newPlayerOpen = null;
+    persist(); renderAdjustPlayers(); renderPreview();
+    toast(`${name} fue agregado al roster.`);
+  }));
+  $$('[data-absence]').forEach(group => {
+    group.querySelectorAll('.seg-btn').forEach(seg => seg.addEventListener('click', () => {
+      state.pendingAbsenceChoices[group.dataset.absence] = seg.dataset.value;
+      renderPreview();
+    }));
+  });
+  const confirmDup = $('#confirmDuplicate');
+  if (confirmDup) confirmDup.addEventListener('change', updateApplyState);
+  updateApplyState();
+
+  function updateApplyState() {
+    const ready = moderatorId && !unmapped && (!duplicate || $('#confirmDuplicate')?.checked) && absenteeIds.every(id => absenceChoices[id]);
+    if (applyBtn) applyBtn.disabled = !ready;
+  }
 }
-function loadRules(){ try { return JSON.parse(localStorage.getItem(RULES_STORAGE)) || clone(defaultRules); } catch { return clone(defaultRules); } }
-function renderRules(){
-  const container = $('#rulesEditor');
-  if(!container) return;
-  const rules = loadRules();
-  container.innerHTML = rules.map((rule,index) => `<article><span>${String(index+1).padStart(2,'0')}</span><h3 contenteditable="true" data-rule-title="${index}">${rule.title}</h3><p contenteditable="true" data-rule-body="${index}">${rule.body}</p></article>`).join('');
+
+function applyImport() {
+  const moderatorId = $('#moderatorSelect')?.value;
+  const session = $('#sessionName')?.value.trim() || 'Kahoot QS League';
+  const date = $('#sessionDate')?.value || new Date().toISOString().slice(0, 10);
+  if (!state.pending?.length || !moderatorId) return;
+  const absenteeIds = absentees(moderatorId);
+  const decisions = absenteeIds.map(id => {
+    const value = (state.pendingAbsenceChoices || {})[id] || '';
+    return { id, label: absenceLabel(value), penalty: absencePenalty(value) };
+  });
+  const rows = state.pending.filter(row => row.playerId && !row.ignored).map(row => ({ rank: row.rank, playerId: row.playerId, nickname: row.nickname, score: row.score, correct: row.correct }));
+  state.imports.unshift({ id: `import-${Date.now()}`, session, date, ts: new Date().toISOString(), moderator: moderatorId, rows, absences: decisions });
+  state.pending = null; state.pendingMeta = null; state.pendingAbsenceChoices = {};
+  $('#fileInput').value = '';
+  $('#sessionName').value = ''; $('#sessionName').dataset.auto = '';
+  $('#moderatorSelect').value = '';
+  persist(); render();
+  toast(`Ranking actualizado. Meteoritos cargados: ${decisions.length}.`);
+  confetti();
+  document.getElementById('podium')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
-function saveRules(){
-  const rules = loadRules().map((rule,index) => ({ title: $(`[data-rule-title="${index}"]`)?.textContent.trim() || rule.title, body: $(`[data-rule-body="${index}"]`)?.textContent.trim() || rule.body }));
-  localStorage.setItem(RULES_STORAGE, JSON.stringify(rules));
-  toast('Reglas guardadas.');
+function resetUpload() {
+  state.pending = null; state.pendingMeta = null; state.pendingAbsenceChoices = {};
+  $('#fileInput').value = '';
+  renderPreview();
 }
-function restoreRules(){ localStorage.removeItem(RULES_STORAGE); renderRules(); toast('Reglas base restauradas.'); }
-function toast(message){
+
+/* ---------- feedback fx ---------- */
+function toast(message) {
   const node = $('#toast');
-  if(!node) return;
+  if (!node) return;
   node.textContent = message;
   node.classList.add('show');
   clearTimeout(toast.timer);
   toast.timer = setTimeout(() => node.classList.remove('show'), 2800);
 }
-function ensureRuntimeStyles(){
-  if($('#qsLeagueRuntimeStyles')) return;
-  const style = document.createElement('style');
-  style.id = 'qsLeagueRuntimeStyles';
-  style.textContent = `.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:rgba(3,5,15,.72);backdrop-filter:blur(14px)}.modal.hidden{display:none!important}.modal-card{width:min(980px,96vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(31,37,64,.98),rgba(14,18,32,.98));box-shadow:var(--shadow);padding:24px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}.admin-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form select,.preview select{width:100%;border:1px solid var(--line);border-radius:14px;background:#0c1020;color:var(--text);padding:12px}.league-icon,.fa-solid{display:inline-flex;align-items:center;justify-content:center;line-height:1}.badge .fa-dragon{color:var(--lime);margin-right:6px}.coin-core .fa-dragon{font-size:54px;color:#06100e}.medal-gold{color:#ffd15c}.medal-silver{color:#d4dced}.medal-bronze{color:#c26a2e}.coin-icon{color:var(--lime)}.meteor-icon{color:#ff8f3a}.icon-avatar .fa-medal{font-size:46px}.mini-podium .fa-medal{font-size:28px}.ranking-panel{min-width:0}.rank-row{grid-template-columns:48px minmax(0,1fr) auto auto auto!important;align-items:center;overflow:visible}.rank-main h3{margin:0}.rank-main small{display:block;color:var(--muted);white-space:normal}.meteor-mini{font-weight:900;color:var(--bronze);white-space:nowrap;display:flex;gap:6px;align-items:center}.coins{display:flex;gap:6px;align-items:center}.medals{display:flex;gap:6px;flex-wrap:wrap}.medals span{display:inline-flex;gap:4px;align-items:center}.semester-podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.semester-winner,.semester-row,.history-row{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.06);padding:14px;min-width:0}.semester-winner{text-align:center}.semester-winner .medal{font-size:44px;min-height:50px}.semester-winner h3,.semester-winner strong{display:block;word-break:normal}.semester-row,.history-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;margin-bottom:8px}.semester-row span,.history-row span{display:block;color:var(--muted);font-size:12px}.wins-pill{font-weight:950;color:var(--lime);white-space:nowrap}.state-confirmar{color:var(--gold)}.confetti-layer{position:fixed;inset:0;z-index:999;pointer-events:none;overflow:hidden}.confetti-piece{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:qsConfetti 1.8s ease-in forwards}@keyframes qsConfetti{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}@media(max-width:1100px){.arena-main-grid{grid-template-columns:1fr}.semester-podium{grid-template-columns:1fr}}@media(max-width:860px){.admin-form{grid-template-columns:1fr}.modal-actions{flex-direction:column}.rank-row{grid-template-columns:38px minmax(0,1fr)!important}.rank-row .medals,.rank-row .coins,.rank-row .meteor-mini{grid-column:2}.semester-row,.history-row{grid-template-columns:36px 1fr}.wins-pill,.history-row em{grid-column:2}}`;
-  document.head.appendChild(style);
+function shake(selector) { const node = $(selector); if (!node) return; node.classList.add('shake'); setTimeout(() => node.classList.remove('shake'), 500); }
+function pulseMeteor(playerId) {
+  const name = player(playerId)?.name;
+  const target = $$('.rank-row').find(row => row.querySelector('h3')?.textContent === name)?.querySelector('.rank-meteors');
+  if (target) { target.classList.add('meteor-hit'); setTimeout(() => target.classList.remove('meteor-hit'), 700); }
 }
-function dropConfetti(){
-  if(confettiDone && !$('#legends')?.classList.contains('active')) return;
-  confettiDone = true;
+function confetti() {
   const layer = document.createElement('div');
   layer.className = 'confetti-layer';
-  const colors = ['#b7ff18','#20f6ff','#ffd15c','#ff4fd8','#7c3cff'];
-  for(let index=0; index<30; index++){
+  const colors = ['#3C9FF1', '#7025E0', '#c6ff5c', '#ffd15c', '#ff7a45'];
+  for (let index = 0; index < 40; index++) {
     const piece = document.createElement('span');
     piece.className = 'confetti-piece';
-    piece.style.left = `${Math.random()*100}%`;
+    piece.style.left = `${Math.random() * 100}%`;
     piece.style.background = colors[index % colors.length];
-    piece.style.animationDelay = `${Math.random()*0.45}s`;
-    piece.style.animationDuration = `${1.25 + Math.random()*1.1}s`;
+    piece.style.animationDelay = `${Math.random() * 0.4}s`;
+    piece.style.animationDuration = `${1.3 + Math.random() * 1.1}s`;
     layer.appendChild(piece);
   }
   document.body.appendChild(layer);
-  setTimeout(() => layer.remove(), 2600);
+  setTimeout(() => layer.remove(), 2700);
 }
 
-init();
+/* ---------- reveal-on-scroll ---------- */
+function initReveal() {
+  const targets = $$('.reveal');
+  if (!('IntersectionObserver' in window) || !targets.length) { targets.forEach(el => el.classList.add('in-view')); return; }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); observer.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  targets.forEach(el => observer.observe(el));
+}
+
+/* ---------- bindings ---------- */
+function bind() {
+  $('#rankingSearch')?.addEventListener('input', renderRanking);
+  $('#applyManualAdjust')?.addEventListener('click', applyManualAdjust);
+  $('#saveRules')?.addEventListener('click', saveRules);
+  $('#restoreRules')?.addEventListener('click', restoreRules);
+  $('#applyImportBtn')?.addEventListener('click', applyImport);
+  $('#resetUploadBtn')?.addEventListener('click', resetUpload);
+  $('#fileInput')?.addEventListener('change', event => readFiles([...event.target.files]));
+  $('#moderatorSelect')?.addEventListener('change', renderPreview);
+  $('#sessionName')?.addEventListener('input', renderPreview);
+
+  const dropZone = $('#dropZone');
+  if (dropZone) {
+    dropZone.addEventListener('dragover', event => { event.preventDefault(); dropZone.classList.add('drag'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+    dropZone.addEventListener('drop', event => { event.preventDefault(); dropZone.classList.remove('drag'); readFiles([...event.dataTransfer.files]); });
+  }
+
+  $$('.nav-link').forEach(link => link.addEventListener('click', () => $('.nav')?.classList.remove('open')));
+  $('#navToggle')?.addEventListener('click', () => $('.nav')?.classList.toggle('open'));
+}
+
+function init() {
+  if ($('#sessionDate') && !$('#sessionDate').value) $('#sessionDate').value = new Date().toISOString().slice(0, 10);
+  bind();
+  render();
+  initReveal();
+}
+document.addEventListener('DOMContentLoaded', init);
