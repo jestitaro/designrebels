@@ -1,0 +1,7 @@
+/* Hide activity panel from Arena */
+#arena .panel:has(#timeline){
+  display:none !important;
+}
+#arena .grid.two:has(#timeline){
+  grid-template-columns:1fr !important;
+}
