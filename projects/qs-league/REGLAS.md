@@ -83,13 +83,15 @@ El sistema debe controlar las ausencias contra este roster oficial:
 | Alejandro | Alejandro Frank | Hufflepuff |
 | Eugenio | Eugenio Balbastro Fages | Ravenclaw / Líder técnico |
 | Javi | Javier De Vergilio | Gryffindor |
-| Jesica | Jesica Titaro | Rebel Designer / Slytherin |
-| Juli | Juli Piccioni | Sin casa definida |
-| Lucrecia | Lucrecia Moralejo | Sin casa definida |
-| May | Mayra Milanesio | Sin casa definida |
-| Nico | Nicolas Rivero Segura | Integrator / COO |
+| Jesica | Jesica Titaro | Gryffindor / Rebel Designer |
+| Juli | Juli Piccioni | Ravenclaw |
+| Lucrecia | Lucrecia Moralejo | Hufflepuff |
+| May | Mayra Milanesio | Gryffindor |
+| Nico | Nicolas Rivero Segura | Slytherin / Integrator / COO |
 | Pablo | Pablo Hernan Gimenez | Slytherin / Visionary / CEO |
-| Sebas | Sebastian Carnota | Sin casa definida |
+| Sebas | Sebastian Carnota | Ravenclaw |
+
+Casas confirmadas contra `quartzsales.com/hogquartz/salacomun/` (17/07/2026).
 
 ### Alias importantes
 

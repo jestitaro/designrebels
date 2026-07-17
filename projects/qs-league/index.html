@@ -7,12 +7,14 @@
   <title>QS League · DinoCoin Arena</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="assets/styles.css?v=3" />
+  <link rel="stylesheet" href="assets/styles.css?v=4" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
+  <div class="crt-overlay" aria-hidden="true"></div>
+  <div class="bg-stars" aria-hidden="true"></div>
   <div class="bg-orb orb-a"></div>
   <div class="bg-orb orb-b"></div>
   <div class="bg-orb orb-c"></div>
@@ -32,12 +34,19 @@
     </nav>
   </header>
 
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>SEASON 02 LIVE</span><b>✦</b><span>SUBÍ TU KAHOOT Y SUMÁ DINOCOINS</span><b>✦</b><span>EL MODERADOR NO COMPITE</span><b>✦</b><span>SI FALTASTE, CARGATE EL METEORITO</span><b>✦</b><span>1° +3 · 2° +2 · 3° +1</span><b>✦</b>
+      <span>SEASON 02 LIVE</span><b>✦</b><span>SUBÍ TU KAHOOT Y SUMÁ DINOCOINS</span><b>✦</b><span>EL MODERADOR NO COMPITE</span><b>✦</b><span>SI FALTASTE, CARGATE EL METEORITO</span><b>✦</b><span>1° +3 · 2° +2 · 3° +1</span><b>✦</b>
+    </div>
+  </div>
+
   <main>
     <section id="hero" class="hero">
       <div class="wrap hero-grid">
         <div class="reveal in-view">
           <span class="eyebrow"><i class="fa-solid fa-dragon"></i> Season 02 · 2do semestre 2026</span>
-          <h1>La arena interna de <span>QuartzSales</span> corre con DinoCoins.</h1>
+          <h1>La arena corre con<br><span class="cycle-word-wrap"><span id="heroCycleWord" class="cycle-word">DINOCOINS</span><span class="cycle-cursor" aria-hidden="true">_</span></span></h1>
           <p>Subí el informe que exporta Kahoot y la arena actualiza el podio sola. Siempre hay un moderador de la fecha, y si alguien falta, se le carga el meteorito acá mismo.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#upload"><i class="fa-solid fa-file-arrow-up"></i> Subir informe de Kahoot</a>
@@ -54,10 +63,10 @@
           <span class="orbit-ring r1"></span>
           <span class="orbit-ring r2"></span>
           <div class="orbit-core"><i class="fa-solid fa-dragon"></i></div>
-          <span class="orbit-icon" style="top:6%;left:8%"><i class="fa-solid fa-coins" style="color:var(--lime)"></i></span>
-          <span class="orbit-icon" style="top:10%;right:4%"><i class="fa-solid fa-medal" style="color:var(--gold)"></i></span>
-          <span class="orbit-icon" style="bottom:4%;left:2%"><i class="fa-solid fa-meteor" style="color:var(--meteor)"></i></span>
-          <span class="orbit-icon" style="bottom:10%;right:8%"><i class="fa-solid fa-user-shield" style="color:var(--blue)"></i></span>
+          <span class="orbit-icon float-a" style="top:6%;left:8%"><i class="fa-solid fa-coins" style="color:var(--lime)"></i></span>
+          <span class="orbit-icon float-b" style="top:10%;right:4%"><i class="fa-solid fa-medal" style="color:var(--gold)"></i></span>
+          <span class="orbit-icon float-c" style="bottom:4%;left:2%"><i class="fa-solid fa-meteor" style="color:var(--meteor)"></i></span>
+          <span class="orbit-icon float-d" style="bottom:10%;right:8%"><i class="fa-solid fa-user-shield" style="color:var(--blue)"></i></span>
         </div>
       </div>
     </section>
@@ -190,6 +199,6 @@
   <footer>QS League · MVP interno de QuartzSales. Reglas completas en <code>REGLAS.md</code>.</footer>
 
   <div class="toast" id="toast"></div>
-  <script src="assets/app.js?v=3" defer></script>
+  <script src="assets/app.js?v=4" defer></script>
 </body>
 </html>
