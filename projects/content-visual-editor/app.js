@@ -268,31 +268,89 @@ $('#inputOpenDesign').addEventListener('change', e => {
 
 // ---------- galería de imágenes: recursos predefinidos (categorías) ----------
 // Vienen con el editor (no se suben ni se guardan en IndexedDB) y no se pueden
-// borrar desde la galería: son el punto de partida que da QuartzSales para
-// que cualquier noticia pueda etiquetarse por categoría de producto.
+// borrar desde la galería: son el punto de partida para etiquetar una noticia
+// por marca y categoría de producto. Cada uno declara su marca (brand) y si es
+// un ícono ilustrado o una imagen (foto), para poder filtrarlos en la galería.
 const DEFAULT_RESOURCES = [
-  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png' },
-  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png' },
-  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png' },
-  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png' },
-  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png' },
-  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png' },
-  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png' },
-  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png' },
-  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png' },
-  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png' },
-  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png' },
-  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png' },
-  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png' },
-  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png' }
+  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png', brand: 'unilever', kind: 'icono' },
+  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png', brand: 'unilever', kind: 'icono' }
 ];
+
+const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
+
+// estado de los filtros de la galería (marca, tipo de recurso y búsqueda)
+let libraryBrand = 'unilever';
+let libraryKind = 'all';
+let librarySearchQuery = '';
+
+// sin tildes y en minúsculas, para que "jabon" encuentre "Jabón"
+function normalizeSearch(s) {
+  return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function matchesLibrarySearch(name) {
+  if (!librarySearchQuery) return true;
+  return normalizeSearch(name).includes(librarySearchQuery);
+}
 
 function renderDefaultLibrary() {
   const grid = $('#libraryDefaultGrid');
+  const empty = $('#libraryDefaultEmpty');
+  const emptyText = $('#libraryDefaultEmptyText');
   if (!grid) return;
+
+  const items = DEFAULT_RESOURCES.filter(item =>
+    item.brand === libraryBrand &&
+    (libraryKind === 'all' || item.kind === libraryKind) &&
+    matchesLibrarySearch(item.name)
+  );
+
+  if (empty) empty.style.display = items.length ? 'none' : 'flex';
+  if (emptyText) {
+    emptyText.textContent = librarySearchQuery
+      ? `No hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} que coincidan con "${librarySearchQuery}".`
+      : `Todavía no hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} en esta categoría.`;
+  }
+
   grid.innerHTML = '';
-  DEFAULT_RESOURCES.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
+  items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
 }
+
+// buscador, marca y tipo son controles de la galería: filtran tanto las
+// categorías predefinidas como los recursos subidos por el usuario
+$('#librarySearchInput').addEventListener('input', e => {
+  librarySearchQuery = normalizeSearch(e.target.value);
+  renderDefaultLibrary();
+  renderLibrary();
+});
+
+$('#libraryBrandToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.pill-toggle-btn');
+  if (!btn || btn.dataset.brand === libraryBrand) return;
+  libraryBrand = btn.dataset.brand;
+  $$('.pill-toggle-btn', $('#libraryBrandToggle')).forEach(b => b.classList.toggle('is-active', b === btn));
+  renderDefaultLibrary();
+});
+
+$('#libraryKindFilter').addEventListener('click', e => {
+  const btn = e.target.closest('.pill-toggle-btn');
+  if (!btn || btn.dataset.kind === libraryKind) return;
+  libraryKind = btn.dataset.kind;
+  $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b === btn));
+  renderDefaultLibrary();
+});
 
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
 // Se guardan como dataURL (igual que el resto de las imágenes del editor) para
@@ -447,14 +505,21 @@ function buildLibraryCell(item, opts = {}) {
 async function renderLibrary() {
   const grid = $('#libraryGrid');
   const empty = $('#libraryEmpty');
+  const emptyText = $('#libraryEmptyText');
   const warning = $('#libraryWarning');
   if (!grid || !empty) return;
 
-  let items = [];
-  try { items = await libraryGetAll(); } catch (e) { items = []; }
+  let allItems = [];
+  try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
+  const items = allItems.filter(item => matchesLibrarySearch(item.name));
 
   if (warning) warning.hidden = libraryMode !== 'memory';
   empty.style.display = items.length ? 'none' : 'flex';
+  if (emptyText) {
+    emptyText.textContent = (librarySearchQuery && allItems.length)
+      ? `Ningún recurso tuyo coincide con "${librarySearchQuery}".`
+      : 'Todavía no hay recursos guardados. Subí una imagen para empezar tu librería.';
+  }
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
 }

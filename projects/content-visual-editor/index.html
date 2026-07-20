@@ -184,9 +184,32 @@ if (window.tailwind) {
       <section class="panel-tab-content" data-tab-content="galeria">
 
         <div class="panel-group">
+          <div class="library-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="search" id="librarySearchInput" placeholder="Buscar recursos por nombre…" aria-label="Buscar recursos en la galería">
+          </div>
+        </div>
+
+        <div class="panel-group">
           <h3 class="panel-group-title">Categorías</h3>
-          <p class="panel-group-hint">Recursos predefinidos por QuartzSales, listos para insertar o usar como fondo.</p>
+          <p class="panel-group-hint">Recursos predefinidos, listos para insertar o usar como fondo.</p>
+
+          <div class="pill-toggle" id="libraryBrandToggle" role="tablist">
+            <button type="button" class="pill-toggle-btn" data-brand="quartzsales">QuartzSales</button>
+            <button type="button" class="pill-toggle-btn is-active" data-brand="unilever">Unilever</button>
+          </div>
+
+          <div class="pill-toggle pill-toggle-sm" id="libraryKindFilter" role="tablist">
+            <button type="button" class="pill-toggle-btn is-active" data-kind="all">Todos</button>
+            <button type="button" class="pill-toggle-btn" data-kind="icono">Íconos</button>
+            <button type="button" class="pill-toggle-btn" data-kind="imagen">Imágenes</button>
+          </div>
+
           <div class="library-grid" id="libraryDefaultGrid"></div>
+          <div class="empty-state" id="libraryDefaultEmpty">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <p id="libraryDefaultEmptyText">No hay recursos que coincidan.</p>
+          </div>
         </div>
 
         <div class="panel-group">
@@ -207,7 +230,7 @@ if (window.tailwind) {
           <div class="library-grid" id="libraryGrid"></div>
           <div class="empty-state" id="libraryEmpty">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <p>Todavía no hay recursos guardados. Subí una imagen para empezar tu librería.</p>
+            <p id="libraryEmptyText">Todavía no hay recursos guardados. Subí una imagen para empezar tu librería.</p>
           </div>
         </div>
       </section>
