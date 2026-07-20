@@ -141,6 +141,30 @@ function load() {
 }
 function persist() {
   localStorage.setItem(STORAGE, JSON.stringify({ customPlayers: state.customPlayers, imports: state.imports, manual: state.manual }));
+  if (typeof window.qsDbSaveState === 'function') {
+    window.qsDbSaveState(state).catch(error => {
+      console.warn('QS League: no pude sincronizar con la base compartida.', error);
+      toast('No se pudo sincronizar con la base compartida. Se guardó localmente.');
+    });
+  }
+}
+
+/* ---------- shared cloud sync (Firestore) ---------- */
+let cloudDocSeen = false;
+function initCloudSync() {
+  if (typeof window.qsDbSubscribe !== 'function') return;
+  window.qsDbSubscribe(data => {
+    if (data) {
+      state.imports = Array.isArray(data.imports) && data.imports.length ? data.imports : state.imports;
+      state.manual = Array.isArray(data.manual) ? data.manual : state.manual;
+      state.customPlayers = Array.isArray(data.customPlayers) ? data.customPlayers : state.customPlayers;
+      localStorage.setItem(STORAGE, JSON.stringify({ customPlayers: state.customPlayers, imports: state.imports, manual: state.manual }));
+      render();
+    } else if (!cloudDocSeen && typeof window.qsDbSaveState === 'function') {
+      window.qsDbSaveState(state).catch(error => console.warn('QS League: no pude inicializar la base compartida.', error));
+    }
+    cloudDocSeen = true;
+  });
 }
 function players() { return [...ROSTER, ...state.customPlayers]; }
 function player(id) { return players().find(item => item.id === id); }
@@ -241,6 +265,7 @@ function renderHero() {
 function podiumCard(item, rank) {
   const h = house(item.house);
   return `<article class="podium-card rank-${rank}" style="--house:${h.color}">
+    ${rank === 1 ? fa('fa-crown', 'podium-crown') : ''}
     <span class="podium-rank">0${rank}</span>
     <div class="podium-avatar">${initials(item.name)}</div>
     <h3>${item.name}</h3>
@@ -691,5 +716,6 @@ function init() {
   render();
   initReveal();
   initHeroCycle();
+  initCloudSync();
 }
 document.addEventListener('DOMContentLoaded', init);
