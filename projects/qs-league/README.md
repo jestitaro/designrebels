@@ -9,8 +9,15 @@ Tres archivos, sin capas de parches:
 - `index.html` — landing de una sola página (hero, podio, ranking, subir informe, ajuste manual, y un bloque "Más" con actividad completa / leyendas / reglas).
 - `assets/styles.css` — un solo stylesheet.
 - `assets/app.js` — un solo módulo. El ranking nunca se muta a mano: `computeStandings()` recalcula coins, medallas y meteoritos desde `state.imports` + `state.manual` cada vez que se pinta la pantalla, así no hace falta reconciliar nada entre sesiones.
+- `assets/firebase.js` — conexión a Firestore (ver "Persistencia" abajo).
 
 Las reglas de negocio (puntaje, moderador, ausencias, ajustes) están documentadas en `REGLAS.md` y son la fuente de verdad.
+
+## Persistencia
+
+Los informes, el ledger manual y los jugadores nuevos se guardan en Firestore, reusando el mismo proyecto Firebase que QuartzProde (`quartzprode2026`), en su propia colección (`qsleague_state`, doc `season02`) para no tocar los datos de Prode. Cualquiera que entre a la página ve el mismo estado, y se actualiza en vivo (`onSnapshot`) si otra persona carga un informe o hace un ajuste desde otro dispositivo.
+
+`localStorage` se mantiene como cache local: pinta al instante mientras carga Firestore, y sirve de respaldo si no hay red — si la sincronización falla, el cambio queda guardado localmente y avisa con un toast.
 
 ## Flujo de un informe de Kahoot
 
@@ -34,4 +41,4 @@ La sección **Ajuste manual** permite cargar (o quitar) un meteorito o DinoCoins
 
 ## Próximo paso
 
-Conectar Firebase Auth + Firestore como en Prode (`users`, `kahoot_sessions`, `coin_ledger`, `absences`) para reemplazar `localStorage` y compartir el estado entre todos los que entran a la liga.
+Firebase Auth si en algún momento vuelve a hacer falta login. Por ahora QS League entra directo, igual que hoy.

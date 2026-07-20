@@ -287,11 +287,10 @@ El podio debe actualizarse a medida que cambie el ranking de la temporada.
 
 ## 13. Pendiente futuro
 
-Cuando el MVP pase a backend real, estas reglas deberían vivir en Firebase o en una base editable por admin.
+Desde el 20/07/2026, imports/ledger/roster nuevo viven en Firestore (proyecto `quartzprode2026`, colección `qsleague_state`, doc `season02`), reusando el mismo proyecto que QuartzProde. `localStorage` queda como cache local y respaldo si no hay red. Estas reglas (REGLAS.md) siguen viviendo en el repo, no en la base.
 
 Pendientes técnicos:
 
-- persistencia real en Firebase / Firestore,
 - autenticación real si vuelve a necesitarse,
 - historial de auditoría de ajustes,
 - exportación de ranking,
