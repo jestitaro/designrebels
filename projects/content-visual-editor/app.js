@@ -25,15 +25,16 @@
       - Filtro por tipo (Todos / Íconos / Imágenes, variable libraryKind)
         y buscador por nombre sin tildes (librarySearchQuery,
         normalizeSearch) que filtran ambas secciones a la vez.
-   2. Guardar / abrir el diseño como archivo editable (buscar
-      "exportDesignFile"): descarga un .json con formato + fondo +
-      elementos (reusa snapshot()/restore() del historial de undo) y
-      lo puede volver a cargar, a diferencia de "Exportar PNG" que es
-      la imagen final ya no editable.
-   3. Al agregar un elemento (o insertar uno desde la Galería) ya no
+   2. Al agregar un elemento (o insertar uno desde la Galería) ya no
       salta de pestaña — antes te mandaba siempre a "Propiedades" y
       cortaba el flujo de agregar varios elementos seguidos. Ver
       selectElement(id, { switchTab: false }) y su uso en addElement().
+   3. Header simplificado ("‹ Volver" + título) y barra de acciones al
+      pie de la pantalla (btnUseImage / btnExport), como en el ABM
+      real. Se sacaron del prototipo: Ayuda, Reiniciar, el flujo de
+      "Subir archivo" y "Abrir/Guardar diseño" como archivo .json —
+      Guille ya tiene esas piezas en el ABM real, no hacía falta
+      duplicarlas acá.
    ======================================================== */
 
 const FORMATS = {
@@ -217,84 +218,6 @@ function loadPersisted() {
     return raw;
   } catch (e) { return null; }
 }
-
-// ---------- guardar / abrir el diseño como archivo editable ----------
-// A diferencia de "Exportar PNG" (una imagen final, no editable), esto
-// descarga el estado completo de la noticia en JSON para retomarla después,
-// en esta computadora o en otra (el autoguardado en localStorage no viaja).
-const DESIGN_FILE_APP_ID = 'qs-content-visual-editor';
-
-function exportDesignFile() {
-  const data = JSON.parse(snapshot());
-  data.app = DESIGN_FILE_APP_ID;
-  data.version = 1;
-  data.savedAt = new Date().toISOString();
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  const f = fmt();
-  link.download = `noticia-${f.w}x${f.h}-editable.json`;
-  link.href = url;
-  link.click();
-  URL.revokeObjectURL(url);
-  toast('Diseño guardado como archivo editable', 'success');
-}
-
-// el archivo viene de afuera (pudo haber sido editado a mano): se sanitiza
-// lo mínimo para no romper el render en vez de confiar en su forma
-function sanitizeImportedElements(elements) {
-  return elements
-    .filter(el => el && typeof el === 'object' && typeof el.type === 'string')
-    .map((el, i) => ({
-      ...el,
-      id: (typeof el.id === 'string' && el.id) ? el.id : ('el_' + (i + 1)),
-      x: Number(el.x) || 0,
-      y: Number(el.y) || 0,
-      w: Number(el.w) || MIN_W,
-      h: Number(el.h) || MIN_H,
-      z: Number(el.z) || (i + 1),
-      hidden: !!el.hidden
-    }));
-}
-
-function importDesignFile(file) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    let data;
-    try { data = JSON.parse(ev.target.result); }
-    catch (e) { toast('Ese archivo no es un diseño válido para este editor', 'error'); return; }
-
-    if (!data || !Array.isArray(data.elements) || !FORMATS[data.format]) {
-      toast('Ese archivo no es un diseño válido para este editor', 'error');
-      return;
-    }
-
-    const background = (data.background && typeof data.background === 'object' && data.background.type)
-      ? data.background
-      : { type: 'color', value: '#130D5D' };
-
-    history.past = [];
-    history.future = [];
-    restore(JSON.stringify({
-      format: data.format,
-      background,
-      elements: sanitizeImportedElements(data.elements)
-    }));
-    deselect();
-    toast('Diseño cargado desde el archivo', 'success');
-  };
-  reader.onerror = () => toast('No se pudo leer el archivo', 'error');
-  reader.readAsText(file);
-}
-
-$('#btnSaveDesign').addEventListener('click', exportDesignFile);
-$('#btnOpenDesign').addEventListener('click', () => $('#inputOpenDesign').click());
-$('#inputOpenDesign').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (file) importDesignFile(file);
-  e.target.value = '';
-});
 
 // ---------- galería de imágenes: recursos predefinidos (categorías) ----------
 // Vienen con el editor (no se suben ni se guardan en IndexedDB) y no se pueden
@@ -683,17 +606,6 @@ $('#panelTabs').addEventListener('click', e => {
   const btn = e.target.closest('.panel-tab');
   if (!btn) return;
   switchTab(btn.dataset.tab);
-});
-
-// ---------- vistas Subir / Crear ----------
-$$('.source-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    $$('.source-tab').forEach(t => t.classList.toggle('is-active', t === tab));
-    const isUpload = tab.dataset.source === 'upload';
-    $('#uploadView').hidden = !isUpload;
-    $('#editorView').style.display = isUpload ? 'none' : '';
-    if (!isUpload) { layoutCanvas(); render(); }
-  });
 });
 
 // ---------- formato ----------
@@ -1120,13 +1032,6 @@ document.addEventListener('pointerdown', e => {
 
 // "Volver" es decorativo en este prototipo (simula el link del ABM real)
 $('#btnBack').addEventListener('click', e => e.preventDefault());
-
-// ---------- ayuda ----------
-$('#btnHelp').addEventListener('click', () => { $('#helpModal').hidden = false; });
-$('#helpModalClose').addEventListener('click', () => { $('#helpModal').hidden = true; });
-$('#helpModal').addEventListener('click', e => {
-  if (e.target === $('#helpModal')) $('#helpModal').hidden = true;
-});
 
 // ---------- render de elementos en el canvas ----------
 function renderElements(retry) {
@@ -1850,7 +1755,6 @@ window.addEventListener('keydown', ev => {
   const typing = target.matches?.('input, textarea, select') || target.isContentEditable;
 
   if (ev.key === 'Escape') {
-    if (!$('#helpModal').hidden) { $('#helpModal').hidden = true; return; }
     if (!$('#statusPopover').hidden) { closeStatusPopover(); return; }
     if (!typing) deselect();
     return;
@@ -1901,76 +1805,6 @@ window.addEventListener('keydown', ev => {
   }
 });
 
-// ---------- vista "Subir archivo" ----------
-const dropzone = $('#uploadDropzone');
-let uploadedFile = null; // {src, name, w, h}
-
-dropzone.addEventListener('click', () => $('#inputUploadFile').click());
-dropzone.addEventListener('keydown', ev => {
-  if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); $('#inputUploadFile').click(); }
-});
-dropzone.addEventListener('dragover', ev => { ev.preventDefault(); dropzone.classList.add('is-dragover'); });
-dropzone.addEventListener('dragleave', () => dropzone.classList.remove('is-dragover'));
-dropzone.addEventListener('drop', ev => {
-  ev.preventDefault();
-  dropzone.classList.remove('is-dragover');
-  const file = ev.dataTransfer.files[0];
-  if (file) readUploadFile(file);
-});
-$('#inputUploadFile').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (file) readUploadFile(file);
-  e.target.value = '';
-});
-
-function readUploadFile(file) {
-  if (!file.type.startsWith('image/')) {
-    toast('Ese archivo no es una imagen', 'error');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const src = ev.target.result;
-    const img = new Image();
-    img.onload = () => {
-      uploadedFile = { src, name: file.name, w: img.naturalWidth, h: img.naturalHeight };
-      $('#uploadPreviewImg').src = src;
-      $('#uploadPreviewName').textContent = file.name;
-      $('#uploadPreviewMeta').textContent = `${img.naturalWidth} × ${img.naturalHeight} px · ${Math.round(file.size / 1024)} KB`;
-      $('#uploadPreview').hidden = false;
-      dropzone.hidden = true;
-      addResourceToLibrary(file.name, src, img.naturalWidth, img.naturalHeight);
-    };
-    img.src = src;
-  };
-  reader.readAsDataURL(file);
-}
-
-function switchToEditor() {
-  $$('.source-tab').forEach(t => t.classList.toggle('is-active', t.dataset.source === 'editor'));
-  $('#uploadView').hidden = true;
-  $('#editorView').style.display = '';
-  layoutCanvas();
-  render();
-}
-
-$('#btnUploadAsBg').addEventListener('click', () => {
-  if (!uploadedFile) return;
-  setBackgroundImage(uploadedFile.src);
-  switchToEditor();
-  toast('La imagen quedó como fondo del lienzo', 'success');
-});
-$('#btnUploadAsElement').addEventListener('click', () => {
-  if (!uploadedFile) return;
-  switchToEditor();
-  addImageElement(uploadedFile.src);
-});
-$('#btnUploadClear').addEventListener('click', () => {
-  uploadedFile = null;
-  $('#uploadPreview').hidden = true;
-  dropzone.hidden = false;
-});
-
 // ---------- export PNG ----------
 async function exportPNG() {
   const stage = $('#canvasStage');
@@ -2017,26 +1851,6 @@ $('#btnUseImage').addEventListener('click', async () => {
   if (ok) toast('En el ABM real, esta imagen quedaría cargada en la noticia', 'info', { duration: 5000 });
 });
 
-$('#btnCancelEditor').addEventListener('click', () => {
-  if (confirm('¿Empezar de nuevo? Se pierde el diseño actual.')) {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-    history.past = [];
-    history.future = [];
-    lastSnapshot = null;
-    state.elements = [];
-    state.selectedId = null;
-    state.nextId = 1;
-    state.nextZ = 1;
-    state.format = 'square';
-    state.background = { type: 'color', value: '#130D5D' };
-    $$('.format-btn').forEach(b => b.classList.toggle('is-active', b.dataset.format === 'square'));
-    renderBgPresets();
-    layoutCanvas();
-    seedTemplate();
-    toast('Editor reiniciado', 'info');
-  }
-});
-
 // ---------- render general ----------
 function render() {
   renderElements();
@@ -2065,11 +1879,7 @@ function init() {
   if (saved) {
     restore(saved);
     deselect();
-    toast('Restauramos tu último diseño', 'info', {
-      actionLabel: 'Empezar de nuevo',
-      duration: 6000,
-      onAction: () => $('#btnCancelEditor').click()
-    });
+    toast('Restauramos tu último diseño', 'info', { duration: 6000 });
   } else {
     seedTemplate();
   }
