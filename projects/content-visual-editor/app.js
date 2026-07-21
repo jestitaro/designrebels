@@ -342,6 +342,7 @@ $('#libraryBrandToggle').addEventListener('click', e => {
   libraryBrand = btn.dataset.brand;
   $$('.pill-toggle-btn', $('#libraryBrandToggle')).forEach(b => b.classList.toggle('is-active', b === btn));
   renderDefaultLibrary();
+  renderLibrary(); // "Tus recursos" también está por marca/cliente
 });
 
 $('#libraryKindFilter').addEventListener('click', e => {
@@ -398,7 +399,8 @@ async function ensureLibraryMode() {
 async function libraryAdd(name, dataUrl, w, h) {
   const item = {
     id: 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-    name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now()
+    name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now(),
+    brand: libraryBrand // el recurso queda asociado a la marca/cliente elegido al subirlo
   };
   const mode = await ensureLibraryMode();
   if (mode === 'memory') { memoryLibrary.set(item.id, item); return item; }
@@ -507,18 +509,25 @@ async function renderLibrary() {
   const empty = $('#libraryEmpty');
   const emptyText = $('#libraryEmptyText');
   const warning = $('#libraryWarning');
+  const sectionTitle = $('#libraryUserSectionTitle');
   if (!grid || !empty) return;
+
+  const brandLabel = BRAND_LABELS[libraryBrand] || libraryBrand;
+  if (sectionTitle) sectionTitle.textContent = `Tus recursos — ${brandLabel}`;
 
   let allItems = [];
   try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
-  const items = allItems.filter(item => matchesLibrarySearch(item.name));
+  // items sin marca son de antes de este cambio: se muestran para cualquier
+  // marca en vez de quedar huérfanos
+  const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
+  const items = brandItems.filter(item => matchesLibrarySearch(item.name));
 
   if (warning) warning.hidden = libraryMode !== 'memory';
   empty.style.display = items.length ? 'none' : 'flex';
   if (emptyText) {
-    emptyText.textContent = (librarySearchQuery && allItems.length)
-      ? `Ningún recurso tuyo coincide con "${librarySearchQuery}".`
-      : 'Todavía no hay recursos guardados. Subí una imagen para empezar tu librería.';
+    emptyText.textContent = (librarySearchQuery && brandItems.length)
+      ? `Ningún recurso de ${brandLabel} coincide con "${librarySearchQuery}".`
+      : `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
   }
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));

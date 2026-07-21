@@ -25,7 +25,7 @@ Proyecto estático, sin build:
 - Textos, placas, tags, fechas e imágenes movibles y redimensionables.
 - Guías de alineación y área segura.
 - Capas, duplicado, deshacer y rehacer.
-- Fondos, colores corporativos y galería de recursos: una sección "Categorías" con imágenes predefinidas (`assets/categorias/`), separadas por marca (QuartzSales / Unilever) y filtrables por tipo (íconos / imágenes), más un buscador por nombre; y otra sección de recursos subidos por el usuario. Ambas reutilizables entre noticias.
+- Fondos, colores corporativos y galería de recursos, organizada por marca/cliente (hoy QuartzSales / Unilever, escalable a otros como Abbott): imágenes predefinidas (`assets/categorias/`) filtrables por tipo (íconos / imágenes), un buscador por nombre, y "Tus recursos" con lo que suba el usuario para esa misma marca — todo reutilizable entre noticias de esa marca.
 - Alertas de corte, contraste, tamaño y desborde.
 - Guardar/abrir la noticia como archivo `.json` editable, para retomarla en esta computadora o en otra.
 - Exportación PNG en tamaño real (formato final, no editable).
