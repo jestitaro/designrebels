@@ -15,7 +15,7 @@
 
    1. Galería de recursos (buscar "galería de imágenes" más abajo):
       - Recursos predefinidos por categoría (DEFAULT_RESOURCES), hoy
-        14 íconos de producto etiquetados como marca "unilever".
+        14 íconos de producto etiquetados como marca "quartzsales".
       - Toggle de marca activa (QuartzSales / Unilever, variable
         libraryBrand) que filtra tanto los predefinidos como "Tus
         recursos" (lo que sube el usuario, en IndexedDB con fallback a
@@ -25,6 +25,10 @@
       - Filtro por tipo (Todos / Íconos / Imágenes, variable libraryKind)
         y buscador por nombre sin tildes (librarySearchQuery,
         normalizeSearch) que filtran ambas secciones a la vez.
+      - Cada recurso subido por el usuario tiene un botón "Mover a
+        [la otra marca]" (ver libraryUpdateBrand) para recategorizarlo
+        sin borrar y volver a subir, por si se subió con la marca
+        activa equivocada.
    2. Al agregar un elemento (o insertar uno desde la Galería) ya no
       salta de pestaña — antes te mandaba siempre a "Propiedades" y
       cortaba el flujo de agregar varios elementos seguidos. Ver
@@ -225,20 +229,20 @@ function loadPersisted() {
 // por marca y categoría de producto. Cada uno declara su marca (brand) y si es
 // un ícono ilustrado o una imagen (foto), para poder filtrarlos en la galería.
 const DEFAULT_RESOURCES = [
-  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png', brand: 'unilever', kind: 'icono' },
-  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png', brand: 'unilever', kind: 'icono' }
+  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png', brand: 'quartzsales', kind: 'icono' }
 ];
 
 const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
@@ -393,6 +397,29 @@ async function libraryDelete(id) {
   });
 }
 
+// re-etiqueta un recurso ya subido a otra marca, para corregir uno que se
+// subió con la marca activa equivocada sin tener que borrarlo y resubirlo
+async function libraryUpdateBrand(id, newBrand) {
+  const mode = await ensureLibraryMode();
+  if (mode === 'memory') {
+    const item = memoryLibrary.get(id);
+    if (item) memoryLibrary.set(id, { ...item, brand: newBrand });
+    return;
+  }
+  const db = await openLibraryDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(LIBRARY_STORE, 'readwrite');
+    const store = tx.objectStore(LIBRARY_STORE);
+    const getReq = store.get(id);
+    getReq.onsuccess = () => {
+      const item = getReq.result;
+      if (item) store.put({ ...item, brand: newBrand });
+    };
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 // agrega un recurso a la galería, refresca la vista si está abierta y devuelve
 // si realmente se pudo guardar (para no avisar "guardado" cuando falló)
 async function addResourceToLibrary(name, dataUrl, w, h) {
@@ -418,12 +445,20 @@ function saveToLibrary(file, dataUrl) {
   });
 }
 
+// única otra marca posible, para el botón "mover a..." (hoy son solo 2)
+function otherBrandId(brand) {
+  return Object.keys(BRAND_LABELS).find(b => b !== brand) || brand;
+}
+
 // arma una celda de la galería, para un recurso predefinido (categoría) o uno
-// subido por el usuario; solo los subidos por el usuario se pueden borrar
+// subido por el usuario; solo los subidos por el usuario se pueden borrar o
+// mover a otra marca (por si se subieron con la marca activa equivocada)
 function buildLibraryCell(item, opts = {}) {
   const src = item.src || item.dataUrl;
   const cell = document.createElement('div');
   cell.className = 'library-item';
+  const targetBrand = otherBrandId(item.brand || libraryBrand);
+  const targetBrandLabel = BRAND_LABELS[targetBrand] || targetBrand;
   cell.innerHTML = `
     <img src="${src}" alt="${escapeHtml(item.name)}" title="${escapeHtml(item.name)}" loading="lazy">
     <div class="library-item-actions">
@@ -433,6 +468,9 @@ function buildLibraryCell(item, opts = {}) {
       <button type="button" data-action="bg" title="Usar como fondo del lienzo" aria-label="Usar como fondo del lienzo">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
       </button>
+      ${opts.deletable ? `<button type="button" data-action="move" title="Mover a ${escapeHtml(targetBrandLabel)}" aria-label="Mover a ${escapeHtml(targetBrandLabel)}">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>` : ''}
       ${opts.deletable ? `<button type="button" data-action="delete" title="Eliminar de la galería" aria-label="Eliminar de la galería">
         <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>` : ''}
@@ -446,6 +484,13 @@ function buildLibraryCell(item, opts = {}) {
     toast('Fondo actualizado desde la galería', 'success');
   });
   if (opts.deletable) {
+    cell.querySelector('[data-action="move"]').addEventListener('click', async () => {
+      try {
+        await libraryUpdateBrand(item.id, targetBrand);
+        renderLibrary();
+        toast(`"${item.name}" movido a ${targetBrandLabel}`, 'success');
+      } catch (e) { toast('No se pudo mover ese recurso', 'error'); }
+    });
     cell.querySelector('[data-action="delete"]').addEventListener('click', async () => {
       try {
         await libraryDelete(item.id);

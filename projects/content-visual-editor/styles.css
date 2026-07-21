@@ -449,7 +449,8 @@ button{ font-family: inherit; }
 }
 .library-item-actions{
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center; gap: 0.3rem;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.25rem;
+  padding: 0.2rem;
   background: rgba(17,24,39,.55);
   opacity: 0;
   transition: opacity .15s ease;
@@ -457,16 +458,17 @@ button{ font-family: inherit; }
 .library-item:hover .library-item-actions,
 .library-item:focus-within .library-item-actions{ opacity: 1; }
 .library-item-actions button{
-  width: 1.9rem; height: 1.9rem;
+  width: 1.7rem; height: 1.7rem;
   display: flex; align-items: center; justify-content: center;
   border: none; border-radius: 0.4rem;
   background: rgba(255,255,255,.9);
   color: var(--text);
   cursor: pointer;
 }
-.library-item-actions button svg{ width: 1rem; height: 1rem; }
+.library-item-actions button svg{ width: 0.9rem; height: 0.9rem; }
 .library-item-actions button:hover{ background: #fff; color: var(--primary); }
 .library-item-actions button[data-action="delete"]:hover{ color: var(--danger); }
+.library-item-actions button[data-action="move"]:hover{ color: #2563eb; }
 
 /* -------- Formulario de propiedades -------- */
 .field{ margin-bottom: 0.9rem; }
