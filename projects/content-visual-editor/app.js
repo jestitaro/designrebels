@@ -6,41 +6,6 @@
      edición de texto en el lienzo, avisos en un popover.
    ======================================================== */
 
-/* ========================================================
-   NOTA PARA GUILLE — qué se agregó/cambió en esta ronda de trabajo
-   (todo escrito en CSS plano en styles.css, siguiendo el estilo que ya
-   tenía el prototipo; para integrarlo al ABM real hay que reescribir
-   los estilos en Tailwind, pero la lógica de JS de acá se puede
-   reusar casi tal cual — son funciones autocontenidas)
-
-   1. Galería de recursos (buscar "galería de imágenes" más abajo):
-      - Recursos predefinidos por categoría (DEFAULT_RESOURCES), hoy
-        14 íconos de producto etiquetados como marca "quartzsales".
-      - Toggle de marca activa (QuartzSales / Unilever, variable
-        libraryBrand) que filtra tanto los predefinidos como "Tus
-        recursos" (lo que sube el usuario, en IndexedDB con fallback a
-        memoria si el navegador bloquea el storage — ver
-        ensureLibraryMode). Cada recurso subido queda tageado con la
-        marca activa al momento de subirlo (ver libraryAdd).
-      - Filtro por tipo (Todos / Íconos / Imágenes, variable libraryKind)
-        y buscador por nombre sin tildes (librarySearchQuery,
-        normalizeSearch) que filtran ambas secciones a la vez.
-      - Cada recurso subido por el usuario tiene un botón "Mover a
-        [la otra marca]" (ver libraryUpdateBrand) para recategorizarlo
-        sin borrar y volver a subir, por si se subió con la marca
-        activa equivocada.
-   2. Al agregar un elemento (o insertar uno desde la Galería) ya no
-      salta de pestaña — antes te mandaba siempre a "Propiedades" y
-      cortaba el flujo de agregar varios elementos seguidos. Ver
-      selectElement(id, { switchTab: false }) y su uso en addElement().
-   3. Header simplificado ("‹ Volver" + título) y barra de acciones al
-      pie de la pantalla (btnUseImage / btnExport), como en el ABM
-      real. Se sacaron del prototipo: Ayuda, Reiniciar, el flujo de
-      "Subir archivo" y "Abrir/Guardar diseño" como archivo .json —
-      Guille ya tiene esas piezas en el ABM real, no hacía falta
-      duplicarlas acá.
-   ======================================================== */
-
 const FORMATS = {
   square: { w: 1080, h: 1080, label: 'Cuadrado 1:1' },
   story:  { w: 1080, h: 1920, label: 'Historia 9:16' }
@@ -222,6 +187,83 @@ function loadPersisted() {
     return raw;
   } catch (e) { return null; }
 }
+
+// ---------- guardar / abrir el diseño como archivo editable ----------
+// "Guardar y utilizar noticia" descarga, además de la imagen final, un .json
+// con el estado completo de la noticia para poder retomarla y editarla
+// después si hace falta (el autoguardado en localStorage no viaja). "Subir
+// JSON" vuelve a cargar uno de esos archivos.
+const DESIGN_FILE_APP_ID = 'qs-content-visual-editor';
+
+function exportDesignFile() {
+  const data = JSON.parse(snapshot());
+  data.app = DESIGN_FILE_APP_ID;
+  data.version = 1;
+  data.savedAt = new Date().toISOString();
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const f = fmt();
+  link.download = `noticia-${f.w}x${f.h}-editable.json`;
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+// el archivo viene de afuera (pudo haber sido editado a mano): se sanitiza
+// lo mínimo para no romper el render en vez de confiar en su forma
+function sanitizeImportedElements(elements) {
+  return elements
+    .filter(el => el && typeof el === 'object' && typeof el.type === 'string')
+    .map((el, i) => ({
+      ...el,
+      id: (typeof el.id === 'string' && el.id) ? el.id : ('el_' + (i + 1)),
+      x: Number(el.x) || 0,
+      y: Number(el.y) || 0,
+      w: Number(el.w) || MIN_W,
+      h: Number(el.h) || MIN_H,
+      z: Number(el.z) || (i + 1),
+      hidden: !!el.hidden
+    }));
+}
+
+function importDesignFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    let data;
+    try { data = JSON.parse(ev.target.result); }
+    catch (e) { toast('Ese archivo no es un diseño válido para este editor', 'error'); return; }
+
+    if (!data || !Array.isArray(data.elements) || !FORMATS[data.format]) {
+      toast('Ese archivo no es un diseño válido para este editor', 'error');
+      return;
+    }
+
+    const background = (data.background && typeof data.background === 'object' && data.background.type)
+      ? data.background
+      : { type: 'color', value: '#130D5D' };
+
+    history.past = [];
+    history.future = [];
+    restore(JSON.stringify({
+      format: data.format,
+      background,
+      elements: sanitizeImportedElements(data.elements)
+    }));
+    deselect();
+    toast('Diseño cargado desde el archivo', 'success');
+  };
+  reader.onerror = () => toast('No se pudo leer el archivo', 'error');
+  reader.readAsText(file);
+}
+
+$('#btnUploadJson').addEventListener('click', () => $('#inputUploadJson').click());
+$('#inputUploadJson').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (file) importDesignFile(file);
+  e.target.value = '';
+});
 
 // ---------- galería de imágenes: recursos predefinidos (categorías) ----------
 // Vienen con el editor (no se suben ni se guardan en IndexedDB) y no se pueden
@@ -1890,10 +1932,12 @@ async function exportPNG() {
 
 $('#btnExport').addEventListener('click', exportPNG);
 
-// "Usar esta imagen": exporta y simula el enganche con el flujo real de subida
+// "Guardar y utilizar noticia": guarda el .json editable (por si hace falta
+// retocar la noticia después) y exporta/usa la imagen, como en el ABM real
 $('#btnUseImage').addEventListener('click', async () => {
+  exportDesignFile();
   const ok = await exportPNG();
-  if (ok) toast('En el ABM real, esta imagen quedaría cargada en la noticia', 'info', { duration: 5000 });
+  if (ok) toast('Noticia guardada: se descargó el archivo editable y la imagen quedó lista para usar', 'success', { duration: 5000 });
 });
 
 // ---------- render general ----------

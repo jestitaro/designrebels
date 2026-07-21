@@ -2,22 +2,6 @@
    TOKENS — convención QuartzSales ABM (Apollo)
    1rem = 12px · Poppins · Indigo #6366f1
    ======================================================== */
-
-/* ========================================================
-   NOTA PARA GUILLE: las reglas .library-*, .pill-toggle* y
-   .brand-toggle* (buscar "Galería de imágenes" más abajo) son nuevas
-   de esta ronda de trabajo, escritas en CSS plano para seguir la
-   convención de este archivo. Cuando se porte a Tailwind para el ABM
-   real, son las que hay que reemplazar por utility classes — el
-   markup y la lógica de JS que las usa no deberían necesitar cambios.
-   Pendiente además: la tipografía real del ABM es Nunito, no Poppins
-   (ver capturas que pasó el equipo de producto).
-
-   Se sacaron del prototipo (y de este archivo) los estilos de: Ayuda +
-   modal de atajos, el toggle Subir archivo/Crear imagen y su vista de
-   subida, y los botones de Abrir/Guardar diseño — Guille ya tiene esas
-   piezas en el ABM real.
-   ======================================================== */
 :root{
   --primary: #6366f1;
   --primary-hover: #4f46e5;

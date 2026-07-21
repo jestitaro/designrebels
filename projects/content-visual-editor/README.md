@@ -27,10 +27,11 @@ Proyecto estático, sin build:
 - Capas, duplicado, deshacer y rehacer.
 - Fondos, colores corporativos y galería de recursos, organizada por marca/cliente (hoy QuartzSales / Unilever, escalable a otros como Abbott): imágenes predefinidas (`assets/categorias/`) filtrables por tipo (íconos / imágenes), un buscador por nombre, y "Tus recursos" con lo que suba el usuario para esa misma marca — todo reutilizable entre noticias de esa marca.
 - Alertas de corte, contraste, tamaño y desborde.
-- Exportación PNG en tamaño real (formato final, no editable).
+- "Guardar y utilizar noticia" descarga un `.json` editable con la noticia completa además de exportar la imagen; "Subir JSON" vuelve a cargar uno de esos archivos para seguir editando.
+- Exportación PNG en tamaño real (formato final, no editable) con "Exportar noticia".
 - Autoguardado local mediante `localStorage` e `IndexedDB`.
 
-No incluye (Guille ya las tiene en el ABM real): ayuda/atajos, reiniciar el diseño, subir un archivo de imagen directo, ni abrir/guardar la noticia como archivo editable.
+No incluye: ayuda/atajos, reiniciar el diseño, ni subir un archivo de imagen directo (fuera de la Galería).
 
 ## Privacidad
 

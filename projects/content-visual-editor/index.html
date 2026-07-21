@@ -1,30 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-<!--
-  NOTA PARA GUILLE — resumen de lo agregado/cambiado en esta ronda de trabajo:
-  1. Pestaña "Galería" (buscar data-tab="galeria" acá abajo): toggle de
-     marca activa (QuartzSales / Unilever) + filtro de tipo (Todos /
-     Íconos / Imágenes) + buscador, sobre dos secciones: recursos
-     predefinidos (id="libraryDefaultGrid") y "Tus recursos" subidos
-     por el usuario (id="libraryGrid"), ambas filtradas por la misma
-     marca activa. La lógica vive en app.js (sección "galería de
-     imágenes").
-  2. Header simplificado ("‹ Volver" + título) y barra de acciones al
-     pie de toda la pantalla (btnUseImage / btnExport), en vez de
-     tenerlas arriba y adentro del lienzo — según la referencia visual
-     que pasó el equipo de producto.
-  3. Se sacaron del prototipo (Guille ya las tiene en el ABM real, no
-     hacía falta duplicarlas acá): botón de Ayuda + modal de atajos,
-     "Reiniciar", el flujo completo de "Subir archivo" (el toggle
-     Subir/Crear de arriba de todo), y "Abrir diseño"/"Guardar diseño"
-     como archivo .json editable.
-
-  Importante: la Galería está armada con CSS plano en styles.css
-  (clases .library-*, .pill-toggle*), para seguir la convención que ya
-  tenía el resto del archivo. Falta portarlo a Tailwind para el ABM
-  real — la estructura de HTML y la lógica de JS se pueden reusar,
-  solo cambian las clases de estilo.
--->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,9 +32,7 @@ if (window.tailwind) {
 <div class="abm-screen">
 
   <!-- Header, simulando el header real del ABM de Noticias:
-       "‹ Volver" como link simple + título, sin breadcrumb. Sin Ayuda
-       ni Reiniciar: Guille ya tiene esas piezas en el ABM real, no
-       hace falta duplicarlas acá (ver NOTA PARA GUILLE arriba de todo). -->
+       "‹ Volver" como link simple + título, sin breadcrumb. -->
   <header class="abm-header">
     <a class="abm-back-link" href="#" id="btnBack">
       <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -327,10 +300,14 @@ if (window.tailwind) {
   </main>
 
   <!-- Barra de acciones al pie de la pantalla, como en el ABM real.
-       No hay botones de "Abrir/Guardar diseño" acá: Guille ya tiene esa
-       función en el ABM real, no hace falta duplicarla en el
-       prototipo (ver NOTA PARA GUILLE arriba de todo). -->
+       "Guardar y utilizar noticia" descarga el .json editable y exporta
+       la imagen; "Subir JSON" vuelve a cargar un diseño guardado antes. -->
   <footer class="abm-bottom-bar">
+    <button class="btn btn-ghost" id="btnUploadJson" title="Subir un archivo .json guardado antes para seguir editándolo">
+      <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+      Subir JSON
+    </button>
+    <input type="file" id="inputUploadJson" accept="application/json,.json" hidden>
     <button class="btn btn-primary" id="btnUseImage">
       <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
       Guardar y utilizar noticia
