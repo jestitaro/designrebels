@@ -291,7 +291,7 @@ const DEFAULT_RESOURCES = [
 const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
 
 // estado de los filtros de la galería (marca, tipo de recurso y búsqueda)
-let libraryBrand = 'unilever';
+let libraryBrand = 'quartzsales';
 let libraryKind = 'all';
 let librarySearchQuery = '';
 
@@ -509,11 +509,9 @@ async function renderLibrary() {
   const empty = $('#libraryEmpty');
   const emptyText = $('#libraryEmptyText');
   const warning = $('#libraryWarning');
-  const sectionTitle = $('#libraryUserSectionTitle');
   if (!grid || !empty) return;
 
   const brandLabel = BRAND_LABELS[libraryBrand] || libraryBrand;
-  if (sectionTitle) sectionTitle.textContent = `Tus recursos — ${brandLabel}`;
 
   let allItems = [];
   try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
