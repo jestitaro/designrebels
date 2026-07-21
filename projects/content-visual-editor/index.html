@@ -50,26 +50,23 @@ if (window.tailwind) {
 
 <div class="abm-screen">
 
-  <!-- Header, simulando el header real del ABM de Noticias -->
+  <!-- Header, simulando el header real del ABM de Noticias:
+       "‹ Volver" como link simple + título, sin breadcrumb ni botones
+       de acción (esos se movieron a la barra inferior, como en el
+       ABM real — ver NOTA PARA GUILLE al principio del archivo). -->
   <header class="abm-header">
-    <div class="abm-header-title">
-      <button class="icon-btn" title="Volver" aria-label="Volver">
-        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-      </button>
-      <div>
-        <h1>Nueva noticia</h1>
-        <p>Archivos <span class="crumb-sep">›</span> Imagen <span class="crumb-sep">›</span> Crear imagen desde editor</p>
+    <a class="abm-back-link" href="#" id="btnBack">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Volver
+    </a>
+    <div class="abm-header-row">
+      <h1>Editor de noticias</h1>
+      <div class="abm-header-actions">
+        <button class="icon-btn" id="btnHelp" title="Ayuda y atajos" aria-label="Ayuda y atajos" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+        </button>
+        <button class="btn btn-ghost" id="btnCancelEditor">Reiniciar</button>
       </div>
-    </div>
-    <div class="abm-header-actions">
-      <button class="icon-btn" id="btnHelp" title="Ayuda y atajos" aria-label="Ayuda y atajos" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-      </button>
-      <button class="btn btn-ghost" id="btnCancelEditor">Reiniciar</button>
-      <button class="btn btn-primary" id="btnUseImage">
-        <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-        Usar esta imagen en la noticia
-      </button>
     </div>
   </header>
 
@@ -373,16 +370,27 @@ if (window.tailwind) {
             <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
             Guardar diseño
           </button>
-          <button class="btn btn-primary" id="btnExport">
-            <svg viewBox="0 0 24 24"><path d="M12 3v12M12 15l-4-4M12 15l4-4"/><path d="M4 17v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-            Exportar PNG
-          </button>
         </div>
       </div>
 
     </section>
 
   </main>
+
+  <!-- Barra de acciones al pie de la pantalla, como en el ABM real:
+       las acciones "finales" (usar/exportar la noticia) viven acá,
+       separadas de "Abrir/Guardar diseño" (que son del archivo de
+       trabajo editable, y se quedan junto al lienzo). -->
+  <footer class="abm-bottom-bar">
+    <button class="btn btn-primary" id="btnUseImage">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      Guardar y utilizar noticia
+    </button>
+    <button class="btn btn-secondary" id="btnExport">
+      <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      Exportar noticia
+    </button>
+  </footer>
 </div>
 
 <!-- Modal de ayuda -->

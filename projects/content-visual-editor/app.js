@@ -1118,6 +1118,9 @@ document.addEventListener('pointerdown', e => {
   if (!$('#statusPopover').hidden && !e.target.closest('.status-wrap')) closeStatusPopover();
 });
 
+// "Volver" es decorativo en este prototipo (simula el link del ABM real)
+$('#btnBack').addEventListener('click', e => e.preventDefault());
+
 // ---------- ayuda ----------
 $('#btnHelp').addEventListener('click', () => { $('#helpModal').hidden = false; });
 $('#helpModalClose').addEventListener('click', () => { $('#helpModal').hidden = true; });
