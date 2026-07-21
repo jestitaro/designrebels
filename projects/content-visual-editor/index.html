@@ -1,5 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
+<!--
+  NOTA PARA GUILLE — resumen de lo agregado en esta ronda de trabajo:
+  1. Pestaña "Galería" (buscar data-tab="galeria" acá abajo): toggle de
+     marca activa (QuartzSales / Unilever) + filtro de tipo (Todos /
+     Íconos / Imágenes) + buscador, sobre dos secciones: recursos
+     predefinidos (id="libraryDefaultGrid") y "Tus recursos" subidos
+     por el usuario (id="libraryGrid"), ambas filtradas por la misma
+     marca activa. La lógica vive en app.js (sección "galería de
+     imágenes").
+  2. Botones "Abrir diseño" / "Guardar diseño" en el pie del lienzo
+     (id="btnOpenDesign" / "btnSaveDesign"): guardan/cargan la noticia
+     completa como .json editable, a diferencia de "Exportar PNG".
+
+  Importante: todo lo de arriba está armado con CSS plano en styles.css
+  (clases .library-*, .pill-toggle*), para seguir la convención que ya
+  tenía el resto del archivo. Falta portarlo a Tailwind para el ABM
+  real — la estructura de HTML y la lógica de JS se pueden reusar,
+  solo cambian las clases de estilo.
+-->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

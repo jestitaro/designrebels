@@ -6,6 +6,36 @@
      edición de texto en el lienzo, avisos en un popover.
    ======================================================== */
 
+/* ========================================================
+   NOTA PARA GUILLE — qué se agregó/cambió en esta ronda de trabajo
+   (todo escrito en CSS plano en styles.css, siguiendo el estilo que ya
+   tenía el prototipo; para integrarlo al ABM real hay que reescribir
+   los estilos en Tailwind, pero la lógica de JS de acá se puede
+   reusar casi tal cual — son funciones autocontenidas)
+
+   1. Galería de recursos (buscar "galería de imágenes" más abajo):
+      - Recursos predefinidos por categoría (DEFAULT_RESOURCES), hoy
+        14 íconos de producto etiquetados como marca "unilever".
+      - Toggle de marca activa (QuartzSales / Unilever, variable
+        libraryBrand) que filtra tanto los predefinidos como "Tus
+        recursos" (lo que sube el usuario, en IndexedDB con fallback a
+        memoria si el navegador bloquea el storage — ver
+        ensureLibraryMode). Cada recurso subido queda tageado con la
+        marca activa al momento de subirlo (ver libraryAdd).
+      - Filtro por tipo (Todos / Íconos / Imágenes, variable libraryKind)
+        y buscador por nombre sin tildes (librarySearchQuery,
+        normalizeSearch) que filtran ambas secciones a la vez.
+   2. Guardar / abrir el diseño como archivo editable (buscar
+      "exportDesignFile"): descarga un .json con formato + fondo +
+      elementos (reusa snapshot()/restore() del historial de undo) y
+      lo puede volver a cargar, a diferencia de "Exportar PNG" que es
+      la imagen final ya no editable.
+   3. Al agregar un elemento (o insertar uno desde la Galería) ya no
+      salta de pestaña — antes te mandaba siempre a "Propiedades" y
+      cortaba el flujo de agregar varios elementos seguidos. Ver
+      selectElement(id, { switchTab: false }) y su uso en addElement().
+   ======================================================== */
+
 const FORMATS = {
   square: { w: 1080, h: 1080, label: 'Cuadrado 1:1' },
   story:  { w: 1080, h: 1920, label: 'Historia 9:16' }
