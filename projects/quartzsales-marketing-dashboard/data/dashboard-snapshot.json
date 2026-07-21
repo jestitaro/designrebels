@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-07-20T11:51:15.312Z",
-  "group": "A",
+  "generatedAt": "2026-07-21T11:13:14.009Z",
+  "group": "B",
   "own": {
     "linkedin": {
-      "followers": 2874,
+      "followers": 2872,
       "employees": 8,
-      "lastSynced": "2026-07-20T11:50:40.322Z",
+      "lastSynced": "2026-07-21T11:12:29.219Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -202,7 +202,7 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-07-18T10:22:58.465Z",
+      "lastSynced": "2026-07-21T11:12:41.303Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -276,7 +276,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-07-18T10:23:11.972Z",
+      "lastSynced": "2026-07-21T11:13:05.970Z",
       "syncStatus": "ok",
       "syncError": null
     },
