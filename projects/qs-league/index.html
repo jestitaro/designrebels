@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="assets/styles.css?v=4" />
+  <link rel="stylesheet" href="assets/styles.css?v=5" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -51,30 +51,16 @@
             <a class="btn btn-ghost" href="#arena"><i class="fa-solid fa-ranking-star"></i> Ver ranking</a>
           </div>
           <div class="stat-row">
-            <article class="stat-chip"><strong id="statCoins" data-value="0">0</strong><span>DinoCoins</span></article>
-            <article class="stat-chip"><strong id="statPlayers" data-value="0">0</strong><span>jugadores</span></article>
-            <article class="stat-chip"><strong id="statMeteors" data-value="0">0</strong><span>meteoritos</span></article>
-            <article class="stat-chip"><strong id="statLastDate">—</strong><span>última fecha</span></article>
+            <article class="stat-chip stat-coins"><i class="fa-solid fa-coins stat-chip-icon"></i><strong id="statCoins" data-value="0">0</strong><span>DinoCoins</span></article>
+            <article class="stat-chip stat-players"><i class="fa-solid fa-users stat-chip-icon"></i><strong id="statPlayers" data-value="0">0</strong><span>Jugadores</span></article>
+            <article class="stat-chip stat-meteors"><i class="fa-solid fa-meteor stat-chip-icon"></i><strong id="statMeteors" data-value="0">0</strong><span>Meteoritos</span></article>
+            <article class="stat-chip stat-date"><i class="fa-solid fa-calendar-days stat-chip-icon"></i><strong id="statLastDate">—</strong><span>Última fecha</span></article>
           </div>
         </div>
-        <div class="hero-orbit reveal in-view" aria-hidden="true">
-          <span class="orbit-ring r1"></span>
-          <span class="orbit-ring r2"></span>
-          <div class="orbit-core"><i class="fa-solid fa-dragon"></i></div>
-          <span class="orbit-icon float-a" style="top:6%;left:8%"><i class="fa-solid fa-coins" style="color:var(--lime)"></i></span>
-          <span class="orbit-icon float-b" style="top:10%;right:4%"><i class="fa-solid fa-medal" style="color:var(--gold)"></i></span>
-          <span class="orbit-icon float-c" style="bottom:4%;left:2%"><i class="fa-solid fa-meteor" style="color:var(--meteor)"></i></span>
-          <span class="orbit-icon float-d" style="bottom:10%;right:8%"><i class="fa-solid fa-user-shield" style="color:var(--blue)"></i></span>
+        <div class="hero-podium reveal in-view" id="podium">
+          <div class="hud-banner"><span class="hud-dots" aria-hidden="true">::</span><span>Ranking parcial</span><span class="hud-dots" aria-hidden="true">::</span></div>
+          <div id="podiumGrid"></div>
         </div>
-      </div>
-    </section>
-
-    <section id="podium">
-      <div class="wrap reveal">
-        <div class="section-head">
-          <div><span class="eyebrow">Ranking parcial</span></div>
-        </div>
-        <div id="podiumGrid"></div>
       </div>
     </section>
 
