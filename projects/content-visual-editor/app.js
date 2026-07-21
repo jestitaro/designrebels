@@ -189,9 +189,10 @@ function loadPersisted() {
 }
 
 // ---------- guardar / abrir el diseño como archivo editable ----------
-// A diferencia de "Exportar PNG" (una imagen final, no editable), esto
-// descarga el estado completo de la noticia en JSON para retomarla después,
-// en esta computadora o en otra (el autoguardado en localStorage no viaja).
+// "Guardar y utilizar noticia" descarga, además de la imagen final, un .json
+// con el estado completo de la noticia para poder retomarla y editarla
+// después si hace falta (el autoguardado en localStorage no viaja). "Subir
+// JSON" vuelve a cargar uno de esos archivos.
 const DESIGN_FILE_APP_ID = 'qs-content-visual-editor';
 
 function exportDesignFile() {
@@ -208,7 +209,6 @@ function exportDesignFile() {
   link.href = url;
   link.click();
   URL.revokeObjectURL(url);
-  toast('Diseño guardado como archivo editable', 'success');
 }
 
 // el archivo viene de afuera (pudo haber sido editado a mano): se sanitiza
@@ -258,9 +258,8 @@ function importDesignFile(file) {
   reader.readAsText(file);
 }
 
-$('#btnSaveDesign').addEventListener('click', exportDesignFile);
-$('#btnOpenDesign').addEventListener('click', () => $('#inputOpenDesign').click());
-$('#inputOpenDesign').addEventListener('change', e => {
+$('#btnUploadJson').addEventListener('click', () => $('#inputUploadJson').click());
+$('#inputUploadJson').addEventListener('change', e => {
   const file = e.target.files[0];
   if (file) importDesignFile(file);
   e.target.value = '';
@@ -268,31 +267,90 @@ $('#inputOpenDesign').addEventListener('change', e => {
 
 // ---------- galería de imágenes: recursos predefinidos (categorías) ----------
 // Vienen con el editor (no se suben ni se guardan en IndexedDB) y no se pueden
-// borrar desde la galería: son el punto de partida que da QuartzSales para
-// que cualquier noticia pueda etiquetarse por categoría de producto.
+// borrar desde la galería: son el punto de partida para etiquetar una noticia
+// por marca y categoría de producto. Cada uno declara su marca (brand) y si es
+// un ícono ilustrado o una imagen (foto), para poder filtrarlos en la galería.
 const DEFAULT_RESOURCES = [
-  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png' },
-  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png' },
-  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png' },
-  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png' },
-  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png' },
-  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png' },
-  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png' },
-  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png' },
-  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png' },
-  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png' },
-  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png' },
-  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png' },
-  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png' },
-  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png' }
+  { id: 'preset_aderezos', name: 'Aderezos', src: 'assets/categorias/Aderezos.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_cremas', name: 'Cremas', src: 'assets/categorias/Cremas.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_deos', name: 'Deos', src: 'assets/categorias/Deos.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_ropa_1', name: 'Jabón para ropa 1', src: 'assets/categorias/JabonRopa1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_ropa_2', name: 'Jabón para ropa 2', src: 'assets/categorias/JabonRopa2.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_jabon_tocador', name: 'Jabón de tocador', src: 'assets/categorias/JabonTocador.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_lavavajillas', name: 'Lavavajillas', src: 'assets/categorias/Lavavajillas.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_limpiadores', name: 'Limpiadores', src: 'assets/categorias/Limpiadores.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_pelo', name: 'Pelo', src: 'assets/categorias/Pelo.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_salsas_1', name: 'Salsas 1', src: 'assets/categorias/Salsas1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_salsas_2', name: 'Salsas 2', src: 'assets/categorias/Salsas2.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_savoury', name: 'Savoury', src: 'assets/categorias/Savoury.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_suavizantes_1', name: 'Suavizantes 1', src: 'assets/categorias/Suavizantes1.png', brand: 'quartzsales', kind: 'icono' },
+  { id: 'preset_suavizantes_2', name: 'Suavizantes 2', src: 'assets/categorias/Suavizantes2.png', brand: 'quartzsales', kind: 'icono' }
 ];
+
+const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
+
+// estado de los filtros de la galería (marca, tipo de recurso y búsqueda)
+let libraryBrand = 'quartzsales';
+let libraryKind = 'all';
+let librarySearchQuery = '';
+
+// sin tildes y en minúsculas, para que "jabon" encuentre "Jabón"
+function normalizeSearch(s) {
+  return (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}
+
+function matchesLibrarySearch(name) {
+  if (!librarySearchQuery) return true;
+  return normalizeSearch(name).includes(librarySearchQuery);
+}
 
 function renderDefaultLibrary() {
   const grid = $('#libraryDefaultGrid');
+  const empty = $('#libraryDefaultEmpty');
+  const emptyText = $('#libraryDefaultEmptyText');
   if (!grid) return;
+
+  const items = DEFAULT_RESOURCES.filter(item =>
+    item.brand === libraryBrand &&
+    (libraryKind === 'all' || item.kind === libraryKind) &&
+    matchesLibrarySearch(item.name)
+  );
+
+  if (empty) empty.style.display = items.length ? 'none' : 'flex';
+  if (emptyText) {
+    emptyText.textContent = librarySearchQuery
+      ? `No hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} que coincidan con "${librarySearchQuery}".`
+      : `Todavía no hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} en esta categoría.`;
+  }
+
   grid.innerHTML = '';
-  DEFAULT_RESOURCES.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
+  items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
 }
+
+// buscador, marca y tipo son controles de la galería: filtran tanto las
+// categorías predefinidas como los recursos subidos por el usuario
+$('#librarySearchInput').addEventListener('input', e => {
+  librarySearchQuery = normalizeSearch(e.target.value);
+  renderDefaultLibrary();
+  renderLibrary();
+});
+
+$('#libraryBrandToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.pill-toggle-btn');
+  if (!btn || btn.dataset.brand === libraryBrand) return;
+  libraryBrand = btn.dataset.brand;
+  $$('.pill-toggle-btn', $('#libraryBrandToggle')).forEach(b => b.classList.toggle('is-active', b === btn));
+  renderDefaultLibrary();
+  renderLibrary(); // "Tus recursos" también está por marca/cliente
+});
+
+$('#libraryKindFilter').addEventListener('click', e => {
+  const btn = e.target.closest('.pill-toggle-btn');
+  if (!btn || btn.dataset.kind === libraryKind) return;
+  libraryKind = btn.dataset.kind;
+  $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b === btn));
+  renderDefaultLibrary();
+});
 
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
 // Se guardan como dataURL (igual que el resto de las imágenes del editor) para
@@ -340,7 +398,8 @@ async function ensureLibraryMode() {
 async function libraryAdd(name, dataUrl, w, h) {
   const item = {
     id: 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
-    name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now()
+    name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now(),
+    brand: libraryBrand // el recurso queda asociado a la marca/cliente elegido al subirlo
   };
   const mode = await ensureLibraryMode();
   if (mode === 'memory') { memoryLibrary.set(item.id, item); return item; }
@@ -380,6 +439,29 @@ async function libraryDelete(id) {
   });
 }
 
+// re-etiqueta un recurso ya subido a otra marca, para corregir uno que se
+// subió con la marca activa equivocada sin tener que borrarlo y resubirlo
+async function libraryUpdateBrand(id, newBrand) {
+  const mode = await ensureLibraryMode();
+  if (mode === 'memory') {
+    const item = memoryLibrary.get(id);
+    if (item) memoryLibrary.set(id, { ...item, brand: newBrand });
+    return;
+  }
+  const db = await openLibraryDB();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(LIBRARY_STORE, 'readwrite');
+    const store = tx.objectStore(LIBRARY_STORE);
+    const getReq = store.get(id);
+    getReq.onsuccess = () => {
+      const item = getReq.result;
+      if (item) store.put({ ...item, brand: newBrand });
+    };
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
 // agrega un recurso a la galería, refresca la vista si está abierta y devuelve
 // si realmente se pudo guardar (para no avisar "guardado" cuando falló)
 async function addResourceToLibrary(name, dataUrl, w, h) {
@@ -405,12 +487,20 @@ function saveToLibrary(file, dataUrl) {
   });
 }
 
+// única otra marca posible, para el botón "mover a..." (hoy son solo 2)
+function otherBrandId(brand) {
+  return Object.keys(BRAND_LABELS).find(b => b !== brand) || brand;
+}
+
 // arma una celda de la galería, para un recurso predefinido (categoría) o uno
-// subido por el usuario; solo los subidos por el usuario se pueden borrar
+// subido por el usuario; solo los subidos por el usuario se pueden borrar o
+// mover a otra marca (por si se subieron con la marca activa equivocada)
 function buildLibraryCell(item, opts = {}) {
   const src = item.src || item.dataUrl;
   const cell = document.createElement('div');
   cell.className = 'library-item';
+  const targetBrand = otherBrandId(item.brand || libraryBrand);
+  const targetBrandLabel = BRAND_LABELS[targetBrand] || targetBrand;
   cell.innerHTML = `
     <img src="${src}" alt="${escapeHtml(item.name)}" title="${escapeHtml(item.name)}" loading="lazy">
     <div class="library-item-actions">
@@ -420,6 +510,9 @@ function buildLibraryCell(item, opts = {}) {
       <button type="button" data-action="bg" title="Usar como fondo del lienzo" aria-label="Usar como fondo del lienzo">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
       </button>
+      ${opts.deletable ? `<button type="button" data-action="move" title="Mover a ${escapeHtml(targetBrandLabel)}" aria-label="Mover a ${escapeHtml(targetBrandLabel)}">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>` : ''}
       ${opts.deletable ? `<button type="button" data-action="delete" title="Eliminar de la galería" aria-label="Eliminar de la galería">
         <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>` : ''}
@@ -433,6 +526,13 @@ function buildLibraryCell(item, opts = {}) {
     toast('Fondo actualizado desde la galería', 'success');
   });
   if (opts.deletable) {
+    cell.querySelector('[data-action="move"]').addEventListener('click', async () => {
+      try {
+        await libraryUpdateBrand(item.id, targetBrand);
+        renderLibrary();
+        toast(`"${item.name}" movido a ${targetBrandLabel}`, 'success');
+      } catch (e) { toast('No se pudo mover ese recurso', 'error'); }
+    });
     cell.querySelector('[data-action="delete"]').addEventListener('click', async () => {
       try {
         await libraryDelete(item.id);
@@ -447,14 +547,26 @@ function buildLibraryCell(item, opts = {}) {
 async function renderLibrary() {
   const grid = $('#libraryGrid');
   const empty = $('#libraryEmpty');
+  const emptyText = $('#libraryEmptyText');
   const warning = $('#libraryWarning');
   if (!grid || !empty) return;
 
-  let items = [];
-  try { items = await libraryGetAll(); } catch (e) { items = []; }
+  const brandLabel = BRAND_LABELS[libraryBrand] || libraryBrand;
+
+  let allItems = [];
+  try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
+  // items sin marca son de antes de este cambio: se muestran para cualquier
+  // marca en vez de quedar huérfanos
+  const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
+  const items = brandItems.filter(item => matchesLibrarySearch(item.name));
 
   if (warning) warning.hidden = libraryMode !== 'memory';
   empty.style.display = items.length ? 'none' : 'flex';
+  if (emptyText) {
+    emptyText.textContent = (librarySearchQuery && brandItems.length)
+      ? `Ningún recurso de ${brandLabel} coincide con "${librarySearchQuery}".`
+      : `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
+  }
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
 }
@@ -581,17 +693,6 @@ $('#panelTabs').addEventListener('click', e => {
   const btn = e.target.closest('.panel-tab');
   if (!btn) return;
   switchTab(btn.dataset.tab);
-});
-
-// ---------- vistas Subir / Crear ----------
-$$('.source-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    $$('.source-tab').forEach(t => t.classList.toggle('is-active', t === tab));
-    const isUpload = tab.dataset.source === 'upload';
-    $('#uploadView').hidden = !isUpload;
-    $('#editorView').style.display = isUpload ? 'none' : '';
-    if (!isUpload) { layoutCanvas(); render(); }
-  });
 });
 
 // ---------- formato ----------
@@ -1016,12 +1117,8 @@ document.addEventListener('pointerdown', e => {
   if (!$('#statusPopover').hidden && !e.target.closest('.status-wrap')) closeStatusPopover();
 });
 
-// ---------- ayuda ----------
-$('#btnHelp').addEventListener('click', () => { $('#helpModal').hidden = false; });
-$('#helpModalClose').addEventListener('click', () => { $('#helpModal').hidden = true; });
-$('#helpModal').addEventListener('click', e => {
-  if (e.target === $('#helpModal')) $('#helpModal').hidden = true;
-});
+// "Volver" es decorativo en este prototipo (simula el link del ABM real)
+$('#btnBack').addEventListener('click', e => e.preventDefault());
 
 // ---------- render de elementos en el canvas ----------
 function renderElements(retry) {
@@ -1745,7 +1842,6 @@ window.addEventListener('keydown', ev => {
   const typing = target.matches?.('input, textarea, select') || target.isContentEditable;
 
   if (ev.key === 'Escape') {
-    if (!$('#helpModal').hidden) { $('#helpModal').hidden = true; return; }
     if (!$('#statusPopover').hidden) { closeStatusPopover(); return; }
     if (!typing) deselect();
     return;
@@ -1796,76 +1892,6 @@ window.addEventListener('keydown', ev => {
   }
 });
 
-// ---------- vista "Subir archivo" ----------
-const dropzone = $('#uploadDropzone');
-let uploadedFile = null; // {src, name, w, h}
-
-dropzone.addEventListener('click', () => $('#inputUploadFile').click());
-dropzone.addEventListener('keydown', ev => {
-  if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); $('#inputUploadFile').click(); }
-});
-dropzone.addEventListener('dragover', ev => { ev.preventDefault(); dropzone.classList.add('is-dragover'); });
-dropzone.addEventListener('dragleave', () => dropzone.classList.remove('is-dragover'));
-dropzone.addEventListener('drop', ev => {
-  ev.preventDefault();
-  dropzone.classList.remove('is-dragover');
-  const file = ev.dataTransfer.files[0];
-  if (file) readUploadFile(file);
-});
-$('#inputUploadFile').addEventListener('change', e => {
-  const file = e.target.files[0];
-  if (file) readUploadFile(file);
-  e.target.value = '';
-});
-
-function readUploadFile(file) {
-  if (!file.type.startsWith('image/')) {
-    toast('Ese archivo no es una imagen', 'error');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const src = ev.target.result;
-    const img = new Image();
-    img.onload = () => {
-      uploadedFile = { src, name: file.name, w: img.naturalWidth, h: img.naturalHeight };
-      $('#uploadPreviewImg').src = src;
-      $('#uploadPreviewName').textContent = file.name;
-      $('#uploadPreviewMeta').textContent = `${img.naturalWidth} × ${img.naturalHeight} px · ${Math.round(file.size / 1024)} KB`;
-      $('#uploadPreview').hidden = false;
-      dropzone.hidden = true;
-      addResourceToLibrary(file.name, src, img.naturalWidth, img.naturalHeight);
-    };
-    img.src = src;
-  };
-  reader.readAsDataURL(file);
-}
-
-function switchToEditor() {
-  $$('.source-tab').forEach(t => t.classList.toggle('is-active', t.dataset.source === 'editor'));
-  $('#uploadView').hidden = true;
-  $('#editorView').style.display = '';
-  layoutCanvas();
-  render();
-}
-
-$('#btnUploadAsBg').addEventListener('click', () => {
-  if (!uploadedFile) return;
-  setBackgroundImage(uploadedFile.src);
-  switchToEditor();
-  toast('La imagen quedó como fondo del lienzo', 'success');
-});
-$('#btnUploadAsElement').addEventListener('click', () => {
-  if (!uploadedFile) return;
-  switchToEditor();
-  addImageElement(uploadedFile.src);
-});
-$('#btnUploadClear').addEventListener('click', () => {
-  uploadedFile = null;
-  $('#uploadPreview').hidden = true;
-  dropzone.hidden = false;
-});
-
 // ---------- export PNG ----------
 async function exportPNG() {
   const stage = $('#canvasStage');
@@ -1906,30 +1932,12 @@ async function exportPNG() {
 
 $('#btnExport').addEventListener('click', exportPNG);
 
-// "Usar esta imagen": exporta y simula el enganche con el flujo real de subida
+// "Guardar y utilizar noticia": guarda el .json editable (por si hace falta
+// retocar la noticia después) y exporta/usa la imagen, como en el ABM real
 $('#btnUseImage').addEventListener('click', async () => {
+  exportDesignFile();
   const ok = await exportPNG();
-  if (ok) toast('En el ABM real, esta imagen quedaría cargada en la noticia', 'info', { duration: 5000 });
-});
-
-$('#btnCancelEditor').addEventListener('click', () => {
-  if (confirm('¿Empezar de nuevo? Se pierde el diseño actual.')) {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
-    history.past = [];
-    history.future = [];
-    lastSnapshot = null;
-    state.elements = [];
-    state.selectedId = null;
-    state.nextId = 1;
-    state.nextZ = 1;
-    state.format = 'square';
-    state.background = { type: 'color', value: '#130D5D' };
-    $$('.format-btn').forEach(b => b.classList.toggle('is-active', b.dataset.format === 'square'));
-    renderBgPresets();
-    layoutCanvas();
-    seedTemplate();
-    toast('Editor reiniciado', 'info');
-  }
+  if (ok) toast('Noticia guardada: se descargó el archivo editable y la imagen quedó lista para usar', 'success', { duration: 5000 });
 });
 
 // ---------- render general ----------
@@ -1960,11 +1968,7 @@ function init() {
   if (saved) {
     restore(saved);
     deselect();
-    toast('Restauramos tu último diseño', 'info', {
-      actionLabel: 'Empezar de nuevo',
-      duration: 6000,
-      onAction: () => $('#btnCancelEditor').click()
-    });
+    toast('Restauramos tu último diseño', 'info', { duration: 6000 });
   } else {
     seedTemplate();
   }
