@@ -354,14 +354,65 @@ Al cerrar cada copa (temporada), quien acumuló más puntos recibe un premio aco
 
 ---
 
-## 19. Pendiente futuro
+## 19. Panel administrativo (desde el 23/07/2026)
 
-Desde el 20/07/2026, imports/ledger/roster nuevo viven en Firestore (proyecto `quartzprode2026`, colección `qsleague_state`, doc `season02`), reusando el mismo proyecto que QuartzProde. `localStorage` queda como cache local y respaldo si no hay red. Estas reglas (REGLAS.md) siguen viviendo en el repo, no en la base.
+La landing pública y las acciones que modifican puntos quedaron separadas:
+
+```txt
+Público (sin login): podio, resultados parciales, campeones, reglas, próximamente.
+Administrador (con login): cargar resultados, aplicar descuentos, anular cargas,
+anular descuentos, consultar el historial.
+```
+
+Acceso: un enlace discreto "Admin" en el footer. Sin sesión, abre un login
+(email + contraseña) contra Firebase Authentication. Con sesión de
+administrador, abre directo el panel. Hay un único rol: `ADMIN`.
+
+Datos: todo vive en Firestore, en el mismo proyecto `quartzprode2026` que
+QuartzProde, bajo sus propias colecciones para no tocar los datos de Prode
+ni los de la `qsleague_state` vieja:
+
+```txt
+dinocup_users      → {uid, email, role, displayName, createdAt}
+dinocup_players    → roster (id, name, alias, house, role, isActive)
+dinocup_matches    → una carga por informe de Kahoot
+dinocup_movements  → el ledger real de puntos
+```
+
+El ranking **nunca** se calcula desde un total guardado en el jugador: se
+recalcula sumando los movimientos con estado `APPLIED` cada vez que se
+pinta la pantalla (misma lógica de siempre, ahora sobre Firestore en vez de
+`localStorage`).
+
+Tipos de movimiento: `REPORT_RESULT`, `ABSENCE_PENALTY`, `REPORT_REVERSAL`,
+`PENALTY_REVERSAL`. Estados de carga: `DRAFT` → `PROCESSING` → `APPLIED` /
+`ERROR` / `ANNULLED`. Estados de movimiento: `APPLIED` / `ANNULLED`. Nada se
+borra: anular una carga o un descuento crea un movimiento inverso y marca el
+original como `ANNULLED`, conservando el historial completo.
+
+`dinocup_users/{uid}` nunca se escribe desde el cliente (ni siquiera el
+propio usuario): el rol `ADMIN` se asigna a mano desde la consola de
+Firebase o el Admin SDK, así nadie puede otorgarse permisos desde el
+navegador. Ver `firestore.rules` / `storage.rules` para el detalle de
+permisos, y la nota de deploy al principio de esos archivos: hay que
+fusionarlos con las reglas que ya tiene `quartzprode2026`, no reemplazarlas.
+
+`localStorage` dejó de usarse para el estado del ranking (Firestore es la
+única fuente de verdad); el archivo original de cada informe se guarda en
+Firebase Storage, accesible solo para administradores.
+
+---
+
+## 20. Pendiente futuro
 
 Pendientes técnicos:
 
-- autenticación real si vuelve a necesitarse,
-- historial de auditoría de ajustes,
+- formulario de ajuste manual de puntos "genéricos" (hoy Aplicar descuentos
+  solo cubre ausencias con -1/-3; sumar puntos sueltos o cargar/quitar un
+  meteorito sin ausencia sigue sin una acción dedicada),
 - exportación de ranking,
-- administración formal de roster y alias,
-- cierre de temporada para mandar Arena actual a Leyendas.
+- administración formal de roster y alias desde el panel (hoy `dinocup_players`
+  se siembra una sola vez con el roster fijo de `assets/roster.js`),
+- cierre de temporada para mandar Arena actual a Leyendas,
+- historial de auditoría más allá de lo que ya guarda cada movimiento
+  (createdBy/createdByEmail/annulledBy).

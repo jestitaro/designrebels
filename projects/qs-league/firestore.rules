@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// Dino Cup — Firestore rules for the dinocup_* collections only.
+//
+// ⚠️ DEPLOY WARNING: Firestore has exactly one active ruleset per project.
+// quartzprode2026 already runs Prode's own rules (managed elsewhere — not
+// checked into this repo, and this sandbox has no Firebase CLI session to
+// fetch them). Deploying this file as-is would REPLACE those rules, not
+// merge with them. Before running `firebase deploy --only firestore:rules`,
+// whoever has access must:
+//   1. Pull the currently live rules (`firebase firestore:rules get` or the
+//      Rules tab in the Firebase console for quartzprode2026).
+//   2. Copy the `match /dinocup_users/...` through `match /dinocup_movements/...`
+//      blocks below into that existing ruleset (inside the same top-level
+//      `match /databases/{database}/documents { ... }` block).
+//   3. Deploy the merged file, not this one directly.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/dinocup_users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/dinocup_users/$(request.auth.uid)).data.role == 'ADMIN';
+    }
+
+    // Role lookup doc for the signed-in user. Never written from the client:
+    // an admin is provisioned manually (Firebase console / Admin SDK) so a
+    // user can never grant themselves the ADMIN role from the browser.
+    match /dinocup_users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Public roster — visible to everyone, editable only by an admin
+    // (admin.js seeds it once on first authenticated login).
+    match /dinocup_players/{playerId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // One doc per Kahoot report upload. Publicly readable so the landing
+    // can show session dates; every write requires an admin. Matches are
+    // never deleted, only moved to ANNULLED.
+    match /dinocup_matches/{matchId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // The real ledger. Publicly readable (only APPLIED rows are queried by
+    // the public landing) so the podium/ranking can be computed client-side;
+    // every write requires an admin. Movements are never deleted, only
+    // marked ANNULLED with a reversal movement created alongside.
+    match /dinocup_movements/{movementId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+  }
+}
