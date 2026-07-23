@@ -264,14 +264,15 @@ function renderHero() {
 
 function podiumCard(item, rank) {
   const h = house(item.house);
+  const avatarIcon = rank === 1 ? fa('fa-trophy') : fa('fa-ghost');
   return `<article class="podium-card rank-${rank}" style="--house:${h.color}">
     ${rank === 1 ? fa('fa-crown', 'podium-crown') : ''}
     <span class="podium-rank">0${rank}</span>
-    <div class="podium-avatar">${initials(item.name)}</div>
+    <div class="podium-avatar">${avatarIcon}</div>
     <h3>${item.name}</h3>
     <p class="podium-role">${item.role || h.name}</p>
     <div class="mini-medals">${medalIcon('gold')}${item.medals.gold}<span></span>${medalIcon('silver')}${item.medals.silver}<span></span>${medalIcon('bronze')}${item.medals.bronze}</div>
-    <div class="podium-coins">${fmt(item.coins)} ${fa('fa-coins')}</div>
+    <div class="podium-coins">${fa('fa-star')} ${fmt(item.coins)}</div>
   </article>`;
 }
 function renderPodium() {
