@@ -1,19 +1,9 @@
 rules_version = '2';
 
-// Dino Cup — Firestore rules for the dinocup_* collections only.
-//
-// ⚠️ DEPLOY WARNING: Firestore has exactly one active ruleset per project.
-// quartzprode2026 already runs Prode's own rules (managed elsewhere — not
-// checked into this repo, and this sandbox has no Firebase CLI session to
-// fetch them). Deploying this file as-is would REPLACE those rules, not
-// merge with them. Before running `firebase deploy --only firestore:rules`,
-// whoever has access must:
-//   1. Pull the currently live rules (`firebase firestore:rules get` or the
-//      Rules tab in the Firebase console for quartzprode2026).
-//   2. Copy the `match /dinocup_users/...` through `match /dinocup_movements/...`
-//      blocks below into that existing ruleset (inside the same top-level
-//      `match /databases/{database}/documents { ... }` block).
-//   3. Deploy the merged file, not this one directly.
+// Dino Cup — Firestore rules for the dino-cup project.
+// This is the complete, standalone ruleset for this project (dino-cup has
+// no other app/collections sharing it) — deploy as-is with
+// `firebase deploy --only firestore:rules`.
 service cloud.firestore {
   match /databases/{database}/documents {
 

@@ -368,9 +368,9 @@ Acceso: un enlace discreto "Admin" en el footer. Sin sesión, abre un login
 (email + contraseña) contra Firebase Authentication. Con sesión de
 administrador, abre directo el panel. Hay un único rol: `ADMIN`.
 
-Datos: todo vive en Firestore, en el mismo proyecto `quartzprode2026` que
-QuartzProde, bajo sus propias colecciones para no tocar los datos de Prode
-ni los de la `qsleague_state` vieja:
+Datos: todo vive en Firestore, en su propio proyecto Firebase exclusivo
+(`dino-cup`, sin compartir base con QuartzProde ni con la `qsleague_state`
+vieja), bajo estas colecciones:
 
 ```txt
 dinocup_users      → {uid, email, role, displayName, createdAt}
@@ -394,8 +394,8 @@ original como `ANNULLED`, conservando el historial completo.
 propio usuario): el rol `ADMIN` se asigna a mano desde la consola de
 Firebase o el Admin SDK, así nadie puede otorgarse permisos desde el
 navegador. Ver `firestore.rules` / `storage.rules` para el detalle de
-permisos, y la nota de deploy al principio de esos archivos: hay que
-fusionarlos con las reglas que ya tiene `quartzprode2026`, no reemplazarlas.
+permisos — son rulesets completos e independientes para el proyecto
+`dino-cup`, se despliegan tal cual.
 
 `localStorage` dejó de usarse para el estado del ranking (Firestore es la
 única fuente de verdad); el archivo original de cada informe se guarda en

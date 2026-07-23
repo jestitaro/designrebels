@@ -1,10 +1,8 @@
 rules_version = '2';
 
-// Dino Cup — Storage rules for the dinocup_reports/ folder only.
-//
-// ⚠️ Same one-ruleset-per-bucket caveat as firestore.rules: merge the
-// `match /dinocup_reports/...` block below into quartzprode2026's existing
-// Storage rules before deploying — don't overwrite them wholesale.
+// Dino Cup — Storage rules for the dino-cup project's default bucket.
+// This is the complete, standalone ruleset — deploy as-is with
+// `firebase deploy --only storage`.
 service firebase.storage {
   match /b/{bucket}/o {
 
