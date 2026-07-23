@@ -936,13 +936,15 @@ button {
   gap: 14px;
 }
 
-.modal-panel label {
+.modal-panel label,
+.admin-view label {
   display: grid;
   gap: 7px;
   margin-top: 12px;
 }
 
-.modal-panel label > span:first-child {
+.modal-panel label > span:first-child,
+.admin-view label > span:first-child {
   color: #b8b3d0;
   font-family: var(--font-display);
   font-size: 0.5rem;
@@ -950,7 +952,9 @@ button {
 }
 
 .modal-panel input,
-.modal-panel select {
+.modal-panel select,
+.admin-view input,
+.admin-view select {
   width: 100%;
   min-height: 46px;
   padding: 0 14px;
@@ -962,7 +966,9 @@ button {
 }
 
 .modal-panel input:focus,
-.modal-panel select:focus {
+.modal-panel select:focus,
+.admin-view input:focus,
+.admin-view select:focus {
   border-color: var(--cyan);
   box-shadow: var(--shadow-cyan);
 }
@@ -2439,7 +2445,8 @@ svg[data-lucide] {
 
 /* Selects con chevron más separado del borde */
 .modal-panel select,
-.absence-row select {
+.absence-row select,
+.admin-view select {
   padding-right: 44px;
   appearance: none;
   -webkit-appearance: none;
@@ -2455,7 +2462,8 @@ svg[data-lucide] {
 }
 
 .modal-panel select:focus,
-.absence-row select:focus {
+.absence-row select:focus,
+.admin-view select:focus {
   background-position:
     calc(100% - 18px) 50%,
     calc(100% - 13px) 50%;
@@ -3227,29 +3235,57 @@ svg[data-lucide] {
   font-size: 0.85rem;
 }
 
+.admin-page__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-page__actions svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Lower emphasis: just navigation, no consequence — stays logged in. */
 .admin-page__back {
   display: inline-flex;
-  flex: 0 0 auto;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  border: 1px solid rgba(255, 53, 199, 0.45);
+  border: 1px solid rgba(131, 71, 255, 0.35);
   border-radius: 10px;
-  color: var(--magenta);
-  background: rgba(255, 53, 199, 0.05);
+  color: var(--muted);
+  background: transparent;
   font-weight: 700;
   font-size: 0.86rem;
   cursor: pointer;
 }
 
-.admin-page__back svg {
-  width: 16px;
-  height: 16px;
+.admin-page__back:hover {
+  color: var(--cyan);
+  border-color: rgba(21, 217, 255, 0.5);
 }
 
-.admin-page__back:hover {
+/* Higher emphasis: ends the session, so it reads as the more deliberate action. */
+.admin-page__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 53, 199, 0.55);
+  border-radius: 10px;
+  color: var(--magenta);
+  background: rgba(255, 53, 199, 0.1);
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.admin-page__logout:hover {
   border-color: var(--magenta);
-  background: rgba(255, 53, 199, 0.14);
+  background: rgba(255, 53, 199, 0.2);
+  box-shadow: var(--shadow-magenta);
 }
 
 .admin-page__content {
@@ -3318,17 +3354,6 @@ svg[data-lucide] {
   box-shadow: var(--shadow-cyan);
 }
 
-.admin-tab--exit {
-  margin-left: auto;
-  color: var(--magenta);
-  border-color: rgba(255, 53, 199, 0.4);
-}
-
-.admin-tab--exit:hover {
-  color: var(--magenta);
-  border-color: var(--magenta);
-  background: rgba(255, 53, 199, 0.08);
-}
 
 .admin-view {
   padding-top: 6px;
@@ -3667,7 +3692,7 @@ svg[data-lucide] {
     flex-direction: column;
   }
 
-  .admin-page__back {
+  .admin-page__actions {
     align-self: flex-start;
   }
 
@@ -3683,4 +3708,23 @@ svg[data-lucide] {
   .admin-table {
     font-size: 0.76rem;
   }
+}
+
+/* "Admin" entry points (header nav-link + footer link) light up when a
+   session is already active, so leaving the panel without logging out
+   still makes it obvious you're still signed in. */
+.admin-status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(184, 255, 61, 0.7);
+  vertical-align: middle;
+}
+
+.nav-link.is-authenticated,
+.footer-nav a.is-authenticated {
+  color: var(--green);
 }
