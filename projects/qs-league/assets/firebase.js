@@ -1,7 +1,6 @@
 // firebase.js — Dino Cup admin data layer
-// Reuses the same Firebase project as QuartzProde (prode2026/firebase.js),
-// under its own collections/storage folder (dinocup_*) so it never touches
-// Prode's or the old QS League's data.
+// Dedicated Firebase project (dino-cup), exclusive to this app — no longer
+// shares a project with QuartzProde or the old QS League.
 //
 // Collections (see REGLAS.md / README.md for the full model):
 //   dinocup_users      — {uid, email, role, displayName, createdAt} · client read-only, never written from here
@@ -15,12 +14,13 @@
 // from assets/admin.js, never from the public assets/app.js.
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBCt4aNLAiajTJIvM5CpVhQvnyiX15Vkqg",
-  authDomain: "quartzprode2026.firebaseapp.com",
-  projectId: "quartzprode2026",
-  storageBucket: "quartzprode2026.firebasestorage.app",
-  messagingSenderId: "616224313629",
-  appId: "1:616224313629:web:5cad77efab7eb2506b51f4"
+  apiKey: "AIzaSyAqW8HqRtLLI1eWxpNOvrXtZSVLK4c3eHU",
+  authDomain: "dino-cup.firebaseapp.com",
+  projectId: "dino-cup",
+  storageBucket: "dino-cup.firebasestorage.app",
+  messagingSenderId: "734657325277",
+  appId: "1:734657325277:web:feada6f960cf17b3ead334",
+  measurementId: "G-7Z2VS7KFT5"
 };
 
 if (!firebase.apps.length) {

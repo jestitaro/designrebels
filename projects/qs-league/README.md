@@ -31,7 +31,7 @@ El panel tiene cuatro secciones + cerrar sesión: **Resumen**, **Cargar resultad
 
 ## Persistencia
 
-Todo (roster, cargas, ledger) vive en Firestore, reusando el mismo proyecto Firebase que QuartzProde (`quartzprode2026`), en sus propias colecciones (`dinocup_users`, `dinocup_players`, `dinocup_matches`, `dinocup_movements`) para no tocar los datos de Prode ni los de la `qsleague_state` vieja. Cualquiera que entre a la página ve el mismo estado, y se actualiza en vivo si un administrador carga un informe o hace un ajuste desde otro dispositivo.
+Todo (roster, cargas, ledger) vive en Firestore, en un proyecto Firebase propio y exclusivo de Dino Cup (`dino-cup`, sin compartir base con QuartzProde ni con la `qsleague_state` vieja), en las colecciones `dinocup_users`, `dinocup_players`, `dinocup_matches`, `dinocup_movements`. Cualquiera que entre a la página ve el mismo estado, y se actualiza en vivo si un administrador carga un informe o hace un ajuste desde otro dispositivo.
 
 El archivo original de cada informe se guarda en Firebase Storage (`dinocup_reports/{matchId}/...`), descargable solo por administradores desde el detalle de una carga.
 
@@ -69,7 +69,7 @@ Para corregir un movimiento (p. ej. cambiar un -1 por un -3) no se edita: se anu
 
 `firestore.rules` y `storage.rules` (en la raíz de este proyecto) definen: lectura pública de `dinocup_players`/`dinocup_matches`/`dinocup_movements`, escritura solo para usuarios autenticados con `role: ADMIN`, sin deletes físicos desde el cliente, y `dinocup_users` de solo lectura (nunca escribible desde el navegador). El archivo original de cada informe en Storage es de lectura/escritura solo para administradores, con límite de tamaño y validación de tipo.
 
-**Importante antes de desplegar**: Firestore/Storage tienen un único ruleset activo por proyecto. `quartzprode2026` ya corre las reglas propias de Prode (no están en este repo). Desplegar estos archivos tal cual los *reemplazaría* en vez de complementarlos — hay que fusionar los bloques `dinocup_*` dentro del ruleset que ya está en producción antes de desplegar. El detalle está comentado al principio de cada archivo `.rules`.
+`firestore.rules` y `storage.rules` son rulesets completos e independientes para el proyecto `dino-cup` (que no aloja ninguna otra app) — se despliegan tal cual, sin fusionar con nada. `.firebaserc` ya apunta el proyecto default a `dino-cup`, así que `firebase deploy --only firestore:rules,storage` alcanza.
 
 ## Pendiente
 
