@@ -279,10 +279,33 @@ function renderResumenTab() {
 /* ============================================================
    CARGAR RESULTADOS (wizard + historial)
    ============================================================ */
-const uploadWizard = { step: 1, moderatorId: '', sessionDate: '', file: null, parsed: null, absences: [], duplicate: null, busy: false };
+const uploadWizard = {
+  step: 1, moderatorId: '', moderatorAutoDetected: false, sessionDate: '',
+  file: null, parsed: null, parsingFile: false, absences: [], duplicate: null, busy: false
+};
 function resetWizard() {
-  uploadWizard.step = 1; uploadWizard.moderatorId = ''; uploadWizard.sessionDate = '';
-  uploadWizard.file = null; uploadWizard.parsed = null; uploadWizard.absences = []; uploadWizard.duplicate = null; uploadWizard.busy = false;
+  uploadWizard.step = 1; uploadWizard.moderatorId = ''; uploadWizard.moderatorAutoDetected = false; uploadWizard.sessionDate = '';
+  uploadWizard.file = null; uploadWizard.parsed = null; uploadWizard.parsingFile = false;
+  uploadWizard.absences = []; uploadWizard.duplicate = null; uploadWizard.busy = false;
+}
+
+/* Best-effort auto-detection from the report's file name + detected title,
+   so the admin usually doesn't have to touch these fields at all. */
+function detectSessionDateFromText(text) {
+  const iso = text.match(/(20\d{2})[-_.](\d{1,2})[-_.](\d{1,2})/);
+  if (iso) return `${iso[1]}-${String(iso[2]).padStart(2, '0')}-${String(iso[3]).padStart(2, '0')}`;
+  // day-month-year (es-AR convention, e.g. "16-07-2026" or "16/07/2026")
+  const dmy = text.match(/(\d{1,2})[-_./](\d{1,2})[-_./](20\d{2})/);
+  if (dmy) return `${dmy[3]}-${String(dmy[2]).padStart(2, '0')}-${String(dmy[1]).padStart(2, '0')}`;
+  return '';
+}
+function detectModeratorFromText(text) {
+  const tokens = text.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  for (const token of tokens) {
+    const match = findPlayerByNickname(token);
+    if (match) return match;
+  }
+  return null;
 }
 
 function renderCargarTab() {
@@ -319,31 +342,47 @@ function renderWizard() {
 }
 
 function wizardStep1Html() {
+  const ready = Boolean(uploadWizard.file) && !uploadWizard.parsingFile && Boolean(uploadWizard.parsed);
+  const fileLabel = uploadWizard.parsingFile
+    ? 'Procesando informe…'
+    : uploadWizard.file
+      ? `Archivo seleccionado: ${esc(uploadWizard.file.name)}`
+      : 'Todavía no seleccionaste un archivo.';
+
   return `
     <form id="wizardStep1Form" class="admin-form">
-      <div class="form-grid">
-        <label>
-          <span>Moderador de la fecha</span>
-          <select id="wizardModerator" required>${personOptionsHtml(uploadWizard.moderatorId)}</select>
-        </label>
-        <label>
-          <span>Fecha de la sesión</span>
-          <input id="wizardSessionDate" type="date" value="${esc(uploadWizard.sessionDate)}" required />
-        </label>
-      </div>
-
       <label class="dropzone" id="wizardDropzone">
         <input id="wizardFileInput" type="file" accept=".xlsx,.xls,.csv" hidden />
         <i class="dropzone-icon" data-lucide="cloud-upload" aria-hidden="true"></i>
         <strong>Arrastrá el informe acá</strong>
         <small>o hacé clic para elegir XLSX / CSV</small>
-        <span class="file-name" id="wizardFileName">${uploadWizard.file ? `Archivo seleccionado: ${esc(uploadWizard.file.name)}` : 'Todavía no seleccionaste un archivo.'}</span>
+        <span class="file-name" id="wizardFileName">${fileLabel}</span>
       </label>
+
+      ${ready ? `
+      <div class="form-grid">
+        <label>
+          <span>Fecha de la sesión</span>
+          <input id="wizardSessionDate" type="date" value="${esc(uploadWizard.sessionDate)}" required />
+        </label>
+
+        <div class="wizard-moderator-field">
+          <span>Moderador de la fecha</span>
+          ${uploadWizard.moderatorAutoDetected ? `
+            <div class="wizard-detected-chip">
+              <span>${esc(player(uploadWizard.moderatorId)?.name || '')}<small>detectado del archivo</small></span>
+              <button type="button" class="admin-btn admin-btn--ghost admin-btn--small" id="wizardChangeModerator">Cambiar</button>
+            </div>
+          ` : `<select id="wizardModerator" required>${personOptionsHtml(uploadWizard.moderatorId)}</select>`}
+        </div>
+      </div>
+      ` : ''}
+
       <p class="admin-form-error" id="wizardStep1Error" hidden></p>
 
       <div class="admin-wizard-actions">
         <button type="button" class="admin-btn admin-btn--ghost" data-wizard-cancel>Cancelar</button>
-        <button type="submit" class="button button--primary modal-submit" id="wizardStep1Submit">
+        <button type="submit" class="button button--primary modal-submit" id="wizardStep1Submit" ${ready ? '' : 'disabled'}>
           <span class="submit-label">Siguiente</span>
           <span class="submit-loading" aria-hidden="true"><span>Procesando informe</span><span class="loading-pixels"><span></span><span></span><span></span><span></span></span></span>
         </button>
@@ -427,54 +466,85 @@ function bindWizardStep() {
     const form = $('#wizardStep1Form');
     const dropzone = $('#wizardDropzone');
     const fileInput = $('#wizardFileInput');
-    const fileNameEl = $('#wizardFileName');
-    const submitBtn = $('#wizardStep1Submit');
-    const errorEl = $('#wizardStep1Error');
 
-    function setFile(file) {
-      uploadWizard.file = file || null;
-      if (!file) { fileNameEl.textContent = 'Todavía no seleccionaste un archivo.'; return; }
+    async function handleFile(file) {
+      const errorEl = $('#wizardStep1Error');
+      errorEl.hidden = true;
       const ext = file.name.split('.').pop()?.toLowerCase();
-      if (!['xlsx', 'xls', 'csv'].includes(ext)) { uploadWizard.file = null; fileNameEl.textContent = 'Formato no válido. Elegí un XLSX, XLS o CSV.'; return; }
-      fileNameEl.textContent = `Archivo seleccionado: ${file.name}`;
+      if (!['xlsx', 'xls', 'csv'].includes(ext)) {
+        errorEl.textContent = 'Formato no válido. Elegí un XLSX, XLS o CSV.';
+        errorEl.hidden = false;
+        return;
+      }
+      uploadWizard.file = file;
+      uploadWizard.parsed = null;
+      uploadWizard.parsingFile = true;
+      uploadWizard.moderatorId = '';
+      uploadWizard.moderatorAutoDetected = false;
+      uploadWizard.sessionDate = '';
+      renderWizard();
+      try {
+        const parsed = await window.DinoCupParser.parseKahootFile(file);
+        if (!parsed.rows.length) {
+          uploadWizard.file = null;
+          uploadWizard.parsingFile = false;
+          renderWizard();
+          const retryError = $('#wizardStep1Error');
+          retryError.textContent = 'No pude leer resultados en el informe. Probá con el XLSX de Kahoot Reports.';
+          retryError.hidden = false;
+          return;
+        }
+        uploadWizard.parsed = parsed;
+        uploadWizard.parsingFile = false;
+        // Best-effort: read the session date and the moderator straight from
+        // the file name / detected title, so the admin usually only has to
+        // drop the file. The moderator dropdown only shows up as a fallback.
+        const detectText = `${file.name} ${parsed.detectedTitle}`;
+        uploadWizard.sessionDate = detectSessionDateFromText(detectText);
+        const moderator = detectModeratorFromText(detectText);
+        if (moderator) {
+          uploadWizard.moderatorId = moderator.id;
+          uploadWizard.moderatorAutoDetected = true;
+        }
+        renderWizard();
+      } catch (error) {
+        console.error(error);
+        uploadWizard.file = null;
+        uploadWizard.parsingFile = false;
+        renderWizard();
+        const retryError = $('#wizardStep1Error');
+        retryError.textContent = 'Ocurrió un error al procesar el informe. Probá de nuevo.';
+        retryError.hidden = false;
+      }
     }
-    fileInput.addEventListener('change', () => setFile(fileInput.files[0]));
+
+    fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
     ['dragenter', 'dragover'].forEach(name => dropzone.addEventListener(name, e => { e.preventDefault(); dropzone.classList.add('is-dragging'); }));
     ['dragleave', 'drop'].forEach(name => dropzone.addEventListener(name, e => { e.preventDefault(); dropzone.classList.remove('is-dragging'); }));
     dropzone.addEventListener('drop', e => {
       const [file] = e.dataTransfer.files;
       if (!file) return;
       const transfer = new DataTransfer(); transfer.items.add(file); fileInput.files = transfer.files;
-      setFile(file);
+      handleFile(file);
     });
 
-    form.addEventListener('submit', async event => {
+    $('#wizardChangeModerator')?.addEventListener('click', () => {
+      uploadWizard.moderatorAutoDetected = false;
+      renderWizard();
+    });
+
+    form.addEventListener('submit', event => {
       event.preventDefault();
-      errorEl.hidden = true;
-      uploadWizard.moderatorId = $('#wizardModerator').value;
-      uploadWizard.sessionDate = $('#wizardSessionDate').value;
-      if (!uploadWizard.moderatorId || !uploadWizard.sessionDate || !uploadWizard.file) {
-        errorEl.textContent = 'Completá moderador, fecha y archivo antes de continuar.';
+      const errorEl = $('#wizardStep1Error');
+      if (!uploadWizard.moderatorAutoDetected) uploadWizard.moderatorId = $('#wizardModerator')?.value || '';
+      uploadWizard.sessionDate = $('#wizardSessionDate')?.value || uploadWizard.sessionDate;
+      if (!uploadWizard.file || !uploadWizard.parsed || !uploadWizard.moderatorId || !uploadWizard.sessionDate) {
+        errorEl.textContent = 'Completá el moderador y la fecha antes de continuar.';
         errorEl.hidden = false;
         return;
       }
-      submitBtn.classList.add('is-loading');
-      try {
-        uploadWizard.parsed = await window.DinoCupParser.parseKahootFile(uploadWizard.file);
-        if (!uploadWizard.parsed.rows.length) {
-          errorEl.textContent = 'No pude leer resultados en el informe. Probá con el XLSX de Kahoot Reports.';
-          errorEl.hidden = false;
-          return;
-        }
-        uploadWizard.step = 2;
-        renderWizard();
-      } catch (error) {
-        console.error(error);
-        errorEl.textContent = 'Ocurrió un error al procesar el informe. Probá de nuevo.';
-        errorEl.hidden = false;
-      } finally {
-        submitBtn.classList.remove('is-loading');
-      }
+      uploadWizard.step = 2;
+      renderWizard();
     });
   }
 
