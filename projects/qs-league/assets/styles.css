@@ -3728,3 +3728,58 @@ svg[data-lucide] {
 .footer-nav a.is-authenticated {
   color: var(--green);
 }
+
+/* Native date input renders a dark calendar icon by default, invisible
+   against this site's dark inputs. Force the light color scheme for the
+   picker UI and invert the icon so it's actually visible. */
+.modal-panel input[type="date"],
+.admin-view input[type="date"] {
+  color-scheme: dark;
+}
+
+.modal-panel input[type="date"]::-webkit-calendar-picker-indicator,
+.admin-view input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.button:disabled,
+.admin-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.wizard-moderator-field {
+  display: grid;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.wizard-moderator-field > span:first-child {
+  color: #b8b3d0;
+  font-family: var(--font-display);
+  font-size: 0.5rem;
+  text-transform: uppercase;
+}
+
+.wizard-detected-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(184, 255, 61, 0.45);
+  border-radius: 10px;
+  background: rgba(184, 255, 61, 0.06);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.wizard-detected-chip small {
+  margin-left: 6px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.76rem;
+}
