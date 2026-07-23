@@ -1,4 +1,4 @@
-// firebase.js — QS League
+// firebase.js — Dino Cup (formerly QS League)
 // Reuses the same Firebase project as QuartzProde (prode2026/firebase.js),
 // under its own collection so it never touches Prode's data.
 
@@ -26,7 +26,6 @@ window.qsDbSaveState = async function (state) {
   await qsDocRef.set({
     imports: state.imports || [],
     manual: state.manual || [],
-    customPlayers: state.customPlayers || [],
     updatedAt: Date.now()
   });
 };

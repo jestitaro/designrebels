@@ -1,6 +1,8 @@
-# QS League — Reglas y decisiones vigentes
+# Dino Cup (ex QS League) — Reglas y decisiones vigentes
 
 Documento de referencia para no perder las reglas definidas durante el armado del MVP.
+
+> El 23/07/2026 el proyecto se rebrandeó de "QS League" a "Dino Cup": mismo repo, mismos datos de la temporada actual, landing y estilo nuevos. Las reglas de esta página siguen siendo la fuente de verdad; el modal "Reglamento oficial" de la landing es solo la versión resumida para los participantes.
 
 ## 1. Temporadas
 
@@ -285,7 +287,74 @@ El podio debe actualizarse a medida que cambie el ranking de la temporada.
 
 ---
 
-## 13. Pendiente futuro
+## 13. Cantidad de preguntas por Kahoot
+
+```txt
+Hasta 2 preguntas relacionadas con cada participante.
+Hasta 2 preguntas generales.
+```
+
+Cuando una persona no participe, sus preguntas pueden reemplazarse por preguntas generales de conocimiento común.
+
+---
+
+## 14. Moderación por último puesto
+
+Convención del equipo (no automatizada en el sistema): quien termina último en una fecha queda a cargo de moderar la próxima reunión y de preparar el próximo Kahoot.
+
+Si esa persona se ausenta, modera quien haya salido anteúltimo.
+
+La landing sigue pidiendo elegir el moderador manualmente al cargar cada informe; esta regla es la que el admin debe respetar al elegirlo, no algo que la app calcule sola todavía.
+
+---
+
+## 15. Desafíos 1 vs. 1
+
+Se permiten desafíos entre dos participantes, por fuera del puntaje normal de la fecha.
+
+Para que valga, el desafío debe:
+
+```txt
+Acordarse antes de comenzar el juego
+Ser aceptado por ambas personas
+Definir de antemano cuántos puntos se ponen en juego
+```
+
+Gana el desafío quien termine mejor posicionado entre los dos, aunque ninguno ocupe los primeros puestos del Kahoot.
+
+Esto se resuelve hoy como un **ajuste manual** (ver sección 8), con motivo `Desafío 1v1` y el detalle de quién retó a quién.
+
+---
+
+## 16. Cambio de juego
+
+El moderador de la fecha puede proponer un juego distinto al Kahoot, siempre que presente antes de empezar:
+
+```txt
+La dinámica del juego
+El objetivo
+La forma de definir quién gana los puntos
+```
+
+La propuesta debe aprobarse antes de arrancar. El puntaje resultante se carga igual que cualquier informe (o como ajuste manual si el juego no genera un Excel exportable).
+
+---
+
+## 17. Desempate
+
+Si al cerrar el período dos o más personas empatan en el primer puesto, se juega un desempate adicional para definir al ganador.
+
+El desempate se hace en una reunión con todos los participantes presentes.
+
+---
+
+## 18. Premio de la copa
+
+Al cerrar cada copa (temporada), quien acumuló más puntos recibe un premio acordado entre todo el equipo. El premio en sí no lo define el sistema.
+
+---
+
+## 19. Pendiente futuro
 
 Desde el 20/07/2026, imports/ledger/roster nuevo viven en Firestore (proyecto `quartzprode2026`, colección `qsleague_state`, doc `season02`), reusando el mismo proyecto que QuartzProde. `localStorage` queda como cache local y respaldo si no hay red. Estas reglas (REGLAS.md) siguen viviendo en el repo, no en la base.
 

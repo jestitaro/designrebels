@@ -3,180 +3,789 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="QS League: ranking interno de DinoCoins de QuartzSales. Subí el informe de Kahoot y la arena se actualiza sola." />
-  <title>QS League · DinoCoin Arena</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="assets/styles.css?v=6" />
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
-</head>
-<body>
-  <div class="bg-orb orb-a"></div>
-  <div class="bg-orb orb-b"></div>
-  <div class="bg-orb orb-c"></div>
+  <meta name="description" content="Dino Cup - Competencia, clasificación y campeones" />
+  <title>Dino Cup</title>
 
-  <header class="nav">
-    <a class="brand" href="#hero">
-      <span class="brand-mark">QS</span>
-      <span><strong>QS League</strong><small>DinoCoin Arena</small></span>
-    </a>
-    <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
-    <nav class="nav-links">
-      <a class="nav-link" href="#podium">Podio</a>
-      <a class="nav-link" href="#arena">Ranking</a>
-      <a class="nav-link" href="#upload">Subir informe</a>
-      <a class="nav-link" href="#adjust">Ajustes</a>
-      <a class="nav-link" href="#more">Más</a>
-    </nav>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="assets/styles.css?v=1" />
+</head>
+
+<body>
+  <div class="background-glow background-glow--one"></div>
+  <div class="background-glow background-glow--two"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <img class="brand-icon brand-icon--image" src="assets/logo-dino-cup.png" alt="" aria-hidden="true" />
+        <span class="brand-name">DINO CUP</span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mainNav"
+        aria-label="Abrir menú"
+      >
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+        <a class="nav-link active" href="#inicio">Inicio</a>
+        <a class="nav-link" href="#ranking">Resultados parciales</a>
+        <a class="nav-link" href="#proximamente">Próximamente</a>
+        
+        
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section id="hero" class="hero">
-      <div class="wrap hero-grid">
-        <div class="reveal in-view hero-copy">
-          <span class="eyebrow"><i class="fa-solid fa-dragon"></i> Season 02 · 2do semestre 2026</span>
-          <h1>La arena corre con<br><span class="cycle-word-wrap"><span id="heroCycleWord" class="cycle-word">DINOCOINS</span><span class="cycle-cursor" aria-hidden="true">_</span></span></h1>
-          <p>Subí el informe que exporta Kahoot y la arena actualiza el podio sola. Siempre hay un moderador de la fecha, y si alguien falta, se le carga el meteorito acá mismo.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#upload"><i class="fa-solid fa-file-arrow-up"></i> Subir informe de Kahoot</a>
-            <a class="btn btn-ghost" href="#arena"><i class="fa-solid fa-ranking-star"></i> Ver ranking</a>
+    <section class="hero section" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="season-chip">
+            <i class="season-chip__icon" data-lucide="gamepad-2" aria-hidden="true"></i>
+            <span>2DO SEMESTRE 2026</span>
+            <span class="season-chip__dot">•</span>
+            <span id="lastFechaChip">16/07/2026</span>
+            <span class="season-chip__meta">Última fecha</span>
           </div>
-          <div class="stat-row">
-            <article class="stat-chip stat-players"><i class="fa-solid fa-users stat-chip-icon"></i><strong id="statPlayers" data-value="0">0</strong><span>Jugadores</span></article>
-            <article class="stat-chip stat-meteors"><i class="fa-solid fa-meteor stat-chip-icon"></i><strong id="statMeteors" data-value="0">0</strong><span>Meteoritos</span></article>
-            <article class="stat-chip stat-date"><i class="fa-solid fa-calendar-days stat-chip-icon"></i><strong id="statLastDate">—</strong><span>Última fecha</span></article>
+
+          <h1 class="hero-title">
+            <span>DINO CUP</span>
+            <span>DONDE NACEN</span>
+            <span class="gradient-text">LEYENDAS_</span>
+          </h1>
+
+          <p class="hero-description">
+            Cargá el informe que exporta Kahoot y Dino Cup actualiza automáticamente
+            los resultados parciales y el podio. Siempre hay un moderador de la fecha y,
+            si alguien falta, se le asigna el meteorito desde acá.
+          </p>
+
+          <div class="hero-actions">
+            <button class="button button--primary" id="openUpload" type="button" data-open-upload>
+              <i class="button__icon" data-lucide="cloud-upload" aria-hidden="true"></i>
+              Cargar resultados
+            </button>
           </div>
         </div>
-        <div class="hero-podium reveal in-view" id="podium">
-          <div id="podiumGrid"></div>
+
+        <div class="ranking-preview reveal" id="ranking">
+          <div class="podium">
+          <article class="podium-card podium-card--second">
+            <span class="podium-rank">02</span>
+            <div class="avatar-ring"><span>M</span></div>
+            <h2>May</h2>
+            <p>Gryffindor</p>
+
+            <div class="medals" aria-label="Medallas">
+              <span class="medal medal--gold"><i data-lucide="medal"></i><b>1</b></span>
+              <span class="medal medal--silver"><i data-lucide="medal"></i><b>1</b></span>
+              <span class="medal medal--bronze"><i data-lucide="medal"></i><b>0</b></span>
+            </div>
+
+            <strong class="score"><i data-lucide="star" aria-hidden="true"></i><span>5</span></strong>
+          </article>
+
+          <article class="podium-card podium-card--first">
+            <i class="crown" data-lucide="crown" aria-hidden="true"></i>
+            <span class="podium-rank">01</span>
+            <div class="avatar-ring"><span>J</span></div>
+            <h2>Javi</h2>
+            <p>Gryffindor</p>
+
+            <div class="medals" aria-label="Medallas">
+              <span class="medal medal--gold"><i data-lucide="medal"></i><b>1</b></span>
+              <span class="medal medal--silver"><i data-lucide="medal"></i><b>1</b></span>
+              <span class="medal medal--bronze"><i data-lucide="medal"></i><b>0</b></span>
+            </div>
+
+            <strong class="score"><i data-lucide="star" aria-hidden="true"></i><span>5</span></strong>
+          </article>
+
+          <article class="podium-card podium-card--third">
+            <span class="podium-rank">03</span>
+            <div class="avatar-ring"><span>N</span></div>
+            <h2>Nico</h2>
+            <p>Integrator / COO</p>
+
+            <div class="medals" aria-label="Medallas">
+              <span class="medal medal--gold"><i data-lucide="medal"></i><b>0</b></span>
+              <span class="medal medal--silver"><i data-lucide="medal"></i><b>0</b></span>
+              <span class="medal medal--bronze"><i data-lucide="medal"></i><b>1</b></span>
+            </div>
+
+            <strong class="score"><i data-lucide="star" aria-hidden="true"></i><span>1</span></strong>
+          </article>
+          </div>
+
+          <section class="mobile-competitors" aria-label="Siguientes competidores">
+            <ol class="mobile-competitors__list mobile-competitors__list--visible">
+              <li><span class="mobile-competitor__position">04</span><span class="mobile-competitor__avatar mobile-competitor__avatar--green">P</span><span class="mobile-competitor__info"><strong>Pablo</strong><small>Slytherin</small></span><span class="mobile-competitor__points">1 pt</span></li>
+              <li><span class="mobile-competitor__position">05</span><span class="mobile-competitor__avatar mobile-competitor__avatar--green">A</span><span class="mobile-competitor__info"><strong>Agustin</strong><small>Slytherin</small></span><span class="mobile-competitor__points">0 pts</span></li>
+              <li><span class="mobile-competitor__position">06</span><span class="mobile-competitor__avatar mobile-competitor__avatar--yellow">A</span><span class="mobile-competitor__info"><strong>Ale</strong><small>Hufflepuff</small></span><span class="mobile-competitor__points">0 pts</span></li>
+            </ol>
+            <div class="mobile-competitors__extra" id="allCompetitors">
+              <ol class="mobile-competitors__list" start="7">
+                <li><span class="mobile-competitor__position">07</span><span class="mobile-competitor__avatar mobile-competitor__avatar--blue">E</span><span class="mobile-competitor__info"><strong>Euge</strong><small>Ravenclaw</small></span><span class="mobile-competitor__points">0 pts</span></li>
+                <li><span class="mobile-competitor__position">08</span><span class="mobile-competitor__avatar mobile-competitor__avatar--blue">J</span><span class="mobile-competitor__info"><strong>Juli</strong><small>Ravenclaw</small></span><span class="mobile-competitor__points">0 pts</span></li>
+                <li><span class="mobile-competitor__position">09</span><span class="mobile-competitor__avatar mobile-competitor__avatar--yellow">L</span><span class="mobile-competitor__info"><strong>Lucre</strong><small>Hufflepuff</small></span><span class="mobile-competitor__points">0 pts</span></li>
+                <li><span class="mobile-competitor__position">10</span><span class="mobile-competitor__avatar mobile-competitor__avatar--blue">S</span><span class="mobile-competitor__info"><strong>Sebas</strong><small>Ravenclaw</small></span><span class="mobile-competitor__points">0 pts</span></li>
+                <li><span class="mobile-competitor__position">11</span><span class="mobile-competitor__avatar mobile-competitor__avatar--red">J</span><span class="mobile-competitor__info"><strong>Jesi</strong><small>Gryffindor</small></span><span class="mobile-competitor__points mobile-competitor__points--negative">−1 pt</span></li>
+              </ol>
+            </div>
+            <button class="mobile-competitors__toggle" id="competitorsToggle" type="button" aria-expanded="false" aria-controls="allCompetitors">
+              <span>Ver todos los competidores</span>
+              <i data-lucide="chevron-down" aria-hidden="true"></i>
+            </button>
+          </section>
+
+          <section class="desktop-competitors" aria-label="Siguientes competidores">
+            <ol class="desktop-competitors__list">
+              <li>
+                <span class="desktop-competitor__position">04</span>
+                <span class="desktop-competitor__avatar desktop-competitor__avatar--green">P</span>
+                <span class="desktop-competitor__info"><strong>Pablo</strong><small>Slytherin</small></span>
+                <span class="desktop-competitor__points">1 pt</span>
+              </li>
+              <li>
+                <span class="desktop-competitor__position">05</span>
+                <span class="desktop-competitor__avatar desktop-competitor__avatar--green">A</span>
+                <span class="desktop-competitor__info"><strong>Agustin</strong><small>Slytherin</small></span>
+                <span class="desktop-competitor__points">0 pts</span>
+              </li>
+              <li>
+                <span class="desktop-competitor__position">06</span>
+                <span class="desktop-competitor__avatar desktop-competitor__avatar--yellow">A</span>
+                <span class="desktop-competitor__info"><strong>Ale</strong><small>Hufflepuff</small></span>
+                <span class="desktop-competitor__points">0 pts</span>
+              </li>
+            </ol>
+
+            <button class="desktop-competitors__button" type="button" data-open-results>
+              <span>Ver todos los competidores</span>
+              <i data-lucide="users" aria-hidden="true"></i>
+            </button>
+          </section>
         </div>
       </div>
+
+      <a class="scroll-indicator" href="#featuresTitle" aria-label="Bajar para conocer más sobre Dino Cup">
+        <span class="scroll-indicator__mouse" aria-hidden="true">
+          <span class="scroll-indicator__wheel"></span>
+        </span>
+        <span class="scroll-indicator__text">Scroll</span>
+        <span class="scroll-indicator__arrow" aria-hidden="true">⌄</span>
+      </a>
     </section>
 
-    <section id="arena">
-      <div class="wrap reveal arena-grid">
-        <article class="panel">
-          <div class="section-head">
-            <div><span class="eyebrow">Temporada actual</span><h2>Ranking individual</h2></div>
-          </div>
-          <div class="search-wrap">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="rankingSearch" placeholder="Buscar nombre, alias o casa" />
-          </div>
-          <div id="rankingList"></div>
-        </article>
+    <section class="section features" aria-labelledby="featuresTitle">
+      <div class="container">
+        <h2 class="section-title reveal" id="featuresTitle">
+          Todo se actualiza <span class="gradient-text">en segundos</span>
+        </h2>
 
-        <div class="side-stack">
-          <article class="panel">
-            <div class="section-head"><div><span class="eyebrow">En vivo</span><h2>Actividad reciente</h2></div></div>
-            <div id="timeline"></div>
+        
+        <div class="features-grid">
+          <article class="feature-card feature-card--violet reveal">
+            <i class="feature-icon" data-lucide="trophy" aria-hidden="true"></i>
+            <h3>Campeones</h3>
+            <p>
+              Conocé a los campeones de las copas anteriores.
+            </p>
+
+            <button
+              class="feature-cta feature-cta--violet"
+              type="button"
+              data-open-legends
+            >
+              <i data-lucide="history" aria-hidden="true"></i>
+              Ver campeones
+            </button>
+
+            <div class="feature-stars" aria-hidden="true"><span></span><span></span><span></span></div>
+          </article>
+
+          <article class="feature-card feature-card--magenta reveal">
+            <i class="feature-icon" data-lucide="scroll-text" aria-hidden="true"></i>
+            <h3>Reglas</h3>
+            <p>
+              ¿Cómo se define cada campeón? Mirá las reglas.
+            </p>
+
+            <button
+              class="feature-cta feature-cta--magenta"
+              type="button"
+              data-open-rules
+            >
+              <i data-lucide="book-open-text" aria-hidden="true"></i>
+              Ver reglas
+            </button>
+
+            <div class="feature-stars" aria-hidden="true"><span></span><span></span><span></span></div>
+          </article>
+
+          <article class="feature-card feature-card--blue reveal">
+            <i class="feature-icon" data-lucide="chart-no-axes-column-increasing" aria-hidden="true"></i>
+            <h3>Resultados parciales</h3>
+            <p>
+              Revisá cómo viene la copa y los últimos movimientos del ranking.
+            </p>
+
+            <button
+              class="feature-cta feature-cta--blue"
+              type="button"
+              data-open-results
+            >
+              <i data-lucide="list-ordered" aria-hidden="true"></i>
+              Ver resultados
+            </button>
+
+            <div class="feature-stars" aria-hidden="true"><span></span><span></span><span></span></div>
           </article>
         </div>
+
       </div>
     </section>
 
-    <section id="upload">
-      <div class="wrap reveal panel">
-        <div class="section-head">
-          <div><span class="eyebrow">Último Kahoot</span><h2>Subir informe y actualizar arena</h2><p>Elegí el moderador, arrastrá el XLSX o CSV de Kahoot Reports y revisá el preview antes de aplicar.</p></div>
-        </div>
+    <section class="section coming-soon-section" id="proximamente">
+      <div class="container">
+        <article class="coming-soon-banner reveal">
+          <div class="coming-soon-banner__glow" aria-hidden="true"></div>
 
-        <div class="upload-grid">
-          <div class="field">
-            <label for="moderatorSelect">Moderador de la fecha</label>
-            <select id="moderatorSelect">
-              <option value="">Elegir moderador</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="sessionDate">Fecha de la sesión</label>
-            <input type="date" id="sessionDate" />
-          </div>
-          <div class="field" style="grid-column:1/-1">
-            <label for="sessionName">Nombre de la fecha</label>
-            <input type="text" id="sessionName" placeholder="Ej: Kahoot QS League 23/07" />
-          </div>
-        </div>
+          <i class="coming-soon-banner__icon" data-lucide="gamepad-2" aria-hidden="true"></i>
 
-        <div class="drop-zone" id="dropZone">
-          <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" multiple />
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <strong>Arrastrá el informe acá</strong>
-          <span>o tocá para elegir XLSX / CSV exportado de Kahoot Reports</span>
-        </div>
+          <div class="coming-soon-banner__content">
+            <span class="coming-soon-banner__badge">Próximamente</span>
 
-        <div id="uploadPreview" class="upload-preview empty"></div>
+            <h2>
+              Las partidas se van a poder jugar
+              <span class="gradient-text">acá mismo</span>
+            </h2>
 
-        <div class="upload-footer">
-          <button class="btn btn-ghost" id="resetUploadBtn" type="button"><i class="fa-solid fa-xmark"></i> Descartar</button>
-          <button class="btn btn-primary" id="applyImportBtn" type="button" disabled><i class="fa-solid fa-rotate"></i> Actualizar ranking</button>
-        </div>
-      </div>
-    </section>
+            <p>
+              Estamos preparando una nueva experiencia para que puedas jugar,
+              competir y seguir los resultados parciales sin salir de Dino Cup.
+            </p>
 
-    <section id="adjust">
-      <div class="wrap reveal panel">
-        <div class="section-head">
-          <div><span class="eyebrow">Admin</span><h2>Ajuste manual</h2><p>¿Alguien faltó y no querés esperar al próximo informe? Cargale el meteorito acá. También sirve para sumar o restar DinoCoins sueltos — siempre con motivo.</p></div>
-        </div>
-        <div class="adjust-grid">
-          <div class="field"><label for="adjustPlayer">Jugador</label><select id="adjustPlayer"></select></div>
-          <div class="field"><label for="adjustKind">Qué ajustar</label>
-            <select id="adjustKind"><option value="dino">DinoCoins</option><option value="meteor">Meteorito</option></select>
-          </div>
-          <div class="field"><label for="adjustAction">Acción</label>
-            <select id="adjustAction"><option value="add">Sumar / cargar</option><option value="remove">Restar / quitar</option></select>
-          </div>
-          <div class="field"><label for="adjustAmount">Cantidad</label><input type="number" id="adjustAmount" min="1" value="1" /></div>
-          <div class="field wide"><label for="adjustReason">Motivo obligatorio</label><input type="text" id="adjustReason" placeholder="Ej: ausencia sin aviso / premio extra por organizar" /></div>
-          <div class="wide"><button class="btn btn-primary btn-block" id="applyManualAdjust" type="button"><i class="fa-solid fa-check"></i> Aplicar ajuste</button></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="more">
-      <div class="wrap reveal">
-        <div class="section-head"><div><span class="eyebrow">Más</span><h2>Leyendas, historial y reglas</h2></div></div>
-
-        <details class="accordion">
-          <summary>Actividad completa <i class="fa-solid fa-chevron-down"></i></summary>
-          <div class="accordion-body"><div id="timelineFull"></div></div>
-        </details>
-
-        <details class="accordion">
-          <summary>Leyendas · Enero-junio 2026 <i class="fa-solid fa-chevron-down"></i></summary>
-          <div class="accordion-body">
-            <p class="legend-note">Histórico cerrado. Cuenta solo ganadores de fecha (<span id="legendsDates">0</span> fechas, <span id="legendsWinners">0</span> ganadores). No hay meteoritos retroactivos: empiezan en Season 02.</p>
-            <div class="legend-podium" id="legendsPodium"></div>
-            <div class="legend-two">
-              <div><h3 style="font-size:14px;margin-bottom:8px">Tabla de victorias</h3><div id="legendsRanking"></div></div>
-              <div><h3 style="font-size:14px;margin-bottom:8px">Fechas jugadas</h3><div id="legendsHistory"></div></div>
+            <div class="coming-soon-banner__support">
+              <span>Proyecto apoyado por</span>
+              <strong>Talent Lab de eSaurio</strong>
             </div>
           </div>
-        </details>
 
-        <details class="accordion">
-          <summary>Reglas de la liga <i class="fa-solid fa-chevron-down"></i></summary>
-          <div class="accordion-body">
-            <div id="rulesEditor"></div>
-            <div class="rules-actions">
-              <button class="btn btn-primary" id="saveRules" type="button"><i class="fa-solid fa-floppy-disk"></i> Guardar cambios</button>
-              <button class="btn btn-ghost" id="restoreRules" type="button"><i class="fa-solid fa-rotate-left"></i> Restaurar reglas base</button>
-            </div>
+          <div class="coming-soon-banner__pixels" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
           </div>
-        </details>
+        </article>
       </div>
     </section>
+
   </main>
 
-  <footer>QS League · MVP interno de QuartzSales. Reglas completas en <code>REGLAS.md</code>.</footer>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img class="brand-icon brand-icon--image" src="assets/logo-dino-cup.png" alt="" aria-hidden="true" />
+        <div>
+          <strong>DINO CUP</strong>
+          <span>La competencia donde nacen las leyendas.</span>
+        </div>
+      </div>
 
-  <div class="toast" id="toast"></div>
+      <nav class="footer-nav" aria-label="Navegación del pie">
+        <a href="#inicio">Inicio</a>
+        <a href="#ranking">Resultados parciales</a>
+        <a href="#proximamente">Próximamente</a>
+        
+        
+      </nav>
+    </div>
+
+    <p class="copyright">© 2026 DINO CUP. Todos los derechos reservados.</p>
+  </footer>
+
+  <div class="modal" id="uploadModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+
+    <section
+      class="modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="uploadTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Nueva fecha</span>
+        <h2 id="uploadTitle">Cargar resultados</h2>
+        <p>Elegí el moderador y cargá el XLSX o CSV exportado de Kahoot. El nombre de la fecha y los resultados se toman automáticamente del informe.</p>
+        <button class="modal-close" type="button" data-close-modal aria-label="Cerrar">
+        ×
+      </button>
+      </div>
+
+      <div class="modal-scroll-content">
+        <form id="uploadForm">
+        <div class="form-grid">
+          <label>
+            <span>Moderador de la fecha</span>
+            <select id="moderatorSelect" required>
+              <option value="">Elegir moderador</option>
+              <option>Javi</option>
+              <option>May</option>
+              <option>Nico</option>
+              <option>Pablo</option>
+              <option>Agustin</option>
+              <option>Ale</option>
+              <option>Euge</option>
+              <option>Juli</option>
+              <option>Lucre</option>
+              <option>Sebas</option>
+              <option>Jesi</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Fecha de la sesión</span>
+            <input id="sessionDate" type="date" value="2026-07-21" required />
+          </label>
+        </div>
+
+
+        <label class="dropzone" id="dropzone">
+          <input
+            id="fileInput"
+            type="file"
+            accept=".xlsx,.xls,.csv"
+            hidden
+          />
+          <i class="dropzone-icon" data-lucide="cloud-upload" aria-hidden="true"></i>
+          <strong>Arrastrá el informe acá</strong>
+          <small>o hacé clic para elegir XLSX / CSV</small>
+          <span class="file-name" id="fileName">Todavía no seleccionaste un archivo.</span>
+        </label>
+
+        <section class="absence-section" aria-labelledby="absenceTitle">
+          <div class="absence-section__header">
+            <div>
+              <span class="absence-section__eyebrow">Ajuste opcional</span>
+              <h3 id="absenceTitle">Descuento por ausencias</h3>
+              <p>
+                Agregá a cada persona que faltó y seleccioná el descuento correspondiente.
+              </p>
+            </div>
+
+            <button
+              class="absence-add-button"
+              id="addAbsence"
+              type="button"
+            >
+              <i data-lucide="user-plus" aria-hidden="true"></i>
+              Agregar ausencia
+            </button>
+          </div>
+
+          <div class="absence-list" id="absenceList"></div>
+
+          <template id="absenceRowTemplate">
+            <div class="absence-row">
+              <label>
+                <span>Persona</span>
+                <select class="absence-person" required>
+                  <option value="">Elegir persona</option>
+                  <option>Javi</option>
+                  <option>May</option>
+                  <option>Nico</option>
+                  <option>Pablo</option>
+                  <option>Agustin</option>
+                  <option>Ale</option>
+                  <option>Euge</option>
+                  <option>Juli</option>
+                  <option>Lucre</option>
+                  <option>Sebas</option>
+                  <option>Jesi</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Descuento</span>
+                <select class="absence-points" required>
+                  <option value="-1">-1 punto · ausencia con aviso</option>
+                  <option value="-3">-3 puntos · ausencia sin aviso</option>
+                </select>
+              </label>
+
+              <button
+                class="absence-remove-button"
+                type="button"
+                aria-label="Eliminar ausencia"
+                title="Eliminar ausencia"
+              >
+                <i data-lucide="trash-2" aria-hidden="true"></i>
+              </button>
+            </div>
+          </template>
+        </section>
+
+        <button
+          class="button button--primary modal-submit"
+          id="submitResults"
+          type="submit"
+        >
+          <span class="submit-label">
+            <i data-lucide="upload-cloud" aria-hidden="true"></i>
+            Cargar resultados
+          </span>
+
+          <span class="submit-loading" aria-hidden="true">
+            <span>Procesando informe</span>
+            <span class="loading-pixels">
+              <span></span><span></span><span></span><span></span>
+            </span>
+          </span>
+        </button>
+      </form>
+      </div>
+    </section>
+  </div>
+
+
+  <div class="modal" id="legendsModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-legends></div>
+
+    <section
+      class="modal-panel legends-modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="legendsTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Campeones · Enero–junio 2026</span>
+        <h2 id="legendsTitle">Podio de la primera copa</h2>
+        <p>
+        Este fue el podio de la primera edición de Dino Cup.
+      </p>
+        <button
+        class="modal-close"
+        type="button"
+        data-close-legends
+        aria-label="Cerrar historial de campeones"
+      >
+        ×
+      </button>
+      </div>
+
+      <div class="modal-scroll-content">
+        <div class="legends-podium">
+        <article class="legend-card legend-card--second">
+          <span class="legend-position">02</span>
+          <i data-lucide="medal" aria-hidden="true"></i>
+          <strong>Nico</strong>
+          <span>Segundo puesto</span>
+        </article>
+
+        <article class="legend-card legend-card--first">
+          <i class="legend-crown" data-lucide="crown" aria-hidden="true"></i>
+          <span class="legend-position">01</span>
+          <i data-lucide="trophy" aria-hidden="true"></i>
+          <strong>Agustin</strong>
+          <span>Campeón</span>
+        </article>
+
+        <article class="legend-card legend-card--third">
+          <span class="legend-position">03</span>
+          <i data-lucide="medal" aria-hidden="true"></i>
+          <strong>Jesi</strong>
+          <span>Tercer puesto</span>
+        </article>
+      </div>
+
+      <div class="legends-modal-note">
+        <i data-lucide="calendar-days" aria-hidden="true"></i>
+        <span>Edición cerrada · Enero–junio 2026</span>
+      </div>
+      </div>
+    </section>
+  </div>
+
+
+  <div class="modal" id="rulesModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-rules></div>
+
+    <section
+      class="modal-panel rules-modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rulesTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Manual de juego</span>
+        <h2 id="rulesTitle">Reglamento oficial · Dino Cup</h2>
+        <p class="rules-intro">
+        Todo lo que necesitás saber para competir, sumar puntos y ganar la copa.
+      </p>
+        <button
+        class="modal-close"
+        type="button"
+        data-close-rules
+        aria-label="Cerrar reglas"
+      >
+        ×
+      </button>
+      </div>
+
+      <div class="modal-scroll-content">
+        <div class="rules-list">
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="list-checks"></i></div>
+          <div>
+            <h3>Cantidad de preguntas</h3>
+            <ul>
+              <li>Hasta 2 preguntas relacionadas con cada participante.</li>
+              <li>Hasta 2 preguntas generales.</li>
+            </ul>
+            <p>Cuando una persona no participe, sus preguntas podrán reemplazarse por preguntas generales de conocimiento común.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="trophy"></i></div>
+          <div>
+            <h3>Sistema de puntos</h3>
+            <p>En cada encuentro se otorgarán puntos según la posición obtenida:</p>
+            <ul>
+              <li><strong>Primer puesto:</strong> 3 puntos.</li>
+              <li><strong>Segundo puesto:</strong> 2 puntos.</li>
+              <li><strong>Tercer puesto:</strong> 1 punto.</li>
+            </ul>
+            <p>Los puntos acumulados se registrarán en la clasificación general de Dino Cup.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="mic-2"></i></div>
+          <div>
+            <h3>Moderación</h3>
+            <p>La persona que termine en el último puesto será la encargada de:</p>
+            <ul>
+              <li>Moderar la próxima reunión.</li>
+              <li>Preparar el próximo Kahoot!.</li>
+            </ul>
+            <p>Cuando la persona encargada de moderar se ausente, quien haya terminado en el anteúltimo puesto será responsable de moderar la reunión.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="user-x"></i></div>
+          <div>
+            <h3>Ausencias</h3>
+            <ul>
+              <li><strong>Ausencia con aviso:</strong> resta 1 punto.</li>
+              <li><strong>Ausencia sin aviso:</strong> resta 3 puntos.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="swords"></i></div>
+          <div>
+            <h3>Desafíos 1 vs. 1</h3>
+            <p>Se permiten desafíos entre dos participantes.</p>
+            <p>El desafío deberá:</p>
+            <ul>
+              <li>Acordarse antes de comenzar el juego.</li>
+              <li>Ser aceptado por ambas personas.</li>
+              <li>Definir previamente cuántos puntos se ponen en juego.</li>
+            </ul>
+            <p>Ganará el desafío quien termine mejor posicionado entre los dos participantes, aunque ninguno ocupe los primeros puestos del Kahoot!.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="repeat-2"></i></div>
+          <div>
+            <h3>Cambio de juego</h3>
+            <p>La persona encargada de moderar podrá proponer un juego diferente al Kahoot!, siempre que presente:</p>
+            <ul>
+              <li>La dinámica del juego.</li>
+              <li>El objetivo.</li>
+              <li>La forma de definir quién gana los puntos.</li>
+            </ul>
+            <p>La propuesta deberá ser aprobada antes de comenzar.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="scale"></i></div>
+          <div>
+            <h3>Desempate</h3>
+            <p>Si al finalizar el período dos o más personas empatan en el primer puesto, se realizará un juego adicional para definir al ganador.</p>
+            <p>El desempate se llevará a cabo en una reunión en la que estén presentes todos los participantes.</p>
+          </div>
+        </section>
+
+        <section class="rule-block">
+          <div class="rule-block__icon"><i data-lucide="gift"></i></div>
+          <div>
+            <h3>Premio de la copa</h3>
+            <p>Al finalizar cada copa, la persona que haya acumulado más puntos recibirá un premio acordado entre todo el equipo.</p>
+          </div>
+      </div>
+    </section>
+      </div>
+    </section>
+  </div>
+
+
+  <div class="modal" id="resultsModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-results></div>
+
+    <section
+      class="modal-panel results-modal-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="resultsTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Temporada actual</span>
+        <h2 id="resultsTitle">Resultados parciales</h2>
+        <p>Así viene la Dino Cup hasta el último encuentro registrado.</p>
+        <button
+        class="modal-close"
+        type="button"
+        data-close-results
+        aria-label="Cerrar resultados parciales"
+      >
+        ×
+      </button>
+      </div>
+
+      <div class="modal-scroll-content">
+        <div class="results-layout">
+        <section class="partial-ranking">
+          <div class="results-heading">
+            <div>
+              <span class="results-label">Ranking individual</span>
+              <small id="participantsCount">11 participantes</small>
+            </div>
+            <i data-lucide="trophy" aria-hidden="true"></i>
+          </div>
+
+          <ol class="partial-ranking-list">
+            <li>
+              <span class="partial-position">01</span>
+              <span class="partial-avatar partial-avatar--red">J</span>
+              <span class="partial-player"><strong>Javi</strong><small>Gryffindor</small></span>
+              <span class="partial-score">5 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">02</span>
+              <span class="partial-avatar partial-avatar--red">M</span>
+              <span class="partial-player"><strong>May</strong><small>Gryffindor</small></span>
+              <span class="partial-score">5 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">03</span>
+              <span class="partial-avatar partial-avatar--green">N</span>
+              <span class="partial-player"><strong>Nico</strong><small>Slytherin · Integrator / COO</small></span>
+              <span class="partial-score">1 pt</span>
+            </li>
+            <li>
+              <span class="partial-position">04</span>
+              <span class="partial-avatar partial-avatar--green">P</span>
+              <span class="partial-player"><strong>Pablo</strong><small>Slytherin · Visionary / CEO</small></span>
+              <span class="partial-score">1 pt</span>
+            </li>
+            <li>
+              <span class="partial-position">05</span>
+              <span class="partial-avatar partial-avatar--green">A</span>
+              <span class="partial-player"><strong>Agustin</strong><small>Slytherin · Director Comercial</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">06</span>
+              <span class="partial-avatar partial-avatar--yellow">A</span>
+              <span class="partial-player"><strong>Ale</strong><small>Hufflepuff</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">07</span>
+              <span class="partial-avatar partial-avatar--blue">E</span>
+              <span class="partial-player"><strong>Euge</strong><small>Ravenclaw · Líder técnico</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">08</span>
+              <span class="partial-avatar partial-avatar--blue">J</span>
+              <span class="partial-player"><strong>Juli</strong><small>Ravenclaw</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">09</span>
+              <span class="partial-avatar partial-avatar--yellow">L</span>
+              <span class="partial-player"><strong>Lucre</strong><small>Hufflepuff</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">10</span>
+              <span class="partial-avatar partial-avatar--blue">S</span>
+              <span class="partial-player"><strong>Sebas</strong><small>Ravenclaw</small></span>
+              <span class="partial-score">0 pts</span>
+            </li>
+            <li>
+              <span class="partial-position">11</span>
+              <span class="partial-avatar partial-avatar--red">J</span>
+              <span class="partial-player"><strong>Jesi</strong><small>Gryffindor · Rebel Designer</small></span>
+              <span class="partial-score partial-score--negative">−1 pt</span>
+            </li>
+          </ol>
+        </section>
+
+        <aside class="recent-activity">
+          <div class="results-heading">
+            <div>
+              <span class="results-label">Actividad reciente</span>
+              <small>Últimos movimientos</small>
+            </div>
+            <i data-lucide="activity" aria-hidden="true"></i>
+          </div>
+
+          <ul class="activity-list">
+            <li class="activity-list__negative"><div><strong>Jesi −1</strong><small>Meteorito admin · Ausencia por asistir a Pocha</small></div>
+            </li>
+            <li><div><strong>Javi +3</strong><small>16 de julio 2026 · +3 puntos</small></div></li>
+            <li><div><strong>May +2</strong><small>16 de julio 2026 · +2 puntos</small></div></li>
+            <li><div><strong>Pablo +1</strong><small>16 de julio 2026 · +1 punto</small></div></li>
+            <li><div><strong>May +3</strong><small>02 de julio 2026 · +3 puntos</small></div></li>
+            <li><div><strong>Javi +2</strong><small>02 de julio 2026 · +2 puntos</small></div></li>
+            <li><div><strong>Nico +1</strong><small>02 de julio 2026 · +1 punto</small></div></li>
+          </ul>
+        </aside>
+      </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    Resultados cargados correctamente.
+  </div>
+
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="assets/firebase.js"></script>
-  <script src="assets/app.js?v=5" defer></script>
+  <script src="assets/app.js?v=1"></script>
 </body>
 </html>
