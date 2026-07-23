@@ -18,19 +18,21 @@
   };
   function house(id) { return HOUSES[id] || { name: 'Sin casa', avatarClass: 'blue' }; }
 
-  /* Houses confirmed against quartzsales.com/hogquartz/salacomun/ (2026-07-17). */
+  /* Houses confirmed against quartzsales.com/hogquartz/salacomun/ (2026-07-17).
+     Aliases are the authoritative nickname list the team actually uses in
+     Kahoot exports (2026-07-23) — used to auto-match report rows/filenames. */
   const ROSTER = [
     { id: 'javi', name: 'Javi', fullName: 'Javier De Vergilio', role: '', house: 'gryffindor', aliases: ['Javi', 'Javier', 'Javier De Vergilio'] },
     { id: 'mayra', name: 'May', fullName: 'Mayra Milanesio', role: '', house: 'gryffindor', aliases: ['May', 'Mayra', 'Mayra Milanesio'] },
-    { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'slytherin', aliases: ['Nico', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
-    { id: 'pablo', name: 'Pablo', fullName: 'Pablo Hernan Gimenez', role: 'Visionary / CEO', house: 'slytherin', aliases: ['Pablo', 'Hero', 'Heror', 'Pablo Hernan Gimenez', 'Pablo Gimenez'] },
-    { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Agustin Goñi Piuma'] },
-    { id: 'alejandro', name: 'Ale', fullName: 'Alejandro Frank', role: '', house: 'hufflepuff', aliases: ['Ale', 'Alejandro', 'Alejandro Frank', '8706743-ale'] },
-    { id: 'eugenio', name: 'Euge', fullName: 'Eugenio Balbastro Fages', role: 'Líder técnico', house: 'ravenclaw', aliases: ['Euge', 'Eugenio', 'Eugenio Balbastro Fages', '8706743'] },
-    { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'ravenclaw', aliases: ['Juli', 'July', 'Picci', 'Juli Piccioni'] },
-    { id: 'lucrecia', name: 'Lucre', fullName: 'Lucrecia Moralejo', role: '', house: 'hufflepuff', aliases: ['Lucre', 'Luly', 'Luli', 'Lucrecia', 'Lucrecia Moralejo'] },
-    { id: 'sebas', name: 'Sebas', fullName: 'Sebastian Carnota', role: '', house: 'ravenclaw', aliases: ['Sebas', 'Seba', 'Sebastian', 'Sebastian Carnota'] },
-    { id: 'jesica', name: 'Jesi', fullName: 'Jesica Titaro', role: 'Rebel Designer', house: 'gryffindor', aliases: ['Jesi', 'Jess', 'Jesica', 'Jesica Titaro'] }
+    { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'slytherin', aliases: ['Nico', 'Nicho', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
+    { id: 'pablo', name: 'Pablo', fullName: 'Pablo Hernan Gimenez', role: 'Visionary / CEO', house: 'slytherin', aliases: ['Pablo', 'Tuki', 'Pablo Hernan Gimenez', 'Pablo Gimenez'] },
+    { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Heroe', 'Agustin Goñi Piuma'] },
+    { id: 'alejandro', name: 'Ale', fullName: 'Alejandro Frank', role: '', house: 'hufflepuff', aliases: ['Ale', 'Alejandro', 'Alejandro Frank'] },
+    { id: 'eugenio', name: 'Euge', fullName: 'Eugenio Balbastro Fages', role: 'Líder técnico', house: 'ravenclaw', aliases: ['Euge', 'Eugenio', 'Eugenio Balbastro Fages'] },
+    { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'ravenclaw', aliases: ['Juli', 'July', 'Picci', 'Julieta', 'Juli Piccioni'] },
+    { id: 'lucrecia', name: 'Lucre', fullName: 'Lucrecia Moralejo', role: '', house: 'hufflepuff', aliases: ['Lucre', 'Luly', 'Lucrecia', 'Lucrecia Moralejo'] },
+    { id: 'sebas', name: 'Sebas', fullName: 'Sebastian Carnota', role: '', house: 'ravenclaw', aliases: ['Sebas', 'Sebi', 'Sebastian', 'Sebastián', 'Sebastian Carnota'] },
+    { id: 'jesica', name: 'Jesi', fullName: 'Jesica Titaro', role: 'Rebel Designer', house: 'gryffindor', aliases: ['Jesi', 'Jes', 'Jesica', 'Jesica Titaro'] }
   ];
   function player(id) { return ROSTER.find(item => item.id === id); }
   function findPlayerByNickname(nick) {
