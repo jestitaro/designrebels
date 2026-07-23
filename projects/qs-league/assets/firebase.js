@@ -68,7 +68,16 @@ async function signIn(email, password) {
     await dcAuth.signOut();
     throw new Error('Esta cuenta no tiene permisos de administrador.');
   }
-  return credential.user;
+  // Return the fully-resolved session shape (same as onAuthChange's callback)
+  // so callers can activate the admin session immediately, instead of racing
+  // the separate onAuthStateChanged listener's own async role lookup.
+  return {
+    uid: credential.user.uid,
+    email: credential.user.email,
+    role,
+    isAdmin: true,
+    lastSignInTime: credential.user.metadata?.lastSignInTime || null
+  };
 }
 function signOut() {
   return dcAuth ? dcAuth.signOut() : Promise.resolve();

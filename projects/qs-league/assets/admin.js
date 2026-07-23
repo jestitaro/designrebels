@@ -126,8 +126,8 @@ const adminPanelSubtitle = $('#adminPanelSubtitle');
 function toggleModal(modal, open, focusTarget) {
   modal.classList.toggle('is-open', open);
   modal.setAttribute('aria-hidden', String(!open));
-  document.body.classList.toggle('modal-open', open || $$('.modal.is-open').length > 0);
-  if (open) window.setTimeout(() => modal.querySelector('.modal-close, input')?.focus(), 150);
+  document.body.classList.toggle('modal-open', open || $$('.modal.is-open, .admin-page.is-open').length > 0);
+  if (open) window.setTimeout(() => modal.querySelector('.modal-close, .admin-page__back, input')?.focus(), 150);
   else focusTarget?.focus();
 }
 function openLoginModal() { adminLoginError.hidden = true; adminLoginForm.reset(); toggleModal(adminLoginModal, true); }
@@ -156,7 +156,8 @@ adminLoginForm?.addEventListener('submit', async event => {
   adminLoginError.hidden = true;
   adminLoginSubmit.classList.add('is-loading');
   try {
-    await window.DinoCupFirebase.auth.signIn(adminEmailInput.value.trim(), adminPasswordInput.value);
+    const user = await window.DinoCupFirebase.auth.signIn(adminEmailInput.value.trim(), adminPasswordInput.value);
+    await activateAdminSession(user);
     closeLoginModal();
     openAdminPanel();
   } catch (error) {
@@ -897,21 +898,29 @@ function stopAdminSubscriptions() {
   adminMatches = []; adminMovements = [];
 }
 
+async function activateAdminSession(user) {
+  if (currentAdmin?.uid === user.uid) return; // already active (e.g. signIn() already did this)
+  currentAdmin = user;
+  adminPanelSubtitle.textContent = `Sesión iniciada como ${user.email}.`;
+  startAdminSubscriptions();
+  try {
+    await window.DinoCupFirebase.players.ensureSeeded(ROSTER);
+    await ensureSeasonSeeded(user.uid, user.email);
+  } catch (error) {
+    console.warn('Dino Cup admin: no pude inicializar los datos base.', error);
+  }
+}
+function deactivateAdminSession() {
+  currentAdmin = null;
+  stopAdminSubscriptions();
+  if (adminPanelModal.classList.contains('is-open')) closeAdminPanel();
+}
+
 if (window.DinoCupFirebase) window.DinoCupFirebase.auth.onAuthChange(async user => {
   if (user?.isAdmin) {
-    currentAdmin = user;
-    adminPanelSubtitle.textContent = `Sesión iniciada como ${user.email}.`;
-    startAdminSubscriptions();
-    try {
-      await window.DinoCupFirebase.players.ensureSeeded(ROSTER);
-      await ensureSeasonSeeded(user.uid, user.email);
-    } catch (error) {
-      console.warn('Dino Cup admin: no pude inicializar los datos base.', error);
-    }
+    await activateAdminSession(user);
   } else {
-    currentAdmin = null;
-    stopAdminSubscriptions();
-    if (adminPanelModal.classList.contains('is-open')) closeAdminPanel();
+    deactivateAdminSession();
   }
 });
 })();

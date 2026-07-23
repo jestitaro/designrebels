@@ -350,36 +350,34 @@
     </section>
   </div>
 
-  <div class="modal admin-modal" id="adminPanelModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-admin-panel></div>
-
-    <section
-      class="modal-panel admin-panel-panel"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="adminPanelTitle"
-    >
-      <div class="modal-sticky-header">
-        <span class="section-kicker">Panel administrativo</span>
-        <h2 id="adminPanelTitle">Dino Cup · Admin</h2>
-        <p id="adminPanelSubtitle">Sesión iniciada.</p>
-        <button class="modal-close" type="button" data-close-admin-panel aria-label="Cerrar panel">×</button>
+  <div class="admin-page" id="adminPanelModal" aria-hidden="true" role="region" aria-labelledby="adminPanelTitle">
+    <header class="admin-page__header">
+      <div class="admin-page__brand">
+        <img class="brand-icon brand-icon--image" src="assets/logo-dino-cup.png" alt="" aria-hidden="true" />
+        <div>
+          <span class="section-kicker">Panel administrativo</span>
+          <h1 id="adminPanelTitle">Dino Cup · Admin</h1>
+          <p id="adminPanelSubtitle">Sesión iniciada.</p>
+        </div>
       </div>
+      <button class="admin-page__back" type="button" data-close-admin-panel>
+        <i data-lucide="arrow-left" aria-hidden="true"></i> Volver al sitio
+      </button>
+    </header>
 
-      <nav class="admin-tabs" id="adminTabs" aria-label="Secciones del panel">
-        <button type="button" class="admin-tab is-active" data-admin-tab="resumen">Resumen</button>
-        <button type="button" class="admin-tab" data-admin-tab="cargar">Cargar resultados</button>
-        <button type="button" class="admin-tab" data-admin-tab="descuentos">Aplicar descuentos</button>
-        <button type="button" class="admin-tab" data-admin-tab="movimientos">Movimientos</button>
-        <button type="button" class="admin-tab admin-tab--exit" id="adminLogoutButton">
-          <i data-lucide="log-out" aria-hidden="true"></i> Cerrar sesión
-        </button>
-      </nav>
+    <nav class="admin-tabs" id="adminTabs" aria-label="Secciones del panel">
+      <button type="button" class="admin-tab is-active" data-admin-tab="resumen">Resumen</button>
+      <button type="button" class="admin-tab" data-admin-tab="cargar">Cargar resultados</button>
+      <button type="button" class="admin-tab" data-admin-tab="descuentos">Aplicar descuentos</button>
+      <button type="button" class="admin-tab" data-admin-tab="movimientos">Movimientos</button>
+      <button type="button" class="admin-tab admin-tab--exit" id="adminLogoutButton">
+        <i data-lucide="log-out" aria-hidden="true"></i> Cerrar sesión
+      </button>
+    </nav>
 
-      <div class="modal-scroll-content">
-        <div id="adminViewContent" class="admin-view"></div>
-      </div>
-    </section>
+    <main class="admin-page__content">
+      <div id="adminViewContent" class="admin-view"></div>
+    </main>
   </div>
 
 
