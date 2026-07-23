@@ -4,16 +4,35 @@
    The public landing (assets/app.js) never imports or calls into this file. */
 
 (function () {
-const { ROSTER, findPlayerByNickname, player, fmt, fmtPoints, longDate, shortDate, award, house } = window.DinoCupData;
+const { ROSTER, findPlayerByNickname, player, fmt, longDate, shortDate, award, house, MONTHS_ES } = window.DinoCupData;
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 function icons() { if (window.lucide) window.lucide.createIcons({ attrs: { 'aria-hidden': 'true' } }); }
 function esc(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
+/* Some Firebase Storage calls can hang instead of rejecting quickly when
+   Storage isn't provisioned yet on the project. Never let a best-effort
+   step like "save the original file" block the whole apply flow forever. */
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => window.setTimeout(() => reject(new Error(`${label || 'Operación'} tardó demasiado.`)), ms))
+  ]);
+}
+
+/* Admin-only: the game's real currency is DinoCoins (see REGLAS.md §2), and
+   absence penalties are "meteoritos" — the public landing keeps its existing
+   pt/pts copy untouched, this is just for everything rendered in here. */
+function fmtCoins(value) {
+  const abs = Math.abs(value);
+  const unit = abs === 1 ? 'DinoCoin' : 'DinoCoins';
+  return `${value < 0 ? '−' : ''}${fmt(abs)} ${unit}`;
+}
+
 const DISCOUNT_OPTIONS = [
-  { value: -1, label: '-1 punto · ausencia con aviso', category: 'Ausencia con aviso' },
-  { value: -3, label: '-3 puntos · ausencia sin aviso', category: 'Ausencia sin aviso' }
+  { value: -1, label: '-1 DinoCoin · ausencia con aviso', category: 'Ausencia con aviso' },
+  { value: -3, label: '-3 DinoCoins · ausencia sin aviso', category: 'Ausencia sin aviso' }
 ];
 function discountOption(value) { return DISCOUNT_OPTIONS.find(option => option.value === Number(value)); }
 function personOptionsHtml(selected = '') {
@@ -21,7 +40,7 @@ function personOptionsHtml(selected = '') {
     ROSTER.map(p => `<option value="${p.id}" ${p.id === selected ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
 }
 function discountOptionsHtml(selected = '') {
-  return `<option value="">Elegir descuento</option>` +
+  return `<option value="">Elegir meteorito</option>` +
     DISCOUNT_OPTIONS.map(option => `<option value="${option.value}" ${String(option.value) === String(selected) ? 'selected' : ''}>${esc(option.label)}</option>`).join('');
 }
 
@@ -222,7 +241,7 @@ function fmtDateTime(ts) {
 const STATUS_LABEL = { DRAFT: 'Borrador', PROCESSING: 'Procesando', APPLIED: 'Aplicado', ERROR: 'Error', ANNULLED: 'Anulado' };
 const STATUS_CLASS = { DRAFT: 'muted', PROCESSING: 'violet', APPLIED: 'green', ERROR: 'magenta', ANNULLED: 'muted' };
 function statusChip(status) { return `<span class="status-chip status-chip--${STATUS_CLASS[status] || 'muted'}">${STATUS_LABEL[status] || status}</span>`; }
-const TYPE_LABEL = { REPORT_RESULT: 'Resultado de informe', ABSENCE_PENALTY: 'Descuento', REPORT_REVERSAL: 'Anulación de resultado', PENALTY_REVERSAL: 'Anulación de descuento' };
+const TYPE_LABEL = { REPORT_RESULT: 'Resultado de informe', ABSENCE_PENALTY: 'Meteorito', REPORT_REVERSAL: 'Anulación de resultado', PENALTY_REVERSAL: 'Anulación de meteorito' };
 
 /* ============================================================
    RESUMEN
@@ -250,8 +269,8 @@ function renderResumenTab() {
       </article>
 
       <article class="admin-card">
-        <h3>Últimos descuentos aplicados</h3>
-        ${lastDiscounts.length ? `<ul class="admin-mini-list">${lastDiscounts.map(m => `<li><strong>${esc(m.playerName)} ${fmtPoints(m.points)}</strong><small>${esc(m.reason || '')}</small></li>`).join('')}</ul>` : '<p class="admin-empty">Sin descuentos registrados.</p>'}
+        <h3>Últimos meteoritos aplicados</h3>
+        ${lastDiscounts.length ? `<ul class="admin-mini-list">${lastDiscounts.map(m => `<li><strong>${esc(m.playerName)} ${fmtCoins(m.points)}</strong><small>${esc(m.reason || '')}</small></li>`).join('')}</ul>` : '<p class="admin-empty">Sin meteoritos registrados.</p>'}
       </article>
 
       <article class="admin-card">
@@ -297,6 +316,13 @@ function detectSessionDateFromText(text) {
   // day-month-year (es-AR convention, e.g. "16-07-2026" or "16/07/2026")
   const dmy = text.match(/(\d{1,2})[-_./](\d{1,2})[-_./](20\d{2})/);
   if (dmy) return `${dmy[3]}-${String(dmy[2]).padStart(2, '0')}-${String(dmy[1]).padStart(2, '0')}`;
+  // day + Spanish month name + year (e.g. "23 de julio 2026", "23 julio de 2026")
+  const monthPattern = new RegExp(`(\\d{1,2})\\s*(?:de\\s+)?(${MONTHS_ES.join('|')})\\s*(?:de\\s+)?(20\\d{2})`, 'i');
+  const named = text.match(monthPattern);
+  if (named) {
+    const monthIndex = MONTHS_ES.findIndex(month => month.toLowerCase() === named[2].toLowerCase());
+    return `${named[3]}-${String(monthIndex + 1).padStart(2, '0')}-${String(named[1]).padStart(2, '0')}`;
+  }
   return '';
 }
 function detectModeratorFromText(text) {
@@ -327,7 +353,7 @@ function renderCargarTab() {
 function wizardStepsHtml() {
   return `<ol class="wizard-steps">
     <li class="${uploadWizard.step === 1 ? 'is-active' : uploadWizard.step > 1 ? 'is-done' : ''}"><span>1</span>Datos</li>
-    <li class="${uploadWizard.step === 2 ? 'is-active' : uploadWizard.step > 2 ? 'is-done' : ''}"><span>2</span>Descuentos</li>
+    <li class="${uploadWizard.step === 2 ? 'is-active' : uploadWizard.step > 2 ? 'is-done' : ''}"><span>2</span>Meteoritos</li>
     <li class="${uploadWizard.step === 3 ? 'is-active' : ''}"><span>3</span>Vista previa</li>
   </ol>`;
 }
@@ -342,22 +368,30 @@ function renderWizard() {
 }
 
 function wizardStep1Html() {
-  const ready = Boolean(uploadWizard.file) && !uploadWizard.parsingFile && Boolean(uploadWizard.parsed);
-  const fileLabel = uploadWizard.parsingFile
-    ? 'Procesando informe…'
-    : uploadWizard.file
-      ? `Archivo seleccionado: ${esc(uploadWizard.file.name)}`
-      : 'Todavía no seleccionaste un archivo.';
+  const parsing = uploadWizard.parsingFile;
+  const ready = Boolean(uploadWizard.file) && !parsing && Boolean(uploadWizard.parsed);
+
+  const dropzoneHtml = ready ? `
+    <div class="dropzone dropzone--loaded" id="wizardDropzone">
+      <input id="wizardFileInput" type="file" accept=".xlsx,.xls,.csv" hidden />
+      <i class="dropzone-icon dropzone-icon--success" data-lucide="check-circle-2" aria-hidden="true"></i>
+      <strong>Archivo cargado</strong>
+      <span class="file-name">${esc(uploadWizard.file.name)}</span>
+      <button type="button" class="admin-btn admin-btn--ghost admin-btn--small" id="wizardChangeFile">Cambiar archivo</button>
+    </div>
+  ` : `
+    <label class="dropzone ${parsing ? 'dropzone--parsing' : ''}" id="wizardDropzone">
+      <input id="wizardFileInput" type="file" accept=".xlsx,.xls,.csv" hidden />
+      <i class="dropzone-icon" data-lucide="cloud-upload" aria-hidden="true"></i>
+      <strong>${parsing ? 'Procesando informe…' : 'Arrastrá el informe acá'}</strong>
+      <small>${parsing ? 'Un momento, estamos leyendo el archivo.' : 'o hacé clic para elegir XLSX / CSV'}</small>
+      ${parsing ? '' : '<span class="file-name" id="wizardFileName">Todavía no seleccionaste un archivo.</span>'}
+    </label>
+  `;
 
   return `
     <form id="wizardStep1Form" class="admin-form">
-      <label class="dropzone" id="wizardDropzone">
-        <input id="wizardFileInput" type="file" accept=".xlsx,.xls,.csv" hidden />
-        <i class="dropzone-icon" data-lucide="cloud-upload" aria-hidden="true"></i>
-        <strong>Arrastrá el informe acá</strong>
-        <small>o hacé clic para elegir XLSX / CSV</small>
-        <span class="file-name" id="wizardFileName">${fileLabel}</span>
-      </label>
+      ${dropzoneHtml}
 
       ${ready ? `
       <div class="form-grid">
@@ -396,8 +430,8 @@ function wizardStep2Html() {
       <div class="absence-section__header">
         <div>
           <span class="absence-section__eyebrow">Ajuste opcional</span>
-          <h3 id="wizardAbsenceTitle">Descuento por ausencias</h3>
-          <p>Agregá a cada persona que faltó, el descuento y el motivo (obligatorio).</p>
+          <h3 id="wizardAbsenceTitle">Meteoritos por ausencia</h3>
+          <p>Agregá a cada persona que faltó, el meteorito y el motivo (obligatorio).</p>
         </div>
         <button class="absence-add-button" id="wizardAddAbsence" type="button"><i data-lucide="user-plus" aria-hidden="true"></i>Agregar ausencia</button>
       </div>
@@ -415,7 +449,7 @@ function wizardAbsenceRowHtml(row, index) {
   const options = `<option value="">Elegir persona</option>` + ROSTER.map(p => `<option value="${p.id}" ${p.id === row.person ? 'selected' : ''} ${usedElsewhere.includes(p.id) ? 'disabled' : ''}>${esc(p.name)}</option>`).join('');
   return `<div class="absence-row" data-index="${index}">
     <label><span>Persona</span><select class="absence-person" data-field="person">${options}</select></label>
-    <label><span>Descuento</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
+    <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason || '')}" placeholder="Motivo de la ausencia" /></label>
     <button class="absence-remove-button" type="button" data-remove aria-label="Eliminar ausencia"><i data-lucide="trash-2" aria-hidden="true"></i></button>
   </div>`;
@@ -440,9 +474,9 @@ function wizardStep3Html() {
       <p class="admin-preview__meta"><strong>${esc(uploadWizard.parsed?.detectedTitle || 'Informe sin título')}</strong> · ${shortDate(uploadWizard.sessionDate)} · Moderador: ${esc(moderator?.name || '—')} · Archivo: ${esc(uploadWizard.file?.name || '—')}</p>
 
       <h4>Resultados detectados</h4>
-      ${top3.length ? `<ol class="admin-result-list">${top3.map(row => `<li>${row.effectiveRank}. ${esc(row.playerName)} · +${award(row.effectiveRank).delta}</li>`).join('')}</ol>` : '<p class="admin-empty">No se detectaron posiciones válidas.</p>'}
+      ${top3.length ? `<ol class="admin-result-list">${top3.map(row => `<li>${row.effectiveRank}. ${esc(row.playerName)} · +${fmtCoins(award(row.effectiveRank).delta)}</li>`).join('')}</ol>` : '<p class="admin-empty">No se detectaron posiciones válidas.</p>'}
 
-      ${uploadWizard.absences.length ? `<h4>Descuentos</h4><ul class="admin-result-list">${uploadWizard.absences.map(row => `<li>${esc(player(row.person)?.name || row.person)} · ${row.discount} · ${esc(row.reason)}</li>`).join('')}</ul>` : ''}
+      ${uploadWizard.absences.length ? `<h4>Meteoritos</h4><ul class="admin-result-list">${uploadWizard.absences.map(row => `<li>${esc(player(row.person)?.name || row.person)} · ${fmtCoins(Number(row.discount))} · ${esc(row.reason)}</li>`).join('')}</ul>` : ''}
 
       ${unmapped.length ? `<h4>Personas que no pudieron relacionarse</h4><ul class="admin-result-list admin-result-list--muted">${unmapped.map(row => `<li>${esc(row.nickname)} (fila ${row.rank})</li>`).join('')}</ul>` : ''}
 
@@ -466,6 +500,7 @@ function bindWizardStep() {
     const form = $('#wizardStep1Form');
     const dropzone = $('#wizardDropzone');
     const fileInput = $('#wizardFileInput');
+    $('#wizardChangeFile')?.addEventListener('click', () => fileInput.click());
 
     async function handleFile(file) {
       const errorEl = $('#wizardStep1Error');
@@ -569,7 +604,7 @@ function bindWizardStep() {
     $('#wizardStep2Next').addEventListener('click', async () => {
       const errorEl = $('#wizardStep2Error');
       const incomplete = uploadWizard.absences.some(row => !row.person || !row.discount || !row.reason.trim());
-      if (incomplete) { errorEl.textContent = 'Completá persona, descuento y motivo en cada fila (o eliminala).'; errorEl.hidden = false; return; }
+      if (incomplete) { errorEl.textContent = 'Completá persona, meteorito y motivo en cada fila (o eliminala).'; errorEl.hidden = false; return; }
       errorEl.hidden = true;
       const fb = window.DinoCupFirebase;
       const [byDate, byHash] = await Promise.all([
@@ -605,10 +640,10 @@ async function confirmWizardApply(confirmBtn) {
   try {
     let originalFileUrl = null;
     try {
-      const uploaded = await fb.storage.uploadOriginalFile(matchRef.id, uploadWizard.file);
+      const uploaded = await withTimeout(fb.storage.uploadOriginalFile(matchRef.id, uploadWizard.file), 8000, 'Guardar el archivo original');
       originalFileUrl = uploaded.url;
     } catch (storageError) {
-      console.warn('Dino Cup admin: no pude guardar el archivo original.', storageError);
+      console.warn('Dino Cup admin: no pude guardar el archivo original (¿Storage habilitado en el proyecto?).', storageError);
     }
 
     const moderator = player(uploadWizard.moderatorId);
@@ -618,7 +653,7 @@ async function confirmWizardApply(confirmBtn) {
     });
     const effective = mapped.filter(row => row.playerId && row.playerId !== uploadWizard.moderatorId).sort((a, b) => a.rank - b.rank).map((row, index) => ({ ...row, effectiveRank: index + 1 }));
 
-    await fb.matches.createDraft(matchRef.id, {
+    await withTimeout(fb.matches.createDraft(matchRef.id, {
       detectedTitle: uploadWizard.parsed.detectedTitle,
       sessionDate: uploadWizard.sessionDate,
       moderatorId: uploadWizard.moderatorId,
@@ -629,7 +664,7 @@ async function confirmWizardApply(confirmBtn) {
       uploadedBy: currentAdmin.uid,
       uploadedByEmail: currentAdmin.email,
       detectedResults: mapped
-    });
+    }), 15000, 'Crear la carga');
 
     const movements = [];
     effective.filter(row => row.effectiveRank <= 3).forEach(row => {
@@ -650,15 +685,15 @@ async function confirmWizardApply(confirmBtn) {
       });
     });
 
-    await fb.matches.applyWithMovements({ matchId: matchRef.id, movements });
+    await withTimeout(fb.matches.applyWithMovements({ matchId: matchRef.id, movements }), 15000, 'Aplicar los resultados');
     resetWizard();
     cargarSubview = 'nueva';
     renderCargarTab();
     showAdminToast('Resultados cargados y aplicados correctamente.');
   } catch (error) {
     console.error(error);
-    try { await fb.matches.markError(matchRef.id, error.message); } catch { /* best-effort */ }
-    window.alert('Ocurrió un error al aplicar la carga. Quedó registrada como error en el historial; no se aplicó ningún punto.');
+    try { await withTimeout(fb.matches.markError(matchRef.id, error.message), 5000, 'Registrar el error'); } catch { /* best-effort */ }
+    window.alert(`Ocurrió un error al aplicar la carga (${error.message || 'error desconocido'}). No se aplicó ningún punto.`);
   } finally {
     uploadWizard.busy = false;
     confirmBtn?.classList.remove('is-loading');
@@ -723,7 +758,7 @@ function openMatchDetail(matchId) {
       ${match.originalFileUrl ? `<a class="admin-btn admin-btn--ghost admin-btn--small" href="${esc(match.originalFileUrl)}" target="_blank" rel="noopener">Descargar archivo original</a>` : '<p class="admin-empty">Archivo original no disponible.</p>'}
 
       <h4>Movimientos generados</h4>
-      ${related.length ? `<ul class="admin-result-list">${related.map(m => `<li>${esc(m.playerName)} · ${fmtPoints(m.points)} · ${esc(m.reason || '')} ${statusChip(m.status)}</li>`).join('')}</ul>` : '<p class="admin-empty">Sin movimientos asociados.</p>'}
+      ${related.length ? `<ul class="admin-result-list">${related.map(m => `<li>${esc(m.playerName)} · ${fmtCoins(m.points)} · ${esc(m.reason || '')} ${statusChip(m.status)}</li>`).join('')}</ul>` : '<p class="admin-empty">Sin movimientos asociados.</p>'}
 
       ${match.status === 'ANNULLED' ? `<p class="admin-card__meta">Anulado por ${esc(match.annulledBy || '—')} el ${fmtDateTime(match.annulledAt)} · Motivo: ${esc(match.annulmentReason || '—')}</p>` : ''}
 
@@ -740,7 +775,7 @@ function renderAnnulMatchConfirm(match, related) {
     <article class="admin-card admin-confirm">
       <h3>Anular carga</h3>
       <p>Se revertirán:</p>
-      <ul class="admin-result-list">${active.map(m => `<li>${esc(m.playerName)} · ${fmtPoints(-m.points)}</li>`).join('')}</ul>
+      <ul class="admin-result-list">${active.map(m => `<li>${esc(m.playerName)} · ${fmtCoins(-m.points)}</li>`).join('')}</ul>
       <label><span>Motivo de la anulación</span><textarea id="annulMatchReason" required></textarea></label>
       <p class="admin-form-error" id="annulMatchError" hidden></p>
       <div class="admin-wizard-actions">
@@ -757,7 +792,7 @@ function renderAnnulMatchConfirm(match, related) {
     if (!reason) { $('#annulMatchError').textContent = 'El motivo es obligatorio.'; $('#annulMatchError').hidden = false; return; }
     event.currentTarget.classList.add('is-loading');
     try {
-      await window.DinoCupFirebase.matches.annul({ match, reason, adminUid: currentAdmin.uid, adminEmail: currentAdmin.email });
+      await withTimeout(window.DinoCupFirebase.matches.annul({ match, reason, adminUid: currentAdmin.uid, adminEmail: currentAdmin.email }), 15000, 'Anular la carga');
       showAdminToast('Carga anulada correctamente.');
       renderHistorialCargas();
     } catch (error) {
@@ -777,7 +812,7 @@ let standaloneDiscounts = [];
 function renderDescuentosTab() {
   if (!standaloneDiscounts.length) standaloneDiscounts = [{ person: '', discount: '', reason: '', date: new Date().toISOString().slice(0, 10) }];
   adminViewContent.innerHTML = `
-    <p class="admin-intro">Cargá un descuento por ausencia sin necesidad de subir un informe.</p>
+    <p class="admin-intro">Cargá un meteorito por ausencia sin necesidad de subir un informe.</p>
     <div class="absence-list" id="standaloneList">${standaloneDiscounts.map((row, index) => standaloneRowHtml(row, index)).join('')}</div>
     <button class="absence-add-button" id="standaloneAdd" type="button"><i data-lucide="user-plus" aria-hidden="true"></i>Agregar otra ausencia</button>
 
@@ -800,7 +835,7 @@ function standaloneRowHtml(row, index) {
   const options = `<option value="">Elegir persona</option>` + ROSTER.map(p => `<option value="${p.id}" ${p.id === row.person ? 'selected' : ''} ${usedElsewhere.includes(p.id) ? 'disabled' : ''}>${esc(p.name)}</option>`).join('');
   return `<div class="absence-row" data-index="${index}">
     <label><span>Persona</span><select class="absence-person" data-field="person">${options}</select></label>
-    <label><span>Descuento</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
+    <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason)}" placeholder="Motivo de la ausencia" /></label>
     <label><span>Fecha</span><input type="date" data-field="date" value="${esc(row.date)}" /></label>
     <button class="absence-remove-button" type="button" data-remove aria-label="Eliminar ausencia"><i data-lucide="trash-2" aria-hidden="true"></i></button>
@@ -838,7 +873,7 @@ function bindStandalone() {
     const errorEl = $('#standaloneError');
     const valid = standaloneDiscounts.filter(row => row.person && row.discount);
     const incomplete = valid.some(row => !row.reason.trim());
-    if (!valid.length || incomplete) { errorEl.textContent = 'Completá persona, descuento y motivo en cada fila.'; errorEl.hidden = false; return; }
+    if (!valid.length || incomplete) { errorEl.textContent = 'Completá persona, meteorito y motivo en cada fila.'; errorEl.hidden = false; return; }
     errorEl.hidden = true;
     event.currentTarget.classList.add('is-loading');
     try {
@@ -850,13 +885,13 @@ function bindStandalone() {
           createdBy: currentAdmin.uid, createdByEmail: currentAdmin.email
         };
       });
-      await window.DinoCupFirebase.movements.createManualPenalties(entries);
+      await withTimeout(window.DinoCupFirebase.movements.createManualPenalties(entries), 15000, 'Aplicar los meteoritos');
       standaloneDiscounts = [];
-      showAdminToast('Descuentos aplicados correctamente.');
+      showAdminToast('Meteoritos aplicados correctamente.');
       renderDescuentosTab();
     } catch (error) {
       console.error(error);
-      errorEl.textContent = 'No pude aplicar los descuentos. Probá de nuevo.';
+      errorEl.textContent = 'No pude aplicar los meteoritos. Probá de nuevo.';
       errorEl.hidden = false;
     } finally {
       event.currentTarget.classList.remove('is-loading');
@@ -883,9 +918,9 @@ function renderMovimientosTab() {
       <select id="filterMovTipo">
         <option value="">Todos</option>
         <option value="REPORT_RESULT" ${movFilter.tipo === 'REPORT_RESULT' ? 'selected' : ''}>Resultados</option>
-        <option value="ABSENCE_PENALTY" ${movFilter.tipo === 'ABSENCE_PENALTY' ? 'selected' : ''}>Descuentos</option>
+        <option value="ABSENCE_PENALTY" ${movFilter.tipo === 'ABSENCE_PENALTY' ? 'selected' : ''}>Meteoritos</option>
         <option value="REPORT_REVERSAL" ${movFilter.tipo === 'REPORT_REVERSAL' ? 'selected' : ''}>Anulaciones de resultado</option>
-        <option value="PENALTY_REVERSAL" ${movFilter.tipo === 'PENALTY_REVERSAL' ? 'selected' : ''}>Anulaciones de descuento</option>
+        <option value="PENALTY_REVERSAL" ${movFilter.tipo === 'PENALTY_REVERSAL' ? 'selected' : ''}>Anulaciones de meteorito</option>
       </select>
       <select id="filterMovPlayer"><option value="">Todos los jugadores</option>${ROSTER.map(p => `<option value="${p.id}" ${p.id === movFilter.player ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select>
       <input type="date" id="filterMovDate" value="${esc(movFilter.date)}" />
@@ -894,17 +929,17 @@ function renderMovimientosTab() {
     </div>
     <div class="admin-table-wrap">
       <table class="admin-table">
-        <thead><tr><th>Fecha</th><th>Tipo</th><th>Jugador</th><th>Puntos</th><th>Motivo</th><th>Estado</th><th>Admin</th><th></th></tr></thead>
+        <thead><tr><th>Fecha</th><th>Tipo</th><th>Jugador</th><th>DinoCoins</th><th>Motivo</th><th>Estado</th><th>Admin</th><th></th></tr></thead>
         <tbody>${filtered.length ? filtered.map(m => `
           <tr>
             <td>${fmtDateTime(m.createdAt)}</td>
             <td>${TYPE_LABEL[m.type] || m.type}</td>
             <td>${esc(m.playerName)}</td>
-            <td>${fmtPoints(m.points)}</td>
+            <td>${fmtCoins(m.points)}</td>
             <td>${esc(m.reason || '—')}</td>
             <td>${statusChip(m.status)}</td>
             <td>${esc(m.createdByEmail || '—')}</td>
-            <td>${m.type === 'ABSENCE_PENALTY' && m.status === 'APPLIED' ? `<button type="button" class="admin-btn admin-btn--ghost admin-btn--small" data-annul-mov="${m.id}">Anular descuento</button>` : ''}</td>
+            <td>${m.type === 'ABSENCE_PENALTY' && m.status === 'APPLIED' ? `<button type="button" class="admin-btn admin-btn--ghost admin-btn--small" data-annul-mov="${m.id}">Anular meteorito</button>` : ''}</td>
           </tr>`).join('') : `<tr><td colspan="8" class="admin-empty">No hay movimientos para este filtro.</td></tr>`}</tbody>
       </table>
     </div>
@@ -925,8 +960,8 @@ function renderAnnulMovementConfirm(movementId) {
   if (!movement || !detailEl) return;
   detailEl.innerHTML = `
     <article class="admin-card admin-confirm">
-      <h3>Anular descuento</h3>
-      <p><strong>${esc(movement.playerName)}</strong> · ${fmtPoints(movement.points)} · ${esc(movement.reason || '')} · ${fmtDateTime(movement.createdAt)}</p>
+      <h3>Anular meteorito</h3>
+      <p><strong>${esc(movement.playerName)}</strong> · ${fmtCoins(movement.points)} · ${esc(movement.reason || '')} · ${fmtDateTime(movement.createdAt)}</p>
       <label><span>Motivo de la anulación</span><textarea id="annulMovReason" required></textarea></label>
       <p class="admin-form-error" id="annulMovError" hidden></p>
       <div class="admin-wizard-actions">
@@ -943,13 +978,13 @@ function renderAnnulMovementConfirm(movementId) {
     if (!reason) { $('#annulMovError').textContent = 'El motivo es obligatorio.'; $('#annulMovError').hidden = false; return; }
     event.currentTarget.classList.add('is-loading');
     try {
-      await window.DinoCupFirebase.movements.annul({ movement, reason, adminUid: currentAdmin.uid, adminEmail: currentAdmin.email });
-      showAdminToast('Descuento anulado correctamente.');
+      await withTimeout(window.DinoCupFirebase.movements.annul({ movement, reason, adminUid: currentAdmin.uid, adminEmail: currentAdmin.email }), 15000, 'Anular el meteorito');
+      showAdminToast('Meteorito anulado correctamente.');
       detailEl.innerHTML = '';
       renderMovimientosTab();
     } catch (error) {
       console.error(error);
-      $('#annulMovError').textContent = 'No pude anular el descuento. Probá de nuevo.';
+      $('#annulMovError').textContent = 'No pude anular el meteorito. Probá de nuevo.';
       $('#annulMovError').hidden = false;
       event.currentTarget.classList.remove('is-loading');
     }
