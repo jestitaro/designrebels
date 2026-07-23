@@ -69,17 +69,10 @@
           </h1>
 
           <p class="hero-description">
-            Cargá el informe que exporta Kahoot y Dino Cup actualiza automáticamente
-            los resultados parciales y el podio. Siempre hay un moderador de la fecha y,
-            si alguien falta, se le asigna el meteorito desde acá.
+            Cada informe de Kahoot actualiza automáticamente los resultados parciales
+            y el podio en tiempo real. Siempre hay un moderador de la fecha y,
+            si alguien falta, el descuento queda registrado en el historial.
           </p>
-
-          <div class="hero-actions">
-            <button class="button button--primary" id="openUpload" type="button" data-open-upload>
-              <i class="button__icon" data-lucide="cloud-upload" aria-hidden="true"></i>
-              Cargar resultados
-            </button>
-          </div>
         </div>
 
         <div class="ranking-preview reveal" id="ranking">
@@ -309,153 +302,82 @@
         <a href="#inicio">Inicio</a>
         <a href="#features">Explorar</a>
         <a href="#proximamente">Próximamente</a>
-        
-        
+        <a href="#" id="adminAccessLink">Admin</a>
       </nav>
     </div>
 
     <p class="copyright">© 2026 DINO CUP. Todos los derechos reservados.</p>
   </footer>
 
-  <div class="modal" id="uploadModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal" id="adminLoginModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-admin-login></div>
 
     <section
-      class="modal-panel"
+      class="modal-panel admin-login-panel"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="uploadTitle"
+      aria-labelledby="adminLoginTitle"
     >
       <div class="modal-sticky-header">
-        <span class="section-kicker">Nueva fecha</span>
-        <h2 id="uploadTitle">Cargar resultados</h2>
-        <p>Elegí el moderador y cargá el XLSX o CSV exportado de Kahoot. El nombre de la fecha y los resultados se toman automáticamente del informe.</p>
-        <button class="modal-close" type="button" data-close-modal aria-label="Cerrar">
-        ×
-      </button>
+        <span class="section-kicker">Acceso restringido</span>
+        <h2 id="adminLoginTitle">Ingreso administrador</h2>
+        <p>Ingresá con tu cuenta de administrador para gestionar resultados y descuentos.</p>
+        <button class="modal-close" type="button" data-close-admin-login aria-label="Cerrar">×</button>
       </div>
 
       <div class="modal-scroll-content">
-        <form id="uploadForm">
-        <div class="form-grid">
+        <form id="adminLoginForm" class="admin-login-form">
           <label>
-            <span>Moderador de la fecha</span>
-            <select id="moderatorSelect" required>
-              <option value="">Elegir moderador</option>
-              <option>Javi</option>
-              <option>May</option>
-              <option>Nico</option>
-              <option>Pablo</option>
-              <option>Agustin</option>
-              <option>Ale</option>
-              <option>Euge</option>
-              <option>Juli</option>
-              <option>Lucre</option>
-              <option>Sebas</option>
-              <option>Jesi</option>
-            </select>
+            <span>Email</span>
+            <input id="adminEmail" type="email" autocomplete="username" required />
+          </label>
+          <label>
+            <span>Contraseña</span>
+            <input id="adminPassword" type="password" autocomplete="current-password" required />
           </label>
 
-          <label>
-            <span>Fecha de la sesión</span>
-            <input id="sessionDate" type="date" value="2026-07-21" required />
-          </label>
-        </div>
+          <p class="admin-login-error" id="adminLoginError" role="alert" hidden></p>
 
-
-        <label class="dropzone" id="dropzone">
-          <input
-            id="fileInput"
-            type="file"
-            accept=".xlsx,.xls,.csv"
-            hidden
-          />
-          <i class="dropzone-icon" data-lucide="cloud-upload" aria-hidden="true"></i>
-          <strong>Arrastrá el informe acá</strong>
-          <small>o hacé clic para elegir XLSX / CSV</small>
-          <span class="file-name" id="fileName">Todavía no seleccionaste un archivo.</span>
-        </label>
-
-        <section class="absence-section" aria-labelledby="absenceTitle">
-          <div class="absence-section__header">
-            <div>
-              <span class="absence-section__eyebrow">Ajuste opcional</span>
-              <h3 id="absenceTitle">Descuento por ausencias</h3>
-              <p>
-                Agregá a cada persona que faltó y seleccioná el descuento correspondiente.
-              </p>
-            </div>
-
-            <button
-              class="absence-add-button"
-              id="addAbsence"
-              type="button"
-            >
-              <i data-lucide="user-plus" aria-hidden="true"></i>
-              Agregar ausencia
-            </button>
-          </div>
-
-          <div class="absence-list" id="absenceList"></div>
-
-          <template id="absenceRowTemplate">
-            <div class="absence-row">
-              <label>
-                <span>Persona</span>
-                <select class="absence-person" required>
-                  <option value="">Elegir persona</option>
-                  <option>Javi</option>
-                  <option>May</option>
-                  <option>Nico</option>
-                  <option>Pablo</option>
-                  <option>Agustin</option>
-                  <option>Ale</option>
-                  <option>Euge</option>
-                  <option>Juli</option>
-                  <option>Lucre</option>
-                  <option>Sebas</option>
-                  <option>Jesi</option>
-                </select>
-              </label>
-
-              <label>
-                <span>Descuento</span>
-                <select class="absence-points" required>
-                  <option value="-1">-1 punto · ausencia con aviso</option>
-                  <option value="-3">-3 puntos · ausencia sin aviso</option>
-                </select>
-              </label>
-
-              <button
-                class="absence-remove-button"
-                type="button"
-                aria-label="Eliminar ausencia"
-                title="Eliminar ausencia"
-              >
-                <i data-lucide="trash-2" aria-hidden="true"></i>
-              </button>
-            </div>
-          </template>
-        </section>
-
-        <button
-          class="button button--primary modal-submit"
-          id="submitResults"
-          type="submit"
-        >
-          <span class="submit-label">
-            <i data-lucide="upload-cloud" aria-hidden="true"></i>
-            Cargar resultados
-          </span>
-
-          <span class="submit-loading" aria-hidden="true">
-            <span>Procesando informe</span>
-            <span class="loading-pixels">
-              <span></span><span></span><span></span><span></span>
+          <button class="button button--primary modal-submit" id="adminLoginSubmit" type="submit">
+            <span class="submit-label"><i data-lucide="log-in" aria-hidden="true"></i> Ingresar</span>
+            <span class="submit-loading" aria-hidden="true">
+              <span>Verificando</span>
+              <span class="loading-pixels"><span></span><span></span><span></span><span></span></span>
             </span>
-          </span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal admin-modal" id="adminPanelModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-admin-panel></div>
+
+    <section
+      class="modal-panel admin-panel-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="adminPanelTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Panel administrativo</span>
+        <h2 id="adminPanelTitle">Dino Cup · Admin</h2>
+        <p id="adminPanelSubtitle">Sesión iniciada.</p>
+        <button class="modal-close" type="button" data-close-admin-panel aria-label="Cerrar panel">×</button>
+      </div>
+
+      <nav class="admin-tabs" id="adminTabs" aria-label="Secciones del panel">
+        <button type="button" class="admin-tab is-active" data-admin-tab="resumen">Resumen</button>
+        <button type="button" class="admin-tab" data-admin-tab="cargar">Cargar resultados</button>
+        <button type="button" class="admin-tab" data-admin-tab="descuentos">Aplicar descuentos</button>
+        <button type="button" class="admin-tab" data-admin-tab="movimientos">Movimientos</button>
+        <button type="button" class="admin-tab admin-tab--exit" id="adminLogoutButton">
+          <i data-lucide="log-out" aria-hidden="true"></i> Cerrar sesión
         </button>
-      </form>
+      </nav>
+
+      <div class="modal-scroll-content">
+        <div id="adminViewContent" class="admin-view"></div>
       </div>
     </section>
   </div>
@@ -784,8 +706,13 @@
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <script src="assets/firebase.js"></script>
-  <script src="assets/app.js?v=1"></script>
+  <script src="assets/roster.js"></script>
+  <script src="assets/kahoot-parser.js"></script>
+  <script src="assets/app.js?v=2"></script>
+  <script src="assets/admin.js?v=1"></script>
 </body>
 </html>

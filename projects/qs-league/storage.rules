@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Dino Cup — Storage rules for the dinocup_reports/ folder only.
+//
+// ⚠️ Same one-ruleset-per-bucket caveat as firestore.rules: merge the
+// `match /dinocup_reports/...` block below into quartzprode2026's existing
+// Storage rules before deploying — don't overwrite them wholesale.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/dinocup_users/$(request.auth.uid)) &&
+        firestore.get(/databases/(default)/documents/dinocup_users/$(request.auth.uid)).data.role == 'ADMIN';
+    }
+
+    // Original Kahoot report files (XLSX/XLS/CSV), one folder per match id.
+    // Only admins can read (download from the "Historial de cargas" detail
+    // view) or write (uploaded during the "Cargar resultados" wizard).
+    match /dinocup_reports/{matchId}/{fileName} {
+      allow read: if isAdmin();
+      allow write: if isAdmin()
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/.*|text/csv|text/plain');
+    }
+  }
+}
