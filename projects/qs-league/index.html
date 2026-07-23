@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="assets/styles.css?v=5" />
+  <link rel="stylesheet" href="assets/styles.css?v=6" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
 </head>
 <body>
@@ -32,17 +32,10 @@
     </nav>
   </header>
 
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>SEASON 02 LIVE</span><b>✦</b><span>SUBÍ TU KAHOOT Y SUMÁ DINOCOINS</span><b>✦</b><span>EL MODERADOR NO COMPITE</span><b>✦</b><span>SI FALTASTE, CARGATE EL METEORITO</span><b>✦</b><span>1° +3 · 2° +2 · 3° +1</span><b>✦</b>
-      <span>SEASON 02 LIVE</span><b>✦</b><span>SUBÍ TU KAHOOT Y SUMÁ DINOCOINS</span><b>✦</b><span>EL MODERADOR NO COMPITE</span><b>✦</b><span>SI FALTASTE, CARGATE EL METEORITO</span><b>✦</b><span>1° +3 · 2° +2 · 3° +1</span><b>✦</b>
-    </div>
-  </div>
-
   <main>
     <section id="hero" class="hero">
       <div class="wrap hero-grid">
-        <div class="reveal in-view">
+        <div class="reveal in-view hero-copy">
           <span class="eyebrow"><i class="fa-solid fa-dragon"></i> Season 02 · 2do semestre 2026</span>
           <h1>La arena corre con<br><span class="cycle-word-wrap"><span id="heroCycleWord" class="cycle-word">DINOCOINS</span><span class="cycle-cursor" aria-hidden="true">_</span></span></h1>
           <p>Subí el informe que exporta Kahoot y la arena actualiza el podio sola. Siempre hay un moderador de la fecha, y si alguien falta, se le carga el meteorito acá mismo.</p>
@@ -51,14 +44,12 @@
             <a class="btn btn-ghost" href="#arena"><i class="fa-solid fa-ranking-star"></i> Ver ranking</a>
           </div>
           <div class="stat-row">
-            <article class="stat-chip stat-coins"><i class="fa-solid fa-coins stat-chip-icon"></i><strong id="statCoins" data-value="0">0</strong><span>DinoCoins</span></article>
             <article class="stat-chip stat-players"><i class="fa-solid fa-users stat-chip-icon"></i><strong id="statPlayers" data-value="0">0</strong><span>Jugadores</span></article>
             <article class="stat-chip stat-meteors"><i class="fa-solid fa-meteor stat-chip-icon"></i><strong id="statMeteors" data-value="0">0</strong><span>Meteoritos</span></article>
             <article class="stat-chip stat-date"><i class="fa-solid fa-calendar-days stat-chip-icon"></i><strong id="statLastDate">—</strong><span>Última fecha</span></article>
           </div>
         </div>
         <div class="hero-podium reveal in-view" id="podium">
-          <div class="hud-banner"><span class="hud-dots" aria-hidden="true">::</span><span>Ranking parcial</span><span class="hud-dots" aria-hidden="true">::</span></div>
           <div id="podiumGrid"></div>
         </div>
       </div>
@@ -186,6 +177,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="assets/firebase.js"></script>
-  <script src="assets/app.js?v=4" defer></script>
+  <script src="assets/app.js?v=5" defer></script>
 </body>
 </html>
