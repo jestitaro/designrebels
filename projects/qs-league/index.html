@@ -44,8 +44,7 @@
         <a class="nav-link active" href="#inicio">Inicio</a>
         <a class="nav-link" href="#features">Explorar</a>
         <a class="nav-link" href="#proximamente">Próximamente</a>
-        
-        
+        <a class="nav-link" href="#" id="adminAccessLinkHeader">Admin</a>
       </nav>
     </div>
   </header>
@@ -360,9 +359,14 @@
           <p id="adminPanelSubtitle">Sesión iniciada.</p>
         </div>
       </div>
-      <button class="admin-page__back" type="button" data-close-admin-panel>
-        <i data-lucide="arrow-left" aria-hidden="true"></i> Volver al sitio
-      </button>
+      <div class="admin-page__actions">
+        <button class="admin-page__back" type="button" data-close-admin-panel>
+          <i data-lucide="arrow-left" aria-hidden="true"></i> Volver al sitio
+        </button>
+        <button class="admin-page__logout" type="button" id="adminLogoutButton">
+          <i data-lucide="log-out" aria-hidden="true"></i> Cerrar sesión
+        </button>
+      </div>
     </header>
 
     <nav class="admin-tabs" id="adminTabs" aria-label="Secciones del panel">
@@ -370,9 +374,6 @@
       <button type="button" class="admin-tab" data-admin-tab="cargar">Cargar resultados</button>
       <button type="button" class="admin-tab" data-admin-tab="descuentos">Aplicar descuentos</button>
       <button type="button" class="admin-tab" data-admin-tab="movimientos">Movimientos</button>
-      <button type="button" class="admin-tab admin-tab--exit" id="adminLogoutButton">
-        <i data-lucide="log-out" aria-hidden="true"></i> Cerrar sesión
-      </button>
     </nav>
 
     <main class="admin-page__content">

@@ -112,7 +112,8 @@ let cargarSubview = 'nueva';
 
 const adminLoginModal = $('#adminLoginModal');
 const adminPanelModal = $('#adminPanelModal');
-const adminAccessLink = $('#adminAccessLink');
+const adminAccessLinks = $$('#adminAccessLink, #adminAccessLinkHeader');
+const adminAccessLink = adminAccessLinks[0];
 const adminLoginForm = $('#adminLoginForm');
 const adminLoginError = $('#adminLoginError');
 const adminLoginSubmit = $('#adminLoginSubmit');
@@ -138,11 +139,22 @@ function openAdminPanel() {
 }
 function closeAdminPanel() { toggleModal(adminPanelModal, false, adminAccessLink); }
 
-adminAccessLink?.addEventListener('click', event => {
+adminAccessLinks.forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
   if (currentAdmin?.isAdmin) openAdminPanel();
   else openLoginModal();
-});
+}));
+
+// Reflect an active admin session on both "Admin" entry points (header + footer)
+// so leaving the panel without logging out still shows the session is live.
+function updateAdminAccessLinks() {
+  const isActive = Boolean(currentAdmin?.isAdmin);
+  adminAccessLinks.forEach(link => {
+    link.classList.toggle('is-authenticated', isActive);
+    link.title = isActive ? `Sesión de administrador activa (${currentAdmin.email})` : '';
+    link.innerHTML = isActive ? '<span class="admin-status-dot" aria-hidden="true"></span>Admin' : 'Admin';
+  });
+}
 $$('[data-close-admin-login]').forEach(el => el.addEventListener('click', closeLoginModal));
 $$('[data-close-admin-panel]').forEach(el => el.addEventListener('click', closeAdminPanel));
 document.addEventListener('keydown', event => {
@@ -902,6 +914,7 @@ async function activateAdminSession(user) {
   if (currentAdmin?.uid === user.uid) return; // already active (e.g. signIn() already did this)
   currentAdmin = user;
   adminPanelSubtitle.textContent = `Sesión iniciada como ${user.email}.`;
+  updateAdminAccessLinks();
   startAdminSubscriptions();
   try {
     await window.DinoCupFirebase.players.ensureSeeded(ROSTER);
@@ -912,6 +925,7 @@ async function activateAdminSession(user) {
 }
 function deactivateAdminSession() {
   currentAdmin = null;
+  updateAdminAccessLinks();
   stopAdminSubscriptions();
   if (adminPanelModal.classList.contains('is-open')) closeAdminPanel();
 }
