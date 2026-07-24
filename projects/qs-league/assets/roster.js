@@ -26,7 +26,7 @@
     { id: 'mayra', name: 'May', fullName: 'Mayra Milanesio', role: '', house: 'gryffindor', aliases: ['May', 'Mayra', 'Mayra Milanesio'] },
     { id: 'nico', name: 'Nico', fullName: 'Nicolas Rivero Segura', role: 'Integrator / COO', house: 'slytherin', aliases: ['Nico', 'Nicho', 'Nicolas', 'Nicolás', 'Nicolas Rivero Segura'] },
     { id: 'pablo', name: 'Pablo', fullName: 'Pablo Hernan Gimenez', role: 'Visionary / CEO', house: 'slytherin', aliases: ['Pablo', 'Tuki', 'Pablo Hernan Gimenez', 'Pablo Gimenez'] },
-    { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Heroe', 'Agustin Goñi Piuma'] },
+    { id: 'agustin', name: 'Agustin', fullName: 'Agustin Goñi Piuma', role: 'Director Comercial', house: 'slytherin', aliases: ['Agustin', 'Agustín', 'Agus', 'Heroe', 'Hereo', 'Heror', 'Agustin Goñi Piuma'] },
     { id: 'alejandro', name: 'Ale', fullName: 'Alejandro Frank', role: '', house: 'hufflepuff', aliases: ['Ale', 'Alejandro', 'Alejandro Frank'] },
     { id: 'eugenio', name: 'Euge', fullName: 'Eugenio Balbastro Fages', role: 'Líder técnico', house: 'ravenclaw', aliases: ['Euge', 'Eugenio', 'Eugenio Balbastro Fages'] },
     { id: 'juli', name: 'Juli', fullName: 'Juli Piccioni', role: '', house: 'ravenclaw', aliases: ['Juli', 'July', 'Picci', 'Julieta', 'Juli Piccioni'] },
