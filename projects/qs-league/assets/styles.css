@@ -2366,6 +2366,7 @@ svg[data-lucide] {
 
 .absence-add-button {
   min-height: 38px;
+  margin-top: 14px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2410,7 +2411,7 @@ svg[data-lucide] {
      old 2-field row (persona + descuento), so the Motivo input added later
      got squeezed into the 38px delete-button track and the button itself
      wrapped onto its own row. */
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(160px, 1.3fr) 38px;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(160px, 1.3fr) 46px;
   align-items: end;
   gap: 10px;
   padding: 12px;
@@ -2426,7 +2427,7 @@ svg[data-lucide] {
 /* Standalone "Aplicar meteoritos" rows have a 4th field (Fecha), so they
    need their own column count instead of the wizard's 3-field template. */
 .absence-row--with-date {
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(140px, 1.1fr) minmax(140px, 0.9fr) 38px;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(140px, 1.1fr) minmax(140px, 0.9fr) 46px;
 }
 
 /* Saved row: compact summary instead of the edit form, with edit/eliminar

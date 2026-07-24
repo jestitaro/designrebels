@@ -569,13 +569,9 @@ function bindWizardStep() {
       }));
       row.querySelector('[data-field="reason"]')?.addEventListener('input', event => { uploadWizard.absences[index].reason = event.target.value; });
       row.querySelector('[data-save]')?.addEventListener('click', () => {
-        if (!isAbsenceRowComplete(uploadWizard.absences[index])) {
-          const errorEl = $('#wizardStep2Error');
-          errorEl.textContent = 'Completá persona, meteorito y motivo antes de guardar.';
-          errorEl.hidden = false;
-          return;
-        }
-        $('#wizardStep2Error').hidden = true;
+        // The button is already disabled until a persona is chosen — saving
+        // here shouldn't re-impose a stricter check than that, since meteorito
+        // and motivo can still be filled in later via "Editar".
         uploadWizard.absences[index].saved = true;
         renderWizard();
       });
@@ -848,13 +844,9 @@ function bindStandalone() {
       field.addEventListener('input', () => { standaloneDiscounts[index][field.dataset.field] = field.value; });
     });
     row.querySelector('[data-save]')?.addEventListener('click', () => {
-      if (!isAbsenceRowComplete(standaloneDiscounts[index])) {
-        const errorEl = $('#standaloneError');
-        errorEl.textContent = 'Completá persona, meteorito y motivo antes de guardar.';
-        errorEl.hidden = false;
-        return;
-      }
-      $('#standaloneError').hidden = true;
+      // The button is already disabled until a persona is chosen — saving
+      // here shouldn't re-impose a stricter check than that, since meteorito
+      // and motivo can still be filled in later via "Editar".
       standaloneDiscounts[index].saved = true;
       renderDescuentosTab();
     });
