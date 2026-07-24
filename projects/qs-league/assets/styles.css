@@ -2406,7 +2406,11 @@ svg[data-lucide] {
 
 .absence-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.9fr) 38px;
+  /* Persona / Meteorito / Motivo / delete button — was still sized for the
+     old 2-field row (persona + descuento), so the Motivo input added later
+     got squeezed into the 38px delete-button track and the button itself
+     wrapped onto its own row. */
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(160px, 1.3fr) 38px;
   align-items: end;
   gap: 10px;
   padding: 12px;
