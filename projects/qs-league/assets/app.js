@@ -6,7 +6,7 @@
    behind an authenticated admin session. */
 
 (function () {
-const { fmt, fmtPoints, house, longDate } = window.DinoCupData;
+const { fmt, fmtPoints, house, longDate, MONTHS_ES } = window.DinoCupData;
 
 /* ---------- helpers ---------- */
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -129,13 +129,28 @@ function renderResultsModal(rows) {
   }
 }
 
+/* REPORT_RESULT movements created before sessionDate was stored on the
+   movement itself don't have that field — fall back to parsing it out of
+   their reason text ("23 de julio 2026 · +3 puntos"), which every
+   REPORT_RESULT has always included. */
+function movementSessionDate(movement) {
+  if (movement.sessionDate) return movement.sessionDate;
+  const match = (movement.reason || '').match(/^(\d{1,2}) de (\p{L}+) (\d{4})/u);
+  if (!match) return null;
+  const monthIndex = MONTHS_ES.findIndex(month => month.toLowerCase() === match[2].toLowerCase());
+  if (monthIndex < 0) return null;
+  return `${match[3]}-${String(monthIndex + 1).padStart(2, '0')}-${String(match[1]).padStart(2, '0')}`;
+}
+
 function renderSeasonChip() {
   const chip = $('#lastFechaChip');
   if (!chip) return;
   const dated = movements
-    .filter(movement => movement.type === 'REPORT_RESULT' && movement.sessionDate)
-    .sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate))[0];
-  chip.textContent = dated ? dated.sessionDate.split('-').reverse().join('/') : '—';
+    .filter(movement => movement.type === 'REPORT_RESULT')
+    .map(movement => ({ movement, date: movementSessionDate(movement) }))
+    .filter(entry => entry.date)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+  chip.textContent = dated ? dated.date.split('-').reverse().join('/') : '—';
 }
 
 function render() {
