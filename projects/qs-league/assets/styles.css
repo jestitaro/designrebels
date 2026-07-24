@@ -3345,36 +3345,41 @@ svg[data-lucide] {
 .admin-page__header {
   display: flex;
   flex: 0 0 auto;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 28px clamp(20px, 4vw, 56px) 20px;
+  padding: 14px clamp(20px, 4vw, 56px);
   border-bottom: 1px solid rgba(131, 71, 255, 0.28);
 }
 
 .admin-page__brand {
   display: flex;
-  align-items: flex-start;
-  gap: 14px;
+  align-items: center;
+  gap: 10px;
 }
 
 .admin-page__brand .brand-icon--image {
-  width: 42px;
-  height: 42px;
-  margin-top: 6px;
+  width: 28px;
+  height: 28px;
+  margin-top: 0;
+}
+
+.admin-page__brand .section-kicker {
+  padding: 5px 10px;
+  font-size: 0.42rem;
 }
 
 .admin-page__brand h1 {
-  margin: 12px 0 0;
+  margin: 4px 0 0;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem);
   line-height: 1.2;
 }
 
 .admin-page__brand p {
-  margin: 8px 0 0;
+  margin: 2px 0 0;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
 }
 
 .admin-page__actions {
