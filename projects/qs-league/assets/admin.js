@@ -44,82 +44,6 @@ function discountOptionsHtml(selected = '') {
     DISCOUNT_OPTIONS.map(option => `<option value="${option.value}" ${String(option.value) === String(selected) ? 'selected' : ''}>${esc(option.label)}</option>`).join('');
 }
 
-/* Historical Season 02 base results (REGLAS.md §10), seeded once into
-   dinocup_matches/dinocup_movements so live totals keep the data the
-   team already had before the admin panel existed. */
-const SEED_MATCHES = [
-  {
-    detectedTitle: 'Kahoot 02/07/2026', sessionDate: '2026-07-02', moderatorId: 'alejandro',
-    rows: [
-      { rank: 1, playerId: 'mayra', nickname: 'May' },
-      { rank: 2, playerId: 'javi', nickname: 'Javi' },
-      { rank: 3, playerId: 'nico', nickname: 'Nico' },
-      { rank: 5, playerId: 'jesica', nickname: 'Jesi' },
-      { rank: 6, playerId: 'sebas', nickname: 'Sebas' },
-      { rank: 7, playerId: 'eugenio', nickname: '8706743' }
-    ]
-  },
-  {
-    detectedTitle: 'Kahoot 16/07/2026', sessionDate: '2026-07-16', moderatorId: 'sebas',
-    rows: [
-      { rank: 1, playerId: 'javi', nickname: 'Javi' },
-      { rank: 2, playerId: 'mayra', nickname: 'May' },
-      { rank: 3, playerId: 'pablo', nickname: 'Heror' },
-      { rank: 5, playerId: 'lucrecia', nickname: 'Luly' },
-      { rank: 6, playerId: 'juli', nickname: 'Picci' },
-      { rank: 7, playerId: 'nico', nickname: 'Nico' },
-      { rank: 8, playerId: 'alejandro', nickname: 'Ale' }
-    ]
-  }
-];
-const SEED_MANUAL_PENALTIES = [
-  { playerId: 'jesica', points: -1, reason: 'Ausencia con aviso', date: '2026-07-18' }
-];
-
-async function ensureSeasonSeeded(adminUid, adminEmail) {
-  const fb = window.DinoCupFirebase;
-  const existing = await fb.matches.findByDate(SEED_MATCHES[0].sessionDate);
-  if (existing) return;
-  for (const seed of SEED_MATCHES) {
-    const effective = seed.rows
-      .filter(row => row.playerId !== seed.moderatorId)
-      .sort((a, b) => a.rank - b.rank)
-      .map((row, index) => ({ ...row, effectiveRank: index + 1 }));
-    const matchRef = fb.matches.newRef();
-    const moderator = player(seed.moderatorId);
-    await fb.matches.createDraft(matchRef.id, {
-      detectedTitle: seed.detectedTitle,
-      sessionDate: seed.sessionDate,
-      moderatorId: seed.moderatorId,
-      moderatorName: moderator?.name || seed.moderatorId,
-      originalFileName: null,
-      originalFileUrl: null,
-      fileHash: null,
-      uploadedBy: 'seed',
-      uploadedByEmail: 'seed@dinocup.internal',
-      detectedResults: seed.rows
-    });
-    const movements = effective.filter(row => row.effectiveRank <= 3).map(row => {
-      const prize = award(row.effectiveRank);
-      const p = player(row.playerId);
-      return {
-        type: 'REPORT_RESULT', playerId: row.playerId, playerName: p?.name || row.nickname,
-        points: prize.delta, reason: `${longDate(seed.sessionDate)} · +${prize.delta} ${prize.delta === 1 ? 'punto' : 'puntos'}`,
-        sourceType: 'KAHOOT_IMPORT', sourceId: matchRef.id, createdBy: 'seed', createdByEmail: 'seed@dinocup.internal'
-      };
-    });
-    await fb.matches.applyWithMovements({ matchId: matchRef.id, movements });
-  }
-  await fb.movements.createManualPenalties(SEED_MANUAL_PENALTIES.map(entry => {
-    const p = player(entry.playerId);
-    const category = entry.points === -1 ? 'Ausencia con aviso' : 'Ausencia sin aviso';
-    return {
-      playerId: entry.playerId, playerName: p?.name || entry.playerId, points: entry.points,
-      reason: category, createdBy: 'seed', createdByEmail: 'seed@dinocup.internal'
-    };
-  }));
-}
-
 /* ---------- auth state ---------- */
 let currentAdmin = null;
 let adminMatches = [];
@@ -1020,7 +944,6 @@ async function activateAdminSession(user) {
   startAdminSubscriptions();
   try {
     await window.DinoCupFirebase.players.ensureSeeded(ROSTER);
-    await ensureSeasonSeeded(user.uid, user.email);
   } catch (error) {
     console.warn('Dino Cup admin: no pude inicializar los datos base.', error);
   }
