@@ -602,10 +602,18 @@ function bindWizardStep() {
       row.querySelector('[data-remove]').addEventListener('click', () => { uploadWizard.absences.splice(index, 1); renderWizard(); });
     });
     $('#wizardStep2Next').addEventListener('click', async () => {
-      const errorEl = $('#wizardStep2Error');
+      // A row added via "Agregar ausencia" but never touched shouldn't block
+      // progress or force the admin to delete it manually — just drop it.
+      uploadWizard.absences = uploadWizard.absences.filter(row => row.person || row.discount || row.reason.trim());
       const incomplete = uploadWizard.absences.some(row => !row.person || !row.discount || !row.reason.trim());
-      if (incomplete) { errorEl.textContent = 'Completá persona, meteorito y motivo en cada fila (o eliminala).'; errorEl.hidden = false; return; }
-      errorEl.hidden = true;
+      if (incomplete) {
+        renderWizard();
+        const errorEl = $('#wizardStep2Error');
+        errorEl.textContent = 'Completá persona, meteorito y motivo en cada fila (o eliminala).';
+        errorEl.hidden = false;
+        return;
+      }
+      $('#wizardStep2Error').hidden = true;
       const fb = window.DinoCupFirebase;
       const [byDate, byHash] = await Promise.all([
         fb.matches.findByDate(uploadWizard.sessionDate),
@@ -870,14 +878,22 @@ function bindStandalone() {
   });
   $('#standaloneCancel').addEventListener('click', () => { standaloneDiscounts = []; renderDescuentosTab(); });
   $('#standaloneConfirm').addEventListener('click', async event => {
-    const errorEl = $('#standaloneError');
-    const valid = standaloneDiscounts.filter(row => row.person && row.discount);
-    const incomplete = valid.some(row => !row.reason.trim());
-    if (!valid.length || incomplete) { errorEl.textContent = 'Completá persona, meteorito y motivo en cada fila.'; errorEl.hidden = false; return; }
-    errorEl.hidden = true;
+    // A row added via "Agregar otra ausencia" but never touched shouldn't
+    // block progress or force the admin to delete it manually — just drop it.
+    standaloneDiscounts = standaloneDiscounts.filter(row => row.person || row.discount || row.reason.trim());
+    const wasEmpty = standaloneDiscounts.length === 0; // capture before renderDescuentosTab() re-seeds a blank row
+    const incomplete = standaloneDiscounts.some(row => !row.person || !row.discount || !row.reason.trim());
+    if (wasEmpty || incomplete) {
+      renderDescuentosTab();
+      const freshError = $('#standaloneError');
+      freshError.textContent = wasEmpty ? 'Agregá al menos una ausencia.' : 'Completá persona, meteorito y motivo en cada fila.';
+      freshError.hidden = false;
+      return;
+    }
+    $('#standaloneError').hidden = true;
     event.currentTarget.classList.add('is-loading');
     try {
-      const entries = valid.map(row => {
+      const entries = standaloneDiscounts.map(row => {
         const option = discountOption(row.discount);
         return {
           playerId: row.person, playerName: player(row.person)?.name || row.person, points: Number(row.discount),
