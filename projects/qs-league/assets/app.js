@@ -185,7 +185,10 @@ function openLegendsModal() { toggleModal(legendsModal, true); }
 function closeLegendsModal() { toggleModal(legendsModal, false, $('[data-open-legends]')); }
 function openRulesModal() { toggleModal(rulesModal, true); }
 function closeRulesModal() { toggleModal(rulesModal, false, $('[data-open-rules]')); }
-function openResultsModal() { toggleModal(resultsModal, true); }
+function openResultsModal(rankingOnly) {
+  resultsModal.classList.toggle('results-modal--ranking-only', Boolean(rankingOnly));
+  toggleModal(resultsModal, true);
+}
 function closeResultsModal() { toggleModal(resultsModal, false, $('[data-open-results]')); }
 
 /* ---------- bindings ---------- */
@@ -201,7 +204,7 @@ function bind() {
 
   openLegendsButtons.forEach(button => button.addEventListener('click', openLegendsModal));
   openRulesButtons.forEach(button => button.addEventListener('click', openRulesModal));
-  openResultsButtons.forEach(button => button.addEventListener('click', openResultsModal));
+  openResultsButtons.forEach(button => button.addEventListener('click', () => openResultsModal(button.hasAttribute('data-ranking-only'))));
 
   closeLegendsButtons.forEach(button => button.addEventListener('click', closeLegendsModal));
   closeRulesButtons.forEach(button => button.addEventListener('click', closeRulesModal));
