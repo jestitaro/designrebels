@@ -444,14 +444,36 @@ function wizardStep2Html() {
       <button type="button" class="button button--primary" id="wizardStep2Next">Siguiente</button>
     </div>`;
 }
+function isAbsenceRowComplete(row) { return Boolean(row.person && row.discount && row.reason && row.reason.trim()); }
+
 function wizardAbsenceRowHtml(row, index) {
+  if (row.saved) return savedAbsenceRowHtml(row, index, 'wizard');
   const usedElsewhere = uploadWizard.absences.filter((r, i) => i !== index).map(r => r.person);
   const options = `<option value="">Elegir persona</option>` + ROSTER.map(p => `<option value="${p.id}" ${p.id === row.person ? 'selected' : ''} ${usedElsewhere.includes(p.id) ? 'disabled' : ''}>${esc(p.name)}</option>`).join('');
   return `<div class="absence-row" data-index="${index}">
     <label><span>Persona</span><select class="absence-person" data-field="person">${options}</select></label>
     <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason || '')}" placeholder="Motivo de la ausencia" /></label>
-    <button class="absence-remove-button" type="button" data-remove aria-label="Eliminar ausencia"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar"><i data-lucide="check" aria-hidden="true"></i></button>
+  </div>`;
+}
+
+/* Shared by the wizard's step-2 rows and the standalone "Aplicar meteoritos"
+   rows: once a row is complete and saved, show a compact summary with
+   edit/eliminar instead of the trash can sitting next to an empty form. */
+function savedAbsenceRowHtml(row, index) {
+  const option = discountOption(row.discount);
+  const dateLabel = row.date ? ` · ${shortDate(row.date)}` : '';
+  return `<div class="absence-row absence-row--saved" data-index="${index}">
+    <div class="absence-row__summary">
+      <strong>${esc(player(row.person)?.name || row.person)}</strong>
+      <span>${esc(option?.label || '')}</span>
+      <small>${esc(row.reason)}${dateLabel}</small>
+    </div>
+    <div class="absence-row__actions">
+      <button class="absence-edit-button" type="button" data-edit aria-label="Editar ausencia" title="Editar"><i data-lucide="pencil" aria-hidden="true"></i></button>
+      <button class="absence-remove-button" type="button" data-remove aria-label="Eliminar ausencia" title="Eliminar"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+    </div>
   </div>`;
 }
 
@@ -586,7 +608,7 @@ function bindWizardStep() {
   if (uploadWizard.step === 2) {
     const list = $('#wizardAbsenceList');
     $('#wizardAddAbsence').addEventListener('click', () => {
-      uploadWizard.absences.push({ person: '', discount: '', reason: '' });
+      uploadWizard.absences.push({ person: '', discount: '', reason: '', saved: false });
       renderWizard();
     });
     $$('.absence-row', list).forEach(row => {
@@ -599,13 +621,25 @@ function bindWizardStep() {
         renderWizard();
       }));
       row.querySelector('[data-field="reason"]')?.addEventListener('input', event => { uploadWizard.absences[index].reason = event.target.value; });
-      row.querySelector('[data-remove]').addEventListener('click', () => { uploadWizard.absences.splice(index, 1); renderWizard(); });
+      row.querySelector('[data-save]')?.addEventListener('click', () => {
+        if (!isAbsenceRowComplete(uploadWizard.absences[index])) {
+          const errorEl = $('#wizardStep2Error');
+          errorEl.textContent = 'Completá persona, meteorito y motivo antes de guardar.';
+          errorEl.hidden = false;
+          return;
+        }
+        $('#wizardStep2Error').hidden = true;
+        uploadWizard.absences[index].saved = true;
+        renderWizard();
+      });
+      row.querySelector('[data-edit]')?.addEventListener('click', () => { uploadWizard.absences[index].saved = false; renderWizard(); });
+      row.querySelector('[data-remove]')?.addEventListener('click', () => { uploadWizard.absences.splice(index, 1); renderWizard(); });
     });
     $('#wizardStep2Next').addEventListener('click', async () => {
       // A row added via "Agregar ausencia" but never touched shouldn't block
       // progress or force the admin to delete it manually — just drop it.
       uploadWizard.absences = uploadWizard.absences.filter(row => row.person || row.discount || row.reason.trim());
-      const incomplete = uploadWizard.absences.some(row => !row.person || !row.discount || !row.reason.trim());
+      const incomplete = uploadWizard.absences.some(row => !isAbsenceRowComplete(row));
       if (incomplete) {
         renderWizard();
         const errorEl = $('#wizardStep2Error');
@@ -613,6 +647,7 @@ function bindWizardStep() {
         errorEl.hidden = false;
         return;
       }
+      uploadWizard.absences.forEach(row => { row.saved = true; });
       $('#wizardStep2Error').hidden = true;
       const fb = window.DinoCupFirebase;
       const [byDate, byHash] = await Promise.all([
@@ -818,7 +853,7 @@ function renderAnnulMatchConfirm(match, related) {
    ============================================================ */
 let standaloneDiscounts = [];
 function renderDescuentosTab() {
-  if (!standaloneDiscounts.length) standaloneDiscounts = [{ person: '', discount: '', reason: '', date: new Date().toISOString().slice(0, 10) }];
+  if (!standaloneDiscounts.length) standaloneDiscounts = [{ person: '', discount: '', reason: '', date: new Date().toISOString().slice(0, 10), saved: false }];
   adminViewContent.innerHTML = `
     <p class="admin-intro">Cargá un meteorito por ausencia sin necesidad de subir un informe.</p>
     <div class="absence-list" id="standaloneList">${standaloneDiscounts.map((row, index) => standaloneRowHtml(row, index)).join('')}</div>
@@ -839,14 +874,15 @@ function renderDescuentosTab() {
   icons();
 }
 function standaloneRowHtml(row, index) {
+  if (row.saved) return savedAbsenceRowHtml(row, index);
   const usedElsewhere = standaloneDiscounts.filter((r, i) => i !== index).map(r => r.person);
   const options = `<option value="">Elegir persona</option>` + ROSTER.map(p => `<option value="${p.id}" ${p.id === row.person ? 'selected' : ''} ${usedElsewhere.includes(p.id) ? 'disabled' : ''}>${esc(p.name)}</option>`).join('');
-  return `<div class="absence-row" data-index="${index}">
+  return `<div class="absence-row absence-row--with-date" data-index="${index}">
     <label><span>Persona</span><select class="absence-person" data-field="person">${options}</select></label>
     <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason)}" placeholder="Motivo de la ausencia" /></label>
     <label><span>Fecha</span><input type="date" data-field="date" value="${esc(row.date)}" /></label>
-    <button class="absence-remove-button" type="button" data-remove aria-label="Eliminar ausencia"><i data-lucide="trash-2" aria-hidden="true"></i></button>
+    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar"><i data-lucide="check" aria-hidden="true"></i></button>
   </div>`;
 }
 function standalonePreviewHtml() {
@@ -857,7 +893,7 @@ function standalonePreviewHtml() {
 function bindStandalone() {
   const list = $('#standaloneList');
   $('#standaloneAdd').addEventListener('click', () => {
-    standaloneDiscounts.push({ person: '', discount: '', reason: '', date: new Date().toISOString().slice(0, 10) });
+    standaloneDiscounts.push({ person: '', discount: '', reason: '', date: new Date().toISOString().slice(0, 10), saved: false });
     renderDescuentosTab();
   });
   $$('.absence-row', list).forEach(row => {
@@ -871,7 +907,19 @@ function bindStandalone() {
     row.querySelectorAll('input[data-field]').forEach(field => {
       field.addEventListener('input', () => { standaloneDiscounts[index][field.dataset.field] = field.value; $('#standalonePreview').innerHTML = standalonePreviewHtml(); });
     });
-    row.querySelector('[data-remove]').addEventListener('click', () => {
+    row.querySelector('[data-save]')?.addEventListener('click', () => {
+      if (!isAbsenceRowComplete(standaloneDiscounts[index])) {
+        const errorEl = $('#standaloneError');
+        errorEl.textContent = 'Completá persona, meteorito y motivo antes de guardar.';
+        errorEl.hidden = false;
+        return;
+      }
+      $('#standaloneError').hidden = true;
+      standaloneDiscounts[index].saved = true;
+      renderDescuentosTab();
+    });
+    row.querySelector('[data-edit]')?.addEventListener('click', () => { standaloneDiscounts[index].saved = false; renderDescuentosTab(); });
+    row.querySelector('[data-remove]')?.addEventListener('click', () => {
       standaloneDiscounts.splice(index, 1);
       renderDescuentosTab();
     });
@@ -882,7 +930,7 @@ function bindStandalone() {
     // block progress or force the admin to delete it manually — just drop it.
     standaloneDiscounts = standaloneDiscounts.filter(row => row.person || row.discount || row.reason.trim());
     const wasEmpty = standaloneDiscounts.length === 0; // capture before renderDescuentosTab() re-seeds a blank row
-    const incomplete = standaloneDiscounts.some(row => !row.person || !row.discount || !row.reason.trim());
+    const incomplete = standaloneDiscounts.some(row => !isAbsenceRowComplete(row));
     if (wasEmpty || incomplete) {
       renderDescuentosTab();
       const freshError = $('#standaloneError');
@@ -890,6 +938,7 @@ function bindStandalone() {
       freshError.hidden = false;
       return;
     }
+    standaloneDiscounts.forEach(row => { row.saved = true; });
     $('#standaloneError').hidden = true;
     event.currentTarget.classList.add('is-loading');
     try {
