@@ -341,6 +341,7 @@ button {
   font-size: clamp(3rem, 5.4vw, 6.2rem);
   line-height: 1.07;
   letter-spacing: -0.07em;
+  word-spacing: -0.3em;
 }
 
 .hero-title span {
