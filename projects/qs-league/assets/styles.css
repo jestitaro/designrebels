@@ -41,6 +41,31 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131, 71, 255, 0.9) rgba(255, 255, 255, 0.04);
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+html::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, var(--magenta), var(--violet), var(--cyan))
+    padding-box;
+  box-shadow: 0 0 12px rgba(131, 71, 255, 0.35);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(180deg, var(--cyan), var(--violet), var(--magenta))
+    padding-box;
 }
 
 body {
@@ -162,6 +187,7 @@ button {
   z-index: 50;
   top: 0;
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   background: rgba(4, 4, 13, 0.76);
   border-bottom: 1px solid rgba(131, 71, 255, 0.28);
 }
@@ -368,20 +394,18 @@ button {
 }
 
 .button--primary {
-  border-color: rgba(255, 53, 199, 0.78);
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255, 53, 199, 0.32),
-      rgba(131, 71, 255, 0.36)
-    );
-  box-shadow: var(--shadow-magenta);
+  color: #080811;
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--cyan), #6af4ff);
+  box-shadow:
+    0 8px 0 #08738d,
+    0 0 28px rgba(21, 217, 255, 0.3);
 }
 
 .button--primary:hover {
   box-shadow:
-    0 0 0 1px rgba(255, 53, 199, 0.35),
-    0 0 36px rgba(255, 53, 199, 0.38);
+    0 8px 0 #08738d,
+    0 0 36px rgba(21, 217, 255, 0.45);
 }
 
 .button__icon {
@@ -3119,13 +3143,14 @@ svg[data-lucide] {
   padding: 24px 72px 20px 30px;
   border-bottom: 1px solid rgba(131, 71, 255, 0.28);
   background:
-    radial-gradient(circle at 0 0, rgba(255, 53, 199, 0.09), transparent 38%),
+    radial-gradient(circle at 0 0, rgba(255, 53, 199, 0.12), transparent 38%),
     linear-gradient(
       180deg,
-      rgba(8, 8, 25, 0.99),
-      rgba(8, 8, 25, 0.96)
+      rgba(8, 8, 25, 0.72),
+      rgba(8, 8, 25, 0.6)
     );
   backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 12px 28px rgba(3, 3, 12, 0.32);
 }
 
@@ -3331,7 +3356,10 @@ svg[data-lucide] {
   z-index: 300;
   display: flex;
   flex-direction: column;
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 12% 0, rgba(255, 53, 199, 0.1), transparent 32%),
+    radial-gradient(circle at 88% 0, rgba(21, 217, 255, 0.08), transparent 30%),
+    var(--bg);
   visibility: hidden;
   opacity: 0;
   transition: opacity 220ms ease, visibility 220ms ease;
@@ -3350,6 +3378,9 @@ svg[data-lucide] {
   gap: 20px;
   padding: 14px clamp(20px, 4vw, 56px);
   border-bottom: 1px solid rgba(131, 71, 255, 0.28);
+  background: rgba(4, 4, 13, 0.7);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .admin-page__brand {
