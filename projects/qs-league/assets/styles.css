@@ -2423,6 +2423,97 @@ svg[data-lucide] {
   margin-top: 0;
 }
 
+/* Standalone "Aplicar meteoritos" rows have a 4th field (Fecha), so they
+   need their own column count instead of the wizard's 3-field template. */
+.absence-row--with-date {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(140px, 1.1fr) minmax(140px, 0.9fr) 38px;
+}
+
+/* Saved row: compact summary instead of the edit form, with edit/eliminar
+   instead of a lone trash can sitting next to an unfinished row. */
+.absence-row--saved {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-color: rgba(184, 255, 61, 0.35);
+  background: rgba(184, 255, 61, 0.05);
+}
+
+.absence-row__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  min-width: 0;
+}
+
+.absence-row__summary strong {
+  color: var(--text);
+}
+
+.absence-row__summary span {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.absence-row__summary small {
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.absence-row__actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.absence-save-button,
+.absence-edit-button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background var(--transition),
+    transform var(--transition);
+}
+
+.absence-save-button {
+  border: 1px solid rgba(184, 255, 61, 0.45);
+  color: var(--green);
+  background: rgba(184, 255, 61, 0.05);
+}
+
+.absence-save-button:hover {
+  transform: translateY(-1px);
+  background: rgba(184, 255, 61, 0.14);
+}
+
+.absence-edit-button {
+  border: 1px solid rgba(21, 217, 255, 0.4);
+  color: var(--cyan);
+  background: rgba(21, 217, 255, 0.04);
+}
+
+.absence-edit-button:hover {
+  transform: translateY(-1px);
+  background: rgba(21, 217, 255, 0.12);
+}
+
+.absence-save-button svg,
+.absence-edit-button svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.9;
+}
+
 .absence-remove-button {
   width: 38px;
   height: 38px;
