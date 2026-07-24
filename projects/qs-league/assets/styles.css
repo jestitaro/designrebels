@@ -2172,6 +2172,16 @@ svg[data-lucide] {
   margin-top: 18px;
 }
 
+/* "Ver todos los competidores" only wants the ranking, not the movement
+   feed — "Ver resultados" (Explorar) keeps showing both. */
+.results-modal--ranking-only .results-layout {
+  grid-template-columns: 1fr;
+}
+
+.results-modal--ranking-only .recent-activity {
+  display: none;
+}
+
 .partial-ranking,
 .recent-activity {
   border: 1px solid rgba(131, 71, 255, 0.45);
