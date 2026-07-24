@@ -8,10 +8,10 @@
   const brachiosaurusRenderer = `  function dino() {
     const phase = player.frame;
     const step = Math.floor(phase) % 2;
-    const bob = player.grounded ? Math.sin(phase * Math.PI) * 0.38 : 0;
+    const bob = player.grounded ? Math.sin(phase * Math.PI) * 0.28 : 0;
     const x = player.x;
     const y = player.y + bob;
-    const p = player.w / 24;
+    const p = player.w / 22;
 
     const R = (a, b, c, d, color) => {
       ctx.fillStyle = color;
@@ -23,70 +23,73 @@
       );
     };
 
-    const cyan = "#15d9ff";
-    const blue = "#168dff";
-    const dark = "#075ecb";
+    const cyan = "#65d8ff";
+    const light = "#3ec6ff";
+    const blue = "#2f8ff0";
+    const dark = "#195ec3";
     const violet = "#8347ff";
     const violetDark = "#5d2acb";
+    const magenta = "#ff35c7";
 
     ctx.save();
-    ctx.shadowBlur = 6;
+
+    // Sin halo grande: apenas un borde suave.
+    ctx.shadowBlur = 2;
     ctx.shadowColor = cyan;
 
-    // Cola y lomo escalonados.
-    R(0, 13, 4, 2, blue);
-    R(3, 12, 4, 3, blue);
-    R(6, 11, 5, 5, blue);
-    R(9, 10, 7, 7, blue);
+    // Cola corta y escalonada.
+    R(0, 12, 4, 2, blue);
+    R(3, 11, 4, 3, blue);
+    R(6, 10, 4, 4, light);
 
     // Cuerpo compacto.
-    R(7, 12, 10, 5, blue);
-    R(9, 11, 7, 2, cyan);
-    R(7, 15, 9, 2, dark);
+    R(7, 9, 7, 6, cyan);
+    R(6, 11, 9, 4, light);
+    R(8, 14, 6, 2, blue);
+    R(7, 15, 7, 1, dark);
 
-    // Cuello largo con inclinación suave hacia la cabeza.
-    R(14, 8, 4, 7, blue);
-    R(15, 5, 4, 7, blue);
-    R(16, 2, 4, 6, blue);
-    R(17, 1, 5, 4, cyan);
+    // Cuello más largo y angosto.
+    R(12, 7, 3, 7, light);
+    R(13, 4, 3, 6, light);
+    R(14, 1, 3, 6, cyan);
+    R(15, 0, 4, 4, cyan);
 
-    // Cabeza y hocico.
-    R(18, 1, 5, 5, cyan);
-    R(21, 3, 3, 3, cyan);
-    R(19, 5, 5, 1, dark);
-    R(21, 5, 3, 1, "#ff35c7");
-    R(21, 2, 1, 1, "#04040d");
+    // Cabeza pequeña, similar a la referencia.
+    R(16, 0, 4, 4, cyan);
+    R(19, 1, 3, 3, cyan);
+    R(20, 3, 2, 1, magenta);
+    R(18, 1, 1, 1, "#04040d");
 
-    // Panza y franja interna del cuello.
-    R(11, 13, 5, 4, violet);
-    R(14, 10, 3, 5, violet);
-    R(16, 6, 2, 6, violet);
-    R(16, 11, 1, 4, violetDark);
+    // Franja violeta del pecho y panza.
+    R(10, 11, 4, 4, violet);
+    R(12, 8, 2, 5, violet);
+    R(13, 5, 2, 4, violet);
+    R(13, 11, 1, 4, violetDark);
 
-    // Patas suaves: cambian apenas entre dos poses.
+    // Patas simples y con movimiento mínimo.
     if (!player.grounded) {
-      R(8, 16, 3, 5, blue);
-      R(7, 20, 5, 2, dark);
-      R(14, 16, 3, 5, blue);
-      R(14, 20, 5, 2, dark);
+      R(8, 15, 2, 5, light);
+      R(7, 19, 4, 2, dark);
+      R(13, 15, 2, 5, light);
+      R(13, 19, 4, 2, dark);
     } else if (step === 0) {
-      R(8, 16, 3, 6, blue);
-      R(7, 21, 5, 1, dark);
-      R(14, 16, 3, 5, blue);
-      R(14, 20, 5, 2, dark);
+      R(8, 15, 2, 6, light);
+      R(7, 20, 4, 1, dark);
+      R(13, 15, 2, 5, light);
+      R(13, 19, 4, 2, dark);
     } else {
-      R(8, 16, 3, 5, blue);
-      R(7, 20, 5, 2, dark);
-      R(14, 16, 3, 6, blue);
-      R(14, 21, 5, 1, dark);
+      R(8, 15, 2, 5, light);
+      R(7, 19, 4, 2, dark);
+      R(13, 15, 2, 6, light);
+      R(13, 20, 4, 1, dark);
     }
 
-    // Reflejos acotados para conservar el look neon sin tapar el sprite.
+    // Reflejos mínimos para conservar el estilo pixel neon.
     ctx.shadowBlur = 0;
-    R(1, 13, 7, 1, "#24e7ff");
-    R(9, 10, 6, 1, "#24e7ff");
-    R(16, 2, 2, 5, "#24e7ff");
-    R(18, 1, 4, 1, "#24e7ff");
+    R(1, 12, 6, 1, "#8ce7ff");
+    R(7, 9, 6, 1, "#8ce7ff");
+    R(14, 1, 2, 5, "#8ce7ff");
+    R(16, 0, 3, 1, "#8ce7ff");
 
     ctx.restore();
   }
@@ -94,7 +97,7 @@
 `;
 
   async function boot() {
-    const response = await fetch(`${ORIGINAL_SCRIPT}?v=brachiosaurio-1`, {
+    const response = await fetch(`${ORIGINAL_SCRIPT}?v=brachiosaurio-2`, {
       cache: "no-store"
     });
 
@@ -121,7 +124,6 @@
   boot().catch((error) => {
     console.error("No se pudo aplicar el brachiosaurio:", error);
 
-    // Si algo externo falla, conserva el juego original en lugar de dejarlo sin iniciar.
     const fallback = document.createElement("script");
     fallback.src = ORIGINAL_SCRIPT;
     document.body.appendChild(fallback);
