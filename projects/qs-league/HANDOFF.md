@@ -52,7 +52,7 @@ El ranking **nunca** se lee de un total cacheado — siempre se recalcula sumand
 - Un rol único: `ADMIN`, verificado contra `dinocup_users/{uid}.role`.
 - Ese doc **nunca se escribe desde el cliente** — un admin se da de alta a mano (Firebase console: crear usuario en Authentication + crear su doc en `dinocup_users` con `role: "ADMIN"`).
 - Entrada: link "Admin" en el header Y en el footer (antes solo estaba en el footer, se agregó al header a pedido). Si hay sesión activa, ambos links se ponen verdes con un puntito — así si volvés a la landing sin cerrar sesión, se nota que seguís logueado.
-- El panel es una **página completa** (no un modal) con su propio header, tabs (Resumen / Cargar resultados / Aplicar meteoritos / Movimientos) y "Volver al sitio" + "Cerrar sesión" agrupados arriba a la derecha con distinto peso visual (Volver = sutil, Cerrar sesión = magenta marcado).
+- El panel es una **página completa** (no un modal) con su propio header, tabs (Cargar resultados / Aplicar meteoritos / Movimientos — se sacó "Resumen", no aportaba valor) y "Volver al sitio" + "Cerrar sesión" agrupados arriba a la derecha con distinto peso visual (Volver = sutil, Cerrar sesión = magenta marcado).
 
 ## Terminología (importante, es una decisión deliberada)
 
@@ -78,6 +78,8 @@ Al confirmar: se excluye al moderador del cálculo, se recalcula el podio real d
 - **"Confirmar y aplicar" se quedaba colgado**: si Storage no está aprovisionado en el proyecto, la llamada podía quedarse esperando en vez de fallar rápido. Se envolvieron todas las llamadas a Firebase del panel en un timeout.
 - **Filas de meteorito vacías bloqueaban avanzar**: agregar una fila con "Agregar ausencia" y no completarla obligaba a borrarla a mano. Ahora se descarta sola si queda vacía; solo bloquea si tiene datos parciales.
 - **UX de guardar/eliminar poco clara**: se agregó un estado explícito de "editando" (botón check/Guardar) vs "guardada" (resumen compacto + Editar/Eliminar), en vez de mostrar siempre el tacho de basura.
+- **Botón "Guardar" (check) con altura distinta a los inputs y sin bloqueo real**: medía 38px fijos contra los 46px de los inputs de la fila, y se podía tocar sin haber elegido persona. Ahora mide 46px (igual altura) y queda `disabled` mientras `row.person` esté vacío.
+- **"Aplicar meteoritos" (standalone) bloqueaba la carga si alguna fila quedaba incompleta**: pedía completar persona/meteorito/motivo en todas las filas antes de dejar aplicar. Como completar una fila no es obligatorio, ahora al confirmar se aplican solo las filas completas y las incompletas se descartan en silencio (solo bloquea si no queda ninguna fila completa). También se sacó la lista "Vista previa" que duplicaba lo que ya muestra el resumen de cada fila guardada.
 
 ## Metodología de testing usada en esta sesión
 
