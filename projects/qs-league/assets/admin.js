@@ -126,7 +126,7 @@ let adminMatches = [];
 let adminMovements = [];
 let unsubMatches = null;
 let unsubMovements = null;
-let activeTab = 'resumen';
+let activeTab = 'cargar';
 let cargarSubview = 'nueva';
 
 const adminLoginModal = $('#adminLoginModal');
@@ -154,7 +154,7 @@ function openLoginModal() { adminLoginError.hidden = true; adminLoginForm.reset(
 function closeLoginModal() { toggleModal(adminLoginModal, false, adminAccessLink); }
 function openAdminPanel() {
   toggleModal(adminPanelModal, true);
-  setActiveTab('resumen');
+  setActiveTab('cargar');
 }
 function closeAdminPanel() { toggleModal(adminPanelModal, false, adminAccessLink); }
 
@@ -224,8 +224,7 @@ function setActiveTab(name) {
 }
 function renderActiveTab() {
   if (!currentAdmin?.isAdmin) { adminViewContent.innerHTML = '<p class="admin-empty">Sesión no autorizada.</p>'; return; }
-  if (activeTab === 'resumen') renderResumenTab();
-  else if (activeTab === 'cargar') renderCargarTab();
+  if (activeTab === 'cargar') renderCargarTab();
   else if (activeTab === 'descuentos') renderDescuentosTab();
   else if (activeTab === 'movimientos') renderMovimientosTab();
   icons();
@@ -242,58 +241,6 @@ const STATUS_LABEL = { DRAFT: 'Borrador', PROCESSING: 'Procesando', APPLIED: 'Ap
 const STATUS_CLASS = { DRAFT: 'muted', PROCESSING: 'violet', APPLIED: 'green', ERROR: 'magenta', ANNULLED: 'muted' };
 function statusChip(status) { return `<span class="status-chip status-chip--${STATUS_CLASS[status] || 'muted'}">${STATUS_LABEL[status] || status}</span>`; }
 const TYPE_LABEL = { REPORT_RESULT: 'Resultado de informe', ABSENCE_PENALTY: 'Meteorito', REPORT_REVERSAL: 'Anulación de resultado', PENALTY_REVERSAL: 'Anulación de meteorito' };
-
-/* ============================================================
-   RESUMEN
-   ============================================================ */
-function renderResumenTab() {
-  const lastMatch = [...adminMatches].sort((a, b) => (toDate(b.uploadedAt) || 0) - (toDate(a.uploadedAt) || 0))[0];
-  const lastDiscounts = adminMovements.filter(m => m.type === 'ABSENCE_PENALTY' && m.status === 'APPLIED').slice(0, 3);
-  const annulled = [...adminMovements.filter(m => m.status === 'ANNULLED'), ...adminMatches.filter(m => m.status === 'ANNULLED')]
-    .sort((a, b) => (toDate(b.annulledAt) || 0) - (toDate(a.annulledAt) || 0)).slice(0, 3);
-  const errors = adminMatches.filter(m => m.status === 'ERROR').sort((a, b) => (toDate(b.erroredAt) || 0) - (toDate(a.erroredAt) || 0)).slice(0, 3);
-
-  const events = [
-    ...adminMovements.map(m => ({ ts: toDate(m.createdAt), by: m.createdByEmail })),
-    ...adminMatches.map(m => ({ ts: toDate(m.appliedAt) || toDate(m.uploadedAt), by: m.uploadedByEmail })),
-    ...adminMatches.filter(m => m.annulledAt).map(m => ({ ts: toDate(m.annulledAt), by: m.annulledBy }))
-  ].filter(e => e.ts).sort((a, b) => b.ts - a.ts);
-  const lastEvent = events[0];
-
-  adminViewContent.innerHTML = `
-    <div class="admin-grid">
-      <article class="admin-card">
-        <h3>Última carga realizada</h3>
-        ${lastMatch ? `<p><strong>${esc(lastMatch.detectedTitle || 'Sin título')}</strong></p>
-          <p class="admin-card__meta">${shortDate(lastMatch.sessionDate)} · Moderador ${esc(lastMatch.moderatorName || '—')} ${statusChip(lastMatch.status)}</p>` : '<p class="admin-empty">Todavía no hay cargas.</p>'}
-      </article>
-
-      <article class="admin-card">
-        <h3>Últimos meteoritos aplicados</h3>
-        ${lastDiscounts.length ? `<ul class="admin-mini-list">${lastDiscounts.map(m => `<li><strong>${esc(m.playerName)} ${fmtCoins(m.points)}</strong><small>${esc(m.reason || '')}</small></li>`).join('')}</ul>` : '<p class="admin-empty">Sin meteoritos registrados.</p>'}
-      </article>
-
-      <article class="admin-card">
-        <h3>Operaciones anuladas recientemente</h3>
-        ${annulled.length ? `<ul class="admin-mini-list">${annulled.map(item => `<li><strong>${esc(item.playerName || item.detectedTitle || 'Carga')}</strong><small>${fmtDateTime(item.annulledAt)}</small></li>`).join('')}</ul>` : '<p class="admin-empty">Sin anulaciones recientes.</p>'}
-      </article>
-
-      <article class="admin-card">
-        <h3>Errores recientes</h3>
-        ${errors.length ? `<ul class="admin-mini-list">${errors.map(item => `<li><strong>${esc(item.detectedTitle || 'Carga')}</strong><small>${esc(item.errorMessage || '')}</small></li>`).join('')}</ul>` : '<p class="admin-empty">Sin errores recientes.</p>'}
-      </article>
-
-      <article class="admin-card">
-        <h3>Movimientos totales</h3>
-        <p class="admin-card__big">${fmt(adminMovements.length)}</p>
-      </article>
-
-      <article class="admin-card">
-        <h3>Última modificación</h3>
-        ${lastEvent ? `<p>${fmtDateTime({ toDate: () => lastEvent.ts })}</p><p class="admin-card__meta">${esc(lastEvent.by || '—')}</p>` : '<p class="admin-empty">Sin actividad todavía.</p>'}
-      </article>
-    </div>`;
-}
 
 /* ============================================================
    CARGAR RESULTADOS (wizard + historial)
@@ -454,7 +401,7 @@ function wizardAbsenceRowHtml(row, index) {
     <label><span>Persona</span><select class="absence-person" data-field="person">${options}</select></label>
     <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason || '')}" placeholder="Motivo de la ausencia" /></label>
-    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar"><i data-lucide="check" aria-hidden="true"></i></button>
+    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar" ${row.person ? '' : 'disabled'}><i data-lucide="check" aria-hidden="true"></i></button>
   </div>`;
 }
 
@@ -859,8 +806,6 @@ function renderDescuentosTab() {
     <div class="absence-list" id="standaloneList">${standaloneDiscounts.map((row, index) => standaloneRowHtml(row, index)).join('')}</div>
     <button class="absence-add-button" id="standaloneAdd" type="button"><i data-lucide="user-plus" aria-hidden="true"></i>Agregar otra ausencia</button>
 
-    <h4>Vista previa</h4>
-    <ul class="admin-result-list" id="standalonePreview">${standalonePreviewHtml()}</ul>
     <p class="admin-form-error" id="standaloneError" hidden></p>
 
     <div class="admin-wizard-actions">
@@ -882,13 +827,8 @@ function standaloneRowHtml(row, index) {
     <label><span>Meteorito</span><select class="absence-points" data-field="discount">${discountOptionsHtml(row.discount)}</select></label>
     <label><span>Motivo</span><input type="text" data-field="reason" value="${esc(row.reason)}" placeholder="Motivo de la ausencia" /></label>
     <label><span>Fecha</span><input type="date" data-field="date" value="${esc(row.date)}" /></label>
-    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar"><i data-lucide="check" aria-hidden="true"></i></button>
+    <button class="absence-save-button" type="button" data-save aria-label="Guardar ausencia" title="Guardar" ${row.person ? '' : 'disabled'}><i data-lucide="check" aria-hidden="true"></i></button>
   </div>`;
-}
-function standalonePreviewHtml() {
-  const valid = standaloneDiscounts.filter(row => row.person && row.discount);
-  if (!valid.length) return '<li class="admin-empty">Agregá al menos una ausencia.</li>';
-  return valid.map(row => `<li>${esc(player(row.person)?.name || row.person)} · ${row.discount} · ${esc(row.reason || 'sin motivo')} · ${shortDate(row.date)}</li>`).join('');
 }
 function bindStandalone() {
   const list = $('#standaloneList');
@@ -905,7 +845,7 @@ function bindStandalone() {
       field.addEventListener('change', () => { standaloneDiscounts[index][field.dataset.field] = field.value; renderDescuentosTab(); });
     });
     row.querySelectorAll('input[data-field]').forEach(field => {
-      field.addEventListener('input', () => { standaloneDiscounts[index][field.dataset.field] = field.value; $('#standalonePreview').innerHTML = standalonePreviewHtml(); });
+      field.addEventListener('input', () => { standaloneDiscounts[index][field.dataset.field] = field.value; });
     });
     row.querySelector('[data-save]')?.addEventListener('click', () => {
       if (!isAbsenceRowComplete(standaloneDiscounts[index])) {
@@ -926,18 +866,17 @@ function bindStandalone() {
   });
   $('#standaloneCancel').addEventListener('click', () => { standaloneDiscounts = []; renderDescuentosTab(); });
   $('#standaloneConfirm').addEventListener('click', async event => {
-    // A row added via "Agregar otra ausencia" but never touched shouldn't
-    // block progress or force the admin to delete it manually — just drop it.
-    standaloneDiscounts = standaloneDiscounts.filter(row => row.person || row.discount || row.reason.trim());
-    const wasEmpty = standaloneDiscounts.length === 0; // capture before renderDescuentosTab() re-seeds a blank row
-    const incomplete = standaloneDiscounts.some(row => !isAbsenceRowComplete(row));
-    if (wasEmpty || incomplete) {
+    // Completing a row is optional, not mandatory — silently drop anything
+    // incomplete (empty or partial) instead of blocking the whole submission.
+    const complete = standaloneDiscounts.filter(row => isAbsenceRowComplete(row));
+    if (!complete.length) {
       renderDescuentosTab();
       const freshError = $('#standaloneError');
-      freshError.textContent = wasEmpty ? 'Agregá al menos una ausencia.' : 'Completá persona, meteorito y motivo en cada fila.';
+      freshError.textContent = 'Agregá al menos una ausencia.';
       freshError.hidden = false;
       return;
     }
+    standaloneDiscounts = complete;
     standaloneDiscounts.forEach(row => { row.saved = true; });
     $('#standaloneError').hidden = true;
     event.currentTarget.classList.add('is-loading');
@@ -956,6 +895,7 @@ function bindStandalone() {
       renderDescuentosTab();
     } catch (error) {
       console.error(error);
+      const errorEl = $('#standaloneError');
       errorEl.textContent = 'No pude aplicar los meteoritos. Probá de nuevo.';
       errorEl.hidden = false;
     } finally {

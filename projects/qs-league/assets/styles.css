@@ -2474,8 +2474,8 @@ svg[data-lucide] {
 
 .absence-save-button,
 .absence-edit-button {
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   border-radius: 10px;
@@ -2515,8 +2515,8 @@ svg[data-lucide] {
 }
 
 .absence-remove-button {
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   display: grid;
   place-items: center;
   border: 1px solid rgba(255, 53, 199, 0.38);
@@ -3894,7 +3894,8 @@ svg[data-lucide] {
 }
 
 .button:disabled,
-.admin-btn:disabled {
+.admin-btn:disabled,
+.absence-save-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
   pointer-events: none;
