@@ -582,6 +582,7 @@ async function confirmWizardApply(confirmBtn) {
       movements.push({
         type: 'REPORT_RESULT', playerId: row.playerId, playerName: row.playerName, points: prize.delta,
         reason: `${longDate(uploadWizard.sessionDate)} · +${prize.delta} ${prize.delta === 1 ? 'punto' : 'puntos'}`,
+        sessionDate: uploadWizard.sessionDate,
         sourceType: 'KAHOOT_IMPORT', sourceId: matchRef.id, createdBy: currentAdmin.uid, createdByEmail: currentAdmin.email
       });
     });
