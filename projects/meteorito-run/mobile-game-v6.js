@@ -202,6 +202,11 @@
   `;
   document.head.appendChild(forcedStyle);
 
+  const uxStyles = document.createElement("link");
+  uxStyles.rel = "stylesheet";
+  uxStyles.href = "mobile-ux-v7.css?v=7";
+  document.head.appendChild(uxStyles);
+
   const syncControls = () => {
     if (soundButton && soundProxy) {
       const pressed = soundButton.getAttribute("aria-pressed") === "true";
