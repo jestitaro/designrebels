@@ -1,0 +1,247 @@
+/* Mobile lightbox · Meteorito Run */
+.mobile-game-launch,
+.mobile-game-toolbar,
+.rotate-device {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  html,
+  body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  body {
+    padding-bottom: 28px;
+  }
+
+  .game-header {
+    position: relative;
+    min-height: 64px;
+  }
+
+  .game-header .header-actions {
+    display: none;
+  }
+
+  .game-shell {
+    display: block !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: 10px !important;
+    overflow: visible !important;
+  }
+
+  .game-copy {
+    padding: 18px 0 6px;
+    text-align: left;
+  }
+
+  .game-copy h1 {
+    max-width: 330px;
+    margin: 18px 0 16px;
+    font-size: clamp(1.55rem, 9vw, 2.25rem) !important;
+    line-height: 1.32 !important;
+  }
+
+  .game-copy > p {
+    max-width: 360px;
+    margin: 0;
+    font-size: .86rem;
+    line-height: 1.55;
+  }
+
+  .mini-stats {
+    margin-top: 22px;
+  }
+
+  .mobile-game-launch {
+    width: 100%;
+    min-height: 54px;
+    margin: 20px 0 8px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 14px;
+    color: #080811;
+    font-family: var(--display);
+    font-size: .42rem;
+    background: linear-gradient(90deg, var(--cyan), #6af4ff);
+    box-shadow: 0 8px 0 #08738d, 0 0 28px rgba(21,217,255,.24);
+    cursor: pointer;
+  }
+
+  .game-frame {
+    display: none;
+  }
+
+  body.mobile-game-open {
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  body.mobile-game-open .game-frame {
+    position: fixed;
+    z-index: 999;
+    inset: 0;
+    width: 100vw !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border: 0;
+    border-radius: 0;
+    background: #04040d;
+    box-shadow: none;
+  }
+
+  body.mobile-game-open .frame-top {
+    display: none;
+  }
+
+  body.mobile-game-open .canvas-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+  }
+
+  body.mobile-game-open .frame-bottom {
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: .28rem;
+  }
+
+  .mobile-game-toolbar {
+    position: relative;
+    z-index: 20;
+    min-height: 58px;
+    padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    border-bottom: 1px solid rgba(131,71,255,.3);
+    background: rgba(5,5,18,.96);
+  }
+
+  .mobile-game-toolbar__title {
+    margin-right: auto;
+    color: var(--cyan);
+    font-family: var(--display);
+    font-size: .32rem;
+  }
+
+  .mobile-game-toolbar .icon-button {
+    width: 40px;
+    height: 40px;
+    display: grid;
+  }
+
+  .mobile-game-toolbar .icon-button svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  #mobilePauseProxy .icon--play {
+    display: none;
+  }
+
+  #mobilePauseProxy.is-paused .icon--pause {
+    display: none;
+  }
+
+  #mobilePauseProxy.is-paused .icon--play {
+    display: block;
+  }
+
+  .mobile-jump {
+    right: 18px !important;
+    bottom: 20px !important;
+    width: 92px !important;
+    height: 92px !important;
+    display: grid !important;
+    opacity: .92 !important;
+    font-size: .36rem !important;
+    background: radial-gradient(circle, rgba(21,217,255,.2), rgba(6,7,22,.94) 70%) !important;
+  }
+
+  .rotate-device {
+    position: absolute;
+    z-index: 30;
+    inset: 0;
+    padding: 24px;
+    place-items: center;
+    text-align: center;
+    background: rgba(3,3,13,.95);
+    backdrop-filter: blur(8px);
+  }
+
+  .rotate-device__card {
+    width: min(90%, 360px);
+    padding: 28px 22px;
+    border: 1px solid rgba(131,71,255,.55);
+    border-radius: 20px;
+    background: rgba(8,9,27,.98);
+    box-shadow: 0 0 36px rgba(131,71,255,.2);
+  }
+
+  .rotate-device__icon {
+    display: block;
+    margin-bottom: 18px;
+    color: var(--cyan);
+    font-size: 2rem;
+    transform: rotate(90deg);
+  }
+
+  .rotate-device strong {
+    display: block;
+    color: var(--text);
+    font-family: var(--display);
+    font-size: .68rem;
+    line-height: 1.55;
+  }
+
+  .rotate-device p {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: .84rem;
+    line-height: 1.5;
+  }
+
+  @media (orientation: portrait) {
+    body.mobile-game-open .rotate-device {
+      display: grid;
+    }
+  }
+
+  @media (orientation: landscape) {
+    body.mobile-game-open .rotate-device {
+      display: none;
+    }
+
+    body.mobile-game-open .mobile-game-toolbar {
+      min-height: 48px;
+      padding-top: calc(5px + env(safe-area-inset-top));
+      padding-bottom: 5px;
+    }
+
+    body.mobile-game-open .frame-bottom {
+      min-height: 28px;
+    }
+
+    body.mobile-game-open .hud {
+      inset: 10px 14px auto;
+    }
+
+    body.mobile-game-open .mobile-jump {
+      width: 78px !important;
+      height: 78px !important;
+      right: 16px !important;
+      bottom: 14px !important;
+    }
+  }
+}
