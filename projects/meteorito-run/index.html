@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="responsive-height-v5.css?v=5">
+  <link rel="stylesheet" href="mobile-game-v6.css?v=6">
   <style>
     .overlay{overflow-y:auto;overscroll-behavior:contain}.overlay-card--start{max-height:calc(100% - 24px);padding:clamp(22px,3vw,32px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(21,217,255,.72) transparent}.overlay-card--start h2{margin:14px 0;font-size:clamp(1.2rem,2.55vw,2rem)}.overlay-card--start p{line-height:1.5}.overlay-card--start .controls-grid{margin:18px 0}.overlay-card--start .control{min-height:68px}.overlay-card--start .button{margin-top:18px}.overlay-card--start .overlay-note{margin-top:13px}.result-grid--three{grid-template-columns:repeat(3,1fr)}.result-grid--three strong{font-size:.66rem}.quartz-pop{position:absolute;z-index:9;pointer-events:none;color:var(--green);font-family:var(--display);font-size:.55rem;text-shadow:0 0 18px rgba(184,255,61,.95);animation:quartzPop .7s ease-out forwards}@keyframes quartzPop{from{opacity:1;transform:translate(-50%,0) scale(.8)}to{opacity:0;transform:translate(-50%,-48px) scale(1.15)}}@media(max-width:700px){.overlay-card--start{max-height:calc(100% - 12px);padding:18px 16px}.overlay-card--start h2{margin:10px 0;font-size:1.08rem}.overlay-card--start .controls-grid{margin:12px 0}.overlay-card--start .control{min-height:58px}.overlay-card--start .button{margin-top:13px}.overlay-card--start .overlay-note{margin-top:10px;font-size:.62rem}.result-grid--three{grid-template-columns:1fr 1fr}.result-grid--three div:last-child{grid-column:1/-1}}
     #pauseButton .icon--pause,#pauseButton .icon--play{display:none}
@@ -79,9 +80,47 @@
           <strong id="outsideLevel">NOVATO</strong>
         </div>
       </div>
+
+      <button class="mobile-game-launch" id="mobileGameLaunch" type="button" aria-expanded="false">
+        ABRIR JUEGO
+      </button>
     </section>
 
     <section class="game-frame" aria-label="Área de juego">
+      <div class="mobile-game-toolbar">
+        <span class="mobile-game-toolbar__title">METEORITO_RUN.EXE</span>
+
+        <button class="icon-button" id="mobileSoundProxy" type="button" aria-label="Activar sonido" aria-pressed="false">
+          <svg class="icon icon--sound-on" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M11 5 6 9H2v6h4l5 4V5Z"></path>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+            <path d="M18 6a8.5 8.5 0 0 1 0 12"></path>
+          </svg>
+          <svg class="icon icon--sound-off" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M11 5 6 9H2v6h4l5 4V5Z"></path>
+            <path d="m22 9-6 6"></path>
+            <path d="m16 9 6 6"></path>
+          </svg>
+        </button>
+
+        <button class="icon-button" id="mobilePauseProxy" type="button" aria-label="Pausar partida" disabled>
+          <svg class="icon icon--pause" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M8 5v14"></path>
+            <path d="M16 5v14"></path>
+          </svg>
+          <svg class="icon icon--play" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m8 5 11 7-11 7V5Z"></path>
+          </svg>
+        </button>
+
+        <button class="icon-button" id="mobileGameClose" type="button" aria-label="Cerrar juego">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12"></path>
+            <path d="m18 6-12 12"></path>
+          </svg>
+        </button>
+      </div>
+
       <div class="frame-top">
         <span class="status-dot"></span>
         <span>METEORITO_RUN.EXE</span>
@@ -90,6 +129,14 @@
 
       <div class="canvas-wrap" id="gameArea">
         <canvas id="gameCanvas" width="1200" height="640" aria-label="Juego Meteorito Run"></canvas>
+
+        <div class="rotate-device" aria-live="polite">
+          <div class="rotate-device__card">
+            <span class="rotate-device__icon" aria-hidden="true">↻</span>
+            <strong>GIRÁ EL CELULAR</strong>
+            <p>Para jugar mejor, usá el teléfono en horizontal.</p>
+          </div>
+        </div>
 
         <div class="hud" aria-hidden="true">
           <div class="hud__item">
@@ -198,5 +245,6 @@
   </footer>
 
   <script src="meteorito-bootstrap-v4.js?v=4"></script>
+  <script src="mobile-game-v6.js?v=6"></script>
 </body>
 </html>
