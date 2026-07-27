@@ -1,0 +1,180 @@
+/* Dino Escape · viewport and hierarchy pass */
+@media (min-width: 1121px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    display: grid;
+    grid-template-rows: 64px minmax(0, 1fr);
+  }
+
+  .game-header {
+    width: min(calc(100% - 32px), 1440px);
+    min-height: 64px;
+    height: 64px;
+  }
+
+  .brand img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .game-shell {
+    width: min(calc(100% - 32px), 1440px);
+    height: calc(100dvh - 64px);
+    min-height: 0;
+    margin-top: 0;
+    padding: 10px 0 14px;
+    grid-template-columns: minmax(270px, .42fr) minmax(460px, .72fr);
+    align-items: center;
+    gap: clamp(28px, 4vw, 58px);
+    overflow: hidden;
+  }
+
+  .game-copy {
+    align-self: center;
+  }
+
+  .game-copy h1 {
+    margin: 20px 0 14px;
+    font-size: clamp(1.7rem, 2.8vw, 3rem);
+  }
+
+  .game-copy > p {
+    max-width: 390px;
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  .mini-stats {
+    margin-top: 22px;
+  }
+
+  .mini-stats div {
+    min-height: 70px;
+    padding: 13px 15px;
+  }
+
+  .game-frame {
+    width: auto;
+    height: 100%;
+    max-height: calc(100dvh - 88px);
+    aspect-ratio: 19 / 23.55;
+    display: grid;
+    grid-template-rows: 34px minmax(0, 1fr) 34px;
+  }
+
+  .frame-top,
+  .frame-bottom {
+    min-height: 34px;
+    height: 34px;
+    padding-inline: 14px;
+    font-size: .3rem;
+  }
+
+  .game-stage {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .board-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  #gameCanvas {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .overlay {
+    padding: 14px;
+  }
+
+  .overlay-card {
+    width: min(90%, 440px);
+    max-height: calc(100% - 12px);
+    padding: 20px 22px;
+    overflow: hidden;
+  }
+
+  .overlay-card h2 {
+    margin: 11px 0;
+    font-size: clamp(.95rem, 2.1vw, 1.4rem);
+  }
+
+  .overlay-card p {
+    font-size: .75rem;
+    line-height: 1.45;
+  }
+
+  .mobile-hint {
+    margin: 12px 0 4px;
+    padding: 10px;
+  }
+
+  .primary-button {
+    min-height: 44px;
+    margin-top: 12px;
+    font-size: .42rem;
+  }
+
+  .overlay-card small {
+    margin-top: 10px;
+    font-size: .55rem;
+  }
+}
+
+@media (min-width: 1121px) and (max-height: 760px) {
+  body {
+    grid-template-rows: 54px minmax(0, 1fr);
+  }
+
+  .game-header {
+    height: 54px;
+    min-height: 54px;
+  }
+
+  .brand img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .game-shell {
+    height: calc(100dvh - 54px);
+    padding: 6px 0 8px;
+  }
+
+  .game-frame {
+    max-height: calc(100dvh - 66px);
+    grid-template-rows: 30px minmax(0, 1fr) 30px;
+  }
+
+  .frame-top,
+  .frame-bottom {
+    height: 30px;
+    min-height: 30px;
+  }
+
+  .game-copy h1 {
+    margin: 14px 0 10px;
+    font-size: clamp(1.45rem, 2.45vw, 2.45rem);
+  }
+
+  .mini-stats {
+    margin-top: 16px;
+  }
+
+  .mini-stats div {
+    min-height: 60px;
+    padding: 10px 13px;
+  }
+}
