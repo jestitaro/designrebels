@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="viewport-v2.css?v=2">
 </head>
 <body>
   <div class="scanlines" aria-hidden="true"></div>
@@ -28,7 +29,7 @@
     <section class="game-copy">
       <span class="eyebrow">DINO CUP PRESENTA</span>
       <h1>DINO<span>ESCAPE_</span></h1>
-      <p>Recuperá todos los isologos de QuartzSales y escapá del laberinto antes de que los meteoritos te encuentren.</p>
+      <p>Recorré el laberinto, juntá todos los puntos y usá los isologos de QuartzSales para volverte inmune a los meteoritos.</p>
       <div class="mini-stats">
         <div><span>RÉCORD LOCAL</span><strong id="outsideBest">000000</strong></div>
         <div><span>MEJOR NIVEL</span><strong id="outsideLevel">01</strong></div>
@@ -46,32 +47,32 @@
       <div class="frame-top"><span class="status-dot"></span><span>DINO_ESCAPE.EXE</span><span>ONLINE</span></div>
       <div class="game-stage">
         <div class="board-wrap" id="gameArea">
-          <canvas id="gameCanvas" width="608" height="672"></canvas>
+          <canvas id="gameCanvas" width="608" height="672" aria-label="Juego Dino Escape"></canvas>
           <div class="hud"><div><span>PUNTOS</span><strong id="scoreValue">000000</strong></div><div><span>NIVEL</span><strong id="levelValue">01</strong></div><div><span>VIDAS</span><strong id="livesValue">03</strong></div></div>
 
           <div class="overlay is-visible" id="startOverlay">
             <div class="overlay-card">
               <span class="overlay-kicker">PROTOCOLO DE ESCAPE</span>
-              <h2>RECUPERÁ LOS<br><span>ISOLOGOS_</span></h2>
-              <p>Movete por los pasillos, evitá los meteoritos y activá los quarzos para volverlos vulnerables.</p>
-              <div class="mobile-hint">DESLIZÁ O USÁ LA CRUCETA</div>
+              <h2>LIMPIÁ TODO<br><span>EL LABERINTO_</span></h2>
+              <p>Juntá los puntos, evitá los meteoritos y agarrá un isologo de QuartzSales para poder atraparlos durante unos segundos.</p>
+              <div class="mobile-hint">FLECHAS · WASD · DESLIZÁ</div>
               <button class="primary-button" id="startButton">INICIAR PARTIDA</button>
-              <small>Recolectá todos los isologos para desbloquear el siguiente nivel.</small>
+              <small>Los isologos grandes te dan inmunidad temporal.</small>
             </div>
           </div>
 
-          <div class="overlay" id="pauseOverlay"><div class="overlay-card compact"><span class="overlay-kicker">SISTEMA EN PAUSA</span><h2>PAUSA_</h2><button class="primary-button" id="resumeButton">CONTINUAR</button></div></div>
-          <div class="overlay" id="gameOverOverlay"><div class="overlay-card compact"><span class="overlay-kicker">FIN DE LA PARTIDA</span><h2>EXTINCIÓN_</h2><p>Los meteoritos cerraron todas las salidas.</p><div class="results"><div><span>PUNTAJE</span><strong id="finalScore">000000</strong></div><div><span>RÉCORD</span><strong id="finalBest">000000</strong></div></div><button class="primary-button" id="restartButton">JUGAR OTRA VEZ</button></div></div>
+          <div class="overlay" id="pauseOverlay" aria-hidden="true"><div class="overlay-card compact"><span class="overlay-kicker">SISTEMA EN PAUSA</span><h2>PAUSA_</h2><button class="primary-button" id="resumeButton">CONTINUAR</button></div></div>
+          <div class="overlay" id="gameOverOverlay" aria-hidden="true"><div class="overlay-card compact"><span class="overlay-kicker">FIN DE LA PARTIDA</span><h2>EXTINCIÓN_</h2><p>Los meteoritos cerraron todas las salidas.</p><div class="results"><div><span>PUNTAJE</span><strong id="finalScore">000000</strong></div><div><span>RÉCORD</span><strong id="finalBest">000000</strong></div></div><button class="primary-button" id="restartButton">JUGAR OTRA VEZ</button></div></div>
         </div>
 
         <div class="dpad" aria-label="Controles táctiles">
           <button data-dir="up">↑</button><button data-dir="left">←</button><i></i><button data-dir="right">→</button><button data-dir="down">↓</button>
         </div>
       </div>
-      <div class="frame-bottom"><span>SISTEMA ESTABLE</span><span>V0.1.0</span></div>
+      <div class="frame-bottom"><span>SISTEMA ESTABLE</span><span>V0.2.0</span></div>
     </section>
   </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>
