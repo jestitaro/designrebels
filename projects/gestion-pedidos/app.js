@@ -331,6 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pzProducts = document.getElementById('pz-products');
   const demoBrandNameEl = document.getElementById('demo-brand-name');
   const demoLogoPreview = document.getElementById('demo-logo-preview');
+  const demoLogoIcon = document.getElementById('demo-logo-icon');
 
   let pendingLogo = null;
   let pendingProductImages = {};
@@ -409,10 +410,12 @@ document.addEventListener('DOMContentLoaded', () => {
     demoBrandNameEl.textContent = brand.name;
     if (brand.logo) {
       demoLogoPreview.src = brand.logo;
-      demoLogoPreview.style.background = 'transparent';
+      demoLogoPreview.hidden = false;
+      demoLogoIcon.hidden = true;
     } else {
       demoLogoPreview.removeAttribute('src');
-      demoLogoPreview.style.background = 'linear-gradient(135deg, var(--brand-blue), var(--brand-1))';
+      demoLogoPreview.hidden = true;
+      demoLogoIcon.hidden = false;
     }
   }
   applyBrandToUI();

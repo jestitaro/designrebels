@@ -129,7 +129,10 @@
       <div class="simulator-shell">
         <div class="simulator-toolbar">
           <div class="simulator-toolbar__brand">
-            <img id="demo-logo-preview" class="demo-logo" alt="Logo del cliente demo" />
+            <span class="demo-logo" id="demo-logo-wrap">
+              <img id="demo-logo-preview" alt="Logo del cliente demo" hidden />
+              <i class="fa-regular fa-store" id="demo-logo-icon" aria-hidden="true"></i>
+            </span>
             <span id="demo-brand-name">NutriPlus</span>
           </div>
           <div class="simulator-toolbar__actions">
@@ -147,7 +150,6 @@
           <aside class="sim-sidebar">
             <div class="sim-sidebar__item is-active"><i class="fa-regular fa-house" aria-hidden="true"></i><span>Inicio</span></div>
             <div class="sim-sidebar__item"><i class="fa-regular fa-sitemap" aria-hidden="true"></i><span>Gestión</span></div>
-            <div class="sim-sidebar__item"><i class="fa-regular fa-wrench" aria-hidden="true"></i><span>Configuración</span></div>
           </aside>
 
           <div class="sim-main">
