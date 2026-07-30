@@ -48,6 +48,8 @@ dinocup_movements  el ledger real (REPORT_RESULT/ABSENCE_PENALTY/REPORT_REVERSAL
 
 El ranking **nunca** se lee de un total cacheado — siempre se recalcula sumando `dinocup_movements` con `status: APPLIED`. Anular una carga o un meteorito no borra nada: crea un movimiento inverso y marca el original `ANNULLED`.
 
+`app.js` (público) ahora también se suscribe a `dinocup_matches` (de sólo lectura) para calcular la card "Próximo moderador y suplente": toma el último match `APPLIED` por `sessionDate`, excluye al moderador de esa fecha de `detectedResults`, y el último puesto pasa a moderar la próxima, el anteúltimo es el suplente. `dinocup_matches` ya era público en `firestore.rules` desde antes (pensado justo para esto), así que no hizo falta tocar las reglas.
+
 ## Acceso admin
 
 - Un rol único: `ADMIN`, verificado contra `dinocup_users/{uid}.role`.
