@@ -24,13 +24,21 @@ function movementTime(movement) {
   return typeof movement.createdAt?.toMillis === 'function' ? movement.createdAt.toMillis() : Date.now();
 }
 
+/* "Meteorito" movements (ABSENCE_PENALTY and their PENALTY_REVERSAL) don't
+   reflect how someone actually played, so they're excluded from
+   gamePoints — used only to find who lost the most Kahoots, not who has
+   the lowest overall balance. The real point totals/podium still include
+   them, unchanged. */
+const METEORITO_TYPES = new Set(['ABSENCE_PENALTY', 'PENALTY_REVERSAL']);
+
 function computeStandings() {
-  const totals = new Map(players.map(p => [p.id, { ...p, points: 0, medals: { gold: 0, silver: 0, bronze: 0 } }]));
+  const totals = new Map(players.map(p => [p.id, { ...p, points: 0, gamePoints: 0, medals: { gold: 0, silver: 0, bronze: 0 } }]));
   const ledger = [];
   movements.forEach(movement => {
     const total = totals.get(movement.playerId);
     if (!total) return;
     total.points += movement.points || 0;
+    if (!METEORITO_TYPES.has(movement.type)) total.gamePoints += movement.points || 0;
     if (movement.type === 'REPORT_RESULT') {
       if (movement.points === 3) total.medals.gold += 1;
       else if (movement.points === 2) total.medals.silver += 1;
@@ -45,6 +53,17 @@ function standingsPlayers() {
   const { totals } = computeStandings();
   return [...totals.values()]
     .sort((a, b) => (b.points - a.points) || (b.medals.gold - a.medals.gold) || (b.medals.silver - a.medals.silver) || a.name.localeCompare(b.name, 'es'));
+}
+/* Who "lost the most" — lowest gamePoints, ignoring meteoritos. Not
+   necessarily the last row of the main (total-points) ranking. Returns
+   null until there's at least one real game result, so nobody gets
+   badged off an all-zero tie before the season has actually started. */
+function worstGamePlayerId() {
+  if (!movements.some(movement => movement.type === 'REPORT_RESULT')) return null;
+  const { totals } = computeStandings();
+  const ranked = [...totals.values()]
+    .sort((a, b) => (a.gamePoints - b.gamePoints) || a.name.localeCompare(b.name, 'es'));
+  return ranked[0]?.id ?? null;
 }
 
 /* ---------- rendering ---------- */
@@ -80,13 +99,13 @@ function lastPlaceBadgeHtml() {
   return ' <span class="last-place-badge">Perdió más</span>';
 }
 
-function competitorLiHtml(item, position, prefix, isLast) {
+function competitorLiHtml(item, position, prefix, isWorstGamePlayer) {
   const h = house(item.house);
   const negative = item.points < 0 ? ` ${prefix}__points--negative` : '';
   return `<li>
     <span class="${prefix}__position">${String(position).padStart(2, '0')}</span>
     <span class="${prefix}__avatar ${prefix}__avatar--${h.avatarClass}">${item.name.charAt(0).toUpperCase()}</span>
-    <span class="${prefix}__info"><strong>${item.name}</strong><small>${h.name}${isLast ? lastPlaceBadgeHtml() : ''}</small></span>
+    <span class="${prefix}__info"><strong>${item.name}</strong><small>${h.name}${isWorstGamePlayer ? lastPlaceBadgeHtml() : ''}</small></span>
     <span class="${prefix}__points${negative}">${fmtPoints(item.points)}</span>
   </li>`;
 }
@@ -94,33 +113,33 @@ function renderCompetitorLists(rows) {
   const rest = rows.slice(3);
   const visible = rest.slice(0, 3);
   const extra = rest.slice(3);
-  const lastIndex = rows.length - 1;
+  const worstId = worstGamePlayerId();
 
   const mobileVisible = $('.mobile-competitors__list--visible');
-  if (mobileVisible) mobileVisible.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'mobile-competitor', i + 3 === lastIndex)).join('');
+  if (mobileVisible) mobileVisible.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'mobile-competitor', item.id === worstId)).join('');
 
   const mobileExtraList = $('#allCompetitors .mobile-competitors__list');
   if (mobileExtraList) {
     mobileExtraList.setAttribute('start', '7');
-    mobileExtraList.innerHTML = extra.map((item, i) => competitorLiHtml(item, i + 7, 'mobile-competitor', i + 6 === lastIndex)).join('');
+    mobileExtraList.innerHTML = extra.map((item, i) => competitorLiHtml(item, i + 7, 'mobile-competitor', item.id === worstId)).join('');
   }
 
   const desktopList = $('.desktop-competitors__list');
-  if (desktopList) desktopList.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'desktop-competitor', i + 3 === lastIndex)).join('');
+  if (desktopList) desktopList.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'desktop-competitor', item.id === worstId)).join('');
 }
 
 function renderResultsModal(rows) {
   const list = $('.partial-ranking-list');
   if (list) {
+    const worstId = worstGamePlayerId();
     list.innerHTML = rows.map((item, index) => {
       const h = house(item.house);
       const negative = item.points < 0 ? ' partial-score--negative' : '';
       const subtitle = `${h.name}${item.role ? ' · ' + item.role : ''}`;
-      const isLast = index === rows.length - 1;
       return `<li>
         <span class="partial-position">${String(index + 1).padStart(2, '0')}</span>
         <span class="partial-avatar partial-avatar--${h.avatarClass}">${item.name.charAt(0).toUpperCase()}</span>
-        <span class="partial-player"><strong>${item.name}</strong><small>${subtitle}${isLast ? lastPlaceBadgeHtml() : ''}</small></span>
+        <span class="partial-player"><strong>${item.name}</strong><small>${subtitle}${item.id === worstId ? lastPlaceBadgeHtml() : ''}</small></span>
         <span class="partial-score${negative}">${fmtPoints(item.points)}</span>
       </li>`;
     }).join('');
