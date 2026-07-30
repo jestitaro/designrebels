@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta name="robots" content="index, follow" />
+
+  <meta name="description" content="Gestión de pedidos QuartzSales: tus clientes cargan pedidos online, con precios y stock siempre actualizados. Probá el simulador." />
+  <meta property="og:title" content="QuartzSales · Gestión de pedidos" />
+  <meta property="og:description" content="La forma más simple de que tus clientes pidan online, con precios y stock siempre actualizados." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#130D5D" />
+
+  <title>QuartzSales · Gestión de pedidos online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="preconnect" href="https://ka-p.fontawesome.com" crossorigin>
+  <script defer crossorigin="anonymous" src="https://kit.fontawesome.com/95d03784e2.js"></script>
+
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header id="site-header">
+    <div class="brand">
+      <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" loading="lazy" />
+      <div class="logo">QuartzSales <span class="logo-sub">Gestión de pedidos</span></div>
+    </div>
+
+    <nav class="nav-desktop">
+      <a href="#simulador">Probar simulador</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#beneficios">Beneficios</a>
+      <a class="nav-back" href="https://www.quartzsales.com/" target="_blank" rel="noopener">
+        <i class="fa-regular fa-arrow-up-right-from-square" aria-hidden="true"></i> Conocé QuartzSales
+      </a>
+      <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
+    </nav>
+
+    <button aria-expanded="false" aria-label="Menú" class="burger">
+      <span></span><span></span><span></span>
+    </button>
+
+    <aside class="drawer">
+      <nav>
+        <button aria-label="Cerrar menú" class="drawer-close">×</button>
+        <a href="#simulador">Probar simulador</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
+        <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
+      </nav>
+    </aside>
+    <div class="drawer-overlay"></div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <!-- HERO -->
+    <section class="hero-pedidos">
+      <div class="hero-pedidos__text">
+        <span class="eyebrow">Pedidos B2B</span>
+        <h1>Que tus clientes pidan solos. Vos mirá cómo entran los pedidos.</h1>
+        <p>Un canal propio, con tu marca, para que tus clientes carguen pedidos online: precios actualizados, stock real y cero llamados ni planillas para cargar a mano.</p>
+        <div class="hero-pedidos__ctas">
+          <button class="btn btn-gradient js-scroll-simulador" type="button">
+            <i class="fa-regular fa-play" aria-hidden="true"></i> Ver cómo funciona
+          </button>
+          <button class="btn btn-outline js-scroll-demo" type="button">Solicitar demo</button>
+        </div>
+      </div>
+      <div class="hero-pedidos__visual" aria-hidden="true">
+        <div class="hero-mock">
+          <div class="hero-mock__row"><span class="hero-mock__dot"></span><span class="hero-mock__dot"></span><span class="hero-mock__dot"></span></div>
+          <div class="hero-mock__line w-60"></div>
+          <div class="hero-mock__line w-90"></div>
+          <div class="hero-mock__card">
+            <div class="hero-mock__line w-40"></div>
+            <div class="hero-mock__line w-70"></div>
+          </div>
+          <div class="hero-mock__total">
+            <span>Total del pedido</span>
+            <strong>$ 144.000</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEMA / PROPUESTA -->
+    <section class="container reveal" id="problema">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Pedir por WhatsApp o Excel te está costando más de lo que pensás</h2>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <i class="fa-regular fa-message-exclamation" aria-hidden="true"></i>
+          <h3>Pedidos por mil canales distintos</h3>
+          <p>WhatsApp, mail, llamado. Se pierden, se cargan mal, nadie sabe cuál es la versión final.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-tag" aria-hidden="true"></i>
+          <h3>Precios que no cierran</h3>
+          <p>El cliente pide con una lista vieja y el precio real es otro. La discusión llega después, con el pedido ya facturado.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
+          <h3>Stock que nadie confirmó</h3>
+          <p>Se vende lo que no hay. El cliente se entera cuando el pedido ya está en preparación.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+          <h3>Cero trazabilidad</h3>
+          <p>Nadie puede responder rápido "¿qué pedí la semana pasada?" sin ponerse a buscar en cadenas de mensajes.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULADOR -->
+    <section class="simulator-section reveal" id="simulador">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="container simulator-intro">
+        <h2 class="section-title">Probalo vos mismo</h2>
+        <p>Esto es exactamente lo que ve tu cliente cuando arma un pedido. Cargá algo de prueba, no se guarda en ningún lado.</p>
+      </div>
+
+      <div class="simulator-shell">
+        <div class="simulator-toolbar">
+          <div class="simulator-toolbar__brand">
+            <img id="demo-logo-preview" class="demo-logo" alt="Logo del cliente demo" />
+            <span id="demo-brand-name">NutriPlus</span>
+          </div>
+          <div class="simulator-toolbar__actions">
+            <button class="tb-btn" id="btn-restart-sim" type="button" title="Reiniciar simulador">
+              <i class="fa-regular fa-arrow-rotate-left" aria-hidden="true"></i> Reiniciar
+            </button>
+            <button class="tb-btn" id="btn-personalize" type="button" title="Personalizar demo">
+              <i class="fa-regular fa-gear" aria-hidden="true"></i> Personalizar demo
+            </button>
+          </div>
+        </div>
+
+        <div class="simulator-app" id="simulator-app">
+          <!-- Sidebar simulada del gestor -->
+          <aside class="sim-sidebar">
+            <div class="sim-sidebar__item is-active"><i class="fa-regular fa-house" aria-hidden="true"></i><span>Inicio</span></div>
+            <div class="sim-sidebar__item"><i class="fa-regular fa-sitemap" aria-hidden="true"></i><span>Gestión</span></div>
+            <div class="sim-sidebar__item"><i class="fa-regular fa-wrench" aria-hidden="true"></i><span>Configuración</span></div>
+          </aside>
+
+          <div class="sim-main">
+            <div class="sim-breadcrumb">Pedidos / Nuevo pedido</div>
+
+            <!-- PASO 1 -->
+            <div class="sim-step" data-step="1">
+              <h3>Cliente</h3>
+              <div class="sim-field">
+                <label for="sim-cliente">Cliente</label>
+                <div class="sim-input-icon">
+                  <input id="sim-cliente" type="text" placeholder="Buscar cliente" autocomplete="off" list="sim-clientes-list" />
+                  <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+                </div>
+                <datalist id="sim-clientes-list">
+                  <option value="Farmacia del Sud"></option>
+                  <option value="Drogueria Central"></option>
+                  <option value="Distribuidora Norte"></option>
+                </datalist>
+              </div>
+              <div class="sim-field">
+                <label for="sim-sucursal">Sucursal</label>
+                <select id="sim-sucursal">
+                  <option value="">Seleccionar sucursal</option>
+                  <option>Casa Central</option>
+                  <option>Sucursal Santa Rosa</option>
+                  <option>Sucursal Norte</option>
+                </select>
+              </div>
+              <div class="sim-field-row">
+                <div class="sim-field">
+                  <label for="sim-fecha-pedido">Fecha de pedido</label>
+                  <input id="sim-fecha-pedido" type="text" readonly />
+                </div>
+                <div class="sim-field">
+                  <label for="sim-fecha-envio">Fecha de envío</label>
+                  <input id="sim-fecha-envio" type="date" />
+                </div>
+              </div>
+              <button class="btn btn-gradient sim-btn-next" data-goto="2" type="button" disabled>
+                <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Guardar y continuar
+              </button>
+            </div>
+
+            <!-- PASO 2 -->
+            <div class="sim-step" data-step="2" hidden>
+              <h3>Productos</h3>
+              <div class="sim-product-toolbar">
+                <input type="text" placeholder="Buscar producto..." class="sim-product-search" />
+                <span class="sim-product-total" id="sim-running-total">Total: $ 0</span>
+              </div>
+              <div class="sim-table-wrap">
+                <table class="sim-table" id="sim-product-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Precio</th>
+                      <th>Cantidad</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sim-product-tbody"><!-- JS --></tbody>
+                </table>
+              </div>
+              <div class="sim-step-actions">
+                <button class="btn btn-outline" data-goto="1" type="button">Atrás</button>
+                <button class="btn btn-gradient sim-btn-next" data-goto="3" type="button" disabled>
+                  <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Guardar y continuar
+                </button>
+              </div>
+            </div>
+
+            <!-- PASO 3 -->
+            <div class="sim-step" data-step="3" hidden>
+              <h3>Resumen de pedido</h3>
+              <div class="sim-summary-card">
+                <div class="sim-summary-total">
+                  <span>Total</span>
+                  <strong id="sim-summary-total-value">$ 0</strong>
+                </div>
+                <p class="sim-summary-note">Precios a modo de referencia. Las bonificaciones se aplican al facturar.</p>
+                <div class="sim-summary-meta">
+                  <span><i class="fa-regular fa-file-lines" aria-hidden="true"></i> O.C. <strong id="sim-summary-oc">—</strong></span>
+                  <span><i class="fa-regular fa-location-dot" aria-hidden="true"></i> <strong id="sim-summary-sucursal">—</strong></span>
+                </div>
+              </div>
+              <div id="sim-summary-items"><!-- JS --></div>
+              <div class="sim-step-actions">
+                <button class="btn btn-outline" data-goto="2" type="button">Atrás</button>
+                <button class="btn btn-gradient" id="sim-btn-enviar" type="button">
+                  <i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Enviar pedido
+                </button>
+              </div>
+            </div>
+
+            <!-- CONFIRMACION -->
+            <div class="sim-step sim-step--success" data-step="done" hidden>
+              <i class="fa-regular fa-circle-check" aria-hidden="true"></i>
+              <h3>Pedido enviado</h3>
+              <p>Así de simple lo vive tu cliente. Del lado tuyo, este pedido ya está cargado, con precios y cantidades correctas, sin que nadie lo tipeara a mano.</p>
+              <button class="btn btn-gradient" id="btn-restart-sim-2" type="button">Volver a probar</button>
+            </div>
+          </div>
+
+          <!-- Panel lateral de progreso -->
+          <aside class="sim-progress">
+            <div class="sim-progress__title">Nuevo pedido</div>
+            <div class="sim-progress__item" data-progress="1">
+              <span class="sim-progress__num">1</span>
+              <div><strong>Información general</strong><small>Cliente, sucursal</small></div>
+            </div>
+            <div class="sim-progress__item" data-progress="2">
+              <span class="sim-progress__num">2</span>
+              <div><strong>Selección de productos</strong><small>Listado de productos</small></div>
+            </div>
+            <div class="sim-progress__item" data-progress="3">
+              <span class="sim-progress__num">3</span>
+              <div><strong>Revisión del pedido</strong><small>Productos agregados, total</small></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Prompt de tour guiado (modal) -->
+      <div class="tour-prompt-overlay" id="tour-prompt-overlay" hidden>
+        <div class="tour-prompt" id="tour-prompt" role="dialog" aria-modal="true" aria-labelledby="tour-prompt-title">
+          <i class="fa-regular fa-sparkles" aria-hidden="true"></i>
+          <p id="tour-prompt-title">¿Querés que te mostremos cómo funciona, paso a paso?</p>
+          <div class="tour-prompt__actions">
+            <button class="btn btn-gradient" id="tour-start" type="button">Mostrame</button>
+            <button class="btn btn-ghost" id="tour-skip" type="button">Prefiero probar solo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMO FUNCIONA -->
+    <section class="container reveal" id="como-funciona">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Tres pasos, de punta a punta</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-card__num">1</span>
+          <h3>Cliente y sucursal</h3>
+          <p>Tu cliente elige quién es y dónde recibe. El sistema ya sabe su lista de precios y condiciones.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">2</span>
+          <h3>Selección de productos</h3>
+          <p>Precios y stock actualizados en el momento. Si algo cambió, se avisa antes de confirmar — no después.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">3</span>
+          <h3>Revisión y envío</h3>
+          <p>Un resumen claro, el cliente confirma y el pedido te llega ordenado, sin pasar por una planilla.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="container reveal" id="beneficios">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Lo que cambia del otro lado del mostrador</h2>
+      <div class="card-grid">
+        <div class="card">
+          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
+          <h3>Stock siempre real</h3>
+          <p>Tu cliente ve lo que hay, no lo que había la semana pasada.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-shield-check" aria-hidden="true"></i>
+          <h3>Precios bajo control</h3>
+          <p>Cada pedido respeta la lista configurada. Si algo se aparta, lo revisás antes de que se confirme.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-clock-rotate-left" aria-hidden="true"></i>
+          <h3>Trazabilidad total</h3>
+          <p>Cada pedido, con fecha, cliente y sucursal, queda registrado y es fácil de encontrar.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA DEMO -->
+    <section class="demo-section reveal" id="demo">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="demo-card">
+        <div class="demo-card__text">
+          <h2>Mostrale esto a tu equipo comercial</h2>
+          <p>Coordinamos una demo corta, con un caso parecido al tuyo. Sin vueltas.</p>
+        </div>
+        <form class="demo-form" id="demo-form">
+          <div class="form-row">
+            <label for="demo-empresa">Empresa</label>
+            <input id="demo-empresa" name="empresa" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="demo-nombre">Nombre y apellido</label>
+            <input id="demo-nombre" name="nombre" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="demo-contacto">Email o teléfono</label>
+            <input id="demo-contacto" name="contacto" type="text" required />
+          </div>
+          <div class="form-row">
+            <label for="demo-horario">Horario de preferencia</label>
+            <select id="demo-horario" name="horario">
+              <option value="">Cuando les quede cómodo</option>
+              <option>Mañana (9 a 12 hs)</option>
+              <option>Mediodía (12 a 15 hs)</option>
+              <option>Tarde (15 a 18 hs)</option>
+            </select>
+          </div>
+          <button class="btn btn-gradient" type="submit">Solicitar demo</button>
+          <p class="form-note" id="demo-form-note" hidden>¡Gracias! Te vamos a contactar a la brevedad.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer reveal">
+    <div class="footer-panels">
+      <div class="footer-panel footer-brand">
+        <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs-negativo-bg-dark.svg" alt="" loading="lazy" />
+        <div class="logo">QuartzSales</div>
+      </div>
+
+      <div class="footer-panel">
+        <h3>PEDIDOS B2B</h3>
+        <a href="#simulador">Probar simulador</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#beneficios">Beneficios</a>
+      </div>
+
+      <div class="footer-panel">
+        <h3>CONTACTO Y REDES</h3>
+        <a href="https://www.linkedin.com/company/quartz-sales" rel="noopener" target="_blank">LinkedIn</a>
+        <a href="mailto:contacto@quartzsales.com">Escribinos</a>
+        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">Sitio principal QuartzSales</a>
+      </div>
+    </div>
+    <div class="offices">
+      Nuestras oficinas: 8333 NW 53rd St, Doral, FL 33166, Estados Unidos • C. de Ríos Rosas 42, 28003 Madrid
+      (Chamberí), España
+    </div>
+    <div class="footer-bottom">© 2026 QuartzSales. Todos los derechos reservados.</div>
+  </footer>
+
+  <!-- PANEL PERSONALIZAR DEMO -->
+  <div class="personalize-overlay" id="personalize-overlay" hidden>
+    <div class="personalize-panel" role="dialog" aria-modal="true" aria-labelledby="personalize-title">
+      <div class="personalize-panel__header">
+        <h3 id="personalize-title"><i class="fa-regular fa-gear" aria-hidden="true"></i> Personalizar demo</h3>
+        <button class="personalize-close" id="personalize-close" type="button" aria-label="Cerrar">×</button>
+      </div>
+      <p class="personalize-panel__hint">Cargá el logo y algunos productos del prospecto para que el simulador se vea con su marca durante la reunión. No se guarda en ningún servidor: es solo para esta sesión del navegador.</p>
+
+      <div class="personalize-field">
+        <label>Nombre de marca</label>
+        <input type="text" id="pz-brand-name" placeholder="Ej: Farmacéutica del Sud" />
+      </div>
+      <div class="personalize-field">
+        <label>Logo</label>
+        <input type="file" id="pz-logo-input" accept="image/*" />
+      </div>
+
+      <div class="personalize-products" id="pz-products"><!-- JS injecta 3 filas --></div>
+
+      <div class="personalize-panel__actions">
+        <button class="btn btn-outline" id="pz-reset" type="button">Restaurar demo original</button>
+        <button class="btn btn-gradient" id="pz-apply" type="button">Aplicar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
