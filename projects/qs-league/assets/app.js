@@ -74,13 +74,19 @@ function renderPodium(rows) {
   podium.innerHTML = order.map(index => podiumCardHtml(top3[index], index + 1)).join('');
 }
 
-function competitorLiHtml(item, position, prefix) {
+/* Whoever's currently last overall gets called out — same badge everywhere
+   the ranking shows up (hero mini-lists, full ranking modal). */
+function lastPlaceBadgeHtml() {
+  return ' <span class="last-place-badge">Perdió más</span>';
+}
+
+function competitorLiHtml(item, position, prefix, isLast) {
   const h = house(item.house);
   const negative = item.points < 0 ? ` ${prefix}__points--negative` : '';
   return `<li>
     <span class="${prefix}__position">${String(position).padStart(2, '0')}</span>
     <span class="${prefix}__avatar ${prefix}__avatar--${h.avatarClass}">${item.name.charAt(0).toUpperCase()}</span>
-    <span class="${prefix}__info"><strong>${item.name}</strong><small>${h.name}</small></span>
+    <span class="${prefix}__info"><strong>${item.name}</strong><small>${h.name}${isLast ? lastPlaceBadgeHtml() : ''}</small></span>
     <span class="${prefix}__points${negative}">${fmtPoints(item.points)}</span>
   </li>`;
 }
@@ -88,18 +94,19 @@ function renderCompetitorLists(rows) {
   const rest = rows.slice(3);
   const visible = rest.slice(0, 3);
   const extra = rest.slice(3);
+  const lastIndex = rows.length - 1;
 
   const mobileVisible = $('.mobile-competitors__list--visible');
-  if (mobileVisible) mobileVisible.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'mobile-competitor')).join('');
+  if (mobileVisible) mobileVisible.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'mobile-competitor', i + 3 === lastIndex)).join('');
 
   const mobileExtraList = $('#allCompetitors .mobile-competitors__list');
   if (mobileExtraList) {
     mobileExtraList.setAttribute('start', '7');
-    mobileExtraList.innerHTML = extra.map((item, i) => competitorLiHtml(item, i + 7, 'mobile-competitor')).join('');
+    mobileExtraList.innerHTML = extra.map((item, i) => competitorLiHtml(item, i + 7, 'mobile-competitor', i + 6 === lastIndex)).join('');
   }
 
   const desktopList = $('.desktop-competitors__list');
-  if (desktopList) desktopList.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'desktop-competitor')).join('');
+  if (desktopList) desktopList.innerHTML = visible.map((item, i) => competitorLiHtml(item, i + 4, 'desktop-competitor', i + 3 === lastIndex)).join('');
 }
 
 function renderResultsModal(rows) {
@@ -109,10 +116,11 @@ function renderResultsModal(rows) {
       const h = house(item.house);
       const negative = item.points < 0 ? ' partial-score--negative' : '';
       const subtitle = `${h.name}${item.role ? ' · ' + item.role : ''}`;
+      const isLast = index === rows.length - 1;
       return `<li>
         <span class="partial-position">${String(index + 1).padStart(2, '0')}</span>
         <span class="partial-avatar partial-avatar--${h.avatarClass}">${item.name.charAt(0).toUpperCase()}</span>
-        <span class="partial-player"><strong>${item.name}</strong><small>${subtitle}</small></span>
+        <span class="partial-player"><strong>${item.name}</strong><small>${subtitle}${isLast ? lastPlaceBadgeHtml() : ''}</small></span>
         <span class="partial-score${negative}">${fmtPoints(item.points)}</span>
       </li>`;
     }).join('');

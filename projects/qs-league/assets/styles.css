@@ -2301,6 +2301,21 @@ svg[data-lucide] {
   color: var(--magenta);
 }
 
+.last-place-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 53, 199, 0.45);
+  border-radius: 6px;
+  color: var(--magenta);
+  font-family: var(--font-display);
+  font-size: 0.4rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
 .activity-list li {
   min-height: 59px;
   display: grid;
