@@ -18,6 +18,7 @@ function renderIcons() {
 /* ---------- live state (players + applied movements) ---------- */
 let players = [];
 let movements = [];
+let matches = [];
 
 function movementTime(movement) {
   return typeof movement.createdAt?.toMillis === 'function' ? movement.createdAt.toMillis() : Date.now();
@@ -153,6 +154,24 @@ function renderSeasonChip() {
   chip.textContent = dated ? dated.date.split('-').reverse().join('/') : '—';
 }
 
+/* Next moderator/suplente comes from the most recent applied match's
+   detected results: last place moderates the next session, second-to-last
+   is the backup — same as the "el que sale último modera" house rule,
+   with the moderator of that session excluded from the running. */
+function renderNextModerator() {
+  const modEl = $('#nextModerator');
+  const backupEl = $('#nextModeratorBackup');
+  if (!modEl || !backupEl) return;
+  const lastMatch = matches
+    .filter(match => match.status === 'APPLIED' && match.sessionDate)
+    .sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate))[0];
+  const rows = (lastMatch?.detectedResults || [])
+    .filter(row => row.playerId && row.playerId !== lastMatch.moderatorId)
+    .sort((a, b) => a.rank - b.rank);
+  modEl.textContent = rows[rows.length - 1]?.playerName || '—';
+  backupEl.textContent = rows[rows.length - 2]?.playerName || '—';
+}
+
 function render() {
   if (!players.length) return;
   const rows = standingsPlayers();
@@ -169,6 +188,7 @@ function initLiveData() {
   if (!fb) return;
   fb.players.subscribe(data => { players = data; render(); });
   fb.movements.subscribeApplied(data => { movements = data; render(); });
+  fb.matches.subscribe(data => { matches = data; renderNextModerator(); });
 }
 
 /* ---------- DOM refs ---------- */

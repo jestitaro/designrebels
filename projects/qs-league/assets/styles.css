@@ -2138,6 +2138,11 @@ svg[data-lucide] {
   box-shadow: 0 0 24px rgba(76, 167, 255, 0.22);
 }
 
+.feature-card--green {
+  color: var(--green);
+  box-shadow: 0 0 24px rgba(184, 255, 61, 0.22);
+}
+
 .feature-cta--blue {
   color: #4ca7ff;
   background: rgba(76, 167, 255, 0.04);
@@ -3308,10 +3313,10 @@ svg[data-lucide] {
 }
 
 
-/* Sección de acciones: tres cards */
+/* Sección de acciones: cuatro cards */
 @media (min-width: 861px) {
   .features-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
