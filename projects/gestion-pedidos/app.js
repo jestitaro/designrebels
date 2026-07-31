@@ -67,28 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => { layoutFlowLine(); updateFlowProgress(); });
   }
 
-  /* ---------- Carrusel de beneficios ---------- */
-  const carouselTrack = document.getElementById('beneficios-track');
-  const carouselPrev = document.getElementById('beneficios-prev');
-  const carouselNext = document.getElementById('beneficios-next');
-  if (carouselTrack && carouselPrev && carouselNext) {
-    const scrollByCard = (dir) => {
-      const card = carouselTrack.querySelector('.carousel-card');
-      const amount = card ? card.getBoundingClientRect().width + 24 : carouselTrack.clientWidth * 0.8;
-      carouselTrack.scrollBy({ left: dir * amount, behavior: 'smooth' });
-    };
-    const updateNavState = () => {
-      const max = carouselTrack.scrollWidth - carouselTrack.clientWidth - 1;
-      carouselPrev.disabled = carouselTrack.scrollLeft <= 0;
-      carouselNext.disabled = carouselTrack.scrollLeft >= max;
-    };
-    carouselPrev.addEventListener('click', () => scrollByCard(-1));
-    carouselNext.addEventListener('click', () => scrollByCard(1));
-    carouselTrack.addEventListener('scroll', updateNavState, { passive: true });
-    window.addEventListener('resize', updateNavState);
-    updateNavState();
-  }
-
   /* ---------- Reveal on scroll ---------- */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

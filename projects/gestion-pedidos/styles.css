@@ -185,32 +185,51 @@ a { color: inherit; }
 .card h3 { font-size: 1.1rem; color: var(--dark-bg); margin: 0 0 .5rem; }
 .card p { font-size: .92rem; color: var(--text-muted); margin: 0; }
 
-/* Carrusel (beneficios) */
-.carousel { position: relative; }
-.carousel-track {
-  display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory;
-  padding: .25rem .25rem 1.5rem; margin: 0 -.25rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin; scrollbar-color: var(--border-color) transparent;
+/* Ícono en badge circular de color (beneficios / pensado-para) */
+.benefit-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
 }
-.carousel-track::-webkit-scrollbar { height: 6px; }
-.carousel-track::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 999px; }
-.carousel-card { flex: 0 0 clamp(240px, 78vw, 300px); scroll-snap-align: start; }
-.carousel-nav {
-  position: absolute; top: calc(50% - .75rem); transform: translateY(-50%);
-  width: 2.75rem; height: 2.75rem; border-radius: 50%; border: 1px solid var(--border-color);
-  background: #fff; color: var(--dark-bg); display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--shadow); z-index: 2;
-  transition: box-shadow .3s var(--easing), opacity .2s var(--easing), visibility .2s;
-}
-.carousel-nav:hover { box-shadow: var(--shadow-hover); }
-.carousel-nav[disabled] { opacity: 0; visibility: hidden; }
-.carousel-nav--prev { left: -1.375rem; }
-.carousel-nav--next { right: -1.375rem; }
+.benefit-icon i { font-size: 1.2rem; color: #fff; margin: 0; }
+
+/* Beneficios: grilla bento con color por card */
+.beneficios-grid { grid-template-columns: repeat(6, 1fr); }
+.beneficios-grid .card { border: none; }
+.beneficios-grid .card:nth-child(-n+3) { grid-column: span 2; }
+.beneficios-grid .card:nth-child(n+4) { grid-column: span 3; }
+.beneficios-grid .card:nth-child(1) { background: #EFEBFC; }
+.beneficios-grid .card:nth-child(1) .benefit-icon { background: var(--brand-1); }
+.beneficios-grid .card:nth-child(2) { background: #E7F1FE; }
+.beneficios-grid .card:nth-child(2) .benefit-icon { background: var(--brand-blue); }
+.beneficios-grid .card:nth-child(3) { background: #EAF7F0; }
+.beneficios-grid .card:nth-child(3) .benefit-icon { background: #16A34A; }
+.beneficios-grid .card:nth-child(4) { background: #FDF3E7; }
+.beneficios-grid .card:nth-child(4) .benefit-icon { background: #D97706; }
+.beneficios-grid .card:nth-child(5) { background: #FCEAF1; }
+.beneficios-grid .card:nth-child(5) .benefit-icon { background: #DB2777; }
 
 @media (max-width: 900px) {
-  .carousel-nav { display: none; }
+  .beneficios-grid { grid-template-columns: 1fr 1fr; }
+  .beneficios-grid .card:nth-child(-n+3),
+  .beneficios-grid .card:nth-child(n+4) { grid-column: span 1; }
+  .beneficios-grid .card:nth-child(5) { grid-column: span 2; }
 }
+@media (max-width: 560px) {
+  .beneficios-grid { grid-template-columns: 1fr; }
+  .beneficios-grid .card:nth-child(-n+3),
+  .beneficios-grid .card:nth-child(n+4),
+  .beneficios-grid .card:nth-child(5) { grid-column: span 1; }
+}
+
+/* Pensado para: mismo tratamiento de color, 3 cards parejas */
+.pensado-grid .card { border: none; }
+.pensado-grid .card:nth-child(1) { background: #EFEBFC; }
+.pensado-grid .card:nth-child(1) .benefit-icon { background: var(--brand-1); }
+.pensado-grid .card:nth-child(2) { background: #E7F1FE; }
+.pensado-grid .card:nth-child(2) .benefit-icon { background: var(--brand-blue); }
+.pensado-grid .card:nth-child(3) { background: #EAF7F0; }
+.pensado-grid .card:nth-child(3) .benefit-icon { background: #16A34A; }
 
 /* =========================================================
    Cómo funciona
