@@ -153,16 +153,19 @@ a { color: inherit; }
   margin-bottom: .75rem;
 }
 .hero-pedidos h1 {
-  font-size: clamp(2rem, 3.4vw, 2.9rem); font-weight: 800; color: var(--dark-bg);
-  line-height: 1.15; margin: 0 0 1.1rem;
+  font-size: clamp(1.6rem, 2.5vw, 2.15rem); font-weight: 800; color: var(--dark-bg);
+  line-height: 1.25; margin: 0 0 1.1rem;
 }
 .hero-pedidos p { font-size: 1.08rem; color: var(--text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
 .hero-pedidos__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 .hero-pedidos__note { font-size: .85rem; color: var(--text-muted); margin: 1rem 0 0; }
 
+.hero-pedidos__visual {
+  border-radius: var(--radius); overflow: hidden;
+}
 .hero-mock-video {
   width: 100%; height: auto; display: block;
-  border-radius: var(--radius);
+  transform: scale(1.18);
 }
 
 @media (max-width: 900px) {
