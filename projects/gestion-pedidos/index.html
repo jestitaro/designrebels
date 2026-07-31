@@ -5,9 +5,9 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <meta name="robots" content="index, follow" />
 
-  <meta name="description" content="Gestión de pedidos QuartzSales: tus clientes cargan pedidos online, con precios y stock siempre actualizados. Probá el simulador." />
+  <meta name="description" content="Order Entry, el módulo de QuartzSales para gestión de pedidos: tus clientes cargan pedidos online, conectado en tiempo real con tu ERP. Probá el simulador." />
   <meta property="og:title" content="QuartzSales · Gestión de pedidos" />
-  <meta property="og:description" content="La forma más simple de que tus clientes pidan online, con precios y stock siempre actualizados." />
+  <meta property="og:description" content="La forma más simple de que tus clientes pidan online, con precios, stock y condiciones comerciales siempre conectados con tu ERP." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#130D5D" />
 
@@ -63,9 +63,9 @@
     <!-- HERO -->
     <section class="hero-pedidos">
       <div class="hero-pedidos__text">
-        <span class="eyebrow">Pedidos B2B</span>
+        <span class="eyebrow">Pedidos B2B · Módulo Order Entry</span>
         <h1>Que tus clientes pidan solos. Vos mirá cómo entran los pedidos.</h1>
-        <p>Un canal propio, con tu marca, para que tus clientes carguen pedidos online: precios actualizados, stock real y cero llamados ni planillas para cargar a mano.</p>
+        <p>Un canal propio, con tu marca, conectado en tiempo real con tu ERP: precios, stock, cuentas corrientes y condiciones comerciales siempre actualizados, sin llamados ni planillas para cargar a mano.</p>
         <div class="hero-pedidos__ctas">
           <button class="btn btn-gradient js-scroll-simulador" type="button">
             <i class="fa-regular fa-play" aria-hidden="true"></i> Ver cómo funciona
@@ -293,17 +293,17 @@
         <div class="step-card">
           <span class="step-card__num">1</span>
           <h3>Cliente y sucursal</h3>
-          <p>Tu cliente elige quién es y dónde recibe. El sistema ya sabe su lista de precios y condiciones.</p>
+          <p>Tu cliente elige quién es y dónde recibe. El sistema ya sabe su lista de precios y condiciones, sincronizadas con tu ERP.</p>
         </div>
         <div class="step-card">
           <span class="step-card__num">2</span>
-          <h3>Selección de productos</h3>
-          <p>Precios y stock actualizados en el momento. Si algo cambió, se avisa antes de confirmar — no después.</p>
+          <h3>Selección y validación</h3>
+          <p>Precios y stock actualizados en el momento, con montos mínimos, cuotas y topes ya validados. Si algo cambió, se avisa antes de confirmar — no después.</p>
         </div>
         <div class="step-card">
           <span class="step-card__num">3</span>
           <h3>Revisión y envío</h3>
-          <p>Un resumen claro, el cliente confirma y el pedido te llega ordenado, sin pasar por una planilla.</p>
+          <p>Un resumen claro, el cliente confirma y —si hace falta aprobación— el pedido sigue ese circuito antes de transmitirse solo a tu ERP.</p>
         </div>
       </div>
     </section>
@@ -314,19 +314,52 @@
       <h2 class="section-title">Lo que cambia del otro lado del mostrador</h2>
       <div class="card-grid">
         <div class="card">
-          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
-          <h3>Stock siempre real</h3>
-          <p>Tu cliente ve lo que hay, no lo que había la semana pasada.</p>
+          <i class="fa-regular fa-list-check" aria-hidden="true"></i>
+          <h3>Carga guiada y sin errores</h3>
+          <p>Las cantidades se ajustan solas por múltiplo de bulto, y cada cliente ve los precios y las condiciones comerciales que le corresponden.</p>
         </div>
         <div class="card">
           <i class="fa-regular fa-shield-check" aria-hidden="true"></i>
-          <h3>Precios bajo control</h3>
-          <p>Cada pedido respeta la lista configurada. Si algo se aparta, lo revisás antes de que se confirme.</p>
+          <h3>Excepciones bajo control</h3>
+          <p>Un cambio de precio o descuento no pasa de largo: queda sujeto a un flujo de aprobación configurable, con trazabilidad completa.</p>
         </div>
         <div class="card">
-          <i class="fa-regular fa-clock-rotate-left" aria-hidden="true"></i>
-          <h3>Trazabilidad total</h3>
-          <p>Cada pedido, con fecha, cliente y sucursal, queda registrado y es fácil de encontrar.</p>
+          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
+          <h3>Stock con cuotas y backorder</h3>
+          <p>Asignás cuotas por producto y sucursal. Si la demanda supera lo disponible, el backorder se calcula automáticamente.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i>
+          <h3>Integración nativa con tu ERP</h3>
+          <p>Clientes, artículos, listas de precios y condiciones comerciales sincronizados. Los pedidos confirmados se transmiten solos.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-bell" aria-hidden="true"></i>
+          <h3>Visibilidad en cada paso</h3>
+          <p>Confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores, en cada etapa del proceso.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PENSADO PARA -->
+    <section class="container reveal" id="pensado-para">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Pensado para todo el equipo</h2>
+      <div class="card-grid">
+        <div class="card">
+          <i class="fa-regular fa-people-group" aria-hidden="true"></i>
+          <h3>Equipos comerciales</h3>
+          <p>Cargan pedidos para múltiples clientes, cada uno con sus propias condiciones comerciales.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-user" aria-hidden="true"></i>
+          <h3>Clientes finales</h3>
+          <p>Autogestionan sus propios pedidos, con un acceso simple y controlado, sin depender de un llamado.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-user-shield" aria-hidden="true"></i>
+          <h3>Administradores</h3>
+          <p>Definen cuotas, aprueban excepciones y mantienen todo consistente con el ERP.</p>
         </div>
       </div>
     </section>
@@ -373,6 +406,7 @@
       <div class="footer-panel footer-brand">
         <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs-negativo-bg-dark.svg" alt="" loading="lazy" />
         <div class="logo">QuartzSales</div>
+        <p class="footer-tagline">Ejecución, gestión e información del punto de venta en un solo lugar.</p>
       </div>
 
       <div class="footer-panel">

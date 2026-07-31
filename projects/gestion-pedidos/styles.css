@@ -449,6 +449,7 @@ a { color: inherit; }
 .footer-panels { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2.5rem; }
 .footer-brand { display: flex; flex-direction: column; gap: .5rem; }
 .footer-brand .logo { color: #fff; }
+.footer-tagline { font-size: .85rem; color: #a3b0c3; margin: 0; max-width: 26rem; }
 .footer-panel h3 { font-size: .78rem; letter-spacing: .05em; color: rgba(255,255,255,.55); margin: 0 0 1rem; }
 .footer-panel a { display: block; color: rgba(255,255,255,.85); text-decoration: none; font-size: .92rem; margin-bottom: .6rem; }
 .footer-panel a:hover { color: var(--brand-2); }
