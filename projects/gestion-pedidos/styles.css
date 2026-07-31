@@ -172,20 +172,6 @@ a { color: inherit; }
 }
 
 /* =========================================================
-   Problema / propuesta
-   ========================================================= */
-.problem-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem;
-}
-.problem-card {
-  background: var(--surface); border-radius: var(--radius); padding: 1.75rem;
-  border: 1px solid var(--border-color);
-}
-.problem-card i { font-size: 1.4rem; color: var(--brand-1); margin-bottom: .75rem; }
-.problem-card h3 { font-size: 1.05rem; color: var(--dark-bg); margin: 0 0 .5rem; }
-.problem-card p { font-size: .92rem; color: var(--text-muted); margin: 0; }
-
-/* =========================================================
    Card grid (beneficios)
    ========================================================= */
 .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; }
