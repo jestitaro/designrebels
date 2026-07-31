@@ -295,32 +295,40 @@
     <section class="container reveal" id="beneficios">
       <span aria-hidden="true" class="sentinel"></span>
       <h2 class="section-title">Beneficios clave</h2>
-      <div class="card-grid">
-        <div class="card">
-          <i class="fa-regular fa-list-check" aria-hidden="true"></i>
-          <h3>Carga guiada y sin errores</h3>
-          <p>Las cantidades se corrigen automáticamente por múltiplo de bulto, y los precios y condiciones comerciales se aplican según cada cliente.</p>
+      <div class="carousel">
+        <button class="carousel-nav carousel-nav--prev" id="beneficios-prev" type="button" aria-label="Ver beneficio anterior">
+          <i class="fa-regular fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="carousel-track" id="beneficios-track">
+          <div class="card carousel-card">
+            <i class="fa-regular fa-list-check" aria-hidden="true"></i>
+            <h3>Carga guiada y sin errores</h3>
+            <p>Las cantidades se corrigen automáticamente por múltiplo de bulto, y los precios y condiciones comerciales se aplican según cada cliente.</p>
+          </div>
+          <div class="card carousel-card">
+            <i class="fa-regular fa-shield-check" aria-hidden="true"></i>
+            <h3>Control de excepciones</h3>
+            <p>Los pedidos con cambios de precio o descuento quedan sujetos a un flujo de aprobación configurable, con trazabilidad completa.</p>
+          </div>
+          <div class="card carousel-card">
+            <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
+            <h3>Gestión de stock limitado</h3>
+            <p>Asignación de cuotas por producto y sucursal, con cálculo automático de backorder cuando la demanda supera lo disponible.</p>
+          </div>
+          <div class="card carousel-card">
+            <i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i>
+            <h3>Integración nativa con tu ERP</h3>
+            <p>Sincroniza clientes, artículos, listas de precios y condiciones comerciales; los pedidos confirmados se transmiten automáticamente.</p>
+          </div>
+          <div class="card carousel-card">
+            <i class="fa-regular fa-bell" aria-hidden="true"></i>
+            <h3>Visibilidad y notificaciones</h3>
+            <p>Envía confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores en cada paso del proceso.</p>
+          </div>
         </div>
-        <div class="card">
-          <i class="fa-regular fa-shield-check" aria-hidden="true"></i>
-          <h3>Control de excepciones</h3>
-          <p>Los pedidos con cambios de precio o descuento quedan sujetos a un flujo de aprobación configurable, con trazabilidad completa.</p>
-        </div>
-        <div class="card">
-          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
-          <h3>Gestión de stock limitado</h3>
-          <p>Asignación de cuotas por producto y sucursal, con cálculo automático de backorder cuando la demanda supera lo disponible.</p>
-        </div>
-        <div class="card">
-          <i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i>
-          <h3>Integración nativa con tu ERP</h3>
-          <p>Sincroniza clientes, artículos, listas de precios y condiciones comerciales; los pedidos confirmados se transmiten automáticamente.</p>
-        </div>
-        <div class="card">
-          <i class="fa-regular fa-bell" aria-hidden="true"></i>
-          <h3>Visibilidad y notificaciones</h3>
-          <p>Envía confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores en cada paso del proceso.</p>
-        </div>
+        <button class="carousel-nav carousel-nav--next" id="beneficios-next" type="button" aria-label="Ver siguiente beneficio">
+          <i class="fa-regular fa-chevron-right" aria-hidden="true"></i>
+        </button>
       </div>
     </section>
 
