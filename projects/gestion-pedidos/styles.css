@@ -160,12 +160,10 @@ a { color: inherit; }
 .hero-pedidos__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 .hero-pedidos__note { font-size: .85rem; color: var(--text-muted); margin: 1rem 0 0; }
 
-.hero-pedidos__visual {
-  border-radius: var(--radius); overflow: hidden;
-}
 .hero-mock-video {
   width: 100%; height: auto; display: block;
-  transform: scale(1.18);
+  border: 1px solid var(--border-color); border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
 }
 
 @media (max-width: 900px) {
