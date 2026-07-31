@@ -224,9 +224,10 @@ a { color: inherit; }
 
 /* Pensado para: mismo tratamiento de color, 3 cards parejas */
 /* "Pensado para": hover estilo dock de Mac — la card se agranda y se invierte a negativo */
-.pensado-grid { align-items: start; padding: .5rem .25rem 1.5rem; }
+.pensado-grid { align-items: stretch; padding: .5rem .25rem 1.5rem; }
 .pensado-grid .card {
-  border: none; position: relative;
+  border: none; position: relative; height: 100%;
+  display: flex; flex-direction: column;
   transition: transform .3s var(--easing), background .3s var(--easing), box-shadow .3s var(--easing);
 }
 .pensado-grid .card:hover {
@@ -239,9 +240,9 @@ a { color: inherit; }
 .pensado-grid .benefit-icon,
 .pensado-grid .benefit-icon i { transition: background .3s var(--easing), color .3s var(--easing); }
 
-.pensado-grid .card:nth-child(1) { --accent: var(--brand-1); --accent-dark: #2A0E63; background: #EFEBFC; }
-.pensado-grid .card:nth-child(2) { --accent: var(--brand-blue); --accent-dark: #0C3C66; background: #E7F1FE; }
-.pensado-grid .card:nth-child(3) { --accent: #16A34A; --accent-dark: #0B3B2E; background: #EAF7F0; }
+.pensado-grid .card:nth-child(1) { --accent: var(--brand-1); --accent-dark: #2A0E63; background: #F1EBFC; }
+.pensado-grid .card:nth-child(2) { --accent: var(--brand-2); --accent-dark: #3D1275; background: #E9DDFC; }
+.pensado-grid .card:nth-child(3) { --accent: #5B1FB8; --accent-dark: #1E0A47; background: #E3D4F9; }
 .pensado-grid .card .benefit-icon { background: var(--accent); }
 
 .pensado-grid .card:hover { background: var(--accent-dark); }
