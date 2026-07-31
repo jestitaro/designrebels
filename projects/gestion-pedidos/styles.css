@@ -223,13 +223,32 @@ a { color: inherit; }
 }
 
 /* Pensado para: mismo tratamiento de color, 3 cards parejas */
-.pensado-grid .card { border: none; }
-.pensado-grid .card:nth-child(1) { background: #EFEBFC; }
-.pensado-grid .card:nth-child(1) .benefit-icon { background: var(--brand-1); }
-.pensado-grid .card:nth-child(2) { background: #E7F1FE; }
-.pensado-grid .card:nth-child(2) .benefit-icon { background: var(--brand-blue); }
-.pensado-grid .card:nth-child(3) { background: #EAF7F0; }
-.pensado-grid .card:nth-child(3) .benefit-icon { background: #16A34A; }
+/* "Pensado para": hover estilo dock de Mac — la card se agranda y se invierte a negativo */
+.pensado-grid { align-items: start; padding: .5rem .25rem 1.5rem; }
+.pensado-grid .card {
+  border: none; position: relative;
+  transition: transform .3s var(--easing), background .3s var(--easing), box-shadow .3s var(--easing);
+}
+.pensado-grid .card:hover {
+  transform: scale(1.07) translateY(-.5rem);
+  box-shadow: 0 22px 45px rgba(17, 24, 39, .28);
+  z-index: 2;
+}
+.pensado-grid .card h3,
+.pensado-grid .card p { transition: color .3s var(--easing); }
+.pensado-grid .benefit-icon,
+.pensado-grid .benefit-icon i { transition: background .3s var(--easing), color .3s var(--easing); }
+
+.pensado-grid .card:nth-child(1) { --accent: var(--brand-1); --accent-dark: #2A0E63; background: #EFEBFC; }
+.pensado-grid .card:nth-child(2) { --accent: var(--brand-blue); --accent-dark: #0C3C66; background: #E7F1FE; }
+.pensado-grid .card:nth-child(3) { --accent: #16A34A; --accent-dark: #0B3B2E; background: #EAF7F0; }
+.pensado-grid .card .benefit-icon { background: var(--accent); }
+
+.pensado-grid .card:hover { background: var(--accent-dark); }
+.pensado-grid .card:hover h3 { color: #fff; }
+.pensado-grid .card:hover p { color: rgba(255, 255, 255, .72); }
+.pensado-grid .card:hover .benefit-icon { background: #fff; }
+.pensado-grid .card:hover .benefit-icon i { color: var(--accent); }
 
 /* =========================================================
    Cómo funciona
