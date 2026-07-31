@@ -1,0 +1,232 @@
+name: Actualizar contenido Order Entry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/one-shot-update-order-entry.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-content:
+    if: contains(github.event.head_commit.message, '[run-order-entry-update]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Actualizar textos desde el one-pager comercial
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('projects/gestion-pedidos/index.html')
+          text = path.read_text(encoding='utf-8')
+          original = text
+
+          replacements = {
+              'Order Entry, el módulo de QuartzSales para gestión de pedidos: tus clientes cargan pedidos online, conectado en tiempo real con tu ERP. Probá el simulador.':
+                  'Order Entry es el módulo de QuartzSales para cargar y gestionar pedidos en el punto de venta o desde el equipo comercial, conectado en tiempo real con tu ERP.',
+              'La forma más simple de que tus clientes pidan online, con precios, stock y condiciones comerciales siempre conectados con tu ERP.':
+                  'Convertí la toma de pedidos en un proceso simple, controlado y siempre conectado con tu ERP.',
+              '<span class="eyebrow">Pedidos B2B · Módulo Order Entry</span>':
+                  '<span class="eyebrow">Módulo · Gestión de pedidos</span>',
+              '<h1>Que tus clientes pidan solos. Vos mirá cómo entran los pedidos.</h1>':
+                  '<h1>Convertí la toma de pedidos en un proceso simple, controlado y siempre conectado con tu ERP.</h1>',
+              '<p>Un canal propio, con tu marca, conectado en tiempo real con tu ERP: precios, stock, cuentas corrientes y condiciones comerciales siempre actualizados, sin llamados ni planillas para cargar a mano.</p>':
+                  '<p>Order Entry permite cargar y gestionar pedidos desde el punto de venta o desde tu equipo comercial. Funciona como una capa de autogestión conectada en tiempo real con tu ERP para precios, stock, cuentas corrientes y facturación.</p>',
+              '<p>Esto es exactamente lo que ve tu cliente cuando arma un pedido. Cargá algo de prueba, no se guarda en ningún lado.</p>':
+                  '<p>Probá una carga guiada de pedido. Es una demostración del flujo y no guarda información en ningún servidor.</p>',
+              '<p>Así de simple lo vive tu cliente. Del lado tuyo, este pedido ya está cargado, con precios y cantidades correctas, sin que nadie lo tipeara a mano.</p>':
+                  '<p>El pedido queda validado, con precios, cantidades y condiciones correctas. Si requiere aprobación, sigue ese circuito antes de transmitirse automáticamente al ERP.</p>',
+          }
+
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f'No se encontró el texto esperado: {old[:80]}')
+              text = text.replace(old, new, 1)
+
+          problem_section = '''    <!-- QUE ES ORDER ENTRY -->
+    <section class="container reveal" id="problema">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">¿Qué es Order Entry?</h2>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <i class="fa-regular fa-cart-shopping" aria-hidden="true"></i>
+          <h3>Carga y gestión de pedidos</h3>
+          <p>Permite tomar pedidos en el punto de venta o desde el equipo comercial, dentro de un flujo simple y controlado.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i>
+          <h3>Conexión en tiempo real</h3>
+          <p>Consulta en tu ERP precios, stock, cuentas corrientes, condiciones comerciales y datos de facturación.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-sliders" aria-hidden="true"></i>
+          <h3>Respeta tus reglas de negocio</h3>
+          <p>QuartzSales se adapta a la operación de cada empresa y pone esas reglas al alcance de clientes, vendedores y administradores.</p>
+        </div>
+        <div class="problem-card">
+          <i class="fa-regular fa-mobile-screen-button" aria-hidden="true"></i>
+          <h3>Simple, mobile-first y offline</h3>
+          <p>La experiencia está pensada para trabajar desde cualquier dispositivo y continuar operando aun cuando la conexión es limitada.</p>
+        </div>
+      </div>
+    </section>'''
+
+          text, count = re.subn(
+              r'    <!-- PROBLEMA / PROPUESTA -->.*?\n    <!-- SIMULADOR -->',
+              problem_section + '\n\n    <!-- SIMULADOR -->',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('No se pudo reemplazar la sección ¿Qué es Order Entry?')
+
+          how_section = '''    <!-- COMO FUNCIONA -->
+    <section class="container reveal" id="como-funciona">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Cómo funciona, de punta a punta</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-card__num">1</span>
+          <h3>Carga</h3>
+          <p>El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">2</span>
+          <h3>Validación</h3>
+          <p>El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">3</span>
+          <h3>Aprobación</h3>
+          <p>Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">4</span>
+          <h3>Transmisión al ERP</h3>
+          <p>Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-card__num">5</span>
+          <h3>Confirmación y notificación</h3>
+          <p>El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</p>
+        </div>
+      </div>
+    </section>'''
+
+          text, count = re.subn(
+              r'    <!-- COMO FUNCIONA -->.*?\n    <!-- BENEFICIOS -->',
+              how_section + '\n\n    <!-- BENEFICIOS -->',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('No se pudo reemplazar la sección Cómo funciona')
+
+          benefits_section = '''    <!-- BENEFICIOS -->
+    <section class="container reveal" id="beneficios">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Beneficios clave</h2>
+      <div class="card-grid">
+        <div class="card">
+          <i class="fa-regular fa-list-check" aria-hidden="true"></i>
+          <h3>Carga guiada y sin errores</h3>
+          <p>Las cantidades se corrigen automáticamente por múltiplo de bulto, y los precios y condiciones comerciales se aplican según cada cliente.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-shield-check" aria-hidden="true"></i>
+          <h3>Control de excepciones</h3>
+          <p>Los pedidos con cambios de precio o descuento quedan sujetos a un flujo de aprobación configurable, con trazabilidad completa.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i>
+          <h3>Gestión de stock limitado</h3>
+          <p>Asignación de cuotas por producto y sucursal, con cálculo automático de backorder cuando la demanda supera lo disponible.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i>
+          <h3>Integración nativa con tu ERP</h3>
+          <p>Sincroniza clientes, artículos, listas de precios y condiciones comerciales; los pedidos confirmados se transmiten automáticamente.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-bell" aria-hidden="true"></i>
+          <h3>Visibilidad y notificaciones</h3>
+          <p>Envía confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores en cada paso del proceso.</p>
+        </div>
+      </div>
+    </section>'''
+
+          text, count = re.subn(
+              r'    <!-- BENEFICIOS -->.*?\n    <!-- PENSADO PARA -->',
+              benefits_section + '\n\n    <!-- PENSADO PARA -->',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('No se pudo reemplazar la sección Beneficios')
+
+          audience_section = '''    <!-- PENSADO PARA -->
+    <section class="container reveal" id="pensado-para">
+      <span aria-hidden="true" class="sentinel"></span>
+      <h2 class="section-title">Pensado para</h2>
+      <div class="card-grid">
+        <div class="card">
+          <i class="fa-regular fa-people-group" aria-hidden="true"></i>
+          <h3>Equipos comerciales</h3>
+          <p>Necesitan cargar pedidos para múltiples clientes con condiciones comerciales distintas.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-user" aria-hidden="true"></i>
+          <h3>Clientes finales</h3>
+          <p>Quieren autogestionar sus propios pedidos, con un acceso simple y controlado.</p>
+        </div>
+        <div class="card">
+          <i class="fa-regular fa-user-shield" aria-hidden="true"></i>
+          <h3>Administradores</h3>
+          <p>Necesitan definir cuotas, aprobar excepciones y mantener consistencia con el ERP.</p>
+        </div>
+      </div>
+    </section>'''
+
+          text, count = re.subn(
+              r'    <!-- PENSADO PARA -->.*?\n    <!-- CTA DEMO -->',
+              audience_section + '\n\n    <!-- CTA DEMO -->',
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('No se pudo reemplazar la sección Pensado para')
+
+          if text == original:
+              raise SystemExit('El archivo no tuvo cambios')
+
+          path.write_text(text, encoding='utf-8')
+          print('Contenido actualizado correctamente')
+          PY
+
+      - name: Validar estructura mínima
+        shell: bash
+        run: |
+          grep -q '¿Qué es Order Entry?' projects/gestion-pedidos/index.html
+          grep -q 'Confirmación y notificación' projects/gestion-pedidos/index.html
+          grep -q 'Beneficios clave' projects/gestion-pedidos/index.html
+          grep -q '<script src="app.js"></script>' projects/gestion-pedidos/index.html
+
+      - name: Publicar actualización
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add projects/gestion-pedidos/index.html
+          git commit -m "Actualizar contenido comercial de Order Entry"
+          git push
