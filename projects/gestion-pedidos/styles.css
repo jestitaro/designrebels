@@ -194,18 +194,25 @@ a { color: inherit; }
 
 /* Beneficios: grilla bento con color por card */
 .beneficios-grid { grid-template-columns: repeat(6, 1fr); }
-.beneficios-grid .card { border: none; overflow: hidden; }
+.beneficios-grid .card {
+  border: none; overflow: hidden;
+  display: flex; flex-direction: column;
+}
 .beneficios-grid .card:nth-child(-n+3) { grid-column: span 2; }
-.beneficios-grid .card:nth-child(n+4) { grid-column: span 3; }
+.beneficios-grid .card:nth-child(n+4) {
+  grid-column: span 3;
+  flex-direction: row; align-items: center; gap: 1.75rem;
+}
+
+.beneficios-grid .card-copy h3 { margin-top: 0; }
 
 .beneficios-grid .benefit-icon {
   width: 96px; height: 88px; background: none; box-shadow: none;
+  flex-shrink: 0;
   transition: transform .2s var(--easing);
 }
-.beneficios-grid .benefit-icon img {
-  width: 100%; height: 100%; object-fit: contain;
-  filter: drop-shadow(0 10px 16px rgba(17, 24, 39, .16));
-}
+.beneficios-grid .card:nth-child(n+4) .benefit-icon { margin-bottom: 0; }
+.beneficios-grid .benefit-icon img { width: 100%; height: 100%; object-fit: contain; }
 
 @keyframes benefitIconWiggle {
   0% { transform: scale(1) rotate(0deg); }
@@ -226,6 +233,8 @@ a { color: inherit; }
   .beneficios-grid .card:nth-child(-n+3),
   .beneficios-grid .card:nth-child(n+4) { grid-column: span 1; }
   .beneficios-grid .card:nth-child(5) { grid-column: span 2; }
+  .beneficios-grid .card:nth-child(n+4) { flex-direction: column; }
+  .beneficios-grid .card:nth-child(n+4) .benefit-icon { margin-bottom: 1rem; }
 }
 @media (max-width: 560px) {
   .beneficios-grid { grid-template-columns: 1fr; }
