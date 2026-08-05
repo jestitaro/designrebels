@@ -11,6 +11,7 @@ Hub de productos, prototipos y herramientas internas creadas por Design Rebels p
 | **QuartzSales Marketing Dashboard** | Demo online | [Abrir dashboard](https://quartzsales-marketing-dashboard.pages.dev/) | [Ver proyecto](./projects/quartzsales-marketing-dashboard/) |
 | **QS League** | MVP | [Abrir QS League](https://jestitaro.github.io/designrebels/projects/qs-league/) | [Ver proyecto](./projects/qs-league/) |
 | **Content Visual Editor** | Demo online | [Abrir editor](https://jestitaro.github.io/designrebels/projects/content-visual-editor/) | [Ver proyecto](./projects/content-visual-editor/) |
+| **IA en el PDV — Demo** | Demo / WIP | [Abrir demo](https://jestitaro.github.io/designrebels/projects/ia-pdv-demo/) | [Ver proyecto](./projects/ia-pdv-demo/) |
 
 ## Estructura
 
@@ -19,6 +20,7 @@ designrebels/
 ├── prode2026/
 ├── projects/
 │   ├── content-visual-editor/
+│   ├── ia-pdv-demo/
 │   ├── quartzsales-marketing-dashboard/
 │   └── qs-league/
 ├── assets/

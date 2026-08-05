@@ -9,18 +9,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuartzSales — IA en el PDV</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --qs-dark:    #0b0e14;
-  --qs-surf:    #10151e;
-  --qs-card:    #161d28;
-  --qs-brd:     #1e2a38;
-  --qs-cyan:    #00d4e8;
-  --qs-cdim:    rgba(0,212,232,.12);
-  --qs-cglow:   rgba(0,212,232,.3);
+  --qs-dark:    #130D5D;
+  --qs-surf:    #1B1568;
+  --qs-card:    #221C74;
+  --qs-brd:     #332C86;
+  --qs-cyan:    #3C9FF1;
+  --qs-cdim:    rgba(60,159,241,.12);
+  --qs-cglow:   rgba(60,159,241,.3);
   --qs-green:   #22d46e;
   --qs-gdim:    rgba(34,212,110,.1);
   --qs-blue:    #1565b8;
@@ -31,7 +31,7 @@
   --qs-white:   #edf2fa;
   --app-bg:     #f2f6fb;
   --app-brd:    #dde6f0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 /* ── SECTION WRAPPER (drop this into quartzsales.com) ── */
@@ -46,7 +46,7 @@
   content: '';
   position: absolute;
   width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0,212,232,.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(60,159,241,.06) 0%, transparent 70%);
   top: -100px; left: -100px;
   pointer-events: none;
 }
@@ -54,7 +54,7 @@
   content: '';
   position: absolute;
   width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(124,92,252,.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(112,37,224,.07) 0%, transparent 70%);
   bottom: -100px; right: -50px;
   pointer-events: none;
 }
@@ -85,7 +85,7 @@
   padding: 5px 14px;
   border-radius: 20px;
   background: var(--qs-cdim);
-  border: 1px solid rgba(0,212,232,.22);
+  border: 1px solid rgba(60,159,241,.22);
 }
 .qs-eyebrow::before {
   content: '';
@@ -123,7 +123,7 @@
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid var(--qs-brd);
-  box-shadow: 0 40px 120px rgba(0,0,0,.5), 0 0 0 1px rgba(0,212,232,.06);
+  box-shadow: 0 40px 120px rgba(0,0,0,.5), 0 0 0 1px rgba(60,159,241,.06);
   min-height: 580px;
   position: relative;
 }
@@ -152,7 +152,7 @@
   cursor: pointer;
   transition: all .2s;
 }
-.qs-step.active { background: var(--qs-cdim); color: var(--qs-cyan); border: 1px solid rgba(0,212,232,.25); }
+.qs-step.active { background: var(--qs-cdim); color: var(--qs-cyan); border: 1px solid rgba(60,159,241,.25); }
 .qs-step.done { color: var(--qs-green); }
 .qs-step-arr { color: var(--qs-brd); font-size: 10px; }
 
@@ -176,7 +176,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  background: radial-gradient(ellipse at 40% 40%, rgba(0,212,232,.05) 0%, transparent 65%), var(--qs-dark);
+  background: radial-gradient(ellipse at 40% 40%, rgba(60,159,241,.05) 0%, transparent 65%), var(--qs-dark);
 }
 .qs-ctx-card {
   background: var(--qs-surf);
@@ -197,22 +197,22 @@
 .qs-select {
   width: 100%; padding: 9px 13px; border-radius: 9px;
   border: 1px solid var(--qs-brd); background: var(--qs-card);
-  color: var(--qs-white); font-family: 'Poppins', sans-serif; font-size: 12px;
+  color: var(--qs-white); font-family: 'Nunito', sans-serif; font-size: 12px;
   cursor: pointer; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234e5e72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 12px center;
 }
-.qs-select option { background: #161d28; }
+.qs-select option { background: #221C74; }
 .qs-ctx-btn {
   width: 100%; margin-top: 6px; padding: 12px;
   border-radius: 11px; border: none;
-  background: linear-gradient(135deg, var(--qs-cyan), #00aabf);
-  color: #000; font-family: 'Poppins', sans-serif;
-  font-size: 13px; font-weight: 700; cursor: pointer;
+  background: linear-gradient(135deg, var(--qs-cyan), #7025E0);
+  color: #fff; font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800; cursor: pointer;
   transition: all .2s;
-  box-shadow: 0 6px 24px rgba(0,212,232,.25);
+  box-shadow: 0 6px 24px rgba(60,159,241,.25);
 }
-.qs-ctx-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,212,232,.35); }
+.qs-ctx-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(60,159,241,.35); }
 
 /* ── S2: GONDOLA ── */
 .qs-gondola-screen {
@@ -300,7 +300,7 @@
 .qs-walk { position: absolute; bottom: 16px; left: 16px; display: flex; gap: 7px; z-index: 50; }
 .qs-wbtn {
   width: 38px; height: 38px; border-radius: 50%;
-  border: 1px solid rgba(0,212,232,.32); background: rgba(8,12,18,.88);
+  border: 1px solid rgba(60,159,241,.32); background: rgba(8,12,18,.88);
   backdrop-filter: blur(8px); color: var(--qs-cyan); font-size: 14px;
   cursor: pointer; display: grid; place-items: center; transition: all .2s;
 }
@@ -311,12 +311,12 @@
 .qs-ai-btn {
   display: flex; align-items: center; gap: 8px;
   padding: 9px 18px; border-radius: 11px; border: none;
-  background: linear-gradient(135deg, var(--qs-cyan), #00aabf);
-  color: #000; font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 700;
+  background: linear-gradient(135deg, var(--qs-cyan), #7025E0);
+  color: #fff; font-family: 'Nunito', sans-serif; font-size: 11.5px; font-weight: 800;
   cursor: pointer; letter-spacing: .2px;
-  box-shadow: 0 6px 22px rgba(0,212,232,.28); transition: all .2s;
+  box-shadow: 0 6px 22px rgba(60,159,241,.28); transition: all .2s;
 }
-.qs-ai-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,212,232,.38); }
+.qs-ai-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(60,159,241,.38); }
 .qs-ai-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
 
 /* ── S3: CAMERA — PERSON POV ── */
@@ -385,8 +385,8 @@
 /* AI sweep */
 .qs-sweep {
   position: absolute; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,232,.6) 30%, rgba(0,212,232,1) 50%, rgba(0,212,232,.6) 70%, transparent);
-  box-shadow: 0 0 18px 6px rgba(0,212,232,.28);
+  background: linear-gradient(90deg, transparent, rgba(60,159,241,.6) 30%, rgba(60,159,241,1) 50%, rgba(60,159,241,.6) 70%, transparent);
+  box-shadow: 0 0 18px 6px rgba(60,159,241,.28);
   pointer-events: none; z-index: 15;
   animation: sweepLine 2.2s ease-in-out infinite;
 }
@@ -402,7 +402,7 @@
 .qs-bbox {
   position: absolute;
   border: 2px solid var(--qs-cyan); border-radius: 3px;
-  background: rgba(0,212,232,.05);
+  background: rgba(60,159,241,.05);
   opacity: 0; transition: opacity .3s;
 }
 .qs-bbox.show { opacity: 1; }
@@ -451,7 +451,7 @@
 }
 @keyframes recBlink { 0%,100%{opacity:1} 50%{opacity:.2} }
 .qs-det-badge {
-  background: rgba(0,212,232,.16); border: 1px solid rgba(0,212,232,.32);
+  background: rgba(60,159,241,.16); border: 1px solid rgba(60,159,241,.32);
   border-radius: 8px; padding: 4px 12px;
   font-size: 11px; font-weight: 700; color: var(--qs-cyan);
   display: flex; align-items: center; gap: 6px;
@@ -467,17 +467,17 @@
   position: relative; z-index: 45; margin-bottom: 8px;
   display: flex; align-items: center; gap: 9px;
   padding: 11px 28px; border-radius: 13px; border: none;
-  background: linear-gradient(135deg, var(--qs-cyan), #00aabf);
-  color: #000; font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, var(--qs-cyan), #7025E0);
+  color: #fff; font-family: 'Nunito', sans-serif;
   font-size: 12px; font-weight: 800;
   cursor: pointer; letter-spacing: .2px;
-  box-shadow: 0 8px 30px rgba(0,212,232,.4);
+  box-shadow: 0 8px 30px rgba(60,159,241,.4);
   transition: all .2s;
   animation: finPulse 2s ease infinite;
 }
 @keyframes finPulse {
-  0%,100% { box-shadow: 0 8px 30px rgba(0,212,232,.4); }
-  50%      { box-shadow: 0 8px 44px rgba(0,212,232,.6); }
+  0%,100% { box-shadow: 0 8px 30px rgba(60,159,241,.4); }
+  50%      { box-shadow: 0 8px 44px rgba(60,159,241,.6); }
 }
 .qs-finish-btn:hover { transform: translateY(-2px); }
 .qs-finish-btn:disabled { opacity: .35; cursor: not-allowed; animation: none; }
@@ -486,7 +486,7 @@
 .qs-save-screen {
   display: flex; align-items: center; justify-content: center;
   height: 100%;
-  background: radial-gradient(ellipse at center, rgba(0,212,232,.05) 0%, transparent 65%), var(--qs-dark);
+  background: radial-gradient(ellipse at center, rgba(60,159,241,.05) 0%, transparent 65%), var(--qs-dark);
 }
 .qs-save-card {
   background: var(--qs-surf); border: 1px solid var(--qs-brd); border-radius: 18px;
@@ -503,7 +503,7 @@
 .qs-save-title { font-size: 17px; font-weight: 700; color: var(--qs-white); margin-bottom: 8px; }
 .qs-save-sub   { font-size: 12px; color: var(--qs-muted); margin-bottom: 24px; line-height: 1.6; }
 .qs-prog       { width: 100%; height: 4px; background: var(--qs-brd); border-radius: 2px; overflow: hidden; }
-.qs-prog-bar   { height: 100%; background: linear-gradient(90deg, var(--qs-cyan), #00aabf); border-radius: 2px; width: 0%; transition: width .1s linear; }
+.qs-prog-bar   { height: 100%; background: linear-gradient(90deg, var(--qs-cyan), #7025E0); border-radius: 2px; width: 0%; transition: width .1s linear; }
 
 /* ════════════════════════════════
    RIGHT PANEL — APP SIDE
@@ -513,6 +513,7 @@
   border-left: 1px solid var(--app-brd);
   display: flex; flex-direction: column;
   overflow: hidden; position: relative;
+  font-family: 'Poppins', sans-serif; /* simula la UI real de la app (producto, no marca) */
 }
 
 /* blue topbar */
@@ -692,7 +693,7 @@
 .qs-feat:last-child { border-right: none; }
 .qs-feat-ico {
   width: 44px; height: 44px; border-radius: 12px;
-  background: var(--qs-cdim); border: 1px solid rgba(0,212,232,.18);
+  background: var(--qs-cdim); border: 1px solid rgba(60,159,241,.18);
   display: grid; place-items: center; font-size: 20px;
   margin: 0 auto 12px;
 }
@@ -857,20 +858,20 @@
                 <line x1="234" y1="66" x2="243" y2="66" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
                 <line x1="236" y1="71" x2="243" y2="71" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
                 <!-- camera viewport on screen -->
-                <rect x="76" y="94" width="168" height="200" rx="6" fill="rgba(0,212,232,.03)" stroke="rgba(0,212,232,.22)" stroke-width="1.2"/>
+                <rect x="76" y="94" width="168" height="200" rx="6" fill="rgba(60,159,241,.03)" stroke="rgba(60,159,241,.22)" stroke-width="1.2"/>
                 <!-- corner marks -->
-                <path d="M80,98 L80,112 M80,98 L94,98"   stroke="#00d4e8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M240,98 L240,112 M240,98 L226,98" stroke="#00d4e8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M80,290 L80,276 M80,290 L94,290"   stroke="#00d4e8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M240,290 L240,276 M240,290 L226,290" stroke="#00d4e8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M80,98 L80,112 M80,98 L94,98"   stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M240,98 L240,112 M240,98 L226,98" stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M80,290 L80,276 M80,290 L94,290"   stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M240,290 L240,276 M240,290 L226,290" stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <!-- crosshair -->
-                <circle cx="160" cy="194" r="5" fill="none" stroke="rgba(0,212,232,.55)" stroke-width="1.8"/>
-                <line x1="155" y1="194" x2="148" y2="194" stroke="rgba(0,212,232,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="165" y1="194" x2="172" y2="194" stroke="rgba(0,212,232,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="160" y1="189" x2="160" y2="182" stroke="rgba(0,212,232,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="160" y1="199" x2="160" y2="206" stroke="rgba(0,212,232,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="160" cy="194" r="5" fill="none" stroke="rgba(60,159,241,.55)" stroke-width="1.8"/>
+                <line x1="155" y1="194" x2="148" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="165" y1="194" x2="172" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="160" y1="189" x2="160" y2="182" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="160" y1="199" x2="160" y2="206" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
                 <!-- animated scan line in phone -->
-                <line x1="78" y1="0" x2="238" y2="0" stroke="rgba(0,212,232,.5)" stroke-width="2" stroke-linecap="round">
+                <line x1="78" y1="0" x2="238" y2="0" stroke="rgba(60,159,241,.5)" stroke-width="2" stroke-linecap="round">
                   <animateTransform attributeName="transform" type="translate" values="0,96;0,292;0,96" dur="1.8s" repeatCount="indefinite" calcMode="ease-in-out"/>
                 </line>
                 <!-- bottom nav -->
