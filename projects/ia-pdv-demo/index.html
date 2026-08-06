@@ -364,8 +364,8 @@
   35%  { transform: translateX(-50%) translateY(-14px) scale(1.02); }
   100% { transform: translateX(-50%) translateY(0) scale(1); animation-name: povIdle; }
 }
-/* con el mouse encima, la mano con el celu sigue el cursor en vez de la animación idle */
-.qs-pov-overlay.tracking { animation: none; transition: transform .15s ease-out; }
+/* con el mouse encima, la mano con el celu sigue el cursor 1:1 en vez de la animación idle */
+.qs-pov-overlay.tracking { animation: none; transition: none; }
 
 /* camera feed (gondola behind phone) */
 .qs-cam-feed {
@@ -393,21 +393,6 @@
 .qs-vignette {
   position: absolute; inset: 0; pointer-events: none; z-index: 6;
   background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.6) 100%);
-}
-
-/* AI sweep */
-.qs-sweep {
-  position: absolute; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(60,159,241,.6) 30%, rgba(60,159,241,1) 50%, rgba(60,159,241,.6) 70%, transparent);
-  box-shadow: 0 0 18px 6px rgba(60,159,241,.28);
-  pointer-events: none; z-index: 15;
-  animation: sweepLine 2.2s ease-in-out infinite;
-}
-@keyframes sweepLine {
-  0%   { top: 8%;  opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 1; }
-  100% { top: 88%; opacity: 0; }
 }
 
 /* bounding boxes */
@@ -886,7 +871,6 @@
             </div>
             <div class="qs-scanlines"></div>
             <div class="qs-vignette"></div>
-            <div class="qs-sweep"></div>
             <div class="qs-bbox-layer" id="qsBboxLayer"></div>
           </div>
 
@@ -1287,10 +1271,13 @@ function qsBuildShelf(rows, bodyEl) {
     const lb = document.createElement('div'); lb.className='qs-shelf-lbl';
     lb.textContent = ri===0?'▸ NIVEL OJOS':'▸ NIVEL MANOS';
     sh.appendChild(lb);
-    row.forEach(sku => {
+    row.forEach((sku,i) => {
       const p = PRODUCTS[sku]; if(!p) return;
       const d = document.createElement('div'); d.className='qs-prod'; d.dataset.sku=sku;
       const w=Math.round(p.w*sc), h=Math.round(p.h*sc);
+      // los recortes de producto traen bastante aire alrededor: se superponen
+      // un poco para que la góndola se vea tupida, como una real
+      if (i>0) d.style.marginLeft = -Math.round(w*0.34)+'px';
       d.innerHTML=`<img src="${p.img}" width="${w}" height="${h}" draggable="false">`;
       sh.appendChild(d);
     });
@@ -1342,6 +1329,12 @@ function qsRenderFormList(idx) {
 
 /* ── camera ── */
 let qsHoverSku = null, qsHoverConf = new Map(), qsHoverLeaveTimer = null;
+let qsProdRects = [];
+
+function qsCacheProdRects() {
+  qsProdRects = [...document.getElementById('qsCamBody').querySelectorAll('.qs-prod')]
+    .map(el => ({ el, sku: el.dataset.sku, r: el.getBoundingClientRect() }));
+}
 
 function qsStartCamera() {
   qsGoScreen(3);
@@ -1355,7 +1348,9 @@ function qsStartCamera() {
   document.getElementById('qsFinishBtn').disabled=true;
   document.getElementById('qsAiPanel').classList.add('show');
   qsHoverSku=null; qsHoverConf=new Map(); clearTimeout(qsHoverLeaveTimer);
+  requestAnimationFrame(qsCacheProdRects); // esperar a que el shelf recién armado tenga layout
 }
+window.addEventListener('resize', () => { if (qsCurScr === 3) qsCacheProdRects(); });
 
 function qsDetect(sku, conf, targetEl) {
   const p=PRODUCTS[sku]; if(!p) return;
@@ -1414,21 +1409,20 @@ function qsShowPhoneDetect(product, conf) {
 function qsCheckAim() {
   if (qsCurScr !== 3) return;
   const svg = document.querySelector('#qsPhone svg');
-  const camBody = document.getElementById('qsCamBody');
-  if (!svg || !camBody) return;
+  if (!svg || !qsProdRects.length) return;
   const r = svg.getBoundingClientRect();
   const scale = r.width / 320;
   const cx = r.left + 160 * scale, cy = r.top + 194 * scale;
 
   let hit = null;
-  for (const el of camBody.querySelectorAll('.qs-prod')) {
-    const pr = el.getBoundingClientRect();
-    if (cx >= pr.left && cx <= pr.right && cy >= pr.top && cy <= pr.bottom) { hit = el; break; }
+  for (const item of qsProdRects) {
+    const pr = item.r;
+    if (cx >= pr.left && cx <= pr.right && cy >= pr.top && cy <= pr.bottom) { hit = item; break; }
   }
 
   if (hit) {
     clearTimeout(qsHoverLeaveTimer);
-    const sku = hit.dataset.sku;
+    const sku = hit.sku;
     if (sku !== qsHoverSku) {
       qsHoverSku = sku;
       const p = PRODUCTS[sku];
@@ -1436,7 +1430,7 @@ function qsCheckAim() {
         let conf = qsHoverConf.get(sku);
         if (!conf) { conf = 88 + Math.floor(Math.random()*11); qsHoverConf.set(sku, conf); }
         qsShowPhoneDetect(p, conf);
-        if (!qsDetected.some(d => d.sku === sku)) qsDetect(sku, conf, hit);
+        if (!qsDetected.some(d => d.sku === sku)) qsDetect(sku, conf, hit.el);
       }
     }
   } else if (qsHoverSku) {
