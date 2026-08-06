@@ -364,6 +364,8 @@
   35%  { transform: translateX(-50%) translateY(-14px) scale(1.02); }
   100% { transform: translateX(-50%) translateY(0) scale(1); animation-name: povIdle; }
 }
+/* con el mouse encima, la mano con el celu sigue el cursor en vez de la animación idle */
+.qs-pov-overlay.tracking { animation: none; transition: transform .15s ease-out; }
 
 /* camera feed (gondola behind phone) */
 .qs-cam-feed {
@@ -443,21 +445,25 @@
 }
 .qs-bbox.pop { animation: bboxPop .35s cubic-bezier(.175,.885,.32,1.275) forwards; }
 
-/* producto reconocido, mostrado dentro de la pantalla del celular */
-.qs-phone-detect {
+/* mira + barrido de búsqueda: se ocultan mientras se muestra una captura */
+.qs-phone-aim { transition: opacity .2s ease; }
+.qs-phone-aim.hide { opacity: 0; }
+
+/* producto capturado, a pantalla completa dentro del celular */
+.qs-phone-capture {
   opacity: 0;
-  transform: scale(.9);
-  transform-origin: 160px 262px;
-  transition: opacity .25s ease, transform .25s cubic-bezier(.175,.885,.32,1.275);
+  transform: scale(.94);
+  transform-origin: 160px 194px;
+  transition: opacity .2s ease, transform .25s cubic-bezier(.175,.885,.32,1.275);
 }
-.qs-phone-detect.show { opacity: 1; transform: scale(1); }
-.qs-phone-detect-name {
-  font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700; color: #fff;
+.qs-phone-capture.show { opacity: 1; transform: scale(1); }
+.qs-phone-capture-name {
+  font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800; color: #fff;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.qs-phone-detect-conf {
-  font-family: 'Nunito', sans-serif; font-size: 8px; font-weight: 800; color: #3C9FF1;
-  margin-top: 2px;
+.qs-phone-capture-conf {
+  font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700; color: #4ee08a;
+  margin-top: 3px;
 }
 
 /* camera top HUD */
@@ -894,6 +900,11 @@
                     <stop offset="0%" stop-color="#1a2435"/>
                     <stop offset="100%" stop-color="#0c1220"/>
                   </linearGradient>
+                  <linearGradient id="capCaption" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#000" stop-opacity="0"/>
+                    <stop offset="62%" stop-color="#000" stop-opacity="0"/>
+                    <stop offset="100%" stop-color="#000" stop-opacity=".82"/>
+                  </linearGradient>
                 </defs>
                 <!-- hand: sólo la muñeca/palma (abajo) y el pulgar (a la derecha) quedan
                      visibles, el resto queda tapado por el cuerpo del teléfono -->
@@ -936,24 +947,26 @@
                 <path d="M240,98 L240,112 M240,98 L226,98" stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M80,290 L80,276 M80,290 L94,290"   stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M240,290 L240,276 M240,290 L226,290" stroke="#3C9FF1" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                <!-- crosshair -->
-                <circle cx="160" cy="194" r="5" fill="none" stroke="rgba(60,159,241,.55)" stroke-width="1.8"/>
-                <line x1="155" y1="194" x2="148" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="165" y1="194" x2="172" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="160" y1="189" x2="160" y2="182" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <line x1="160" y1="199" x2="160" y2="206" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
-                <!-- animated scan line in phone -->
-                <line x1="78" y1="0" x2="238" y2="0" stroke="rgba(60,159,241,.5)" stroke-width="2" stroke-linecap="round">
-                  <animateTransform attributeName="transform" type="translate" values="0,96;0,292;0,96" dur="1.8s" repeatCount="indefinite" calcMode="ease-in-out"/>
-                </line>
-                <!-- producto reconocido en pantalla -->
-                <g id="qsPhoneDetect" class="qs-phone-detect">
-                  <rect x="84" y="248" width="152" height="34" rx="9" fill="rgba(6,16,28,.92)" stroke="rgba(60,159,241,.4)" stroke-width="1"/>
-                  <image id="qsPhoneDetectImg" x="90" y="253" width="22" height="24" preserveAspectRatio="xMidYMid meet"/>
-                  <foreignObject x="120" y="251" width="108" height="28">
-                    <div xmlns="http://www.w3.org/1999/xhtml" style="line-height:1.25">
-                      <div id="qsPhoneDetectName" class="qs-phone-detect-name"></div>
-                      <div id="qsPhoneDetectConf" class="qs-phone-detect-conf"></div>
+                <!-- mira + barrido: visibles mientras "busca", se ocultan cuando ya capturó un producto -->
+                <g id="qsPhoneAim" class="qs-phone-aim">
+                  <circle cx="160" cy="194" r="5" fill="none" stroke="rgba(60,159,241,.55)" stroke-width="1.8"/>
+                  <line x1="155" y1="194" x2="148" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="165" y1="194" x2="172" y2="194" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="160" y1="189" x2="160" y2="182" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="160" y1="199" x2="160" y2="206" stroke="rgba(60,159,241,.45)" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="78" y1="0" x2="238" y2="0" stroke="rgba(60,159,241,.5)" stroke-width="2" stroke-linecap="round">
+                    <animateTransform attributeName="transform" type="translate" values="0,96;0,292;0,96" dur="1.8s" repeatCount="indefinite" calcMode="ease-in-out"/>
+                  </line>
+                </g>
+                <!-- producto capturado: llena la pantalla, como si lo hubiera visto la cámara -->
+                <g id="qsPhoneCapture" class="qs-phone-capture">
+                  <rect x="77" y="95" width="166" height="198" rx="5" fill="#eef1f4"/>
+                  <image id="qsPhoneCaptureImg" x="95" y="103" width="130" height="154" preserveAspectRatio="xMidYMid meet"/>
+                  <rect x="77" y="95" width="166" height="198" rx="5" fill="url(#capCaption)"/>
+                  <foreignObject x="87" y="252" width="146" height="36">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="line-height:1.3">
+                      <div id="qsPhoneCaptureName" class="qs-phone-capture-name"></div>
+                      <div id="qsPhoneCaptureConf" class="qs-phone-capture-conf"></div>
                     </div>
                   </foreignObject>
                 </g>
@@ -1322,7 +1335,8 @@ function qsStartCamera() {
   qsDetected=[]; document.getElementById('qsDetCount').textContent='0';
   document.getElementById('qsAiList').innerHTML=''; document.getElementById('qsAiCnt').textContent='0';
   document.getElementById('qsBboxLayer').innerHTML='';
-  document.getElementById('qsPhoneDetect').classList.remove('show');
+  document.getElementById('qsPhoneCapture').classList.remove('show');
+  document.getElementById('qsPhoneAim').classList.remove('hide');
   document.getElementById('qsFinishBtn').disabled=true;
   document.getElementById('qsAiPanel').classList.add('show');
   setTimeout(qsRunDetections, 1100);
@@ -1380,16 +1394,40 @@ function qsDrawBbox(sku, conf) {
 
 let qsPhoneDetectTimer = null;
 function qsShowPhoneDetect(product, conf) {
-  const g = document.getElementById('qsPhoneDetect');
-  document.getElementById('qsPhoneDetectImg').setAttribute('href', product.img);
-  document.getElementById('qsPhoneDetectName').textContent = product.name;
-  document.getElementById('qsPhoneDetectConf').textContent = conf + '% de confianza';
+  const g = document.getElementById('qsPhoneCapture');
+  const aim = document.getElementById('qsPhoneAim');
+  document.getElementById('qsPhoneCaptureImg').setAttribute('href', product.img);
+  document.getElementById('qsPhoneCaptureName').textContent = product.name;
+  document.getElementById('qsPhoneCaptureConf').textContent = conf + '% de confianza';
   g.classList.remove('show');
   void g.getBoundingClientRect(); // reinicia la transición aunque ya estuviera visible
   g.classList.add('show');
+  aim.classList.add('hide');
   clearTimeout(qsPhoneDetectTimer);
-  qsPhoneDetectTimer = setTimeout(() => g.classList.remove('show'), 1600);
+  qsPhoneDetectTimer = setTimeout(() => { g.classList.remove('show'); aim.classList.remove('hide'); }, 1600);
 }
+
+/* ── la mano con el celu sigue el mouse mientras se apunta a la góndola ── */
+(function () {
+  const screen = document.querySelector('.qs-camera-screen');
+  const phone = document.getElementById('qsPhone');
+  if (!screen || !phone) return;
+  let tracking = false;
+  screen.addEventListener('mousemove', (e) => {
+    if (qsCurScr !== 3) return;
+    if (!tracking) { phone.classList.add('tracking'); tracking = true; }
+    const r = screen.getBoundingClientRect();
+    const fx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - .5) * 2));
+    const fy = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - .5) * 2));
+    const tx = fx * 16, ty = fy * 9, rot = fx * 3;
+    phone.style.transform = `translateX(calc(-50% + ${tx}px)) translateY(${ty}px) rotate(${rot}deg)`;
+  });
+  screen.addEventListener('mouseleave', () => {
+    if (!tracking) return;
+    phone.style.transform = 'translateX(-50%)';
+    setTimeout(() => { phone.classList.remove('tracking'); phone.style.transform = ''; tracking = false; }, 200);
+  });
+})();
 
 /* ── finish & generate ── */
 function qsFinish() {
