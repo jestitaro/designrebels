@@ -21,14 +21,6 @@ const BRAND_COLORS_KEY = 'qs-image-editor-brand-colors-v1'; // paleta de la empr
 const LIBRARY_DB_NAME = 'qs-image-editor-library-v1';
 const LIBRARY_STORE = 'resources';
 
-const BG_PRESETS = [
-  { id: 'p1', type: 'color', value: '#130D5D' },
-  { id: 'p2', type: 'color', value: '#6366f1' },
-  { id: 'p3', type: 'gradient', value: 'linear-gradient(135deg,#6366f1,#130D5D)' },
-  { id: 'p4', type: 'color', value: '#F9FAFB' },
-  { id: 'p5', type: 'gradient', value: 'linear-gradient(135deg,#8b5cf6,#4f46e5)' }
-];
-
 const state = {
   format: 'square',
   elements: [],
@@ -145,7 +137,7 @@ function restore(snap) {
   state.nextZ = state.elements.reduce((m, e) => Math.max(m, e.z), 0) + 1;
   lastSnapshot = snap;
   $$('.format-btn').forEach(b => b.classList.toggle('is-active', b.dataset.format === state.format));
-  renderBgPresets();
+  syncBgColorPicker();
   layoutCanvas();
   render();
   renderProps();
@@ -492,19 +484,28 @@ function saveToLibrary(file, dataUrl, kind, brand) {
 }
 
 // modal para nombrar y clasificar (tipo + marca) un recurso, tanto al subirlo
-// como para editar uno ya existente. Devuelve { name, kind, brand } si se
-// confirma, o null si se cancela.
-function openResourceEditModal({ title, name, kind, brand, previewSrc }) {
+// como para editar uno ya existente. También se reutiliza (con showKindBrand
+// en false) como confirmación simple de "¿guardar esto en la galería?" al
+// subir un fondo o una imagen directo desde Elementos, donde el tipo y la
+// marca ya están definidos por el contexto. Devuelve { name, kind, brand }
+// si se confirma, o null si se cancela.
+function openResourceEditModal({ title, name, kind, brand, previewSrc, showKindBrand = true, saveLabel = 'Guardar', cancelLabel = 'Cancelar' }) {
   return new Promise(resolve => {
     const modal = $('#resourceEditModal');
     const kindPicker = $('#resourceEditKindPicker');
     const brandPicker = $('#resourceEditBrandPicker');
+    const kindField = kindPicker.closest('.field');
+    const brandField = brandPicker.closest('.field');
     let selectedKind = (kind && KIND_LABELS[kind]) ? kind : 'imagen';
     let selectedBrand = (brand && BRAND_LABELS[brand]) ? brand : libraryBrand;
 
     $('#resourceEditModalTitle').textContent = title || 'Recurso';
     $('#resourceEditPreview').src = previewSrc || '';
     $('#resourceEditName').value = name || '';
+    kindField.hidden = !showKindBrand;
+    brandField.hidden = !showKindBrand;
+    $('#resourceEditSave').textContent = saveLabel;
+    $('#resourceEditCancel').textContent = cancelLabel;
     $$('.pill-toggle-btn', kindPicker).forEach(b => b.classList.toggle('is-active', b.dataset.kind === selectedKind));
     $$('.pill-toggle-btn', brandPicker).forEach(b => b.classList.toggle('is-active', b.dataset.brand === selectedBrand));
 
@@ -639,9 +640,7 @@ async function renderLibrary() {
 
   let allItems = [];
   try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
-  // items sin marca son de antes de este cambio: se muestran para cualquier
-  // marca en vez de quedar huérfanos
-  const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
+  const brandItems = allItems.filter(item => item.brand === libraryBrand);
   const items = brandItems.filter(item =>
     (libraryKind === 'all' || (item.kind || 'imagen') === libraryKind) &&
     matchesLibrarySearch(item.name)
@@ -651,12 +650,15 @@ async function renderLibrary() {
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
 
-  // el estado vacío es solo para la primera vez de verdad (no subiste nada
-  // todavía para esta marca): si ya subiste algo pero el filtro de tipo o la
-  // búsqueda no encuentran nada, la grilla queda en blanco sin cartel
-  empty.style.display = brandItems.length === 0 ? 'flex' : 'none';
-  if (emptyText && brandItems.length === 0) {
-    emptyText.textContent = `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
+  // el estado vacío es solo para la primera vez de verdad (ni nosotros ni el
+  // usuario subieron nada todavía para esta marca): si ya hay predefinidos o
+  // ya subiste algo, pero el filtro de tipo o la búsqueda no encuentran nada,
+  // la grilla queda en blanco sin cartel
+  const hasDefaults = DEFAULT_RESOURCES.some(item => item.brand === libraryBrand);
+  const brandIsEmpty = brandItems.length === 0 && !hasDefaults;
+  empty.style.display = brandIsEmpty ? 'flex' : 'none';
+  if (emptyText && brandIsEmpty) {
+    emptyText.textContent = `Todavía no hay recursos de ${brandLabel}. Subí una imagen para empezar.`;
   }
 }
 
@@ -817,63 +819,88 @@ $('#formatToggle').addEventListener('click', e => {
 
 // ---------- agregar elementos ----------
 $$('.add-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.add;
-    if (type === 'image') {
-      $('#inputImageElement').click();
-      return;
-    }
-    addElement(type);
-  });
+  btn.addEventListener('click', () => addElement(btn.dataset.add));
 });
 
+// ---------- imagen / recurso: subir desde el ordenador o elegir de la galería ----------
+$('#btnUploadImageElement').addEventListener('click', () => $('#inputImageElement').click());
+$('#btnPickImageFromGallery').addEventListener('click', () => goToGalleryFilteredByKind('all'));
 $('#inputImageElement').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result, 'imagen'); };
+  reader.onload = async ev => {
+    const dataUrl = ev.target.result;
+    addImageElement(dataUrl);
+    const result = await openResourceEditModal({
+      title: '¿Guardar esta imagen en la galería?',
+      name: file.name.replace(/\.[^./]+$/, ''),
+      kind: 'imagen',
+      brand: libraryBrand,
+      previewSrc: dataUrl,
+      showKindBrand: false,
+      saveLabel: 'Guardar en la galería',
+      cancelLabel: 'No guardar'
+    });
+    if (result) {
+      const { w, h } = await readImageDimensions(dataUrl);
+      await addResourceToLibrary(result.name, dataUrl, w, h, 'imagen', libraryBrand);
+      toast('Imagen guardada en la galería', 'success');
+    }
+  };
   reader.readAsDataURL(file);
   e.target.value = '';
 });
 
 // ---------- fondo ----------
-function renderBgPresets() {
-  const wrap = $('#bgPresets');
-  wrap.innerHTML = '';
-  BG_PRESETS.forEach(p => {
-    const b = document.createElement('button');
-    b.className = 'bg-preset' + (state.background.type !== 'image' && state.background.value === p.value ? ' is-active' : '');
-    b.style.background = p.value;
-    b.title = 'Fondo predefinido';
-    b.addEventListener('click', () => {
-      state.background = { type: p.type === 'gradient' ? 'gradient' : 'color', value: p.value };
-      renderBgPresets();
-      renderCanvasBackground();
-      render();
-      commit();
-    });
-    wrap.appendChild(b);
-  });
-  syncBgColorPicker();
-}
-
+// los colores predefinidos se sacaron: el fondo se elige con el color
+// personalizado (con los colores guardados disponibles adentro del selector,
+// ver enhanceColorPicker), un color ya guardado, o una imagen (subida u
+// obtenida de la galería)
 function setBackgroundImage(src) {
   state.background = { type: 'image', value: src };
-  renderBgPresets();
+  syncBgColorPicker();
   renderCanvasBackground();
   render();
   commit();
 }
+
+// abre la galería filtrada por tipo, para elegir un fondo o una imagen ya
+// guardada en vez de subir un archivo nuevo
+function goToGalleryFilteredByKind(kind) {
+  libraryKind = kind;
+  $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b.dataset.kind === kind));
+  renderDefaultLibrary();
+  renderLibrary();
+  switchTab('galeria');
+}
+
+$('#btnPickBgFromGallery').addEventListener('click', () => goToGalleryFilteredByKind('fondo'));
 
 $('#btnUploadBg').addEventListener('click', () => $('#inputBgImage').click());
 $('#inputBgImage').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => {
-    setBackgroundImage(ev.target.result);
-    saveToLibrary(file, ev.target.result, 'fondo');
+  reader.onload = async ev => {
+    const dataUrl = ev.target.result;
+    setBackgroundImage(dataUrl);
     toast('Fondo actualizado', 'success');
+    const result = await openResourceEditModal({
+      title: '¿Guardar esta imagen en la galería?',
+      name: file.name.replace(/\.[^./]+$/, ''),
+      kind: 'fondo',
+      brand: libraryBrand,
+      previewSrc: dataUrl,
+      showKindBrand: false,
+      saveLabel: 'Guardar en la galería',
+      cancelLabel: 'No guardar'
+    });
+    if (result) {
+      const { w, h } = await readImageDimensions(dataUrl);
+      await addResourceToLibrary(result.name, dataUrl, w, h, 'fondo', libraryBrand);
+      toast('Fondo guardado en la galería', 'success');
+    }
   };
   reader.readAsDataURL(file);
   e.target.value = '';
@@ -895,13 +922,16 @@ $('#bgColorPicker').addEventListener('input', e => {
   renderValidations(); // el contraste puede cambiar en vivo
 });
 $('#bgColorPicker').addEventListener('change', () => {
-  renderBgPresets();
+  syncBgColorPicker();
   render();
   commit();
 });
 
 function syncBgColorPicker() {
-  if (state.background.type === 'color') $('#bgColorPicker').value = state.background.value;
+  if (state.background.type !== 'color') return;
+  const input = $('#bgColorPicker');
+  input.value = state.background.value;
+  if (input._triggerDot) input._triggerDot.style.background = state.background.value;
 }
 
 // ---------- colores de la empresa (paleta con nombre, ej. por categoría) ----------
@@ -934,7 +964,7 @@ function renderBrandColors() {
     swatch.title = `Usar "${c.name}" como fondo del lienzo`;
     swatch.addEventListener('click', () => {
       state.background = { type: 'color', value: c.value };
-      renderBgPresets();
+      syncBgColorPicker();
       renderCanvasBackground();
       render();
       commit();
@@ -944,6 +974,14 @@ function renderBrandColors() {
     const label = document.createElement('span');
     label.className = 'brand-color-name';
     label.textContent = c.name;
+
+    const edit = document.createElement('button');
+    edit.type = 'button';
+    edit.className = 'brand-color-edit';
+    edit.title = 'Renombrar color';
+    edit.setAttribute('aria-label', `Renombrar color ${c.name}`);
+    edit.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>';
+    edit.addEventListener('click', ev => { ev.stopPropagation(); startRenameBrandColor(label, c); });
 
     const del = document.createElement('button');
     del.type = 'button';
@@ -955,9 +993,55 @@ function renderBrandColors() {
 
     item.appendChild(swatch);
     item.appendChild(label);
+    item.appendChild(edit);
     item.appendChild(del);
     wrap.appendChild(item);
   });
+}
+
+// reemplaza el nombre por un input editable en el momento; Enter o perder el
+// foco guarda, Escape cancela
+function startRenameBrandColor(label, c) {
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'brand-color-name-input';
+  input.value = c.name;
+  input.maxLength = 24;
+  input.setAttribute('aria-label', `Nuevo nombre para ${c.name}`);
+  label.replaceWith(input);
+  input.focus();
+  input.select();
+
+  let done = false;
+  function commitOnce() {
+    if (done) return;
+    done = true;
+    renameBrandColor(c.id, input.value);
+  }
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); commitOnce(); }
+    if (e.key === 'Escape') { e.preventDefault(); done = true; renderBrandColors(); }
+  });
+  input.addEventListener('blur', commitOnce);
+}
+
+function renameBrandColor(id, newName) {
+  const idx = brandColors.findIndex(c => c.id === id);
+  if (idx === -1) return;
+  const trimmed = (newName || '').trim();
+  if (!trimmed || trimmed.toLowerCase() === brandColors[idx].name.toLowerCase()) {
+    renderBrandColors();
+    return;
+  }
+  if (brandColors.some((c, i) => i !== idx && c.name.toLowerCase() === trimmed.toLowerCase())) {
+    toast('Ya existe un color guardado con ese nombre', 'error');
+    renderBrandColors();
+    return;
+  }
+  brandColors[idx].name = trimmed;
+  persistBrandColors();
+  renderBrandColors();
+  renderProps();
 }
 
 function addBrandColor(name, value) {
@@ -965,6 +1049,7 @@ function addBrandColor(name, value) {
   brandColors.push({ id, name, value });
   persistBrandColors();
   renderBrandColors();
+  syncBgColorPicker(); // el color guardado también queda disponible como fondo
   renderProps(); // refresca las mini paletas del panel de propiedades, si hay uno abierto
 }
 
@@ -974,6 +1059,7 @@ function removeBrandColor(id) {
   const [removed] = brandColors.splice(idx, 1);
   persistBrandColors();
   renderBrandColors();
+  syncBgColorPicker();
   renderProps();
   toast(`Color "${removed.name}" eliminado`, 'info', {
     actionLabel: 'Deshacer',
@@ -981,6 +1067,7 @@ function removeBrandColor(id) {
       brandColors.splice(idx, 0, removed);
       persistBrandColors();
       renderBrandColors();
+      syncBgColorPicker();
       renderProps();
     }
   });
@@ -1008,26 +1095,97 @@ $('#brandColorName').addEventListener('keydown', e => {
 });
 
 // debajo de cada input de color del panel de propiedades, ofrece la paleta de la empresa
-function attachBrandSwatches(container) {
-  if (!brandColors.length) return;
-  $$('input[type="color"][data-prop]', container).forEach(input => {
-    const row = document.createElement('div');
-    row.className = 'brand-swatch-row';
+// convierte un <input type="color"> en un selector con popover: el punto de
+// color abre un panel que tiene, adentro, los colores guardados en "Colores
+// de la empresa" (si hay) y el selector nativo para uno personalizado. Antes
+// los colores guardados se mostraban en una fila fija debajo de cada campo
+// con color; ahora solo aparecen dentro del selector, al abrirlo.
+function enhanceColorPicker(input, { block = false } = {}) {
+  if (input.dataset.colorEnhanced) return input._trigger;
+  input.dataset.colorEnhanced = '1';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'color-picker';
+  input.parentNode.insertBefore(wrap, input);
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'btn btn-secondary color-picker-trigger' + (block ? ' btn-block' : '');
+  trigger.title = input.title || 'Elegir color';
+  trigger.setAttribute('aria-label', input.getAttribute('aria-label') || 'Elegir color');
+
+  const dot = document.createElement('span');
+  dot.className = 'color-picker-trigger-dot';
+  dot.style.background = input.value;
+  trigger.appendChild(dot);
+  trigger.appendChild(document.createTextNode('Seleccionar color'));
+
+  const popover = document.createElement('div');
+  popover.className = 'color-picker-popover';
+  popover.hidden = true;
+
+  const swatches = document.createElement('div');
+  swatches.className = 'color-picker-swatches';
+
+  const customRow = document.createElement('div');
+  customRow.className = 'color-picker-custom-row';
+  const customLabel = document.createElement('span');
+  customLabel.textContent = 'Personalizado';
+  customRow.appendChild(input);
+  customRow.appendChild(customLabel);
+
+  popover.appendChild(swatches);
+  popover.appendChild(customRow);
+  wrap.appendChild(trigger);
+  wrap.appendChild(popover);
+  input._trigger = trigger;
+  input._triggerDot = dot;
+
+  function renderSwatches() {
+    swatches.innerHTML = '';
+    if (!brandColors.length) {
+      const hint = document.createElement('p');
+      hint.className = 'color-picker-empty';
+      hint.textContent = 'Todavía no guardaste colores en "Colores de la empresa".';
+      swatches.appendChild(hint);
+      return;
+    }
     brandColors.forEach(c => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'brand-swatch-mini';
+      b.className = 'brand-swatch-mini' + (input.value.toLowerCase() === c.value.toLowerCase() ? ' is-active' : '');
       b.style.background = c.value;
       b.title = c.name;
-      b.setAttribute('aria-label', `Usar color ${c.name}`);
+      b.setAttribute('aria-label', `Usar color guardado ${c.name}`);
       b.addEventListener('click', () => {
         input.value = c.value;
+        dot.style.background = c.value;
         input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        closePopover();
       });
-      row.appendChild(b);
+      swatches.appendChild(b);
     });
-    input.closest('.field').appendChild(row);
+  }
+
+  function openPopover() {
+    $$('.color-picker-popover').forEach(p => { if (p !== popover) p.hidden = true; });
+    renderSwatches();
+    popover.hidden = false;
+  }
+  function closePopover() { popover.hidden = true; }
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    popover.hidden ? openPopover() : closePopover();
   });
+  input.addEventListener('input', () => { dot.style.background = input.value; });
+  input.addEventListener('change', closePopover);
+  document.addEventListener('click', e => {
+    if (!popover.hidden && !wrap.contains(e.target)) closePopover();
+  });
+
+  return trigger;
 }
 
 // ---------- layout del canvas (tamaño real vs escala visual) ----------
@@ -1878,7 +2036,7 @@ function renderProps() {
     });
   }
 
-  attachBrandSwatches(form);
+  $$('input[type="color"][data-prop]', form).forEach(enhanceColorPicker);
 }
 
 function field(label, inner, small) {
@@ -2066,9 +2224,10 @@ function seedTemplate() {
 }
 
 function init() {
+  enhanceColorPicker($('#bgColorPicker'), { block: true });
   loadBrandColors();
   renderBrandColors();
-  renderBgPresets();
+  syncBgColorPicker();
   renderDefaultLibrary();
   renderLibrary();
   layoutCanvas();

@@ -86,9 +86,19 @@ if (window.tailwind) {
               <svg viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="2"/></svg>
               Placa de fondo
             </button>
-            <button class="add-btn" data-add="image">
+          </div>
+        </div>
+
+        <div class="panel-group">
+          <h3 class="panel-group-title">Imagen / recurso</h3>
+          <div class="source-actions">
+            <button class="btn btn-secondary btn-block" id="btnUploadImageElement">
+              <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+              Subir desde el ordenador
+            </button>
+            <button class="btn btn-secondary btn-block" id="btnPickImageFromGallery">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-              Imagen / recurso
+              Seleccionar de la galería
             </button>
           </div>
           <input type="file" id="inputImageElement" accept="image/*" hidden>
@@ -97,17 +107,15 @@ if (window.tailwind) {
         <div class="panel-group">
           <h3 class="panel-group-title">Fondo del lienzo</h3>
 
-          <div class="bg-presets" id="bgPresets"></div>
-
-          <div class="bg-custom-color">
+          <div class="source-actions">
             <input type="color" id="bgColorPicker" class="color-dot-input" value="#130D5D" title="Elegir color personalizado" aria-label="Color de fondo personalizado">
-            <span class="bg-custom-color-label">Color personalizado</span>
-          </div>
-
-          <div class="bg-actions">
             <button class="btn btn-secondary btn-block" id="btnUploadBg">
               <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-              Subir imagen de fondo
+              Subir desde el ordenador
+            </button>
+            <button class="btn btn-secondary btn-block" id="btnPickBgFromGallery">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              Seleccionar de la galería
             </button>
             <input type="file" id="inputBgImage" accept="image/*" hidden>
           </div>
