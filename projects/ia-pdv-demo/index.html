@@ -443,6 +443,23 @@
 }
 .qs-bbox.pop { animation: bboxPop .35s cubic-bezier(.175,.885,.32,1.275) forwards; }
 
+/* producto reconocido, mostrado dentro de la pantalla del celular */
+.qs-phone-detect {
+  opacity: 0;
+  transform: scale(.9);
+  transform-origin: 160px 262px;
+  transition: opacity .25s ease, transform .25s cubic-bezier(.175,.885,.32,1.275);
+}
+.qs-phone-detect.show { opacity: 1; transform: scale(1); }
+.qs-phone-detect-name {
+  font-family: 'Nunito', sans-serif; font-size: 9px; font-weight: 700; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.qs-phone-detect-conf {
+  font-family: 'Nunito', sans-serif; font-size: 8px; font-weight: 800; color: #3C9FF1;
+  margin-top: 2px;
+}
+
 /* camera top HUD */
 .qs-cam-hud {
   position: absolute; top: 0; left: 0; right: 0; z-index: 20;
@@ -878,22 +895,17 @@
                     <stop offset="100%" stop-color="#0c1220"/>
                   </linearGradient>
                 </defs>
-                <!-- hand -->
-                <!-- palm -->
-                <path d="M40,310 Q30,330 32,370 Q38,410 80,418 Q120,424 160,420 Q200,424 240,418 Q282,410 288,370 Q290,330 280,310 Z" fill="#d9936a"/>
-                <!-- fingers -->
-                <path d="M55,315 Q50,280 54,250 Q58,222 70,218 Q82,214 84,232 Q86,252 84,315 Z" fill="#e09a72"/>
-                <path d="M92,315 Q88,274 92,242 Q96,212 110,208 Q124,204 124,228 Q124,254 122,315 Z" fill="#e09a72"/>
-                <path d="M130,315 Q128,276 132,246 Q136,218 150,216 Q164,214 162,238 Q160,262 158,315 Z" fill="#e09a72"/>
-                <path d="M168,315 Q167,280 170,256 Q174,232 186,232 Q198,232 196,252 Q194,274 192,315 Z" fill="#d9936a"/>
-                <path d="M206,315 Q205,284 208,265 Q212,246 222,248 Q232,250 228,268 Q224,286 220,315 Z" fill="#d4906a"/>
-                <!-- thumb -->
-                <path d="M270,330 Q295,316 298,296 Q301,276 288,268 Q275,260 264,274 Q256,286 258,310 Z" fill="#e09a72"/>
-                <!-- knuckle lines -->
-                <path d="M60,284 Q68,281 74,284" stroke="#c07848" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M98,274 Q107,271 115,274" stroke="#c07848" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M136,272 Q145,269 153,272" stroke="#c07848" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                <path d="M173,275 Q180,272 187,275" stroke="#c07848" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <!-- hand: sólo la muñeca/palma (abajo) y el pulgar (a la derecha) quedan
+                     visibles, el resto queda tapado por el cuerpo del teléfono -->
+                <!-- muñeca / palma -->
+                <path d="M72,300 C56,322 53,364 60,402 C65,423 98,430 160,430 C222,430 255,423 260,402 C267,364 264,322 248,300 Z" fill="#d9936a"/>
+                <path d="M92,320 C82,346 82,384 92,410 C98,420 112,424 122,422 C112,410 108,380 112,352 C114,336 108,324 96,318 Z" fill="#e6a67c" opacity=".55"/>
+                <path d="M226,308 C240,330 244,368 236,404 C232,416 222,424 210,428 C222,412 226,378 222,346 C220,328 220,314 226,308 Z" fill="#00000018"/>
+                <!-- pulgar, apoyado sobre el borde derecho del teléfono -->
+                <path d="M244,340 C232,322 234,296 254,280 C268,269 288,272 296,286 C303,299 300,317 285,330 C273,340 254,346 244,340 Z" fill="#e6a67c"/>
+                <path d="M270,288 C278,284 288,288 291,297" stroke="#f0bd93" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
+                <!-- pliegue que separa el pulgar de la palma -->
+                <path d="M244,340 C236,328 236,310 246,296" stroke="#00000030" stroke-width="6" fill="none" stroke-linecap="round"/>
                 <!-- phone body -->
                 <rect x="56" y="6" width="208" height="340" rx="28" fill="url(#phoneBody)"/>
                 <rect x="56" y="6" width="208" height="340" rx="28" fill="none" stroke="#2a3a52" stroke-width="2"/>
@@ -934,6 +946,17 @@
                 <line x1="78" y1="0" x2="238" y2="0" stroke="rgba(60,159,241,.5)" stroke-width="2" stroke-linecap="round">
                   <animateTransform attributeName="transform" type="translate" values="0,96;0,292;0,96" dur="1.8s" repeatCount="indefinite" calcMode="ease-in-out"/>
                 </line>
+                <!-- producto reconocido en pantalla -->
+                <g id="qsPhoneDetect" class="qs-phone-detect">
+                  <rect x="84" y="248" width="152" height="34" rx="9" fill="rgba(6,16,28,.92)" stroke="rgba(60,159,241,.4)" stroke-width="1"/>
+                  <image id="qsPhoneDetectImg" x="90" y="253" width="22" height="24" preserveAspectRatio="xMidYMid meet"/>
+                  <foreignObject x="120" y="251" width="108" height="28">
+                    <div xmlns="http://www.w3.org/1999/xhtml" style="line-height:1.25">
+                      <div id="qsPhoneDetectName" class="qs-phone-detect-name"></div>
+                      <div id="qsPhoneDetectConf" class="qs-phone-detect-conf"></div>
+                    </div>
+                  </foreignObject>
+                </g>
                 <!-- bottom nav -->
                 <rect x="68" y="308" width="184" height="24" fill="#040d18"/>
                 <text x="96"  y="323" font-size="12" fill="#3a5060" text-anchor="middle">⌂</text>
@@ -1299,6 +1322,7 @@ function qsStartCamera() {
   qsDetected=[]; document.getElementById('qsDetCount').textContent='0';
   document.getElementById('qsAiList').innerHTML=''; document.getElementById('qsAiCnt').textContent='0';
   document.getElementById('qsBboxLayer').innerHTML='';
+  document.getElementById('qsPhoneDetect').classList.remove('show');
   document.getElementById('qsFinishBtn').disabled=true;
   document.getElementById('qsAiPanel').classList.add('show');
   setTimeout(qsRunDetections, 1100);
@@ -1323,6 +1347,9 @@ function qsDetect(sku, conf) {
 
   // bbox
   qsDrawBbox(sku, conf);
+
+  // producto reconocido, visible en la pantalla del celular
+  qsShowPhoneDetect(p, conf);
 
   // detection panel row
   const list=document.getElementById('qsAiList');
@@ -1349,6 +1376,19 @@ function qsDrawBbox(sku, conf) {
   setTimeout(()=>box.classList.add('show'),20);
   setTimeout(()=>box.classList.remove('pop'),400);
   layer.appendChild(box);
+}
+
+let qsPhoneDetectTimer = null;
+function qsShowPhoneDetect(product, conf) {
+  const g = document.getElementById('qsPhoneDetect');
+  document.getElementById('qsPhoneDetectImg').setAttribute('href', product.img);
+  document.getElementById('qsPhoneDetectName').textContent = product.name;
+  document.getElementById('qsPhoneDetectConf').textContent = conf + '% de confianza';
+  g.classList.remove('show');
+  void g.getBoundingClientRect(); // reinicia la transición aunque ya estuviera visible
+  g.classList.add('show');
+  clearTimeout(qsPhoneDetectTimer);
+  qsPhoneDetectTimer = setTimeout(() => g.classList.remove('show'), 1600);
 }
 
 /* ── finish & generate ── */
