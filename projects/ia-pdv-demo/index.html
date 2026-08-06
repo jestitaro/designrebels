@@ -449,6 +449,16 @@
 .qs-phone-aim { transition: opacity .2s ease; }
 .qs-phone-aim.hide { opacity: 0; }
 
+/* pista para invitar a mover el mouse sobre la góndola */
+.qs-scan-hint {
+  position: absolute; top: 54px; left: 50%; transform: translateX(-50%);
+  background: rgba(8,12,18,.85); color: var(--qs-text); font-size: 11px; font-weight: 600;
+  padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(60,159,241,.25);
+  z-index: 42; pointer-events: none; white-space: nowrap;
+  transition: opacity .4s ease;
+}
+.qs-scan-hint.hide { opacity: 0; }
+
 /* producto capturado, a pantalla completa dentro del celular */
 .qs-phone-capture {
   opacity: 0;
@@ -885,6 +895,8 @@
             <div class="qs-rec"><div class="qs-rec-dot"></div> Reconocimiento activo</div>
             <div class="qs-det-badge"><b id="qsDetCount">0</b> detectados</div>
           </div>
+
+          <div class="qs-scan-hint" id="qsScanHint">Recorré la góndola con el mouse para escanearla</div>
 
           <!-- bottom: finish btn + phone in foreground -->
           <div class="qs-cam-bottom">
@@ -1329,6 +1341,8 @@ function qsRenderFormList(idx) {
 }
 
 /* ── camera ── */
+let qsHoverSku = null, qsHoverConf = new Map(), qsHoverLeaveTimer = null;
+
 function qsStartCamera() {
   qsGoScreen(3);
   qsBuildShelf(QS_MODULES[qsCurMod].rows, document.getElementById('qsCamBody'));
@@ -1337,33 +1351,21 @@ function qsStartCamera() {
   document.getElementById('qsBboxLayer').innerHTML='';
   document.getElementById('qsPhoneCapture').classList.remove('show');
   document.getElementById('qsPhoneAim').classList.remove('hide');
+  document.getElementById('qsScanHint').classList.remove('hide');
   document.getElementById('qsFinishBtn').disabled=true;
   document.getElementById('qsAiPanel').classList.add('show');
-  setTimeout(qsRunDetections, 1100);
+  qsHoverSku=null; qsHoverConf=new Map(); clearTimeout(qsHoverLeaveTimer);
 }
 
-function qsRunDetections() {
-  const unique=[...new Set(QS_MODULES[qsCurMod].rows.flat())];
-  const seq = unique.sort(()=>Math.random()-.5).slice(0,7).map((sku,i)=>({
-    sku, conf: 88+Math.floor(Math.random()*11), delay: 700+i*820
-  }));
-  seq.forEach(d => setTimeout(()=>qsDetect(d.sku, d.conf), d.delay));
-  const last = seq[seq.length-1];
-  setTimeout(()=>{ document.getElementById('qsFinishBtn').disabled=false; }, (last?.delay||3000)+500);
-}
-
-function qsDetect(sku, conf) {
+function qsDetect(sku, conf, targetEl) {
   const p=PRODUCTS[sku]; if(!p) return;
 
   // highlight in form
   const prow=document.getElementById(`qsprow-${sku}-${qsCurMod}`);
   if(prow){ prow.classList.add('det','flash'); const st=document.getElementById(`qsst-${sku}-${qsCurMod}`); if(st){st.className='qs-status det';st.textContent='● Detectado';} }
 
-  // bbox
-  qsDrawBbox(sku, conf);
-
-  // producto reconocido, visible en la pantalla del celular
-  qsShowPhoneDetect(p, conf);
+  // bbox, justo donde apuntó el celular
+  qsDrawBbox(sku, conf, targetEl);
 
   // detection panel row
   const list=document.getElementById('qsAiList');
@@ -1374,13 +1376,18 @@ function qsDetect(sku, conf) {
   qsDetected.push({sku,conf});
   document.getElementById('qsDetCount').textContent=qsDetected.length;
   document.getElementById('qsAiCnt').textContent=qsDetected.length;
+  document.getElementById('qsScanHint').classList.add('hide');
+  document.getElementById('qsFinishBtn').disabled=false;
 }
 
-function qsDrawBbox(sku, conf) {
+function qsDrawBbox(sku, conf, targetEl) {
   const layer=document.getElementById('qsBboxLayer');
-  const prods=[...document.querySelectorAll('#qsCamBody .qs-prod')].filter(e=>e.dataset.sku===sku);
-  if(!prods.length) return;
-  const target=prods[Math.floor(Math.random()*prods.length)];
+  let target=targetEl;
+  if(!target){
+    const prods=[...document.querySelectorAll('#qsCamBody .qs-prod')].filter(e=>e.dataset.sku===sku);
+    if(!prods.length) return;
+    target=prods[Math.floor(Math.random()*prods.length)];
+  }
   const tr=target.getBoundingClientRect(), lr=layer.getBoundingClientRect();
   const box=document.createElement('div');
   box.className='qs-bbox '+(conf>=90?'hi':'lo')+' pop';
@@ -1399,30 +1406,68 @@ function qsShowPhoneDetect(product, conf) {
   document.getElementById('qsPhoneCaptureImg').setAttribute('href', product.img);
   document.getElementById('qsPhoneCaptureName').textContent = product.name;
   document.getElementById('qsPhoneCaptureConf').textContent = conf + '% de confianza';
-  g.classList.remove('show');
-  void g.getBoundingClientRect(); // reinicia la transición aunque ya estuviera visible
   g.classList.add('show');
   aim.classList.add('hide');
-  clearTimeout(qsPhoneDetectTimer);
-  qsPhoneDetectTimer = setTimeout(() => { g.classList.remove('show'); aim.classList.remove('hide'); }, 1600);
 }
 
-/* ── la mano con el celu sigue el mouse mientras se apunta a la góndola ── */
+/* ── la mano con el celu sigue el mouse, y captura lo que quede bajo la mira ── */
+function qsCheckAim() {
+  if (qsCurScr !== 3) return;
+  const svg = document.querySelector('#qsPhone svg');
+  const camBody = document.getElementById('qsCamBody');
+  if (!svg || !camBody) return;
+  const r = svg.getBoundingClientRect();
+  const scale = r.width / 320;
+  const cx = r.left + 160 * scale, cy = r.top + 194 * scale;
+
+  let hit = null;
+  for (const el of camBody.querySelectorAll('.qs-prod')) {
+    const pr = el.getBoundingClientRect();
+    if (cx >= pr.left && cx <= pr.right && cy >= pr.top && cy <= pr.bottom) { hit = el; break; }
+  }
+
+  if (hit) {
+    clearTimeout(qsHoverLeaveTimer);
+    const sku = hit.dataset.sku;
+    if (sku !== qsHoverSku) {
+      qsHoverSku = sku;
+      const p = PRODUCTS[sku];
+      if (p) {
+        let conf = qsHoverConf.get(sku);
+        if (!conf) { conf = 88 + Math.floor(Math.random()*11); qsHoverConf.set(sku, conf); }
+        qsShowPhoneDetect(p, conf);
+        if (!qsDetected.some(d => d.sku === sku)) qsDetect(sku, conf, hit);
+      }
+    }
+  } else if (qsHoverSku) {
+    qsHoverSku = null;
+    clearTimeout(qsHoverLeaveTimer);
+    qsHoverLeaveTimer = setTimeout(() => {
+      document.getElementById('qsPhoneCapture').classList.remove('show');
+      document.getElementById('qsPhoneAim').classList.remove('hide');
+    }, 250);
+  }
+}
+
 (function () {
   const screen = document.querySelector('.qs-camera-screen');
   const phone = document.getElementById('qsPhone');
   if (!screen || !phone) return;
-  let tracking = false;
+  let tracking = false, aimScheduled = false;
   screen.addEventListener('mousemove', (e) => {
     if (qsCurScr !== 3) return;
     if (!tracking) { phone.classList.add('tracking'); tracking = true; }
     const r = screen.getBoundingClientRect();
     const fx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - .5) * 2));
     const fy = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - .5) * 2));
-    const tx = fx * 16, ty = fy * 9, rot = fx * 3;
+    const tx = fx * r.width * 0.30, ty = fy * r.height * 0.09, rot = fx * 3;
     phone.style.transform = `translateX(calc(-50% + ${tx}px)) translateY(${ty}px) rotate(${rot}deg)`;
+    if (!aimScheduled) { aimScheduled = true; requestAnimationFrame(() => { aimScheduled = false; qsCheckAim(); }); }
   });
   screen.addEventListener('mouseleave', () => {
+    qsHoverSku = null; clearTimeout(qsHoverLeaveTimer);
+    document.getElementById('qsPhoneCapture').classList.remove('show');
+    document.getElementById('qsPhoneAim').classList.remove('hide');
     if (!tracking) return;
     phone.style.transform = 'translateX(-50%)';
     setTimeout(() => { phone.classList.remove('tracking'); phone.style.transform = ''; tracking = false; }, 200);
