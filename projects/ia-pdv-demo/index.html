@@ -1,15 +1,26 @@
-<!-- ═══════════════════════════════════════════════════════════
-     QUARTZSALES — Sección demo interactiva IA en PDV
-     Para integrar en https://www.quartzsales.com/ (sección #ai)
-     Self-contained: sin dependencias externas salvo Google Fonts
-═══════════════════════════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuartzSales — IA en el PDV</title>
+<meta name="robots" content="index, follow">
+
+<meta name="description" content="IA en el PDV es el módulo de QuartzSales que reconoce productos en góndola por cámara y completa el relevamiento automáticamente.">
+<meta property="og:title" content="QuartzSales · IA en el PDV">
+<meta property="og:description" content="Apuntá la cámara a la góndola. La IA detecta cada producto y carga el formulario por vos.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#130D5D">
+
+<title>QuartzSales · IA en el PDV</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://ka-p.fontawesome.com" crossorigin>
+<script defer crossorigin="anonymous" src="https://kit.fontawesome.com/95d03784e2.js"></script>
+
+<link href="styles.css" rel="stylesheet">
 <style>
 /* ── RESET & BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -701,7 +712,56 @@
 .qs-feat-desc  { font-size: 11px; color: var(--qs-muted); line-height: 1.6; }
 </style>
 </head>
-<body style="background:var(--qs-dark)">
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<header id="site-header">
+  <div class="brand">
+    <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" loading="lazy" />
+    <div class="logo">QuartzSales <span class="logo-sub">IA en el PDV</span></div>
+  </div>
+
+  <nav class="nav-desktop">
+    <a href="#ai-demo">Probar el demo</a>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#pensado-para">Pensado para</a>
+    <a class="nav-back" href="https://www.quartzsales.com/" target="_blank" rel="noopener">
+      <i class="fa-regular fa-arrow-up-right-from-square" aria-hidden="true"></i> Conocé QuartzSales
+    </a>
+    <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
+  </nav>
+
+  <button aria-expanded="false" aria-label="Menú" class="burger">
+    <span></span><span></span><span></span>
+  </button>
+
+  <aside class="drawer">
+    <nav>
+      <button aria-label="Cerrar menú" class="drawer-close">×</button>
+      <a href="#ai-demo">Probar el demo</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#pensado-para">Pensado para</a>
+      <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
+      <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
+    </nav>
+  </aside>
+  <div class="drawer-overlay"></div>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- HERO -->
+<section class="hero-ia">
+  <span class="eyebrow">Módulo · IA en el punto de venta</span>
+  <h1>Apuntá la cámara a la góndola. La IA carga el relevamiento por vos.</h1>
+  <p>Un repositor apunta su celular a la góndola. La IA detecta cada producto, lo identifica y completa el formulario con los precios automáticamente — sin tipear nada, en segundos.</p>
+  <div class="hero-ia__ctas">
+    <button class="btn btn-gradient js-scroll-simulador" type="button">
+      <i class="fa-regular fa-play" aria-hidden="true"></i> Ver cómo funciona
+    </button>
+    <button class="btn btn-outline js-scroll-demo" type="button">Solicitar demo</button>
+  </div>
+</section>
 
 <section class="qs-demo-section" id="ai-demo">
 <div class="qs-section-inner">
@@ -980,6 +1040,139 @@
 </div><!-- /inner -->
 </section>
 
+<!-- COMO FUNCIONA -->
+<section class="container reveal" id="como-funciona">
+  <span aria-hidden="true" class="sentinel"></span>
+  <h2 class="section-title">Cómo funciona, de punta a punta</h2>
+  <div class="flow" id="flow">
+    <div class="flow-line" id="flow-line" aria-hidden="true"></div>
+    <div class="flow-line-progress" id="flow-line-progress" aria-hidden="true"></div>
+    <div class="flow-step">
+      <div class="flow-step__icon"><i class="fa-regular fa-camera" aria-hidden="true"></i></div>
+      <div class="flow-step__body">
+        <span class="flow-step__num">Paso 01</span>
+        <h3>Reconocimiento en el momento</h3>
+        <p>El repositor apunta la cámara del celular a la góndola. No hace falta sacar una foto ni subir nada: la IA reconoce los productos en vivo.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step__icon"><i class="fa-regular fa-barcode" aria-hidden="true"></i></div>
+      <div class="flow-step__body">
+        <span class="flow-step__num">Paso 02</span>
+        <h3>Match automático con el catálogo</h3>
+        <p>Cada producto detectado se cruza contra el catálogo del cliente y muestra su porcentaje de confianza.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step__icon"><i class="fa-regular fa-pen" aria-hidden="true"></i></div>
+      <div class="flow-step__body">
+        <span class="flow-step__num">Paso 03</span>
+        <h3>El formulario se completa solo</h3>
+        <p>Los precios se cargan automáticamente en el relevamiento. El usuario puede ajustar cualquier campo antes de enviar.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></div>
+      <div class="flow-step__body">
+        <span class="flow-step__num">Paso 04</span>
+        <h3>Sincronización inmediata</h3>
+        <p>Al enviar, el relevamiento queda disponible al instante en el dashboard, con la data conectada al resto de QuartzSales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PENSADO PARA -->
+<section class="container reveal" id="pensado-para">
+  <span aria-hidden="true" class="sentinel"></span>
+  <h2 class="section-title">Pensado para</h2>
+  <div class="card-grid pensado-grid">
+    <div class="card">
+      <span class="benefit-icon"><i class="fa-regular fa-person-walking" aria-hidden="true"></i></span>
+      <h3>Repositores y equipo de campo</h3>
+      <p>Cargan relevamientos de precios y exhibición todo el día. Necesitan una forma más rápida que tipear producto por producto.</p>
+    </div>
+    <div class="card">
+      <span class="benefit-icon"><i class="fa-regular fa-chart-line" aria-hidden="true"></i></span>
+      <h3>Supervisores de trade marketing</h3>
+      <p>Necesitan visibilidad rápida y confiable del PDV, sin depender de que cada visita se cargue bien a mano.</p>
+    </div>
+    <div class="card">
+      <span class="benefit-icon"><i class="fa-regular fa-plug" aria-hidden="true"></i></span>
+      <h3>Administradores / IT</h3>
+      <p>Necesitan que el reconocimiento se integre con el catálogo y los formularios ya configurados en QuartzSales, sin procesos paralelos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA DEMO -->
+<section class="demo-section reveal" id="demo">
+  <span aria-hidden="true" class="sentinel"></span>
+  <div class="demo-card">
+    <div class="demo-card__text">
+      <h2>Veamos IA en el PDV aplicado a tu operación</h2>
+      <p>Coordinamos una demo corta con tu catálogo y tus productos reales.</p>
+    </div>
+    <form class="demo-form" id="demo-form">
+      <div class="form-row">
+        <label for="demo-empresa">Empresa</label>
+        <input id="demo-empresa" name="empresa" type="text" required />
+      </div>
+      <div class="form-row">
+        <label for="demo-nombre">Nombre y apellido</label>
+        <input id="demo-nombre" name="nombre" type="text" required />
+      </div>
+      <div class="form-row">
+        <label for="demo-contacto">Email o teléfono</label>
+        <input id="demo-contacto" name="contacto" type="text" required />
+      </div>
+      <div class="form-row">
+        <label for="demo-horario">Horario de preferencia</label>
+        <select id="demo-horario" name="horario">
+          <option value="">Cuando les quede cómodo</option>
+          <option>Mañana (9 a 12 hs)</option>
+          <option>Mediodía (12 a 15 hs)</option>
+          <option>Tarde (15 a 18 hs)</option>
+        </select>
+      </div>
+      <button class="btn btn-gradient" type="submit">Solicitar demo</button>
+      <p class="form-note" id="demo-form-note" hidden>¡Gracias! Te vamos a contactar a la brevedad.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer reveal">
+  <div class="footer-panels">
+    <div class="footer-panel footer-brand">
+      <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs-negativo-bg-dark.svg" alt="" loading="lazy" />
+      <div class="logo">QuartzSales</div>
+      <p class="footer-tagline">Ejecución, gestión e información del punto de venta en un solo lugar.</p>
+    </div>
+
+    <div class="footer-panel">
+      <h3>IA EN EL PDV</h3>
+      <a href="#ai-demo">Probar el demo</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#pensado-para">Pensado para</a>
+    </div>
+
+    <div class="footer-panel">
+      <h3>CONTACTO Y REDES</h3>
+      <a href="https://www.linkedin.com/company/quartz-sales" rel="noopener" target="_blank">LinkedIn</a>
+      <a href="mailto:contacto@quartzsales.com">Escribinos</a>
+      <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">Sitio principal QuartzSales</a>
+    </div>
+  </div>
+  <div class="offices">
+    Nuestras oficinas: 8333 NW 53rd St, Doral, FL 33166, Estados Unidos • C. de Ríos Rosas 42, 28003 Madrid
+    (Chamberí), España
+  </div>
+  <div class="footer-bottom">© 2026 QuartzSales. Todos los derechos reservados.</div>
+</footer>
+
+<script src="app.js"></script>
 <script>
 const PRODUCTS = {
   "7791293045658": {"name": "Brillo Ceramidas Shampoo 190ml", "type": "shampoo", "w": 46, "h": 110, "price": "1850", "img": "data:image/png;base64,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"},
