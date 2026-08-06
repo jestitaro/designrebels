@@ -237,15 +237,6 @@ button{ font-family: inherit; }
   gap: 0.5rem;
 }
 
-.checkbox-field{
-  display: flex; align-items: center; gap: 0.5rem;
-  margin-top: 0.7rem;
-  font-size: 0.85rem;
-  color: var(--text-soft);
-  cursor: pointer;
-}
-.checkbox-field input{ cursor: pointer; }
-
 /* Input de color nativo, mostrado como pastilla redonda */
 .color-dot-input{
   width: 2.4rem; height: 2.4rem;
@@ -261,11 +252,42 @@ button{ font-family: inherit; }
 .color-dot-input::-moz-color-swatch{ border: none; border-radius: 50%; }
 .color-dot-input:hover{ border-color: var(--primary); }
 
-.bg-custom-color{
-  display: flex; align-items: center; gap: 0.6rem;
+/* Selector de color con popover: el punto abre un panel con los colores
+   guardados (si hay) y el selector nativo para uno personalizado, en vez de
+   mostrar los guardados en una fila fija debajo del campo */
+.color-picker{
+  position: relative;
+  display: inline-block;
   margin-bottom: 0.9rem;
 }
-.bg-custom-color-label{ font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.color-picker-popover{
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 50;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: 0.7rem;
+  min-width: 10rem;
+}
+.color-picker-swatches{
+  display: flex; flex-wrap: wrap; gap: 0.35rem;
+  margin-bottom: 0.6rem;
+}
+.color-picker-empty{
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  max-width: 9rem;
+}
+.color-picker-custom-row{
+  display: flex; align-items: center; gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+.color-picker-custom-row span{ font-size: 0.8rem; color: var(--text-soft); }
 
 .panel-group-hint{
   margin: 0 0 0.8rem;
@@ -307,13 +329,24 @@ button{ font-family: inherit; }
   color: var(--text);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
+.brand-color-name-input{
+  flex: 1; min-width: 0;
+  font-family: inherit; font-size: 0.85rem; font-weight: 500;
+  color: var(--text);
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--primary); border-radius: 0.3rem;
+  background: var(--surface);
+}
+.brand-color-edit,
 .brand-color-delete{
   width: 1.6rem; height: 1.6rem;
   display: flex; align-items: center; justify-content: center;
   border: none; background: transparent; border-radius: 0.4rem;
   color: var(--text-soft); cursor: pointer; flex-shrink: 0;
 }
+.brand-color-edit svg,
 .brand-color-delete svg{ width: 0.85rem; height: 0.85rem; }
+.brand-color-edit:hover{ background: var(--primary-soft); color: var(--primary); }
 .brand-color-delete:hover{ background: var(--danger-soft); color: var(--danger); }
 
 .brand-color-add{
@@ -331,12 +364,7 @@ button{ font-family: inherit; }
 .brand-color-add input[type="text"]:focus{ outline: 2px solid var(--primary-soft); border-color: var(--primary); }
 .brand-color-add .btn{ flex-shrink: 0; padding: 0.55rem 0.8rem; font-size: 0.85rem; }
 
-/* Mini paleta de la empresa debajo de un input de color en Propiedades */
-.brand-swatch-row{
-  display: flex; flex-wrap: wrap; gap: 0.35rem;
-  margin-top: 0.5rem;
-}
-#bgSavedColors{ margin-bottom: 0.9rem; }
+/* Mini swatch de un color guardado, dentro del popover del selector de color */
 .brand-swatch-mini{
   width: 1.3rem; height: 1.3rem;
   border-radius: 50%;

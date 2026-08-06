@@ -101,21 +101,13 @@ if (window.tailwind) {
               Seleccionar de la galería
             </button>
           </div>
-          <label class="checkbox-field">
-            <input type="checkbox" id="chkSaveImageToLibrary" checked>
-            Guardar también en la galería
-          </label>
           <input type="file" id="inputImageElement" accept="image/*" hidden>
         </div>
 
         <div class="panel-group">
           <h3 class="panel-group-title">Fondo del lienzo</h3>
 
-          <div class="bg-custom-color">
-            <input type="color" id="bgColorPicker" class="color-dot-input" value="#130D5D" title="Elegir color personalizado" aria-label="Color de fondo personalizado">
-            <span class="bg-custom-color-label">Color personalizado</span>
-          </div>
-          <div class="brand-swatch-row" id="bgSavedColors"></div>
+          <input type="color" id="bgColorPicker" class="color-dot-input" value="#130D5D" title="Elegir color personalizado" aria-label="Color de fondo personalizado">
 
           <div class="source-actions">
             <button class="btn btn-secondary btn-block" id="btnUploadBg">
@@ -128,10 +120,6 @@ if (window.tailwind) {
             </button>
             <input type="file" id="inputBgImage" accept="image/*" hidden>
           </div>
-          <label class="checkbox-field">
-            <input type="checkbox" id="chkSaveBgToLibrary" checked>
-            Guardar también en la galería
-          </label>
         </div>
 
         <div class="panel-group">
