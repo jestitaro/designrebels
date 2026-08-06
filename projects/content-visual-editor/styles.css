@@ -888,6 +888,53 @@ button{ font-family: inherit; }
 }
 
 /* ========================================================
+   Modal (subir / editar un recurso de la galería)
+   ======================================================== */
+.modal-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(17,24,39,.45);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  z-index: 500;
+}
+.modal{
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 44rem;
+  max-width: 100%;
+  max-height: 85vh;
+  display: flex; flex-direction: column;
+}
+.modal-sm{ width: 26rem; }
+.modal-header{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.modal-header h2{ margin: 0; font-size: 1.3rem; font-weight: 700; }
+.modal-body{
+  padding: 1.5rem;
+  overflow-y: auto;
+  font-size: 0.95rem;
+}
+.modal-footer{
+  display: flex; justify-content: flex-end; gap: 0.6rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+}
+.resource-edit-preview{
+  display: block;
+  width: 100%;
+  max-height: 12rem;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-50);
+  margin-bottom: 1.1rem;
+}
+
+/* ========================================================
    Toasts
    ======================================================== */
 .toasts{

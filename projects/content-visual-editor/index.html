@@ -162,14 +162,6 @@ if (window.tailwind) {
             Este navegador no permite guardar la galería de forma permanente en este contexto: lo que subas va a estar disponible solo durante esta sesión (se pierde al recargar).
           </p>
 
-          <p class="panel-group-hint" id="libraryUploadKindHint">¿Qué tipo de recurso vas a subir?</p>
-          <div class="pill-toggle pill-toggle-sm" id="libraryUploadKindPicker" role="tablist">
-            <button type="button" class="pill-toggle-btn" data-upload-kind="logo">Logo</button>
-            <button type="button" class="pill-toggle-btn is-active" data-upload-kind="imagen">Imagen</button>
-            <button type="button" class="pill-toggle-btn" data-upload-kind="icono">Ícono</button>
-            <button type="button" class="pill-toggle-btn" data-upload-kind="fondo">Fondo</button>
-          </div>
-
           <button type="button" class="btn btn-secondary btn-block" id="btnLibraryUpload">
             <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
             Subir recursos a la galería
@@ -323,6 +315,48 @@ if (window.tailwind) {
       Exportar noticia
     </button>
   </footer>
+</div>
+
+<!-- Modal para subir/editar un recurso de la galería: nombre, tipo y marca -->
+<div class="modal-backdrop" id="resourceEditModal" hidden>
+  <div class="modal modal-sm" role="dialog" aria-modal="true" aria-labelledby="resourceEditModalTitle">
+    <div class="modal-header">
+      <h2 id="resourceEditModalTitle">Recurso</h2>
+      <button class="popover-close" id="resourceEditModalClose" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <img class="resource-edit-preview" id="resourceEditPreview" alt="Vista previa del recurso">
+
+      <div class="field">
+        <label for="resourceEditName">Nombre</label>
+        <input type="text" id="resourceEditName" maxlength="60">
+      </div>
+
+      <div class="field">
+        <label>Tipo de recurso</label>
+        <div class="pill-toggle pill-toggle-sm" id="resourceEditKindPicker" role="tablist">
+          <button type="button" class="pill-toggle-btn" data-kind="logo">Logo</button>
+          <button type="button" class="pill-toggle-btn" data-kind="imagen">Imagen</button>
+          <button type="button" class="pill-toggle-btn" data-kind="icono">Ícono</button>
+          <button type="button" class="pill-toggle-btn" data-kind="fondo">Fondo</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Marca</label>
+        <div class="pill-toggle" id="resourceEditBrandPicker" role="tablist">
+          <button type="button" class="pill-toggle-btn" data-brand="quartzsales">QuartzSales</button>
+          <button type="button" class="pill-toggle-btn" data-brand="unilever">Unilever</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-ghost" id="resourceEditCancel">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="resourceEditSave">Guardar</button>
+    </div>
+  </div>
 </div>
 
 <!-- Toasts -->
