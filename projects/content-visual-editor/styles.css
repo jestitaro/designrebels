@@ -165,6 +165,10 @@ button{ font-family: inherit; }
 }
 
 /* -------- Panel izquierdo -------- */
+/* height: fit-content + align-self: start, redundante con el align-items:
+   start de .editor-body, para que el panel nunca se estire a la altura del
+   preview cuando su contenido (ej. "Propiedades" sin nada seleccionado) es
+   corto */
 .editor-panel{
   background: var(--surface);
   border: 1px solid var(--border);
@@ -173,6 +177,8 @@ button{ font-family: inherit; }
   overflow: hidden;
   position: sticky;
   top: 1.5rem;
+  align-self: start;
+  height: fit-content;
 }
 
 .panel-tabs{
@@ -258,7 +264,12 @@ button{ font-family: inherit; }
 .color-picker{
   position: relative;
   display: inline-block;
-  margin-bottom: 0.9rem;
+}
+.color-picker-trigger-dot{
+  width: 1.1rem; height: 1.1rem;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  flex-shrink: 0;
 }
 .color-picker-popover{
   position: absolute;
@@ -513,14 +524,10 @@ button{ font-family: inherit; }
 .field-row{ display: flex; gap: 0.6rem; }
 .field-row .field{ flex: 1; }
 
-.field input[type="color"]{
-  width: 100%; height: 2.4rem;
-  padding: 0.2rem;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  background: var(--surface);
-}
+/* el color nativo real vive adentro del popover del selector (ver
+   enhanceColorPicker), no directo en el field: mantiene su forma de
+   pastilla redonda en vez de ocupar todo el ancho del campo */
+.color-picker-custom-row input[type="color"]{ width: 2.4rem; height: 2.4rem; }
 
 .field input[type="range"]{ width: 100%; accent-color: var(--primary); }
 

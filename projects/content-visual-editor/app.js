@@ -931,7 +931,7 @@ function syncBgColorPicker() {
   if (state.background.type !== 'color') return;
   const input = $('#bgColorPicker');
   input.value = state.background.value;
-  if (input._trigger) input._trigger.style.background = state.background.value;
+  if (input._triggerDot) input._triggerDot.style.background = state.background.value;
 }
 
 // ---------- colores de la empresa (paleta con nombre, ej. por categoría) ----------
@@ -1100,7 +1100,7 @@ $('#brandColorName').addEventListener('keydown', e => {
 // de la empresa" (si hay) y el selector nativo para uno personalizado. Antes
 // los colores guardados se mostraban en una fila fija debajo de cada campo
 // con color; ahora solo aparecen dentro del selector, al abrirlo.
-function enhanceColorPicker(input) {
+function enhanceColorPicker(input, { block = false } = {}) {
   if (input.dataset.colorEnhanced) return input._trigger;
   input.dataset.colorEnhanced = '1';
 
@@ -1110,10 +1110,15 @@ function enhanceColorPicker(input) {
 
   const trigger = document.createElement('button');
   trigger.type = 'button';
-  trigger.className = 'color-dot-input color-picker-trigger';
-  trigger.style.background = input.value;
+  trigger.className = 'btn btn-secondary color-picker-trigger' + (block ? ' btn-block' : '');
   trigger.title = input.title || 'Elegir color';
   trigger.setAttribute('aria-label', input.getAttribute('aria-label') || 'Elegir color');
+
+  const dot = document.createElement('span');
+  dot.className = 'color-picker-trigger-dot';
+  dot.style.background = input.value;
+  trigger.appendChild(dot);
+  trigger.appendChild(document.createTextNode('Seleccionar color'));
 
   const popover = document.createElement('div');
   popover.className = 'color-picker-popover';
@@ -1134,6 +1139,7 @@ function enhanceColorPicker(input) {
   wrap.appendChild(trigger);
   wrap.appendChild(popover);
   input._trigger = trigger;
+  input._triggerDot = dot;
 
   function renderSwatches() {
     swatches.innerHTML = '';
@@ -1153,7 +1159,7 @@ function enhanceColorPicker(input) {
       b.setAttribute('aria-label', `Usar color guardado ${c.name}`);
       b.addEventListener('click', () => {
         input.value = c.value;
-        trigger.style.background = c.value;
+        dot.style.background = c.value;
         input.dispatchEvent(new Event('input', { bubbles: true }));
         input.dispatchEvent(new Event('change', { bubbles: true }));
         closePopover();
@@ -1173,7 +1179,7 @@ function enhanceColorPicker(input) {
     e.stopPropagation();
     popover.hidden ? openPopover() : closePopover();
   });
-  input.addEventListener('input', () => { trigger.style.background = input.value; });
+  input.addEventListener('input', () => { dot.style.background = input.value; });
   input.addEventListener('change', closePopover);
   document.addEventListener('click', e => {
     if (!popover.hidden && !wrap.contains(e.target)) closePopover();
@@ -2218,7 +2224,7 @@ function seedTemplate() {
 }
 
 function init() {
-  enhanceColorPicker($('#bgColorPicker'));
+  enhanceColorPicker($('#bgColorPicker'), { block: true });
   loadBrandColors();
   renderBrandColors();
   syncBgColorPicker();
