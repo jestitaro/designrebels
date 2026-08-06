@@ -310,6 +310,7 @@ function matchesLibrarySearch(name) {
 // grilla simplemente queda en blanco, sin cartel
 function renderDefaultLibrary() {
   const grid = $('#libraryDefaultGrid');
+  const group = $('#libraryDefaultGroup');
   if (!grid) return;
 
   const items = DEFAULT_RESOURCES.filter(item =>
@@ -320,6 +321,12 @@ function renderDefaultLibrary() {
 
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
+
+  // sin esto, cuando no hay predefinidos para filtrar (ej. Unilever, que no
+  // tiene ninguno) el bloque queda vacío pero sigue ocupando su margen: eso
+  // hacía que la distancia hasta "Tus recursos" fuera distinta según la
+  // marca. Si no hay nada que mostrar, se saca el bloque entero.
+  if (group) group.hidden = items.length === 0;
 }
 
 // buscador, marca y tipo son controles de la galería: filtran tanto las
