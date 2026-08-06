@@ -514,7 +514,9 @@ function openResourceEditModal({ title, name, kind, brand, previewSrc }) {
       $$('.pill-toggle-btn', brandPicker).forEach(b => b.classList.toggle('is-active', b === btn));
     }
     function cleanup() {
-      modal.hidden = true;
+      // desliza el drawer afuera antes de sacarlo del flujo (hidden), para que
+      // se vea la animación de cierre en vez de desaparecer de golpe
+      modal.classList.remove('is-open');
       kindPicker.removeEventListener('click', onKindClick);
       brandPicker.removeEventListener('click', onBrandClick);
       $('#resourceEditSave').removeEventListener('click', onSave);
@@ -522,6 +524,7 @@ function openResourceEditModal({ title, name, kind, brand, previewSrc }) {
       $('#resourceEditModalClose').removeEventListener('click', onCancel);
       modal.removeEventListener('keydown', onKeydown);
       modal.removeEventListener('click', onBackdropClick);
+      setTimeout(() => { modal.hidden = true; }, 250);
     }
     function onSave() {
       const finalName = $('#resourceEditName').value.trim() || 'Imagen';
@@ -549,8 +552,13 @@ function openResourceEditModal({ title, name, kind, brand, previewSrc }) {
     modal.addEventListener('click', onBackdropClick);
 
     modal.hidden = false;
-    $('#resourceEditName').focus();
-    $('#resourceEditName').select();
+    // hay que sacar el "hidden" y esperar al frame siguiente para que el
+    // navegador registre el estado inicial antes de animar hacia "is-open"
+    requestAnimationFrame(() => {
+      modal.classList.add('is-open');
+      $('#resourceEditName').focus();
+      $('#resourceEditName').select();
+    });
   });
 }
 
