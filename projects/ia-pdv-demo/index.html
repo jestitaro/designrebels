@@ -1250,6 +1250,10 @@ function qsGoScreen(n) {
   document.querySelectorAll('.qs-screen').forEach(s => s.classList.remove('active'));
   document.getElementById('qss'+n).classList.add('active');
   qsCurScr = n;
+  // la góndola se arma una vez al cargar la página, con la pantalla todavía
+  // oculta (ancho 0): hay que re-armarla recién cuando se vuelve visible
+  // para que el reparto de espacio de qsBuildShelf tenga el ancho real
+  if (n === 2) qsRenderGondola(qsCurMod);
   // update step indicator
   const map = ['qs-s1','qs-s2','qs-s3','qs-s4'];
   map.forEach((id,i) => {
@@ -1265,19 +1269,25 @@ function qsGoStep(n){ if(n<=qsCurScr) qsGoScreen(n); }
 const QS_SC = [1, 0.8];
 function qsBuildShelf(rows, bodyEl) {
   bodyEl.querySelectorAll('.qs-shelf').forEach(e=>e.remove());
+  const availW = bodyEl.clientWidth - 12; // padding horizontal del .qs-shelf
   rows.forEach((row,ri) => {
     const sc = QS_SC[Math.min(ri, QS_SC.length-1)];
     const sh = document.createElement('div'); sh.className='qs-shelf';
     const lb = document.createElement('div'); lb.className='qs-shelf-lbl';
     lb.textContent = ri===0?'▸ NIVEL OJOS':'▸ NIVEL MANOS';
     sh.appendChild(lb);
+    const widths = row.map(sku => { const p = PRODUCTS[sku]; return p ? Math.round(p.w*sc) : 0; });
+    const totalW = widths.reduce((a,b) => a+b, 0);
+    // los recortes de producto traen bastante aire alrededor: se reparte el
+    // espacio sobrante (o faltante) entre todos para que la fila llegue
+    // siempre de punta a punta del módulo, tupida como una góndola real,
+    // sin importar cuántos productos tenga esa fila
+    const step = row.length > 1 ? (availW - totalW) / (row.length - 1) : 0;
     row.forEach((sku,i) => {
       const p = PRODUCTS[sku]; if(!p) return;
       const d = document.createElement('div'); d.className='qs-prod'; d.dataset.sku=sku;
-      const w=Math.round(p.w*sc), h=Math.round(p.h*sc);
-      // los recortes de producto traen bastante aire alrededor: se superponen
-      // un poco para que la góndola se vea tupida, como una real
-      if (i>0) d.style.marginLeft = -Math.round(w*0.34)+'px';
+      const w = widths[i], h=Math.round(p.h*sc);
+      if (i>0) d.style.marginLeft = Math.round(Math.max(step, -w*0.45))+'px';
       d.innerHTML=`<img src="${p.img}" width="${w}" height="${h}" draggable="false">`;
       sh.appendChild(d);
     });
