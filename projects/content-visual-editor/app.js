@@ -21,14 +21,6 @@ const BRAND_COLORS_KEY = 'qs-image-editor-brand-colors-v1'; // paleta de la empr
 const LIBRARY_DB_NAME = 'qs-image-editor-library-v1';
 const LIBRARY_STORE = 'resources';
 
-const BG_PRESETS = [
-  { id: 'p1', type: 'color', value: '#130D5D' },
-  { id: 'p2', type: 'color', value: '#6366f1' },
-  { id: 'p3', type: 'gradient', value: 'linear-gradient(135deg,#6366f1,#130D5D)' },
-  { id: 'p4', type: 'color', value: '#F9FAFB' },
-  { id: 'p5', type: 'gradient', value: 'linear-gradient(135deg,#8b5cf6,#4f46e5)' }
-];
-
 const state = {
   format: 'square',
   elements: [],
@@ -145,7 +137,7 @@ function restore(snap) {
   state.nextZ = state.elements.reduce((m, e) => Math.max(m, e.z), 0) + 1;
   lastSnapshot = snap;
   $$('.format-btn').forEach(b => b.classList.toggle('is-active', b.dataset.format === state.format));
-  renderBgPresets();
+  renderBgSavedColors();
   layoutCanvas();
   render();
   renderProps();
@@ -649,12 +641,15 @@ async function renderLibrary() {
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
 
-  // el estado vacío es solo para la primera vez de verdad (no subiste nada
-  // todavía para esta marca): si ya subiste algo pero el filtro de tipo o la
-  // búsqueda no encuentran nada, la grilla queda en blanco sin cartel
-  empty.style.display = brandItems.length === 0 ? 'flex' : 'none';
-  if (emptyText && brandItems.length === 0) {
-    emptyText.textContent = `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
+  // el estado vacío es solo para la primera vez de verdad (ni nosotros ni el
+  // usuario subieron nada todavía para esta marca): si ya hay predefinidos o
+  // ya subiste algo, pero el filtro de tipo o la búsqueda no encuentran nada,
+  // la grilla queda en blanco sin cartel
+  const hasDefaults = DEFAULT_RESOURCES.some(item => item.brand === libraryBrand);
+  const brandIsEmpty = brandItems.length === 0 && !hasDefaults;
+  empty.style.display = brandIsEmpty ? 'flex' : 'none';
+  if (emptyText && brandIsEmpty) {
+    emptyText.textContent = `Todavía no hay recursos de ${brandLabel}. Subí una imagen para empezar.`;
   }
 }
 
@@ -815,37 +810,42 @@ $('#formatToggle').addEventListener('click', e => {
 
 // ---------- agregar elementos ----------
 $$('.add-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const type = btn.dataset.add;
-    if (type === 'image') {
-      $('#inputImageElement').click();
-      return;
-    }
-    addElement(type);
-  });
+  btn.addEventListener('click', () => addElement(btn.dataset.add));
 });
 
+// ---------- imagen / recurso: subir desde el ordenador o elegir de la galería ----------
+$('#btnUploadImageElement').addEventListener('click', () => $('#inputImageElement').click());
+$('#btnPickImageFromGallery').addEventListener('click', () => goToGalleryFilteredByKind('all'));
 $('#inputImageElement').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result, 'imagen'); };
+  reader.onload = ev => {
+    addImageElement(ev.target.result);
+    if ($('#chkSaveImageToLibrary').checked) saveToLibrary(file, ev.target.result, 'imagen');
+  };
   reader.readAsDataURL(file);
   e.target.value = '';
 });
 
 // ---------- fondo ----------
-function renderBgPresets() {
-  const wrap = $('#bgPresets');
+// los colores predefinidos se sacaron: el fondo se elige con el color
+// personalizado, un color ya guardado en "Colores de la empresa", o una
+// imagen (subida u obtenida de la galería)
+function renderBgSavedColors() {
+  const wrap = $('#bgSavedColors');
+  if (!wrap) return;
   wrap.innerHTML = '';
-  BG_PRESETS.forEach(p => {
+  brandColors.forEach(c => {
     const b = document.createElement('button');
-    b.className = 'bg-preset' + (state.background.type !== 'image' && state.background.value === p.value ? ' is-active' : '');
-    b.style.background = p.value;
-    b.title = 'Fondo predefinido';
+    b.type = 'button';
+    b.className = 'brand-swatch-mini' + (state.background.type === 'color' && state.background.value.toLowerCase() === c.value.toLowerCase() ? ' is-active' : '');
+    b.style.background = c.value;
+    b.title = c.name;
+    b.setAttribute('aria-label', `Usar color guardado ${c.name}`);
     b.addEventListener('click', () => {
-      state.background = { type: p.type === 'gradient' ? 'gradient' : 'color', value: p.value };
-      renderBgPresets();
+      state.background = { type: 'color', value: c.value };
+      renderBgSavedColors();
       renderCanvasBackground();
       render();
       commit();
@@ -857,11 +857,23 @@ function renderBgPresets() {
 
 function setBackgroundImage(src) {
   state.background = { type: 'image', value: src };
-  renderBgPresets();
+  renderBgSavedColors();
   renderCanvasBackground();
   render();
   commit();
 }
+
+// abre la galería filtrada por tipo, para elegir un fondo o una imagen ya
+// guardada en vez de subir un archivo nuevo
+function goToGalleryFilteredByKind(kind) {
+  libraryKind = kind;
+  $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b.dataset.kind === kind));
+  renderDefaultLibrary();
+  renderLibrary();
+  switchTab('galeria');
+}
+
+$('#btnPickBgFromGallery').addEventListener('click', () => goToGalleryFilteredByKind('fondo'));
 
 $('#btnUploadBg').addEventListener('click', () => $('#inputBgImage').click());
 $('#inputBgImage').addEventListener('change', e => {
@@ -870,7 +882,7 @@ $('#inputBgImage').addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = ev => {
     setBackgroundImage(ev.target.result);
-    saveToLibrary(file, ev.target.result, 'fondo');
+    if ($('#chkSaveBgToLibrary').checked) saveToLibrary(file, ev.target.result, 'fondo');
     toast('Fondo actualizado', 'success');
   };
   reader.readAsDataURL(file);
@@ -893,7 +905,7 @@ $('#bgColorPicker').addEventListener('input', e => {
   renderValidations(); // el contraste puede cambiar en vivo
 });
 $('#bgColorPicker').addEventListener('change', () => {
-  renderBgPresets();
+  renderBgSavedColors();
   render();
   commit();
 });
@@ -932,7 +944,7 @@ function renderBrandColors() {
     swatch.title = `Usar "${c.name}" como fondo del lienzo`;
     swatch.addEventListener('click', () => {
       state.background = { type: 'color', value: c.value };
-      renderBgPresets();
+      renderBgSavedColors();
       renderCanvasBackground();
       render();
       commit();
@@ -963,6 +975,7 @@ function addBrandColor(name, value) {
   brandColors.push({ id, name, value });
   persistBrandColors();
   renderBrandColors();
+  renderBgSavedColors(); // el color guardado también queda disponible como fondo
   renderProps(); // refresca las mini paletas del panel de propiedades, si hay uno abierto
 }
 
@@ -972,6 +985,7 @@ function removeBrandColor(id) {
   const [removed] = brandColors.splice(idx, 1);
   persistBrandColors();
   renderBrandColors();
+  renderBgSavedColors();
   renderProps();
   toast(`Color "${removed.name}" eliminado`, 'info', {
     actionLabel: 'Deshacer',
@@ -979,6 +993,7 @@ function removeBrandColor(id) {
       brandColors.splice(idx, 0, removed);
       persistBrandColors();
       renderBrandColors();
+      renderBgSavedColors();
       renderProps();
     }
   });
@@ -2066,7 +2081,7 @@ function seedTemplate() {
 function init() {
   loadBrandColors();
   renderBrandColors();
-  renderBgPresets();
+  renderBgSavedColors();
   renderDefaultLibrary();
   renderLibrary();
   layoutCanvas();
