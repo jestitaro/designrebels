@@ -147,15 +147,13 @@ if (window.tailwind) {
 
           <div class="pill-toggle pill-toggle-sm" id="libraryKindFilter" role="tablist">
             <button type="button" class="pill-toggle-btn is-active" data-kind="all">Todos</button>
-            <button type="button" class="pill-toggle-btn" data-kind="icono">Íconos</button>
+            <button type="button" class="pill-toggle-btn" data-kind="logo">Logos</button>
             <button type="button" class="pill-toggle-btn" data-kind="imagen">Imágenes</button>
+            <button type="button" class="pill-toggle-btn" data-kind="icono">Íconos</button>
+            <button type="button" class="pill-toggle-btn" data-kind="fondo">Fondos</button>
           </div>
 
           <div class="library-grid" id="libraryDefaultGrid"></div>
-          <div class="empty-state" id="libraryDefaultEmpty">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-            <p id="libraryDefaultEmptyText">No hay recursos que coincidan.</p>
-          </div>
         </div>
 
         <div class="panel-group">
@@ -163,6 +161,14 @@ if (window.tailwind) {
             <svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
             Este navegador no permite guardar la galería de forma permanente en este contexto: lo que subas va a estar disponible solo durante esta sesión (se pierde al recargar).
           </p>
+
+          <p class="panel-group-hint" id="libraryUploadKindHint">¿Qué tipo de recurso vas a subir?</p>
+          <div class="pill-toggle pill-toggle-sm" id="libraryUploadKindPicker" role="tablist">
+            <button type="button" class="pill-toggle-btn" data-upload-kind="logo">Logo</button>
+            <button type="button" class="pill-toggle-btn is-active" data-upload-kind="imagen">Imagen</button>
+            <button type="button" class="pill-toggle-btn" data-upload-kind="icono">Ícono</button>
+            <button type="button" class="pill-toggle-btn" data-upload-kind="fondo">Fondo</button>
+          </div>
 
           <button type="button" class="btn btn-secondary btn-block" id="btnLibraryUpload">
             <svg viewBox="0 0 24 24"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>

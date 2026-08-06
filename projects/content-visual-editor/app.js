@@ -288,11 +288,14 @@ const DEFAULT_RESOURCES = [
 ];
 
 const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
+const KIND_LABELS = { logo: 'Logos', imagen: 'Imágenes', icono: 'Íconos', fondo: 'Fondos' };
 
 // estado de los filtros de la galería (marca, tipo de recurso y búsqueda)
 let libraryBrand = 'quartzsales';
 let libraryKind = 'all';
 let librarySearchQuery = '';
+// tipo elegido para el próximo lote que se suba desde "Tus recursos"
+let libraryUploadKind = 'imagen';
 
 // sin tildes y en minúsculas, para que "jabon" encuentre "Jabón"
 function normalizeSearch(s) {
@@ -304,10 +307,11 @@ function matchesLibrarySearch(name) {
   return normalizeSearch(name).includes(librarySearchQuery);
 }
 
+// las Categorías son predefinidas: nunca están "vacías por primera vez", así
+// que ese estado se sacó del todo — si un filtro no encuentra nada acá, la
+// grilla simplemente queda en blanco, sin cartel
 function renderDefaultLibrary() {
   const grid = $('#libraryDefaultGrid');
-  const empty = $('#libraryDefaultEmpty');
-  const emptyText = $('#libraryDefaultEmptyText');
   if (!grid) return;
 
   const items = DEFAULT_RESOURCES.filter(item =>
@@ -315,13 +319,6 @@ function renderDefaultLibrary() {
     (libraryKind === 'all' || item.kind === libraryKind) &&
     matchesLibrarySearch(item.name)
   );
-
-  if (empty) empty.style.display = items.length ? 'none' : 'flex';
-  if (emptyText) {
-    emptyText.textContent = librarySearchQuery
-      ? `No hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} que coincidan con "${librarySearchQuery}".`
-      : `Todavía no hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} en esta categoría.`;
-  }
 
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
@@ -350,6 +347,15 @@ $('#libraryKindFilter').addEventListener('click', e => {
   libraryKind = btn.dataset.kind;
   $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b === btn));
   renderDefaultLibrary();
+  renderLibrary();
+});
+
+// tipo que van a llevar los próximos recursos que se suban desde acá
+$('#libraryUploadKindPicker').addEventListener('click', e => {
+  const btn = e.target.closest('.pill-toggle-btn');
+  if (!btn || btn.dataset.uploadKind === libraryUploadKind) return;
+  libraryUploadKind = btn.dataset.uploadKind;
+  $$('.pill-toggle-btn', $('#libraryUploadKindPicker')).forEach(b => b.classList.toggle('is-active', b === btn));
 });
 
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
@@ -395,11 +401,12 @@ async function ensureLibraryMode() {
   return libraryMode;
 }
 
-async function libraryAdd(name, dataUrl, w, h) {
+async function libraryAdd(name, dataUrl, w, h, kind) {
   const item = {
     id: 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
     name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now(),
-    brand: libraryBrand // el recurso queda asociado a la marca/cliente elegido al subirlo
+    brand: libraryBrand, // el recurso queda asociado a la marca/cliente elegido al subirlo
+    kind: kind && KIND_LABELS[kind] ? kind : 'imagen'
   };
   const mode = await ensureLibraryMode();
   if (mode === 'memory') { memoryLibrary.set(item.id, item); return item; }
@@ -464,9 +471,9 @@ async function libraryUpdateBrand(id, newBrand) {
 
 // agrega un recurso a la galería, refresca la vista si está abierta y devuelve
 // si realmente se pudo guardar (para no avisar "guardado" cuando falló)
-async function addResourceToLibrary(name, dataUrl, w, h) {
+async function addResourceToLibrary(name, dataUrl, w, h, kind) {
   try {
-    await libraryAdd(name, dataUrl, w, h);
+    await libraryAdd(name, dataUrl, w, h, kind);
     renderLibrary();
     return true;
   } catch (e) {
@@ -477,12 +484,12 @@ async function addResourceToLibrary(name, dataUrl, w, h) {
 }
 
 // mismo flujo que addResourceToLibrary, pero calculando el ancho/alto a partir del dataURL
-function saveToLibrary(file, dataUrl) {
+function saveToLibrary(file, dataUrl, kind) {
   return new Promise(resolve => {
     const img = new Image();
     const name = (file && file.name) || 'Imagen';
-    img.onload = () => resolve(addResourceToLibrary(name, dataUrl, img.naturalWidth, img.naturalHeight));
-    img.onerror = () => resolve(addResourceToLibrary(name, dataUrl, 0, 0));
+    img.onload = () => resolve(addResourceToLibrary(name, dataUrl, img.naturalWidth, img.naturalHeight, kind));
+    img.onerror = () => resolve(addResourceToLibrary(name, dataUrl, 0, 0, kind));
     img.src = dataUrl;
   });
 }
@@ -558,17 +565,22 @@ async function renderLibrary() {
   // items sin marca son de antes de este cambio: se muestran para cualquier
   // marca en vez de quedar huérfanos
   const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
-  const items = brandItems.filter(item => matchesLibrarySearch(item.name));
+  const items = brandItems.filter(item =>
+    (libraryKind === 'all' || (item.kind || 'imagen') === libraryKind) &&
+    matchesLibrarySearch(item.name)
+  );
 
   if (warning) warning.hidden = libraryMode !== 'memory';
-  empty.style.display = items.length ? 'none' : 'flex';
-  if (emptyText) {
-    emptyText.textContent = (librarySearchQuery && brandItems.length)
-      ? `Ningún recurso de ${brandLabel} coincide con "${librarySearchQuery}".`
-      : `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
-  }
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
+
+  // el estado vacío es solo para la primera vez de verdad (no subiste nada
+  // todavía para esta marca): si ya subiste algo pero el filtro de tipo o la
+  // búsqueda no encuentran nada, la grilla queda en blanco sin cartel
+  empty.style.display = brandItems.length === 0 ? 'flex' : 'none';
+  if (emptyText && brandItems.length === 0) {
+    emptyText.textContent = `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
+  }
 }
 
 function readFileAsDataUrl(file) {
@@ -589,7 +601,7 @@ $('#inputLibraryUpload').addEventListener('change', async e => {
   const results = await Promise.all(files.map(async file => {
     try {
       const dataUrl = await readFileAsDataUrl(file);
-      return saveToLibrary(file, dataUrl);
+      return saveToLibrary(file, dataUrl, libraryUploadKind);
     } catch (err) { return false; }
   }));
   const okCount = results.filter(Boolean).length;
@@ -722,7 +734,7 @@ $('#inputImageElement').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result); };
+  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result, 'imagen'); };
   reader.readAsDataURL(file);
   e.target.value = '';
 });
@@ -763,7 +775,7 @@ $('#inputBgImage').addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = ev => {
     setBackgroundImage(ev.target.result);
-    saveToLibrary(file, ev.target.result);
+    saveToLibrary(file, ev.target.result, 'fondo');
     toast('Fondo actualizado', 'success');
   };
   reader.readAsDataURL(file);
@@ -1761,7 +1773,7 @@ function renderProps() {
           el.src = ev.target.result;
           render();
           commit();
-          saveToLibrary(file, ev.target.result);
+          saveToLibrary(file, ev.target.result, 'imagen');
         };
         reader.readAsDataURL(file);
       });
