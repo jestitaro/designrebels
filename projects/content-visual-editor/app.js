@@ -288,6 +288,7 @@ const DEFAULT_RESOURCES = [
 ];
 
 const BRAND_LABELS = { quartzsales: 'QuartzSales', unilever: 'Unilever' };
+const KIND_LABELS = { logo: 'Logos', imagen: 'Imágenes', icono: 'Íconos', fondo: 'Fondos' };
 
 // estado de los filtros de la galería (marca, tipo de recurso y búsqueda)
 let libraryBrand = 'quartzsales';
@@ -304,10 +305,12 @@ function matchesLibrarySearch(name) {
   return normalizeSearch(name).includes(librarySearchQuery);
 }
 
+// las Categorías son predefinidas: nunca están "vacías por primera vez", así
+// que ese estado se sacó del todo — si un filtro no encuentra nada acá, la
+// grilla simplemente queda en blanco, sin cartel
 function renderDefaultLibrary() {
   const grid = $('#libraryDefaultGrid');
-  const empty = $('#libraryDefaultEmpty');
-  const emptyText = $('#libraryDefaultEmptyText');
+  const group = $('#libraryDefaultGroup');
   if (!grid) return;
 
   const items = DEFAULT_RESOURCES.filter(item =>
@@ -316,15 +319,14 @@ function renderDefaultLibrary() {
     matchesLibrarySearch(item.name)
   );
 
-  if (empty) empty.style.display = items.length ? 'none' : 'flex';
-  if (emptyText) {
-    emptyText.textContent = librarySearchQuery
-      ? `No hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} que coincidan con "${librarySearchQuery}".`
-      : `Todavía no hay recursos de ${BRAND_LABELS[libraryBrand] || libraryBrand} en esta categoría.`;
-  }
-
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: false })));
+
+  // sin esto, cuando no hay predefinidos para filtrar (ej. Unilever, que no
+  // tiene ninguno) el bloque queda vacío pero sigue ocupando su margen: eso
+  // hacía que la distancia hasta "Tus recursos" fuera distinta según la
+  // marca. Si no hay nada que mostrar, se saca el bloque entero.
+  if (group) group.hidden = items.length === 0;
 }
 
 // buscador, marca y tipo son controles de la galería: filtran tanto las
@@ -350,6 +352,7 @@ $('#libraryKindFilter').addEventListener('click', e => {
   libraryKind = btn.dataset.kind;
   $$('.pill-toggle-btn', $('#libraryKindFilter')).forEach(b => b.classList.toggle('is-active', b === btn));
   renderDefaultLibrary();
+  renderLibrary();
 });
 
 // ---------- galería de imágenes: librería de recursos (IndexedDB) ----------
@@ -395,11 +398,12 @@ async function ensureLibraryMode() {
   return libraryMode;
 }
 
-async function libraryAdd(name, dataUrl, w, h) {
+async function libraryAdd(name, dataUrl, w, h, kind, brand) {
   const item = {
     id: 'res_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
     name: name || 'Imagen', dataUrl, w: w || 0, h: h || 0, createdAt: Date.now(),
-    brand: libraryBrand // el recurso queda asociado a la marca/cliente elegido al subirlo
+    brand: (brand && BRAND_LABELS[brand]) ? brand : libraryBrand,
+    kind: kind && KIND_LABELS[kind] ? kind : 'imagen'
   };
   const mode = await ensureLibraryMode();
   if (mode === 'memory') { memoryLibrary.set(item.id, item); return item; }
@@ -439,13 +443,13 @@ async function libraryDelete(id) {
   });
 }
 
-// re-etiqueta un recurso ya subido a otra marca, para corregir uno que se
-// subió con la marca activa equivocada sin tener que borrarlo y resubirlo
-async function libraryUpdateBrand(id, newBrand) {
+// aplica cambios (nombre, tipo y/o marca) a un recurso ya subido, para poder
+// corregirlo sin borrarlo y volver a subirlo
+async function libraryUpdateItem(id, patch) {
   const mode = await ensureLibraryMode();
   if (mode === 'memory') {
     const item = memoryLibrary.get(id);
-    if (item) memoryLibrary.set(id, { ...item, brand: newBrand });
+    if (item) memoryLibrary.set(id, { ...item, ...patch });
     return;
   }
   const db = await openLibraryDB();
@@ -455,7 +459,7 @@ async function libraryUpdateBrand(id, newBrand) {
     const getReq = store.get(id);
     getReq.onsuccess = () => {
       const item = getReq.result;
-      if (item) store.put({ ...item, brand: newBrand });
+      if (item) store.put({ ...item, ...patch });
     };
     tx.oncomplete = () => resolve();
     tx.onerror = () => reject(tx.error);
@@ -464,9 +468,9 @@ async function libraryUpdateBrand(id, newBrand) {
 
 // agrega un recurso a la galería, refresca la vista si está abierta y devuelve
 // si realmente se pudo guardar (para no avisar "guardado" cuando falló)
-async function addResourceToLibrary(name, dataUrl, w, h) {
+async function addResourceToLibrary(name, dataUrl, w, h, kind, brand) {
   try {
-    await libraryAdd(name, dataUrl, w, h);
+    await libraryAdd(name, dataUrl, w, h, kind, brand);
     renderLibrary();
     return true;
   } catch (e) {
@@ -477,30 +481,101 @@ async function addResourceToLibrary(name, dataUrl, w, h) {
 }
 
 // mismo flujo que addResourceToLibrary, pero calculando el ancho/alto a partir del dataURL
-function saveToLibrary(file, dataUrl) {
+function saveToLibrary(file, dataUrl, kind, brand) {
   return new Promise(resolve => {
     const img = new Image();
     const name = (file && file.name) || 'Imagen';
-    img.onload = () => resolve(addResourceToLibrary(name, dataUrl, img.naturalWidth, img.naturalHeight));
-    img.onerror = () => resolve(addResourceToLibrary(name, dataUrl, 0, 0));
+    img.onload = () => resolve(addResourceToLibrary(name, dataUrl, img.naturalWidth, img.naturalHeight, kind, brand));
+    img.onerror = () => resolve(addResourceToLibrary(name, dataUrl, 0, 0, kind, brand));
     img.src = dataUrl;
   });
 }
 
-// única otra marca posible, para el botón "mover a..." (hoy son solo 2)
-function otherBrandId(brand) {
-  return Object.keys(BRAND_LABELS).find(b => b !== brand) || brand;
+// modal para nombrar y clasificar (tipo + marca) un recurso, tanto al subirlo
+// como para editar uno ya existente. Devuelve { name, kind, brand } si se
+// confirma, o null si se cancela.
+function openResourceEditModal({ title, name, kind, brand, previewSrc }) {
+  return new Promise(resolve => {
+    const modal = $('#resourceEditModal');
+    const kindPicker = $('#resourceEditKindPicker');
+    const brandPicker = $('#resourceEditBrandPicker');
+    let selectedKind = (kind && KIND_LABELS[kind]) ? kind : 'imagen';
+    let selectedBrand = (brand && BRAND_LABELS[brand]) ? brand : libraryBrand;
+
+    $('#resourceEditModalTitle').textContent = title || 'Recurso';
+    $('#resourceEditPreview').src = previewSrc || '';
+    $('#resourceEditName').value = name || '';
+    $$('.pill-toggle-btn', kindPicker).forEach(b => b.classList.toggle('is-active', b.dataset.kind === selectedKind));
+    $$('.pill-toggle-btn', brandPicker).forEach(b => b.classList.toggle('is-active', b.dataset.brand === selectedBrand));
+
+    function onKindClick(e) {
+      const btn = e.target.closest('.pill-toggle-btn');
+      if (!btn) return;
+      selectedKind = btn.dataset.kind;
+      $$('.pill-toggle-btn', kindPicker).forEach(b => b.classList.toggle('is-active', b === btn));
+    }
+    function onBrandClick(e) {
+      const btn = e.target.closest('.pill-toggle-btn');
+      if (!btn) return;
+      selectedBrand = btn.dataset.brand;
+      $$('.pill-toggle-btn', brandPicker).forEach(b => b.classList.toggle('is-active', b === btn));
+    }
+    function cleanup() {
+      // desliza el drawer afuera antes de sacarlo del flujo (hidden), para que
+      // se vea la animación de cierre en vez de desaparecer de golpe
+      modal.classList.remove('is-open');
+      kindPicker.removeEventListener('click', onKindClick);
+      brandPicker.removeEventListener('click', onBrandClick);
+      $('#resourceEditSave').removeEventListener('click', onSave);
+      $('#resourceEditCancel').removeEventListener('click', onCancel);
+      $('#resourceEditModalClose').removeEventListener('click', onCancel);
+      modal.removeEventListener('keydown', onKeydown);
+      modal.removeEventListener('click', onBackdropClick);
+      setTimeout(() => { modal.hidden = true; }, 250);
+    }
+    function onSave() {
+      const finalName = $('#resourceEditName').value.trim() || 'Imagen';
+      cleanup();
+      resolve({ name: finalName, kind: selectedKind, brand: selectedBrand });
+    }
+    function onCancel() {
+      cleanup();
+      resolve(null);
+    }
+    function onKeydown(e) {
+      if (e.key === 'Escape') onCancel();
+      if (e.key === 'Enter' && e.target.id === 'resourceEditName') onSave();
+    }
+    function onBackdropClick(e) {
+      if (e.target === modal) onCancel();
+    }
+
+    kindPicker.addEventListener('click', onKindClick);
+    brandPicker.addEventListener('click', onBrandClick);
+    $('#resourceEditSave').addEventListener('click', onSave);
+    $('#resourceEditCancel').addEventListener('click', onCancel);
+    $('#resourceEditModalClose').addEventListener('click', onCancel);
+    modal.addEventListener('keydown', onKeydown);
+    modal.addEventListener('click', onBackdropClick);
+
+    modal.hidden = false;
+    // hay que sacar el "hidden" y esperar al frame siguiente para que el
+    // navegador registre el estado inicial antes de animar hacia "is-open"
+    requestAnimationFrame(() => {
+      modal.classList.add('is-open');
+      $('#resourceEditName').focus();
+      $('#resourceEditName').select();
+    });
+  });
 }
 
 // arma una celda de la galería, para un recurso predefinido (categoría) o uno
 // subido por el usuario; solo los subidos por el usuario se pueden borrar o
-// mover a otra marca (por si se subieron con la marca activa equivocada)
+// editar (nombre, tipo y marca) desde el modal
 function buildLibraryCell(item, opts = {}) {
   const src = item.src || item.dataUrl;
   const cell = document.createElement('div');
   cell.className = 'library-item';
-  const targetBrand = otherBrandId(item.brand || libraryBrand);
-  const targetBrandLabel = BRAND_LABELS[targetBrand] || targetBrand;
   cell.innerHTML = `
     <img src="${src}" alt="${escapeHtml(item.name)}" title="${escapeHtml(item.name)}" loading="lazy">
     <div class="library-item-actions">
@@ -510,8 +585,8 @@ function buildLibraryCell(item, opts = {}) {
       <button type="button" data-action="bg" title="Usar como fondo del lienzo" aria-label="Usar como fondo del lienzo">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
       </button>
-      ${opts.deletable ? `<button type="button" data-action="move" title="Mover a ${escapeHtml(targetBrandLabel)}" aria-label="Mover a ${escapeHtml(targetBrandLabel)}">
-        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      ${opts.deletable ? `<button type="button" data-action="edit" title="Renombrar, cambiar el tipo o la marca" aria-label="Editar recurso">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>
       </button>` : ''}
       ${opts.deletable ? `<button type="button" data-action="delete" title="Eliminar de la galería" aria-label="Eliminar de la galería">
         <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -526,12 +601,21 @@ function buildLibraryCell(item, opts = {}) {
     toast('Fondo actualizado desde la galería', 'success');
   });
   if (opts.deletable) {
-    cell.querySelector('[data-action="move"]').addEventListener('click', async () => {
+    cell.querySelector('[data-action="edit"]').addEventListener('click', async () => {
+      const result = await openResourceEditModal({
+        title: 'Editar recurso',
+        name: item.name,
+        kind: item.kind || 'imagen',
+        brand: item.brand || libraryBrand,
+        previewSrc: src
+      });
+      if (!result) return;
       try {
-        await libraryUpdateBrand(item.id, targetBrand);
+        await libraryUpdateItem(item.id, result);
+        renderDefaultLibrary();
         renderLibrary();
-        toast(`"${item.name}" movido a ${targetBrandLabel}`, 'success');
-      } catch (e) { toast('No se pudo mover ese recurso', 'error'); }
+        toast(`"${result.name}" actualizado`, 'success');
+      } catch (e) { toast('No se pudo actualizar ese recurso', 'error'); }
     });
     cell.querySelector('[data-action="delete"]').addEventListener('click', async () => {
       try {
@@ -558,17 +642,22 @@ async function renderLibrary() {
   // items sin marca son de antes de este cambio: se muestran para cualquier
   // marca en vez de quedar huérfanos
   const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
-  const items = brandItems.filter(item => matchesLibrarySearch(item.name));
+  const items = brandItems.filter(item =>
+    (libraryKind === 'all' || (item.kind || 'imagen') === libraryKind) &&
+    matchesLibrarySearch(item.name)
+  );
 
   if (warning) warning.hidden = libraryMode !== 'memory';
-  empty.style.display = items.length ? 'none' : 'flex';
-  if (emptyText) {
-    emptyText.textContent = (librarySearchQuery && brandItems.length)
-      ? `Ningún recurso de ${brandLabel} coincide con "${librarySearchQuery}".`
-      : `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
-  }
   grid.innerHTML = '';
   items.forEach(item => grid.appendChild(buildLibraryCell(item, { deletable: true })));
+
+  // el estado vacío es solo para la primera vez de verdad (no subiste nada
+  // todavía para esta marca): si ya subiste algo pero el filtro de tipo o la
+  // búsqueda no encuentran nada, la grilla queda en blanco sin cartel
+  empty.style.display = brandItems.length === 0 ? 'flex' : 'none';
+  if (emptyText && brandItems.length === 0) {
+    emptyText.textContent = `Todavía no subiste recursos de ${brandLabel}. Subí una imagen para empezar.`;
+  }
 }
 
 function readFileAsDataUrl(file) {
@@ -580,26 +669,46 @@ function readFileAsDataUrl(file) {
   });
 }
 
+function readImageDimensions(dataUrl) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+    img.onerror = () => resolve({ w: 0, h: 0 });
+    img.src = dataUrl;
+  });
+}
+
 $('#btnLibraryUpload').addEventListener('click', () => $('#inputLibraryUpload').click());
 $('#inputLibraryUpload').addEventListener('change', async e => {
   const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
   e.target.value = '';
   if (!files.length) return;
 
-  const results = await Promise.all(files.map(async file => {
-    try {
-      const dataUrl = await readFileAsDataUrl(file);
-      return saveToLibrary(file, dataUrl);
-    } catch (err) { return false; }
-  }));
-  const okCount = results.filter(Boolean).length;
+  // un modal por archivo: ahí se elige nombre, tipo y marca antes de guardarlo
+  let savedCount = 0;
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    let dataUrl;
+    try { dataUrl = await readFileAsDataUrl(file); } catch (err) { continue; }
 
-  if (okCount === files.length) {
-    toast(okCount === 1 ? 'Recurso guardado en la galería' : `${okCount} recursos guardados en la galería`, 'success');
-  } else if (okCount > 0) {
-    toast(`Se guardaron ${okCount} de ${files.length} recursos, el resto no se pudo guardar`, 'error');
-  } else {
-    toast('No se pudo guardar en la galería en este navegador', 'error');
+    const result = await openResourceEditModal({
+      title: files.length > 1 ? `Nuevo recurso (${i + 1} de ${files.length})` : 'Nuevo recurso',
+      name: file.name.replace(/\.[^./]+$/, ''),
+      kind: 'imagen',
+      brand: libraryBrand,
+      previewSrc: dataUrl
+    });
+    if (!result) continue; // cancelado: se saltea este archivo
+
+    const { w, h } = await readImageDimensions(dataUrl);
+    const ok = await addResourceToLibrary(result.name, dataUrl, w, h, result.kind, result.brand);
+    if (ok) savedCount++;
+  }
+
+  if (savedCount === files.length) {
+    if (savedCount > 0) toast(savedCount === 1 ? 'Recurso guardado en la galería' : `${savedCount} recursos guardados en la galería`, 'success');
+  } else if (savedCount > 0) {
+    toast(`Se guardaron ${savedCount} de ${files.length} recursos`, 'info');
   }
 });
 
@@ -722,7 +831,7 @@ $('#inputImageElement').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result); };
+  reader.onload = ev => { addImageElement(ev.target.result); saveToLibrary(file, ev.target.result, 'imagen'); };
   reader.readAsDataURL(file);
   e.target.value = '';
 });
@@ -763,7 +872,7 @@ $('#inputBgImage').addEventListener('change', e => {
   const reader = new FileReader();
   reader.onload = ev => {
     setBackgroundImage(ev.target.result);
-    saveToLibrary(file, ev.target.result);
+    saveToLibrary(file, ev.target.result, 'fondo');
     toast('Fondo actualizado', 'success');
   };
   reader.readAsDataURL(file);
@@ -1761,7 +1870,7 @@ function renderProps() {
           el.src = ev.target.result;
           render();
           commit();
-          saveToLibrary(file, ev.target.result);
+          saveToLibrary(file, ev.target.result, 'imagen');
         };
         reader.readAsDataURL(file);
       });
