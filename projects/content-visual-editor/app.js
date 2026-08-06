@@ -639,9 +639,7 @@ async function renderLibrary() {
 
   let allItems = [];
   try { allItems = await libraryGetAll(); } catch (e) { allItems = []; }
-  // items sin marca son de antes de este cambio: se muestran para cualquier
-  // marca en vez de quedar huérfanos
-  const brandItems = allItems.filter(item => !item.brand || item.brand === libraryBrand);
+  const brandItems = allItems.filter(item => item.brand === libraryBrand);
   const items = brandItems.filter(item =>
     (libraryKind === 'all' || (item.kind || 'imagen') === libraryKind) &&
     matchesLibrarySearch(item.name)
