@@ -173,8 +173,9 @@ a { color: inherit; }
   .hero-pedidos { grid-template-columns: 1fr; padding-top: 2.5rem; }
 }
 
-@media (max-width: 480px) {
-  .hero-pedidos__ctas .btn { padding: .7rem 1.4rem; font-size: .88rem; }
+@media (max-width: 560px) {
+  .hero-pedidos__ctas { flex-direction: column; }
+  .hero-pedidos__ctas .btn { width: 100%; justify-content: center; padding: 1rem 1.5rem; }
 }
 
 /* =========================================================
