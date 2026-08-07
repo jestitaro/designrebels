@@ -44,19 +44,19 @@
     <button aria-expanded="false" aria-label="Menú" class="burger">
       <span></span><span></span><span></span>
     </button>
-
-    <aside class="drawer">
-      <nav>
-        <button aria-label="Cerrar menú" class="drawer-close">×</button>
-        <a href="#simulador">Probar simulador</a>
-        <a href="#como-funciona">Cómo funciona</a>
-        <a href="#beneficios">Beneficios</a>
-        <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
-        <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
-      </nav>
-    </aside>
-    <div class="drawer-overlay"></div>
   </header>
+
+  <aside class="drawer">
+    <nav>
+      <button aria-label="Cerrar menú" class="drawer-close">×</button>
+      <a href="#simulador">Probar simulador</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
+      <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
+    </nav>
+  </aside>
+  <div class="drawer-overlay"></div>
 
   <main id="main" tabindex="-1">
 
@@ -228,17 +228,6 @@
               <div><strong>Revisión del pedido</strong><small>Productos agregados, total</small></div>
             </div>
           </aside>
-        </div>
-      </div>
-
-      <div class="tour-prompt-overlay" id="tour-prompt-overlay" hidden>
-        <div class="tour-prompt" id="tour-prompt" role="dialog" aria-modal="true" aria-labelledby="tour-prompt-title">
-          <i class="fa-regular fa-sparkles" aria-hidden="true"></i>
-          <p id="tour-prompt-title">¿Querés que te mostremos cómo funciona, paso a paso?</p>
-          <div class="tour-prompt__actions">
-            <button class="btn btn-gradient" id="tour-start" type="button">Mostrame</button>
-            <button class="btn btn-ghost" id="tour-skip" type="button">Prefiero probar solo</button>
-          </div>
         </div>
       </div>
     </section>
@@ -424,6 +413,17 @@
     </div>
     <div class="footer-bottom">© 2026 QuartzSales. Todos los derechos reservados.</div>
   </footer>
+
+  <div class="tour-prompt-overlay" id="tour-prompt-overlay" hidden>
+    <div class="tour-prompt" id="tour-prompt" role="dialog" aria-modal="true" aria-labelledby="tour-prompt-title">
+      <i class="fa-regular fa-sparkles" aria-hidden="true"></i>
+      <p id="tour-prompt-title">¿Querés que te mostremos cómo funciona, paso a paso?</p>
+      <div class="tour-prompt__actions">
+        <button class="btn btn-gradient" id="tour-start" type="button">Mostrame</button>
+        <button class="btn btn-ghost" id="tour-skip" type="button">Prefiero probar solo</button>
+      </div>
+    </div>
+  </div>
 
   <div class="personalize-overlay" id="personalize-overlay" hidden>
     <div class="personalize-panel" role="dialog" aria-modal="true" aria-labelledby="personalize-title">
