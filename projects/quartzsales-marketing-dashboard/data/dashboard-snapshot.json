@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-09T09:46:22.336Z",
-  "group": "C",
+  "generatedAt": "2026-08-10T10:22:36.958Z",
+  "group": "A",
   "own": {
     "linkedin": {
       "followers": 2872,
       "employees": 8,
-      "lastSynced": "2026-08-09T09:46:02.718Z",
+      "lastSynced": "2026-08-10T10:22:08.959Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -29,7 +29,7 @@
       "gradEnd": "#6366f1",
       "size": "251-500",
       "stats": {
-        "followers": "73.9K",
+        "followers": "74.0K",
         "posts_mes": 18,
         "engagement": "3.2",
         "funding": "~$13M"
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-08-07T10:05:07.677Z",
+      "lastSynced": "2026-08-10T10:22:15.947Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -91,7 +91,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-08-07T10:05:17.175Z",
+      "lastSynced": "2026-08-10T10:22:24.852Z",
       "syncStatus": "ok",
       "syncError": null
     },
