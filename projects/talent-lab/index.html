@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Talent Lab by QuartzSales · Cada equipo sube avances de su proyecto y el resto suma feedback y valoraciones, estilo cafecito." />
+  <title>Talent Lab · by QuartzSales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header">
+    <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub">
+      <span class="brand-mark" aria-hidden="true">TL</span>
+      <span>Talent Lab<br><small>by QuartzSales</small></span>
+    </a>
+    <div class="header-actions" id="header-actions">
+      <a class="button button-ghost" href="#labs">Ver Labs</a>
+      <button class="button button-dark" id="btn-open-auth" type="button">Iniciar sesión</button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- ============ HOME ============ -->
+    <section id="view-home">
+      <section class="hero grid-bg" id="inicio">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span></span> QuartzSales · Talent Lab</p>
+          <h1>Tu proyecto, <em>en movimiento</em>.</h1>
+          <p class="hero-text">Cada equipo tiene su propio Lab: sube avances de lo que está construyendo y el resto de QuartzSales suma feedback y valoraciones — como un cafecito, pero para ideas.</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="#labs">Ver los Labs <span aria-hidden="true">↗</span></a>
+            <button class="button" id="btn-create-lab-hero" type="button">Crear mi Lab</button>
+          </div>
+        </div>
+        <div class="hero-board reveal" aria-hidden="true">
+          <div class="feed-card tilt">
+            <header><span>Talent Games · Design Rebels</span><span class="feed-stars">★★★★★</span></header>
+            <p>"Probamos el primer minijuego en la reunión de equipo y funcionó buenísimo para romper el hielo."</p>
+          </div>
+          <div class="feed-bubble">+1 valoración ✦</div>
+          <div class="feed-card">
+            <header><span>Nueva actualización</span><span>hace 2h</span></header>
+            <p>Sumamos un ranking en vivo para las capacitaciones. Próximo paso: modo cliente.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="como-funciona">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow"><span></span> Cómo funciona</p>
+            <h2>Compartí. Recibí feedback. Iterá.</h2>
+          </div>
+          <p>Talent Lab no es una vidriera estática: es un feed vivo de lo que cada equipo está probando dentro de QuartzSales.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="reveal"><span>01</span><h3>Creá tu Lab</h3><p>Contá qué proyecto estás construyendo: nombre, para qué sirve y enlaces a lo que ya tengas andando.</p></article>
+          <article class="reveal"><span>02</span><h3>Subí actualizaciones</h3><p>Cada avance real que compartís queda en la línea de tiempo de tu Lab, visible para todo el equipo.</p></article>
+          <article class="reveal"><span>03</span><h3>Recibí feedback</h3><p>Tus compañeros comentan y valoran cada actualización — señal real para saber qué seguir puliendo.</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="labs">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow"><span></span> Labs activos</p>
+            <h2>Lo que se está cocinando.</h2>
+          </div>
+          <button class="button button-dark" id="btn-create-lab" type="button">+ Crear mi Lab</button>
+        </div>
+        <div class="labs-grid" id="labs-grid"></div>
+        <div class="empty-state hidden" id="labs-empty">
+          <p><strong>Todavía no hay Labs cargados.</strong><br>Sé el primero en contar en qué estás trabajando.</p>
+          <button class="button button-dark" id="btn-create-lab-empty" type="button">Crear el primer Lab</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============ LAB DETAIL ============ -->
+    <section id="view-lab" class="hidden">
+      <div class="lab-detail">
+        <a class="back-link" href="#labs">← Volver a Labs</a>
+        <div id="lab-detail-content"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>Talent Lab</strong>
+    <span>by QuartzSales · Design Rebels · 2026</span>
+    <a href="../../index.html">Volver al hub ↑</a>
+  </footer>
+
+  <!-- ============ AUTH MODAL ============ -->
+  <div class="modal-overlay" id="modal-auth">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="modal-close" type="button" data-close-modal="modal-auth" aria-label="Cerrar">✕</button>
+      <div class="tabs">
+        <button class="tab-btn active" data-auth-tab="login" type="button">Iniciar sesión</button>
+        <button class="tab-btn" data-auth-tab="signup" type="button">Crear cuenta</button>
+      </div>
+      <h2 id="auth-title">Entrá a Talent Lab</h2>
+      <p class="sub">Usá tu email de QuartzSales.</p>
+
+      <form class="stacked" id="form-login">
+        <div class="field"><label for="login-email">Email</label><input type="email" id="login-email" required autocomplete="email" /></div>
+        <div class="field"><label for="login-password">Contraseña</label><input type="password" id="login-password" required autocomplete="current-password" /></div>
+        <p class="form-error" id="login-error"></p>
+        <div class="form-actions"><button class="button button-dark" type="submit">Ingresar</button></div>
+      </form>
+
+      <form class="stacked hidden" id="form-signup">
+        <div class="field"><label for="signup-name">Nombre</label><input type="text" id="signup-name" required autocomplete="name" /></div>
+        <div class="field"><label for="signup-email">Email</label><input type="email" id="signup-email" required autocomplete="email" /></div>
+        <div class="field"><label for="signup-password">Contraseña</label><input type="password" id="signup-password" required minlength="6" autocomplete="new-password" /><small>Mínimo 6 caracteres.</small></div>
+        <p class="form-error" id="signup-error"></p>
+        <div class="form-actions"><button class="button button-dark" type="submit">Crear cuenta</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ CREATE LAB MODAL ============ -->
+  <div class="modal-overlay" id="modal-create-lab">
+    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="create-lab-title">
+      <button class="modal-close" type="button" data-close-modal="modal-create-lab" aria-label="Cerrar">✕</button>
+      <h2 id="create-lab-title">Contanos tu Lab</h2>
+      <p class="sub">Esto crea la ficha pública de tu proyecto dentro de Talent Lab.</p>
+      <form class="stacked" id="form-create-lab">
+        <div class="field"><label for="lab-name">Nombre del proyecto</label><input type="text" id="lab-name" required placeholder="Ej: Talent Games by Design Rebels" /></div>
+        <div class="field"><label for="lab-tagline">Resumen en una línea</label><input type="text" id="lab-tagline" required maxlength="140" placeholder="Ej: Minijuegos para reuniones, capacitaciones y eventos" /></div>
+        <div class="field"><label for="lab-category">Categoría</label>
+          <select id="lab-category">
+            <option>Producto</option>
+            <option>Diseño</option>
+            <option>Automatización</option>
+            <option>IA</option>
+            <option>Marketing</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="field"><label for="lab-description">Descripción</label><textarea id="lab-description" required placeholder="¿Qué es, para quién es y qué problema resuelve?"></textarea></div>
+        <div class="field"><label for="lab-links">Enlaces (opcional)</label><textarea id="lab-links" placeholder="Un enlace por línea: Nombre :: URL&#10;Ej: Jugar Dino Chomp :: ../dino-chomp/"></textarea><small>Formato: Nombre :: URL, uno por línea.</small></div>
+        <p class="form-error" id="create-lab-error"></p>
+        <div class="form-actions"><button class="button button-dark" type="submit">Publicar mi Lab</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ POST UPDATE MODAL ============ -->
+  <div class="modal-overlay" id="modal-post-update">
+    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="post-update-title">
+      <button class="modal-close" type="button" data-close-modal="modal-post-update" aria-label="Cerrar">✕</button>
+      <h2 id="post-update-title">Nueva actualización</h2>
+      <p class="sub">Contá un avance real. Queda en la línea de tiempo de tu Lab.</p>
+      <form class="stacked" id="form-post-update">
+        <div class="field"><label for="update-title">Título</label><input type="text" id="update-title" required maxlength="120" placeholder="Ej: Sumamos ranking en vivo" /></div>
+        <div class="field"><label for="update-body">Detalle</label><textarea id="update-body" required placeholder="¿Qué cambió? ¿Qué probaste? ¿Qué sigue?"></textarea></div>
+        <p class="form-error" id="post-update-error"></p>
+        <div class="form-actions"><button class="button button-dark" type="submit">Publicar actualización</button></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="assets/firebase.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
