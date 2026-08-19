@@ -87,51 +87,238 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* =========================================================
-     SIMULADOR
+     SIMULADOR — Gestor de pedidos
      ========================================================= */
   const money = (n) => '$ ' + Math.round(n).toLocaleString('es-AR');
+  const fechaHoy = () => new Date().toLocaleDateString('es-AR');
 
   const defaultBrand = { name: 'NutriPlus', logo: null };
-  const defaultProducts = [
-    { id: 'p1', name: 'NutriPlus Vainilla', price: 7200, configured: 7200, img: null, qty: 0 },
-    { id: 'p2', name: 'NutriPlus Chocolate', price: 3827, configured: 5500, img: null, qty: 0 },
-    { id: 'p3', name: 'NutriPlus Banana', price: 5450, configured: 7250, img: null, qty: 0 },
-    { id: 'p4', name: 'NutriPlus Frutilla', price: 6200, configured: 6800, img: null, qty: 0 },
-    { id: 'p5', name: 'NutriPlus Mango', price: 4598, configured: 9300, img: null, qty: 0 },
+
+  /* --- Catálogo ficticio de productos (marca / código / stock / precios) --- */
+  const catalog = [
+    { id: 'e1', marca: 'NutriPlus', codigo: '6922244700697', sku: 'S619 VV400', nombre: 'NUTRIPLUS FRUTILLA RPB', pres: '220 ml.', uxb: 24, stock: 'Disponible', psl: 6500.00, desc: 15 },
+    { id: 'e2', marca: 'NutriPlus', codigo: '6922244700698', sku: 'S620 VV401', nombre: 'NUTRIPLUS BANANA', pres: '240 ml.', uxb: 30, stock: 'Disponible', psl: 8500.50, desc: 15 },
+    { id: 'e3', marca: 'NutriPlus', codigo: '6922244700699', sku: 'S621 VV402', nombre: 'NUTRIPLUS CHOCOLATE', pres: '200 ml.', uxb: 12, stock: 'Agotado', psl: 5500.00, desc: 10 },
+    { id: 'e4', marca: 'NutriPlus', codigo: '6922244700700', sku: 'S622 VV403', nombre: 'NUTRIPLUS VAINILLA', pres: '225 ml.', uxb: 18, stock: 'Disponible', psl: 7250.75, desc: 25 },
+    { id: 'e5', marca: 'NutriPlus', codigo: '6922244700701', sku: 'S623 VV404', nombre: 'NUTRIPLUS FRUTILLA', pres: '210 ml.', uxb: 15, stock: 'Disponible', psl: 6800.30, desc: 5 },
+    { id: 'e6', marca: 'NutriPlus', codigo: '6922244700702', sku: 'S624 VV405', nombre: 'NUTRIPLUS MANGO', pres: '250 ml.', uxb: 20, stock: 'Disponible', psl: 9300.00, desc: 30 },
+    { id: 'v1', marca: 'VitaCare', codigo: '6922244700710', sku: 'S630 VV410', nombre: 'VITACARE COMPLETO VAINILLA', pres: '237 ml.', uxb: 24, stock: 'Disponible', psl: 7100.00, desc: 12 },
+    { id: 'v2', marca: 'VitaCare', codigo: '6922244700711', sku: 'S631 VV411', nombre: 'VITACARE COMPLETO CHOCOLATE', pres: '237 ml.', uxb: 24, stock: 'Disponible', psl: 7100.00, desc: 12 },
+    { id: 'p1', marca: 'PediaVital', codigo: '6922244700720', sku: 'S640 VV420', nombre: 'PEDIAVITAL VAINILLA', pres: '235 ml.', uxb: 18, stock: 'Disponible', psl: 6980.00, desc: 8 },
+    { id: 'p2', marca: 'PediaVital', codigo: '6922244700721', sku: 'S641 VV421', nombre: 'PEDIAVITAL CHOCOLATE', pres: '235 ml.', uxb: 18, stock: 'Agotado', psl: 6980.00, desc: 8 },
+    { id: 'h1', marca: 'HidraPlus', codigo: '6922244700730', sku: 'S650 VV430', nombre: 'HIDRAPLUS NARANJA', pres: '500 ml.', uxb: 12, stock: 'Disponible', psl: 3200.00, desc: 0 },
+    { id: 'h2', marca: 'HidraPlus', codigo: '6922244700731', sku: 'S651 VV431', nombre: 'HIDRAPLUS UVA', pres: '500 ml.', uxb: 12, stock: 'Disponible', psl: 3200.00, desc: 0 },
+    { id: 'o1', marca: 'Otros', codigo: '6922244700740', sku: 'S660 VV440', nombre: 'BARRA PROTEICA MIX FRUTOS', pres: '40 g.', uxb: 20, stock: 'Disponible', psl: 1850.00, desc: 0 },
   ];
+  const priceFor = (p) => p.psl * (1 - p.desc / 100);
+
+  /* --- Pedidos ficticios del listado --- */
+  const defaultPedidos = [
+    { id: 1, fecha: '18/08/2026', numero: 69, cliente: 'Farmacia del Sud', sucursal: 'Casa Central', total: 0, estado: 'Borrador' },
+    { id: 2, fecha: '18/08/2026', numero: 68, cliente: 'Drogueria Central', sucursal: 'Sucursal Norte', total: 1928448.00, estado: 'Pendiente' },
+    { id: 3, fecha: '18/08/2026', numero: 67, cliente: 'Distribuidora Norte', sucursal: 'Sucursal Santa Rosa', total: 26300.68, estado: 'Creado Parcialmente' },
+    { id: 4, fecha: '18/08/2026', numero: 66, cliente: 'Farmacia San Martín', sucursal: 'Casa Central', total: 208978.56, estado: 'No Creado' },
+    { id: 5, fecha: '18/08/2026', numero: 65, cliente: 'Nutrihogar SRL', sucursal: 'Sucursal Norte', total: 384819.40, estado: 'Creado Completo' },
+    { id: 6, fecha: '13/08/2026', numero: 64, cliente: 'Farmacia del Sud', sucursal: 'Sucursal Santa Rosa', total: 846709.20, estado: 'Creado Completo' },
+    { id: 7, fecha: '13/08/2026', numero: 63, cliente: 'Drogueria Central', sucursal: 'Casa Central', total: 85871.83, estado: 'Creado Completo' },
+    { id: 8, fecha: '13/08/2026', numero: 62, cliente: 'Distribuidora Norte', sucursal: 'Sucursal Norte', total: 119149.22, estado: 'Creado Parcialmente' },
+    { id: 9, fecha: '13/08/2026', numero: 61, cliente: 'Farmacia San Martín', sucursal: 'Sucursal Santa Rosa', total: 42757.73, estado: 'No Creado' },
+    { id: 10, fecha: '12/08/2026', numero: 60, cliente: 'Nutrihogar SRL', sucursal: 'Casa Central', total: 168313.45, estado: 'Creado Completo' },
+  ];
+  const estadoBadgeClass = {
+    'Borrador': 'sim-badge--borrador',
+    'Pendiente': 'sim-badge--pendiente',
+    'Creado Parcialmente': 'sim-badge--parcial',
+    'No Creado': 'sim-badge--no-creado',
+    'Creado Completo': 'sim-badge--completo',
+  };
 
   let brand = JSON.parse(JSON.stringify(defaultBrand));
-  let products = JSON.parse(JSON.stringify(defaultProducts));
+  let pedidosData = JSON.parse(JSON.stringify(defaultPedidos));
+  let nextPedidoNumero = 70;
+  let cart = {}; // id producto -> cantidad
   let currentStep = 1;
+  let currentBrandFilter = 'Todas las marcas';
+  let productSearchTerm = '';
+  let listSearchTerm = '';
+  let filterEstado = '';
+  let filterSucursal = '';
+  let currentPage = 1;
+  const PAGE_SIZE = 5;
 
   const simApp = document.getElementById('simulator-app');
-  const steps = simApp.querySelectorAll('.sim-step');
+  const viewList = document.getElementById('sim-view-list');
+  const viewWizard = document.getElementById('sim-view-wizard');
+  const wizardSteps = viewWizard.querySelectorAll('.sim-step');
+  const progressAside = document.getElementById('sim-progress');
   const progressItems = document.querySelectorAll('.sim-progress__item');
+
+  /* --- Toast liviano para acciones simuladas --- */
+  function showToast(msg) {
+    let toast = document.getElementById('sim-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'sim-toast';
+      toast.className = 'sim-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add('is-visible');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('is-visible'), 2800);
+  }
+
+  /* ---------------------------------------------------------
+     Vista: LISTADO DE PEDIDOS
+     --------------------------------------------------------- */
+  const pedidosTbody = document.getElementById('sim-pedidos-tbody');
+  const listEmptyEl = document.getElementById('sim-list-empty');
+  const paginationEl = document.getElementById('sim-pagination');
+  const listSearchInput = document.getElementById('sim-list-search');
+  const filtrosBtn = document.getElementById('sim-btn-filtros');
+  const filtrosPanel = document.getElementById('sim-filters-panel');
+
+  function getFilteredPedidos() {
+    const term = listSearchTerm.trim().toLowerCase();
+    return pedidosData.filter(p => {
+      if (filterEstado && p.estado !== filterEstado) return false;
+      if (filterSucursal && p.sucursal !== filterSucursal) return false;
+      if (term && !`${p.numero} ${p.cliente} ${p.sucursal}`.toLowerCase().includes(term)) return false;
+      return true;
+    });
+  }
+
+  function renderPagination(totalPages) {
+    let html = `<button class="sim-page-btn" id="sim-page-prev" type="button" aria-label="Anterior" ${currentPage <= 1 ? 'disabled' : ''}><i class="fa-regular fa-chevron-left" aria-hidden="true"></i></button>`;
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="sim-page-btn ${i === currentPage ? 'is-active' : ''}" data-page="${i}" type="button">${i}</button>`;
+    }
+    html += `<button class="sim-page-btn" id="sim-page-next" type="button" aria-label="Siguiente" ${currentPage >= totalPages ? 'disabled' : ''}><i class="fa-regular fa-chevron-right" aria-hidden="true"></i></button>`;
+    paginationEl.innerHTML = html;
+    paginationEl.querySelectorAll('[data-page]').forEach(btn => {
+      btn.addEventListener('click', () => { currentPage = Number(btn.dataset.page); renderPedidosList(); });
+    });
+    document.getElementById('sim-page-prev')?.addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); renderPedidosList(); });
+    document.getElementById('sim-page-next')?.addEventListener('click', () => { currentPage = Math.min(totalPages, currentPage + 1); renderPedidosList(); });
+  }
+
+  function renderPedidosList() {
+    const filtered = getFilteredPedidos();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+    listEmptyEl.hidden = filtered.length > 0;
+    pedidosTbody.innerHTML = pageItems.map(p => `
+      <tr>
+        <td>${p.fecha}</td>
+        <td>${p.numero}</td>
+        <td>${p.cliente}</td>
+        <td>${p.sucursal}</td>
+        <td>${money(p.total)}</td>
+        <td><span class="sim-badge ${estadoBadgeClass[p.estado] || ''}">${p.estado}</span></td>
+        <td>${p.estado === 'Borrador'
+          ? `<button class="sim-row-action sim-row-action--edit" type="button" data-edit="${p.id}"><i class="fa-regular fa-pen" aria-hidden="true"></i> Editar</button>`
+          : `<button class="sim-row-action" type="button" data-view="${p.id}"><i class="fa-regular fa-eye" aria-hidden="true"></i> Detalle</button>`}</td>
+      </tr>
+    `).join('');
+
+    pedidosTbody.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const row = pedidosData.find(p => p.id === Number(btn.dataset.edit));
+        startNewPedido({ cliente: row?.cliente, sucursal: row?.sucursal });
+      });
+    });
+    pedidosTbody.querySelectorAll('[data-view]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        showToast('Es una demostración: el detalle completo no está disponible. Probá "Nuevo Pedido" para ver el flujo completo.');
+      });
+    });
+
+    renderPagination(totalPages);
+  }
+
+  listSearchInput.addEventListener('input', (e) => { listSearchTerm = e.target.value; currentPage = 1; renderPedidosList(); });
+  document.getElementById('sim-search-btn').addEventListener('click', () => renderPedidosList());
+
+  filtrosBtn.addEventListener('click', () => {
+    const willShow = filtrosPanel.hidden;
+    filtrosPanel.hidden = !willShow;
+    filtrosBtn.setAttribute('aria-expanded', String(willShow));
+    filtrosBtn.innerHTML = `<i class="fa-regular fa-sliders" aria-hidden="true"></i> ${willShow ? 'Ocultar' : 'Mostrar'} Filtros <i class="fa-regular fa-chevron-right" aria-hidden="true"></i>`;
+  });
+  document.getElementById('sim-filter-estado').addEventListener('change', (e) => { filterEstado = e.target.value; currentPage = 1; renderPedidosList(); });
+  document.getElementById('sim-filter-sucursal').addEventListener('change', (e) => { filterSucursal = e.target.value; currentPage = 1; renderPedidosList(); });
+  document.getElementById('sim-filter-clear').addEventListener('click', () => {
+    filterEstado = ''; filterSucursal = '';
+    document.getElementById('sim-filter-estado').value = '';
+    document.getElementById('sim-filter-sucursal').value = '';
+    currentPage = 1;
+    renderPedidosList();
+  });
+  document.getElementById('sim-btn-export').addEventListener('click', () => {
+    showToast('Exportación simulada: en la app real esto descarga un .xlsx con estos pedidos.');
+  });
+
+  /* ---------------------------------------------------------
+     Modal: tipo de pedido
+     --------------------------------------------------------- */
+  const modalTipo = document.getElementById('sim-modal-tipo');
+  function openModalTipo() { modalTipo.hidden = false; lockBodyScroll(); }
+  function closeModalTipo() { modalTipo.hidden = true; unlockBodyScroll(); }
+  document.getElementById('sim-btn-nuevo-pedido').addEventListener('click', openModalTipo);
+  document.getElementById('sim-modal-tipo-close').addEventListener('click', closeModalTipo);
+  modalTipo.addEventListener('click', (e) => { if (e.target === modalTipo) closeModalTipo(); });
+  document.getElementById('sim-tipo-tradicional').addEventListener('click', () => { closeModalTipo(); startNewPedido(); });
+  document.getElementById('sim-tipo-especial').addEventListener('click', () => { closeModalTipo(); startNewPedido(); });
+
+  /* ---------------------------------------------------------
+     Cambio de vista: listado <-> wizard
+     --------------------------------------------------------- */
+  function showListView() {
+    simApp.classList.add('is-list-view');
+    viewList.hidden = false;
+    viewWizard.hidden = true;
+    progressAside.hidden = true;
+    renderPedidosList();
+  }
+  function showWizardView() {
+    simApp.classList.remove('is-list-view');
+    viewList.hidden = true;
+    viewWizard.hidden = false;
+    progressAside.hidden = false;
+  }
+  document.getElementById('sim-breadcrumb-back').addEventListener('click', (e) => { e.preventDefault(); showListView(); });
 
   function goToStep(step) {
     currentStep = step;
-    steps.forEach(s => { s.hidden = s.dataset.step != step; });
+    wizardSteps.forEach(s => { s.hidden = s.dataset.step != step; });
     progressItems.forEach(p => {
       const n = Number(p.dataset.progress);
       p.classList.toggle('is-active', n === step);
       p.classList.toggle('is-done', n < step);
     });
+    if (step === 2) { renderBrandTabs(); renderProducts(); }
+    if (step === 3) { renderSummaryItems(); }
+    updateAllTotals();
   }
 
-  simApp.querySelectorAll('[data-goto]').forEach(btn => {
+  viewWizard.querySelectorAll('[data-goto]').forEach(btn => {
     btn.addEventListener('click', () => {
       const goto = btn.dataset.goto;
-      goToStep(goto === '3' ? 3 : Number(goto));
+      if (goto === 'list') { showListView(); return; }
+      goToStep(Number(goto));
     });
   });
 
-  /* --- Paso 1: habilitar "Guardar y continuar" --- */
+  /* --- Paso 1: Información general --- */
+  const simOc = document.getElementById('sim-oc');
   const simCliente = document.getElementById('sim-cliente');
   const simSucursal = document.getElementById('sim-sucursal');
   const simFechaPedido = document.getElementById('sim-fecha-pedido');
-  const step1Next = simApp.querySelector('.sim-step[data-step="1"] .sim-btn-next');
-
-  simFechaPedido.value = new Date().toLocaleDateString('es-AR');
+  const simObservaciones = document.getElementById('sim-observaciones');
+  const step1Next = viewWizard.querySelector('.sim-step[data-step="1"] .sim-btn-next');
 
   function checkStep1() {
     step1Next.disabled = !(simCliente.value.trim() && simSucursal.value);
@@ -139,92 +326,164 @@ document.addEventListener('DOMContentLoaded', () => {
   simCliente.addEventListener('input', checkStep1);
   simSucursal.addEventListener('change', checkStep1);
 
-  /* --- Paso 2: tabla de productos --- */
-  const tbody = document.getElementById('sim-product-tbody');
-  const runningTotalEl = document.getElementById('sim-running-total');
-  const step2Next = simApp.querySelector('.sim-step[data-step="2"] .sim-btn-next');
+  /* --- Paso 2: selección de productos --- */
+  const brandTabsEl = document.getElementById('sim-brand-tabs');
+  const productTbody = document.getElementById('sim-product-tbody');
+  const productSearchInput = document.getElementById('sim-product-search');
+  const productEmptyEl = document.getElementById('sim-product-empty');
+  const step2Next = viewWizard.querySelector('.sim-step[data-step="2"] .sim-btn-next');
 
-  function productThumb(p) {
-    if (p.img) return `<img class="sim-product-thumb" src="${p.img}" alt="" style="border-radius:8px;object-fit:cover;" />`;
-    return `<span class="sim-product-thumb" aria-hidden="true"></span>`;
+  function brandList() {
+    const marcas = [...new Set(catalog.map(p => p.marca).filter(m => m !== 'Otros'))];
+    return ['Todas las marcas', ...marcas, 'Otros'];
+  }
+
+  function renderBrandTabs() {
+    brandTabsEl.innerHTML = brandList().map(b => `
+      <button type="button" class="sim-brand-tab ${b === currentBrandFilter ? 'is-active' : ''}" data-brand="${b}">${b}</button>
+    `).join('');
+    brandTabsEl.querySelectorAll('.sim-brand-tab').forEach(btn => {
+      btn.addEventListener('click', () => { currentBrandFilter = btn.dataset.brand; renderBrandTabs(); renderProducts(); });
+    });
+  }
+
+  function visibleProducts() {
+    const term = productSearchTerm.trim().toLowerCase();
+    return catalog.filter(p => {
+      if (currentBrandFilter !== 'Todas las marcas' && p.marca !== currentBrandFilter) return false;
+      if (term && !(p.nombre.toLowerCase().includes(term) || p.codigo.includes(term) || p.sku.toLowerCase().includes(term))) return false;
+      return true;
+    });
   }
 
   function renderProducts() {
-    tbody.innerHTML = products.map(p => {
-      const modified = p.price < p.configured;
+    const list = visibleProducts();
+    productEmptyEl.hidden = list.length > 0;
+    productTbody.innerHTML = list.map(p => {
+      const qty = cart[p.id] || 0;
+      const agotado = p.stock === 'Agotado';
       return `
         <tr data-id="${p.id}">
           <td>
-            <div class="sim-product-name">
-              ${productThumb(p)}
-              <span>${p.name}</span>
-            </div>
+            <span class="sim-product-code">${p.codigo} | ${p.sku}</span>
+            <div class="sim-product-name"><strong>${p.nombre}</strong></div>
           </td>
-          <td>
-            <span class="sim-price ${modified ? 'is-modified' : ''}">${money(p.price)}</span>
-            ${modified ? `<span class="sim-price-warn" data-id="${p.id}" title="Ver precio configurado"><i class="fa-regular fa-triangle-exclamation" aria-hidden="true"></i> ajustado</span>` : ''}
-          </td>
-          <td><input class="sim-qty-input" type="number" min="0" value="${p.qty || ''}" placeholder="0" data-id="${p.id}" /></td>
+          <td>${p.uxb}un.</td>
+          <td>${p.pres}</td>
+          <td><span class="sim-stock sim-stock--${agotado ? 'agotado' : 'disponible'}">${p.stock}</span></td>
+          <td>${money(p.psl)}</td>
+          <td>${p.desc}%</td>
+          <td>${money(priceFor(p))}</td>
+          <td><input class="sim-qty-input" type="number" min="0" ${agotado ? 'disabled' : ''} value="${qty || ''}" placeholder="0" data-id="${p.id}" /></td>
         </tr>`;
     }).join('');
 
-    tbody.querySelectorAll('.sim-qty-input').forEach(input => {
+    productTbody.querySelectorAll('.sim-qty-input').forEach(input => {
       input.addEventListener('input', () => {
-        const p = products.find(x => x.id === input.dataset.id);
-        p.qty = Math.max(0, Number(input.value) || 0);
-        updateTotals();
-      });
-    });
-
-    tbody.querySelectorAll('.sim-price-warn').forEach(badge => {
-      badge.addEventListener('click', () => {
-        const p = products.find(x => x.id === badge.dataset.id);
-        alert(`Precio configurado: ${money(p.configured)}\nPrecio ingresado: ${money(p.price)}\n\nEsto se confirma antes de cerrar el pedido, igual que en la app real.`);
+        cart[input.dataset.id] = Math.max(0, Number(input.value) || 0);
+        updateAllTotals();
       });
     });
   }
 
+  function currentUnidades() {
+    return Object.values(cart).reduce((sum, q) => sum + (q > 0 ? q : 0), 0);
+  }
+  function currentCajas() {
+    return Object.entries(cart).reduce((sum, [id, qty]) => {
+      if (!qty) return sum;
+      const p = catalog.find(x => x.id === id);
+      return sum + Math.ceil(qty / p.uxb);
+    }, 0);
+  }
   function currentTotal() {
-    return products.reduce((sum, p) => sum + (p.qty * p.price), 0);
+    return Object.entries(cart).reduce((sum, [id, qty]) => {
+      if (!qty) return sum;
+      const p = catalog.find(x => x.id === id);
+      return sum + qty * priceFor(p);
+    }, 0);
   }
 
-  function updateTotals() {
+  const runningTotalEl = document.getElementById('sim-running-total');
+
+  function updateAllTotals() {
     const total = currentTotal();
-    runningTotalEl.textContent = 'Total: ' + money(total);
-    step2Next.disabled = total <= 0;
+    const unidades = currentUnidades();
+    const cajas = currentCajas();
+    step2Next.disabled = unidades <= 0;
+    runningTotalEl.textContent = `Total: ${money(total)} · Unidades: ${unidades} · Cajas: ${cajas}`;
+    summaryTotalValue.textContent = money(total);
+    summaryUnidades.textContent = String(unidades);
+    summaryCajas.textContent = String(cajas);
   }
 
-  /* --- Paso 3: resumen --- */
+  /* --- Paso 3: revisión del pedido --- */
   const summaryTotalValue = document.getElementById('sim-summary-total-value');
+  const summaryUnidades = document.getElementById('sim-summary-unidades');
+  const summaryCajas = document.getElementById('sim-summary-cajas');
   const summaryOc = document.getElementById('sim-summary-oc');
   const summarySucursal = document.getElementById('sim-summary-sucursal');
   const summaryItems = document.getElementById('sim-summary-items');
 
-  function renderSummary() {
-    summaryTotalValue.textContent = money(currentTotal());
-    summaryOc.textContent = String(Math.floor(100000 + Math.random() * 800000));
+  function renderSummaryItems() {
+    summaryOc.textContent = simOc.value.trim() || String(Math.floor(100000 + Math.random() * 800000));
     summarySucursal.textContent = simSucursal.value || '—';
-    summaryItems.innerHTML = products.filter(p => p.qty > 0).map(p => `
-      <div class="sim-summary-item">
-        ${p.img ? `<img src="${p.img}" alt="" />` : `<span class="sim-product-thumb" style="width:40px;height:40px;border-radius:8px;display:block;"></span>`}
-        <span class="name">${p.name}</span>
-        <span class="qty">x${p.qty}</span>
-        <span class="subtotal">${money(p.qty * p.price)}</span>
-      </div>
-    `).join('') || '<p style="color:var(--text-muted);font-size:.88rem;">No agregaste productos.</p>';
+
+    const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+    summaryItems.innerHTML = entries.map(([id, qty]) => {
+      const p = catalog.find(x => x.id === id);
+      return `
+        <div class="sim-summary-item" data-id="${id}">
+          <span class="sim-product-thumb" aria-hidden="true"></span>
+          <div class="info">
+            <span class="name">${p.nombre}</span>
+            <span class="pres">${p.codigo} · ${p.pres} · UxB ${p.uxb}un.</span>
+          </div>
+          <input class="qty-input" type="number" min="0" value="${qty}" data-id="${id}" />
+          <span class="subtotal">${money(qty * priceFor(p))}</span>
+          <button class="sim-item-remove" type="button" data-id="${id}" aria-label="Quitar producto"><i class="fa-regular fa-trash" aria-hidden="true"></i></button>
+        </div>`;
+    }).join('') || '<p class="sim-empty-note">No agregaste productos.</p>';
+
+    summaryItems.querySelectorAll('.qty-input').forEach(input => {
+      input.addEventListener('input', () => {
+        cart[input.dataset.id] = Math.max(0, Number(input.value) || 0);
+        updateAllTotals();
+        renderSummaryItems();
+      });
+    });
+    summaryItems.querySelectorAll('.sim-item-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        delete cart[btn.dataset.id];
+        updateAllTotals();
+        renderSummaryItems();
+      });
+    });
   }
 
-  const observeStep3 = new MutationObserver(() => {
-    const step3 = simApp.querySelector('.sim-step[data-step="3"]');
-    if (!step3.hidden) renderSummary();
+  /* --- Tabs: Productos / Archivos adjuntos --- */
+  document.querySelectorAll('.sim-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.sim-tab').forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      document.querySelectorAll('.sim-tab-panel').forEach(panel => { panel.hidden = panel.dataset.panel !== tab.dataset.tab; });
+    });
   });
-  observeStep3.observe(simApp, { attributes: true, subtree: true, attributeFilter: ['hidden'] });
 
   /* --- Enviar pedido --- */
   document.getElementById('sim-btn-enviar').addEventListener('click', (e) => {
     e.currentTarget.blur();
-    steps.forEach(s => s.hidden = true);
-    const successStep = simApp.querySelector('.sim-step--success');
+    pedidosData.unshift({
+      id: Date.now(),
+      fecha: fechaHoy(),
+      numero: nextPedidoNumero++,
+      cliente: simCliente.value.trim() || 'Cliente demo',
+      sucursal: simSucursal.value || '—',
+      total: currentTotal(),
+      estado: 'Pendiente',
+    });
+    wizardSteps.forEach(s => s.hidden = true);
+    const successStep = viewWizard.querySelector('.sim-step--success');
     successStep.hidden = false;
     progressItems.forEach(p => p.classList.add('is-done'));
     successStep.setAttribute('tabindex', '-1');
@@ -232,21 +491,42 @@ document.addEventListener('DOMContentLoaded', () => {
     successStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  function resetSimulator() {
-    products = JSON.parse(JSON.stringify(defaultProducts));
-    simCliente.value = '';
-    simSucursal.value = '';
-    document.getElementById('sim-fecha-envio').value = '';
+  /* --- Alta de pedido / reinicio --- */
+  function startNewPedido(prefill) {
+    cart = {};
+    currentBrandFilter = 'Todas las marcas';
+    productSearchTerm = '';
+    simOc.value = '';
+    simCliente.value = prefill?.cliente || '';
+    simSucursal.value = prefill?.sucursal || '';
+    simObservaciones.value = '';
+    simFechaPedido.value = fechaHoy();
+    productSearchInput.value = '';
     checkStep1();
-    renderProducts();
-    updateTotals();
+    showWizardView();
     goToStep(1);
+    maybeShowTourPrompt();
+  }
+
+  function resetSimulator() {
+    pedidosData = JSON.parse(JSON.stringify(defaultPedidos));
+    nextPedidoNumero = 70;
+    cart = {};
+    filterEstado = ''; filterSucursal = ''; listSearchTerm = '';
+    listSearchInput.value = '';
+    document.getElementById('sim-filter-estado').value = '';
+    document.getElementById('sim-filter-sucursal').value = '';
+    filtrosPanel.hidden = true;
+    filtrosBtn.setAttribute('aria-expanded', 'false');
+    currentPage = 1;
+    showListView();
   }
   document.getElementById('btn-restart-sim').addEventListener('click', resetSimulator);
-  document.getElementById('btn-restart-sim-2').addEventListener('click', resetSimulator);
+  document.getElementById('btn-restart-sim-2').addEventListener('click', showListView);
 
-  renderProducts();
-  updateTotals();
+  productSearchInput.addEventListener('input', (e) => { productSearchTerm = e.target.value; renderProducts(); });
+
+  showListView();
 
   /* =========================================================
      TOUR GUIADO
@@ -259,32 +539,18 @@ document.addEventListener('DOMContentLoaded', () => {
     tourPromptShown = true;
     tourPromptOverlay.hidden = false;
     lockBodyScroll();
-    setTimeout(() => {
-      const active = document.activeElement;
-      if (active && active.tagName === 'INPUT' && active.hasAttribute('list')) {
-        const listId = active.getAttribute('list');
-        active.removeAttribute('list');
-        active.blur();
-        setTimeout(() => active.setAttribute('list', listId), 50);
-      } else {
-        active?.blur();
-      }
-    }, 0);
   }
-  simApp.addEventListener('focusin', maybeShowTourPrompt);
-  simApp.addEventListener('pointerdown', maybeShowTourPrompt);
-
   document.getElementById('tour-skip').addEventListener('click', () => { tourPromptOverlay.hidden = true; unlockBodyScroll(); });
   tourPromptOverlay.addEventListener('click', (e) => { if (e.target === tourPromptOverlay) { tourPromptOverlay.hidden = true; unlockBodyScroll(); } });
 
   const tourSteps = [
     { selector: '#sim-cliente', step: 1, text: 'Tu cliente busca su nombre acá. El sistema ya conoce sus condiciones comerciales.' },
-    { selector: '#sim-sucursal', step: 1, text: 'Elige la sucursal donde quiere recibir el pedido.' },
-    { selector: '.sim-step[data-step="1"] .sim-btn-next', step: 1, text: 'Guarda y pasa a elegir productos.', action: () => { simCliente.value = 'Farmacia del Sud'; simSucursal.value = 'Casa Central'; checkStep1(); } },
-    { selector: '.sim-table', step: 2, text: 'Acá carga cantidades. Los precios ya vienen actualizados según su lista.' },
-    { selector: '.sim-price-warn', step: 2, text: 'Si un precio quedó por debajo del configurado, queda marcado para revisar antes de confirmar.', optional: true },
-    { selector: '.sim-step[data-step="2"] .sim-btn-next', step: 2, text: 'Con el pedido cargado, avanza a la revisión final.', action: () => { const p = products.find(x => x.id === 'p1'); p.qty = 12; renderProducts(); updateTotals(); } },
-    { selector: '#sim-btn-enviar', step: 3, text: 'Revisa el resumen y envía. Así de simple es todo el proceso para tu cliente.' },
+    { selector: '#sim-sucursal', step: 1, text: 'Elegís la sucursal donde quiere recibir el pedido.' },
+    { selector: '.sim-step[data-step="1"] .sim-btn-next', step: 1, text: 'Guardás y pasás a elegir productos.', action: () => { simCliente.value = simCliente.value || 'Farmacia del Sud'; simSucursal.value = simSucursal.value || 'Casa Central'; checkStep1(); } },
+    { selector: '#sim-brand-tabs', step: 2, text: 'Filtrá el catálogo por marca, igual que en la app real.' },
+    { selector: '.sim-table--products', step: 2, text: 'Cargás cantidades. Precios, stock y descuentos ya vienen según la lista de este cliente.' },
+    { selector: '.sim-step[data-step="2"] .sim-btn-next', step: 2, text: 'Con el pedido cargado, avanzás a la revisión final.', action: () => { cart['e1'] = 12; renderProducts(); updateAllTotals(); } },
+    { selector: '#sim-btn-enviar', step: 3, text: 'Revisás el resumen y enviás. Así de simple es todo el proceso para tu cliente.' },
   ];
 
   let tourIndex = 0;
@@ -370,37 +636,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const pzOverlay = document.getElementById('personalize-overlay');
   const pzBrandName = document.getElementById('pz-brand-name');
   const pzLogoInput = document.getElementById('pz-logo-input');
-  const pzProducts = document.getElementById('pz-products');
   const demoBrandNameEl = document.getElementById('demo-brand-name');
   const demoLogoPreview = document.getElementById('demo-logo-preview');
   const demoLogoIcon = document.getElementById('demo-logo-icon');
 
   let pendingLogo = null;
-  let pendingProductImages = {};
 
   function openPersonalize() {
     pzBrandName.value = brand.name;
-    pzProducts.innerHTML = products.map((p, i) => `
-      <div class="pz-product-row" data-id="${p.id}">
-        <img src="${p.img || ''}" alt="" style="${p.img ? '' : 'background:var(--surface);'}" />
-        <input type="text" value="${p.name}" data-field="name" data-id="${p.id}" />
-        <input type="file" accept="image/*" data-field="img" data-id="${p.id}" />
-      </div>
-    `).join('');
-
-    pzProducts.querySelectorAll('input[data-field="img"]').forEach(input => {
-      input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          pendingProductImages[input.dataset.id] = ev.target.result;
-          input.closest('.pz-product-row').querySelector('img').src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-
     pzOverlay.hidden = false;
     lockBodyScroll();
   }
@@ -420,30 +663,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pz-apply').addEventListener('click', () => {
     brand.name = pzBrandName.value.trim() || defaultBrand.name;
     if (pendingLogo) brand.logo = pendingLogo;
-
-    pzProducts.querySelectorAll('input[data-field="name"]').forEach(input => {
-      const p = products.find(x => x.id === input.dataset.id);
-      if (p) p.name = input.value.trim() || p.name;
-    });
-    Object.entries(pendingProductImages).forEach(([id, src]) => {
-      const p = products.find(x => x.id === id);
-      if (p) p.img = src;
-    });
-
     applyBrandToUI();
-    renderProducts();
-    renderSummary();
     pzOverlay.hidden = true;
     unlockBodyScroll();
   });
   document.getElementById('pz-reset').addEventListener('click', () => {
     brand = JSON.parse(JSON.stringify(defaultBrand));
-    products = JSON.parse(JSON.stringify(defaultProducts));
     pendingLogo = null;
-    pendingProductImages = {};
     applyBrandToUI();
-    renderProducts();
-    updateTotals();
     pzOverlay.hidden = true;
     unlockBodyScroll();
   });
