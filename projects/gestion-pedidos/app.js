@@ -276,11 +276,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------------------------------------------------------
      Cambio de vista: listado <-> wizard
      --------------------------------------------------------- */
+  const topbarCrumb = document.getElementById('sim-topbar-crumb');
+
   function showListView() {
     simApp.classList.add('is-list-view');
     viewList.hidden = false;
     viewWizard.hidden = true;
     progressAside.hidden = true;
+    topbarCrumb.innerHTML = '<span class="is-current">Pedidos</span>';
     renderPedidosList();
   }
   function showWizardView() {
@@ -288,8 +291,9 @@ document.addEventListener('DOMContentLoaded', () => {
     viewList.hidden = true;
     viewWizard.hidden = false;
     progressAside.hidden = false;
+    topbarCrumb.innerHTML = '<a href="#" id="sim-topbar-crumb-back">Pedidos</a> / <span class="is-current">Nuevo pedido</span>';
+    document.getElementById('sim-topbar-crumb-back').addEventListener('click', (e) => { e.preventDefault(); showListView(); });
   }
-  document.getElementById('sim-breadcrumb-back').addEventListener('click', (e) => { e.preventDefault(); showListView(); });
 
   function goToStep(step) {
     currentStep = step;

@@ -111,9 +111,19 @@
         </div>
 
         <div class="simulator-app" id="simulator-app">
+          <div class="sim-topbar">
+            <button class="sim-topbar__burger" type="button" aria-label="Menú"><i class="fa-regular fa-bars" aria-hidden="true"></i></button>
+            <div class="sim-topbar__crumb" id="sim-topbar-crumb"><span class="is-current">Pedidos</span></div>
+            <span class="sim-topbar__avatar" aria-hidden="true"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
+          </div>
+
+          <div class="sim-body">
           <aside class="sim-sidebar">
-            <div class="sim-sidebar__item is-active"><i class="fa-regular fa-house" aria-hidden="true"></i><span>Inicio</span></div>
-            <div class="sim-sidebar__item"><i class="fa-regular fa-sitemap" aria-hidden="true"></i><span>Gestión</span></div>
+            <span class="sim-sidebar__logo" aria-hidden="true"><i class="fa-regular fa-layer-group" aria-hidden="true"></i></span>
+            <div class="sim-sidebar__item is-active" title="Inicio"><i class="fa-regular fa-house" aria-hidden="true"></i></div>
+            <div class="sim-sidebar__item" title="Gestión"><i class="fa-regular fa-sitemap" aria-hidden="true"></i></div>
+            <div class="sim-sidebar__item" title="Configuración"><i class="fa-regular fa-gear" aria-hidden="true"></i></div>
+            <div class="sim-sidebar__item sim-sidebar__item--logout" title="Salir"><i class="fa-regular fa-arrow-right-from-bracket" aria-hidden="true"></i></div>
           </aside>
 
           <div class="sim-main" id="sim-main">
@@ -192,10 +202,6 @@
 
             <!-- VISTA: ALTA DE PEDIDO (WIZARD) -->
             <div class="sim-view" id="sim-view-wizard" hidden>
-              <div class="sim-breadcrumb">
-                <a href="#" id="sim-breadcrumb-back">Pedidos</a> / Nuevo pedido
-              </div>
-
               <div class="sim-step" data-step="1">
                 <button class="btn btn-outline sim-btn-back" data-goto="list" type="button">
                   <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
@@ -339,6 +345,7 @@
               <div><strong>Revisión del pedido</strong><small>Productos agregados, total</small></div>
             </div>
           </aside>
+          </div>
         </div>
       </div>
 
