@@ -700,6 +700,48 @@
     </section>
   </div>
 
+  <button class="dna-chat-fab" id="dnaChatFab" type="button" data-open-dna-chat aria-label="Preguntale a REX, el oráculo del ranking">
+    <i data-lucide="message-circle-question" aria-hidden="true"></i>
+  </button>
+
+  <div class="modal dna-chat-modal" id="dnaChatModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-dna-chat></div>
+
+    <section
+      class="modal-panel dna-chat-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dnaChatTitle"
+    >
+      <div class="modal-sticky-header">
+        <span class="section-kicker">Oráculo jurásico</span>
+        <h2 id="dnaChatTitle">Preguntale a REX</h2>
+        <p>Fechas que ganó alguien, cuántas veces ganó o perdió, puntos, posición... REX tiene la data.</p>
+        <button
+          class="modal-close"
+          type="button"
+          data-close-dna-chat
+          aria-label="Cerrar chat"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="dna-chat-body" id="dnaChatBody" aria-live="polite"></div>
+
+      <div class="dna-chat-suggestions">
+        <button type="button" data-dna-suggestion>¿Quién ganó más?</button>
+        <button type="button" data-dna-suggestion>¿Cuántas veces ganó Javi?</button>
+        <button type="button" data-dna-suggestion>¿Qué fechas ganó May?</button>
+      </div>
+
+      <form class="dna-chat-form" id="dnaChatForm">
+        <input type="text" id="dnaChatInput" placeholder="Preguntale a REX..." autocomplete="off" aria-label="Tu pregunta para REX" />
+        <button type="submit" class="button button--primary">Enviar</button>
+      </form>
+    </section>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite">
     Resultados cargados correctamente.
   </div>

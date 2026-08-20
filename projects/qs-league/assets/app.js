@@ -6,7 +6,7 @@
    behind an authenticated admin session. */
 
 (function () {
-const { fmt, fmtPoints, house, longDate, MONTHS_ES } = window.DinoCupData;
+const { fmt, fmtPoints, house, longDate, MONTHS_ES, ROSTER, findPlayerByNickname, norm } = window.DinoCupData;
 
 /* ---------- helpers ---------- */
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -199,6 +199,171 @@ function renderNextModerator() {
   backupEl.textContent = rows[rows.length - 2]?.playerName || '—';
 }
 
+/* ============================================================
+   REX — el oráculo jurásico. Un chat con onda "personaje que
+   explica cosas", pero sin IA real detrás: esto es un sitio 100%
+   estático sin backend, así que no hay dónde guardar una API key
+   sin exponerla en el navegador de cualquiera. En cambio, REX
+   interpreta preguntas por patrones (español, con o sin tildes) y
+   contesta con los datos reales del ranking — fechas que ganó
+   alguien, cuántas veces ganó/perdió, puntos, posición, etc. —
+   con variedad de frases para que no suene siempre igual.
+   ============================================================ */
+function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]; }
+
+/* Reconstruye, por jugador, en qué fechas quedó en el podio (ganó)
+   y en cuáles participó sin llegar a medalla (perdió) — usando el
+   detectedResults de cada match aplicado, excluyendo al moderador
+   de esa fecha, igual que "Próximo moderador" y que el wizard. */
+function computeMatchHistory() {
+  const history = new Map();
+  matches
+    .filter(match => match.status === 'APPLIED' && match.sessionDate && Array.isArray(match.detectedResults))
+    .forEach(match => {
+      const effective = match.detectedResults
+        .filter(row => row.playerId && row.playerId !== match.moderatorId)
+        .sort((a, b) => a.rank - b.rank)
+        .map((row, index) => ({ ...row, effectiveRank: index + 1 }));
+      effective.forEach(row => {
+        if (!history.has(row.playerId)) history.set(row.playerId, { wins: [], losses: [] });
+        const bucket = row.effectiveRank <= 3 ? 'wins' : 'losses';
+        history.get(row.playerId)[bucket].push({ sessionDate: match.sessionDate, effectiveRank: row.effectiveRank });
+      });
+    });
+  return history;
+}
+
+/* Busca qué jugador del roster se menciona en el mensaje, probando
+   todos sus alias (incluye nombre completo) — se queda con el alias
+   más largo que matchee para evitar falsos positivos cortos. */
+function findMentionedPlayer(text) {
+  const normText = ` ${norm(text).replace(/[¿?¡!.,;:()"']/g, ' ')} `;
+  let best = null;
+  ROSTER.forEach(p => {
+    [p.id, p.name, p.fullName, ...p.aliases].forEach(alias => {
+      const a = norm(alias);
+      if (a.length < 2 || !normText.includes(` ${a} `)) return;
+      if (!best || a.length > best.aliasLen) best = { player: p, aliasLen: a.length };
+    });
+  });
+  return best?.player || null;
+}
+
+const REX_GREETINGS = [
+  '🦖 ¡RRRAWR! Digo, hola. Soy REX, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
+  'Ejem, perdón, estaba masticando un helecho. ¿En qué te ayudo con el ranking?',
+  '65 millones de años esperando esta conversación. Dale, preguntame.'
+];
+const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?" o "¿quién perdió más?". Decime un nombre y te tiro toda la data.';
+const REX_FALLBACKS = [
+  `No entendí bien esa, y eso que sobreviví una extinción masiva. ${REX_HELP}`,
+  `Mis neuronas de reptil no dieron con eso. ${REX_HELP}`,
+  `Eso quedó fosilizado en mi cabeza sin traducción. ${REX_HELP}`
+];
+
+function playerLabel(entry) { return entry.effectiveRank === 1 ? '🥇' : entry.effectiveRank === 2 ? '🥈' : '🥉'; }
+function fechaList(entries) {
+  return entries.map(e => longDate(e.sessionDate)).join(', ');
+}
+function vezVeces(n) { return n === 1 ? 'vez' : 'veces'; }
+
+function rexAnswer(rawText) {
+  const text = (rawText || '').trim();
+  if (!text) return pickRandom(REX_FALLBACKS);
+  const normText = norm(text);
+  const mentioned = findMentionedPlayer(text);
+
+  if (!mentioned && /^(hola|holis|buenas|hey|ey+|que tal|buen dia|buenas tardes|buenas noches)\b/.test(normText)) {
+    return pickRandom(REX_GREETINGS);
+  }
+  if (/ayuda|que sabes hacer|que pod[ei]s hacer|que me pod[ei]s preguntar|que onda|quien sos/.test(normText)) {
+    return REX_HELP;
+  }
+
+  const history = computeMatchHistory();
+  const { totals } = computeStandings();
+
+  if (/quien\s+(gan|es el que mas gan)/.test(normText) && /mas/.test(normText)) {
+    const ranked = [...history.entries()].map(([id, h]) => ({ player: totals.get(id), wins: h.wins.length })).filter(r => r.player);
+    ranked.sort((a, b) => b.wins - a.wins);
+    const top = ranked[0];
+    if (!top || top.wins === 0) return 'Todavía nadie se subió al podio en esta temporada. La era de los campeones no empezó.';
+    return `🏆 ${top.player.name} es quien más ganó: ${top.wins} ${vezVeces(top.wins)} en el podio. El resto, a extinguirse de la envidia.`;
+  }
+  if (/quien\s+perdi/.test(normText) && /mas/.test(normText)) {
+    const ranked = [...history.entries()].map(([id, h]) => ({ player: totals.get(id), losses: h.losses.length })).filter(r => r.player);
+    ranked.sort((a, b) => b.losses - a.losses);
+    const top = ranked[0];
+    if (!top || top.losses === 0) return 'Todavía nadie se quedó afuera del podio esta temporada. O ganaron todos, o nadie jugó — la extinción sigue esperando.';
+    return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.`;
+  }
+
+  if (mentioned) {
+    const entry = history.get(mentioned.id) || { wins: [], losses: [] };
+    const total = totals.get(mentioned.id);
+    const name = total?.name || mentioned.name;
+
+    if (/fecha/.test(normText) && /gan/.test(normText)) {
+      if (!entry.wins.length) return `${name} todavía no ganó ninguna fecha. Su cadena evolutiva de victorias sigue en cero.`;
+      return `🗓️ ${name} ganó el ${fechaList(entry.wins)}${entry.wins.length > 1 ? ' (en ese orden)' : ''}. ${entry.wins.length > 1 ? 'Un depredador constante.' : 'Un solo zarpazo, pero bien dado.'}`;
+    }
+    if (/fecha/.test(normText) && /perdi/.test(normText)) {
+      if (!entry.losses.length) return `${name} no tiene fechas sin podio registradas — o ganó siempre, o todavía no jugó.`;
+      return `${name} se quedó afuera del podio el ${fechaList(entry.losses)}. Nadie es perfecto, ni los dinosaurios.`;
+    }
+    if (/cuant[oa]s?\b.*\bgan/.test(normText) || /\bgan[oó]\b.*cuant[oa]s?/.test(normText)) {
+      const n = entry.wins.length;
+      if (n === 0) return `${name} ganó 0 veces. Todavía no probó las mieles de la victoria, pero la extinción de los dinosaurios tampoco pasó de la noche a la mañana.`;
+      return `${name} ganó ${n} ${vezVeces(n)}. ${n >= 3 ? '¡Un T-Rex del ranking!' : 'Nada mal para empezar.'}`;
+    }
+    if (/cuant[oa]s?\b.*perdi/.test(normText) || /perdi[oó]\b.*cuant[oa]s?/.test(normText)) {
+      const n = entry.losses.length;
+      if (n === 0) return `${name} nunca se quedó sin podio (o directamente no jugó todavía). Prontuario limpio.`;
+      return `${name} se quedó sin medalla ${n} ${vezVeces(n)}. Le pasa a los mejores, incluso a los que tienen 65 millones de años de experiencia como yo.`;
+    }
+    if (/puntos|dinocoins/.test(normText)) {
+      return `${name} tiene ${fmtPoints(total?.points ?? 0)} en el ranking. ${(total?.points ?? 0) < 0 ? 'Números rojos, hay que remontar.' : 'Sumando fósiles de gloria.'}`;
+    }
+    if (/puesto|posicion|lugar/.test(normText)) {
+      const ranked = standingsPlayers();
+      const position = ranked.findIndex(p => p.id === mentioned.id) + 1;
+      return `${name} está en el puesto ${position} de ${ranked.length}. ${position === 1 ? '¡La cima del Cretácico!' : position === ranked.length ? 'Bueno, alguien tiene que estar último.' : 'En plena carrera.'}`;
+    }
+
+    const winCount = entry.wins.length;
+    const lossCount = entry.losses.length;
+    return `${name} tiene ${fmtPoints(total?.points ?? 0)}, ganó ${winCount} ${vezVeces(winCount)} y se quedó sin podio ${lossCount} ${vezVeces(lossCount)}. Preguntame algo más específico si querés fechas exactas.`;
+  }
+
+  return pickRandom(REX_FALLBACKS);
+}
+
+function rexBubbleHtml(text, who) {
+  return `<div class="dna-chat-bubble dna-chat-bubble--${who}">${text}</div>`;
+}
+function rexAddMessage(text, who) {
+  const body = $('#dnaChatBody');
+  if (!body) return;
+  body.insertAdjacentHTML('beforeend', rexBubbleHtml(text, who));
+  body.scrollTop = body.scrollHeight;
+}
+function rexAsk(question) {
+  const trimmed = (question || '').trim();
+  if (!trimmed) return;
+  rexAddMessage(esc(trimmed), 'user');
+  const body = $('#dnaChatBody');
+  const typingEl = document.createElement('div');
+  typingEl.className = 'dna-chat-bubble dna-chat-bubble--rex dna-chat-bubble--typing';
+  typingEl.textContent = '···';
+  body?.appendChild(typingEl);
+  if (body) body.scrollTop = body.scrollHeight;
+  window.setTimeout(() => {
+    typingEl.remove();
+    rexAddMessage(esc(rexAnswer(trimmed)), 'rex');
+  }, 450 + Math.random() * 400);
+}
+function esc(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
 function render() {
   if (!players.length) return;
   const rows = standingsPlayers();
@@ -235,6 +400,10 @@ const resultsModal = $('#resultsModal');
 const openResultsButtons = $$('[data-open-results]');
 const closeResultsButtons = $$('[data-close-results]');
 
+const dnaChatModal = $('#dnaChatModal');
+const openDnaChatButtons = $$('[data-open-dna-chat]');
+const closeDnaChatButtons = $$('[data-close-dna-chat]');
+
 /* ---------- modals ---------- */
 function toggleModal(modal, open, focusTarget) {
   modal.classList.toggle('is-open', open);
@@ -253,6 +422,17 @@ function openResultsModal(rankingOnly) {
 }
 function closeResultsModal() { toggleModal(resultsModal, false, $('[data-open-results]')); }
 
+let dnaChatGreeted = false;
+function openDnaChatModal() {
+  toggleModal(dnaChatModal, true);
+  if (!dnaChatGreeted) {
+    dnaChatGreeted = true;
+    rexAddMessage(pickRandom(REX_GREETINGS), 'rex');
+  }
+  window.setTimeout(() => $('#dnaChatInput')?.focus(), 200);
+}
+function closeDnaChatModal() { toggleModal(dnaChatModal, false, $('[data-open-dna-chat]')); }
+
 /* ---------- bindings ---------- */
 function bind() {
   menuToggle.addEventListener('click', () => {
@@ -267,17 +447,30 @@ function bind() {
   openLegendsButtons.forEach(button => button.addEventListener('click', openLegendsModal));
   openRulesButtons.forEach(button => button.addEventListener('click', openRulesModal));
   openResultsButtons.forEach(button => button.addEventListener('click', () => openResultsModal(button.hasAttribute('data-ranking-only'))));
+  openDnaChatButtons.forEach(button => button.addEventListener('click', openDnaChatModal));
 
   closeLegendsButtons.forEach(button => button.addEventListener('click', closeLegendsModal));
   closeRulesButtons.forEach(button => button.addEventListener('click', closeRulesModal));
   closeResultsButtons.forEach(button => button.addEventListener('click', closeResultsModal));
+  closeDnaChatButtons.forEach(button => button.addEventListener('click', closeDnaChatModal));
 
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
     if (legendsModal.classList.contains('is-open')) closeLegendsModal();
     if (rulesModal.classList.contains('is-open')) closeRulesModal();
     if (resultsModal.classList.contains('is-open')) closeResultsModal();
+    if (dnaChatModal.classList.contains('is-open')) closeDnaChatModal();
   });
+
+  const dnaChatForm = $('#dnaChatForm');
+  const dnaChatInput = $('#dnaChatInput');
+  dnaChatForm?.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!dnaChatInput.value.trim()) return;
+    rexAsk(dnaChatInput.value);
+    dnaChatInput.value = '';
+  });
+  $$('[data-dna-suggestion]').forEach(chip => chip.addEventListener('click', () => rexAsk(chip.textContent)));
 
   const competitorsToggle = $('#competitorsToggle');
   const allCompetitors = $('#allCompetitors');
