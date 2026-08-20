@@ -249,12 +249,31 @@ function findMentionedPlayer(text) {
   return best?.player || null;
 }
 
+/* Saca una fecha del mensaje (ISO, DD/MM/YYYY, o "13 de agosto [2026]"
+   con nombre de mes — el año es opcional, se asume el actual). Palabras
+   sueltas como "el jueves" no rompen el match, el regex las ignora. */
+function parseDateMention(text) {
+  const normText = norm(text);
+  const iso = normText.match(/(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);
+  if (iso) return `${iso[1]}-${String(iso[2]).padStart(2, '0')}-${String(iso[3]).padStart(2, '0')}`;
+  const dmy = normText.match(/(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2})/);
+  if (dmy) return `${dmy[3]}-${String(dmy[2]).padStart(2, '0')}-${String(dmy[1]).padStart(2, '0')}`;
+  const monthPattern = new RegExp(`(\\d{1,2})\\s*(?:de\\s+)?(${MONTHS_ES.join('|')})(?:\\s*(?:de\\s+)?(20\\d{2}))?`);
+  const named = normText.match(monthPattern);
+  if (named) {
+    const monthIndex = MONTHS_ES.findIndex(month => month === named[2]);
+    const year = named[3] || String(new Date().getFullYear());
+    return `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(named[1]).padStart(2, '0')}`;
+  }
+  return null;
+}
+
 const REX_GREETINGS = [
   '🦖 ¡RRRAWR! Digo, hola. Soy REX, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
   'Ejem, perdón, estaba masticando un helecho. ¿En qué te ayudo con el ranking?',
   '65 millones de años esperando esta conversación. Dale, preguntame.'
 ];
-const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?" o "¿quién perdió más?". Decime un nombre y te tiro toda la data.';
+const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?" o "¿quién ganó el 16 de julio?". Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
   `No entendí bien esa, y eso que sobreviví una extinción masiva. ${REX_HELP}`,
   `Mis neuronas de reptil no dieron con eso. ${REX_HELP}`,
@@ -296,6 +315,22 @@ function rexAnswer(rawText) {
     const top = ranked[0];
     if (!top || top.losses === 0) return 'Todavía nadie se quedó afuera del podio esta temporada. O ganaron todos, o nadie jugó — la extinción sigue esperando.';
     return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.`;
+  }
+
+  if (!mentioned && /gan/.test(normText)) {
+    const dateMention = parseDateMention(text);
+    if (dateMention) {
+      const match = matches.find(m => m.status === 'APPLIED' && m.sessionDate === dateMention);
+      if (!match) return `No tengo ningún informe cargado para el ${longDate(dateMention)}. O no se jugó, o todavía no lo subieron a la base de datos.`;
+      const podium = (match.detectedResults || [])
+        .filter(row => row.playerId && row.playerId !== match.moderatorId)
+        .sort((a, b) => a.rank - b.rank)
+        .slice(0, 3);
+      if (!podium.length) return `Tengo el informe del ${longDate(match.sessionDate)} pero sin podio legible. Rarísimo, como un fósil sin huesos.`;
+      const medals = ['🥇', '🥈', '🥉'];
+      const podiumText = podium.map((row, i) => `${medals[i]} ${row.playerName}`).join(', ');
+      return `El ${longDate(match.sessionDate)} el podio fue: ${podiumText}. Moderó ${match.moderatorName || '—'}.`;
+    }
   }
 
   if (mentioned) {
