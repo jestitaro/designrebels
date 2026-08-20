@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentStep = 1;
   let currentBrandFilter = 'Todas las marcas';
   let productSearchTerm = '';
+  let productFilterStock = '';
   let listSearchTerm = '';
   let filterEstado = '';
   let filterSucursal = '';
@@ -152,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const wizardSteps = viewWizard.querySelectorAll('.sim-step');
   const progressAside = document.getElementById('sim-progress');
   const progressItems = document.querySelectorAll('.sim-progress__item');
+  const progressCart = document.getElementById('sim-progress-cart');
+  const progressCartItems = document.getElementById('sim-progress-cart-items');
 
   /* --- Toast liviano para acciones simuladas --- */
   function showToast(msg) {
@@ -303,7 +306,8 @@ document.addEventListener('DOMContentLoaded', () => {
       p.classList.toggle('is-active', n === step);
       p.classList.toggle('is-done', n < step);
     });
-    if (step === 2) { renderBrandTabs(); renderProducts(); }
+    progressCart.hidden = step !== 2;
+    if (step === 2) { renderBrandTabs(); renderProducts(); renderProgressCart(); }
     if (step === 3) { renderSummaryItems(); }
     updateAllTotals();
   }
@@ -355,10 +359,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const term = productSearchTerm.trim().toLowerCase();
     return catalog.filter(p => {
       if (currentBrandFilter !== 'Todas las marcas' && p.marca !== currentBrandFilter) return false;
+      if (productFilterStock && p.stock !== productFilterStock) return false;
       if (term && !(p.nombre.toLowerCase().includes(term) || p.codigo.includes(term) || p.sku.toLowerCase().includes(term))) return false;
       return true;
     });
   }
+
+  const productFiltrosBtn = document.getElementById('sim-btn-product-filtros');
+  const productFiltrosPanel = document.getElementById('sim-product-filters-panel');
+  productFiltrosBtn.addEventListener('click', () => {
+    const willShow = productFiltrosPanel.hidden;
+    productFiltrosPanel.hidden = !willShow;
+    productFiltrosBtn.setAttribute('aria-expanded', String(willShow));
+  });
+  document.getElementById('sim-product-filter-stock').addEventListener('change', (e) => { productFilterStock = e.target.value; renderProducts(); });
+  document.getElementById('sim-product-filter-clear').addEventListener('click', () => {
+    productFilterStock = '';
+    document.getElementById('sim-product-filter-stock').value = '';
+    renderProducts();
+  });
 
   function renderProducts() {
     const list = visibleProducts();
@@ -386,6 +405,40 @@ document.addEventListener('DOMContentLoaded', () => {
       input.addEventListener('input', () => {
         cart[input.dataset.id] = Math.max(0, Number(input.value) || 0);
         updateAllTotals();
+        renderProgressCart();
+      });
+    });
+  }
+
+  function renderProgressCart() {
+    const entries = Object.entries(cart).filter(([, qty]) => qty > 0);
+    progressCartItems.innerHTML = entries.map(([id, qty]) => {
+      const p = catalog.find(x => x.id === id);
+      return `
+        <div class="sim-progress__cart-item" data-id="${id}">
+          <span class="name">${p.nombre}</span>
+          <div class="row">
+            <input class="qty-input" type="number" min="0" value="${qty}" data-id="${id}" />
+            <span class="price">${money(qty * priceFor(p))}</span>
+            <button class="sim-item-remove" type="button" data-id="${id}" aria-label="Quitar producto"><i class="fa-regular fa-trash" aria-hidden="true"></i></button>
+          </div>
+        </div>`;
+    }).join('') || '<p class="sim-empty-note">Sin productos agregados.</p>';
+
+    progressCartItems.querySelectorAll('.qty-input').forEach(input => {
+      input.addEventListener('input', () => {
+        cart[input.dataset.id] = Math.max(0, Number(input.value) || 0);
+        updateAllTotals();
+        renderProducts();
+        renderProgressCart();
+      });
+    });
+    progressCartItems.querySelectorAll('.sim-item-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        delete cart[btn.dataset.id];
+        updateAllTotals();
+        renderProducts();
+        renderProgressCart();
       });
     });
   }
@@ -408,14 +461,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 0);
   }
 
-  const runningTotalEl = document.getElementById('sim-running-total');
+  const cartTotalValueEl = document.getElementById('sim-cart-total-value');
+  const cartUnidadesEl = document.getElementById('sim-cart-unidades');
+  const cartCajasEl = document.getElementById('sim-cart-cajas');
 
   function updateAllTotals() {
     const total = currentTotal();
     const unidades = currentUnidades();
     const cajas = currentCajas();
     step2Next.disabled = unidades <= 0;
-    runningTotalEl.textContent = `Total: ${money(total)} · Unidades: ${unidades} · Cajas: ${cajas}`;
+    cartTotalValueEl.textContent = money(total);
+    cartUnidadesEl.textContent = String(unidades);
+    cartCajasEl.textContent = String(cajas);
     summaryTotalValue.textContent = money(total);
     summaryUnidades.textContent = String(unidades);
     summaryCajas.textContent = String(cajas);
@@ -500,6 +557,10 @@ document.addEventListener('DOMContentLoaded', () => {
     cart = {};
     currentBrandFilter = 'Todas las marcas';
     productSearchTerm = '';
+    productFilterStock = '';
+    document.getElementById('sim-product-filter-stock').value = '';
+    productFiltrosPanel.hidden = true;
+    productFiltrosBtn.setAttribute('aria-expanded', 'false');
     simOc.value = '';
     simCliente.value = prefill?.cliente || '';
     simSucursal.value = prefill?.sucursal || '';
@@ -553,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { selector: '.sim-step[data-step="1"] .sim-btn-next', step: 1, text: 'Guardás y pasás a elegir productos.', action: () => { simCliente.value = simCliente.value || 'Farmacia del Sud'; simSucursal.value = simSucursal.value || 'Casa Central'; checkStep1(); } },
     { selector: '#sim-brand-tabs', step: 2, text: 'Filtrá el catálogo por marca, igual que en la app real.' },
     { selector: '.sim-table--products', step: 2, text: 'Cargás cantidades. Precios, stock y descuentos ya vienen según la lista de este cliente.' },
-    { selector: '.sim-step[data-step="2"] .sim-btn-next', step: 2, text: 'Con el pedido cargado, avanzás a la revisión final.', action: () => { cart['e1'] = 12; renderProducts(); updateAllTotals(); } },
+    { selector: '.sim-step[data-step="2"] .sim-btn-next', step: 2, text: 'Con el pedido cargado, avanzás a la revisión final.', action: () => { cart['e1'] = 12; renderProducts(); updateAllTotals(); renderProgressCart(); } },
     { selector: '#sim-btn-enviar', step: 3, text: 'Revisás el resumen y enviás. Así de simple es todo el proceso para tu cliente.' },
   ];
 

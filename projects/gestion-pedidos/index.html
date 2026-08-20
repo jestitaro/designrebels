@@ -252,7 +252,20 @@
                     <input type="text" placeholder="Buscar producto o código..." class="sim-product-search" id="sim-product-search" autocomplete="off" />
                     <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
                   </div>
-                  <span class="sim-product-total" id="sim-running-total">Total: $ 0 · Unidades: 0 · Cajas: 0</span>
+                  <button class="btn btn-outline sim-btn-filtros" id="sim-btn-product-filtros" type="button" aria-expanded="false">
+                    <i class="fa-regular fa-sliders" aria-hidden="true"></i> Filtrar
+                  </button>
+                </div>
+                <div class="sim-filters-panel" id="sim-product-filters-panel" hidden>
+                  <div class="sim-field">
+                    <label for="sim-product-filter-stock">Stock</label>
+                    <select id="sim-product-filter-stock">
+                      <option value="">Todos</option>
+                      <option value="Disponible">Disponible</option>
+                      <option value="Agotado">Agotado</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-ghost" id="sim-product-filter-clear" type="button">Limpiar filtro</button>
                 </div>
                 <div class="sim-table-wrap sim-table-wrap--products">
                   <table class="sim-table sim-table--products" id="sim-product-table">
@@ -340,6 +353,18 @@
             <div class="sim-progress__item" data-progress="3">
               <span class="sim-progress__num">3</span>
               <div><strong>Revisión del pedido</strong><small>Productos agregados, total</small></div>
+            </div>
+
+            <div class="sim-progress__cart" id="sim-progress-cart" hidden>
+              <div class="sim-progress__cart-total">
+                <span><i class="fa-regular fa-circle-exclamation" aria-hidden="true"></i> Total</span>
+                <strong id="sim-cart-total-value">$ 0</strong>
+              </div>
+              <div class="sim-progress__cart-meta">
+                <span><i class="fa-regular fa-tag" aria-hidden="true"></i> Unidades: <strong id="sim-cart-unidades">0</strong></span>
+                <span><i class="fa-regular fa-box" aria-hidden="true"></i> Cajas: <strong id="sim-cart-cajas">0</strong></span>
+              </div>
+              <div id="sim-progress-cart-items"><!-- JS --></div>
             </div>
           </aside>
           </div>

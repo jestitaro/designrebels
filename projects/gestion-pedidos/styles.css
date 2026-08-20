@@ -498,13 +498,12 @@ a { color: inherit; }
 .sim-brand-tab:hover { border-color: var(--brand-1); color: var(--brand-1); }
 .sim-brand-tab.is-active { border-color: var(--brand-1); color: var(--brand-1); box-shadow: inset 0 0 0 1px var(--brand-1); }
 
-.sim-product-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
-.sim-product-search-wrap { flex: 1; max-width: 320px; }
+.sim-product-toolbar { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.sim-product-search-wrap { width: 100%; max-width: 480px; margin: 0 auto; }
 .sim-product-search {
   border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: .6rem .9rem; width: 100%;
   font-family: inherit; font-size: .88rem;
 }
-.sim-product-total { font-weight: 800; color: var(--dark-bg); }
 
 .sim-table-wrap { border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; overflow-x: auto; }
 .sim-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
@@ -577,17 +576,40 @@ a { color: inherit; }
 
 .sim-progress { border-left: 1px solid var(--border-color); padding: 1.75rem 1.25rem; }
 .sim-progress__title { font-weight: 800; color: var(--dark-bg); margin-bottom: 1rem; font-size: .95rem; }
-.sim-progress__item { display: flex; gap: .7rem; margin-bottom: 1.25rem; opacity: .55; }
-.sim-progress__item.is-active { opacity: 1; }
+.sim-progress__item {
+  display: flex; gap: .7rem; margin-bottom: 1rem; opacity: .55;
+  padding: .6rem; border-radius: var(--radius-sm); border: 1px solid transparent;
+}
+.sim-progress__item.is-active { opacity: 1; border-color: var(--brand-blue); background: #EFF7FF; }
 .sim-progress__item.is-done { opacity: 1; }
 .sim-progress__item.is-done .sim-progress__num { background: #16a34a; color: #fff; }
 .sim-progress__num {
   width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--border-color); color: var(--text-muted);
   display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 800; flex-shrink: 0;
 }
-.sim-progress__item.is-active .sim-progress__num { background: var(--brand-1); color: #fff; }
+.sim-progress__item.is-active .sim-progress__num { background: var(--brand-blue); color: #fff; }
 .sim-progress__item strong { display: block; font-size: .85rem; color: var(--light-text); }
 .sim-progress__item small { color: var(--text-muted); font-size: .75rem; }
+
+/* Mini-carrito lateral (visible en Selección de productos) */
+.sim-progress__cart { margin-top: .5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); }
+.sim-progress__cart[hidden] { display: none; }
+.sim-progress__cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: .6rem; }
+.sim-progress__cart-total > span { font-size: .92rem; font-weight: 800; color: var(--dark-bg); display: inline-flex; align-items: center; gap: .4rem; }
+.sim-progress__cart-total > span i { color: #d97706; font-size: .82rem; }
+.sim-progress__cart-total strong { font-size: 1.2rem; color: var(--dark-bg); }
+.sim-progress__cart-meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .78rem; color: var(--text-muted); margin-bottom: .5rem; }
+.sim-progress__cart-meta strong { color: var(--light-text); }
+.sim-progress__cart-item { padding: .7rem 0; border-top: 1px solid var(--border-color); }
+.sim-progress__cart-item .name { display: block; font-weight: 800; font-size: .78rem; color: var(--dark-bg); margin-bottom: .5rem; }
+.sim-progress__cart-item .row { display: flex; align-items: center; gap: .5rem; }
+.sim-progress__cart-item .qty-input {
+  width: 52px; border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+  padding: .35rem .4rem; text-align: center; font-family: inherit; font-size: .82rem;
+}
+.sim-progress__cart-item .price { flex: 1; text-align: right; font-weight: 700; font-size: .85rem; color: var(--light-text); }
+.sim-progress__cart-item .sim-item-remove { background: none; border: none; color: #dc2626; padding: .25rem; font-size: .88rem; }
+.sim-progress__cart-item .sim-item-remove:hover { color: #991b1b; }
 
 .sim-toast {
   position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 20px);
