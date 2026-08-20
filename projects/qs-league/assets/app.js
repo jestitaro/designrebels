@@ -211,6 +211,16 @@ function renderNextModerator() {
    ============================================================ */
 function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]; }
 
+/* Última fecha de la que se habló, para que un "¿y quién perdió?" sin
+   fecha propia siga hablando de la misma sesión que la pregunta anterior. */
+let rexLastDateMention = null;
+
+function rexKnownDatesList() {
+  const dates = [...new Set(matches.filter(m => m.status === 'APPLIED' && m.sessionDate).map(m => m.sessionDate))].sort();
+  if (!dates.length) return '';
+  return ` Las fechas que tengo cargadas son: ${dates.map(d => longDate(d)).join(', ')}.`;
+}
+
 /* Reconstruye, por jugador, en qué fechas quedó en el podio (ganó)
    y en cuáles participó sin llegar a medalla (perdió) — usando el
    detectedResults de cada match aplicado, excluyendo al moderador
@@ -317,16 +327,28 @@ function rexAnswer(rawText) {
     return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.`;
   }
 
-  if (!mentioned && /gan/.test(normText)) {
-    const dateMention = parseDateMention(text);
+  const asksAboutWin = /gan/.test(normText);
+  const asksAboutLoss = /perdi/.test(normText);
+  if (!mentioned && (asksAboutWin || asksAboutLoss)) {
+    // Sin fecha propia en el mensaje, un "¿y quién perdió?" sigue hablando
+    // de la última fecha que se mencionó en la conversación.
+    const dateMention = parseDateMention(text) || rexLastDateMention;
     if (dateMention) {
       const match = matches.find(m => m.status === 'APPLIED' && m.sessionDate === dateMention);
-      if (!match) return `No tengo ningún informe cargado para el ${longDate(dateMention)}. O no se jugó, o todavía no lo subieron a la base de datos.`;
-      const podium = (match.detectedResults || [])
+      if (!match) return `No tengo ningún informe cargado para el ${longDate(dateMention)}.${rexKnownDatesList()}`;
+      rexLastDateMention = dateMention;
+      const effective = (match.detectedResults || [])
         .filter(row => row.playerId && row.playerId !== match.moderatorId)
         .sort((a, b) => a.rank - b.rank)
-        .slice(0, 3);
-      if (!podium.length) return `Tengo el informe del ${longDate(match.sessionDate)} pero sin podio legible. Rarísimo, como un fósil sin huesos.`;
+        .map((row, index) => ({ ...row, effectiveRank: index + 1 }));
+      if (!effective.length) return `Tengo el informe del ${longDate(match.sessionDate)} pero sin datos legibles. Rarísimo, como un fósil sin huesos.`;
+
+      if (asksAboutLoss && !asksAboutWin) {
+        const losers = effective.filter(row => row.effectiveRank > 3);
+        if (!losers.length) return `El ${longDate(match.sessionDate)} entraron todos al podio — día sin perdedores, cosa rara en esta era.`;
+        return `El ${longDate(match.sessionDate)} se quedaron sin podio: ${losers.map(row => row.playerName).join(', ')}. Moderó ${match.moderatorName || '—'}.`;
+      }
+      const podium = effective.slice(0, 3);
       const medals = ['🥇', '🥈', '🥉'];
       const podiumText = podium.map((row, i) => `${medals[i]} ${row.playerName}`).join(', ');
       return `El ${longDate(match.sessionDate)} el podio fue: ${podiumText}. Moderó ${match.moderatorName || '—'}.`;
