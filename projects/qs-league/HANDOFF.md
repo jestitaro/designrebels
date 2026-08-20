@@ -71,6 +71,16 @@ La **landing pública** y el texto guardado en `movement.reason` (el que aliment
 
 Al confirmar: se excluye al moderador del cálculo, se recalcula el podio real de la fecha, y todo se aplica en un batch de Firestore. Todas las llamadas a Firebase en el flujo de aplicar/anular tienen timeout (8-15s) para que nunca se quede colgado en "Aplicando..." si Storage u otra llamada no responde.
 
+## REX — chat oráculo en la landing pública
+
+Botón flotante (abajo a la derecha) que abre un chat donde se le puede preguntar cosas tipo "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿quién ganó/perdió más?", puntos, posición. Vive entero en `app.js` (no es un archivo separado).
+
+**No es una IA real** — es matching de patrones sobre texto en español (`rexAnswer()` en `app.js`). El sitio es 100% estático sin backend, así que no hay dónde guardar una API key sin exponerla en el navegador de cualquier visitante; por eso se descartó conectar un LLM real. Si en algún momento se agrega backend, ahí sí tendría sentido reemplazar `rexAnswer()` por una llamada real.
+
+- El historial de victorias/derrotas por jugador (`computeMatchHistory()`) se arma iterando `dinocup_matches` con `status: APPLIED`, usando `detectedResults` de cada match y excluyendo al moderador de esa fecha — mismo criterio que "Próximo moderador y suplente". Ganó = quedó en el podio (rank efectivo ≤3); perdió = jugó pero no quedó en el podio.
+- Esto es **distinto** de `worstGamePlayerId()` (el que decide el badge "Perdió más" del ranking, basado en menor gamePoints) — "quién perdió más" en el chat cuenta veces reales afuera del podio jugando, no puntaje más bajo. Son preguntas relacionadas pero no la misma métrica; a propósito se dejaron separadas.
+- El reconocimiento de nombres reutiliza los mismos alias del roster (`ROSTER`/`findPlayerByNickname` de `roster.js`), así que "Tuki" resuelve a Pablo igual que en el resto del sitio.
+
 ## Bugs reales encontrados y arreglados en esta sesión (por si vuelven a aparecer)
 
 - **Race condition de login**: `signIn()` hacía su propia consulta de rol pero devolvía el user crudo de Firebase; el panel dependía de un listener separado (`onAuthStateChanged`) con su propia consulta async para saber que había sesión — a veces el panel se abría antes de que ese listener terminara, mostrando "Sesión no autorizada". Se arregló haciendo que `signIn()` devuelva la sesión ya resuelta y que el login la use directo.
