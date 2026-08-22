@@ -701,7 +701,7 @@
   </div>
 
   <button class="dna-chat-fab" id="dnaChatFab" type="button" data-open-dna-chat aria-label="Preguntale a REX, el oráculo del ranking">
-    <i data-lucide="message-circle-question" aria-hidden="true"></i>
+    <img src="assets/rex-mascot.png" alt="" aria-hidden="true" class="dna-chat-fab__mascot" />
   </button>
 
   <div class="modal dna-chat-modal" id="dnaChatModal" aria-hidden="true">
@@ -713,10 +713,13 @@
       aria-modal="true"
       aria-labelledby="dnaChatTitle"
     >
-      <div class="modal-sticky-header">
-        <span class="section-kicker">Oráculo jurásico</span>
-        <h2 id="dnaChatTitle">Preguntale a REX</h2>
-        <p>Fechas que ganó alguien, cuántas veces ganó o perdió, puntos, posición... REX tiene la data.</p>
+      <div class="modal-sticky-header dna-chat-header">
+        <img src="assets/rex-mascot.png" alt="" aria-hidden="true" class="dna-chat-header__mascot" />
+        <div class="dna-chat-header__text">
+          <span class="section-kicker">Oráculo jurásico</span>
+          <h2 id="dnaChatTitle">Preguntale a REX</h2>
+          <p>Fechas que ganó alguien, cuántas veces ganó o perdió, puntos, posición... REX tiene la data.</p>
+        </div>
         <button
           class="modal-close"
           type="button"
