@@ -551,7 +551,6 @@ function openDnaChatModal() {
     dnaChatGreeted = true;
     rexAddMessage(pickRandom(REX_GREETINGS), 'rex');
   }
-  window.setTimeout(() => $('#dnaChatInput')?.focus(), 200);
 }
 function closeDnaChatModal() { toggleModal(dnaChatModal, false, $('[data-open-dna-chat]')); }
 
