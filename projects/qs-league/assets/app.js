@@ -349,7 +349,7 @@ function rexAnswer(rawText) {
   }
 
   // ---------- trivia del equipo (dato curioso, easter eggs) ----------
-  if (/dinosaurio/.test(normText)) {
+  if (/dinosaurio|carnotauro/.test(normText)) {
     return REX_CARNOTAURIO;
   }
   const bareWhoQuestion = normText.replace(/[¿?¡!.,;:]/g, '').trim();
