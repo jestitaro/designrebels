@@ -42,6 +42,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: rgba(131, 71, 255, 0.9) rgba(255, 255, 255, 0.04);
 }
