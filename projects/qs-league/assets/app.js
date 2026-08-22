@@ -339,9 +339,9 @@ const REX_GREETINGS = [
 ];
 const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?", "¿quién ganó la última vez?" o "¿quién modera la próxima vez?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
-  `No entendí bien esa, y eso que sobreviví una extinción masiva. ${REX_HELP}`,
-  `Mis neuronas de reptil no dieron con eso. ${REX_HELP}`,
-  `Eso quedó fosilizado en mi cabeza sin traducción. ${REX_HELP}`
+  'Eso no está en mi ADN. Probá con otra pregunta, o quejate con la diseñadora de eSaurio.',
+  'Ni idea, no está en mi ADN. Escribí "ayuda" si querés ver qué sí sé responder.',
+  'Esa secuencia no me la cargaron en el ADN. Probá con otra, o reclamale a la diseñadora de eSaurio.'
 ];
 
 function playerLabel(entry) { return entry.effectiveRank === 1 ? '🥇' : entry.effectiveRank === 2 ? '🥈' : '🥉'; }
