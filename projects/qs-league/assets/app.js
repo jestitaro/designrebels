@@ -185,18 +185,26 @@ function renderSeasonChip() {
    detected results: last place moderates the next session, second-to-last
    is the backup — same as the "el que sale último modera" house rule,
    with the moderator of that session excluded from the running. */
-function renderNextModerator() {
-  const modEl = $('#nextModerator');
-  const backupEl = $('#nextModeratorBackup');
-  if (!modEl || !backupEl) return;
+function computeNextModerator() {
   const lastMatch = matches
     .filter(match => match.status === 'APPLIED' && match.sessionDate)
     .sort((a, b) => new Date(b.sessionDate) - new Date(a.sessionDate))[0];
   const rows = (lastMatch?.detectedResults || [])
     .filter(row => row.playerId && row.playerId !== lastMatch.moderatorId)
     .sort((a, b) => a.rank - b.rank);
-  modEl.textContent = rows[rows.length - 1]?.playerName || '—';
-  backupEl.textContent = rows[rows.length - 2]?.playerName || '—';
+  return {
+    sessionDate: lastMatch?.sessionDate || null,
+    moderator: rows[rows.length - 1]?.playerName || null,
+    backup: rows[rows.length - 2]?.playerName || null
+  };
+}
+function renderNextModerator() {
+  const modEl = $('#nextModerator');
+  const backupEl = $('#nextModeratorBackup');
+  if (!modEl || !backupEl) return;
+  const next = computeNextModerator();
+  modEl.textContent = next.moderator || '—';
+  backupEl.textContent = next.backup || '—';
 }
 
 /* ============================================================
@@ -317,12 +325,19 @@ function parseDateMention(text) {
   return null;
 }
 
+/* Fecha del informe aplicado más reciente — lo que "la última vez" quiere decir. */
+function resolveLastMatchDate() {
+  const applied = matches.filter(m => m.status === 'APPLIED' && m.sessionDate);
+  if (!applied.length) return null;
+  return applied.reduce((max, m) => (!max || m.sessionDate > max) ? m.sessionDate : max, null);
+}
+
 const REX_GREETINGS = [
-  '🦖 ¡RRRAWR! Digo, hola. Soy REX, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
-  'Ejem, perdón, estaba masticando un helecho. ¿En qué te ayudo con el ranking?',
+  '🦖 ¡RRRAWR! Digo, hola. Soy ADN, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
+  'Ejem, perdón, me estaba haciendo un estudio de sangre. ¿En qué te ayudo con el ranking?',
   '65 millones de años esperando esta conversación. Dale, preguntame.'
 ];
-const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?" o "¿quién ganó el 16 de julio?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
+const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?", "¿quién ganó la última vez?" o "¿quién modera la próxima vez?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
   `No entendí bien esa, y eso que sobreviví una extinción masiva. ${REX_HELP}`,
   `Mis neuronas de reptil no dieron con eso. ${REX_HELP}`,
@@ -392,12 +407,20 @@ function rexAnswer(rawText) {
     return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.`;
   }
 
+  if (/quien\s+modera|proximo\s+moderador|moderador(a)?\s+de\s+la\s+proxima|quien\s+es\s+el\s+moderador/.test(normText)) {
+    const next = computeNextModerator();
+    if (!next.moderator) return 'Todavía no tengo suficientes informes cargados como para saber quién modera la próxima. Volvé a preguntar cuando haya más data.';
+    return `🎙️ ${next.moderator} modera la próxima, con ${next.backup || 'alguien a confirmar'} como suplente. Consecuencia directa de haber salido último en el ${longDate(next.sessionDate)}.`;
+  }
+
   const asksAboutWin = /gan/.test(normText);
   const asksAboutLoss = /perdi/.test(normText);
   if (!mentioned && (asksAboutWin || asksAboutLoss)) {
+    const wantsLastTime = /ultima\s+vez|ultimo\s+encuentro|ultima\s+fecha|ultimo\s+kahoot|ultima\s+jugada/.test(normText);
     // Sin fecha propia en el mensaje, un "¿y quién perdió?" sigue hablando
-    // de la última fecha que se mencionó en la conversación.
-    const dateMention = parseDateMention(text) || rexLastDateMention;
+    // de la última fecha que se mencionó en la conversación; "la última
+    // vez" apunta directo al informe más reciente cargado.
+    const dateMention = parseDateMention(text) || (wantsLastTime ? resolveLastMatchDate() : null) || rexLastDateMention;
     if (dateMention) {
       const match = matches.find(m => m.status === 'APPLIED' && m.sessionDate === dateMention);
       if (!match) return `No tengo ningún informe cargado para el ${longDate(dateMention)}.${rexKnownDatesList()}`;
