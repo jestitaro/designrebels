@@ -4010,31 +4010,39 @@ svg[data-lucide] {
 .dna-chat-fab {
   position: fixed;
   z-index: 120;
-  right: 20px;
-  bottom: 20px;
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(184, 255, 61, 0.55);
-  border-radius: 50%;
-  color: var(--green);
-  background:
-    radial-gradient(circle at 30% 20%, rgba(184, 255, 61, 0.16), transparent 60%),
-    rgba(4, 4, 13, 0.9);
-  box-shadow: 0 0 22px rgba(184, 255, 61, 0.28), 0 10px 24px rgba(2, 2, 9, 0.5);
+  right: 16px;
+  bottom: 8px;
+  width: 76px;
+  border: none;
+  padding: 0;
+  background: none;
   cursor: pointer;
-  transition: transform var(--transition), box-shadow var(--transition);
+  animation: rexFloat 3.2s ease-in-out infinite;
 }
 
-.dna-chat-fab:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 32px rgba(184, 255, 61, 0.4), 0 12px 28px rgba(2, 2, 9, 0.55);
+.dna-chat-fab__mascot {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter:
+    drop-shadow(0 0 16px rgba(184, 255, 61, 0.45))
+    drop-shadow(0 10px 18px rgba(2, 2, 9, 0.55));
+  transition: transform var(--transition);
 }
 
-.dna-chat-fab svg {
-  width: 26px;
-  height: 26px;
+.dna-chat-fab:hover .dna-chat-fab__mascot {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+@keyframes rexFloat {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dna-chat-fab {
+    animation: none;
+  }
 }
 
 .dna-chat-panel {
@@ -4044,6 +4052,30 @@ svg[data-lucide] {
 
 .dna-chat-panel .modal-sticky-header {
   padding: 22px 60px 16px 24px;
+}
+
+.dna-chat-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.dna-chat-header__mascot {
+  flex: 0 0 auto;
+  width: 46px;
+  height: auto;
+  margin-top: 2px;
+  filter: drop-shadow(0 0 10px rgba(184, 255, 61, 0.4));
+}
+
+.dna-chat-header__text {
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .dna-chat-header__mascot {
+    width: 38px;
+  }
 }
 
 .dna-chat-body {
@@ -4156,10 +4188,9 @@ svg[data-lucide] {
 
 @media (max-width: 560px) {
   .dna-chat-fab {
-    right: 14px;
-    bottom: 14px;
-    width: 52px;
-    height: 52px;
+    right: 10px;
+    bottom: 6px;
+    width: 58px;
   }
 
   .dna-chat-panel {
