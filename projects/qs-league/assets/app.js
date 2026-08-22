@@ -259,6 +259,45 @@ function findMentionedPlayer(text) {
   return best?.player || null;
 }
 
+/* ---------- trivia del equipo (window.DinoCupTrivia, ver assets/trivia.js) ----------
+   Roster propio, separado del de Dino Cup: incluye gente que no compite
+   en la copa. Mismo criterio de matcheo por alias que findMentionedPlayer. */
+const TRIVIA_PEOPLE = window.DinoCupTrivia?.PEOPLE || [];
+function findTriviaPerson(text) {
+  const normText = ` ${norm(text).replace(/[¿?¡!.,;:()"']/g, ' ')} `;
+  let best = null;
+  TRIVIA_PEOPLE.forEach(p => {
+    [p.id, p.name, ...p.aliases].forEach(alias => {
+      const a = norm(alias);
+      if (a.length < 2 || !normText.includes(` ${a} `)) return;
+      if (!best || a.length > best.aliasLen) best = { person: p, aliasLen: a.length };
+    });
+  });
+  return best?.person || null;
+}
+
+/* Cola barajada de todos los datos, sin repetir hasta agotarla — así
+   "otro" y "otro" y "otro" no repiten antes de recorrer todo el pool. */
+let rexTriviaQueue = [];
+function nextTriviaFact() {
+  if (!rexTriviaQueue.length) {
+    const pool = [];
+    TRIVIA_PEOPLE.forEach(p => p.facts.forEach(fact => pool.push({ name: p.name, fact })));
+    for (let i = pool.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    rexTriviaQueue = pool;
+  }
+  return rexTriviaQueue.pop() || null;
+}
+
+/* Último dato de trivia contado, para que "¿quién?" pueda revelar a
+   quién pertenecía si se contó como misterio. */
+let rexLastTriviaFact = null;
+
+const REX_CARNOTAURIO = 'Uno confirmado: el Carnota-urio. Y evolucionó hasta VP of Engineering.';
+
 /* Saca una fecha del mensaje (ISO, DD/MM/YYYY, o "13 de agosto [2026]"
    con nombre de mes — el año es opcional, se asume el actual). Palabras
    sueltas como "el jueves" no rompen el match, el regex las ignora. */
@@ -283,7 +322,7 @@ const REX_GREETINGS = [
   'Ejem, perdón, estaba masticando un helecho. ¿En qué te ayudo con el ranking?',
   '65 millones de años esperando esta conversación. Dale, preguntame.'
 ];
-const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?" o "¿quién ganó el 16 de julio?". Decime un nombre o una fecha y te tiro toda la data.';
+const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?" o "¿quién ganó el 16 de julio?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
   `No entendí bien esa, y eso que sobreviví una extinción masiva. ${REX_HELP}`,
   `Mis neuronas de reptil no dieron con eso. ${REX_HELP}`,
@@ -307,6 +346,32 @@ function rexAnswer(rawText) {
   }
   if (/ayuda|que sabes hacer|que pod[ei]s hacer|que me pod[ei]s preguntar|que onda|quien sos/.test(normText)) {
     return REX_HELP;
+  }
+
+  // ---------- trivia del equipo (dato curioso, easter eggs) ----------
+  if (/dinosaurio/.test(normText)) {
+    return REX_CARNOTAURIO;
+  }
+  const bareWhoQuestion = normText.replace(/[¿?¡!.,;:]/g, '').trim();
+  if (['quien', 'quien es', 'de quien', 'y quien'].includes(bareWhoQuestion) && rexLastTriviaFact && !rexLastTriviaFact.revealed) {
+    rexLastTriviaFact.revealed = true;
+    return `${rexLastTriviaFact.name}. ${rexLastTriviaFact.fact}`;
+  }
+  const triviaPerson = findTriviaPerson(text);
+  const wantsTrivia = /\bdato\b|curiosidad|curioso|trivia|cont[aá]me|sab[eé]s de|conoc[eé]s de|conoc[eé]s algo/.test(normText);
+  const wantsAnother = /^otro\b/.test(normText) || bareWhoQuestion === 'otro';
+  if (triviaPerson && (wantsTrivia || wantsAnother || !mentioned)) {
+    const fact = pickRandom(triviaPerson.facts);
+    rexLastTriviaFact = { name: triviaPerson.name, fact, revealed: true };
+    return `${triviaPerson.name}: ${fact}`;
+  }
+  if (!triviaPerson && (wantsTrivia || wantsAnother)) {
+    const entry = nextTriviaFact();
+    if (!entry) return pickRandom(REX_FALLBACKS);
+    // A veces se cuenta como misterio y solo se revela el nombre si preguntan "¿quién?".
+    const reveal = Math.random() < 0.45;
+    rexLastTriviaFact = { name: entry.name, fact: entry.fact, revealed: reveal };
+    return reveal ? `${entry.name}: ${entry.fact}` : entry.fact;
   }
 
   const history = computeMatchHistory();
