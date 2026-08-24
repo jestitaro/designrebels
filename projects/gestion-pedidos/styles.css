@@ -252,13 +252,18 @@ a { color: inherit; }
 /* =========================================================
    Cómo funciona
    ========================================================= */
-.flow-showcase { display: flex; gap: 3rem; align-items: flex-start; }
+.flow-showcase { display: flex; gap: 3rem; align-items: center; }
 .flow-showcase__media {
-  flex: 1 1 46%; min-width: 0; position: sticky; top: 100px;
+  flex: 1 1 46%; min-width: 0;
   border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border-color);
   box-shadow: var(--shadow-hover); background: #fff;
 }
-.flow-showcase__media img { width: 100%; height: auto; display: block; transition: opacity .2s var(--easing); }
+.flow-showcase__media img {
+  width: 100%; height: auto; display: block;
+  transition: opacity .25s var(--easing), transform .4s var(--easing);
+  transform: scale(1); opacity: 1;
+}
+.flow-showcase__media img.is-swapping { opacity: 0; transform: scale(1.1); }
 .flow-showcase .flow { flex: 1 1 50%; max-width: none; margin: 0; }
 .flow-step { cursor: pointer; }
 .flow-step__body h3 { transition: color .2s var(--easing); }
@@ -266,7 +271,7 @@ a { color: inherit; }
 
 @media (max-width: 860px) {
   .flow-showcase { flex-direction: column; gap: 2rem; }
-  .flow-showcase__media { position: static; width: 100%; }
+  .flow-showcase__media { width: 100%; }
 }
 
 .flow { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; position: relative; }

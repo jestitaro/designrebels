@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
 
-  /* ---------- Timeline "Cómo funciona": se llena con el scroll y cambia
-     la imagen del panel de al lado según el paso activo ---------- */
+  /* ---------- Timeline "Cómo funciona": el usuario elige el paso a mano
+     y la imagen del panel de al lado cambia con una animación de zoom ---------- */
   const flowEl = document.getElementById('flow');
   const flowLine = document.getElementById('flow-line');
   const flowFill = document.getElementById('flow-line-progress');
@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const flowPreviewImg = document.getElementById('flow-preview-img');
 
   if (flowEl && flowLine && flowFill && flowIcons.length) {
-    const TRIGGER_RATIO = 0.72; // altura del viewport a la que "llega" el scroll
     let activeFlowIndex = -1;
     let flowImgTimeout = null;
 
@@ -50,39 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
       flowFill.style.top = top + 'px';
     }
 
+    function updateFlowFill(index) {
+      const flowRect = flowEl.getBoundingClientRect();
+      const firstRect = flowIcons[0].getBoundingClientRect();
+      const activeRect = flowIcons[index].getBoundingClientRect();
+      const top = (firstRect.top + firstRect.height / 2) - flowRect.top;
+      const activeCenter = (activeRect.top + activeRect.height / 2) - flowRect.top;
+      flowFill.style.height = Math.max(0, activeCenter - top) + 'px';
+      flowIcons.forEach((icon, i) => icon.classList.toggle('is-filled', i === index));
+    }
+
     function setActiveFlowStep(index) {
       if (index === activeFlowIndex || !flowPreviewImg) return;
       activeFlowIndex = index;
       const step = flowSteps[index];
       flowSteps.forEach(s => s.classList.remove('is-current'));
       step.classList.add('is-current');
-      flowPreviewImg.style.opacity = '0';
+      updateFlowFill(index);
+
+      flowPreviewImg.classList.add('is-swapping');
       clearTimeout(flowImgTimeout);
       flowImgTimeout = setTimeout(() => {
         flowPreviewImg.src = step.dataset.flowImg;
-        flowPreviewImg.style.opacity = '1';
-      }, 150);
-    }
-
-    let flowTicking = false;
-    function updateFlowProgress() {
-      flowTicking = false;
-      const lineRect = flowLine.getBoundingClientRect();
-      const triggerY = window.innerHeight * TRIGGER_RATIO;
-      const progressPx = Math.max(0, Math.min(lineRect.height, triggerY - lineRect.top));
-      flowFill.style.height = progressPx + 'px';
-      let lastFilled = 0;
-      flowIcons.forEach((icon, i) => {
-        const iconRect = icon.getBoundingClientRect();
-        const iconCenter = (iconRect.top + iconRect.height / 2) - lineRect.top;
-        const isFilled = iconCenter <= progressPx + 1;
-        icon.classList.toggle('is-filled', isFilled);
-        if (isFilled) lastFilled = i;
-      });
-      setActiveFlowStep(lastFilled);
-    }
-    function onFlowScroll() {
-      if (!flowTicking) { requestAnimationFrame(updateFlowProgress); flowTicking = true; }
+        requestAnimationFrame(() => flowPreviewImg.classList.remove('is-swapping'));
+      }, 220);
     }
 
     flowSteps.forEach((step, i) => {
@@ -90,9 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     layoutFlowLine();
-    updateFlowProgress();
-    window.addEventListener('scroll', onFlowScroll, { passive: true });
-    window.addEventListener('resize', () => { layoutFlowLine(); updateFlowProgress(); });
+    setActiveFlowStep(0);
+    window.addEventListener('resize', layoutFlowLine);
   }
 
   /* ---------- Reveal on scroll ---------- */
