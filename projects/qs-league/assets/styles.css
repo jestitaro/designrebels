@@ -87,6 +87,13 @@ body.modal-open {
   overflow: hidden;
 }
 
+/* El scroll real de la página vive en <html>, no en <body> — bloquear
+   solo el body no alcanza (wheel/touch sobre el backdrop del modal
+   seguía scrolleando el fondo). Hay que frenar ambos. */
+html.modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;

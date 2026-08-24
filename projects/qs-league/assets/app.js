@@ -296,7 +296,7 @@ function triviaBonusFor(name) {
   return ` Dato de yapa — ${person.name}: ${pickRandom(person.facts)}`;
 }
 
-const REX_CARNOTAURIO = 'Uno confirmado: el Carnota-urio. Y evolucionó hasta VP of Engineering.';
+const REX_CARNOTAURIO = 'Uno confirmado: el Carnota-uro. Y evolucionó hasta VP of Engineering.';
 
 /* Saca una fecha del mensaje (ISO, DD/MM/YYYY, o "13 de agosto [2026]"
    con nombre de mes — el año es opcional, se asume el actual). Palabras
@@ -539,7 +539,9 @@ const closeDnaChatButtons = $$('[data-close-dna-chat]');
 function toggleModal(modal, open, focusTarget) {
   modal.classList.toggle('is-open', open);
   modal.setAttribute('aria-hidden', String(!open));
-  document.body.classList.toggle('modal-open', open || $$('.modal.is-open').length > 0);
+  const anyOpen = open || $$('.modal.is-open').length > 0;
+  document.body.classList.toggle('modal-open', anyOpen);
+  document.documentElement.classList.toggle('modal-open', anyOpen);
   if (open) window.setTimeout(() => modal.querySelector('.modal-close')?.focus(), 150);
   else focusTarget?.focus();
 }
