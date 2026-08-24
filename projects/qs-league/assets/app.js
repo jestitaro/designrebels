@@ -287,17 +287,31 @@ function findTriviaPerson(text) {
 /* Cola barajada de todos los datos, sin repetir hasta agotarla — así
    "otro" y "otro" y "otro" no repiten antes de recorrer todo el pool. */
 let rexTriviaQueue = [];
+let rexLastFactPersonId = null;
 function nextTriviaFact() {
   if (!rexTriviaQueue.length) {
     const pool = [];
-    TRIVIA_PEOPLE.forEach(p => p.facts.forEach(fact => pool.push({ name: p.name, fact })));
+    TRIVIA_PEOPLE.forEach(p => p.facts.forEach(fact => pool.push({ id: p.id, name: p.name, fact })));
     for (let i = pool.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
     rexTriviaQueue = pool;
   }
-  return rexTriviaQueue.pop() || null;
+  let entry = rexTriviaQueue.pop() || null;
+  // Dos datos seguidos de la misma persona se sienten repetitivo — si toca,
+  // buscamos el próximo de otra persona más adelante en la cola y lo
+  // adelantamos, devolviendo el descartado al fondo para más tarde.
+  if (entry && entry.id === rexLastFactPersonId && rexTriviaQueue.length) {
+    const swapIndex = rexTriviaQueue.findIndex(candidate => candidate.id !== entry.id);
+    if (swapIndex !== -1) {
+      const alt = rexTriviaQueue.splice(swapIndex, 1)[0];
+      rexTriviaQueue.unshift(entry);
+      entry = alt;
+    }
+  }
+  if (entry) rexLastFactPersonId = entry.id;
+  return entry;
 }
 
 /* Último dato de trivia contado, para que "¿quién?" pueda revelar a
@@ -305,6 +319,17 @@ function nextTriviaFact() {
 let rexLastTriviaFact = null;
 
 const REX_CARNOTAURIO = 'Uno confirmado: el Carnota-urio. Y evolucionó hasta VP of Engineering.';
+
+/* Cuando el dato se cuenta como misterio (sin nombre), igual necesita un
+   sujeto — si no, la frase queda flotando sin contexto. Estas aperturas le
+   dan marco de "excavación/hallazgo" sin revelar a quién pertenece. */
+const REX_MYSTERY_INTROS = [
+  'Hay alguien acá de quien se dice esto:',
+  'Encontramos esto sin etiqueta en la excavación de hoy:',
+  'Registro recuperado, todavía sin identificar:',
+  'Un hallazgo fresco, sin nombre por ahora:',
+  'Esto salió de un fósil sin catalogar:'
+];
 
 /* Saca una fecha del mensaje (ISO, DD/MM/YYYY, o "13 de agosto [2026]"
    con nombre de mes — el año es opcional, se asume el actual). Palabras
@@ -371,9 +396,12 @@ function rexAnswer(rawText) {
     return REX_CARNOTAURIO;
   }
   const bareWhoQuestion = normText.replace(/[¿?¡!.,;:]/g, '').trim();
-  if (['quien', 'quien es', 'de quien', 'y quien'].includes(bareWhoQuestion) && rexLastTriviaFact && !rexLastTriviaFact.revealed) {
-    rexLastTriviaFact.revealed = true;
-    return `${rexLastTriviaFact.name}. ${rexLastTriviaFact.fact}`;
+  if (['quien', 'quien es', 'de quien', 'y quien'].includes(bareWhoQuestion) && rexLastTriviaFact) {
+    if (!rexLastTriviaFact.revealed) {
+      rexLastTriviaFact.revealed = true;
+      return `${rexLastTriviaFact.name}. ${rexLastTriviaFact.fact}`;
+    }
+    return `Ya te lo dije: es ${rexLastTriviaFact.name}. Pedime "otro dato" si querés más.`;
   }
   const triviaPerson = findTriviaPerson(text);
   const wantsTrivia = /\bdato\b|curiosidad|curioso|trivia|cont[aá]me|sab[eé]s de|conoc[eé]s de|conoc[eé]s algo/.test(normText);
@@ -389,7 +417,7 @@ function rexAnswer(rawText) {
     // A veces se cuenta como misterio y solo se revela el nombre si preguntan "¿quién?".
     const reveal = Math.random() < 0.45;
     rexLastTriviaFact = { name: entry.name, fact: entry.fact, revealed: reveal };
-    return reveal ? `${entry.name}: ${entry.fact}` : entry.fact;
+    return reveal ? `${entry.name}: ${entry.fact}` : `${pickRandom(REX_MYSTERY_INTROS)} ${entry.fact}`;
   }
 
   const history = computeMatchHistory();
