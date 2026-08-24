@@ -95,7 +95,7 @@
         <div class="simulator-toolbar">
           <div class="simulator-toolbar__brand">
             <span class="demo-logo" id="demo-logo-wrap">
-              <img id="demo-logo-preview" alt="Logo del cliente demo" hidden />
+              <img id="demo-logo-preview" alt="Logo del cliente demo" />
               <i class="fa-regular fa-store" id="demo-logo-icon" aria-hidden="true"></i>
             </span>
             <span id="demo-brand-name">NutriPlus</span>
@@ -210,9 +210,9 @@
                 </div>
                 <div class="sim-field">
                   <label for="sim-cliente">Cliente *</label>
-                  <div class="sim-input-icon">
-                    <input id="sim-cliente" type="text" placeholder="Buscar cliente" autocomplete="off" list="sim-clientes-list" />
+                  <div class="sim-input-icon sim-input-icon--left">
                     <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
+                    <input id="sim-cliente" type="text" placeholder="Buscar cliente" autocomplete="off" list="sim-clientes-list" />
                   </div>
                   <datalist id="sim-clientes-list">
                     <option value="Farmacia del Sud"></option>
@@ -245,6 +245,9 @@
               </div>
 
               <div class="sim-step" data-step="2" hidden>
+                <button class="btn btn-outline sim-btn-back" data-goto="1" type="button">
+                  <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
+                </button>
                 <h3>Productos</h3>
                 <div class="sim-brand-tabs" id="sim-brand-tabs"><!-- JS --></div>
                 <div class="sim-product-toolbar">
@@ -285,8 +288,7 @@
                   </table>
                 </div>
                 <p class="sim-empty-note" id="sim-product-empty" hidden>No se encontraron productos con esos criterios.</p>
-                <div class="sim-step-actions">
-                  <button class="btn btn-outline" data-goto="1" type="button">Atrás</button>
+                <div class="sim-step-actions sim-step-actions--single">
                   <button class="btn btn-gradient sim-btn-next" data-goto="3" type="button" disabled>
                     <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Guardar y continuar
                   </button>
@@ -294,6 +296,9 @@
               </div>
 
               <div class="sim-step" data-step="3" hidden>
+                <button class="btn btn-outline sim-btn-back" data-goto="2" type="button">
+                  <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
+                </button>
                 <h3>Resumen de pedido</h3>
                 <div class="sim-summary-card">
                   <div class="sim-summary-total">
@@ -323,8 +328,7 @@
                   <p class="sim-empty-note">No hay archivos adjuntos en este pedido.</p>
                 </div>
 
-                <div class="sim-step-actions">
-                  <button class="btn btn-outline" data-goto="2" type="button">Atrás</button>
+                <div class="sim-step-actions sim-step-actions--single">
                   <button class="btn btn-gradient" id="sim-btn-enviar" type="button">
                     <i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Enviar pedido
                   </button>

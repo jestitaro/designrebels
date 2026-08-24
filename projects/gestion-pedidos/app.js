@@ -283,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function showListView() {
     simApp.classList.add('is-list-view');
+    simApp.classList.remove('is-success-view');
     viewList.hidden = false;
     viewWizard.hidden = true;
     progressAside.hidden = true;
@@ -291,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function showWizardView() {
     simApp.classList.remove('is-list-view');
+    simApp.classList.remove('is-success-view');
     viewList.hidden = true;
     viewWizard.hidden = false;
     progressAside.hidden = false;
@@ -546,7 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
     wizardSteps.forEach(s => s.hidden = true);
     const successStep = viewWizard.querySelector('.sim-step--success');
     successStep.hidden = false;
-    progressItems.forEach(p => p.classList.add('is-done'));
+    progressAside.hidden = true;
+    simApp.classList.add('is-success-view');
     successStep.setAttribute('tabindex', '-1');
     successStep.focus({ preventScroll: true });
     successStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -702,8 +705,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const pzBrandName = document.getElementById('pz-brand-name');
   const pzLogoInput = document.getElementById('pz-logo-input');
   const demoBrandNameEl = document.getElementById('demo-brand-name');
+  const demoLogoWrap = document.getElementById('demo-logo-wrap');
   const demoLogoPreview = document.getElementById('demo-logo-preview');
-  const demoLogoIcon = document.getElementById('demo-logo-icon');
 
   let pendingLogo = null;
 
@@ -742,14 +745,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyBrandToUI() {
     demoBrandNameEl.textContent = brand.name;
+    demoLogoWrap.classList.toggle('has-logo', !!brand.logo);
     if (brand.logo) {
       demoLogoPreview.src = brand.logo;
-      demoLogoPreview.hidden = false;
-      demoLogoIcon.hidden = true;
     } else {
       demoLogoPreview.removeAttribute('src');
-      demoLogoPreview.hidden = true;
-      demoLogoIcon.hidden = false;
     }
   }
   applyBrandToUI();

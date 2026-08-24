@@ -337,6 +337,12 @@ a { color: inherit; }
 }
 .demo-logo img { width: 100%; height: 100%; border-radius: 6px; object-fit: cover; }
 .demo-logo i { color: #fff; font-size: .8rem; }
+/* Selectores por id (no por tag) porque el kit de Font Awesome puede
+   reemplazar el <i> por un <svg> en runtime, conservando el id. */
+#demo-logo-preview { display: none; }
+#demo-logo-icon { display: inline-block; color: #fff; font-size: .8rem; }
+.demo-logo.has-logo #demo-logo-preview { display: block; }
+.demo-logo.has-logo #demo-logo-icon { display: none; }
 .simulator-toolbar__actions { display: flex; gap: .5rem; }
 .tb-btn {
   background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: #fff;
@@ -354,7 +360,12 @@ a { color: inherit; }
   display: flex; flex-direction: column;
   background: #fff; border: 1px solid var(--border-color); border-top: none;
   border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow-hover);
-  min-height: 560px; overflow: hidden;
+  min-height: 560px;
+  /* Sin overflow:hidden a propósito: así el botón sticky del wizard
+     puede pegarse al fondo del viewport real, no de este contenedor.
+     El corner redondeado inferior-izquierdo lo resuelve el propio
+     sidebar (ver .sim-sidebar) porque es el único hijo con fondo
+     distinto que llega a ese borde. */
 }
 
 /* Barra superior de la app simulada: hamburguesa, breadcrumb, avatar */
@@ -379,6 +390,7 @@ a { color: inherit; }
 .sim-sidebar {
   background: #fbfaff; border-right: 1px solid var(--border-color);
   display: flex; flex-direction: column; align-items: center; gap: 1.5rem; padding: 1.5rem 0;
+  border-bottom-left-radius: var(--radius);
 }
 .sim-sidebar__logo {
   width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0; margin-bottom: .5rem;
@@ -389,7 +401,8 @@ a { color: inherit; }
 .sim-sidebar__item.is-active { color: var(--brand-1); background: #EFE9FE; }
 .sim-sidebar__item--logout { margin-top: auto; }
 
-.simulator-app.is-list-view .sim-body { grid-template-columns: 64px 1fr; }
+.simulator-app.is-list-view .sim-body,
+.simulator-app.is-success-view .sim-body { grid-template-columns: 64px 1fr; }
 .sim-main { padding: 1.75rem 2rem; min-width: 0; }
 .sim-view[hidden] { display: none; }
 .sim-breadcrumb { font-size: .8rem; color: var(--text-muted); margin-bottom: 1.25rem; }
@@ -489,6 +502,10 @@ a { color: inherit; }
 .sim-input-icon { position: relative; }
 .sim-input-icon input { width: 100%; padding-right: 2.2rem; }
 .sim-input-icon i { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: .85rem; }
+/* Variante con el ícono a la izquierda: evita que choque con la
+   flechita nativa que el navegador dibuja en inputs con datalist. */
+.sim-input-icon--left input { width: 100%; padding-right: .9rem; padding-left: 2.2rem; }
+.sim-input-icon--left i { left: .9rem; right: auto; }
 
 .sim-brand-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
 .sim-brand-tab {
@@ -506,6 +523,8 @@ a { color: inherit; }
 }
 
 .sim-table-wrap { border: 1px solid var(--border-color); border-radius: var(--radius-sm); overflow: hidden; overflow-x: auto; }
+.sim-table-wrap--products { max-height: 460px; overflow-y: auto; }
+.sim-table-wrap--products thead th { position: sticky; top: 0; z-index: 1; }
 .sim-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
 .sim-table th {
   text-align: left; background: var(--surface); color: var(--text-muted);
@@ -535,6 +554,10 @@ a { color: inherit; }
 .sim-stock--agotado { background: #FBD5D5; color: #9B1C1C; }
 
 .sim-step-actions { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+.sim-step-actions--single {
+  justify-content: flex-end; position: sticky; bottom: 0;
+  background: #fff; padding: 1rem 0 .25rem; border-top: 1px solid var(--border-color);
+}
 
 .sim-summary-card { background: var(--surface); border-radius: var(--radius-sm); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
 .sim-summary-total { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .5rem; flex-wrap: wrap; gap: .5rem; }
@@ -573,6 +596,7 @@ a { color: inherit; }
 .sim-step--success i { font-size: 2.6rem; color: #16a34a; }
 .sim-step--success h3 { margin: 0; }
 .sim-step--success p { color: var(--text-muted); max-width: 30rem; margin: 0 0 1rem; }
+.sim-step--success .btn { align-self: center; }
 
 .sim-progress { border-left: 1px solid var(--border-color); padding: 1.75rem 1.25rem; }
 .sim-progress__title { font-weight: 800; color: var(--dark-bg); margin-bottom: 1rem; font-size: .95rem; }
