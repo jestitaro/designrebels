@@ -284,52 +284,19 @@ function findTriviaPerson(text) {
   return best?.person || null;
 }
 
-/* Cola barajada de todos los datos, sin repetir hasta agotarla — así
-   "otro" y "otro" y "otro" no repiten antes de recorrer todo el pool. */
-let rexTriviaQueue = [];
-let rexLastFactPersonId = null;
-function nextTriviaFact() {
-  if (!rexTriviaQueue.length) {
-    const pool = [];
-    TRIVIA_PEOPLE.forEach(p => p.facts.forEach(fact => pool.push({ id: p.id, name: p.name, fact })));
-    for (let i = pool.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-    rexTriviaQueue = pool;
-  }
-  let entry = rexTriviaQueue.pop() || null;
-  // Dos datos seguidos de la misma persona se sienten repetitivo — si toca,
-  // buscamos el próximo de otra persona más adelante en la cola y lo
-  // adelantamos, devolviendo el descartado al fondo para más tarde.
-  if (entry && entry.id === rexLastFactPersonId && rexTriviaQueue.length) {
-    const swapIndex = rexTriviaQueue.findIndex(candidate => candidate.id !== entry.id);
-    if (swapIndex !== -1) {
-      const alt = rexTriviaQueue.splice(swapIndex, 1)[0];
-      rexTriviaQueue.unshift(entry);
-      entry = alt;
-    }
-  }
-  if (entry) rexLastFactPersonId = entry.id;
-  return entry;
+/* Dato de yapa: cuando ya tenemos el nombre de alguien por otro motivo
+   (moderador, ganador, jugador mencionado), a veces sumamos un dato
+   curioso suyo — nunca como pedido aparte que pueda quedar en el aire
+   esperando un "¿quién?" que no llega, sino ya con nombre y contexto
+   pegado a una respuesta que de por sí es autosuficiente. */
+function triviaBonusFor(name) {
+  if (!name) return '';
+  const person = findTriviaPerson(name);
+  if (!person || Math.random() >= 0.3) return '';
+  return ` Dato de yapa — ${person.name}: ${pickRandom(person.facts)}`;
 }
 
-/* Último dato de trivia contado, para que "¿quién?" pueda revelar a
-   quién pertenecía si se contó como misterio. */
-let rexLastTriviaFact = null;
-
 const REX_CARNOTAURIO = 'Uno confirmado: el Carnota-urio. Y evolucionó hasta VP of Engineering.';
-
-/* Cuando el dato se cuenta como misterio (sin nombre), igual necesita un
-   sujeto — si no, la frase queda flotando sin contexto. Estas aperturas le
-   dan marco de "excavación/hallazgo" sin revelar a quién pertenece. */
-const REX_MYSTERY_INTROS = [
-  'Hay alguien acá de quien se dice esto:',
-  'Encontramos esto sin etiqueta en la excavación de hoy:',
-  'Registro recuperado, todavía sin identificar:',
-  'Un hallazgo fresco, sin nombre por ahora:',
-  'Esto salió de un fósil sin catalogar:'
-];
 
 /* Saca una fecha del mensaje (ISO, DD/MM/YYYY, o "13 de agosto [2026]"
    con nombre de mes — el año es opcional, se asume el actual). Palabras
@@ -365,7 +332,7 @@ const REX_GREETINGS = [
   'Salí de un mosquito atrapado en ámbar solo para esto. Preguntame lo que quieras.',
   '"La vida se abre camino"... y las preguntas también. Dale, largá.'
 ];
-const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?", "¿quién ganó la última vez?" o "¿quién modera la próxima vez?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
+const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?", "¿quién ganó la última vez?" o "¿quién modera la próxima vez?". También tengo datos curiosos del equipo — preguntame por alguien en particular, o simplemente aparecen de yapa en mis otras respuestas. Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
   'Eso no está en mi ADN. Probá con otra pregunta, o quejate con la diseñadora de eSaurio.',
   'Ni idea, no está en mi ADN. Escribí "ayuda" si querés ver qué sí sé responder.',
@@ -395,29 +362,10 @@ function rexAnswer(rawText) {
   if (/dinosaurio|carnotauro/.test(normText)) {
     return REX_CARNOTAURIO;
   }
-  const bareWhoQuestion = normText.replace(/[¿?¡!.,;:]/g, '').trim();
-  if (['quien', 'quien es', 'de quien', 'y quien'].includes(bareWhoQuestion) && rexLastTriviaFact) {
-    if (!rexLastTriviaFact.revealed) {
-      rexLastTriviaFact.revealed = true;
-      return `${rexLastTriviaFact.name}. ${rexLastTriviaFact.fact}`;
-    }
-    return `Ya te lo dije: es ${rexLastTriviaFact.name}. Pedime "otro dato" si querés más.`;
-  }
   const triviaPerson = findTriviaPerson(text);
   const wantsTrivia = /\bdato\b|curiosidad|curioso|trivia|cont[aá]me|sab[eé]s de|conoc[eé]s de|conoc[eé]s algo/.test(normText);
-  const wantsAnother = /^otro\b/.test(normText) || bareWhoQuestion === 'otro';
-  if (triviaPerson && (wantsTrivia || wantsAnother || !mentioned)) {
-    const fact = pickRandom(triviaPerson.facts);
-    rexLastTriviaFact = { name: triviaPerson.name, fact, revealed: true };
-    return `${triviaPerson.name}: ${fact}`;
-  }
-  if (!triviaPerson && (wantsTrivia || wantsAnother)) {
-    const entry = nextTriviaFact();
-    if (!entry) return pickRandom(REX_FALLBACKS);
-    // A veces se cuenta como misterio y solo se revela el nombre si preguntan "¿quién?".
-    const reveal = Math.random() < 0.45;
-    rexLastTriviaFact = { name: entry.name, fact: entry.fact, revealed: reveal };
-    return reveal ? `${entry.name}: ${entry.fact}` : `${pickRandom(REX_MYSTERY_INTROS)} ${entry.fact}`;
+  if (triviaPerson && (wantsTrivia || !mentioned)) {
+    return `${triviaPerson.name}: ${pickRandom(triviaPerson.facts)}`;
   }
 
   const history = computeMatchHistory();
@@ -428,20 +376,20 @@ function rexAnswer(rawText) {
     ranked.sort((a, b) => b.wins - a.wins);
     const top = ranked[0];
     if (!top || top.wins === 0) return 'Todavía nadie se subió al podio en esta temporada. La era de los campeones no empezó.';
-    return `🏆 ${top.player.name} es quien más ganó: ${top.wins} ${vezVeces(top.wins)} en el podio. El resto, a extinguirse de la envidia.`;
+    return `🏆 ${top.player.name} es quien más ganó: ${top.wins} ${vezVeces(top.wins)} en el podio. El resto, a extinguirse de la envidia.${triviaBonusFor(top.player.name)}`;
   }
   if (/quien\s+perdi/.test(normText) && /mas/.test(normText)) {
     const ranked = [...history.entries()].map(([id, h]) => ({ player: totals.get(id), losses: h.losses.length })).filter(r => r.player);
     ranked.sort((a, b) => b.losses - a.losses);
     const top = ranked[0];
     if (!top || top.losses === 0) return 'Todavía nadie se quedó afuera del podio esta temporada. O ganaron todos, o nadie jugó — la extinción sigue esperando.';
-    return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.`;
+    return `💀 ${top.player.name} es quien más veces se quedó sin podio: ${top.losses} ${vezVeces(top.losses)}. Ojo que esto no cuenta meteoritos, solo Kahoots reales.${triviaBonusFor(top.player.name)}`;
   }
 
   if (/quien\s+modera|proximo\s+moderador|moderador(a)?\s+de\s+la\s+proxima|quien\s+es\s+el\s+moderador/.test(normText)) {
     const next = computeNextModerator();
     if (!next.moderator) return 'Todavía no tengo suficientes informes cargados como para saber quién modera la próxima. Volvé a preguntar cuando haya más data.';
-    return `🎙️ ${next.moderator} modera la próxima, con ${next.backup || 'alguien a confirmar'} como suplente. Consecuencia directa de haber salido último en el ${longDate(next.sessionDate)}.`;
+    return `🎙️ ${next.moderator} modera la próxima, con ${next.backup || 'alguien a confirmar'} como suplente. Consecuencia directa de haber salido último en el ${longDate(next.sessionDate)}.${triviaBonusFor(next.moderator)}`;
   }
 
   const asksAboutWin = /gan/.test(normText);
@@ -477,7 +425,7 @@ function rexAnswer(rawText) {
       const podium = effective.slice(0, 3);
       const medals = ['🥇', '🥈', '🥉'];
       const podiumText = podium.map((row, i) => `${medals[i]} ${row.playerName}`).join(', ');
-      return `El ${longDate(match.sessionDate)} el podio fue: ${podiumText}. Moderó ${match.moderatorName || '—'}.`;
+      return `El ${longDate(match.sessionDate)} el podio fue: ${podiumText}. Moderó ${match.moderatorName || '—'}.${triviaBonusFor(podium[0]?.playerName)}`;
     }
   }
 
@@ -515,7 +463,7 @@ function rexAnswer(rawText) {
 
     const winCount = entry.wins.length;
     const lossCount = entry.losses.length;
-    return `${name} tiene ${fmtPoints(total?.points ?? 0)}, ganó ${winCount} ${vezVeces(winCount)} y se quedó sin podio ${lossCount} ${vezVeces(lossCount)}. Preguntame algo más específico si querés fechas exactas.`;
+    return `${name} tiene ${fmtPoints(total?.points ?? 0)}, ganó ${winCount} ${vezVeces(winCount)} y se quedó sin podio ${lossCount} ${vezVeces(lossCount)}. Preguntame algo más específico si querés fechas exactas.${triviaBonusFor(name)}`;
   }
 
   return pickRandom(REX_FALLBACKS);
