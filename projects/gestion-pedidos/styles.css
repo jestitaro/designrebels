@@ -252,19 +252,19 @@ a { color: inherit; }
 /* =========================================================
    Cómo funciona
    ========================================================= */
-.flow-showcase { display: flex; gap: 3rem; align-items: center; }
+.flow-showcase { display: flex; gap: 2.5rem; align-items: center; }
 .flow-showcase__media {
-  flex: 1 1 46%; min-width: 0;
+  flex: 1 1 58%; min-width: 0;
   border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border-color);
   box-shadow: var(--shadow-hover); background: #fff;
 }
 .flow-showcase__media img {
   width: 100%; height: auto; display: block;
-  transition: opacity .25s var(--easing), transform .4s var(--easing);
-  transform: scale(1); opacity: 1;
+  transition: opacity .3s var(--easing);
+  opacity: 1;
 }
-.flow-showcase__media img.is-swapping { opacity: 0; transform: scale(1.1); }
-.flow-showcase .flow { flex: 1 1 50%; max-width: none; margin: 0; }
+.flow-showcase__media img.is-swapping { opacity: 0; }
+.flow-showcase .flow { flex: 1 1 38%; max-width: none; margin: 0; }
 .flow-step { cursor: pointer; }
 .flow-step__body h3 { transition: color .2s var(--easing); }
 .flow-step.is-current .flow-step__body h3 { color: var(--brand-1); }
@@ -306,6 +306,45 @@ a { color: inherit; }
 }
 .flow-step__body h3 { color: var(--dark-bg); font-size: 1.1rem; margin: 0 0 .4rem; }
 .flow-step__body p { color: var(--text-muted); font-size: .92rem; margin: 0; }
+
+/* =========================================================
+   Pensado para
+   ========================================================= */
+.pensado-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+}
+.pensado-header p { color: var(--text-muted); max-width: 520px; margin: .75rem 0 0; }
+.pensado-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: stretch; }
+.pensado-card {
+  background: #F5F3FC; border-radius: var(--radius); padding: 2rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: transform .3s var(--easing), box-shadow .3s var(--easing);
+}
+.pensado-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.pensado-card--active {
+  background: linear-gradient(160deg, var(--dark-bg), var(--brand-1));
+  color: #fff;
+}
+.pensado-icon {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; color: var(--brand-1); font-size: 1.2rem;
+  border: 1px solid var(--border-color);
+}
+.pensado-card--active .pensado-icon { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .3); }
+.pensado-card h3 { font-size: 1.15rem; margin: 0; color: var(--dark-bg); }
+.pensado-card--active h3 { color: #fff; }
+.pensado-card p { font-size: .92rem; color: var(--text-muted); margin: 0; flex: 1; }
+.pensado-card--active p { color: rgba(255, 255, 255, .85); }
+.pensado-link { font-size: .88rem; font-weight: 700; color: var(--brand-1); text-decoration: none; }
+.pensado-link:hover { text-decoration: underline; }
+.pensado-card--active .pensado-link { color: #fff; }
+
+@media (max-width: 860px) {
+  .pensado-grid { grid-template-columns: 1fr; }
+  .pensado-header { align-items: flex-start; }
+}
 
 /* =========================================================
    Demo section (franja CTA final)

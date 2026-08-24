@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ---------- Timeline "Cómo funciona": el usuario elige el paso a mano
-     y la imagen del panel de al lado cambia con una animación de zoom ---------- */
+     y la imagen del panel de al lado cambia con un fade ---------- */
   const flowEl = document.getElementById('flow');
   const flowLine = document.getElementById('flow-line');
   const flowFill = document.getElementById('flow-line-progress');
