@@ -32,9 +32,8 @@
     </div>
 
     <nav class="nav-desktop">
-      <a href="#simulador">Probar simulador</a>
-      <a href="#como-funciona">Cómo funciona</a>
       <a href="#beneficios">Beneficios</a>
+      <a href="#como-funciona">Cómo funciona</a>
       <a class="nav-back" href="https://www.quartzsales.com/" target="_blank" rel="noopener">
         <i class="fa-regular fa-arrow-up-right-from-square" aria-hidden="true"></i> Conocé QuartzSales
       </a>
@@ -49,9 +48,8 @@
   <aside class="drawer">
     <nav>
       <button aria-label="Cerrar menú" class="drawer-close">×</button>
-      <a href="#simulador">Probar simulador</a>
-      <a href="#como-funciona">Cómo funciona</a>
       <a href="#beneficios">Beneficios</a>
+      <a href="#como-funciona">Cómo funciona</a>
       <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
       <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
     </nav>
@@ -67,7 +65,7 @@
         <h1>Convertí la toma de pedidos en un proceso simple, controlado y siempre conectado con tu ERP.</h1>
         <p>Order Entry permite cargar y gestionar pedidos desde el punto de venta o desde tu equipo comercial. Funciona como una capa de autogestión conectada en tiempo real con tu ERP para precios, stock, cuentas corrientes y facturación.</p>
         <div class="hero-pedidos__ctas">
-          <button class="btn btn-gradient js-scroll-simulador" type="button">
+          <button class="btn btn-gradient js-scroll-como-funciona" type="button">
             <i class="fa-regular fa-play" aria-hidden="true"></i> Ver cómo funciona
           </button>
           <button class="btn btn-outline js-scroll-demo" type="button">Solicitar demo</button>
@@ -80,372 +78,6 @@
           poster="media/hero-mock-poster.png"
           autoplay muted loop playsinline preload="auto">
         </video>
-      </div>
-    </section>
-
-    <!-- SIMULADOR -->
-    <section class="simulator-section reveal" id="simulador">
-      <span aria-hidden="true" class="sentinel"></span>
-      <div class="container simulator-intro">
-        <h2 class="section-title">Probalo vos mismo</h2>
-        <p>Explorá el gestor de pedidos con datos ficticios: listado con filtros, alta de pedido, selección de productos y revisión final. Es una demostración del flujo y no guarda información en ningún servidor.</p>
-      </div>
-
-      <div class="simulator-shell">
-        <div class="simulator-toolbar">
-          <div class="simulator-toolbar__brand">
-            <span class="demo-logo" id="demo-logo-wrap">
-              <img id="demo-logo-preview" alt="Logo del cliente demo" />
-              <i class="fa-regular fa-store" id="demo-logo-icon" aria-hidden="true"></i>
-            </span>
-            <span id="demo-brand-name">NutriPlus</span>
-          </div>
-          <div class="simulator-toolbar__actions">
-            <button class="tb-btn" id="btn-restart-sim" type="button" title="Reiniciar simulador">
-              <i class="fa-regular fa-arrow-rotate-left" aria-hidden="true"></i> Reiniciar
-            </button>
-            <button class="tb-btn" id="btn-personalize" type="button" title="Personalizar demo">
-              <i class="fa-regular fa-gear" aria-hidden="true"></i> Personalizar demo
-            </button>
-          </div>
-        </div>
-
-        <div class="simulator-app" id="simulator-app">
-          <div class="sim-topbar">
-            <button class="sim-topbar__burger" type="button" aria-label="Menú"><i class="fa-regular fa-bars" aria-hidden="true"></i></button>
-            <div class="sim-topbar__crumb" id="sim-topbar-crumb"><span class="is-current">Pedidos</span></div>
-            <span class="sim-topbar__avatar" aria-hidden="true"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
-          </div>
-
-          <div class="sim-body">
-          <aside class="sim-sidebar">
-            <span class="sim-sidebar__logo" aria-hidden="true"><i class="fa-regular fa-layer-group" aria-hidden="true"></i></span>
-            <div class="sim-sidebar__item is-active" title="Inicio"><i class="fa-regular fa-house" aria-hidden="true"></i></div>
-            <div class="sim-sidebar__item" title="Gestión"><i class="fa-regular fa-sitemap" aria-hidden="true"></i></div>
-            <div class="sim-sidebar__item" title="Configuración"><i class="fa-regular fa-gear" aria-hidden="true"></i></div>
-            <div class="sim-sidebar__item sim-sidebar__item--logout" title="Salir"><i class="fa-regular fa-arrow-right-from-bracket" aria-hidden="true"></i></div>
-          </aside>
-
-          <div class="sim-main" id="sim-main">
-
-            <!-- VISTA: LISTADO DE PEDIDOS -->
-            <div class="sim-view" id="sim-view-list">
-              <div class="sim-list-toolbar">
-                <h3>Pedidos</h3>
-                <button class="btn btn-gradient" id="sim-btn-nuevo-pedido" type="button">
-                  <i class="fa-regular fa-plus" aria-hidden="true"></i> Nuevo Pedido
-                </button>
-                <div class="sim-input-icon sim-list-search-wrap">
-                  <input type="text" id="sim-list-search" placeholder="Buscar" autocomplete="off" />
-                  <button type="button" class="sim-search-btn" id="sim-search-btn" aria-label="Buscar">
-                    <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
-                  </button>
-                </div>
-                <div class="sim-list-toolbar__actions">
-                  <button class="btn btn-outline sim-btn-filtros" id="sim-btn-filtros" type="button" aria-expanded="false">
-                    <i class="fa-regular fa-sliders" aria-hidden="true"></i> Mostrar Filtros
-                    <i class="fa-regular fa-chevron-right" aria-hidden="true"></i>
-                  </button>
-                  <button class="btn btn-outline" id="sim-btn-export" type="button">
-                    <i class="fa-regular fa-file-arrow-down" aria-hidden="true"></i> Exportar a excel
-                  </button>
-                </div>
-              </div>
-
-              <div class="sim-filters-panel" id="sim-filters-panel" hidden>
-                <div class="sim-field">
-                  <label for="sim-filter-estado">Estado</label>
-                  <select id="sim-filter-estado">
-                    <option value="">Todos</option>
-                    <option>Borrador</option>
-                    <option>Pendiente</option>
-                    <option>Creado Parcialmente</option>
-                    <option>No Creado</option>
-                    <option>Creado Completo</option>
-                  </select>
-                </div>
-                <div class="sim-field">
-                  <label for="sim-filter-sucursal">Sucursal</label>
-                  <select id="sim-filter-sucursal">
-                    <option value="">Todas</option>
-                    <option>Casa Central</option>
-                    <option>Sucursal Santa Rosa</option>
-                    <option>Sucursal Norte</option>
-                  </select>
-                </div>
-                <button class="btn btn-ghost" id="sim-filter-clear" type="button">Limpiar filtros</button>
-              </div>
-
-              <div class="sim-table-wrap">
-                <table class="sim-table sim-table--pedidos">
-                  <thead>
-                    <tr>
-                      <th>Fecha</th>
-                      <th>Número de Pedido</th>
-                      <th>Cliente</th>
-                      <th>Sucursal</th>
-                      <th>Total</th>
-                      <th>Estado</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="sim-pedidos-tbody"><!-- JS --></tbody>
-                </table>
-              </div>
-              <p class="sim-empty-note" id="sim-list-empty" hidden>No se encontraron pedidos con esos criterios.</p>
-
-              <div class="sim-pagination" id="sim-pagination"><!-- JS --></div>
-            </div>
-
-            <!-- VISTA: ALTA DE PEDIDO (WIZARD) -->
-            <div class="sim-view" id="sim-view-wizard" hidden>
-              <div class="sim-step" data-step="1">
-                <button class="btn btn-outline sim-btn-back" data-goto="list" type="button">
-                  <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
-                </button>
-                <h3>Cliente</h3>
-                <div class="sim-field">
-                  <label for="sim-oc">Número de Orden de Compra</label>
-                  <input id="sim-oc" type="text" placeholder="Opcional" autocomplete="off" />
-                </div>
-                <div class="sim-field">
-                  <label for="sim-cliente">Cliente *</label>
-                  <div class="sim-input-icon sim-input-icon--left">
-                    <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
-                    <input id="sim-cliente" type="text" placeholder="Buscar cliente" autocomplete="off" list="sim-clientes-list" />
-                  </div>
-                  <datalist id="sim-clientes-list">
-                    <option value="Farmacia del Sud"></option>
-                    <option value="Drogueria Central"></option>
-                    <option value="Distribuidora Norte"></option>
-                    <option value="Farmacia San Martín"></option>
-                    <option value="Nutrihogar SRL"></option>
-                  </datalist>
-                </div>
-                <div class="sim-field">
-                  <label for="sim-sucursal">Sucursal *</label>
-                  <select id="sim-sucursal">
-                    <option value="">Seleccionar sucursal</option>
-                    <option>Casa Central</option>
-                    <option>Sucursal Santa Rosa</option>
-                    <option>Sucursal Norte</option>
-                  </select>
-                </div>
-                <div class="sim-field">
-                  <label for="sim-fecha-pedido">Fecha de Creación de Pedido *</label>
-                  <input id="sim-fecha-pedido" type="text" readonly />
-                </div>
-                <div class="sim-field">
-                  <label for="sim-observaciones">Observaciones</label>
-                  <textarea id="sim-observaciones" rows="3" placeholder="Opcional"></textarea>
-                </div>
-                <button class="btn btn-gradient sim-btn-next" data-goto="2" type="button" disabled>
-                  <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Guardar y Continuar
-                </button>
-              </div>
-
-              <div class="sim-step" data-step="2" hidden>
-                <button class="btn btn-outline sim-btn-back" data-goto="1" type="button">
-                  <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
-                </button>
-                <h3>Productos</h3>
-                <div class="sim-brand-tabs" id="sim-brand-tabs"><!-- JS --></div>
-                <div class="sim-product-toolbar">
-                  <div class="sim-input-icon sim-product-search-wrap">
-                    <input type="text" placeholder="Buscar producto o código..." class="sim-product-search" id="sim-product-search" autocomplete="off" />
-                    <i class="fa-regular fa-magnifying-glass" aria-hidden="true"></i>
-                  </div>
-                  <button class="btn btn-outline sim-btn-filtros" id="sim-btn-product-filtros" type="button" aria-expanded="false">
-                    <i class="fa-regular fa-sliders" aria-hidden="true"></i> Filtrar
-                  </button>
-                </div>
-                <div class="sim-filters-panel" id="sim-product-filters-panel" hidden>
-                  <div class="sim-field">
-                    <label for="sim-product-filter-stock">Stock</label>
-                    <select id="sim-product-filter-stock">
-                      <option value="">Todos</option>
-                      <option value="Disponible">Disponible</option>
-                      <option value="Agotado">Agotado</option>
-                    </select>
-                  </div>
-                  <button class="btn btn-ghost" id="sim-product-filter-clear" type="button">Limpiar filtro</button>
-                </div>
-                <div class="sim-table-wrap sim-table-wrap--products">
-                  <table class="sim-table sim-table--products" id="sim-product-table">
-                    <thead>
-                      <tr>
-                        <th>Producto</th>
-                        <th>UxB</th>
-                        <th>Pres.</th>
-                        <th>Stock</th>
-                        <th>PSL</th>
-                        <th>Desc. %</th>
-                        <th>P/Desc. %</th>
-                        <th>Cantidad</th>
-                      </tr>
-                    </thead>
-                    <tbody id="sim-product-tbody"><!-- JS --></tbody>
-                  </table>
-                </div>
-                <p class="sim-empty-note" id="sim-product-empty" hidden>No se encontraron productos con esos criterios.</p>
-                <div class="sim-step-actions sim-step-actions--single">
-                  <button class="btn btn-gradient sim-btn-next" data-goto="3" type="button" disabled>
-                    <i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Guardar y continuar
-                  </button>
-                </div>
-              </div>
-
-              <div class="sim-step" data-step="3" hidden>
-                <button class="btn btn-outline sim-btn-back" data-goto="2" type="button">
-                  <i class="fa-regular fa-arrow-left" aria-hidden="true"></i> Volver
-                </button>
-                <h3>Resumen de pedido</h3>
-                <div class="sim-summary-card">
-                  <div class="sim-summary-total">
-                    <span>Total</span>
-                    <span class="sim-summary-total-meta">
-                      <i class="fa-regular fa-tags" aria-hidden="true"></i> Unidades: <strong id="sim-summary-unidades">0</strong>
-                      <i class="fa-regular fa-boxes-stacked" aria-hidden="true"></i> Cajas: <strong id="sim-summary-cajas">0</strong>
-                      <strong id="sim-summary-total-value">$ 0</strong>
-                    </span>
-                  </div>
-                  <p class="sim-summary-note">Precios a modo de referencia valorizados a PSL. Se aplicarán las bonificaciones al momento de facturar el pedido. Por productos con stock limitado o sin stock, validar con comercial.</p>
-                  <div class="sim-summary-meta">
-                    <span><i class="fa-regular fa-file-lines" aria-hidden="true"></i> O.C. <strong id="sim-summary-oc">—</strong></span>
-                    <span><i class="fa-regular fa-location-dot" aria-hidden="true"></i> Sucursal <strong id="sim-summary-sucursal">—</strong></span>
-                  </div>
-                </div>
-
-                <div class="sim-tabs">
-                  <button class="sim-tab is-active" data-tab="productos" type="button">Productos</button>
-                  <button class="sim-tab" data-tab="archivos" type="button">Archivos adjuntos</button>
-                </div>
-
-                <div class="sim-tab-panel" data-panel="productos">
-                  <div id="sim-summary-items"><!-- JS --></div>
-                </div>
-                <div class="sim-tab-panel" data-panel="archivos" hidden>
-                  <p class="sim-empty-note">No hay archivos adjuntos en este pedido.</p>
-                </div>
-
-                <div class="sim-step-actions sim-step-actions--single">
-                  <button class="btn btn-gradient" id="sim-btn-enviar" type="button">
-                    <i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Enviar pedido
-                  </button>
-                </div>
-              </div>
-
-              <div class="sim-step sim-step--success" data-step="done" hidden>
-                <i class="fa-regular fa-circle-check" aria-hidden="true"></i>
-                <h3>Pedido enviado</h3>
-                <p>El pedido queda validado, con precios, cantidades y condiciones correctas. Si requiere aprobación, sigue ese circuito antes de transmitirse automáticamente al ERP.</p>
-                <button class="btn btn-gradient" id="btn-restart-sim-2" type="button">Volver a Pedidos</button>
-              </div>
-            </div>
-          </div>
-
-          <aside class="sim-progress" id="sim-progress" hidden>
-            <div class="sim-progress__title">Nuevo pedido</div>
-            <div class="sim-progress__item" data-progress="1">
-              <span class="sim-progress__num">1</span>
-              <div><strong>Información general</strong><small>Orden de compra, sucursal</small></div>
-            </div>
-            <div class="sim-progress__item" data-progress="2">
-              <span class="sim-progress__num">2</span>
-              <div><strong>Selección de productos</strong><small>Listado de productos</small></div>
-            </div>
-            <div class="sim-progress__item" data-progress="3">
-              <span class="sim-progress__num">3</span>
-              <div><strong>Revisión del pedido</strong><small>Productos agregados, total</small></div>
-            </div>
-
-            <div class="sim-progress__cart" id="sim-progress-cart" hidden>
-              <div class="sim-progress__cart-total">
-                <span><i class="fa-regular fa-circle-exclamation" aria-hidden="true"></i> Total</span>
-                <strong id="sim-cart-total-value">$ 0</strong>
-              </div>
-              <div class="sim-progress__cart-meta">
-                <span><i class="fa-regular fa-tag" aria-hidden="true"></i> Unidades: <strong id="sim-cart-unidades">0</strong></span>
-                <span><i class="fa-regular fa-box" aria-hidden="true"></i> Cajas: <strong id="sim-cart-cajas">0</strong></span>
-              </div>
-              <div id="sim-progress-cart-items"><!-- JS --></div>
-            </div>
-          </aside>
-          </div>
-        </div>
-      </div>
-
-      <!-- MODAL: TIPO DE PEDIDO -->
-      <div class="sim-modal-overlay" id="sim-modal-tipo" hidden>
-        <div class="sim-modal" role="dialog" aria-modal="true" aria-labelledby="sim-modal-tipo-title">
-          <button class="sim-modal-close" id="sim-modal-tipo-close" type="button" aria-label="Cerrar">×</button>
-          <h3 id="sim-modal-tipo-title">Selecciona tipo de pedido que querés crear</h3>
-          <div class="sim-modal-choice">
-            <button class="btn btn-gradient" id="sim-tipo-tradicional" type="button">Tradicional</button>
-            <button class="btn btn-gradient" id="sim-tipo-especial" type="button">Especial</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="tour-prompt-overlay" id="tour-prompt-overlay" hidden>
-        <div class="tour-prompt" id="tour-prompt" role="dialog" aria-modal="true" aria-labelledby="tour-prompt-title">
-          <i class="fa-regular fa-sparkles" aria-hidden="true"></i>
-          <p id="tour-prompt-title">¿Querés que te mostremos cómo funciona, paso a paso?</p>
-          <div class="tour-prompt__actions">
-            <button class="btn btn-gradient" id="tour-start" type="button">Mostrame</button>
-            <button class="btn btn-ghost" id="tour-skip" type="button">Prefiero probar solo</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMO FUNCIONA -->
-    <section class="container reveal" id="como-funciona">
-      <span aria-hidden="true" class="sentinel"></span>
-      <h2 class="section-title">Cómo funciona, de punta a punta</h2>
-      <div class="flow" id="flow">
-        <div class="flow-line" id="flow-line" aria-hidden="true"></div>
-        <div class="flow-line-progress" id="flow-line-progress" aria-hidden="true"></div>
-        <div class="flow-step">
-          <div class="flow-step__icon"><i class="fa-regular fa-cart-shopping" aria-hidden="true"></i></div>
-          <div class="flow-step__body">
-            <span class="flow-step__num">Paso 01</span>
-            <h3>Carga</h3>
-            <p>El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</p>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__icon"><i class="fa-regular fa-clipboard-check" aria-hidden="true"></i></div>
-          <div class="flow-step__body">
-            <span class="flow-step__num">Paso 02</span>
-            <h3>Validación</h3>
-            <p>El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</p>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__icon"><i class="fa-regular fa-user-check" aria-hidden="true"></i></div>
-          <div class="flow-step__body">
-            <span class="flow-step__num">Paso 03</span>
-            <h3>Aprobación</h3>
-            <p>Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</p>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></div>
-          <div class="flow-step__body">
-            <span class="flow-step__num">Paso 04</span>
-            <h3>Transmisión al ERP</h3>
-            <p>Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</p>
-          </div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-step__icon"><i class="fa-regular fa-bell" aria-hidden="true"></i></div>
-          <div class="flow-step__body">
-            <span class="flow-step__num">Paso 05</span>
-            <h3>Confirmación y notificación</h3>
-            <p>El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -492,25 +124,57 @@
       </div>
     </section>
 
-    <!-- PENSADO PARA -->
-    <section class="container reveal" id="pensado-para">
+    <!-- COMO FUNCIONA -->
+    <section class="container reveal" id="como-funciona">
       <span aria-hidden="true" class="sentinel"></span>
-      <h2 class="section-title">Pensado para</h2>
-      <div class="card-grid pensado-grid">
-        <div class="card">
-          <span class="benefit-icon"><i class="fa-regular fa-people-group" aria-hidden="true"></i></span>
-          <h3>Equipos comerciales</h3>
-          <p>Necesitan cargar pedidos para múltiples clientes con condiciones comerciales distintas.</p>
+      <h2 class="section-title">Cómo funciona, de punta a punta</h2>
+      <div class="flow-showcase">
+        <div class="flow-showcase__media">
+          <img id="flow-preview-img" src="media/flow/paso-1-carga.png" alt="Vista de la app en el paso Carga" />
         </div>
-        <div class="card">
-          <span class="benefit-icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
-          <h3>Clientes finales</h3>
-          <p>Quieren autogestionar sus propios pedidos, con un acceso simple y controlado.</p>
-        </div>
-        <div class="card">
-          <span class="benefit-icon"><i class="fa-regular fa-user-shield" aria-hidden="true"></i></span>
-          <h3>Administradores</h3>
-          <p>Necesitan definir cuotas, aprobar excepciones y mantener consistencia con el ERP.</p>
+        <div class="flow" id="flow">
+          <div class="flow-line" id="flow-line" aria-hidden="true"></div>
+          <div class="flow-line-progress" id="flow-line-progress" aria-hidden="true"></div>
+          <div class="flow-step" data-flow-img="media/flow/paso-1-carga.png">
+            <div class="flow-step__icon"><i class="fa-regular fa-cart-shopping" aria-hidden="true"></i></div>
+            <div class="flow-step__body">
+              <span class="flow-step__num">Paso 01</span>
+              <h3>Carga</h3>
+              <p>El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</p>
+            </div>
+          </div>
+          <div class="flow-step" data-flow-img="media/flow/paso-2-validacion.png">
+            <div class="flow-step__icon"><i class="fa-regular fa-clipboard-check" aria-hidden="true"></i></div>
+            <div class="flow-step__body">
+              <span class="flow-step__num">Paso 02</span>
+              <h3>Validación</h3>
+              <p>El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</p>
+            </div>
+          </div>
+          <div class="flow-step" data-flow-img="media/flow/paso-3-aprobacion.png">
+            <div class="flow-step__icon"><i class="fa-regular fa-user-check" aria-hidden="true"></i></div>
+            <div class="flow-step__body">
+              <span class="flow-step__num">Paso 03</span>
+              <h3>Aprobación</h3>
+              <p>Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</p>
+            </div>
+          </div>
+          <div class="flow-step" data-flow-img="media/flow/paso-4-transmision.png">
+            <div class="flow-step__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></div>
+            <div class="flow-step__body">
+              <span class="flow-step__num">Paso 04</span>
+              <h3>Transmisión al ERP</h3>
+              <p>Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</p>
+            </div>
+          </div>
+          <div class="flow-step" data-flow-img="media/flow/paso-5-confirmacion.png">
+            <div class="flow-step__icon"><i class="fa-regular fa-bell" aria-hidden="true"></i></div>
+            <div class="flow-step__body">
+              <span class="flow-step__num">Paso 05</span>
+              <h3>Confirmación y notificación</h3>
+              <p>El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -518,36 +182,9 @@
     <!-- CTA DEMO -->
     <section class="demo-section reveal" id="demo">
       <span aria-hidden="true" class="sentinel"></span>
-      <div class="demo-card">
-        <div class="demo-card__text">
-          <h2>Veamos Order Entry aplicado a tu operación</h2>
-          <p>Coordinamos una demo corta con un caso parecido al tuyo y tus propias reglas comerciales.</p>
-        </div>
-        <form class="demo-form" id="demo-form">
-          <div class="form-row">
-            <label for="demo-empresa">Empresa</label>
-            <input id="demo-empresa" name="empresa" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="demo-nombre">Nombre y apellido</label>
-            <input id="demo-nombre" name="nombre" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="demo-contacto">Email o teléfono</label>
-            <input id="demo-contacto" name="contacto" type="text" required />
-          </div>
-          <div class="form-row">
-            <label for="demo-horario">Horario de preferencia</label>
-            <select id="demo-horario" name="horario">
-              <option value="">Cuando les quede cómodo</option>
-              <option>Mañana (9 a 12 hs)</option>
-              <option>Mediodía (12 a 15 hs)</option>
-              <option>Tarde (15 a 18 hs)</option>
-            </select>
-          </div>
-          <button class="btn btn-gradient" type="submit">Solicitar demo</button>
-          <p class="form-note" id="demo-form-note" hidden>¡Gracias! Te vamos a contactar a la brevedad.</p>
-        </form>
+      <div class="demo-band">
+        <h2>Cada decisión marca la diferencia. Elegí dar el salto con nosotros.</h2>
+        <a class="btn btn-gradient" href="mailto:contacto@quartzsales.com">Solicitar demo</a>
       </div>
     </section>
   </main>
@@ -561,17 +198,17 @@
       </div>
 
       <div class="footer-panel">
-        <h3>PEDIDOS B2B</h3>
-        <a href="#simulador">Probar simulador</a>
-        <a href="#como-funciona">Cómo funciona</a>
-        <a href="#beneficios">Beneficios</a>
+        <h3>CONTENIDOS Y AYUDA</h3>
+        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">Blog</a>
+        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">FAQs</a>
+        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">Nuestras políticas</a>
       </div>
 
       <div class="footer-panel">
         <h3>CONTACTO Y REDES</h3>
         <a href="https://www.linkedin.com/company/quartz-sales" rel="noopener" target="_blank">LinkedIn</a>
         <a href="mailto:contacto@quartzsales.com">Escribinos</a>
-        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank">Sitio principal QuartzSales</a>
+        <a href="https://www.quartzsales.com/" rel="noopener" target="_blank"><i class="fa-solid fa-heart" aria-hidden="true"></i> Jugá al RoscoSales!</a>
       </div>
     </div>
     <div class="offices">
@@ -580,30 +217,6 @@
     </div>
     <div class="footer-bottom">© 2026 QuartzSales. Todos los derechos reservados.</div>
   </footer>
-
-  <div class="personalize-overlay" id="personalize-overlay" hidden>
-    <div class="personalize-panel" role="dialog" aria-modal="true" aria-labelledby="personalize-title">
-      <div class="personalize-panel__header">
-        <h3 id="personalize-title"><i class="fa-regular fa-gear" aria-hidden="true"></i> Personalizar demo</h3>
-        <button class="personalize-close" id="personalize-close" type="button" aria-label="Cerrar">×</button>
-      </div>
-      <p class="personalize-panel__hint">Cargá el nombre y el logo del prospecto para que el simulador se vea con su marca durante la reunión. No se guarda en ningún servidor: es solo para esta sesión del navegador.</p>
-
-      <div class="personalize-field">
-        <label>Nombre de marca</label>
-        <input type="text" id="pz-brand-name" placeholder="Ej: Farmacéutica del Sud" />
-      </div>
-      <div class="personalize-field">
-        <label>Logo</label>
-        <input type="file" id="pz-logo-input" accept="image/*" />
-      </div>
-
-      <div class="personalize-panel__actions">
-        <button class="btn btn-outline" id="pz-reset" type="button">Restaurar demo original</button>
-        <button class="btn btn-gradient" id="pz-apply" type="button">Aplicar</button>
-      </div>
-    </div>
-  </div>
 
   <script src="app.js"></script>
 </body>
