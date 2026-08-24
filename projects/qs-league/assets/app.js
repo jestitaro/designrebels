@@ -333,9 +333,12 @@ function resolveLastMatchDate() {
 }
 
 const REX_GREETINGS = [
-  '🦖 ¡RRRAWR! Digo, hola. Soy ADN, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
+  '🦖 ¡RRRAWR! Digo, hola. Soy Mr. DNA, el oráculo jurásico del ranking. Preguntame lo que quieras saber.',
+  'Ahora que el Sr. Hammond está tomando el té, tengo unos minutos libres. ¿En qué te ayudo?',
   'Ejem, perdón, me estaba haciendo un estudio de sangre. ¿En qué te ayudo con el ranking?',
-  '65 millones de años esperando esta conversación. Dale, preguntame.'
+  '65 millones de años esperando esta conversación. Dale, preguntame.',
+  'Salí de un mosquito atrapado en ámbar solo para esto. Preguntame lo que quieras.',
+  '"La vida se abre camino"... y las preguntas también. Dale, largá.'
 ];
 const REX_HELP = 'Puedo contarte, por ejemplo: "¿cuántas veces ganó Javi?", "¿qué fechas ganó May?", "¿cuántas veces perdió Nico?", "¿cuántos DinoCoins tiene Agustin?", "¿en qué puesto está Pablo?", "¿quién ganó más?", "¿quién perdió más?", "¿quién ganó la última vez?" o "¿quién modera la próxima vez?". También tengo datos curiosos del equipo — pedime "un dato random" o "otro", o preguntame por alguien en particular. Decime un nombre o una fecha y te tiro toda la data.';
 const REX_FALLBACKS = [
@@ -434,7 +437,14 @@ function rexAnswer(rawText) {
       if (asksAboutLoss && !asksAboutWin) {
         const losers = effective.filter(row => row.effectiveRank > 3);
         if (!losers.length) return `El ${longDate(match.sessionDate)} entraron todos al podio — día sin perdedores, cosa rara en esta era.`;
-        return `El ${longDate(match.sessionDate)} se quedaron sin podio: ${losers.map(row => row.playerName).join(', ')}. Moderó ${match.moderatorName || '—'}.`;
+        let response = `El ${longDate(match.sessionDate)} se quedaron sin podio: ${losers.map(row => row.playerName).join(', ')}. Moderó ${match.moderatorName || '—'}.`;
+        // Solo si esta fue la fecha más reciente tiene sentido hablar de
+        // "próximo moderador" — para una fecha vieja ya se sabe cómo siguió.
+        if (match.sessionDate === resolveLastMatchDate()) {
+          const next = computeNextModerator();
+          if (next.moderator) response += ` Aunque no llegó a la extinción, ${next.moderator} es el próximo moderador${next.backup ? ` y ${next.backup} su suplente` : ''}.`;
+        }
+        return response;
       }
       const podium = effective.slice(0, 3);
       const medals = ['🥇', '🥈', '🥉'];
