@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-23T09:33:03.634Z",
-  "group": "B",
+  "generatedAt": "2026-08-24T09:54:20.084Z",
+  "group": "C",
   "own": {
     "linkedin": {
       "followers": 2873,
       "employees": 8,
-      "lastSynced": "2026-08-23T09:32:34.676Z",
+      "lastSynced": "2026-08-24T09:53:57.897Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -363,7 +363,7 @@
       "gradEnd": "#d97706",
       "size": "11-50",
       "stats": {
-        "followers": "538",
+        "followers": "539",
         "posts_mes": 4,
         "engagement": "1.8",
         "funding": "Sin datos"
@@ -387,7 +387,7 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": "2026-08-21T09:42:44.023Z",
+      "lastSynced": "2026-08-24T09:54:12.865Z",
       "syncStatus": "ok",
       "syncError": null
     },
