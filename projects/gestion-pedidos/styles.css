@@ -256,7 +256,6 @@ a { color: inherit; }
   position: sticky; top: 74px; z-index: 10;
   background: #fff; width: 100%; max-width: none;
   margin: 0 0 2.5rem; padding: 1.1rem 0;
-  border-bottom: 1px solid var(--border-color);
 }
 .stack { display: block; }
 .stack-spacer { height: 34rem; }
@@ -293,7 +292,7 @@ a { color: inherit; }
 @media (max-width: 860px) {
   #como-funciona .section-title {
     position: static; width: auto; max-width: 46rem; text-align: center;
-    padding: 0; border-bottom: none; margin: 0 0 2.5rem;
+    padding: 0; margin: 0 0 2.5rem;
   }
   .stack-card {
     position: static; flex-direction: column; align-items: stretch;
