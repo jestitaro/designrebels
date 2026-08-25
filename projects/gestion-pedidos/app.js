@@ -25,6 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
 
+  /* ---------- Cómo funciona: soltar el título fijo apenas la última
+     card empieza a despegarse (evita que quede tapando/tapada) ---------- */
+  const titleSticky = document.querySelector('.section-title-sticky');
+  const stackCards = document.querySelectorAll('.stack .stack-card');
+  const lastStackCard = stackCards[stackCards.length - 1];
+  if (titleSticky && lastStackCard) {
+    function syncTitleRelease() {
+      const released = lastStackCard.getBoundingClientRect().top < 150;
+      titleSticky.classList.toggle('is-released', released);
+    }
+    window.addEventListener('scroll', syncTitleRelease, { passive: true });
+    syncTitleRelease();
+  }
+
   /* ---------- Reveal on scroll ---------- */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
