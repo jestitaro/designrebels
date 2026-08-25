@@ -208,13 +208,17 @@ a { color: inherit; }
 /* Beneficios: grilla bento con color por card */
 .beneficios-grid { grid-template-columns: repeat(6, 1fr); }
 .beneficios-grid .card {
-  border: none; overflow: hidden;
+  overflow: hidden;
   display: flex; flex-direction: column; align-items: center; text-align: center;
+  background: linear-gradient(160deg, #1B1454, #241A62);
+  border: 1px solid rgba(255, 255, 255, .07);
 }
+.beneficios-grid .card:hover { box-shadow: 0 16px 40px rgba(112, 37, 224, .28); }
 .beneficios-grid .card:nth-child(-n+3) { grid-column: span 2; }
 .beneficios-grid .card:nth-child(n+4) { grid-column: span 3; }
 
-.beneficios-grid .card-copy h3 { margin-top: 0; }
+.beneficios-grid .card-copy h3 { margin-top: 0; color: #fff; }
+.beneficios-grid .card-copy p { color: rgba(255, 255, 255, .72); }
 
 .beneficios-grid .benefit-icon {
   width: 120px; height: 110px; background: none; box-shadow: none; margin-bottom: 1.1rem;
@@ -229,12 +233,6 @@ a { color: inherit; }
   100% { transform: scale(1.08) rotate(-2deg); }
 }
 .beneficios-grid .card:hover .benefit-icon { animation: benefitIconWiggle .5s var(--easing) forwards; }
-
-.beneficios-grid .card:nth-child(1) { background: linear-gradient(135deg, #F3EEFE, #E6D9FB); }
-.beneficios-grid .card:nth-child(2) { background: linear-gradient(135deg, #E8F3FE, #C9E4FC); }
-.beneficios-grid .card:nth-child(3) { background: linear-gradient(135deg, #F4F5F7, #E3E6EA); }
-.beneficios-grid .card:nth-child(4) { background: linear-gradient(135deg, #D7EAFC, #AEDBFB); }
-.beneficios-grid .card:nth-child(5) { background: linear-gradient(135deg, #E9DEFC, #D2B8F7); }
 
 @media (max-width: 900px) {
   .beneficios-grid { grid-template-columns: 1fr 1fr; }
