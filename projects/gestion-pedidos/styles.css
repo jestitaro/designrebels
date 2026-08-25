@@ -184,77 +184,85 @@ a { color: inherit; }
 }
 
 /* =========================================================
-   Card grid (beneficios)
+   Beneficios: sección oscura de punta a punta
    ========================================================= */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; }
-.card {
-  border-radius: var(--radius); padding: 2rem 1.75rem; background: #fff;
-  border: 1px solid var(--border-color); box-shadow: var(--shadow);
-  transition: transform .3s var(--easing), box-shadow .3s var(--easing);
-}
-.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-.card i { font-size: 1.6rem; color: var(--brand-1); margin-bottom: .9rem; }
-.card h3 { font-size: 1.1rem; color: var(--dark-bg); margin: 0 0 .5rem; }
-.card p { font-size: .92rem; color: var(--text-muted); margin: 0; }
-
-/* Ícono en badge circular de color (beneficios) */
-.benefit-icon {
-  width: 48px; height: 48px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 1rem;
-}
-.benefit-icon i { font-size: 1.2rem; color: #fff; margin: 0; }
-
-/* Beneficios: sección oscura de punta a punta, cards como
-   superficie apenas más clara que el fondo */
 .beneficios-section {
   background: linear-gradient(160deg, #0F0A3D 0%, #1B1257 100%);
 }
 .beneficios-section .section-title { color: #fff; }
 
-.beneficios-grid { grid-template-columns: repeat(6, 1fr); }
-.beneficios-grid .card {
-  overflow: hidden; border-radius: 1.75rem;
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .09);
-  box-shadow: none;
+/* Beneficios: bento grid con card hero (mockup real) + 4 cards
+   de ícono grande, todas sobre superficie violeta oscura */
+.beneficios-bento {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  grid-template-rows: repeat(2, minmax(230px, auto));
+  gap: 1.25rem;
 }
-.beneficios-grid .card:hover {
-  background: rgba(255, 255, 255, .09);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, .35);
+.beneficio-card {
+  position: relative; overflow: hidden;
+  border-radius: 1.75rem; padding: 2.25rem;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(161, 114, 255, .28), transparent 42%),
+    linear-gradient(150deg, #1B1454 0%, #0D0938 75%);
+  border: 1px solid rgba(255, 255, 255, .08);
+  box-shadow: 0 14px 38px rgba(5, 3, 25, .35);
+  transition: transform .35s var(--easing), box-shadow .35s var(--easing);
 }
-.beneficios-grid .card:nth-child(-n+3) { grid-column: span 2; }
-.beneficios-grid .card:nth-child(n+4) { grid-column: span 3; }
+.beneficio-card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(5, 3, 25, .45); }
 
-.beneficios-grid .card-copy h3 { margin-top: 0; color: #fff; }
-.beneficios-grid .card-copy p { color: rgba(255, 255, 255, .72); }
-
-.beneficios-grid .benefit-icon {
-  width: 120px; height: 110px; background: none; box-shadow: none; margin-bottom: 1.1rem;
-  transition: transform .2s var(--easing);
+.beneficio-card__copy { position: relative; z-index: 1; max-width: 66%; }
+.beneficio-card h3 {
+  margin: 0 0 .85rem; color: #fff; font-size: 1.3rem; font-weight: 800;
+  line-height: 1.15; letter-spacing: -.01em;
 }
-.beneficios-grid .benefit-icon img { width: 100%; height: 100%; object-fit: contain; }
+.beneficio-card p { margin: 0; color: rgba(255, 255, 255, .68); font-size: .92rem; line-height: 1.55; }
 
-@keyframes benefitIconWiggle {
-  0% { transform: scale(1) rotate(0deg); }
-  30% { transform: scale(1.15) rotate(-10deg); }
-  60% { transform: scale(.96) rotate(8deg); }
-  100% { transform: scale(1.08) rotate(-2deg); }
+.beneficio-card__icon {
+  position: absolute; top: 1.6rem; right: 1.6rem; width: 92px; height: 92px;
+  object-fit: contain; filter: drop-shadow(0 14px 22px rgba(83, 43, 208, .4));
+  transition: transform .4s var(--easing);
 }
-.beneficios-grid .card:hover .benefit-icon { animation: benefitIconWiggle .5s var(--easing) forwards; }
+.beneficio-card:hover .beneficio-card__icon { transform: scale(1.08) rotate(-4deg); }
+
+.beneficio-card--hero {
+  grid-row: 1 / span 2;
+  display: flex; flex-direction: column;
+}
+.beneficio-card--hero .beneficio-card__copy { max-width: 100%; margin-bottom: 1.75rem; }
+.beneficio-card--hero h3 { font-size: 1.85rem; }
+.beneficio-card--hero p { max-width: 88%; }
+
+.beneficio-card__mock {
+  position: relative; margin-top: auto; border-radius: 1.1rem; overflow: hidden;
+  border: 1px solid rgba(161, 114, 255, .4); background: #fff;
+  box-shadow: 0 30px 60px rgba(5, 3, 25, .5);
+  transform: perspective(1000px) rotateX(3deg);
+  animation: beneficioMockFloat 6s ease-in-out infinite;
+}
+.beneficio-card__mock-chrome { display: flex; gap: .4rem; padding: .7rem .9rem; background: #EDEBF7; }
+.beneficio-card__mock-chrome span { width: 8px; height: 8px; border-radius: 50%; background: var(--border-color); }
+.beneficio-card__mock img { display: block; width: 100%; height: auto; }
+
+@keyframes beneficioMockFloat {
+  0%, 100% { transform: perspective(1000px) rotateX(3deg) translateY(0); }
+  50% { transform: perspective(1000px) rotateX(3deg) translateY(-8px); }
+}
 
 @media (max-width: 900px) {
-  .beneficios-grid { grid-template-columns: 1fr 1fr; }
-  .beneficios-grid .card:nth-child(-n+3),
-  .beneficios-grid .card:nth-child(n+4) { grid-column: span 1; }
-  .beneficios-grid .card:nth-child(5) { grid-column: span 2; }
+  .beneficios-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .beneficio-card--hero { grid-column: 1 / -1; grid-row: auto; }
 }
-@media (max-width: 560px) {
-  .beneficios-grid { grid-template-columns: 1fr; }
-  .beneficios-grid .card:nth-child(-n+3),
-  .beneficios-grid .card:nth-child(n+4),
-  .beneficios-grid .card:nth-child(5) { grid-column: span 1; }
+@media (max-width: 640px) {
+  .beneficios-bento { grid-template-columns: 1fr; }
+  .beneficio-card { padding: 1.75rem; }
+  .beneficio-card__copy { max-width: 72%; }
+  .beneficio-card--hero .beneficio-card__copy { max-width: 100%; }
+  .beneficio-card__icon { width: 76px; height: 76px; top: 1.25rem; right: 1.25rem; }
+  .beneficio-card__mock { animation: none; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .beneficio-card__mock { animation: none; }
 }
 
 /* =========================================================
