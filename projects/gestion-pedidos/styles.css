@@ -250,80 +250,61 @@ a { color: inherit; }
 }
 
 /* =========================================================
-   Cómo funciona (scrollytelling: cards en acordeón, con la
-   sección entera fijada mientras se recorren los 5 pasos)
+   Cómo funciona (cards que se apilan con el scroll)
    ========================================================= */
-.stack-scroll { position: relative; height: 3600px; }
-.stack-pin { position: sticky; top: 74px; }
+.section-title-sticky {
+  position: sticky; top: 74px; z-index: 10;
+}
+.section-title-sticky.is-released { position: static; }
 #como-funciona .section-title {
   background: #fff; width: 100%; max-width: none;
   margin: 0 0 2.5rem; padding: 1.1rem 0;
 }
-.stack { display: flex; flex-direction: column; }
+.stack { display: block; }
+.stack-spacer { height: 10rem; }
 .stack-card {
-  box-sizing: border-box;
+  position: sticky; top: 200px;
   display: flex; align-items: flex-start; gap: 3rem;
-  border: 1px solid var(--border-color);
-  border-radius: 1.75rem; box-shadow: 0 10px 24px rgba(17, 24, 39, .05);
-  padding: 3rem; margin-bottom: 1rem;
-  cursor: pointer;
-  transition: padding .4s var(--easing), margin-bottom .4s var(--easing);
+  background: #fff; border: 1px solid var(--border-color);
+  border-radius: 1.75rem; box-shadow: 0 10px 24px rgba(17, 24, 39, .03);
+  padding: 3rem; margin-bottom: 2.5rem;
 }
-.stack-card.is-collapsed { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-.stack-card.is-upcoming { display: none; }
-
-.stack-card:nth-child(1) { background: #E2D3FA; }
-.stack-card:nth-child(2) { background: #D5C1F8; }
-.stack-card:nth-child(3) { background: #C7AEF5; }
-.stack-card:nth-child(4) { background: #B99BF2; }
-.stack-card:nth-child(5) { background: #AB86EE; }
+.stack-card:nth-child(1) { z-index: 1; }
+.stack-card:nth-child(2) { z-index: 2; }
+.stack-card:nth-child(3) { z-index: 3; }
+.stack-card:nth-child(4) { z-index: 4; }
+.stack-card:nth-child(5) { z-index: 5; }
 
 .stack-card__text { flex: 1 1 40%; min-width: 0; }
 .stack-card__eyebrow {
   display: block; font-size: .8rem; font-weight: 800; letter-spacing: .08em;
   text-transform: uppercase; color: var(--brand-1); margin-bottom: .85rem;
 }
-.stack-card__text h3 {
-  font-size: 1.7rem; color: var(--dark-bg); margin: 0 0 1rem;
-  max-height: 4rem; opacity: 1; overflow: hidden;
-  transition: max-height .4s var(--easing), opacity .3s var(--easing), margin .4s var(--easing);
-}
-.stack-card__text p {
-  color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin: 0;
-  max-height: 8rem; opacity: 1; overflow: hidden;
-  transition: max-height .4s var(--easing), opacity .3s var(--easing);
-}
-.stack-card.is-collapsed .stack-card__text h3,
-.stack-card.is-collapsed .stack-card__text p {
-  max-height: 0; opacity: 0; margin: 0;
-}
+.stack-card__text h3 { font-size: 1.7rem; color: var(--dark-bg); margin: 0 0 1rem; }
+.stack-card__text p { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin: 0; }
 
 .stack-card__visual {
-  flex: 1 1 54%; min-width: 0; max-width: 54%; border-radius: 1.25rem;
+  flex: 1 1 54%; min-width: 0; border-radius: 1.25rem; overflow: hidden;
   border: 1px solid var(--border-color); background: #F7F6FC;
-  display: flex; flex-direction: column; overflow: hidden;
-  max-height: 30rem; opacity: 1;
-  transition: max-height .4s var(--easing), opacity .3s var(--easing);
+  display: flex; flex-direction: column;
 }
 .stack-card__chrome { display: flex; gap: .4rem; padding: .85rem 1rem; background: #EDEBF7; }
 .stack-card__chrome span { width: 9px; height: 9px; border-radius: 50%; background: var(--border-color); }
-.stack-card__visual img { display: block; width: 100%; height: 380px; object-fit: cover; object-position: top; flex-shrink: 0; }
-.stack-card.is-collapsed .stack-card__visual { max-height: 0; opacity: 0; border-width: 0; }
+.stack-card__visual img { display: block; width: 100%; height: 380px; object-fit: cover; object-position: top; }
 
 @media (max-width: 860px) {
-  .stack-scroll { height: auto; }
-  .stack-pin { position: static; }
+  .section-title-sticky { position: static; }
   #como-funciona .section-title {
     width: auto; max-width: 46rem; text-align: center;
     padding: 0; margin: 0 auto 2.5rem;
   }
   .stack-card {
-    flex-direction: column; align-items: stretch; cursor: default;
+    position: static; flex-direction: column; align-items: stretch;
     padding: 1.75rem; margin-bottom: 1.5rem; gap: 1.5rem;
-    max-height: none !important; opacity: 1 !important; border-width: 1px !important;
   }
   .stack-card__text h3 { font-size: 1.35rem; }
   .stack-card__visual img { height: 260px; }
+  .stack-spacer { display: none; }
 }
 
 /* =========================================================

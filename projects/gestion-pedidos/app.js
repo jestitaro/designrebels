@@ -25,51 +25,18 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
 
-  /* ---------- Cómo funciona: scrollytelling con cards en acordeón.
-     La sección entera queda fija mientras se recorren los 5 pasos;
-     cada paso se abre en su turno y los anteriores quedan como
-     pestañas angostas que se pueden volver a abrir con un click. ---------- */
-  const stackScroll = document.getElementById('stack-scroll');
-  const stackCards = stackScroll ? Array.from(stackScroll.querySelectorAll('.stack-card')) : [];
-  if (stackScroll && stackCards.length) {
-    const TOTAL = stackCards.length;
-    let activeStep = -1;
-
-    function setActiveStep(index) {
-      if (index === activeStep) return;
-      activeStep = index;
-      stackCards.forEach((card, i) => {
-        card.classList.toggle('is-active', i === index);
-        card.classList.toggle('is-collapsed', i < index);
-        card.classList.toggle('is-upcoming', i > index);
-      });
+  /* ---------- Cómo funciona: soltar el título fijo apenas la última
+     card empieza a despegarse (evita que quede tapando/tapada) ---------- */
+  const titleSticky = document.querySelector('.section-title-sticky');
+  const stackCards = document.querySelectorAll('.stack .stack-card');
+  const lastStackCard = stackCards[stackCards.length - 1];
+  if (titleSticky && lastStackCard) {
+    function syncTitleRelease() {
+      const released = lastStackCard.getBoundingClientRect().top < 198;
+      titleSticky.classList.toggle('is-released', released);
     }
-
-    function getProgress() {
-      const rect = stackScroll.getBoundingClientRect();
-      const scrollable = rect.height - window.innerHeight;
-      if (scrollable <= 0) return 0;
-      return Math.min(1, Math.max(0, -rect.top / scrollable));
-    }
-
-    function onStackScroll() {
-      const idx = Math.min(TOTAL - 1, Math.max(0, Math.floor(getProgress() * TOTAL)));
-      setActiveStep(idx);
-    }
-
-    stackCards.forEach((card, i) => {
-      card.addEventListener('click', () => {
-        const rect = stackScroll.getBoundingClientRect();
-        const scrollable = rect.height - window.innerHeight;
-        if (scrollable <= 0) return;
-        const targetProgress = (i + 0.5) / TOTAL;
-        window.scrollTo({ top: window.scrollY + rect.top + targetProgress * scrollable, behavior: 'smooth' });
-      });
-    });
-
-    window.addEventListener('scroll', onStackScroll, { passive: true });
-    window.addEventListener('resize', onStackScroll);
-    onStackScroll();
+    window.addEventListener('scroll', syncTitleRelease, { passive: true });
+    syncTitleRelease();
   }
 
   /* ---------- Reveal on scroll ---------- */
