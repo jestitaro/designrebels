@@ -252,9 +252,16 @@ a { color: inherit; }
 /* =========================================================
    Cómo funciona (cards que se apilan con el scroll)
    ========================================================= */
-.stack { display: block; padding-bottom: 4rem; }
+#como-funciona .section-title {
+  position: sticky; top: 74px; z-index: 10;
+  background: #fff; width: 100%; max-width: none;
+  margin: 0 0 2.5rem; padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.stack { display: block; }
+.stack-spacer { height: 34rem; }
 .stack-card {
-  position: sticky; top: 96px;
+  position: sticky; top: 152px;
   display: flex; align-items: flex-start; gap: 3rem;
   background: #fff; border: 1px solid var(--border-color);
   border-radius: 1.75rem; box-shadow: var(--shadow-hover);
@@ -284,13 +291,17 @@ a { color: inherit; }
 .stack-card__visual img { display: block; width: 100%; height: 380px; object-fit: cover; object-position: top; }
 
 @media (max-width: 860px) {
+  #como-funciona .section-title {
+    position: static; width: auto; max-width: 46rem; text-align: center;
+    padding: 0; border-bottom: none; margin: 0 0 2.5rem;
+  }
   .stack-card {
     position: static; flex-direction: column; align-items: stretch;
     padding: 1.75rem; margin-bottom: 1.5rem; gap: 1.5rem;
   }
   .stack-card__text h3 { font-size: 1.35rem; }
   .stack-card__visual img { height: 260px; }
-  .stack { padding-bottom: 0; }
+  .stack-spacer { display: none; }
 }
 
 /* =========================================================
@@ -300,15 +311,16 @@ a { color: inherit; }
   display: flex; justify-content: space-between; align-items: flex-end;
   gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem;
 }
+.pensado-header .section-title { text-align: left; max-width: none; margin: 0; }
 .pensado-header p { color: var(--text-muted); max-width: 520px; margin: .75rem 0 0; }
 .pensado-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: stretch; }
 .pensado-card {
   background: #F5F3FC; border-radius: var(--radius); padding: 2rem;
   display: flex; flex-direction: column; gap: 1rem;
-  transition: transform .3s var(--easing), box-shadow .3s var(--easing);
+  transition: transform .3s var(--easing), box-shadow .3s var(--easing), background .3s var(--easing), color .3s var(--easing);
 }
-.pensado-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
-.pensado-card--active {
+.pensado-card:hover {
+  transform: translateY(-4px); box-shadow: var(--shadow-hover);
   background: linear-gradient(160deg, var(--dark-bg), var(--brand-1));
   color: #fff;
 }
@@ -317,12 +329,13 @@ a { color: inherit; }
   display: flex; align-items: center; justify-content: center;
   background: #fff; color: var(--brand-1); font-size: 1.2rem;
   border: 1px solid var(--border-color);
+  transition: background .3s var(--easing), color .3s var(--easing), border-color .3s var(--easing);
 }
-.pensado-card--active .pensado-icon { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .3); }
-.pensado-card h3 { font-size: 1.15rem; margin: 0; color: var(--dark-bg); }
-.pensado-card--active h3 { color: #fff; }
-.pensado-card p { font-size: .92rem; color: var(--text-muted); margin: 0; flex: 1; }
-.pensado-card--active p { color: rgba(255, 255, 255, .85); }
+.pensado-card:hover .pensado-icon { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .3); }
+.pensado-card h3 { font-size: 1.15rem; margin: 0; color: var(--dark-bg); transition: color .3s var(--easing); }
+.pensado-card:hover h3 { color: #fff; }
+.pensado-card p { font-size: .92rem; color: var(--text-muted); margin: 0; flex: 1; transition: color .3s var(--easing); }
+.pensado-card:hover p { color: rgba(255, 255, 255, .85); }
 
 @media (max-width: 860px) {
   .pensado-grid { grid-template-columns: 1fr; }
