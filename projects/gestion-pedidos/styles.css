@@ -205,15 +205,25 @@ a { color: inherit; }
 }
 .benefit-icon i { font-size: 1.2rem; color: #fff; margin: 0; }
 
-/* Beneficios: grilla bento con color por card */
+/* Beneficios: sección oscura de punta a punta, cards como
+   superficie apenas más clara que el fondo */
+.beneficios-section {
+  background: linear-gradient(160deg, #0F0A3D 0%, #1B1257 100%);
+}
+.beneficios-section .section-title { color: #fff; }
+
 .beneficios-grid { grid-template-columns: repeat(6, 1fr); }
 .beneficios-grid .card {
-  overflow: hidden;
+  overflow: hidden; border-radius: 1.75rem;
   display: flex; flex-direction: column; align-items: center; text-align: center;
-  background: linear-gradient(160deg, #1B1454, #241A62);
-  border: 1px solid rgba(255, 255, 255, .07);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .09);
+  box-shadow: none;
 }
-.beneficios-grid .card:hover { box-shadow: 0 16px 40px rgba(112, 37, 224, .28); }
+.beneficios-grid .card:hover {
+  background: rgba(255, 255, 255, .09);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .35);
+}
 .beneficios-grid .card:nth-child(-n+3) { grid-column: span 2; }
 .beneficios-grid .card:nth-child(n+4) { grid-column: span 3; }
 
