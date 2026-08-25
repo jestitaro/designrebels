@@ -228,6 +228,7 @@ a { color: inherit; }
 .beneficio-card--hero {
   grid-row: 1 / span 2;
   display: flex; flex-direction: column;
+  overflow: visible;
 }
 .beneficio-card--hero .beneficio-card__copy { max-width: 100%; margin-bottom: 1.75rem; }
 .beneficio-card--hero h3 { font-size: 1.85rem; }
@@ -249,9 +250,37 @@ a { color: inherit; }
   50% { transform: perspective(1000px) rotateX(3deg) translateY(-8px); }
 }
 
+/* Chips de UI real (filtros, exportar, editar, estado) que se
+   escapan del marco del mockup, cada uno con su propio flote */
+.mock-chip {
+  position: absolute; z-index: 2;
+  display: flex; align-items: center; gap: .5rem;
+  padding: .55rem .95rem; border-radius: 999px;
+  background: #fff; color: #1B1257;
+  font-size: .78rem; font-weight: 700; letter-spacing: -.01em;
+  box-shadow: 0 16px 30px rgba(5, 3, 25, .38), 0 0 0 1px rgba(161, 114, 255, .18);
+  white-space: nowrap; pointer-events: none;
+  animation: chipFloat 5s ease-in-out infinite;
+}
+.mock-chip i { font-size: .85rem; color: var(--brand-1); }
+
+.mock-chip--filters { top: -1.1rem; left: 1.6rem; animation-delay: .2s; }
+.mock-chip--status { top: 1.4rem; right: -1.5rem; background: #E9FBF1; animation-delay: 1.1s; }
+.mock-chip--status i { color: #1FAE5C; }
+.mock-chip--export { bottom: 3rem; right: -2rem; animation-delay: .6s; }
+.mock-chip--export i { color: #1D9F4E; }
+.mock-chip--edit { bottom: -1.2rem; left: 2.6rem; animation-delay: 1.6s; }
+
+@keyframes chipFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-9px) rotate(-1.5deg); }
+}
+
 @media (max-width: 900px) {
   .beneficios-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .beneficio-card--hero { grid-column: 1 / -1; grid-row: auto; }
+  .mock-chip--status { right: -.8rem; }
+  .mock-chip--export { right: -1rem; }
 }
 @media (max-width: 640px) {
   .beneficios-bento { grid-template-columns: 1fr; }
@@ -260,9 +289,14 @@ a { color: inherit; }
   .beneficio-card--hero .beneficio-card__copy { max-width: 100%; }
   .beneficio-card__icon { width: 76px; height: 76px; top: 1.25rem; right: 1.25rem; }
   .beneficio-card__mock { animation: none; transform: none; }
+  .mock-chip { padding: .45rem .75rem; font-size: .68rem; gap: .35rem; }
+  .mock-chip--filters { top: -.7rem; left: .9rem; }
+  .mock-chip--status { top: .7rem; right: -.7rem; }
+  .mock-chip--export { bottom: 1.9rem; right: -.8rem; }
+  .mock-chip--edit { bottom: -.7rem; left: 1.1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .beneficio-card__mock { animation: none; }
+  .beneficio-card__mock, .mock-chip { animation: none; }
 }
 
 /* =========================================================
