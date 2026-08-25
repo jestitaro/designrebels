@@ -25,65 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
 
-  /* ---------- Timeline "Cómo funciona": el usuario elige el paso a mano
-     y la imagen del panel de al lado cambia con un fade ---------- */
-  const flowEl = document.getElementById('flow');
-  const flowLine = document.getElementById('flow-line');
-  const flowFill = document.getElementById('flow-line-progress');
-  const flowSteps = flowEl ? Array.from(flowEl.querySelectorAll('.flow-step')) : [];
-  const flowIcons = flowSteps.map(step => step.querySelector('.flow-step__icon'));
-  const flowPreviewImg = document.getElementById('flow-preview-img');
-
-  if (flowEl && flowLine && flowFill && flowIcons.length) {
-    let activeFlowIndex = -1;
-    let flowImgTimeout = null;
-
-    function layoutFlowLine() {
-      const flowRect = flowEl.getBoundingClientRect();
-      const firstRect = flowIcons[0].getBoundingClientRect();
-      const lastRect = flowIcons[flowIcons.length - 1].getBoundingClientRect();
-      const top = (firstRect.top + firstRect.height / 2) - flowRect.top;
-      const bottom = (lastRect.top + lastRect.height / 2) - flowRect.top;
-      flowLine.style.top = top + 'px';
-      flowLine.style.height = Math.max(0, bottom - top) + 'px';
-      flowFill.style.top = top + 'px';
-    }
-
-    function updateFlowFill(index) {
-      const flowRect = flowEl.getBoundingClientRect();
-      const firstRect = flowIcons[0].getBoundingClientRect();
-      const activeRect = flowIcons[index].getBoundingClientRect();
-      const top = (firstRect.top + firstRect.height / 2) - flowRect.top;
-      const activeCenter = (activeRect.top + activeRect.height / 2) - flowRect.top;
-      flowFill.style.height = Math.max(0, activeCenter - top) + 'px';
-      flowIcons.forEach((icon, i) => icon.classList.toggle('is-filled', i === index));
-    }
-
-    function setActiveFlowStep(index) {
-      if (index === activeFlowIndex || !flowPreviewImg) return;
-      activeFlowIndex = index;
-      const step = flowSteps[index];
-      flowSteps.forEach(s => s.classList.remove('is-current'));
-      step.classList.add('is-current');
-      updateFlowFill(index);
-
-      flowPreviewImg.classList.add('is-swapping');
-      clearTimeout(flowImgTimeout);
-      flowImgTimeout = setTimeout(() => {
-        flowPreviewImg.src = step.dataset.flowImg;
-        requestAnimationFrame(() => flowPreviewImg.classList.remove('is-swapping'));
-      }, 220);
-    }
-
-    flowSteps.forEach((step, i) => {
-      step.addEventListener('click', () => setActiveFlowStep(i));
-    });
-
-    layoutFlowLine();
-    setActiveFlowStep(0);
-    window.addEventListener('resize', layoutFlowLine);
-  }
-
   /* ---------- Reveal on scroll ---------- */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
