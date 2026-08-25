@@ -328,37 +328,48 @@ a { color: inherit; }
 }
 
 /* =========================================================
-   Demo section (franja CTA final)
+   CTA final (franja "Cada decisión marca la diferencia")
    ========================================================= */
-.demo-section { padding: 4rem 1.5rem; }
-.demo-band {
-  max-width: 1180px; margin: 0 auto; padding: 3.5rem 2rem; border-radius: var(--radius);
-  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
-  display: flex; flex-direction: column; align-items: center; gap: 1.75rem; text-align: center;
+.cta {
+  background: linear-gradient(135deg, var(--brand-2), var(--brand-1));
+  color: #fff;
+  text-align: center;
+  padding: 5rem 1.5rem;
 }
-.demo-band h2 { color: #fff; font-size: clamp(1.3rem, 2.2vw, 1.8rem); margin: 0; max-width: 40rem; }
-.demo-band .btn-gradient { background: #fff; color: var(--brand-1); }
-.demo-band .btn-gradient:hover { background: #fff; box-shadow: 0 12px 28px rgba(17,24,39,.22); }
+.cta h3 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; }
+.cta .btn-gradient { background: #fff; color: var(--brand-1); }
+.cta .btn-gradient:hover { background: #fff; box-shadow: 0 12px 28px rgba(17,24,39,.22); }
 
 /* =========================================================
    Footer
    ========================================================= */
-.site-footer { background: var(--dark-bg); color: #fff; padding: 4rem 1.5rem 1.5rem; }
-.footer-panels { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2.5rem; }
-.footer-brand { display: flex; flex-direction: column; gap: .5rem; }
-.footer-brand .logo { color: #fff; }
-.footer-tagline { font-size: .85rem; color: #a3b0c3; margin: 0; max-width: 26rem; }
-.footer-panel h3 { font-size: .78rem; letter-spacing: .05em; color: rgba(255,255,255,.55); margin: 0 0 1rem; }
-.footer-panel a { display: block; color: rgba(255,255,255,.85); text-decoration: none; font-size: .92rem; margin-bottom: .6rem; }
+.site-footer {
+  background: #0e1b28;
+  background: linear-gradient(135deg, #10223b 0%, #051325 100%);
+  color: #cbd5e1;
+  padding: 4rem 2rem 2rem;
+}
+.footer-panels {
+  max-width: 1200px; margin: auto;
+  display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
+}
+.footer-panel { min-width: 200px; text-align: center; }
+.footer-iso { width: 68px; margin: 0 auto 0.25rem; }
+.footer-brand .logo { font-size: 1.35rem; font-weight: 800; color: #fff; margin-bottom: 1.35rem; }
+.footer-panel a {
+  display: block; margin-bottom: .75rem; color: #cbd5e1; font-weight: 600;
+  text-decoration: none; transition: color .3s var(--easing);
+}
 .footer-panel a:hover { color: var(--brand-2); }
 
 .offices { text-align: center; margin-top: 3rem; font-size: .85rem; color: #a3b0c3; }
 
 .footer-bottom {
-  max-width: 1180px; margin: 1rem auto 0; padding-top: 1.5rem;
-  border-top: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.5); font-size: .82rem; text-align: center;
+  text-align: center; margin-top: 1rem; font-size: .85rem; color: #64748b;
+  border-top: 1px solid rgba(255,255,255,.06); padding-top: 1.5rem;
 }
 
-@media (max-width: 800px) {
-  .footer-panels { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .footer-panels { flex-direction: column; gap: 2rem; }
+  .footer-panel { padding: 0 2rem; }
 }
