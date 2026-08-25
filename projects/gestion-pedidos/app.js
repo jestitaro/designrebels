@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lastStackCard = stackCards[stackCards.length - 1];
   if (titleSticky && lastStackCard) {
     function syncTitleRelease() {
-      const released = lastStackCard.getBoundingClientRect().top < 150;
+      const released = lastStackCard.getBoundingClientRect().top < 198;
       titleSticky.classList.toggle('is-released', released);
     }
     window.addEventListener('scroll', syncTitleRelease, { passive: true });

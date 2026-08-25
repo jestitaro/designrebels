@@ -263,10 +263,10 @@ a { color: inherit; }
 .stack { display: block; }
 .stack-spacer { height: 34rem; }
 .stack-card {
-  position: sticky; top: 152px;
+  position: sticky; top: 200px;
   display: flex; align-items: flex-start; gap: 3rem;
   background: #fff; border: 1px solid var(--border-color);
-  border-radius: 1.75rem; box-shadow: var(--shadow-hover);
+  border-radius: 1.75rem; box-shadow: 0 10px 24px rgba(17, 24, 39, .03);
   padding: 3rem; margin-bottom: 2.5rem;
 }
 .stack-card:nth-child(1) { z-index: 1; }
