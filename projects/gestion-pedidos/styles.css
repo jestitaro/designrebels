@@ -183,14 +183,6 @@ a { color: inherit; }
   .hero-pedidos__ctas .btn { width: 100%; justify-content: center; padding: 1rem 1.5rem; }
 }
 
-/* =========================================================
-   Beneficios: sección oscura de punta a punta
-   ========================================================= */
-.beneficios-section {
-  background: linear-gradient(160deg, #0F0A3D 0%, #1B1257 100%);
-}
-.beneficios-section .section-title { color: #fff; }
-
 /* Beneficios: bento grid con card hero (mockup real) + 4 cards
    de ícono grande, todas sobre superficie violeta oscura */
 .beneficios-bento {
@@ -235,23 +227,27 @@ a { color: inherit; }
 .beneficio-card--hero p { max-width: 88%; }
 
 .beneficio-card__mock {
-  position: relative; margin-top: auto; border-radius: 1.1rem; overflow: hidden;
+  position: relative; margin-top: auto; border-radius: 1.1rem;
   border: 1px solid rgba(161, 114, 255, .4); background: #fff;
   box-shadow: 0 30px 60px rgba(5, 3, 25, .5);
   transform: perspective(1000px) rotateX(3deg);
   animation: beneficioMockFloat 6s ease-in-out infinite;
 }
-.beneficio-card__mock-chrome { display: flex; gap: .4rem; padding: .7rem .9rem; background: #EDEBF7; }
+.beneficio-card__mock-chrome {
+  display: flex; gap: .4rem; padding: .7rem .9rem; background: #EDEBF7;
+  border-radius: 1.1rem 1.1rem 0 0;
+}
 .beneficio-card__mock-chrome span { width: 8px; height: 8px; border-radius: 50%; background: var(--border-color); }
-.beneficio-card__mock img { display: block; width: 100%; height: auto; }
+.beneficio-card__mock-body { position: relative; }
+.beneficio-card__mock-body img { display: block; width: 100%; height: auto; border-radius: 0 0 1.1rem 1.1rem; }
 
 @keyframes beneficioMockFloat {
   0%, 100% { transform: perspective(1000px) rotateX(3deg) translateY(0); }
   50% { transform: perspective(1000px) rotateX(3deg) translateY(-8px); }
 }
 
-/* Chips de UI real (filtros, exportar, editar, estado) que se
-   escapan del marco del mockup, cada uno con su propio flote */
+/* Chips de UI real (filtros, exportar, estado, detalle) apoyados
+   sobre el mockup, cada uno asomando apenas por su esquina */
 .mock-chip {
   position: absolute; z-index: 2;
   display: flex; align-items: center; gap: .5rem;
@@ -260,27 +256,36 @@ a { color: inherit; }
   font-size: .78rem; font-weight: 700; letter-spacing: -.01em;
   box-shadow: 0 16px 30px rgba(5, 3, 25, .38), 0 0 0 1px rgba(161, 114, 255, .18);
   white-space: nowrap; pointer-events: none;
-  animation: chipFloat 5s ease-in-out infinite;
 }
 .mock-chip i { font-size: .85rem; color: var(--brand-1); }
 
-.mock-chip--filters { top: -1.1rem; left: 1.6rem; animation-delay: .2s; }
-.mock-chip--status { top: 1.4rem; right: -1.5rem; background: #E9FBF1; animation-delay: 1.1s; }
-.mock-chip--status i { color: #1FAE5C; }
-.mock-chip--export { bottom: 3rem; right: -2rem; animation-delay: .6s; }
+.mock-chip--filters { top: 8%; left: 5%; animation: chipFloatTL 5s ease-in-out infinite; animation-delay: .2s; }
+.mock-chip--export { top: 8%; right: 5%; animation: chipFloatTR 5s ease-in-out infinite; animation-delay: .6s; }
 .mock-chip--export i { color: #1D9F4E; }
-.mock-chip--edit { bottom: -1.2rem; left: 2.6rem; animation-delay: 1.6s; }
+.mock-chip--status { bottom: 8%; left: 5%; background: #E9FBF1; animation: chipFloatBL 5s ease-in-out infinite; animation-delay: 1.1s; }
+.mock-chip--status i { color: #1FAE5C; }
+.mock-chip--detail { bottom: 8%; right: 5%; animation: chipFloatBR 5s ease-in-out infinite; animation-delay: 1.6s; }
 
-@keyframes chipFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-9px) rotate(-1.5deg); }
+@keyframes chipFloatTL {
+  0%, 100% { transform: translate(-20%, -45%); }
+  50% { transform: translate(-20%, -58%); }
+}
+@keyframes chipFloatTR {
+  0%, 100% { transform: translate(20%, -45%); }
+  50% { transform: translate(20%, -58%); }
+}
+@keyframes chipFloatBL {
+  0%, 100% { transform: translate(-20%, 45%); }
+  50% { transform: translate(-20%, 58%); }
+}
+@keyframes chipFloatBR {
+  0%, 100% { transform: translate(20%, 45%); }
+  50% { transform: translate(20%, 58%); }
 }
 
 @media (max-width: 900px) {
   .beneficios-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .beneficio-card--hero { grid-column: 1 / -1; grid-row: auto; }
-  .mock-chip--status { right: -.8rem; }
-  .mock-chip--export { right: -1rem; }
 }
 @media (max-width: 640px) {
   .beneficios-bento { grid-template-columns: 1fr; }
@@ -289,11 +294,7 @@ a { color: inherit; }
   .beneficio-card--hero .beneficio-card__copy { max-width: 100%; }
   .beneficio-card__icon { width: 76px; height: 76px; top: 1.25rem; right: 1.25rem; }
   .beneficio-card__mock { animation: none; transform: none; }
-  .mock-chip { padding: .45rem .75rem; font-size: .68rem; gap: .35rem; }
-  .mock-chip--filters { top: -.7rem; left: .9rem; }
-  .mock-chip--status { top: .7rem; right: -.7rem; }
-  .mock-chip--export { bottom: 1.9rem; right: -.8rem; }
-  .mock-chip--edit { bottom: -.7rem; left: 1.1rem; }
+  .mock-chip { padding: .4rem .65rem; font-size: .64rem; gap: .3rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .beneficio-card__mock, .mock-chip { animation: none; }
