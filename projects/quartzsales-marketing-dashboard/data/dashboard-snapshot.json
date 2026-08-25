@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-24T09:54:20.084Z",
-  "group": "C",
+  "generatedAt": "2026-08-25T09:41:24.606Z",
+  "group": "A",
   "own": {
     "linkedin": {
-      "followers": 2873,
+      "followers": 2870,
       "employees": 8,
-      "lastSynced": "2026-08-24T09:53:57.897Z",
+      "lastSynced": "2026-08-25T09:40:53.840Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-08-22T09:31:59.554Z",
+      "lastSynced": "2026-08-25T09:41:00.214Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -91,7 +91,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-08-22T09:32:09.750Z",
+      "lastSynced": "2026-08-25T09:41:09.761Z",
       "syncStatus": "ok",
       "syncError": null
     },
