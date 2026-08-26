@@ -50,22 +50,14 @@ img{max-width:100%;display:block}
 .btn-outline:hover{border-color:#fff}
 .panel-paper .btn-outline{border-color:var(--ink);color:var(--ink)}
 
-/* icon shelf: big silhouettes of everyday project tools, falling the height of the
-   screen and landing across the full width of the hero, some overlapping like a real pile.
-   Lives in normal flow BELOW the hero text (never absolutely over it), full-bleed within
-   the section's own padding so it reads as "the whole screen", not a narrow column. */
-.icon-shelf{position:relative;width:100%;height:clamp(280px,36vw,440px);margin-top:clamp(20px,4vw,50px);pointer-events:none}
-.shelf-icon{position:absolute;left:var(--x,0);bottom:var(--y,0);width:var(--w,140px);transform:translateY(-60vh) rotate(calc(var(--r,0deg) - 35deg));opacity:0;filter:drop-shadow(0 18px 26px rgba(0,0,0,.35));pointer-events:auto;transition:transform .5s cubic-bezier(.33,1,.4,1)}
+/* icon shelf: big silhouettes of everyday project tools, dropped with a real physics
+   simulation (gravity + collisions, via Matter.js — see hero-physics.js) so the order
+   they land in and how they pile up is never scripted, always a little different.
+   Lives in normal flow BELOW the hero text (never absolutely over it), clipped to its
+   own box so nothing is visible above the container before it falls into frame. */
+.icon-shelf{position:relative;width:100%;height:clamp(280px,36vw,440px);margin-top:clamp(20px,4vw,50px);overflow:hidden}
+.shelf-icon{position:absolute;top:0;left:0;width:var(--w,140px);opacity:0;filter:drop-shadow(0 18px 26px rgba(0,0,0,.35));will-change:transform}
 .shelf-icon svg{display:block;width:100%;height:auto;pointer-events:none}
-.icon-shelf.is-visible .shelf-icon{animation:leaf-fall 1.9s cubic-bezier(.16,.9,.25,1) var(--d,0s) forwards}
-.shelf-icon.landed{transform:rotate(var(--r,0deg));opacity:1}
-.shelf-icon:hover{transform:translateY(-10px) rotate(calc(var(--r,0deg) + 3deg))}
-@keyframes leaf-fall{
-  0%{transform:translateY(-60vh) rotate(calc(var(--r,0deg) - 35deg));opacity:0}
-  22%{opacity:1}
-  78%{transform:translateY(14px) rotate(calc(var(--r,0deg) - 4deg));opacity:1}
-  100%{transform:translateY(0) rotate(var(--r,0deg));opacity:1}
-}
 
 /* statement */
 .statement{font-size:clamp(28px,4.4vw,58px);line-height:1.15;letter-spacing:-.03em;font-weight:800;max-width:1080px}
@@ -140,5 +132,5 @@ footer.tl-footer a{text-decoration:none;color:#fff}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
-  .shelf-icon{animation:none;opacity:1;transform:rotate(var(--r,0deg));transition:none}
+  .shelf-icon{opacity:1}
 }
