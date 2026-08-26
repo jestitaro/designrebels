@@ -126,7 +126,7 @@ footer.tl-footer a{text-decoration:none;color:#fff}
 }
 @media(max-width:640px){
   .panel{padding:100px 18px 70px}
-  .hero-panel{padding-bottom:0;padding-top:90px;justify-content:flex-start;min-height:135vh}
+  .hero-panel{padding-bottom:0;padding-top:90px;justify-content:flex-start}
   .chrome-logo,.chrome-cta{padding:10px 14px;font-size:12px}
   .scatter-card{width:100%;max-width:280px}
 }
