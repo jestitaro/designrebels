@@ -36,8 +36,8 @@ img{max-width:100%;display:block}
 .eyebrow::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px;opacity:.7}
 
 /* hero */
-.hero-panel{padding-top:140px;padding-bottom:180px}
-.hero-grid{max-width:760px}
+.hero-panel{padding-top:140px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(30px,5vw,70px);align-items:center}
 .hero-title{margin:0;font-size:clamp(44px,6.4vw,96px);line-height:.98;letter-spacing:-.045em;font-weight:800}
 .hero-title em{font-style:normal;color:var(--violet)}
 .hero-text{max-width:520px;font-size:clamp(16px,1.4vw,19px);line-height:1.65;color:rgba(255,255,255,.75);margin:26px 0 34px}
@@ -49,10 +49,18 @@ img{max-width:100%;display:block}
 .btn-outline:hover{border-color:#fff}
 .panel-paper .btn-outline{border-color:var(--ink);color:var(--ink)}
 
-/* icon shelf: silhouettes of everyday project tools, resting along the floor of the hero */
-.icon-shelf{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:flex-end;justify-content:center;gap:clamp(6px,1.6vw,22px);padding:0 clamp(10px,3vw,40px);pointer-events:none;overflow:hidden}
-.shelf-icon{flex:0 0 auto;transform:translateY(14px) rotate(var(--r,0deg));filter:drop-shadow(0 14px 22px rgba(0,0,0,.25))}
-.shelf-icon svg{display:block;height:auto}
+/* icon shelf: silhouettes of everyday project tools, falling gently and landing on a floor line */
+.icon-shelf{position:relative;height:clamp(300px,34vw,420px);display:flex;flex-wrap:wrap;align-items:flex-end;align-content:flex-end;justify-content:center;gap:clamp(4px,1.3vw,16px) clamp(8px,1.6vw,20px)}
+.shelf-icon{flex:0 0 auto;transform:rotate(var(--r,0deg));filter:drop-shadow(0 14px 22px rgba(0,0,0,.25));opacity:1;animation:leaf-fall 1.1s cubic-bezier(.2,.7,.3,1) var(--d,0s) forwards;transition:transform .6s cubic-bezier(.34,1.2,.4,1)}
+.shelf-icon svg{display:block;height:auto;pointer-events:none}
+.shelf-icon:hover{transform:translateY(-10px) rotate(calc(var(--r,0deg) + 6deg))}
+@keyframes leaf-fall{
+  0%{transform:translate(0,-160px) rotate(calc(var(--r,0deg) - 30deg));opacity:0}
+  35%{opacity:1}
+  55%{transform:translate(12px,-70px) rotate(calc(var(--r,0deg) + 14deg))}
+  78%{transform:translate(-8px,-14px) rotate(calc(var(--r,0deg) - 8deg))}
+  100%{transform:translate(0,0) rotate(var(--r,0deg));opacity:1}
+}
 
 /* statement */
 .statement{font-size:clamp(28px,4.4vw,58px);line-height:1.15;letter-spacing:-.03em;font-weight:800;max-width:1080px}
@@ -115,7 +123,8 @@ footer.tl-footer a{text-decoration:none;color:#fff}
 .reveal.is-visible{opacity:1;transform:none}
 
 @media(max-width:960px){
-  .case{grid-template-columns:1fr}
+  .hero-grid,.case{grid-template-columns:1fr}
+  .icon-shelf{margin-top:40px}
   .chrome-side{display:none}
 }
 @media(max-width:640px){
@@ -126,4 +135,5 @@ footer.tl-footer a{text-decoration:none;color:#fff}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
+  .shelf-icon{animation:none;opacity:1;transform:rotate(var(--r,0deg));transition:none}
 }
