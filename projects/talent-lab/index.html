@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Talent Lab by QuartzSales · Cada equipo sube avances de su proyecto y el resto suma feedback y valoraciones, estilo cafecito." />
+  <meta name="description" content="Talent Lab by QuartzSales · Vidriera de talentos internos y clasificados para encontrar a quien nadie se postuló." />
   <title>Talent Lab · by QuartzSales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,163 +13,158 @@
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub">
-      <span class="brand-mark" aria-hidden="true">TL</span>
-      <span>Talent Lab<br><small>by QuartzSales</small></span>
-    </a>
-    <div class="header-actions" id="header-actions">
-      <a class="button button-ghost" href="#labs">Ver Labs</a>
-      <button class="button button-dark" id="btn-open-auth" type="button">Iniciar sesión</button>
-    </div>
-  </header>
+  <a class="chrome-logo" href="../../index.html" aria-label="Design Rebels, volver al hub"><span>TL</span> Talent Lab</a>
+  <a class="chrome-cta" href="#contacto">Sumar mi talento</a>
+  <div class="chrome-side" aria-hidden="true"><span>Talent Lab · by QuartzSales</span></div>
 
   <main id="contenido">
-    <!-- ============ HOME ============ -->
-    <section id="view-home">
-      <section class="hero grid-bg" id="inicio">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span></span> QuartzSales · Talent Lab</p>
-          <h1>Tu proyecto, <em>en movimiento</em>.</h1>
-          <p class="hero-text">Cada equipo tiene su propio Lab: sube avances de lo que está construyendo y el resto de QuartzSales suma feedback y valoraciones — como un cafecito, pero para ideas.</p>
+
+    <!-- HERO -->
+    <section class="panel panel-ink hero-panel">
+      <div class="panel-inner hero-grid">
+        <div class="reveal">
+          <p class="eyebrow"><span></span>QuartzSales · Talent Lab</p>
+          <h1 class="hero-title">El talento interno,<br><em>a la vista</em>.</h1>
+          <p class="hero-text">Una vidriera de lo que cada equipo está creando dentro de QuartzSales — y unos clasificados para encontrar talento allí donde todavía nadie se postuló.</p>
           <div class="hero-actions">
-            <a class="button button-dark" href="#labs">Ver los Labs <span aria-hidden="true">↗</span></a>
-            <button class="button" id="btn-create-lab-hero" type="button">Crear mi Lab</button>
+            <a class="btn btn-solid" href="#talentos">Ver la vidriera ↓</a>
+            <a class="btn btn-outline" href="#clasificados">Ver clasificados</a>
           </div>
         </div>
-        <div class="hero-board reveal" aria-hidden="true">
-          <div class="feed-card tilt">
-            <header><span>Talent Games · Design Rebels</span><span class="feed-stars">★★★★★</span></header>
-            <p>"Probamos el primer minijuego en la reunión de equipo y funcionó buenísimo para romper el hielo."</p>
-          </div>
-          <div class="feed-bubble">+1 valoración ✦</div>
-          <div class="feed-card">
-            <header><span>Nueva actualización</span><span>hace 2h</span></header>
-            <p>Sumamos un ranking en vivo para las capacitaciones. Próximo paso: modo cliente.</p>
-          </div>
+        <div class="totem reveal" aria-hidden="true">
+          <div class="totem-shape totem-circle"></div>
+          <div class="totem-shape totem-circle-sm"></div>
+          <div class="totem-shape totem-bar" style="border-radius:999px"></div>
+          <div class="totem-shape totem-triangle" style="background:none;border-radius:0"></div>
+          <div class="totem-shape totem-pill"></div>
+          <div class="totem-badge">Talento · en movimiento</div>
         </div>
-      </section>
-
-      <section class="section" id="como-funciona">
-        <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow"><span></span> Cómo funciona</p>
-            <h2>Compartí. Recibí feedback. Iterá.</h2>
-          </div>
-          <p>Talent Lab no es una vidriera estática: es un feed vivo de lo que cada equipo está probando dentro de QuartzSales.</p>
-        </div>
-        <div class="steps-grid">
-          <article class="reveal"><span>01</span><h3>Creá tu Lab</h3><p>Contá qué proyecto estás construyendo: nombre, para qué sirve y enlaces a lo que ya tengas andando.</p></article>
-          <article class="reveal"><span>02</span><h3>Subí actualizaciones</h3><p>Cada avance real que compartís queda en la línea de tiempo de tu Lab, visible para todo el equipo.</p></article>
-          <article class="reveal"><span>03</span><h3>Recibí feedback</h3><p>Tus compañeros comentan y valoran cada actualización — señal real para saber qué seguir puliendo.</p></article>
-        </div>
-      </section>
-
-      <section class="section" id="labs">
-        <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow"><span></span> Labs activos</p>
-            <h2>Lo que se está cocinando.</h2>
-          </div>
-          <button class="button button-dark" id="btn-create-lab" type="button">+ Crear mi Lab</button>
-        </div>
-        <div class="labs-grid" id="labs-grid"></div>
-        <div class="empty-state hidden" id="labs-empty">
-          <p><strong>Todavía no hay Labs cargados.</strong><br>Sé el primero en contar en qué estás trabajando.</p>
-          <button class="button button-dark" id="btn-create-lab-empty" type="button">Crear el primer Lab</button>
-        </div>
-      </section>
+      </div>
     </section>
 
-    <!-- ============ LAB DETAIL ============ -->
-    <section id="view-lab" class="hidden">
-      <div class="lab-detail">
-        <a class="back-link" href="#labs">← Volver a Labs</a>
-        <div id="lab-detail-content"></div>
+    <!-- POR QUÉ EXISTE -->
+    <section class="panel panel-paper">
+      <div class="panel-inner reveal">
+        <p class="eyebrow"><span></span>Por qué existe</p>
+        <p class="statement">Hay proyectos increíbles dando vueltas por QuartzSales que <span class="muted">casi nadie conoce</span>. Y hay lugares donde falta una mano que <span class="muted">todavía nadie levantó</span>. Talent Lab existe para las dos cosas.</p>
+      </div>
+    </section>
+
+    <!-- VIDRIERA -->
+    <section class="panel panel-blue" id="talentos">
+      <div class="panel-inner">
+        <div class="ads-head reveal">
+          <div>
+            <p class="eyebrow"><span></span>Vidriera</p>
+            <h2 style="margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.03em">Lo que ya está sonando.</h2>
+          </div>
+          <p>Proyectos reales creados por gente de QuartzSales, en su tiempo y con su propia iniciativa.</p>
+        </div>
+        <div class="scatter reveal">
+          <a class="scatter-card" href="#talent-games">
+            <span class="tag">Design Rebels</span>
+            <div>
+              <h4>Talent Games</h4>
+              <p>Minijuegos para reuniones, capacitaciones, eventos y clientes.</p>
+            </div>
+          </a>
+          <a class="scatter-card slot" href="#contacto">
+            <strong>Tu proyecto acá</strong>
+            <span>Contanos qué estás construyendo</span>
+          </a>
+          <a class="scatter-card slot" href="#contacto">
+            <strong>Espacio libre</strong>
+            <span>Próximamente más talentos</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASO DESTACADO -->
+    <section class="panel panel-mint" id="talent-games">
+      <div class="panel-inner case reveal">
+        <div class="case-visual">
+          <div class="ph">🎮<br>Talent Games<br>by Design Rebels</div>
+        </div>
+        <div>
+          <p class="eyebrow"><span></span>Caso destacado</p>
+          <h3>Talent Games <br>by Design Rebels</h3>
+          <p>Una colección de minijuegos para reuniones internas, capacitaciones, eventos y clientes, que transforma cualquier encuentro en una experiencia participativa.</p>
+          <div class="case-links">
+            <a href="../dino-chomp/" target="_blank" rel="noopener noreferrer">Jugar Dino Chomp ↗</a>
+            <a href="../dino-escape/" target="_blank" rel="noopener noreferrer">Jugar Dino Escape ↗</a>
+            <a href="../meteorito-run/" target="_blank" rel="noopener noreferrer">Jugar Meteorito Run ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASIFICADOS -->
+    <section class="panel panel-pink" id="clasificados">
+      <div class="panel-inner">
+        <div class="ads-head reveal">
+          <div>
+            <p class="eyebrow"><span></span>Clasificados</p>
+            <h2 style="margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.03em">Las páginas amarillas del talento.</h2>
+          </div>
+          <p>Búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló. Si alguna te suena a vos, escribinos.</p>
+        </div>
+        <div class="ads-grid reveal">
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Alguien que arme trivias para capacitaciones de ventas</h4>
+            <p>Buscamos a alguien con ganas de diseñar preguntas y dinámicas para las próximas capacitaciones del equipo comercial.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Voz para locuciones de video internos</h4>
+            <p>Necesitamos una voz para los próximos videos de onboarding y comunicación interna.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Ilustrador/a para stickers de equipo</h4>
+            <p>Queremos un set de stickers propios para usar en Slack y en las presentaciones internas.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISIÓN / QUOTE -->
+    <section class="panel panel-paper">
+      <div class="panel-inner reveal">
+        <div class="quote-stack">
+          <div class="quote-layer l1"></div>
+          <div class="quote-layer l2"></div>
+          <div class="quote-card">
+            <p class="quote-text">"El mejor talento de QuartzSales no siempre está en el organigrama. A veces solo necesita una vidriera."</p>
+            <p class="quote-foot">— Design Rebels</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="panel panel-green" id="contacto">
+      <div class="panel-inner cta-panel reveal">
+        <p class="eyebrow"><span></span>Sumate</p>
+        <h2 class="cta-title">¿Tenés un proyecto para mostrar o una búsqueda para publicar?</h2>
+        <div class="cta-actions">
+          <a class="btn btn-solid" href="mailto:talentlab@quartzsales.com?subject=Quiero%20sumar%20mi%20talento">Escribinos ↗</a>
+          <a class="btn btn-outline" href="../../index.html">Volver al hub</a>
+        </div>
+        <p class="cta-note">talentlab@quartzsales.com</p>
       </div>
     </section>
   </main>
 
-  <footer>
-    <strong>Talent Lab</strong>
-    <span>by QuartzSales · Design Rebels · 2026</span>
-    <a href="../../index.html">Volver al hub ↑</a>
+  <footer class="tl-footer">
+    <span>Talent Lab · by QuartzSales · Design Rebels · 2026</span>
+    <a href="#contenido">Volver arriba ↑</a>
   </footer>
 
-  <!-- ============ AUTH MODAL ============ -->
-  <div class="modal-overlay" id="modal-auth">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-      <button class="modal-close" type="button" data-close-modal="modal-auth" aria-label="Cerrar">✕</button>
-      <div class="tabs">
-        <button class="tab-btn active" data-auth-tab="login" type="button">Iniciar sesión</button>
-        <button class="tab-btn" data-auth-tab="signup" type="button">Crear cuenta</button>
-      </div>
-      <h2 id="auth-title">Entrá a Talent Lab</h2>
-      <p class="sub">Usá tu email de QuartzSales.</p>
-
-      <form class="stacked" id="form-login">
-        <div class="field"><label for="login-email">Email</label><input type="email" id="login-email" required autocomplete="email" /></div>
-        <div class="field"><label for="login-password">Contraseña</label><input type="password" id="login-password" required autocomplete="current-password" /></div>
-        <p class="form-error" id="login-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Ingresar</button></div>
-      </form>
-
-      <form class="stacked hidden" id="form-signup">
-        <div class="field"><label for="signup-name">Nombre</label><input type="text" id="signup-name" required autocomplete="name" /></div>
-        <div class="field"><label for="signup-email">Email</label><input type="email" id="signup-email" required autocomplete="email" /></div>
-        <div class="field"><label for="signup-password">Contraseña</label><input type="password" id="signup-password" required minlength="6" autocomplete="new-password" /><small>Mínimo 6 caracteres.</small></div>
-        <p class="form-error" id="signup-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Crear cuenta</button></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ CREATE LAB MODAL ============ -->
-  <div class="modal-overlay" id="modal-create-lab">
-    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="create-lab-title">
-      <button class="modal-close" type="button" data-close-modal="modal-create-lab" aria-label="Cerrar">✕</button>
-      <h2 id="create-lab-title">Contanos tu Lab</h2>
-      <p class="sub">Esto crea la ficha pública de tu proyecto dentro de Talent Lab.</p>
-      <form class="stacked" id="form-create-lab">
-        <div class="field"><label for="lab-name">Nombre del proyecto</label><input type="text" id="lab-name" required placeholder="Ej: Talent Games by Design Rebels" /></div>
-        <div class="field"><label for="lab-tagline">Resumen en una línea</label><input type="text" id="lab-tagline" required maxlength="140" placeholder="Ej: Minijuegos para reuniones, capacitaciones y eventos" /></div>
-        <div class="field"><label for="lab-category">Categoría</label>
-          <select id="lab-category">
-            <option>Producto</option>
-            <option>Diseño</option>
-            <option>Automatización</option>
-            <option>IA</option>
-            <option>Marketing</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="field"><label for="lab-description">Descripción</label><textarea id="lab-description" required placeholder="¿Qué es, para quién es y qué problema resuelve?"></textarea></div>
-        <div class="field"><label for="lab-links">Enlaces (opcional)</label><textarea id="lab-links" placeholder="Un enlace por línea: Nombre :: URL&#10;Ej: Jugar Dino Chomp :: ../dino-chomp/"></textarea><small>Formato: Nombre :: URL, uno por línea.</small></div>
-        <p class="form-error" id="create-lab-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Publicar mi Lab</button></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ POST UPDATE MODAL ============ -->
-  <div class="modal-overlay" id="modal-post-update">
-    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="post-update-title">
-      <button class="modal-close" type="button" data-close-modal="modal-post-update" aria-label="Cerrar">✕</button>
-      <h2 id="post-update-title">Nueva actualización</h2>
-      <p class="sub">Contá un avance real. Queda en la línea de tiempo de tu Lab.</p>
-      <form class="stacked" id="form-post-update">
-        <div class="field"><label for="update-title">Título</label><input type="text" id="update-title" required maxlength="120" placeholder="Ej: Sumamos ranking en vivo" /></div>
-        <div class="field"><label for="update-body">Detalle</label><textarea id="update-body" required placeholder="¿Qué cambió? ¿Qué probaste? ¿Qué sigue?"></textarea></div>
-        <p class="form-error" id="post-update-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Publicar actualización</button></div>
-      </form>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="assets/firebase.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
