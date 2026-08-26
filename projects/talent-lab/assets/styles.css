@@ -37,6 +37,7 @@ img{max-width:100%;display:block}
 
 /* hero */
 .hero-panel{padding-top:140px;padding-bottom:40px}
+.hero-panel .panel-inner{margin-left:0;max-width:none}
 .hero-grid{max-width:720px;position:relative;z-index:2}
 .hero-title{margin:0;font-size:clamp(44px,6.4vw,96px);line-height:.98;letter-spacing:-.045em;font-weight:800}
 .hero-title em{font-style:normal;color:var(--violet)}
@@ -54,15 +55,16 @@ img{max-width:100%;display:block}
    Lives in normal flow BELOW the hero text (never absolutely over it), full-bleed within
    the section's own padding so it reads as "the whole screen", not a narrow column. */
 .icon-shelf{position:relative;width:100%;height:clamp(280px,36vw,440px);margin-top:clamp(20px,4vw,50px);pointer-events:none}
-.shelf-icon{position:absolute;left:var(--x,0);bottom:var(--y,0);width:var(--w,140px);transform:rotate(var(--r,0deg));filter:drop-shadow(0 18px 26px rgba(0,0,0,.35));opacity:1;pointer-events:auto;animation:leaf-fall 1.6s cubic-bezier(.2,.7,.3,1) var(--d,0s) forwards;transition:transform .6s cubic-bezier(.34,1.2,.4,1)}
+.shelf-icon{position:absolute;left:var(--x,0);bottom:var(--y,0);width:var(--w,140px);transform:translateY(-60vh) rotate(calc(var(--r,0deg) - 35deg));opacity:0;filter:drop-shadow(0 18px 26px rgba(0,0,0,.35));pointer-events:auto;transition:transform .5s cubic-bezier(.33,1,.4,1)}
 .shelf-icon svg{display:block;width:100%;height:auto;pointer-events:none}
-.shelf-icon:hover{transform:translateY(-14px) rotate(calc(var(--r,0deg) + 6deg));z-index:5}
+.icon-shelf.is-visible .shelf-icon{animation:leaf-fall 1.9s cubic-bezier(.16,.9,.25,1) var(--d,0s) forwards}
+.shelf-icon.landed{transform:rotate(var(--r,0deg));opacity:1}
+.shelf-icon:hover{transform:translateY(-10px) rotate(calc(var(--r,0deg) + 3deg))}
 @keyframes leaf-fall{
-  0%{transform:translate(0,-95vh) rotate(calc(var(--r,0deg) - 40deg));opacity:0}
-  30%{opacity:1}
-  58%{transform:translate(3vw,-38vh) rotate(calc(var(--r,0deg) + 18deg))}
-  80%{transform:translate(-2vw,-8vh) rotate(calc(var(--r,0deg) - 10deg))}
-  100%{transform:translate(0,0) rotate(var(--r,0deg));opacity:1}
+  0%{transform:translateY(-60vh) rotate(calc(var(--r,0deg) - 35deg));opacity:0}
+  22%{opacity:1}
+  78%{transform:translateY(14px) rotate(calc(var(--r,0deg) - 4deg));opacity:1}
+  100%{transform:translateY(0) rotate(var(--r,0deg));opacity:1}
 }
 
 /* statement */
