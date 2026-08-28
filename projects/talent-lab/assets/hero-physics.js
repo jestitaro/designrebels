@@ -154,7 +154,14 @@
 
   const shelfObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) { start(); shelfObserver.disconnect(); }
+      if (!entry.isIntersecting) return;
+      shelfObserver.disconnect();
+      // El bloque de texto tiene su propia transición de entrada (.reveal,
+      // ~0.7s animando opacity + transform). Si medimos su altura mientras
+      // todavía se está moviendo, agarramos una posición de paso, no la
+      // final — y el colchón que calculamos para la pila queda corto.
+      // Esperamos a que termine esa transición antes de medir y armar la física.
+      setTimeout(start, 760);
     });
   }, { threshold: 0, rootMargin: '0px 0px -35% 0px' });
   shelfObserver.observe(shelf);
