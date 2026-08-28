@@ -36,6 +36,7 @@
 
   function layoutStatic() {
     // Sin animación: los acomoda en una fila prolija, ya en su posición final.
+    ensureRoomBelowText();
     const w = shelf.clientWidth || 900;
     let x = 10;
     icons.forEach(el => {
@@ -49,7 +50,26 @@
     });
   }
 
+  function ensureRoomBelowText() {
+    // La sección debe tener suficiente alto como para que el texto Y la pila
+    // de íconos entren sin pisarse — sin importar qué tan bajo sea el
+    // viewport (una ventana de escritorio achicada, un notebook con poca
+    // altura, etc.). Si no alcanza, se agranda el hero en vez de dejar que
+    // la pila trepe hasta la altura del título.
+    const heroGrid = document.querySelector('.hero-grid');
+    const heroPanel = document.querySelector('.hero-panel');
+    if (!heroGrid || !heroPanel) return;
+    const shelfTop = shelf.getBoundingClientRect().top;
+    const textBottom = heroGrid.getBoundingClientRect().bottom - shelfTop;
+    const PILE_CLEARANCE = 260;
+    const minRequired = Math.round(textBottom + PILE_CLEARANCE);
+    if (shelf.clientHeight < minRequired) {
+      heroPanel.style.minHeight = (minRequired + 40) + 'px';
+    }
+  }
+
   function setup() {
+    ensureRoomBelowText();
     const W = shelf.clientWidth;
     const H = shelf.clientHeight;
 
