@@ -40,6 +40,9 @@ img{max-width:100%;display:block}
 .hero-grid{max-width:720px;position:relative;z-index:2}
 .hero-title{margin:0;font-size:clamp(44px,6.4vw,96px);line-height:.98;letter-spacing:-.045em;font-weight:800}
 .hero-title em{font-style:normal;color:var(--violet)}
+.eye-wrap{display:inline-block;position:relative;width:1.5em;height:.8em;background:#fff;border-radius:999px;vertical-align:middle;margin:0 .1em 0 .16em;overflow:hidden}
+.eye-iris{position:absolute;top:50%;left:50%;width:.56em;height:.56em;border-radius:50%;background:var(--yellow);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center}
+.eye-pupil{width:38%;height:38%;border-radius:50%;background:#181812}
 .hero-text{max-width:520px;font-size:clamp(16px,1.4vw,19px);line-height:1.65;color:rgba(255,255,255,.75);margin:26px 0 34px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
 .btn{min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 24px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;border:1px solid transparent;cursor:pointer}
