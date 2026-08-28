@@ -40,21 +40,30 @@ img{max-width:100%;display:block}
 .eyebrow::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px;opacity:.7}
 
 /* hero */
-.hero-panel{padding-top:96px;padding-bottom:40px}
-.hero-grid{max-width:720px;position:relative;z-index:2}
-.hero-title{margin:0;font-size:clamp(44px,6.4vw,96px);line-height:.98;letter-spacing:-.045em;font-weight:800}
+.hero-panel{padding-top:80px;padding-bottom:40px}
+.hero-grid{max-width:1150px;margin:0 auto;position:relative;z-index:2;text-align:center}
+.eyebrow.center{justify-content:center;width:fit-content;margin:0 auto 18px}
+.hero-title{margin:0;font-size:clamp(30px,4.6vw,74px);line-height:1.05;letter-spacing:-.03em;font-weight:800}
 .hero-title em{font-style:normal;color:var(--violet)}
 .eye-wrap{display:inline-block;position:relative;width:1.5em;height:.8em;background:#fff;border-radius:999px;vertical-align:middle;margin:0 .1em 0 .16em;overflow:hidden}
 .eye-iris{position:absolute;top:50%;left:50%;width:.56em;height:.56em;border-radius:50%;background:var(--yellow);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center}
 .eye-pupil{width:38%;height:38%;border-radius:50%;background:#181812}
-.hero-text{max-width:520px;font-size:clamp(16px,1.4vw,19px);line-height:1.65;color:rgba(255,255,255,.75);margin:26px 0 34px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+.hero-quote{max-width:600px;margin:24px auto 0;font-size:clamp(17px,1.7vw,21px);line-height:1.55;font-weight:700;color:#fff}
+.hero-text{max-width:560px;margin:14px auto 32px;font-size:clamp(15px,1.3vw,17px);line-height:1.6;color:rgba(255,255,255,.68)}
+.hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
 .btn{min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:0 24px;border-radius:999px;text-decoration:none;font-weight:800;font-size:14px;border:1px solid transparent;cursor:pointer}
 .btn-solid{background:#fff;color:var(--ink)}
 .btn-solid:hover{background:var(--yellow)}
 .btn-outline{border-color:rgba(255,255,255,.4);color:#fff}
 .btn-outline:hover{border-color:#fff}
 .panel-paper .btn-outline{border-color:var(--ink);color:var(--ink)}
+
+/* scroll cue: tells people there's more below, fades out once they actually scroll */
+.scroll-cue{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:10;width:46px;height:46px;border:2px solid rgba(255,255,255,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:18px;transition:opacity .3s ease,visibility .3s ease;animation:scroll-cue-bounce 1.8s ease-in-out infinite}
+.scroll-cue:hover{border-color:#fff}
+.scroll-cue.is-hidden{opacity:0;visibility:hidden}
+@keyframes scroll-cue-bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+@media(prefers-reduced-motion:reduce){.scroll-cue{animation:none}}
 
 /* icon shelf: big silhouettes of everyday project tools, dropped with a real physics
    simulation (gravity + collisions, via Matter.js — see hero-physics.js) so the order
