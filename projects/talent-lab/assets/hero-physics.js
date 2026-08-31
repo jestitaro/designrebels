@@ -64,8 +64,11 @@
     // El colchón se calcula a partir del tamaño real de los íconos en esta
     // pantalla (ya son responsive, más chicos en mobile) — así en pantallas
     // angostas no se reserva de más y queda un hueco vacío antes de la pila.
-    const tallestIcon = Math.max(...icons.map(el => el.offsetHeight || 0), 60);
-    const PILE_CLEARANCE = Math.round(tallestIcon * 1.7);
+    // Se usa el promedio (no el más alto) para no sobre-reservar por culpa
+    // de un solo ícono desproporcionado (ej: la lamparita, más alta que ancha).
+    const heights = icons.map(el => el.offsetHeight || 0).filter(Boolean);
+    const avgIconHeight = heights.length ? heights.reduce((a, b) => a + b, 0) / heights.length : 100;
+    const PILE_CLEARANCE = Math.round(Math.max(avgIconHeight * 1.5, 140));
     const minRequired = Math.round(textBottom + PILE_CLEARANCE);
     if (shelf.clientHeight < minRequired) {
       heroPanel.style.minHeight = (minRequired + 40) + 'px';
