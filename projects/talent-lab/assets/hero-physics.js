@@ -61,7 +61,11 @@
     if (!heroGrid || !heroPanel) return;
     const shelfTop = shelf.getBoundingClientRect().top;
     const textBottom = heroGrid.getBoundingClientRect().bottom - shelfTop;
-    const PILE_CLEARANCE = 260;
+    // El colchón se calcula a partir del tamaño real de los íconos en esta
+    // pantalla (ya son responsive, más chicos en mobile) — así en pantallas
+    // angostas no se reserva de más y queda un hueco vacío antes de la pila.
+    const tallestIcon = Math.max(...icons.map(el => el.offsetHeight || 0), 60);
+    const PILE_CLEARANCE = Math.round(tallestIcon * 1.7);
     const minRequired = Math.round(textBottom + PILE_CLEARANCE);
     if (shelf.clientHeight < minRequired) {
       heroPanel.style.minHeight = (minRequired + 40) + 'px';

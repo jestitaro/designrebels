@@ -1,7 +1,9 @@
 /* Talent Lab — eye.js
- * El ojito (estilo dino) al lado de "a la vista": el iris sigue al cursor,
- * pero nunca sale del óvalo blanco — se limita a una elipse (no un círculo)
- * porque el óvalo es más ancho que alto, igual que en la referencia. */
+ * El ojito (estilo dino) al lado de "a la vista": el iris sigue al cursor
+ * (o al dedo, en mobile — tocar y arrastrar en cualquier parte de la
+ * pantalla), pero nunca sale del óvalo blanco — se limita a una elipse
+ * (no un círculo) porque el óvalo es más ancho que alto, igual que en la
+ * referencia. */
 (function () {
   const eyes = Array.from(document.querySelectorAll('.eye-wrap')).map(wrap => ({
     wrap,
@@ -33,9 +35,23 @@
   }
 
   let ticking = false;
-  document.addEventListener('mousemove', e => {
+  function queue(x, y) {
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(() => { update(e.clientX, e.clientY); ticking = false; });
-  });
+    requestAnimationFrame(() => { update(x, y); ticking = false; });
+  }
+
+  document.addEventListener('mousemove', e => queue(e.clientX, e.clientY));
+
+  // Touch: tocar y arrastrar en cualquier parte de la pantalla mueve el ojo,
+  // igual que el mouse. passive:true porque nunca llamamos preventDefault
+  // (no queremos bloquear el scroll normal de la página).
+  document.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    if (t) queue(t.clientX, t.clientY);
+  }, { passive: true });
+  document.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    if (t) queue(t.clientX, t.clientY);
+  }, { passive: true });
 })();
