@@ -142,7 +142,11 @@ footer.tl-footer a{text-decoration:none;color:#fff}
 }
 @media(max-width:640px){
   .panel{padding:100px 18px 70px}
-  .hero-panel{padding-bottom:0;padding-top:90px;justify-content:flex-start}
+  .hero-panel{padding-bottom:0;padding-top:120px;justify-content:flex-start}
+  .hero-title{font-size:clamp(36px,9.5vw,46px)}
+  .hero-quote{margin-top:18px}
+  .hero-text{margin:10px auto 26px}
+  .eye-wrap{width:1.7em;height:.95em}
   .chrome-logo,.chrome-cta{padding:10px 14px;font-size:12px}
   .scatter-card{width:100%;max-width:280px}
 }
