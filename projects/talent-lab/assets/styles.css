@@ -40,7 +40,7 @@ img{max-width:100%;display:block}
 .eyebrow::before{content:"";width:9px;height:9px;background:currentColor;border-radius:2px;opacity:.7}
 
 /* hero */
-.hero-panel{padding-top:80px;padding-bottom:40px}
+.hero-panel{padding-top:110px;padding-bottom:40px;justify-content:flex-start}
 .hero-grid{max-width:1150px;margin:0 auto;position:relative;z-index:2;text-align:center}
 .eyebrow.center{justify-content:center;width:fit-content;margin:0 auto 18px}
 .hero-title{margin:0;font-size:clamp(30px,4.6vw,74px);line-height:1.05;letter-spacing:-.03em;font-weight:800}
