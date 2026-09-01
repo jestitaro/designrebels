@@ -1,4 +1,4 @@
-# Design Compare — plugin de Figma
+# Design Compare — plugin de Figma + backend
 
 Compara un frame/componente de Figma ("diseño original") contra una captura de
 la implementación real, y devuelve un listado de diferencias para pasar a
@@ -6,11 +6,11 @@ mano a una smartlist en Jira.
 
 ## Estado actual
 
-Esqueleto del plugin únicamente. El flujo de exportar + subir archivo está
-completo y funcional; el llamado al backend es un **stub** (`compareWithBackend`
-en `plugin/ui.html`) que devuelve data de ejemplo sin pegarle a ningún
-servidor todavía. El backend Node/Express con la llamada a la API de Claude
-(vision) es la siguiente etapa.
+- **Plugin**: el flujo de exportar + subir archivo está completo y funcional.
+  El llamado al backend sigue siendo un **stub** (`compareWithBackend` en
+  `plugin/ui.html`) — todavía no está conectado al fetch real.
+- **Backend**: `POST /compare` funcional, llama a Claude (vision) y devuelve
+  el JSON validado. Falta conectarlo desde el plugin.
 
 ## Estructura
 
@@ -21,9 +21,17 @@ plugin/
 ├── ui.html          # UI del plugin (iframe sandboxed, HTML+JS plano)
 ├── package.json
 └── tsconfig.json
+
+backend/
+├── src/
+│   ├── index.ts     # server Express, endpoint POST /compare
+│   └── compare.ts   # llamada a Claude con structured outputs (Zod)
+├── package.json
+├── tsconfig.json
+└── .env.example
 ```
 
-## Cómo probarlo en Figma
+## Cómo probar el plugin en Figma
 
 1. Instalar dependencias y compilar:
 
@@ -41,13 +49,16 @@ plugin/
 6. Con ambas imágenes cargadas se habilita **Comparar con backend** (por ahora
    usa el stub y muestra data de ejemplo).
 
+## Cómo probar el backend
+
+Ver `backend/README.md` — setup, endpoint, y ejemplos de curl para probarlo
+de forma aislada antes de conectar el plugin.
+
 ## Pendiente para la próxima etapa
 
-- Backend Node/Express con endpoint `POST /compare` que reciba `design` e
-  `implementation` en base64 y llame a la API de Claude (vision) pidiendo
-  JSON con schema fijo: `{ diffs: [{ description, location, type }] }`.
-- Reemplazar el dominio placeholder en `manifest.json` →
+- Reemplazar el dominio placeholder en `plugin/manifest.json` →
   `networkAccess.allowedDomains` por el dominio real del backend (HTTPS
   requerido; para desarrollo local usar `devAllowedDomains` + ngrok o un
   túnel HTTPS).
-- Conectar `compareWithBackend()` en `ui.html` al fetch real.
+- Conectar `compareWithBackend()` en `plugin/ui.html` al fetch real contra
+  `POST /compare`.
