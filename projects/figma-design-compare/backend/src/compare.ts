@@ -54,11 +54,6 @@ function detectImageMediaType(base64: string): "image/png" | "image/jpeg" {
 }
 
 const workspaceId = process.env.ANTHROPIC_WORKSPACE_ID;
-console.log(
-  workspaceId
-    ? `[compare] ANTHROPIC_WORKSPACE_ID detectado: ${workspaceId}`
-    : "[compare] ANTHROPIC_WORKSPACE_ID NO detectado al construir el cliente Anthropic"
-);
 
 const client = new Anthropic({
   defaultHeaders: workspaceId ? { "anthropic-workspace-id": workspaceId } : undefined,
