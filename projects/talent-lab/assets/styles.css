@@ -111,11 +111,29 @@ img{max-width:100%;display:block}
 .case-visual{position:relative;border-radius:32px;background:#fff;padding:14px;box-shadow:var(--shadow)}
 .case-visual img,.case-visual .ph{border-radius:22px;width:100%;display:block}
 .case-visual .ph{aspect-ratio:4/3;background:linear-gradient(135deg,var(--yellow),var(--coral));display:grid;place-items:center;color:#111;font-weight:800;font-size:15px;text-align:center;padding:20px}
-.case h3{font-size:clamp(30px,3.6vw,48px);letter-spacing:-.03em;margin:14px 0 18px}
+.case h1{font-size:clamp(30px,3.6vw,48px);letter-spacing:-.03em;margin:14px 0 18px}
 .case p{font-size:16px;line-height:1.7;max-width:520px;margin:0 0 24px}
 .case-links{display:flex;flex-wrap:wrap;gap:10px}
 .case-links a{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:13px;font-weight:800;padding:0 18px;border:1px solid var(--ink);border-radius:999px;text-decoration:none}
 .case-links a:hover{background:var(--ink);color:#fff}
+
+/* talent detail page: back link + simple content blocks (idea / qué
+   resuelve / quién lo lleva adelante) shared across sections */
+.back-link{display:flex;width:fit-content;align-items:center;gap:6px;text-decoration:none;color:inherit;opacity:.65;font-size:13px;font-weight:800;margin-bottom:22px}
+.back-link:hover{opacity:1}
+.detail-block{max-width:760px}
+.detail-block h2{font-size:clamp(28px,3.6vw,44px);letter-spacing:-.03em;margin:0 0 20px}
+.detail-block p{font-size:17px;line-height:1.7;margin:0}
+
+/* talent detail page: carrusel horizontal con otros talentos */
+.carousel{position:relative;margin:0 -6px}
+.carousel-track{display:flex;gap:20px;overflow-x:auto;padding:8px 6px 22px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.carousel-card{flex:0 0 auto;width:230px;min-height:170px;scroll-snap-align:start;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;text-align:center;text-decoration:none;color:var(--ink);background:transparent;border:2px dashed rgba(17,17,27,.25);transition:transform .25s ease,border-color .25s ease}
+.carousel-card:hover{transform:translateY(-6px);border-color:var(--ink)}
+.carousel-card strong{font-size:15px}
+.carousel-card span{font-size:13px;opacity:.65}
+.carousel-more{flex:0 0 auto;width:230px;min-height:170px;scroll-snap-align:start;border-radius:22px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;text-align:center;text-decoration:none;color:var(--ink);background:var(--ink);color:#fff;font-weight:800}
+.carousel-more:hover{background:var(--purple)}
 
 /* clasificados */
 .ads-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}

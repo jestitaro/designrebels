@@ -2,25 +2,41 @@
 
 Landing estática (sin backend, sin login) con dos partes:
 
-1. **Vidriera**: proyectos reales creados por gente de QuartzSales por iniciativa propia, con un caso destacado (hoy: Talent Games by Design Rebels).
+1. **Vidriera**: proyectos reales creados por gente de QuartzSales por iniciativa propia. Cada talento tiene su propia página de detalle en `talentos/` (hoy: Talent Games by Design Rebels).
 2. **Clasificados**: búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló — las "páginas amarillas" del talento interno.
 
-No hay carga por admin ni cuentas: el contenido es fijo, se edita directo en `index.html`.
+No hay carga por admin ni cuentas: el contenido es fijo, se edita directo en el HTML.
 
 ## Arquitectura
 
 ```
 projects/talent-lab/
-├── index.html          toda la landing (secciones a pantalla completa, sin backend)
+├── index.html                    landing principal (hero, vidriera, clasificados, CTA)
 ├── README.md
+├── talentos/
+│   └── talent-games.html         página de detalle de un talento (ver abajo)
 └── assets/
     ├── styles.css       tokens de color reutilizados del hub de Design Rebels + el layout
-    ├── app.js            scroll-reveal del resto de la página
-    ├── hero-physics.js   caída de los íconos del hero (ver abajo)
+    ├── app.js            scroll-reveal (compartido por index.html y las páginas de talentos/)
+    ├── hero-physics.js   caída de los íconos del hero de index.html (ver abajo)
     └── vendor/
         ├── matter.min.js          Matter.js vendorizado (sin depender de un CDN externo)
         └── matter-js-LICENSE.txt  su licencia MIT
 ```
+
+### Página de un talento (`talentos/*.html`)
+
+Cada card de la Vidriera enlaza a su propia página dentro de `talentos/`, en vez de abrir un "caso destacado" dentro de `index.html`. Todas siguen la misma estructura, con las mismas secciones a pantalla completa que el resto del sitio:
+
+1. Intro (idea en una línea + links de acción, ej. jugar los juegos)
+2. La idea
+3. Qué resuelve
+4. Quién lo lleva adelante
+5. Por qué lo eligió (como pull-quote, reutilizando `.quote-stack`)
+6. Carrusel horizontal con otros talentos (`.carousel`) + link de vuelta a la vidriera
+7. Footer (el mismo `.tl-footer` de `index.html`)
+
+Para sumar un talento nuevo: copiar `talentos/talent-games.html`, reemplazar el contenido de cada sección, y agregar una `.scatter-card` en `index.html` (`#talentos`) apuntando a `talentos/<archivo>.html`.
 
 Diseño inspirado en la estructura de una landing de referencia (ritmo de secciones a pantalla completa con colores planos alternados, header flotante fijo, cards de portfolio rotadas/superpuestas, sección de testimonio con capas de color apiladas) — la identidad visual (colores, tipografía Manrope) es la de Design Rebels, no una copia literal de la referencia.
 
@@ -36,8 +52,8 @@ Con `prefers-reduced-motion: reduce` no corre la simulación: los íconos se aco
 
 Todo vive directo en `index.html`, en texto plano:
 
-- **Vidriera** (`#talentos`): cada talento es una `.scatter-card` dentro de `.scatter`. Hoy hay 1 real + 2 "slots" vacíos invitando a sumar más — reemplazar los slots por cards reales a medida que entren proyectos.
-- **Caso destacado** (`#talent-games`): sección `.case` con la descripción larga y los links a los juegos ya publicados en este repo (`../dino-chomp/`, `../dino-escape/`, `../meteorito-run/`).
+- **Vidriera** (`#talentos`): cada talento es una `.scatter-card` dentro de `.scatter`, que enlaza a su página en `talentos/`. Hoy hay 1 real + 2 "slots" vacíos invitando a sumar más — reemplazar los slots por cards reales (y su página en `talentos/`) a medida que entren proyectos.
+- **Página de un talento** (`talentos/talent-games.html`): ver "Página de un talento" más arriba.
 - **Clasificados** (`#clasificados`): cada búsqueda es un `.ad-card` dentro de `.ads-grid`. Los 3 actuales están marcados "Ejemplo" — reemplazar por las búsquedas reales y sacar el badge `<span class="example">`.
 - **Contacto**: hoy apunta a `talentlab@quartzsales.com` (placeholder) en dos lugares (`.chrome-cta` del header no, pero sí `#clasificados` y `#contacto`) — cambiar por el canal de contacto real (mail de equipo, WhatsApp, formulario).
 
