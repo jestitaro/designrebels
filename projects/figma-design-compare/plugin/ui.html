@@ -1,0 +1,343 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --border: #e0e0e0;
+        --text-muted: #8c8c8c;
+        --accent: #18a0fb;
+        --danger: #f24822;
+        --bg-soft: #f5f5f5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 12px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 12px;
+        color: #1e1e1e;
+      }
+
+      h2 {
+        font-size: 13px;
+        margin: 0 0 4px;
+      }
+
+      p.subtitle {
+        margin: 0 0 12px;
+        color: var(--text-muted);
+      }
+
+      section {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      section h3 {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        color: var(--text-muted);
+        margin: 0 0 8px;
+      }
+
+      button {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: none;
+        background: var(--accent);
+        color: #fff;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      button:disabled {
+        background: var(--border);
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
+
+      button.secondary {
+        background: var(--bg-soft);
+        color: #1e1e1e;
+        border: 1px solid var(--border);
+      }
+
+      input[type="file"] {
+        width: 100%;
+        font-size: 11px;
+      }
+
+      .status {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .status.error {
+        color: var(--danger);
+      }
+
+      .preview-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .preview {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .preview img {
+        width: 100%;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 50% / 12px 12px;
+      }
+
+      .preview span {
+        display: block;
+        margin-top: 4px;
+        font-size: 10px;
+        color: var(--text-muted);
+        word-break: break-all;
+      }
+
+      textarea#resultOutput {
+        width: 100%;
+        min-height: 140px;
+        resize: vertical;
+        font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+        font-size: 11px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Design Compare</h2>
+    <p class="subtitle">Comparar diseño vs. implementación real</p>
+
+    <section>
+      <h3>1. Diseño original</h3>
+      <button id="exportBtn" disabled>Exportar selección actual</button>
+      <div id="exportStatus" class="status">Seleccioná un frame o componente en el canvas.</div>
+      <div class="preview-row" id="designPreviewRow" style="display: none">
+        <div class="preview">
+          <img id="designPreview" alt="Preview del diseño exportado" />
+          <span id="designPreviewLabel"></span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>2. Implementación (captura local)</h3>
+      <input type="file" id="implementationInput" accept="image/png, image/jpeg" />
+      <div class="preview-row" id="implPreviewRow" style="display: none">
+        <div class="preview">
+          <img id="implPreview" alt="Preview de la captura subida" />
+          <span id="implPreviewLabel"></span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>3. Comparar</h3>
+      <button id="compareBtn" disabled>Comparar con backend</button>
+      <div id="compareStatus" class="status"></div>
+      <textarea
+        id="resultOutput"
+        placeholder="Acá va a aparecer el listado de diferencias, en texto plano y copiable."
+        readonly
+      ></textarea>
+      <div style="margin-top: 6px">
+        <button id="copyBtn" class="secondary" disabled>Copiar resultado</button>
+      </div>
+    </section>
+
+    <script>
+      const state = {
+        design: null, // { base64, fileName, width, height }
+        implementation: null, // { base64, fileName }
+      };
+
+      const exportBtn = document.getElementById("exportBtn");
+      const exportStatus = document.getElementById("exportStatus");
+      const designPreviewRow = document.getElementById("designPreviewRow");
+      const designPreview = document.getElementById("designPreview");
+      const designPreviewLabel = document.getElementById("designPreviewLabel");
+
+      const implementationInput = document.getElementById("implementationInput");
+      const implPreviewRow = document.getElementById("implPreviewRow");
+      const implPreview = document.getElementById("implPreview");
+      const implPreviewLabel = document.getElementById("implPreviewLabel");
+
+      const compareBtn = document.getElementById("compareBtn");
+      const compareStatus = document.getElementById("compareStatus");
+      const resultOutput = document.getElementById("resultOutput");
+      const copyBtn = document.getElementById("copyBtn");
+
+      function updateCompareAvailability() {
+        compareBtn.disabled = !(state.design && state.implementation);
+      }
+
+      // --- 1. Exportar selección desde Figma ---
+
+      exportBtn.addEventListener("click", () => {
+        exportStatus.textContent = "Exportando...";
+        exportStatus.classList.remove("error");
+        parent.postMessage({ pluginMessage: { type: "export-selection" } }, "*");
+      });
+
+      window.onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+        if (!msg) return;
+
+        if (msg.type === "selection-changed") {
+          exportBtn.disabled = !msg.hasValidSelection;
+          exportStatus.classList.remove("error");
+          exportStatus.textContent = msg.hasValidSelection
+            ? `Listo para exportar: "${msg.nodeName}"`
+            : "Seleccioná un frame o componente en el canvas.";
+        }
+
+        if (msg.type === "export-success") {
+          state.design = {
+            base64: msg.base64,
+            fileName: msg.fileName,
+            width: msg.width,
+            height: msg.height,
+          };
+          exportStatus.textContent = `Exportado: "${msg.fileName}"`;
+          designPreview.src = `data:image/png;base64,${msg.base64}`;
+          designPreviewLabel.textContent = `${msg.fileName}${
+            msg.width && msg.height ? ` · ${msg.width}×${msg.height}` : ""
+          }`;
+          designPreviewRow.style.display = "flex";
+          updateCompareAvailability();
+        }
+
+        if (msg.type === "export-error") {
+          exportStatus.textContent = msg.message;
+          exportStatus.classList.add("error");
+        }
+      };
+
+      // --- 2. Subir captura local ---
+
+      implementationInput.addEventListener("change", () => {
+        const file = implementationInput.files && implementationInput.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result;
+          const base64 = dataUrl.split(",")[1];
+
+          state.implementation = { base64, fileName: file.name, mimeType: file.type };
+          implPreview.src = dataUrl;
+          implPreviewLabel.textContent = file.name;
+          implPreviewRow.style.display = "flex";
+          updateCompareAvailability();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // --- 3. Comparar (stub del llamado al backend) ---
+
+      async function compareWithBackend(design, implementation) {
+        // TODO: reemplazar por el fetch real una vez que el backend esté desplegado.
+        // Recordar declarar el dominio del backend en manifest.json > networkAccess.allowedDomains.
+        //
+        // Ejemplo de implementación futura:
+        //
+        // const response = await fetch("https://TU-BACKEND.example.com/compare", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({
+        //     design: { base64: design.base64, fileName: design.fileName },
+        //     implementation: { base64: implementation.base64, fileName: implementation.fileName },
+        //   }),
+        // });
+        //
+        // if (!response.ok) throw new Error(`Backend respondió ${response.status}`);
+        // return response.json(); // { diffs: [{ description, location, type }, ...] }
+
+        console.log("[stub] compareWithBackend llamado con", {
+          design: { fileName: design.fileName },
+          implementation: { fileName: implementation.fileName },
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 600));
+
+        return {
+          diffs: [
+            {
+              description: "(stub) Todavía no hay backend conectado — esto es data de ejemplo.",
+              location: "N/A",
+              type: "menor",
+            },
+          ],
+        };
+      }
+
+      function formatDiffsAsPlainText(result) {
+        if (!result.diffs || result.diffs.length === 0) {
+          return "Sin diferencias detectadas.";
+        }
+
+        return result.diffs
+          .map(
+            (diff, i) =>
+              `${i + 1}. [${diff.type}] ${diff.description}\n   Ubicación: ${diff.location}`
+          )
+          .join("\n\n");
+      }
+
+      compareBtn.addEventListener("click", async () => {
+        if (!state.design || !state.implementation) return;
+
+        compareBtn.disabled = true;
+        copyBtn.disabled = true;
+        compareStatus.classList.remove("error");
+        compareStatus.textContent = "Comparando con el backend...";
+        resultOutput.value = "";
+
+        try {
+          const result = await compareWithBackend(state.design, state.implementation);
+          resultOutput.value = formatDiffsAsPlainText(result);
+          compareStatus.textContent = `${result.diffs.length} diferencia(s) encontrada(s).`;
+          copyBtn.disabled = false;
+        } catch (error) {
+          compareStatus.textContent = `Error: ${error.message}`;
+          compareStatus.classList.add("error");
+        } finally {
+          updateCompareAvailability();
+        }
+      });
+
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(resultOutput.value);
+          copyBtn.textContent = "Copiado ✓";
+          setTimeout(() => (copyBtn.textContent = "Copiar resultado"), 1500);
+        } catch (error) {
+          resultOutput.select();
+          document.execCommand("copy");
+        }
+      });
+    </script>
+  </body>
+</html>
