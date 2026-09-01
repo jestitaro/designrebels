@@ -53,10 +53,15 @@ function detectImageMediaType(base64: string): "image/png" | "image/jpeg" {
   throw new Error("No se pudo determinar el tipo de imagen (se esperaba PNG o JPEG).");
 }
 
+const workspaceId = process.env.ANTHROPIC_WORKSPACE_ID;
+console.log(
+  workspaceId
+    ? `[compare] ANTHROPIC_WORKSPACE_ID detectado: ${workspaceId}`
+    : "[compare] ANTHROPIC_WORKSPACE_ID NO detectado al construir el cliente Anthropic"
+);
+
 const client = new Anthropic({
-  defaultHeaders: process.env.ANTHROPIC_WORKSPACE_ID
-    ? { "anthropic-workspace-id": process.env.ANTHROPIC_WORKSPACE_ID }
-    : undefined,
+  defaultHeaders: workspaceId ? { "anthropic-workspace-id": workspaceId } : undefined,
 });
 
 export async function compareDesignVsImplementation(
