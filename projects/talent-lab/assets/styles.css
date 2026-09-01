@@ -82,10 +82,10 @@ img{max-width:100%;display:block}
 
 /* scattered talent cards */
 .scatter{position:relative;display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:20px 0 60px;max-width:1200px;margin:0 auto}
-.scatter-card{width:230px;min-height:300px;border-radius:26px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);transition:transform .25s ease;text-decoration:none;color:var(--ink)}
-.scatter-card:hover{transform:translateY(-10px) rotate(0deg) !important}
+.scatter-card{width:230px;min-height:300px;border-radius:26px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);will-change:transform;transition:transform .9s cubic-bezier(.34,1.56,.64,1)}
+.scatter-card:hover{transform:translateY(-10px) rotate(0deg) !important;transition:transform .25s ease !important}
 .scatter-card:nth-child(1){transform:rotate(-6deg);background:var(--yellow)}
-.scatter-card:nth-child(2){transform:rotate(3deg);background:#fff;margin-top:36px}
+.scatter-card:nth-child(2){transform:rotate(3deg) translateY(36px);background:#fff}
 .scatter-card:nth-child(3){transform:rotate(-2deg);background:var(--mint-pale)}
 .scatter-card h4{margin:0 0 8px;font-size:20px;letter-spacing:-.02em}
 .scatter-card p{margin:0;font-size:13px;line-height:1.5;opacity:.75}
@@ -93,6 +93,18 @@ img{max-width:100%;display:block}
 .scatter-card.slot{background:transparent;border:2px dashed rgba(17,17,27,.25);box-shadow:none;align-items:center;text-align:center;justify-content:center;gap:10px}
 .scatter-card.slot strong{font-size:15px}
 .scatter-card.slot span{font-size:13px;opacity:.65}
+
+/* Como en el mazo de tarjetas de la referencia: antes de entrar en pantalla
+   quedan amontonadas con rotaciones grandes, y recién se reparten a su
+   lugar cuando la sección hace scroll a la vista (mismo trigger que
+   .reveal), una por una con un pequeño delay entre cada una. */
+.scatter:not(.is-visible) .scatter-card{transition-delay:0s !important}
+.scatter:not(.is-visible) .scatter-card:nth-child(1){transform:translate(180px,-10px) rotate(-30deg) scale(.93)}
+.scatter:not(.is-visible) .scatter-card:nth-child(2){transform:translate(0,10px) rotate(42deg) scale(.93)}
+.scatter:not(.is-visible) .scatter-card:nth-child(3){transform:translate(-180px,-4px) rotate(-50deg) scale(.93)}
+.scatter.is-visible .scatter-card:nth-child(1){transition-delay:.04s}
+.scatter.is-visible .scatter-card:nth-child(2){transition-delay:.16s}
+.scatter.is-visible .scatter-card:nth-child(3){transition-delay:.28s}
 
 /* case study */
 .case{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(30px,5vw,70px);align-items:center}
@@ -154,4 +166,8 @@ footer.tl-footer a{text-decoration:none;color:#fff}
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none;transition:none}
   .shelf-icon{opacity:1}
+  .scatter-card{transition:none !important}
+  .scatter:not(.is-visible) .scatter-card:nth-child(1){transform:rotate(-6deg)}
+  .scatter:not(.is-visible) .scatter-card:nth-child(2){transform:rotate(3deg) translateY(36px)}
+  .scatter:not(.is-visible) .scatter-card:nth-child(3){transform:rotate(-2deg)}
 }
