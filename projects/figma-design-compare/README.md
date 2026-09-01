@@ -6,13 +6,15 @@ mano a una smartlist en Jira.
 
 ## Estado actual
 
-Flujo completo funcionando end-to-end en local: el plugin exporta el frame
+**En producción.** El backend está desplegado en Render:
+`https://designrebels.onrender.com`. El plugin exporta el frame
 seleccionado, subís la captura de la implementación, y **Comparar con
-backend** le pega de verdad a `POST /compare`, que llama a Claude (vision) y
+backend** le pega de verdad a ese servidor, que llama a Claude (vision) y
 devuelve el listado de diferencias en el textarea copiable.
 
-Falta únicamente desplegar el backend a un dominio real (hoy solo corre en
-`localhost:3000`, apto para desarrollo).
+Es el plan free de Render: si no recibe tráfico por 15 minutos se duerme, y
+la primera comparación después de eso tarda ~30-50s en responder mientras
+arranca de nuevo (el plugin avisa esto en el status mientras espera).
 
 ## Estructura
 
@@ -33,19 +35,9 @@ backend/
 └── .env.example
 ```
 
-## Cómo probarlo completo
+## Cómo usarlo
 
-1. Levantar el backend (ver `backend/README.md` para el setup con
-   `ANTHROPIC_API_KEY` y, si hace falta, `ANTHROPIC_WORKSPACE_ID`):
-
-   ```bash
-   cd backend
-   npm install
-   cp .env.example .env   # completar las keys
-   npm run dev             # localhost:3000
-   ```
-
-2. Compilar y cargar el plugin en Figma:
+1. Compilar y cargar el plugin en Figma (solo hace falta una vez):
 
    ```bash
    cd plugin
@@ -57,15 +49,31 @@ backend/
    apuntando a `plugin/manifest.json`, y correrlo desde
    **Plugins → Development → Design Compare**.
 
-3. En el plugin: seleccionar un frame/componente → **Exportar selección
+2. En el plugin: seleccionar un frame/componente → **Exportar selección
    actual**, subir la captura de la implementación real, y tocar
    **Comparar con backend**. El resultado aparece en el textarea, listo para
    copiar a una smartlist de Jira.
 
-## Pendiente para producción
+No hace falta levantar nada en local — el plugin le pega directo al backend
+en Render.
 
-- Desplegar el backend a un dominio propio (HTTPS) y actualizar:
-  - `plugin/manifest.json` → `networkAccess.allowedDomains` con ese dominio.
-  - `BACKEND_URL` en `plugin/ui.html` (hoy apunta a `http://localhost:3000/compare`).
-- `devAllowedDomains` en el manifest ya cubre el desarrollo local — no hace
-  falta ngrok mientras se prueba en la misma máquina donde corre el backend.
+## El backend (Render)
+
+Deployado desde la branch `claude/figma-design-implementation-compare-li9fpn`
+del repo, con **Root Directory** `projects/figma-design-compare/backend`,
+build `npm install && npm run build`, start `npm start`, plan **Free**.
+
+Variables de entorno configuradas en el dashboard de Render (no en el repo):
+`ANTHROPIC_API_KEY` y `ANTHROPIC_WORKSPACE_ID`.
+
+Para desarrollar/debuggear el backend en local, ver `backend/README.md` — el
+mismo setup con `.env` y `npm run dev` sigue funcionando para probar cambios
+antes de pushearlos (Render redeploya solo con cada push a la branch
+conectada).
+
+## Pendiente
+
+- Si en algún momento se mergea esta branch a `main`, cambiar la branch que
+  Render tiene conectada para que el deploy siga el historial de `main`.
+- Evaluar pasar al plan Starter de Render ($7/mes) si el cold-start de 30-50s
+  del free tier resulta molesto en el uso diario.

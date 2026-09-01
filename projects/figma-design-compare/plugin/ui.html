@@ -257,9 +257,7 @@
 
       // --- 3. Comparar ---
 
-      // En dev le pega a localhost (declarado en manifest.json > networkAccess.devAllowedDomains).
-      // Al desplegar el backend, reemplazar por esa URL y declararla en networkAccess.allowedDomains.
-      const BACKEND_URL = "http://localhost:3000/compare";
+      const BACKEND_URL = "https://designrebels.onrender.com/compare";
 
       async function compareWithBackend(design, implementation) {
         const response = await fetch(BACKEND_URL, {
@@ -300,7 +298,7 @@
         compareBtn.disabled = true;
         copyBtn.disabled = true;
         compareStatus.classList.remove("error");
-        compareStatus.textContent = "Comparando con el backend...";
+        compareStatus.textContent = "Comparando con el backend... (puede tardar ~30s si estaba inactivo)";
         resultOutput.value = "";
 
         try {

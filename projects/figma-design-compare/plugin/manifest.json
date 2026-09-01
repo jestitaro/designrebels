@@ -6,7 +6,7 @@
   "ui": "ui.html",
   "editorType": ["figma"],
   "networkAccess": {
-    "allowedDomains": ["https://TU-BACKEND.example.com"],
+    "allowedDomains": ["https://designrebels.onrender.com"],
     "devAllowedDomains": ["http://localhost:3000"],
     "reasoning": "Envía el PNG exportado del frame y la captura subida al backend propio para el análisis de diferencias con Claude."
   }
