@@ -255,42 +255,30 @@
         reader.readAsDataURL(file);
       });
 
-      // --- 3. Comparar (stub del llamado al backend) ---
+      // --- 3. Comparar ---
+
+      // En dev le pega a localhost (declarado en manifest.json > networkAccess.devAllowedDomains).
+      // Al desplegar el backend, reemplazar por esa URL y declararla en networkAccess.allowedDomains.
+      const BACKEND_URL = "http://localhost:3000/compare";
 
       async function compareWithBackend(design, implementation) {
-        // TODO: reemplazar por el fetch real una vez que el backend esté desplegado.
-        // Recordar declarar el dominio del backend en manifest.json > networkAccess.allowedDomains.
-        //
-        // Ejemplo de implementación futura:
-        //
-        // const response = await fetch("https://TU-BACKEND.example.com/compare", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({
-        //     design: { base64: design.base64, fileName: design.fileName },
-        //     implementation: { base64: implementation.base64, fileName: implementation.fileName },
-        //   }),
-        // });
-        //
-        // if (!response.ok) throw new Error(`Backend respondió ${response.status}`);
-        // return response.json(); // { diffs: [{ description, location, type }, ...] }
-
-        console.log("[stub] compareWithBackend llamado con", {
-          design: { fileName: design.fileName },
-          implementation: { fileName: implementation.fileName },
+        const response = await fetch(BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            originalImage: design.base64,
+            implementedImage: implementation.base64,
+          }),
         });
 
-        await new Promise((resolve) => setTimeout(resolve, 600));
+        if (!response.ok) {
+          const errorBody = await response.json().catch(() => null);
+          throw new Error(
+            errorBody?.message || errorBody?.error || `Backend respondió ${response.status}`
+          );
+        }
 
-        return {
-          diffs: [
-            {
-              description: "(stub) Todavía no hay backend conectado — esto es data de ejemplo.",
-              location: "N/A",
-              type: "menor",
-            },
-          ],
-        };
+        return response.json(); // { diffs: [{ description, location, type }, ...] }
       }
 
       function formatDiffsAsPlainText(result) {
