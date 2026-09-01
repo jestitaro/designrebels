@@ -53,7 +53,11 @@ function detectImageMediaType(base64: string): "image/png" | "image/jpeg" {
   throw new Error("No se pudo determinar el tipo de imagen (se esperaba PNG o JPEG).");
 }
 
-const client = new Anthropic();
+const client = new Anthropic({
+  defaultHeaders: process.env.ANTHROPIC_WORKSPACE_ID
+    ? { "anthropic-workspace-id": process.env.ANTHROPIC_WORKSPACE_ID }
+    : undefined,
+});
 
 export async function compareDesignVsImplementation(
   originalImageBase64: string,

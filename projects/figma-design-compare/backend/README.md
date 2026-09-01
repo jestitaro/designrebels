@@ -80,6 +80,20 @@ antes de responder — no depende de que el modelo "se porte bien" con el prompt
    curl -s -X POST http://localhost:3000/compare -H "Content-Type: application/json" -d '{}'
    ```
 
+## Error "anthropic-workspace-id is required..."
+
+Si tu API key está vinculada a tu identidad personal (en vez de ser una key
+"clásica" de organización), la API de Claude va a rechazar el request pidiendo
+el `anthropic-workspace-id`. Solución: en console.anthropic.com → Settings →
+Workspaces, copiá el ID del workspace (empieza con `wrkspc_`) y agregalo a tu
+`.env`:
+
+```
+ANTHROPIC_WORKSPACE_ID=wrkspc_...
+```
+
+Reiniciá `npm run dev` después de editar `.env`.
+
 ## Notas
 
 - CORS está abierto (`cors()` sin restricciones) porque el plugin de Figma
