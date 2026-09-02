@@ -81,10 +81,29 @@
         margin-top: 6px;
         font-size: 11px;
         color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .status.error {
         color: var(--danger);
+      }
+
+      .spinner {
+        width: 10px;
+        height: 10px;
+        flex: none;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       .preview-row {
@@ -132,8 +151,10 @@
 
     <section>
       <h3>1. Diseño original</h3>
-      <div id="exportStatus" class="status">Seleccioná un frame o componente en el canvas — se exporta solo.</div>
-      <button id="exportBtn" class="secondary" disabled>Re-exportar selección</button>
+      <div id="exportStatus" class="status">
+        <span id="exportSpinner" class="spinner" hidden></span>
+        <span id="exportStatusText">Seleccioná un frame o componente en el canvas — se exporta solo.</span>
+      </div>
       <div class="preview-row" id="designPreviewRow" style="display: none">
         <div class="preview">
           <img id="designPreview" alt="Preview del diseño exportado" />
@@ -156,7 +177,10 @@
     <section>
       <h3>3. Comparar</h3>
       <button id="compareBtn" disabled>Comparar con backend</button>
-      <div id="compareStatus" class="status"></div>
+      <div id="compareStatus" class="status">
+        <span id="compareSpinner" class="spinner" hidden></span>
+        <span id="compareStatusText"></span>
+      </div>
       <textarea
         id="resultOutput"
         placeholder="Acá va a aparecer el listado de diferencias, en texto plano y copiable."
@@ -173,8 +197,9 @@
         implementation: null, // { base64, fileName }
       };
 
-      const exportBtn = document.getElementById("exportBtn");
       const exportStatus = document.getElementById("exportStatus");
+      const exportSpinner = document.getElementById("exportSpinner");
+      const exportStatusText = document.getElementById("exportStatusText");
       const designPreviewRow = document.getElementById("designPreviewRow");
       const designPreview = document.getElementById("designPreview");
       const designPreviewLabel = document.getElementById("designPreviewLabel");
@@ -185,6 +210,8 @@
       const implPreviewLabel = document.getElementById("implPreviewLabel");
 
       const compareBtn = document.getElementById("compareBtn");
+      const compareSpinner = document.getElementById("compareSpinner");
+      const compareStatusText = document.getElementById("compareStatusText");
       const compareStatus = document.getElementById("compareStatus");
       const resultOutput = document.getElementById("resultOutput");
       const copyBtn = document.getElementById("copyBtn");
@@ -193,22 +220,16 @@
         compareBtn.disabled = !(state.design && state.implementation);
       }
 
-      // --- 1. Exportar selección desde Figma ---
-
-      exportBtn.addEventListener("click", () => {
-        exportStatus.textContent = "Exportando...";
-        exportStatus.classList.remove("error");
-        parent.postMessage({ pluginMessage: { type: "export-selection" } }, "*");
-      });
+      // --- 1. Exportar selección desde Figma (automático) ---
 
       window.onmessage = (event) => {
         const msg = event.data.pluginMessage;
         if (!msg) return;
 
         if (msg.type === "selection-changed") {
-          exportBtn.disabled = !msg.hasValidSelection;
           exportStatus.classList.remove("error");
-          exportStatus.textContent = msg.hasValidSelection
+          exportSpinner.hidden = !msg.hasValidSelection;
+          exportStatusText.textContent = msg.hasValidSelection
             ? `Exportando "${msg.nodeName}"...`
             : "Seleccioná un frame o componente en el canvas — se exporta solo.";
         }
@@ -220,7 +241,8 @@
             width: msg.width,
             height: msg.height,
           };
-          exportStatus.textContent = `Exportado: "${msg.fileName}"`;
+          exportSpinner.hidden = true;
+          exportStatusText.textContent = `Exportado: "${msg.fileName}"`;
           designPreview.src = `data:image/png;base64,${msg.base64}`;
           designPreviewLabel.textContent = `${msg.fileName}${
             msg.width && msg.height ? ` · ${msg.width}×${msg.height}` : ""
@@ -230,7 +252,8 @@
         }
 
         if (msg.type === "export-error") {
-          exportStatus.textContent = msg.message;
+          exportSpinner.hidden = true;
+          exportStatusText.textContent = msg.message;
           exportStatus.classList.add("error");
         }
       };
@@ -298,18 +321,20 @@
         compareBtn.disabled = true;
         copyBtn.disabled = true;
         compareStatus.classList.remove("error");
-        compareStatus.textContent = "Comparando con el backend... (puede tardar ~30s si estaba inactivo)";
+        compareSpinner.hidden = false;
+        compareStatusText.textContent = "Comparando con el backend... (puede tardar ~30s si estaba inactivo)";
         resultOutput.value = "";
 
         try {
           const result = await compareWithBackend(state.design, state.implementation);
           resultOutput.value = formatDiffsAsPlainText(result);
-          compareStatus.textContent = `${result.diffs.length} diferencia(s) encontrada(s).`;
+          compareStatusText.textContent = `${result.diffs.length} diferencia(s) encontrada(s).`;
           copyBtn.disabled = false;
         } catch (error) {
-          compareStatus.textContent = `Error: ${error.message}`;
+          compareStatusText.textContent = `Error: ${error.message}`;
           compareStatus.classList.add("error");
         } finally {
+          compareSpinner.hidden = true;
           updateCompareAvailability();
         }
       });
