@@ -273,15 +273,15 @@
     </section>
 
     <section>
-      <h3><span class="step">2</span>Implementación (captura local)</h3>
-      <label for="implementationInput" class="file-btn">Elegir captura</label>
+      <h3><span class="step">2</span>Diseño implementado</h3>
+      <label for="implementationInput" class="file-btn">Seleccionar archivo</label>
       <input
         type="file"
         id="implementationInput"
         accept="image/png, image/jpeg"
         class="visually-hidden"
       />
-      <div id="implFileName" class="status">Ningún archivo seleccionado.</div>
+      <div id="implFileName" class="status">Formatos aceptados: PNG o JPG — ningún archivo seleccionado.</div>
       <div class="preview-row" id="implPreviewRow" style="display: none">
         <div class="preview">
           <img id="implPreview" alt="Preview de la captura subida" />
@@ -297,13 +297,11 @@
         <span id="compareSpinner" class="spinner" hidden></span>
         <span id="compareStatusText"></span>
       </div>
-      <textarea
-        id="resultOutput"
-        placeholder="Acá va a aparecer el listado de diferencias, en texto plano y copiable."
-        readonly
-      ></textarea>
-      <div style="margin-top: 8px">
-        <button id="copyBtn" class="secondary" disabled>Copiar resultado</button>
+      <div id="resultBlock" style="display: none">
+        <textarea id="resultOutput" readonly></textarea>
+        <div style="margin-top: 8px">
+          <button id="copyBtn" class="secondary">Copiar resultado</button>
+        </div>
       </div>
     </section>
 
@@ -330,6 +328,7 @@
       const compareSpinner = document.getElementById("compareSpinner");
       const compareStatusText = document.getElementById("compareStatusText");
       const compareStatus = document.getElementById("compareStatus");
+      const resultBlock = document.getElementById("resultBlock");
       const resultOutput = document.getElementById("resultOutput");
       const copyBtn = document.getElementById("copyBtn");
 
@@ -437,7 +436,7 @@
         if (!state.design || !state.implementation) return;
 
         compareBtn.disabled = true;
-        copyBtn.disabled = true;
+        resultBlock.style.display = "none";
         compareStatus.classList.remove("error");
         compareSpinner.hidden = false;
         compareStatusText.textContent = "Comparando con el backend... (puede tardar ~30s si estaba inactivo)";
@@ -447,7 +446,7 @@
           const result = await compareWithBackend(state.design, state.implementation);
           resultOutput.value = formatDiffsAsPlainText(result);
           compareStatusText.textContent = `${result.diffs.length} diferencia(s) encontrada(s).`;
-          copyBtn.disabled = false;
+          resultBlock.style.display = "block";
         } catch (error) {
           compareStatusText.textContent = `Error: ${error.message}`;
           compareStatus.classList.add("error");
