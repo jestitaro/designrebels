@@ -262,7 +262,7 @@
       <h3><span class="step">1</span>Diseño original</h3>
       <div id="exportStatus" class="status">
         <span id="exportSpinner" class="spinner" hidden></span>
-        <span id="exportStatusText">Seleccioná un frame o componente en el canvas — se exporta solo.</span>
+        <span id="exportStatusText">Seleccioná un frame o componente en el canvas y se exporta automáticamente.</span>
       </div>
       <div class="preview-row" id="designPreviewRow" style="display: none">
         <div class="preview">
@@ -347,7 +347,7 @@
           exportSpinner.hidden = !msg.hasValidSelection;
           exportStatusText.textContent = msg.hasValidSelection
             ? `Exportando "${msg.nodeName}"...`
-            : "Seleccioná un frame o componente en el canvas — se exporta solo.";
+            : "Seleccioná un frame o componente en el canvas y se exporta automáticamente.";
         }
 
         if (msg.type === "export-success") {
