@@ -39,6 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
     syncTitleRelease();
   }
 
+  /* ---------- Hero: mockups flotantes con rotación ---------- */
+  const heroStage = document.getElementById('heroStage');
+  if (heroStage) {
+    requestAnimationFrame(() => heroStage.classList.add('is-active'));
+
+    function rotateSlot(selector, interval) {
+      const items = heroStage.querySelectorAll(selector + ' .slot-item');
+      if (items.length < 2) return;
+      let index = 0;
+      setInterval(() => {
+        items[index].classList.remove('active');
+        index = (index + 1) % items.length;
+        items[index].classList.add('active');
+      }, interval);
+    }
+    rotateSlot('.slot-left', 3200);
+    rotateSlot('.slot-top', 3600);
+    rotateSlot('.slot-right', 4000);
+  }
+
   /* ---------- Reveal on scroll ---------- */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
