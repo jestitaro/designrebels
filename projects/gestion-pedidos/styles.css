@@ -226,6 +226,10 @@ a { color: inherit; }
 }
 .slot-item.active { opacity: 1; }
 
+@media (min-width: 901px) {
+  .violet-back { width: 70%; }
+}
+
 @media (max-width: 900px) {
   .hero-pedidos { grid-template-columns: 1fr; padding-top: 2.5rem; }
   .hero-stage { min-height: 340px; margin-top: .5rem; }
