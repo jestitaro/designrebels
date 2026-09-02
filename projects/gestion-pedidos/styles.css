@@ -215,7 +215,7 @@ a { color: inherit; }
 .hero-stage.is-active .desktop-card { opacity: 1; transform: translateX(-50%); }
 
 .slot { position: absolute; z-index: 4; pointer-events: none; }
-.slot-left  { left: 0;  top: 6%;  width: 29%; }
+.slot-left  { left: 0;  top: 6%;  width: 37%; }
 .slot-top   { right: 0; top: 6%;  width: 44%; }
 .slot-right { right: 0; top: 50%; width: 40%; }
 
