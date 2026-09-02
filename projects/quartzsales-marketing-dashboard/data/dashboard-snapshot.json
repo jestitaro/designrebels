@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-25T09:41:24.606Z",
-  "group": "A",
+  "generatedAt": "2026-09-02T13:29:01.039Z",
+  "group": "C",
   "own": {
     "linkedin": {
-      "followers": 2870,
+      "followers": 2872,
       "employees": 8,
-      "lastSynced": "2026-08-25T09:40:53.840Z",
+      "lastSynced": "2026-09-02T13:28:40.965Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -29,7 +29,7 @@
       "gradEnd": "#6366f1",
       "size": "251-500",
       "stats": {
-        "followers": "74.2K",
+        "followers": "74.3K",
         "posts_mes": 18,
         "engagement": "3.2",
         "funding": "~$13M"
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-08-25T09:41:00.214Z",
+      "lastSynced": "2026-08-31T16:57:16.872Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -91,7 +91,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-08-25T09:41:09.761Z",
+      "lastSynced": "2026-08-31T16:57:25.675Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -202,7 +202,7 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-08-23T09:32:43.584Z",
+      "lastSynced": "2026-09-01T14:03:18.679Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -276,7 +276,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-08-23T09:32:57.657Z",
+      "lastSynced": "2026-09-01T14:03:32.481Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -363,7 +363,7 @@
       "gradEnd": "#d97706",
       "size": "11-50",
       "stats": {
-        "followers": "539",
+        "followers": "540",
         "posts_mes": 4,
         "engagement": "1.8",
         "funding": "Sin datos"
@@ -387,7 +387,7 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": "2026-08-24T09:54:12.865Z",
+      "lastSynced": "2026-09-02T13:28:52.303Z",
       "syncStatus": "ok",
       "syncError": null
     },

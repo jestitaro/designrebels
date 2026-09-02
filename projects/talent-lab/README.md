@@ -1,61 +1,64 @@
 # Talent Lab · by QuartzSales
 
-Landing + app funcional para que cada equipo de QuartzSales tenga su propio "Lab": sube actualizaciones de lo que está construyendo y el resto de la compañía deja feedback y valoraciones — estilo cafecito, pero para ideas y proyectos internos.
+Landing estática (sin backend, sin login) con dos partes:
+
+1. **Vidriera**: proyectos reales creados por gente de QuartzSales por iniciativa propia. Cada talento tiene su propia página de detalle en `talentos/` (hoy: Talent Games by Design Rebels).
+2. **Clasificados**: búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló — las "páginas amarillas" del talento interno.
+
+No hay carga por admin ni cuentas: el contenido es fijo, se edita directo en el HTML.
 
 ## Arquitectura
 
-Mismo patrón que Dino Cup (`projects/qs-league`): un proyecto Firebase propio y dedicado, sin capas de admin separadas — cualquier usuario autenticado puede crear su Lab, publicar actualizaciones en el que le pertenece, y dejar feedback en cualquiera.
-
 ```
 projects/talent-lab/
-├── index.html          landing pública + vista de detalle de Lab (SPA con router por hash) + modales (login/signup, crear Lab, nueva actualización)
-├── firebase.json        apunta a firestore.rules
-├── .firebaserc            proyecto default: talent-lab-quartzsales
-├── firestore.rules       reglas completas del proyecto talent-lab-quartzsales
-├── README.md              este archivo
+├── index.html                    landing principal (hero, vidriera, clasificados, CTA)
+├── README.md
+├── talentos/
+│   └── talent-games.html         página de detalle de un talento (ver abajo)
 └── assets/
-    ├── firebase.js         Auth + Firestore (compat SDK) — window.TalentLabFirebase
-    ├── app.js               toda la UI: routing, render, formularios, eventos
-    └── styles.css           un solo stylesheet, reutiliza los tokens de color de Design Rebels (--purple/--coral/--mint/--blue/--yellow, tipografía Manrope)
+    ├── styles.css       tokens de color reutilizados del hub de Design Rebels + el layout
+    ├── app.js            scroll-reveal (compartido por index.html y las páginas de talentos/)
+    ├── hero-physics.js   caída de los íconos del hero de index.html (ver abajo)
+    └── vendor/
+        ├── matter.min.js          Matter.js vendorizado (sin depender de un CDN externo)
+        └── matter-js-LICENSE.txt  su licencia MIT
 ```
 
-No hay separación público/admin como en Dino Cup: acá todos los usuarios autenticados tienen los mismos permisos (crear su propio Lab, publicar en el que les pertenece, opinar en cualquiera).
+### Página de un talento (`talentos/*.html`)
 
-## Modelo de datos (Firestore, proyecto `talent-lab-quartzsales`)
+Cada card de la Vidriera enlaza a su propia página dentro de `talentos/`, en vez de abrir un "caso destacado" dentro de `index.html`. Todas siguen la misma estructura, con las mismas secciones a pantalla completa que el resto del sitio:
 
-```
-talentlab_profiles   {uid, email, displayName, createdAt} — cada usuario crea/edita solo el suyo, lectura pública
-talentlab_labs       {id, ownerUid, ownerName, name, tagline, description, category, links[], createdAt, updatedAt}
-talentlab_updates    {id, labId, authorUid, authorName, title, body, createdAt} — solo el dueño del Lab puede crear
-talentlab_feedback   {id, labId, updateId, authorUid, authorName, rating(1-5), comment, createdAt}
-```
+1. Intro (idea en una línea + links de acción, ej. jugar los juegos)
+2. La idea
+3. Qué resuelve
+4. Quién lo lleva adelante
+5. Por qué lo eligió (como pull-quote, reutilizando `.quote-stack`)
+6. Carrusel horizontal con otros talentos (`.carousel`) + link de vuelta a la vidriera
+7. Footer (el mismo `.tl-footer` de `index.html`)
 
-Los ratings **nunca se guardan cacheados**: el promedio de cada actualización y de cada Lab se recalcula en el cliente sumando `talentlab_feedback` cada vez que se pinta la pantalla (mismo principio que el ranking de Dino Cup). En v1 nada se edita ni se borra desde el cliente — ver "Pendiente" más abajo.
+Para sumar un talento nuevo: copiar `talentos/talent-games.html`, reemplazar el contenido de cada sección, y agregar una `.scatter-card` en `index.html` (`#talentos`) apuntando a `talentos/<archivo>.html`.
 
-`firestore.rules` es la fuente de verdad de estos permisos (usa `get()` sobre `talentlab_labs` para verificar que quien publica una actualización sea el dueño del Lab).
+Diseño inspirado en la estructura de una landing de referencia (ritmo de secciones a pantalla completa con colores planos alternados, header flotante fijo, cards de portfolio rotadas/superpuestas, sección de testimonio con capas de color apiladas) — la identidad visual (colores, tipografía Manrope) es la de Design Rebels, no una copia literal de la referencia.
 
-## Puesta en marcha (pasos manuales, fuera de este repo)
+### El hero: caída con física real, no animación guionada
 
-Este código está listo pero necesita un proyecto Firebase real conectado. Nadie con acceso a este repo puede crear ni configurar ese proyecto por vos — son pasos que hace una persona con cuenta de Firebase:
+Los íconos del hero (mouse, celular, teclado, laptop, anteojos, cuaderno, cerebro, lamparita) caen con una simulación de física real (gravedad + colisiones) hecha con [Matter.js](https://brm.io/matter-js/), no con un `@keyframes` de CSS. La referencia que se usó de base para esto también usa un motor de física sobre un `<canvas>` — acá se hace lo mismo pero renderizando sobre los mismos `<div>`/`<svg>` del DOM (se lee la posición/ángulo de cada body de Matter.js en cada frame y se aplica como `transform`), para no perder el hover ni la semántica de los íconos.
 
-1. **Crear el proyecto** en [Firebase Console](https://console.firebase.google.com/) → nombre sugerido `talent-lab-quartzsales` (o el que prefieras, pero actualizá `.firebaserc` y `assets/firebase.js` con el nombre real).
-2. **Habilitar Authentication** → método Email/contraseña.
-3. **Habilitar Firestore** (modo producción).
-4. **Desplegar las reglas**: con el [Firebase CLI](https://firebase.google.com/docs/cli) instalado, `firebase login`, y desde `projects/talent-lab/`:
-   ```
-   firebase deploy --only firestore:rules
-   ```
-5. **Copiar la config real** desde Firebase Console (Configuración del proyecto → tus apps → SDK setup) y reemplazar los valores `REEMPLAZAR_*` en `assets/firebase.js` (`apiKey`, `messagingSenderId`, `appId`).
-6. **Cargar el primer Lab de verdad**: una vez desplegado, entrar a la app, crear una cuenta, y usar el botón "Crear mi Lab" para dar de alta **Talent Games by Design Rebels** (nombre, resumen, descripción, y como enlaces: `Jugar Dino Chomp :: ../dino-chomp/`, `Jugar Dino Escape :: ../dino-escape/`, `Jugar Meteorito Run :: ../meteorito-run/`, todos ya publicados en este mismo repo). No hay seed automático por código a propósito — ver nota abajo.
+Por eso el orden en que aterrizan y cómo quedan apilados nunca es igual dos veces — lo resuelve el motor, no un guion. Arranca recién cuando `.icon-shelf` entra bien en pantalla (`IntersectionObserver` con `rootMargin` negativo, para exigir scroll real y no un pixel asomando en el borde) y se detiene solo cuando todos los cuerpos quedan dormidos (`engine.enableSleeping`), para no gastar CPU de más. Al pasar el mouse por un ícono ya aterrizado, se le aplica un impulso real (`Body.applyForce`) — lo despierta y lo hace reaccionar físicamente, no una transición CSS simulando el efecto.
 
-### Por qué no hay un Lab "sembrado" por código
+Con `prefers-reduced-motion: reduce` no corre la simulación: los íconos se acomodan en una fila fija, sin animación.
 
-Dino Cup tuvo un bug real (ver `../qs-league/HANDOFF.md`) donde un seed automático se re-ejecutaba en cada login y resucitaba datos borrados a mano. Para no repetir ese patrón, acá el primer Lab (Talent Games) se crea a mano, una sola vez, desde la propia UI ya en producción — se vuelve un dato real más, dueño de una cuenta real, sin ninguna lógica especial en el código que pueda resucitarlo o pisarlo.
+## Cómo actualizar el contenido
+
+Todo vive directo en `index.html`, en texto plano:
+
+- **Vidriera** (`#talentos`): cada talento es una `.scatter-card` dentro de `.scatter`, que enlaza a su página en `talentos/`. Hoy hay 1 real + 2 "slots" vacíos invitando a sumar más — reemplazar los slots por cards reales (y su página en `talentos/`) a medida que entren proyectos.
+- **Página de un talento** (`talentos/talent-games.html`): ver "Página de un talento" más arriba.
+- **Clasificados** (`#clasificados`): cada búsqueda es un `.ad-card` dentro de `.ads-grid`. Los 3 actuales están marcados "Ejemplo" — reemplazar por las búsquedas reales y sacar el badge `<span class="example">`.
+- **Contacto**: hoy apunta a `talentlab@quartzsales.com` (placeholder) en dos lugares (`.chrome-cta` del header no, pero sí `#clasificados` y `#contacto`) — cambiar por el canal de contacto real (mail de equipo, WhatsApp, formulario).
 
 ## Pendiente
 
-- Editar o borrar Labs/actualizaciones/feedback (hoy es todo de solo-creación, igual que el ledger de Dino Cup).
-- Imágenes en las actualizaciones (v1 es solo texto — evita la complejidad de Storage hasta que haga falta).
-- Restringir el signup a dominios de email de QuartzSales (hoy cualquier email puede crear cuenta; se puede agregar una validación en `firestore.rules` sobre `request.auth.token.email` si hace falta).
-- Notificaciones cuando alguien deja feedback en tu Lab.
-- Confirmar que `firestore.rules` esté desplegado en el proyecto real (paso 4 arriba).
+- Definir el canal de contacto real para "Me postulo" (hoy `mailto:talentlab@quartzsales.com`, un placeholder).
+- Cargar los talentos y clasificados reales que reemplacen a los de ejemplo.
+- Si en algún momento se necesita que cualquiera pueda publicar su propio talento o clasificado sin pasar por el código, ahí sí hace falta volver a un backend (Firebase, como en `../qs-league`) — decisión consciente, no la versión actual.

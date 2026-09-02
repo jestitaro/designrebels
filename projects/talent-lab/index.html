@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Talent Lab by QuartzSales · Cada equipo sube avances de su proyecto y el resto suma feedback y valoraciones, estilo cafecito." />
+  <meta name="description" content="Talent Lab by QuartzSales · Vidriera de talentos internos y clasificados para encontrar a quien nadie se postuló." />
   <title>Talent Lab · by QuartzSales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,163 +13,185 @@
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <header class="site-header">
-    <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub">
-      <span class="brand-mark" aria-hidden="true">TL</span>
-      <span>Talent Lab<br><small>by QuartzSales</small></span>
-    </a>
-    <div class="header-actions" id="header-actions">
-      <a class="button button-ghost" href="#labs">Ver Labs</a>
-      <button class="button button-dark" id="btn-open-auth" type="button">Iniciar sesión</button>
-    </div>
-  </header>
+  <a class="chrome-logo" href="../../index.html" aria-label="Design Rebels, volver al hub"><span>TL</span> Talent Lab</a>
+  <a class="chrome-cta" href="#contacto">Sumar mi talento</a>
+  <div class="chrome-side" aria-hidden="true"><span>Talent Lab · by QuartzSales</span></div>
 
   <main id="contenido">
-    <!-- ============ HOME ============ -->
-    <section id="view-home">
-      <section class="hero grid-bg" id="inicio">
-        <div class="hero-copy reveal">
-          <p class="eyebrow"><span></span> QuartzSales · Talent Lab</p>
-          <h1>Tu proyecto, <em>en movimiento</em>.</h1>
-          <p class="hero-text">Cada equipo tiene su propio Lab: sube avances de lo que está construyendo y el resto de QuartzSales suma feedback y valoraciones — como un cafecito, pero para ideas.</p>
+
+    <!-- HERO -->
+    <section class="panel panel-ink hero-panel">
+      <div class="panel-inner">
+        <div class="hero-grid reveal">
+          <p class="eyebrow center"><span></span>QuartzSales · Talent Lab</p>
+          <h1 class="hero-title">Talento QuartzSales, <em>a la vista</em><span class="eye-wrap" aria-hidden="true"><span class="eye-iris"><span class="eye-pupil"></span></span></span>.</h1>
+          <p class="hero-quote">Porque lo esencial es invisible a los ojos… hasta que alguien lo hace visible.</p>
+          <p class="hero-text">Talent Lab: oportunidades y talentos que estaban esperando salir de la Cámara de los Secretos.</p>
           <div class="hero-actions">
-            <a class="button button-dark" href="#labs">Ver los Labs <span aria-hidden="true">↗</span></a>
-            <button class="button" id="btn-create-lab-hero" type="button">Crear mi Lab</button>
+            <a class="btn btn-solid" href="#talentos">Ver la vidriera ↓</a>
+            <a class="btn btn-outline" href="#clasificados">Ver clasificados</a>
           </div>
         </div>
-        <div class="hero-board reveal" aria-hidden="true">
-          <div class="feed-card tilt">
-            <header><span>Talent Games · Design Rebels</span><span class="feed-stars">★★★★★</span></header>
-            <p>"Probamos el primer minijuego en la reunión de equipo y funcionó buenísimo para romper el hielo."</p>
-          </div>
-          <div class="feed-bubble">+1 valoración ✦</div>
-          <div class="feed-card">
-            <header><span>Nueva actualización</span><span>hace 2h</span></header>
-            <p>Sumamos un ranking en vivo para las capacitaciones. Próximo paso: modo cliente.</p>
-          </div>
-        </div>
-      </section>
+      </div>
 
-      <section class="section" id="como-funciona">
-        <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow"><span></span> Cómo funciona</p>
-            <h2>Compartí. Recibí feedback. Iterá.</h2>
-          </div>
-          <p>Talent Lab no es una vidriera estática: es un feed vivo de lo que cada equipo está probando dentro de QuartzSales.</p>
-        </div>
-        <div class="steps-grid">
-          <article class="reveal"><span>01</span><h3>Creá tu Lab</h3><p>Contá qué proyecto estás construyendo: nombre, para qué sirve y enlaces a lo que ya tengas andando.</p></article>
-          <article class="reveal"><span>02</span><h3>Subí actualizaciones</h3><p>Cada avance real que compartís queda en la línea de tiempo de tu Lab, visible para todo el equipo.</p></article>
-          <article class="reveal"><span>03</span><h3>Recibí feedback</h3><p>Tus compañeros comentan y valoran cada actualización — señal real para saber qué seguir puliendo.</p></article>
-        </div>
-      </section>
+      <a class="scroll-cue" href="#talentos" aria-label="Scroll para ver más">
+        <span class="scroll-cue-arrow" aria-hidden="true">↓</span>
+      </a>
 
-      <section class="section" id="labs">
-        <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow"><span></span> Labs activos</p>
-            <h2>Lo que se está cocinando.</h2>
-          </div>
-          <button class="button button-dark" id="btn-create-lab" type="button">+ Crear mi Lab</button>
+      <div class="icon-shelf" aria-hidden="true">
+        <!-- mouse -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(120px, 20vw);color:var(--coral)">
+          <svg viewBox="0 0 70 110" width="100%"><rect x="8" y="8" width="54" height="94" rx="27" fill="currentColor"/><rect x="32" y="8" width="6" height="26" rx="3" fill="rgba(17,17,27,.2)"/></svg>
         </div>
-        <div class="labs-grid" id="labs-grid"></div>
-        <div class="empty-state hidden" id="labs-empty">
-          <p><strong>Todavía no hay Labs cargados.</strong><br>Sé el primero en contar en qué estás trabajando.</p>
-          <button class="button button-dark" id="btn-create-lab-empty" type="button">Crear el primer Lab</button>
+        <!-- celular -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(104px, 17vw);color:var(--yellow)">
+          <svg viewBox="0 0 60 120" width="100%"><rect x="5" y="5" width="50" height="110" rx="14" fill="currentColor"/><circle cx="30" cy="17" r="3.5" fill="rgba(17,17,27,.2)"/><rect x="19" y="99" width="22" height="5" rx="2.5" fill="rgba(17,17,27,.2)"/></svg>
         </div>
-      </section>
+        <!-- lamparita -->
+        <div class="shelf-icon" data-shape="circle" style="width:min(150px, 24vw);color:var(--yellow)">
+          <svg viewBox="0 0 80 130" width="100%"><circle cx="40" cy="46" r="34" fill="currentColor"/><rect x="26" y="76" width="28" height="20" rx="5" fill="currentColor"/><g stroke="rgba(17,17,27,.22)" stroke-width="4"><line x1="26" y1="100" x2="54" y2="100"/><line x1="26" y1="107" x2="54" y2="107"/></g></svg>
+        </div>
+        <!-- teclado -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(230px, 38vw);color:var(--mint)">
+          <svg viewBox="0 0 150 70" width="100%"><rect x="5" y="5" width="140" height="60" rx="14" fill="currentColor"/><g fill="rgba(17,17,27,.2)"><rect x="18" y="20" width="12" height="10" rx="3"/><rect x="38" y="20" width="12" height="10" rx="3"/><rect x="58" y="20" width="12" height="10" rx="3"/><rect x="78" y="20" width="12" height="10" rx="3"/><rect x="98" y="20" width="12" height="10" rx="3"/><rect x="118" y="20" width="14" height="10" rx="3"/><rect x="18" y="40" width="114" height="10" rx="5"/></g></svg>
+        </div>
+        <!-- laptop -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(250px, 41vw);color:var(--blue)">
+          <svg viewBox="0 0 140 110" width="100%"><rect x="25" y="6" width="90" height="66" rx="10" fill="currentColor"/><rect x="34" y="15" width="72" height="48" rx="4" fill="rgba(17,17,27,.18)"/><rect x="10" y="78" width="120" height="16" rx="8" fill="currentColor"/></svg>
+        </div>
+        <!-- anteojos -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(220px, 37vw);color:var(--violet)">
+          <svg viewBox="0 0 170 60" width="100%"><g fill="currentColor"><rect x="0" y="24" width="18" height="7" rx="3.5"/><rect x="152" y="24" width="18" height="7" rx="3.5"/><rect x="10" y="6" width="60" height="42" rx="18"/><rect x="100" y="6" width="60" height="42" rx="18"/><rect x="66" y="22" width="38" height="8" rx="4"/></g></svg>
+        </div>
+        <!-- cuaderno + lapicera -->
+        <div class="shelf-icon" data-shape="rect" style="width:min(170px, 28vw);color:var(--pink-pale)">
+          <svg viewBox="0 0 100 130" width="100%"><rect x="10" y="10" width="80" height="110" rx="10" fill="currentColor"/><g fill="rgba(17,17,27,.22)"><circle cx="16" cy="26" r="3"/><circle cx="16" cy="46" r="3"/><circle cx="16" cy="66" r="3"/><circle cx="16" cy="86" r="3"/><circle cx="16" cy="106" r="3"/></g><g transform="rotate(38 60 60)"><rect x="30" y="52" width="70" height="14" rx="7" fill="var(--purple)"/><path d="M96 52 L112 59 L96 66 Z" fill="var(--ink)"/></g></svg>
+        </div>
+        <!-- cerebro -->
+        <div class="shelf-icon" data-shape="circle" style="width:min(180px, 30vw);color:var(--coral)">
+          <svg viewBox="0 0 120 100" width="100%">
+            <path d="M22,55 C6,52 6,28 22,24 C20,8 46,2 54,14 C60,2 88,4 90,20 C106,22 108,48 92,52 C96,68 70,76 62,64 C58,76 30,74 26,60 Z" fill="currentColor"/>
+            <rect x="50" y="62" width="18" height="18" rx="7" fill="currentColor"/>
+            <g stroke="rgba(17,17,27,.3)" stroke-width="3.5" fill="none" stroke-linecap="round">
+              <path d="M30,26 Q40,18 50,26"/>
+              <path d="M62,18 Q72,12 84,20"/>
+              <path d="M22,40 Q30,44 26,52"/>
+              <path d="M94,32 Q100,38 92,46"/>
+              <path d="M46,30 Q58,42 50,56"/>
+              <path d="M60,30 Q70,40 66,54"/>
+            </g>
+          </svg>
+        </div>
+      </div>
     </section>
 
-    <!-- ============ LAB DETAIL ============ -->
-    <section id="view-lab" class="hidden">
-      <div class="lab-detail">
-        <a class="back-link" href="#labs">← Volver a Labs</a>
-        <div id="lab-detail-content"></div>
+    <!-- POR QUÉ EXISTE -->
+    <section class="panel panel-paper">
+      <div class="panel-inner reveal">
+        <p class="eyebrow"><span></span>Por qué existe</p>
+        <p class="statement">Hay proyectos increíbles dando vueltas por QuartzSales que <span class="muted">casi nadie conoce</span>. Y hay lugares donde falta una mano que <span class="muted">todavía nadie levantó</span>. Talent Lab existe para las dos cosas.</p>
+      </div>
+    </section>
+
+    <!-- VIDRIERA -->
+    <section class="panel panel-blue" id="talentos">
+      <div class="panel-inner">
+        <div class="ads-head reveal">
+          <div>
+            <p class="eyebrow"><span></span>Vidriera</p>
+            <h2 style="margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.03em">Lo que ya está sonando.</h2>
+          </div>
+          <p>Proyectos reales creados por gente de QuartzSales, en su tiempo y con su propia iniciativa.</p>
+        </div>
+        <div class="scatter reveal">
+          <a class="scatter-card" href="talentos/talent-games.html">
+            <span class="tag">Design Rebels</span>
+            <div>
+              <h4>Talent Games</h4>
+              <p>Minijuegos para reuniones, capacitaciones, eventos y clientes.</p>
+            </div>
+          </a>
+          <a class="scatter-card slot" href="#contacto">
+            <strong>Tu proyecto acá</strong>
+            <span>Contanos qué estás construyendo</span>
+          </a>
+          <a class="scatter-card slot" href="#contacto">
+            <strong>Espacio libre</strong>
+            <span>Próximamente más talentos</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLASIFICADOS -->
+    <section class="panel panel-pink" id="clasificados">
+      <div class="panel-inner">
+        <div class="ads-head reveal">
+          <div>
+            <p class="eyebrow"><span></span>Clasificados</p>
+            <h2 style="margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.03em">Las páginas amarillas del talento.</h2>
+          </div>
+          <p>Búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló. Si alguna te suena a vos, escribinos.</p>
+        </div>
+        <div class="ads-grid reveal">
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Alguien que arme trivias para capacitaciones de ventas</h4>
+            <p>Buscamos a alguien con ganas de diseñar preguntas y dinámicas para las próximas capacitaciones del equipo comercial.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Voz para locuciones de video internos</h4>
+            <p>Necesitamos una voz para los próximos videos de onboarding y comunicación interna.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+          <div class="ad-card">
+            <span class="example">Ejemplo</span>
+            <h4>Ilustrador/a para stickers de equipo</h4>
+            <p>Queremos un set de stickers propios para usar en Slack y en las presentaciones internas.</p>
+            <a href="mailto:talentlab@quartzsales.com?subject=Quiero%20postularme%20a%20un%20clasificado">Me postulo →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISIÓN / QUOTE -->
+    <section class="panel panel-paper">
+      <div class="panel-inner reveal">
+        <div class="quote-stack">
+          <div class="quote-layer l1"></div>
+          <div class="quote-layer l2"></div>
+          <div class="quote-card">
+            <p class="quote-text">"El mejor talento de QuartzSales no siempre está en el organigrama. A veces solo necesita una vidriera."</p>
+            <p class="quote-foot">— Design Rebels</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="panel panel-green" id="contacto">
+      <div class="panel-inner cta-panel reveal">
+        <p class="eyebrow"><span></span>Sumate</p>
+        <h2 class="cta-title">¿Tenés un proyecto para mostrar o una búsqueda para publicar?</h2>
+        <div class="cta-actions">
+          <a class="btn btn-solid" href="mailto:talentlab@quartzsales.com?subject=Quiero%20sumar%20mi%20talento">Escribinos ↗</a>
+          <a class="btn btn-outline" href="../../index.html">Volver al hub</a>
+        </div>
+        <p class="cta-note">talentlab@quartzsales.com</p>
       </div>
     </section>
   </main>
 
-  <footer>
-    <strong>Talent Lab</strong>
-    <span>by QuartzSales · Design Rebels · 2026</span>
-    <a href="../../index.html">Volver al hub ↑</a>
+  <footer class="tl-footer">
+    <span>Talent Lab · by QuartzSales · Design Rebels · 2026</span>
+    <a href="#contenido">Volver arriba ↑</a>
   </footer>
 
-  <!-- ============ AUTH MODAL ============ -->
-  <div class="modal-overlay" id="modal-auth">
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-      <button class="modal-close" type="button" data-close-modal="modal-auth" aria-label="Cerrar">✕</button>
-      <div class="tabs">
-        <button class="tab-btn active" data-auth-tab="login" type="button">Iniciar sesión</button>
-        <button class="tab-btn" data-auth-tab="signup" type="button">Crear cuenta</button>
-      </div>
-      <h2 id="auth-title">Entrá a Talent Lab</h2>
-      <p class="sub">Usá tu email de QuartzSales.</p>
-
-      <form class="stacked" id="form-login">
-        <div class="field"><label for="login-email">Email</label><input type="email" id="login-email" required autocomplete="email" /></div>
-        <div class="field"><label for="login-password">Contraseña</label><input type="password" id="login-password" required autocomplete="current-password" /></div>
-        <p class="form-error" id="login-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Ingresar</button></div>
-      </form>
-
-      <form class="stacked hidden" id="form-signup">
-        <div class="field"><label for="signup-name">Nombre</label><input type="text" id="signup-name" required autocomplete="name" /></div>
-        <div class="field"><label for="signup-email">Email</label><input type="email" id="signup-email" required autocomplete="email" /></div>
-        <div class="field"><label for="signup-password">Contraseña</label><input type="password" id="signup-password" required minlength="6" autocomplete="new-password" /><small>Mínimo 6 caracteres.</small></div>
-        <p class="form-error" id="signup-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Crear cuenta</button></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ CREATE LAB MODAL ============ -->
-  <div class="modal-overlay" id="modal-create-lab">
-    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="create-lab-title">
-      <button class="modal-close" type="button" data-close-modal="modal-create-lab" aria-label="Cerrar">✕</button>
-      <h2 id="create-lab-title">Contanos tu Lab</h2>
-      <p class="sub">Esto crea la ficha pública de tu proyecto dentro de Talent Lab.</p>
-      <form class="stacked" id="form-create-lab">
-        <div class="field"><label for="lab-name">Nombre del proyecto</label><input type="text" id="lab-name" required placeholder="Ej: Talent Games by Design Rebels" /></div>
-        <div class="field"><label for="lab-tagline">Resumen en una línea</label><input type="text" id="lab-tagline" required maxlength="140" placeholder="Ej: Minijuegos para reuniones, capacitaciones y eventos" /></div>
-        <div class="field"><label for="lab-category">Categoría</label>
-          <select id="lab-category">
-            <option>Producto</option>
-            <option>Diseño</option>
-            <option>Automatización</option>
-            <option>IA</option>
-            <option>Marketing</option>
-            <option>Otro</option>
-          </select>
-        </div>
-        <div class="field"><label for="lab-description">Descripción</label><textarea id="lab-description" required placeholder="¿Qué es, para quién es y qué problema resuelve?"></textarea></div>
-        <div class="field"><label for="lab-links">Enlaces (opcional)</label><textarea id="lab-links" placeholder="Un enlace por línea: Nombre :: URL&#10;Ej: Jugar Dino Chomp :: ../dino-chomp/"></textarea><small>Formato: Nombre :: URL, uno por línea.</small></div>
-        <p class="form-error" id="create-lab-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Publicar mi Lab</button></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============ POST UPDATE MODAL ============ -->
-  <div class="modal-overlay" id="modal-post-update">
-    <div class="modal-panel wide" role="dialog" aria-modal="true" aria-labelledby="post-update-title">
-      <button class="modal-close" type="button" data-close-modal="modal-post-update" aria-label="Cerrar">✕</button>
-      <h2 id="post-update-title">Nueva actualización</h2>
-      <p class="sub">Contá un avance real. Queda en la línea de tiempo de tu Lab.</p>
-      <form class="stacked" id="form-post-update">
-        <div class="field"><label for="update-title">Título</label><input type="text" id="update-title" required maxlength="120" placeholder="Ej: Sumamos ranking en vivo" /></div>
-        <div class="field"><label for="update-body">Detalle</label><textarea id="update-body" required placeholder="¿Qué cambió? ¿Qué probaste? ¿Qué sigue?"></textarea></div>
-        <p class="form-error" id="post-update-error"></p>
-        <div class="form-actions"><button class="button button-dark" type="submit">Publicar actualización</button></div>
-      </form>
-    </div>
-  </div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="assets/firebase.js"></script>
+  <script src="assets/vendor/matter.min.js"></script>
+  <script src="assets/hero-physics.js"></script>
+  <script src="assets/eye.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
