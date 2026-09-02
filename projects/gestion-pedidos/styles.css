@@ -234,26 +234,6 @@ a { color: inherit; }
   50% { transform: translateY(-10px); }
 }
 
-.badge-erp {
-  position: absolute;
-  right: 2%; top: 47%;
-  padding: 12px 15px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-hover);
-  font-weight: 800;
-  color: var(--dark-bg);
-  font-size: .75rem;
-  opacity: 0;
-  transform: translateX(18px);
-  z-index: 5;
-  white-space: nowrap;
-  transition: opacity .8s var(--easing) .3s, transform .8s var(--easing) .3s;
-}
-.badge-erp small { display: block; color: var(--text-muted); font-size: .62rem; margin-top: 2px; font-weight: 700; }
-.hero-stage.is-active .badge-erp { opacity: 1; transform: none; }
-
 @media (max-width: 900px) {
   .hero-pedidos { grid-template-columns: 1fr; padding-top: 2.5rem; }
   .hero-stage { min-height: 340px; margin-top: .5rem; }
@@ -262,12 +242,17 @@ a { color: inherit; }
 @media (max-width: 560px) {
   .hero-pedidos__ctas { flex-direction: column; }
   .hero-pedidos__ctas .btn { width: 100%; justify-content: center; padding: 1rem 1.5rem; }
-  .stage-wrap { max-width: 320px; }
-  .slot-left  { left: 1%; top: 10%; width: 25%; }
-  .slot-top   { right: 0; top: 12%; width: 45%; }
-  .slot-right { right: 0; top: 48%; width: 36%; }
-  .badge-erp { padding: 9px 11px; font-size: .68rem; }
-  .badge-erp small { font-size: .56rem; }
+  .hero-pedidos h1 { font-size: clamp(1.9rem, 8vw, 2.3rem); }
+  .stage-wrap { max-width: 100%; }
+  .desktop-card {
+    width: 88%;
+    right: auto; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+  }
+  .hero-stage.is-active .desktop-card { transform: translateX(-50%); }
+  .slot-left  { left: 0;  top: 6%;  width: 27%; }
+  .slot-top   { right: 0; top: 8%;  width: 46%; }
+  .slot-right { right: 2%; top: 42%; width: 30%; }
 }
 
 /* Beneficios: bento grid con card hero (mockup real) + 4 cards
