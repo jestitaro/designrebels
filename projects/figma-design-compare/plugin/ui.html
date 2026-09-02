@@ -270,6 +270,9 @@
           <span id="designPreviewLabel"></span>
         </div>
       </div>
+      <div id="designChangeHint" class="status" style="display: none">
+        Para cambiarlo, seleccioná otro frame o componente.
+      </div>
     </section>
 
     <section>
@@ -317,6 +320,7 @@
       const designPreviewRow = document.getElementById("designPreviewRow");
       const designPreview = document.getElementById("designPreview");
       const designPreviewLabel = document.getElementById("designPreviewLabel");
+      const designChangeHint = document.getElementById("designChangeHint");
 
       const implementationInput = document.getElementById("implementationInput");
       const implFileName = document.getElementById("implFileName");
@@ -364,6 +368,7 @@
             msg.width && msg.height ? ` · ${msg.width}×${msg.height}` : ""
           }`;
           designPreviewRow.style.display = "flex";
+          designChangeHint.style.display = "flex";
           updateCompareAvailability();
         }
 
