@@ -151,7 +151,7 @@ a { color: inherit; }
    Hero
    ========================================================= */
 .hero-pedidos {
-  display: grid; grid-template-columns: 1fr 1.1fr; gap: 3rem; align-items: center;
+  display: grid; grid-template-columns: .9fr 1.2fr; gap: 3rem; align-items: center;
   max-width: 1180px; margin: 0 auto; padding: 4.5rem 1.5rem 5rem;
 }
 .eyebrow {
@@ -171,7 +171,7 @@ a { color: inherit; }
 /* Hero: escenario con mockups flotantes que rotan + mockup de escritorio */
 .hero-stage {
   position: relative;
-  min-height: 480px;
+  min-height: 520px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +190,7 @@ a { color: inherit; }
 .stage-wrap {
   position: relative;
   width: 100%;
-  max-width: 560px;
+  max-width: 630px;
   aspect-ratio: 64 / 52;
   z-index: 1;
 }
