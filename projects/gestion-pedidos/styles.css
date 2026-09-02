@@ -205,19 +205,19 @@ a { color: inherit; }
 
 .desktop-card {
   position: absolute;
-  right: 2%; bottom: 2%; width: 69%;
-  opacity: 0; transform: translateY(16px);
+  left: 50%; bottom: 0; width: 82%;
+  opacity: 0; transform: translateX(-50%) translateY(16px);
   filter: drop-shadow(0 22px 22px rgba(19, 13, 93, .14));
   z-index: 2;
   transition: opacity .9s var(--easing), transform .9s var(--easing);
 }
 .desktop-card img, .slot img { width: 100%; height: auto; object-fit: contain; display: block; }
-.hero-stage.is-active .desktop-card { opacity: 1; transform: none; }
+.hero-stage.is-active .desktop-card { opacity: 1; transform: translateX(-50%); }
 
 .slot { position: absolute; z-index: 4; pointer-events: none; }
-.slot-left  { left: 1%;  top: 10%; width: 21%; }
-.slot-top   { right: 0;  top: 11%; width: 41%; }
-.slot-right { right: 1%; top: 46%; width: 33%; }
+.slot-left  { left: 0;  top: 6%;  width: 29%; }
+.slot-top   { right: 0; top: 6%;  width: 44%; }
+.slot-right { right: 0; top: 40%; width: 40%; }
 
 .slot-item {
   position: absolute; inset: 0;
