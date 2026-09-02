@@ -132,8 +132,8 @@
 
     <section>
       <h3>1. Diseño original</h3>
-      <button id="exportBtn" disabled>Exportar selección actual</button>
-      <div id="exportStatus" class="status">Seleccioná un frame o componente en el canvas.</div>
+      <div id="exportStatus" class="status">Seleccioná un frame o componente en el canvas — se exporta solo.</div>
+      <button id="exportBtn" class="secondary" disabled>Re-exportar selección</button>
       <div class="preview-row" id="designPreviewRow" style="display: none">
         <div class="preview">
           <img id="designPreview" alt="Preview del diseño exportado" />
@@ -209,8 +209,8 @@
           exportBtn.disabled = !msg.hasValidSelection;
           exportStatus.classList.remove("error");
           exportStatus.textContent = msg.hasValidSelection
-            ? `Listo para exportar: "${msg.nodeName}"`
-            : "Seleccioná un frame o componente en el canvas.";
+            ? `Exportando "${msg.nodeName}"...`
+            : "Seleccioná un frame o componente en el canvas — se exporta solo.";
         }
 
         if (msg.type === "export-success") {

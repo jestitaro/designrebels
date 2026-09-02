@@ -65,6 +65,10 @@ figma.on("selectionchange", () => {
     hasValidSelection: isValid,
     nodeName: isValid ? node.name : null,
   });
+
+  if (isValid) {
+    exportSelectionAsPng();
+  }
 });
 
 figma.ui.onmessage = (msg: { type: string }) => {
