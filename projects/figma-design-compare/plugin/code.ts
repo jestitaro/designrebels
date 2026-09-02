@@ -3,7 +3,7 @@
 // Tipos de nodos que tiene sentido exportar como "diseño original".
 const EXPORTABLE_TYPES: NodeType[] = ["FRAME", "COMPONENT", "COMPONENT_SET", "INSTANCE"];
 
-figma.showUI(__html__, { width: 360, height: 520 });
+figma.showUI(__html__, { width: 380, height: 600 });
 
 async function exportSelectionAsPng() {
   const selection = figma.currentPage.selection;
