@@ -262,7 +262,7 @@
       <h3><span class="step">1</span>Diseño original</h3>
       <div id="exportStatus" class="status">
         <span id="exportSpinner" class="spinner" hidden></span>
-        <span id="exportStatusText">Seleccioná un frame o componente en el canvas y se exporta automáticamente.</span>
+        <span id="exportStatusText">Seleccioná un frame o componente en el canvas.</span>
       </div>
       <div class="preview-row" id="designPreviewRow" style="display: none">
         <div class="preview">
@@ -274,14 +274,14 @@
 
     <section>
       <h3><span class="step">2</span>Diseño implementado</h3>
-      <label for="implementationInput" class="file-btn">Seleccionar archivo</label>
+      <label for="implementationInput" class="file-btn">Subir archivo</label>
       <input
         type="file"
         id="implementationInput"
         accept="image/png, image/jpeg"
         class="visually-hidden"
       />
-      <div id="implFileName" class="status">Formatos aceptados: PNG o JPG. Ningún archivo seleccionado.</div>
+      <div id="implFileName" class="status">Formatos aceptados: PNG o JPG.</div>
       <div class="preview-row" id="implPreviewRow" style="display: none">
         <div class="preview">
           <img id="implPreview" alt="Preview de la captura subida" />
@@ -347,7 +347,7 @@
           exportSpinner.hidden = !msg.hasValidSelection;
           exportStatusText.textContent = msg.hasValidSelection
             ? `Exportando "${msg.nodeName}"...`
-            : "Seleccioná un frame o componente en el canvas y se exporta automáticamente.";
+            : "Seleccioná un frame o componente en el canvas.";
         }
 
         if (msg.type === "export-success") {
