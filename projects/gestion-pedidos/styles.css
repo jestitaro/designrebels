@@ -225,13 +225,6 @@ a { color: inherit; }
   transition: opacity .5s ease;
 }
 .slot-item.active { opacity: 1; }
-.slot-left .slot-item.active  { animation: heroFloat 5.8s ease-in-out infinite; }
-.slot-top .slot-item.active   { animation: heroFloat 4.8s ease-in-out infinite; }
-.slot-right .slot-item.active { animation: heroFloat 4s ease-in-out infinite; }
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
 
 @media (max-width: 900px) {
   .hero-pedidos { grid-template-columns: 1fr; padding-top: 2.5rem; }
