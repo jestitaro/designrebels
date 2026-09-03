@@ -54,9 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
         items[index].classList.add('active');
       }, interval);
     }
-    rotateSlot('.slot-left', 3200);
-    rotateSlot('.slot-top', 3600);
-    rotateSlot('.slot-right', 4000);
+    rotateSlot('.slot-left', 4800);
+    rotateSlot('.slot-top', 5200);
+    rotateSlot('.slot-right', 5600);
   }
 
   /* ---------- Reveal on scroll ---------- */
