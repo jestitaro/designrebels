@@ -310,15 +310,6 @@ a { color: inherit; }
   margin-left: -2.25rem; margin-right: -2.25rem; margin-bottom: -2.25rem;
   transform: none; animation: none;
   flex: 1; display: flex; aspect-ratio: 1.15 / 1;
-  isolation: isolate;
-}
-.beneficio-card__mock--photo::before {
-  content: "";
-  position: absolute;
-  inset: 2% -8% 0%;
-  background: radial-gradient(circle at 50% 15%, rgba(216, 190, 255, .75) 0%, rgba(161, 90, 255, .55) 30%, rgba(112, 37, 224, .32) 52%, transparent 70%);
-  filter: blur(16px);
-  z-index: -1;
 }
 .beneficio-card__mock-chrome {
   display: flex; gap: .4rem; padding: .7rem .9rem; background: #EDEBF7;
