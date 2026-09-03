@@ -82,7 +82,6 @@ El sistema debe controlar las ausencias contra este roster oficial:
 | Persona | Nombre completo | Casa / rol |
 |---|---|---|
 | Agustin | Agustin Goñi Piuma | Slytherin / Director Comercial |
-| Alejandro | Alejandro Frank | Hufflepuff |
 | Eugenio | Eugenio Balbastro Fages | Ravenclaw / Líder técnico |
 | Javi | Javier De Vergilio | Gryffindor |
 | Jesica | Jesica Titaro | Gryffindor / Rebel Designer |
