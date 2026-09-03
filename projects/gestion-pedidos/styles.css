@@ -308,6 +308,7 @@ a { color: inherit; }
 .beneficio-card__mock--photo {
   border: none; background: none; box-shadow: none; border-radius: 0;
   margin-left: -2.25rem; margin-right: -2.25rem; margin-bottom: -2.25rem;
+  transform: none; animation: none;
 }
 .beneficio-card__mock--photo::before {
   content: "";
