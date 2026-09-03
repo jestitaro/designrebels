@@ -294,7 +294,7 @@ a { color: inherit; }
   display: flex; flex-direction: column;
   overflow: hidden;
 }
-.beneficio-card--hero .beneficio-card__copy { max-width: 100%; margin-bottom: .75rem; }
+.beneficio-card--hero .beneficio-card__copy { max-width: 100%; margin-bottom: .25rem; }
 .beneficio-card--hero h3 { font-size: 1.85rem; margin-bottom: .85rem; }
 .beneficio-card--hero p { max-width: 88%; }
 
@@ -309,15 +309,15 @@ a { color: inherit; }
   border: none; background: none; box-shadow: none; border-radius: 0;
   margin-left: -2.25rem; margin-right: -2.25rem; margin-bottom: -2.25rem;
   transform: none; animation: none;
-  flex: 1; display: flex; aspect-ratio: 9 / 10;
+  flex: 1; display: flex; aspect-ratio: 1 / 1;
   isolation: isolate;
 }
 .beneficio-card__mock--photo::before {
   content: "";
   position: absolute;
-  inset: 6% -8% 0%;
-  background: radial-gradient(circle at 50% 30%, rgba(216, 190, 255, .8) 0%, rgba(161, 90, 255, .62) 35%, rgba(112, 37, 224, .4) 58%, transparent 76%);
-  filter: blur(18px);
+  inset: 2% -8% 0%;
+  background: radial-gradient(circle at 50% 15%, rgba(216, 190, 255, .75) 0%, rgba(161, 90, 255, .55) 30%, rgba(112, 37, 224, .32) 52%, transparent 70%);
+  filter: blur(16px);
   z-index: -1;
 }
 .beneficio-card__mock-chrome {
@@ -333,10 +333,10 @@ a { color: inherit; }
 .beneficio-card__mock--photo .beneficio-card__mock-body img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; object-position: center 30%;
+  object-fit: cover; object-position: center 88%;
   border-radius: 0;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
 }
 
 @keyframes beneficioMockFloat {
