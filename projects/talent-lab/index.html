@@ -103,7 +103,7 @@
           <p>Proyectos reales creados por gente de QuartzSales, en su tiempo y con su propia iniciativa.</p>
         </div>
         <div class="scatter reveal">
-          <a class="scatter-card" href="talentos/talent-games.html">
+          <a class="scatter-card" href="talentos/talent-games.html" data-lightbox-target="lightbox-talent-games">
             <span class="tag">Design Rebels</span>
             <div>
               <h4>Talent Games</h4>
@@ -275,9 +275,56 @@
     <a href="#contenido">Volver arriba ↑</a>
   </footer>
 
+  <!-- LIGHTBOX: detalle de un talento, sin salir de la página -->
+  <div class="lightbox" id="lightbox-talent-games" hidden>
+    <div class="lightbox-backdrop" data-close></div>
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-talent-games-title">
+      <button class="lightbox-close" type="button" data-close aria-label="Cerrar">✕</button>
+
+      <div class="lb-hero">
+        <div>
+          <p class="lb-tag">Design Rebels</p>
+          <h2 class="lb-title" id="lightbox-talent-games-title">Talent Games <span class="lb-emoji">🎮</span></h2>
+          <p class="lb-intro">Una propuesta para sumar juego, participación y un poco de competencia a la rutina.</p>
+          <div class="lb-actions">
+            <a href="../dino-chomp/" target="_blank" rel="noopener noreferrer">Jugar Dino Chomp ↗</a>
+            <a href="../dino-escape/" target="_blank" rel="noopener noreferrer">Jugar Dino Escape ↗</a>
+            <a href="../meteorito-run/" target="_blank" rel="noopener noreferrer">Jugar Meteorito Run ↗</a>
+          </div>
+        </div>
+        <div class="lb-photo-wrap">
+          <span class="lb-doodle star" aria-hidden="true">✦</span>
+          <span class="lb-doodle spark" aria-hidden="true">✻</span>
+          <div class="lb-photo">
+            <!-- placeholder: reemplazar por la foto real de Jesica -->
+            <svg viewBox="0 0 100 100" width="46%" aria-hidden="true"><circle cx="50" cy="38" r="20" fill="rgba(255,255,255,.9)"/><path d="M14 96c0-22 16-34 36-34s36 12 36 34" fill="rgba(255,255,255,.9)"/></svg>
+          </div>
+          <div class="lb-photo-badge">
+            <strong>Jesica Titaro</strong>
+            <span>Design Rebels</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lb-grid">
+        <div class="lb-card lb-card-a">
+          <span class="lb-card-icon" aria-hidden="true">🎯</span>
+          <h4>Qué problema resuelve</h4>
+          <p>Hacer más dinámicas y participativas las reuniones, capacitaciones y actividades, evitando que siempre tengan el mismo formato y ayudando a mantener la atención.</p>
+        </div>
+        <div class="lb-card lb-card-b">
+          <span class="lb-card-icon" aria-hidden="true">🚀</span>
+          <h4>Qué quiere lograr</h4>
+          <p>Crear una experiencia lúdica propia de QuartzSales, con trivias y minijuegos que podamos usar tanto internamente como con clientes, adaptándolos a diferentes actividades y necesidades.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/matter.min.js"></script>
   <script src="assets/hero-physics.js"></script>
   <script src="assets/eye.js"></script>
   <script src="assets/app.js"></script>
+  <script src="assets/lightbox.js"></script>
 </body>
 </html>
