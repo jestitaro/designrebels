@@ -180,7 +180,7 @@ body.lightbox-open{overflow:hidden}
 .lightbox[hidden]{display:none}
 .lightbox-backdrop{position:absolute;inset:0;background:rgba(17,17,27,.72);backdrop-filter:blur(2px)}
 .lightbox-panel{position:relative;background:var(--paper);color:var(--ink);border-radius:32px;max-width:920px;width:100%;max-height:88vh;overflow:hidden;box-shadow:0 40px 90px rgba(0,0,0,.4)}
-.lightbox-scroll{max-height:88vh;overflow-y:auto;padding:clamp(28px,4vw,56px);scrollbar-width:thin;scrollbar-color:var(--purple) transparent}
+.lightbox-scroll{max-height:calc(88vh - 24px);margin:12px 0;overflow-y:auto;padding:clamp(28px,4vw,56px);scrollbar-width:thin;scrollbar-color:var(--purple) transparent}
 .lightbox-scroll::-webkit-scrollbar{width:8px}
 .lightbox-scroll::-webkit-scrollbar-track{background:transparent}
 .lightbox-scroll::-webkit-scrollbar-thumb{background:var(--purple);border-radius:999px}
