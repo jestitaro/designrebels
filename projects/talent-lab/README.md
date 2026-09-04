@@ -38,7 +38,7 @@ Cada card de la Vidriera enlaza a su propia página dentro de `talentos/`, en ve
 
 Para sumar un talento nuevo: copiar `talentos/talent-games.html`, reemplazar el contenido de cada sección, y agregar una `.scatter-card` en `index.html` (`#talentos`) apuntando a `talentos/<archivo>.html`.
 
-Diseño inspirado en la estructura de una landing de referencia (ritmo de secciones a pantalla completa con colores planos alternados, header flotante fijo, cards de portfolio rotadas/superpuestas, sección de testimonio con capas de color apiladas) — la identidad visual (colores, tipografía Manrope) es la de Design Rebels, no una copia literal de la referencia.
+Diseño inspirado en la estructura de una landing de referencia (ritmo de secciones a pantalla completa con colores planos alternados, header flotante fijo, cards de portfolio rotadas/superpuestas, sección de testimonio con capas de color apiladas) — la identidad visual (colores, tipografía Poppins) es la de Design Rebels, no una copia literal de la referencia.
 
 ### El hero: caída con física real, no animación guionada
 
