@@ -150,9 +150,15 @@ img{max-width:100%;display:block}
    (.wizard-float, en un <span> aparte para que no choque con la
    animación de "sale y vuela" del hover, que anima el propio
    <svg class="wizard"> — dos elementos, dos transforms). */
-.wizard-float{display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
+.wizard-float{position:relative;display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
 @keyframes wizard-levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .wizard{width:44px;height:auto;flex-shrink:0;overflow:visible;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+
+/* sombrita en el piso: se achica y se desvanece cuando levita más alto,
+   sincronizada con @keyframes wizard-levitate (misma duración) */
+.wizard-shadow{position:absolute;left:50%;bottom:-4px;width:60%;height:9px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(26,1,69,.35),transparent 75%);animation:wizard-shadow-pulse 3.4s ease-in-out infinite;pointer-events:none}
+@keyframes wizard-shadow-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.5}50%{transform:translateX(-50%) scale(.6);opacity:.22}}
+.oracle-btn:hover .wizard-shadow{transform:translateX(-50%) scale(.4);opacity:.14}
 
 /* brazos + manos: mismo pivote absoluto (coordenadas del viewBox) en
    cada par para que giren sincronizados aunque el brazo se dibuje
@@ -276,7 +282,16 @@ body.lightbox-open{overflow:hidden}
 
 /* El Oráculo de Talent Lab */
 .oracle-panel{max-width:640px}
-.oracle-wizard{display:flex;justify-content:center;margin:4px 0 18px}
+.oracle-wizard{position:relative;display:flex;justify-content:center;margin:4px 0 18px}
+
+/* estrellitas alrededor del mago, solo mientras el modal está abierto
+   (la animación corre siempre pero .oracle-wizard no es visible salvo
+   con el modal abierto, así que en la práctica solo se ve ahí) */
+.oracle-sparkle{position:absolute;font-size:15px;line-height:1;pointer-events:none;animation:oracle-twinkle 2.4s ease-in-out infinite}
+.oracle-sparkle-1{top:6px;left:calc(50% - 88px);color:var(--cyan);animation-delay:0s}
+.oracle-sparkle-2{top:-2px;left:calc(50% + 68px);color:var(--purple);animation-delay:.6s;font-size:12px}
+.oracle-sparkle-3{bottom:14px;left:calc(50% - 100px);color:var(--purple);animation-delay:1.2s;font-size:11px}
+@keyframes oracle-twinkle{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
 .wizard-lg{width:96px}
 .oracle-eyebrow{margin:0 0 8px;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}
 .oracle-title{margin:0 0 16px;text-align:center;font-size:clamp(24px,3vw,30px);font-weight:800;letter-spacing:-.02em}
@@ -332,6 +347,8 @@ body.lightbox-open{overflow:hidden}
   .eye-wrap{width:1.7em;height:.95em}
   .chrome-logo,.chrome-cta{padding:10px 14px;font-size:12px}
   .scatter-card{width:100%;max-width:280px}
+  .wizard{width:62px}
+  .wizard-lg{width:132px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
