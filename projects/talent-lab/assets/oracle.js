@@ -59,12 +59,27 @@
   var currentStep = 0;
 
   var steps = modal.querySelectorAll('[data-oracle-step]');
-  var eyeWrap = modal.querySelector('.oracle-eye-wrap');
+  var wizardEl = modal.querySelector('.oracle-wizard .wizard');
 
-  function blinkEye() {
-    if (!eyeWrap) return;
-    eyeWrap.classList.add('blink');
-    setTimeout(function () { eyeWrap.classList.remove('blink'); }, 180);
+  function blinkWizard() {
+    if (!wizardEl) return;
+    wizardEl.classList.add('is-blinking');
+    setTimeout(function () { wizardEl.classList.remove('is-blinking'); }, 180);
+  }
+
+  // Si tarda en responder una pregunta, se impacienta.
+  var ANGRY_DELAY = 9000;
+  var angryTimer = null;
+  function clearAngryTimer() {
+    if (angryTimer) { clearTimeout(angryTimer); angryTimer = null; }
+    if (wizardEl) wizardEl.classList.remove('is-angry');
+  }
+  function armAngryTimer() {
+    clearAngryTimer();
+    if (currentStep < 1 || currentStep > 3) return; // solo en las preguntas, no en intro/revelación
+    angryTimer = setTimeout(function () {
+      if (wizardEl) wizardEl.classList.add('is-angry');
+    }, ANGRY_DELAY);
   }
 
   function showStep(n) {
@@ -72,10 +87,12 @@
     steps.forEach(function (step) {
       step.hidden = Number(step.dataset.oracleStep) !== n;
     });
-    blinkEye();
+    blinkWizard();
+    armAngryTimer();
   }
 
   function resetOracle() {
+    clearAngryTimer();
     state = { chips: new Set(), laquesis: null, atropos: null };
     modal.querySelectorAll('.oracle-chip.is-selected, .oracle-option.is-selected').forEach(function (el) {
       el.classList.remove('is-selected');
@@ -99,6 +116,7 @@
       }
       var nextBtn = chip.closest('[data-oracle-step]').querySelector('[data-oracle-next]');
       if (nextBtn) nextBtn.disabled = state.chips.size === 0;
+      armAngryTimer();
     });
   });
 
@@ -113,6 +131,7 @@
         var step = group.closest('[data-oracle-step]');
         var advanceBtn = step.querySelector('[data-oracle-next], [data-oracle-reveal]');
         if (advanceBtn) advanceBtn.disabled = false;
+        armAngryTimer();
       });
     });
   });
