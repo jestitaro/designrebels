@@ -130,7 +130,10 @@
             <p class="eyebrow"><span></span>Clasificados</p>
             <h2 style="margin:0;font-size:clamp(32px,4vw,52px);letter-spacing:-.03em">Áreas de mejora disponible</h2>
           </div>
-          <p>Búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló. Si alguna te suena a vos, escribinos.</p>
+          <div class="ads-head-side">
+            <p>Búsquedas abiertas dentro de QuartzSales para las que todavía nadie se postuló. Si alguna te suena a vos, escribinos.</p>
+            <button class="oracle-btn" type="button" data-lightbox-target="oracle-modal">🔮 Consultar con el oráculo</button>
+          </div>
         </div>
         <div class="ads-grid reveal">
           <div class="ad-card">
@@ -360,10 +363,110 @@
     </div>
   </div>
 
+  <!-- LIGHTBOX: El Oráculo de Talent Lab (la lógica de las preguntas y el
+       resultado vive en assets/oracle.js) -->
+  <div class="lightbox" id="oracle-modal" hidden>
+    <div class="lightbox-backdrop" data-close></div>
+    <div class="lightbox-panel oracle-panel" role="dialog" aria-modal="true" aria-labelledby="oracle-title">
+      <div class="lightbox-scroll">
+        <button class="lightbox-close" type="button" data-close aria-label="Cerrar">✕</button>
+
+        <div class="oracle-eye" aria-hidden="true">
+          <span class="eye-wrap oracle-eye-wrap"><span class="eye-iris"><span class="eye-pupil"></span></span></span>
+        </div>
+
+        <!-- paso 0: intro -->
+        <div class="oracle-step" data-oracle-step="0">
+          <p class="oracle-eyebrow">Las tres Moiras de QuartzSales</p>
+          <h2 class="oracle-title" id="oracle-title">🔮 El Oráculo de Talent Lab</h2>
+          <p class="oracle-copy">Cloto, Láquesis y Átropos te van a hacer tres preguntas cortas. Al final te van a decir cuál es tu Talent Lab.</p>
+          <div class="oracle-nav oracle-nav-start">
+            <button class="oracle-primary" type="button" data-oracle-start>Comenzar ✨</button>
+          </div>
+        </div>
+
+        <!-- paso 1: Cloto — tu talento -->
+        <div class="oracle-step" data-oracle-step="1" hidden>
+          <p class="oracle-eyebrow">Cloto · Tu talento</p>
+          <h3 class="oracle-question">¿Qué disfrutás haciendo incluso cuando nadie te lo pide?</h3>
+          <p class="oracle-hint">Elegí las que más te representen.</p>
+          <div class="oracle-chips" data-oracle-chips>
+            <button type="button" class="oracle-chip" data-chip="orden">Ordenar y sistematizar</button>
+            <button type="button" class="oracle-chip" data-chip="detectar">Encontrar errores antes que nadie</button>
+            <button type="button" class="oracle-chip" data-chip="explicar">Explicar las cosas para que se entiendan</button>
+            <button type="button" class="oracle-chip" data-chip="automatizar">Automatizar tareas repetitivas</button>
+            <button type="button" class="oracle-chip" data-chip="contar">Contar historias y comunicar</button>
+            <button type="button" class="oracle-chip" data-chip="visual">Que las cosas se vean bien y funcionen mejor</button>
+            <button type="button" class="oracle-chip" data-chip="cuidar">Cuidar a las personas del equipo</button>
+            <button type="button" class="oracle-chip" data-chip="vender">Vender y cerrar oportunidades</button>
+            <button type="button" class="oracle-chip" data-chip="acompanar">Acompañar y fidelizar clientes</button>
+            <button type="button" class="oracle-chip" data-chip="datos">Números, datos y métricas</button>
+            <button type="button" class="oracle-chip" data-chip="simplificar">Simplificar el día a día de developers</button>
+            <button type="button" class="oracle-chip" data-chip="reutilizar">Diseñar soluciones reutilizables</button>
+          </div>
+          <div class="oracle-nav">
+            <button class="oracle-back" type="button" data-oracle-back>← Atrás</button>
+            <button class="oracle-primary" type="button" data-oracle-next disabled>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- paso 2: Láquesis — tu oportunidad -->
+        <div class="oracle-step" data-oracle-step="2" hidden>
+          <p class="oracle-eyebrow">Láquesis · Tu oportunidad</p>
+          <h3 class="oracle-question">¿Qué problema no podés dejar de mirar?</h3>
+          <div class="oracle-options" data-oracle-options="laquesis">
+            <button type="button" class="oracle-option" data-value="producto">Cosas que hacemos siempre a mano y se podrían automatizar</button>
+            <button type="button" class="oracle-option" data-value="marketing">Falta claridad en cómo comunicamos lo que hacemos</button>
+            <button type="button" class="oracle-option" data-value="rrhh">El equipo nuevo tarda en encontrar su lugar</button>
+            <button type="button" class="oracle-option" data-value="comercial">Se pierden oportunidades de venta o clientes en el camino</button>
+          </div>
+          <div class="oracle-nav">
+            <button class="oracle-back" type="button" data-oracle-back>← Atrás</button>
+            <button class="oracle-primary" type="button" data-oracle-next disabled>Siguiente →</button>
+          </div>
+        </div>
+
+        <!-- paso 3: Átropos — tu destino -->
+        <div class="oracle-step" data-oracle-step="3" hidden>
+          <p class="oracle-eyebrow">Átropos · Tu destino</p>
+          <h3 class="oracle-question">Si pudieras mejorar una sola cosa de QuartzSales, ¿qué elegirías?</h3>
+          <div class="oracle-options" data-oracle-options="atropos">
+            <button type="button" class="oracle-option" data-value="producto">Que el trabajo técnico sea más simple, rápido y sólido</button>
+            <button type="button" class="oracle-option" data-value="marketing">Que se vea y se entienda mejor todo lo que construimos</button>
+            <button type="button" class="oracle-option" data-value="rrhh">Que cuidemos mejor a la gente que ya está y a la que llega</button>
+            <button type="button" class="oracle-option" data-value="comercial">Que vendamos y acompañemos mejor a nuestros clientes</button>
+          </div>
+          <div class="oracle-nav">
+            <button class="oracle-back" type="button" data-oracle-back>← Atrás</button>
+            <button class="oracle-primary" type="button" data-oracle-reveal disabled>Revelar 🔮</button>
+          </div>
+        </div>
+
+        <!-- paso 4: revelación -->
+        <div class="oracle-step" data-oracle-step="4" hidden>
+          <p class="oracle-eyebrow">Átropos ha decidido</p>
+          <p class="oracle-reveal-kicker">✨ Tu Talent Lab es…</p>
+          <p class="dept ad-info-dept" data-oracle-result-dept></p>
+          <h3 class="oracle-result-title" data-oracle-result-title></h3>
+          <p class="oracle-result-mission" data-oracle-result-mission></p>
+          <div class="oracle-affinity">
+            <p class="oracle-affinity-label">Afinidad: <strong data-oracle-affinity-pct></strong></p>
+            <div class="oracle-affinity-bar"><span data-oracle-affinity-fill></span></div>
+          </div>
+          <p class="oracle-also">También podrías explorar: <span data-oracle-alt></span></p>
+          <div class="oracle-nav oracle-nav-start">
+            <button class="oracle-secondary" type="button" data-oracle-restart>Volver a intentar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/matter.min.js"></script>
   <script src="assets/hero-physics.js"></script>
   <script src="assets/eye.js"></script>
   <script src="assets/app.js"></script>
   <script src="assets/lightbox.js"></script>
+  <script src="assets/oracle.js"></script>
 </body>
 </html>
