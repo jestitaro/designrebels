@@ -188,7 +188,7 @@ img{max-width:100%;display:block}
 @keyframes wizard-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
 
 /* mago del modal: responde al toque (ver assets/wizard.js) */
-.oracle-wizard{cursor:pointer}
+.oracle-wizard{cursor:pointer;touch-action:manipulation}
 .wizard.is-spinning{animation:wizard-spin .6s ease}
 @keyframes wizard-spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
@@ -315,7 +315,7 @@ body.lightbox-open{overflow:hidden}
 .oracle-option.is-selected{border-color:var(--purple);background:rgba(112,37,224,.1);font-weight:800}
 
 .oracle-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.oracle-nav-start{justify-content:center}
+.oracle-nav-start{justify-content:center;margin-top:22px}
 .oracle-back{border:none;background:none;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink);opacity:.6;cursor:pointer;padding:0}
 .oracle-back:hover{opacity:1}
 .oracle-primary{min-height:46px;padding:0 22px;border-radius:999px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
