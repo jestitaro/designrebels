@@ -143,24 +143,37 @@ img{max-width:100%;display:block}
 .oracle-btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:6px 22px 6px 10px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
 .oracle-btn:hover{border-color:var(--purple)}
 
-/* el mago: trigger animado del Oráculo (reemplaza la bola de cristal) */
+/* el mago: trigger animado del Oráculo (reemplaza la bola de cristal).
+   Levita todo el tiempo (.wizard-float, en un <span> aparte para que
+   no choque con la animación de "sale y vuela" del hover, que anima
+   el propio <svg class="wizard"> — dos elementos, dos transforms). */
+.wizard-float{display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
+@keyframes wizard-levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .wizard{width:40px;height:auto;flex-shrink:0;overflow:visible;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .wizard-robe{fill:var(--purple)}
 .wizard-hood{fill:var(--violet)}
 .wizard-face{fill:var(--ink)}
 .wizard-hand{fill:#ffc21c}
 .wizard-eye-white{fill:#fff}
-.wizard-eye-pupil{fill:var(--ink)}
+.wizard-eye-pupil{fill:var(--ink);transition:transform .4s ease}
 .wizard-badge{fill:#fff;opacity:.9}
 .wizard-eye{transition:transform .12s ease}
 .wizard-brow{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;opacity:0;transition:opacity .2s ease,transform .2s ease}
 .wizard-sparkles path{fill:var(--cyan);opacity:0;transform-origin:center;transition:opacity .3s ease,transform .3s ease}
 
+/* brazos: vaivén constante, con más amplitud al volar (hover) */
+.wizard-hand-left{transform-box:fill-box;transform-origin:100% 30%;animation:wizard-wave-left 2.6s ease-in-out infinite}
+.wizard-hand-right{transform-box:fill-box;transform-origin:0% 30%;animation:wizard-wave-right 2.3s ease-in-out infinite .3s}
+@keyframes wizard-wave-left{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+@keyframes wizard-wave-right{0%,100%{transform:rotate(0)}50%{transform:rotate(12deg)}}
+
 /* hover: el mago "sale y vuela" */
 .oracle-btn:hover .wizard{transform:translateY(-8px) rotate(-8deg) scale(1.12)}
 .oracle-btn:hover .wizard-sparkles path{opacity:1;transform:scale(1.15)}
+.oracle-btn:hover .wizard-hand-left{animation-duration:.7s}
+.oracle-btn:hover .wizard-hand-right{animation-duration:.6s}
 
-/* parpadeo (aleatorio, ver assets/wizard.js) */
+/* parpadeo y mirada (aleatorios, ver assets/wizard.js) */
 .wizard.is-blinking .wizard-eye{transform:scaleY(.08)}
 
 /* se enoja si tarda en responder */
