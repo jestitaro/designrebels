@@ -235,7 +235,7 @@ body.lightbox-open{overflow:hidden}
 /* El Oráculo de Talent Lab */
 .oracle-panel{max-width:640px}
 .oracle-eye{display:flex;justify-content:center;margin:4px 0 22px}
-.oracle-eye-wrap{width:64px;height:34px}
+.oracle-eye-wrap{font-size:72px;width:1.5em;height:.8em}
 .oracle-eye-wrap .eye-pupil{transition:transform .12s ease}
 .oracle-eye-wrap.blink .eye-pupil{transform:scaleY(.1)}
 .oracle-eyebrow{margin:0 0 8px;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}

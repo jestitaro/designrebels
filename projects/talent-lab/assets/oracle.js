@@ -1,13 +1,13 @@
 /* Talent Lab — oracle.js
- * El Oráculo: 3 preguntas cortas (una por cada Moira) y al final revela
+ * El Oráculo: 3 preguntas cortas (una por cada persona) y al final revela
  * cuál de las 20 áreas de "Clasificados" es la que más matchea. El motor
  * es simple a propósito — no busca ser un test psicométrico real, es un
  * juego para invitar a mirar la lista completa desde otro ángulo.
  *
- * Cloto (chips, multi-select) da la señal más fina: cada chip suma
- * puntos a 1-2 áreas puntuales. Láquesis y Átropos (una opción cada
+ * Pablo (chips, multi-select) da la señal más fina: cada chip suma
+ * puntos a 1-2 áreas puntuales. Sebi y Nico (una opción cada
  * una, por departamento) suman puntos más grandes a todo un
- * departamento — btropos pesa más porque es la pregunta "decisiva". */
+ * departamento — Nico pesa más porque es la pregunta "decisiva". */
 (function () {
   var modal = document.getElementById('oracle-modal');
   if (!modal) return;
@@ -86,7 +86,7 @@
     showStep(0);
   }
 
-  // Cloto: chips multi-select
+  // Pablo: chips multi-select
   modal.querySelectorAll('[data-chip]').forEach(function (chip) {
     chip.addEventListener('click', function () {
       var tag = chip.dataset.chip;
@@ -102,7 +102,7 @@
     });
   });
 
-  // Láquesis / Átropos: una opción por grupo
+  // Sebi / Nico: una opción por grupo
   modal.querySelectorAll('[data-oracle-options]').forEach(function (group) {
     var key = group.dataset.oracleOptions; // "laquesis" | "atropos"
     group.querySelectorAll('.oracle-option').forEach(function (opt) {
