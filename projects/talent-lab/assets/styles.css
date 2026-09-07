@@ -144,45 +144,40 @@ img{max-width:100%;display:block}
 .oracle-btn:hover{border-color:var(--purple)}
 
 /* el mago: trigger animado del Oráculo (reemplaza la bola de cristal).
-   Levita todo el tiempo (.wizard-float, en un <span> aparte para que
-   no choque con la animación de "sale y vuela" del hover, que anima
-   el propio <svg class="wizard"> — dos elementos, dos transforms). */
+   SVG real de Jesica (assets/mago.svg), embebido inline para poder
+   animar sus partes por separado (brazo-izquierdo/derecho, mano-
+   izquierda/derecha, ojo-izquierdo/derecho). Levita todo el tiempo
+   (.wizard-float, en un <span> aparte para que no choque con la
+   animación de "sale y vuela" del hover, que anima el propio
+   <svg class="wizard"> — dos elementos, dos transforms). */
 .wizard-float{display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
 @keyframes wizard-levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .wizard{width:44px;height:auto;flex-shrink:0;overflow:visible;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
-.wizard-robe{fill:#3a37a0}
-.wizard-arm{fill:#3a37a0}
-.wizard-hood{fill:#33308a}
-.wizard-hood-shade{fill:#221f66}
-.wizard-face{fill:#0d0c2e}
-.wizard-mitten{fill:#ffc21c}
-.wizard-eye{fill:#ffc21c;transition:transform .12s ease}
-.wizard-eye-look{transition:transform .4s ease}
-.wizard-badge polygon{fill:#fff}
-.wizard-badge-lines{stroke:#3a37a0;stroke-width:.8;opacity:.5}
-.wizard-brow{fill:none;stroke:#0d0c2e;stroke-width:4;stroke-linecap:round;opacity:0;transition:opacity .2s ease,transform .2s ease}
-.wizard-sparkles path{fill:var(--cyan);opacity:0;transform-origin:center;transition:opacity .3s ease,transform .3s ease}
 
-/* brazos: vaivén constante, con más amplitud al volar (hover) */
-.wizard-hand-left{transform-box:fill-box;transform-origin:100% 5%;animation:wizard-wave-left 2.6s ease-in-out infinite}
-.wizard-hand-right{transform-box:fill-box;transform-origin:0% 5%;animation:wizard-wave-right 2.3s ease-in-out infinite .3s}
+/* brazos + manos: mismo pivote absoluto (coordenadas del viewBox) en
+   cada par para que giren sincronizados aunque el brazo se dibuje
+   antes del cuerpo y la mano después (para no romper el orden visual
+   del arte original). Vaivén constante, más amplio al volar (hover). */
+.wizard-hand-left{transform-box:view-box;transform-origin:265px 350px;animation:wizard-wave-left 2.6s ease-in-out infinite}
+.wizard-hand-right{transform-box:view-box;transform-origin:355px 325px;animation:wizard-wave-right 2.3s ease-in-out infinite .3s}
 @keyframes wizard-wave-left{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
-@keyframes wizard-wave-right{0%,100%{transform:rotate(0)}50%{transform:rotate(10deg)}}
+@keyframes wizard-wave-right{0%,100%{transform:rotate(0)}50%{transform:rotate(8deg)}}
 
 /* hover: el mago "sale y vuela" */
 .oracle-btn:hover .wizard{transform:translateY(-8px) rotate(-6deg) scale(1.1)}
-.oracle-btn:hover .wizard-sparkles path{opacity:1;transform:scale(1.15)}
 .oracle-btn:hover .wizard-hand-left{animation-duration:.7s}
 .oracle-btn:hover .wizard-hand-right{animation-duration:.6s}
 
-/* parpadeo y mirada (aleatorios, ver assets/wizard.js) */
+/* parpadeo y mirada (aleatorios, ver assets/wizard.js). Dos <g>
+   anidados por ojo: el de afuera (wizard-eye-look) mueve la mirada,
+   el de adentro (wizard-eye) parpadea — un transform CSS por elemento
+   para que no se pisen entre sí. */
+.wizard-eye-look{transform-box:fill-box;transform-origin:50% 50%;transition:transform .4s ease}
+.wizard-eye{transform-box:fill-box;transform-origin:50% 50%;transition:transform .12s ease}
 .wizard.is-blinking .wizard-eye{transform:scaleY(.08)}
 
-/* se enoja si tarda en responder */
-.wizard.is-angry .wizard-brow{opacity:1}
-.wizard.is-angry .wizard-brow:nth-child(1){transform:translate(2px,3px) rotate(12deg)}
-.wizard.is-angry .wizard-brow:nth-child(2){transform:translate(-2px,3px) rotate(-12deg)}
-.wizard.is-angry .wizard-eye{transform:scaleY(.6)}
+/* se enoja si tarda en responder: tiembla y entrecierra los ojos */
+.wizard.is-angry .wizard-eye{transform:scaleY(.55)}
 .wizard.is-angry{animation:wizard-shake .4s ease}
 @keyframes wizard-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
