@@ -166,8 +166,8 @@ a { color: inherit; }
   margin-bottom: .75rem;
 }
 .hero-pedidos h1 {
-  font-size: clamp(1.6rem, 2.5vw, 2.15rem); font-weight: 800; color: var(--dark-bg);
-  line-height: 1.25; margin: 0 0 1.1rem;
+  font-size: 3rem; font-weight: 800; color: var(--dark-bg);
+  line-height: 3.1rem; margin: 0 0 1.1rem;
 }
 .hero-pedidos p { font-size: 1.08rem; color: var(--text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
 .hero-pedidos__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
@@ -389,6 +389,7 @@ a { color: inherit; }
 @media (max-width: 900px) {
   .beneficios-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .beneficio-card--hero { grid-column: 1 / -1; grid-row: auto; }
+  .beneficio-card--hero h3 { font-size: 1.3rem; }
 }
 @media (max-width: 640px) {
   .beneficios-bento { grid-template-columns: 1fr; }
