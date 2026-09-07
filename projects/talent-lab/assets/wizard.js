@@ -43,4 +43,20 @@
     scheduleBlink(el);
     scheduleLook(el);
   });
+
+  /* el mago del modal responde al toque (no tiene hover en mobile):
+     1er toque gira, 2do toque se enoja, 3ro vuelve a la normalidad. */
+  var modalWizardWrap = document.querySelector('.oracle-wizard');
+  var modalWizard = modalWizardWrap && modalWizardWrap.querySelector('.wizard');
+  if (modalWizardWrap && modalWizard) {
+    modalWizardWrap.style.cursor = 'pointer';
+    var tapState = 0;
+    modalWizardWrap.addEventListener('click', function () {
+      tapState = (tapState + 1) % 3;
+      modalWizard.classList.remove('is-spinning', 'is-angry');
+      void modalWizard.offsetWidth;
+      if (tapState === 1) modalWizard.classList.add('is-spinning');
+      else if (tapState === 2) modalWizard.classList.add('is-angry');
+    });
+  }
 })();
