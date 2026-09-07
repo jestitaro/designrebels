@@ -48,8 +48,10 @@ function discountOptionsHtml(selected = '') {
 let currentAdmin = null;
 let adminMatches = [];
 let adminMovements = [];
+let adminPlayers = [];
 let unsubMatches = null;
 let unsubMovements = null;
+let unsubPlayers = null;
 let activeTab = 'cargar';
 let cargarSubview = 'nueva';
 
@@ -151,6 +153,7 @@ function renderActiveTab() {
   if (activeTab === 'cargar') renderCargarTab();
   else if (activeTab === 'descuentos') renderDescuentosTab();
   else if (activeTab === 'movimientos') renderMovimientosTab();
+  else if (activeTab === 'jugadores') renderJugadoresTab();
   icons();
 }
 
@@ -914,6 +917,48 @@ function renderAnnulMovementConfirm(movementId) {
   icons();
 }
 
+/* ============================================================
+   JUGADORES (activar/desactivar)
+   ============================================================ */
+function renderJugadoresTab() {
+  // Lee de Firestore, no de ROSTER — así alguien que ya se sacó del código
+  // (pero sigue teniendo historial real cargado) sigue apareciendo acá para
+  // poder desactivarlo, en vez de quedar visible en el ranking sin forma
+  // de sacarlo.
+  const sorted = [...adminPlayers].sort((a, b) => {
+    if ((a.isActive === false) !== (b.isActive === false)) return a.isActive === false ? 1 : -1;
+    return (a.name || '').localeCompare(b.name || '', 'es');
+  });
+  adminViewContent.innerHTML = `
+    <p class="admin-intro">Un jugador desactivado sale del ranking y podio públicos, pero conserva todo su historial — se puede reactivar en cualquier momento.</p>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>Jugador</th><th>Casa</th><th>Estado</th><th></th></tr></thead>
+        <tbody>${sorted.length ? sorted.map(p => `
+          <tr>
+            <td>${esc(p.name || p.id)}</td>
+            <td>${esc(house(p.house)?.name || '—')}</td>
+            <td>${p.isActive === false ? '<span class="status-chip status-chip--muted">Desactivado</span>' : '<span class="status-chip status-chip--green">Activo</span>'}</td>
+            <td><button type="button" class="admin-btn admin-btn--ghost admin-btn--small" data-toggle-player="${p.id}" data-next-active="${p.isActive === false}">${p.isActive === false ? 'Reactivar' : 'Desactivar'}</button></td>
+          </tr>`).join('') : `<tr><td colspan="4" class="admin-empty">Todavía no hay jugadores cargados.</td></tr>`}</tbody>
+      </table>
+    </div>`;
+  $$('[data-toggle-player]', adminViewContent).forEach(btn => btn.addEventListener('click', async () => {
+    const playerId = btn.dataset.togglePlayer;
+    const nextActive = btn.dataset.nextActive === 'true';
+    btn.disabled = true;
+    try {
+      await withTimeout(window.DinoCupFirebase.players.setActive(playerId, nextActive), 15000, 'Actualizar el jugador');
+      showAdminToast(nextActive ? 'Jugador reactivado.' : 'Jugador desactivado — ya no aparece en el ranking público.');
+    } catch (error) {
+      console.error(error);
+      showAdminToast('No pude actualizar el jugador. Probá de nuevo.');
+      btn.disabled = false;
+    }
+  }));
+  icons();
+}
+
 /* ---------- admin toast (reuses the public toast element) ---------- */
 function showAdminToast(message) {
   const toast = $('#toast');
@@ -930,11 +975,12 @@ function startAdminSubscriptions() {
   const fb = window.DinoCupFirebase;
   unsubMatches = fb.matches.subscribe(data => { adminMatches = data; if (adminPanelModal.classList.contains('is-open')) renderActiveTab(); });
   unsubMovements = fb.movements.subscribeAll(data => { adminMovements = data; if (adminPanelModal.classList.contains('is-open')) renderActiveTab(); });
+  unsubPlayers = fb.players.subscribe(data => { adminPlayers = data; if (adminPanelModal.classList.contains('is-open')) renderActiveTab(); });
 }
 function stopAdminSubscriptions() {
-  unsubMatches?.(); unsubMovements?.();
-  unsubMatches = null; unsubMovements = null;
-  adminMatches = []; adminMovements = [];
+  unsubMatches?.(); unsubMovements?.(); unsubPlayers?.();
+  unsubMatches = null; unsubMovements = null; unsubPlayers = null;
+  adminMatches = []; adminMovements = []; adminPlayers = [];
 }
 
 async function activateAdminSession(user) {

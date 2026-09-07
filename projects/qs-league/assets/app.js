@@ -509,7 +509,9 @@ function render() {
 function initLiveData() {
   const fb = window.DinoCupFirebase;
   if (!fb) return;
-  fb.players.subscribe(data => { players = data; render(); });
+  // Un jugador desactivado (isActive: false) sale del ranking público pero
+  // conserva su historial real — admin.js es el único lugar que lo togglea.
+  fb.players.subscribe(data => { players = data.filter(p => p.isActive !== false); render(); });
   fb.movements.subscribeApplied(data => { movements = data; render(); });
   fb.matches.subscribe(data => { matches = data; renderNextModerator(); });
 }

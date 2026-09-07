@@ -139,6 +139,16 @@ async function ensureRosterSeeded(roster) {
   await batch.commit();
 }
 
+/* Soft remove/restore a player from the public ranking — never deletes the
+   doc (their historical movements/match rows keep pointing at a real
+   player), just flips the flag app.js already filters on. */
+async function setPlayerActive(playerId, isActive) {
+  await col.players.doc(playerId).update({
+    isActive: Boolean(isActive),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
 /* ---------- storage: original report files ---------- */
 async function uploadOriginalFile(matchId, file) {
   if (!dcStorage) throw new Error('Firebase Storage no está disponible.');
@@ -275,7 +285,7 @@ async function annulMovement({ movement, reason, adminUid, adminEmail }) {
 
 window.DinoCupFirebase = {
   auth: { onAuthChange, signIn, signOut },
-  players: { subscribe: subscribePlayers, ensureSeeded: ensureRosterSeeded },
+  players: { subscribe: subscribePlayers, ensureSeeded: ensureRosterSeeded, setActive: setPlayerActive },
   movements: {
     subscribeApplied: subscribeAppliedMovements,
     subscribeAll: subscribeAllMovements,

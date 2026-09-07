@@ -30,16 +30,6 @@
       ]
     },
     {
-      id: 'alejandro', name: 'Alejandro', aliases: ['Alejandro', 'Ale'],
-      facts: [
-        'Trabaja en desarrollos de IA y en el Proyecto SGI.',
-        'Le gustan Harry Potter, Lost y Outer Wilds.',
-        'Su hobby son las manualidades.',
-        'Está trabajando en mejorar cómo comunica y transmite sus mensajes.',
-        'Prefiere montaña antes que playa, café antes que mate, mañana antes que noche y dulce antes que salado.'
-      ]
-    },
-    {
       id: 'loreana', name: 'Loreana', aliases: ['Loreana', 'Lore'],
       facts: [
         'Trabaja en BI y es fan de los Beatles — George Harrison es su favorito.',
