@@ -137,19 +137,25 @@ img{max-width:100%;display:block}
 /* clasificados */
 .ads-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
 .ads-head p{max-width:480px;line-height:1.6;margin:14px 0 0}
+.ads-head-side{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.oracle-btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.oracle-btn:hover{background:var(--ink);color:#fff}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-.ad-card{background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06)}
+.ad-card{position:relative;background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06)}
 .ad-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ad-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ad-card .dept{margin:0;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
-.ad-card h4{margin:0;font-size:16px;letter-spacing:-.01em;line-height:1.35}
-.ad-icon.dept-producto,.dept-label.dept-producto{color:var(--purple)}
+.ad-card h4{margin:0;font-size:16px;letter-spacing:-.01em;line-height:1.35;padding-right:22px}
+.ad-info-btn{position:absolute;top:16px;right:16px;width:26px;height:26px;border-radius:50%;border:none;background:rgba(17,17,27,.06);color:var(--ink);opacity:.6;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.ad-info-btn:hover{opacity:1;background:rgba(17,17,27,.12)}
+.ad-info-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.ad-icon.dept-producto,.dept.dept-producto{color:var(--purple)}
 .ad-icon.dept-producto{background:rgba(112,37,224,.1)}
-.ad-icon.dept-marketing,.dept-label.dept-marketing{color:var(--coral)}
+.ad-icon.dept-marketing,.dept.dept-marketing{color:var(--coral)}
 .ad-icon.dept-marketing{background:rgba(255,111,97,.12)}
-.ad-icon.dept-rrhh,.dept-label.dept-rrhh{color:var(--green)}
+.ad-icon.dept-rrhh,.dept.dept-rrhh{color:var(--green)}
 .ad-icon.dept-rrhh{background:var(--mint-pale)}
-.ad-icon.dept-comercial,.dept-label.dept-comercial{color:var(--blue-strong)}
+.ad-icon.dept-comercial,.dept.dept-comercial{color:var(--blue-strong)}
 .ad-icon.dept-comercial{background:var(--blue-pale)}
 
 /* mission / pull-quote */
@@ -206,14 +212,67 @@ body.lightbox-open{overflow:hidden}
 .lb-doodle{position:absolute;font-size:26px;pointer-events:none}
 .lb-doodle.star{top:-18px;right:20px;color:var(--yellow)}
 .lb-doodle.spark{bottom:16px;right:-18px;color:var(--coral)}
+.lb-sticker-smiley{position:absolute;top:-16px;left:-16px;z-index:2;width:42px;height:42px;border-radius:50%;background:var(--mint-pale);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 22px rgba(17,17,27,.18);transform:rotate(-12deg)}
+.lb-stamp{position:absolute;top:-30px;left:34%;z-index:2;width:76px;height:76px;border-radius:50%;border:2px dashed var(--ink);display:flex;align-items:center;justify-content:center;text-align:center;background:var(--paper);transform:rotate(-8deg)}
+.lb-stamp span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;line-height:1.3}
 
 .lb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:44px}
 .lb-card{border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px}
 .lb-card-a{background:var(--mint-pale)}
 .lb-card-b{background:var(--blue-pale)}
-.lb-card-icon{font-size:26px}
+.lb-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(255,255,255,.65)}
 .lb-card h4{margin:0;font-size:16px;letter-spacing:-.01em}
 .lb-card p{margin:0;font-size:14px;line-height:1.6;opacity:.8}
+
+/* modal de info de un clasificado */
+.ad-info-dept{margin:0 0 10px}
+.ad-info-title{margin:0 0 16px;font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.ad-info-desc{margin:0 0 22px;font-size:16px;line-height:1.6}
+.ad-info-benefit{background:rgba(17,17,27,.05);border-radius:18px;padding:18px 20px}
+.ad-info-benefit-label{margin:0 0 6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;opacity:.6}
+.ad-info-benefit p:last-child{margin:0;font-size:15px;line-height:1.6}
+
+/* El Oráculo de Talent Lab */
+.oracle-panel{max-width:640px}
+.oracle-eye{display:flex;justify-content:center;margin:4px 0 22px}
+.oracle-eye-wrap{font-size:72px;width:1.5em;height:.8em}
+.oracle-eye-wrap .eye-pupil{transition:transform .12s ease}
+.oracle-eye-wrap.blink .eye-pupil{transform:scaleY(.1)}
+.oracle-eyebrow{margin:0 0 8px;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}
+.oracle-title{margin:0 0 16px;text-align:center;font-size:clamp(24px,3vw,30px);font-weight:800;letter-spacing:-.02em}
+.oracle-copy{margin:0 auto;max-width:440px;text-align:center;font-size:15px;line-height:1.6;opacity:.8}
+.oracle-question{margin:0 0 6px;text-align:center;font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.oracle-hint{margin:0 0 22px;text-align:center;font-size:13px;opacity:.6}
+
+.oracle-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:26px}
+.oracle-chip{border:2px solid rgba(17,17,27,.15);background:#fff;border-radius:999px;padding:10px 16px;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;transition:border-color .2s ease,background .2s ease,color .2s ease}
+.oracle-chip:hover{border-color:var(--purple)}
+.oracle-chip.is-selected{border-color:var(--purple);background:rgba(112,37,224,.1);color:var(--purple)}
+
+.oracle-options{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.oracle-option{text-align:left;border:2px solid rgba(17,17,27,.15);background:#fff;border-radius:16px;padding:14px 18px;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .2s ease,background .2s ease}
+.oracle-option:hover{border-color:var(--purple)}
+.oracle-option.is-selected{border-color:var(--purple);background:rgba(112,37,224,.1);font-weight:800}
+
+.oracle-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.oracle-nav-start{justify-content:center}
+.oracle-back{border:none;background:none;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink);opacity:.6;cursor:pointer;padding:0}
+.oracle-back:hover{opacity:1}
+.oracle-primary{min-height:46px;padding:0 22px;border-radius:999px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.oracle-primary:hover{background:var(--purple)}
+.oracle-primary:disabled{opacity:.35;cursor:not-allowed}
+.oracle-secondary{min-height:46px;padding:0 22px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.oracle-secondary:hover{background:var(--ink);color:#fff}
+
+.oracle-reveal-kicker{margin:0 0 4px;text-align:center;font-size:15px;font-weight:800;opacity:.7}
+.oracle-result-title{margin:6px 0 14px;text-align:center;font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-.02em;color:var(--purple)}
+.oracle-result-mission{margin:0 auto 26px;max-width:460px;text-align:center;font-size:16px;line-height:1.6;font-style:italic}
+.oracle-affinity{max-width:320px;margin:0 auto 22px}
+.oracle-affinity-label{margin:0 0 8px;text-align:center;font-size:13px;font-weight:800}
+.oracle-affinity-bar{height:10px;border-radius:999px;background:rgba(17,17,27,.08);overflow:hidden}
+.oracle-affinity-bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--purple));border-radius:999px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.oracle-also{margin:0 0 26px;text-align:center;font-size:13px;opacity:.7}
+.oracle-also strong{color:var(--ink)}
 
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
 .reveal.is-visible{opacity:1;transform:none}
