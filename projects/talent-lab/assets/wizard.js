@@ -26,8 +26,8 @@
 
   function look(el) {
     var spot = LOOK_SPOTS[Math.floor(Math.random() * LOOK_SPOTS.length)];
-    el.querySelectorAll('.wizard-eye-pupil').forEach(function (pupil) {
-      pupil.style.transform = 'translate(' + spot[0] + 'px,' + spot[1] + 'px)';
+    el.querySelectorAll('.wizard-eye-look').forEach(function (eye) {
+      eye.style.transform = 'translate(' + spot[0] + 'px,' + spot[1] + 'px)';
     });
   }
 
