@@ -465,16 +465,16 @@ a { color: inherit; }
    Cómo funciona (v2): pestañas verticales que avanzan solas
    ========================================================= */
 .flow-panel { position: relative; }
-.flow-header { text-align: center; margin-bottom: 3rem; position: relative; z-index: 1; }
-.flow-header p { color: rgba(255, 255, 255, .68); max-width: 480px; margin: .75rem auto 0; }
-.flow-tabs { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5rem; align-items: center; position: relative; z-index: 1; }
+.flow-header { text-align: center; margin-bottom: 2.25rem; position: relative; z-index: 1; }
+.flow-tabs { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5rem; align-items: start; position: relative; z-index: 1; }
 .flow-tabs__list { display: flex; flex-direction: column; }
 .flow-tab {
   all: unset; box-sizing: border-box; cursor: pointer;
   display: flex; flex-direction: column;
   padding: 1.1rem 0 1.1rem 1.5rem;
   border-left: 2px solid rgba(255, 255, 255, .15);
-  transition: border-color .3s var(--easing);
+  opacity: .45;
+  transition: border-color .3s var(--easing), opacity .3s var(--easing);
 }
 .flow-tab__head { display: flex; align-items: center; gap: .85rem; }
 .flow-tab__icon {
@@ -499,7 +499,7 @@ a { color: inherit; }
 .flow-tab__progress-bar.is-running { animation: flowProgress 4.5s linear forwards; }
 @keyframes flowProgress { from { width: 0%; } to { width: 100%; } }
 
-.flow-tab.active { border-left-color: var(--brand-2); }
+.flow-tab.active { border-left-color: var(--brand-2); opacity: 1; }
 .flow-tab.active .flow-tab__icon { background: var(--brand-2); color: #fff; border-color: transparent; }
 .flow-tab.active .flow-tab__title { color: var(--brand-2); font-weight: 800; }
 .flow-tab.active .flow-tab__caption { max-height: 6rem; opacity: 1; margin-top: .6rem; }
