@@ -32,8 +32,12 @@
     var descEl = adInfoModal.querySelector('#ad-info-desc');
     var benefitEl = adInfoModal.querySelector('#ad-info-benefit-text');
 
-    document.querySelectorAll('[data-ad-info]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    // la tarjeta entera es clickeable (no solo el ícono de info, que
+    // se deja como pista visual)
+    document.querySelectorAll('.ad-card').forEach(function (card) {
+      var btn = card.querySelector('[data-ad-info]');
+      if (!btn) return;
+      card.addEventListener('click', function () {
         deptEl.textContent = btn.dataset.dept;
         deptEl.className = 'dept ad-info-dept ' + btn.dataset.deptClass;
         titleEl.textContent = btn.dataset.title;
