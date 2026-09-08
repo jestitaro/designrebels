@@ -212,6 +212,70 @@
       </div>
     </section>
 
+    <!-- CÓMO FUNCIONA (V2, pestañas automáticas) -->
+    <section class="container reveal" id="flujo-interactivo">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="flow-header">
+        <span class="pensado-kicker">Otra forma de verlo</span>
+        <h2 class="section-title">Cómo funciona, de punta a punta</h2>
+        <p>El mismo recorrido, en un formato que avanza solo.</p>
+      </div>
+      <div class="flow-tabs">
+        <div class="flow-tabs__list" role="tablist" aria-label="Pasos de Order Entry">
+          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-panel-1" id="flow-tab-1" data-index="0">
+            <span class="flow-tab__head">
+              <span class="flow-tab__icon"><i class="fa-regular fa-cart-plus" aria-hidden="true"></i></span>
+              <strong class="flow-tab__title">Carga</strong>
+            </span>
+            <span class="flow-tab__caption">El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</span>
+            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-2" id="flow-tab-2" data-index="1">
+            <span class="flow-tab__head">
+              <span class="flow-tab__icon"><i class="fa-regular fa-list-check" aria-hidden="true"></i></span>
+              <strong class="flow-tab__title">Validación</strong>
+            </span>
+            <span class="flow-tab__caption">El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</span>
+            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-3" id="flow-tab-3" data-index="2">
+            <span class="flow-tab__head">
+              <span class="flow-tab__icon"><i class="fa-regular fa-stamp" aria-hidden="true"></i></span>
+              <strong class="flow-tab__title">Aprobación</strong>
+            </span>
+            <span class="flow-tab__caption">Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</span>
+            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-4" id="flow-tab-4" data-index="3">
+            <span class="flow-tab__head">
+              <span class="flow-tab__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></span>
+              <strong class="flow-tab__title">Transmisión al ERP</strong>
+            </span>
+            <span class="flow-tab__caption">Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</span>
+            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-5" id="flow-tab-5" data-index="4">
+            <span class="flow-tab__head">
+              <span class="flow-tab__icon"><i class="fa-regular fa-circle-check" aria-hidden="true"></i></span>
+              <strong class="flow-tab__title">Confirmación y notificación</strong>
+            </span>
+            <span class="flow-tab__caption">El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</span>
+            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+          </button>
+        </div>
+        <div class="flow-tabs__panel">
+          <div class="flow-tabs__chrome"><span></span><span></span><span></span></div>
+          <div class="flow-tabs__body">
+            <img class="flow-tabs__image" src="media/flow/paso-1-carga.png" alt="Vista de la app en el paso Carga" role="tabpanel" id="flow-panel-1" aria-labelledby="flow-tab-1" data-index="0" />
+            <img class="flow-tabs__image" src="media/flow/paso-2-validacion.png" alt="Vista de la app en el paso Validación" role="tabpanel" id="flow-panel-2" aria-labelledby="flow-tab-2" data-index="1" />
+            <img class="flow-tabs__image" src="media/flow/paso-3-aprobacion.png" alt="Vista de la app en el paso Aprobación" role="tabpanel" id="flow-panel-3" aria-labelledby="flow-tab-3" data-index="2" />
+            <img class="flow-tabs__image" src="media/flow/paso-4-transmision.png" alt="Vista de la app en el paso Transmisión al ERP" role="tabpanel" id="flow-panel-4" aria-labelledby="flow-tab-4" data-index="3" />
+            <img class="flow-tabs__image" src="media/flow/paso-5-confirmacion.png" alt="Vista de la app en el paso Confirmación y notificación" role="tabpanel" id="flow-panel-5" aria-labelledby="flow-tab-5" data-index="4" />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- PENSADO PARA -->
     <section class="container reveal pensado-section" id="pensado-para">
       <span aria-hidden="true" class="sentinel"></span>
