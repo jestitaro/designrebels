@@ -464,48 +464,51 @@ a { color: inherit; }
 /* =========================================================
    Cómo funciona (v2): pestañas verticales que avanzan solas
    ========================================================= */
-.flow-header { text-align: center; margin-bottom: 3rem; }
-.flow-header p { color: var(--text-muted); max-width: 480px; margin: .75rem auto 0; }
-.flow-tabs { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5rem; align-items: center; }
+.flow-panel { position: relative; }
+.flow-header { text-align: center; margin-bottom: 3rem; position: relative; z-index: 1; }
+.flow-header p { color: rgba(255, 255, 255, .68); max-width: 480px; margin: .75rem auto 0; }
+.flow-tabs { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5rem; align-items: center; position: relative; z-index: 1; }
 .flow-tabs__list { display: flex; flex-direction: column; }
 .flow-tab {
   all: unset; box-sizing: border-box; cursor: pointer;
   display: flex; flex-direction: column;
   padding: 1.1rem 0 1.1rem 1.5rem;
-  border-left: 2px solid var(--border-color);
+  border-left: 2px solid rgba(255, 255, 255, .15);
   transition: border-color .3s var(--easing);
 }
 .flow-tab__head { display: flex; align-items: center; gap: .85rem; }
 .flow-tab__icon {
   width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  background: #F5F3FC; color: var(--brand-1); font-size: 1rem;
-  transition: background .3s var(--easing), color .3s var(--easing);
+  background: rgba(255, 255, 255, .08); color: var(--brand-2); font-size: 1rem;
+  border: 1px solid rgba(255, 255, 255, .15);
+  transition: background .3s var(--easing), color .3s var(--easing), border-color .3s var(--easing);
 }
-.flow-tab__title { font-size: 1.02rem; color: var(--dark-bg); transition: color .3s var(--easing); }
+.flow-tab__title { font-size: 1.02rem; color: #fff; transition: color .3s var(--easing); }
 .flow-tab__caption {
-  display: block; font-size: .88rem; line-height: 1.55; color: var(--text-muted);
+  display: block; font-size: .88rem; line-height: 1.55; color: rgba(255, 255, 255, .65);
   max-height: 0; opacity: 0; overflow: hidden; margin-left: calc(38px + .85rem);
   transition: max-height .4s var(--easing), opacity .3s var(--easing), margin-top .4s var(--easing);
 }
 .flow-tab__progress {
-  display: block; height: 3px; border-radius: 3px; background: var(--border-color);
+  display: block; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .15);
   margin-left: calc(38px + .85rem); margin-top: 0; overflow: hidden;
   opacity: 0; max-height: 0; transition: opacity .3s var(--easing);
 }
-.flow-tab__progress-bar { display: block; height: 100%; width: 0; background: var(--brand-1); }
+.flow-tab__progress-bar { display: block; height: 100%; width: 0; background: var(--brand-2); }
 .flow-tab__progress-bar.is-running { animation: flowProgress 4.5s linear forwards; }
 @keyframes flowProgress { from { width: 0%; } to { width: 100%; } }
 
-.flow-tab.active { border-left-color: var(--brand-1); }
-.flow-tab.active .flow-tab__icon { background: var(--brand-1); color: #fff; }
-.flow-tab.active .flow-tab__title { color: var(--brand-1); font-weight: 800; }
+.flow-tab.active { border-left-color: var(--brand-2); }
+.flow-tab.active .flow-tab__icon { background: var(--brand-2); color: #fff; border-color: transparent; }
+.flow-tab.active .flow-tab__title { color: var(--brand-2); font-weight: 800; }
 .flow-tab.active .flow-tab__caption { max-height: 6rem; opacity: 1; margin-top: .6rem; }
 .flow-tab.active .flow-tab__progress { opacity: 1; max-height: 3px; margin-top: .85rem; }
 
 .flow-tabs__panel {
   position: relative; border-radius: 1.25rem; overflow: hidden;
-  border: 1px solid var(--border-color); background: #F7F6FC; box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, .12); background: #F7F6FC;
+  box-shadow: 0 30px 60px rgba(5, 3, 25, .45);
 }
 .flow-tabs__chrome { display: flex; gap: .4rem; padding: .85rem 1rem; background: #EDEBF7; }
 .flow-tabs__chrome span { width: 9px; height: 9px; border-radius: 50%; background: var(--border-color); }
@@ -517,10 +520,18 @@ a { color: inherit; }
 }
 .flow-tabs__image.active { opacity: 1; }
 
-@media (max-width: 900px) {
-  .flow-tabs { grid-template-columns: 1fr; gap: 2rem; }
-  .flow-tabs__body { height: 320px; }
+.flow-sparkle {
+  position: absolute; pointer-events: none; z-index: 0;
+  color: rgba(255, 255, 255, .55);
 }
+.flow-sparkle svg { display: block; width: 100%; height: 100%; }
+.flow-sparkle--a { top: 6%; left: 5%; width: 26px; height: 26px; color: rgba(255, 255, 255, .7); }
+.flow-sparkle--b { bottom: 8%; right: 6%; width: 20px; height: 20px; color: rgba(161, 114, 255, .55); }
+.flow-dot { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; background: rgba(255, 255, 255, .4); }
+.flow-dot--a { top: 14%; right: 16%; width: 6px; height: 6px; }
+.flow-dot--b { bottom: 20%; left: 32%; width: 5px; height: 5px; background: rgba(161, 114, 255, .5); }
+.flow-dot--c { top: 44%; left: 3%; width: 4px; height: 4px; }
+
 @media (max-width: 560px) {
   .flow-tabs__body { height: 240px; }
   .flow-tab__title { font-size: .95rem; }
