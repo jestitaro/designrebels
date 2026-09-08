@@ -368,6 +368,7 @@ body.lightbox-open{overflow:hidden}
 @media(max-width:640px){
   .panel{padding:100px 18px 70px}
   .panel-paper{min-height:auto;padding-top:64px;padding-bottom:64px}
+  .panel-green{min-height:auto;padding-top:64px;padding-bottom:56px}
   .hero-panel{padding-bottom:0;padding-top:120px;justify-content:flex-start}
   .hero-title{font-size:clamp(36px,9.5vw,46px)}
   .eye-wrap{width:1.7em;height:.95em}
