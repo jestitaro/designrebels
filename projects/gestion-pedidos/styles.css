@@ -487,8 +487,8 @@ a { color: inherit; }
 .flow-tab__title { font-size: 1.02rem; color: #fff; transition: color .3s var(--easing); }
 .flow-tab__caption {
   display: block; font-size: .88rem; line-height: 1.55; color: rgba(255, 255, 255, .65);
-  max-height: 0; opacity: 0; overflow: hidden; margin-left: calc(38px + .85rem);
-  transition: max-height .4s var(--easing), opacity .3s var(--easing), margin-top .4s var(--easing);
+  height: 0; opacity: 0; overflow: hidden; margin-left: calc(38px + .85rem);
+  transition: height .4s var(--easing), opacity .3s var(--easing), margin-top .4s var(--easing);
 }
 .flow-tab__progress {
   display: block; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .15);
@@ -502,7 +502,7 @@ a { color: inherit; }
 .flow-tab.active { border-left-color: var(--brand-2); opacity: 1; }
 .flow-tab.active .flow-tab__icon { background: var(--brand-2); color: #fff; border-color: transparent; }
 .flow-tab.active .flow-tab__title { color: var(--brand-2); font-weight: 800; }
-.flow-tab.active .flow-tab__caption { max-height: 6rem; opacity: 1; margin-top: .6rem; }
+.flow-tab.active .flow-tab__caption { height: 3rem; opacity: 1; margin-top: .6rem; }
 .flow-tab.active .flow-tab__progress { opacity: 1; max-height: 3px; margin-top: .85rem; }
 
 .flow-tabs__panel {
@@ -532,9 +532,14 @@ a { color: inherit; }
 .flow-dot--b { bottom: 20%; left: 32%; width: 5px; height: 5px; background: rgba(161, 114, 255, .5); }
 .flow-dot--c { top: 44%; left: 3%; width: 4px; height: 4px; }
 
+@media (max-width: 900px) {
+  .flow-tabs { grid-template-columns: 1fr; gap: 2rem; }
+  .flow-tabs__body { height: 320px; }
+}
 @media (max-width: 560px) {
   .flow-tabs__body { height: 240px; }
   .flow-tab__title { font-size: .95rem; }
+  .flow-tab.active .flow-tab__caption { height: 5.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .flow-tab__progress-bar.is-running { animation: none; width: 100%; }
