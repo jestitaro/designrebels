@@ -59,6 +59,52 @@ document.addEventListener('DOMContentLoaded', () => {
     rotateSlot('.slot-right', 5600);
   }
 
+  /* ---------- Cómo funciona (v2): pestañas que avanzan solas ---------- */
+  const flowTabs = document.querySelectorAll('.flow-tab');
+  const flowImages = document.querySelectorAll('.flow-tabs__image');
+  if (flowTabs.length) {
+    const FLOW_INTERVAL = 4500;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let flowIndex = 0;
+    let flowTimer;
+
+    function setFlowActive(i) {
+      flowIndex = i;
+      flowTabs.forEach((tab, idx) => {
+        const isActive = idx === i;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+      });
+      flowImages.forEach((img, idx) => img.classList.toggle('active', idx === i));
+      if (!reduceMotion) restartFlowProgress();
+    }
+
+    function restartFlowProgress() {
+      flowTabs.forEach(tab => tab.querySelector('.flow-tab__progress-bar')?.classList.remove('is-running'));
+      const activeBar = flowTabs[flowIndex].querySelector('.flow-tab__progress-bar');
+      if (!activeBar) return;
+      void activeBar.offsetWidth;
+      activeBar.classList.add('is-running');
+    }
+
+    function nextFlow() { setFlowActive((flowIndex + 1) % flowTabs.length); }
+
+    function startFlowTimer() {
+      clearInterval(flowTimer);
+      flowTimer = setInterval(nextFlow, FLOW_INTERVAL);
+    }
+
+    flowTabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        setFlowActive(i);
+        startFlowTimer();
+      });
+    });
+
+    setFlowActive(0);
+    startFlowTimer();
+  }
+
   /* ---------- Reveal on scroll ---------- */
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
