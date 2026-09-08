@@ -45,18 +45,49 @@
   });
 
   /* el mago del modal responde al toque (no tiene hover en mobile):
-     1er toque gira, 2do toque se enoja, 3ro vuelve a la normalidad. */
+     alterna gira / se enoja un poco y se le pasa solo. Si nadie lo
+     toca (ni abre el modal recién), se queda dormido. */
   var modalWizardWrap = document.querySelector('.oracle-wizard');
   var modalWizard = modalWizardWrap && modalWizardWrap.querySelector('.wizard');
   if (modalWizardWrap && modalWizard) {
     modalWizardWrap.style.cursor = 'pointer';
-    var tapState = 0;
+    var ANGRY_FLASH = 1100;
+    var SLEEP_DELAY = 12000;
+    var tapIsAngryNext = false;
+    var angryFlashTimer = null;
+    var sleepTimer = null;
+
+    function wake() {
+      modalWizard.classList.remove('is-sleeping');
+      clearTimeout(sleepTimer);
+      sleepTimer = setTimeout(function () {
+        modalWizard.classList.add('is-sleeping');
+      }, SLEEP_DELAY);
+    }
+
     modalWizardWrap.addEventListener('click', function () {
-      tapState = (tapState + 1) % 3;
+      wake();
+      clearTimeout(angryFlashTimer);
       modalWizard.classList.remove('is-spinning', 'is-angry');
       void modalWizard.offsetWidth;
-      if (tapState === 1) modalWizard.classList.add('is-spinning');
-      else if (tapState === 2) modalWizard.classList.add('is-angry');
+      if (tapIsAngryNext) {
+        modalWizard.classList.add('is-angry');
+        angryFlashTimer = setTimeout(function () {
+          modalWizard.classList.remove('is-angry');
+        }, ANGRY_FLASH);
+      } else {
+        modalWizard.classList.add('is-spinning');
+      }
+      tapIsAngryNext = !tapIsAngryNext;
     });
+
+    var oracleModal = document.getElementById('oracle-modal');
+    if (oracleModal) {
+      new MutationObserver(function () {
+        if (!oracleModal.hidden) wake();
+      }).observe(oracleModal, { attributes: true, attributeFilter: ['hidden'] });
+    } else {
+      wake();
+    }
   }
 })();
