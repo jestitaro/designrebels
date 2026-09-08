@@ -182,9 +182,9 @@ img{max-width:100%;display:block}
 .wizard-eye{transform-box:fill-box;transform-origin:50% 50%;transition:transform .12s ease}
 .wizard.is-blinking .wizard-eye{transform:scaleY(.08)}
 
-/* se enoja si tarda en responder (o si le tocan el mago del modal dos
-   veces): tiembla sin parar y entrecierra bien los ojos, para que se
-   note, hasta que el usuario interactúa de nuevo */
+/* se enoja si tarda en responder una pregunta del quiz (dura hasta
+   que interactúa de nuevo) o si le tocan el mago del modal (ahí es
+   un flash breve que se le pasa solo, ver assets/wizard.js) */
 .wizard.is-angry .wizard-eye{transform:scaleY(.32)}
 .wizard.is-angry{animation:wizard-shake .35s ease-in-out infinite}
 @keyframes wizard-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
@@ -192,8 +192,12 @@ img{max-width:100%;display:block}
 /* mago del modal: responde al toque (ver assets/wizard.js). Sin el
    recuadro de "tap highlight" del navegador, que tapaba al mago. */
 .oracle-wizard{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
-.wizard.is-spinning{animation:wizard-float-spin 1s cubic-bezier(.34,1.56,.64,1)}
+.wizard.is-spinning{animation:wizard-float-spin 1s ease-in-out}
 @keyframes wizard-float-spin{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(180deg) translateY(-14px)}100%{transform:rotate(360deg) translateY(0)}}
+
+/* si no lo tocan (ni bien se abre el modal), se queda dormido */
+.wizard.is-sleeping .wizard-eye{transform:scaleY(.08)}
+.wizard.is-sleeping .wizard-hand-left,.wizard.is-sleeping .wizard-hand-right{animation-play-state:paused}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .ad-card{position:relative;background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06)}
 .ad-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
