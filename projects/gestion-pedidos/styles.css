@@ -402,6 +402,35 @@ a { color: inherit; }
 }
 
 /* =========================================================
+   Beneficios (v2): cards tipo mazo, fondo violeta
+   ========================================================= */
+.deck-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+.deck-card {
+  position: relative; overflow: hidden;
+  border-radius: 1.5rem; padding: 1.75rem 1.5rem 1.5rem;
+  display: flex; flex-direction: column; gap: .75rem;
+  color: #fff; cursor: pointer;
+  background-image:
+    radial-gradient(circle at 88% 12%, rgba(161, 114, 255, .28), transparent 42%),
+    linear-gradient(150deg, #1B1454 0%, #0D0938 75%);
+  box-shadow: 0 14px 34px rgba(5, 3, 25, .3);
+  transition: transform .3s var(--easing), box-shadow .3s var(--easing);
+}
+.deck-card:hover { transform: translateY(-4px); box-shadow: 0 20px 42px rgba(5, 3, 25, .4); }
+.deck-number { position: absolute; top: 1.1rem; right: 1.2rem; font-size: .68rem; font-weight: 800; letter-spacing: .04em; color: rgba(255, 255, 255, .4); }
+.deck-icon { width: 52px; height: 52px; border-radius: 14px; background: rgba(255, 255, 255, .12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.deck-icon img { width: 30px; height: 30px; object-fit: contain; }
+.deck-card h3 { margin: 0; font-size: 1.1rem; letter-spacing: -.01em; line-height: 1.25; padding-right: 1.25rem; }
+.deck-card p { margin: 0; font-size: .88rem; line-height: 1.55; color: rgba(255, 255, 255, .68); }
+.text-btn {
+  align-self: flex-start; margin-top: auto; padding: 0; border: none; background: none;
+  font-family: inherit; font-size: .85rem; font-weight: 800; color: #fff; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.text-btn span { transition: transform .2s var(--easing); }
+.deck-card:hover .text-btn span { transform: translate(2px, -2px); }
+
+/* =========================================================
    Cómo funciona (cards que se apilan con el scroll)
    ========================================================= */
 .section-title-sticky {
