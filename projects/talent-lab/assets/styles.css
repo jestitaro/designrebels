@@ -195,8 +195,12 @@ img{max-width:100%;display:block}
 .wizard.is-spinning{animation:wizard-float-spin 1s ease-in-out}
 @keyframes wizard-float-spin{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(180deg) translateY(-14px)}100%{transform:rotate(360deg) translateY(0)}}
 
-/* si no lo tocan (ni bien se abre el modal), se queda dormido */
+/* si no lo tocan (ni bien se abre el modal), se queda dormido.
+   cls-6/cls-7 son la pupila oscura de cada ojo (ver assets/mago.svg)
+   — al achicar el ojo se la oculta para que quede solo la línea
+   amarilla, sin el punto oscuro adentro. */
 .wizard.is-sleeping .wizard-eye{transform:scaleY(.08)}
+.wizard.is-sleeping .wizard-eye .cls-6,.wizard.is-sleeping .wizard-eye .cls-7{opacity:0}
 .wizard.is-sleeping .wizard-hand-left,.wizard.is-sleeping .wizard-hand-right{animation-play-state:paused}
 
 /* "zzz" (texto, no emoji) para que se note que está durmiendo */
