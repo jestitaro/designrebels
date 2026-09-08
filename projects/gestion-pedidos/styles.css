@@ -302,7 +302,7 @@ a { color: inherit; }
   overflow: hidden;
 }
 .beneficio-card--hero .beneficio-card__copy { max-width: 100%; margin-bottom: 1rem; }
-.beneficio-card--hero h3 { font-size: 1.85rem; margin-bottom: .85rem; }
+.beneficio-card--hero h3 { margin-bottom: .85rem; }
 .beneficio-card--hero p { max-width: 88%; }
 
 .beneficio-card__mock {
@@ -389,7 +389,6 @@ a { color: inherit; }
 @media (max-width: 900px) {
   .beneficios-bento { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .beneficio-card--hero { grid-column: 1 / -1; grid-row: auto; }
-  .beneficio-card--hero h3 { font-size: 1.3rem; }
 }
 @media (max-width: 640px) {
   .beneficios-bento { grid-template-columns: 1fr; }
