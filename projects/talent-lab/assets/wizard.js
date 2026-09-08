@@ -52,7 +52,7 @@
   if (modalWizardWrap && modalWizard) {
     modalWizardWrap.style.cursor = 'pointer';
     var ANGRY_FLASH = 1100;
-    var SLEEP_DELAY = 12000;
+    var SLEEP_DELAY = 5000;
     var tapIsAngryNext = false;
     var angryFlashTimer = null;
     var sleepTimer = null;
