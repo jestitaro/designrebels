@@ -174,17 +174,20 @@ img{max-width:100%;display:block}
 .oracle-btn:hover .wizard-hand-left{animation-duration:.7s}
 .oracle-btn:hover .wizard-hand-right{animation-duration:.6s}
 
-/* parpadeo y mirada (aleatorios, ver assets/wizard.js). Dos <g>
+/* parpadeo y mirada (ver assets/wizard.js): la mirada sigue al cursor
+   o al dedo en tiempo real, así que la transition es cortita (si no,
+   se ve como si el ojo fuera atrás del puntero con delay). Dos <g>
    anidados por ojo: el de afuera (wizard-eye-look) mueve la mirada,
    el de adentro (wizard-eye) parpadea — un transform CSS por elemento
    para que no se pisen entre sí. */
-.wizard-eye-look{transform-box:fill-box;transform-origin:50% 50%;transition:transform .4s ease}
+.wizard-eye-look{transform-box:fill-box;transform-origin:50% 50%;transition:transform .08s ease-out}
 .wizard-eye{transform-box:fill-box;transform-origin:50% 50%;transition:transform .12s ease}
 .wizard.is-blinking .wizard-eye{transform:scaleY(.08)}
 
 /* se enoja si tarda en responder una pregunta del quiz (dura hasta
-   que interactúa de nuevo) o si le tocan el mago del modal (ahí es
-   un flash breve que se le pasa solo, ver assets/wizard.js) */
+   que interactúa de nuevo) o cada vez que le tocan el mago del modal
+   (ahí es un flash de unos segundos que se le pasa solo, ver
+   assets/wizard.js) */
 .wizard.is-angry .wizard-eye{transform:scaleY(.32)}
 .wizard.is-angry{animation:wizard-shake .35s ease-in-out infinite}
 @keyframes wizard-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
@@ -192,8 +195,6 @@ img{max-width:100%;display:block}
 /* mago del modal: responde al toque (ver assets/wizard.js). Sin el
    recuadro de "tap highlight" del navegador, que tapaba al mago. */
 .oracle-wizard{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
-.wizard.is-spinning{animation:wizard-float-spin 1s ease-in-out}
-@keyframes wizard-float-spin{0%{transform:rotate(0) translateY(0)}50%{transform:rotate(180deg) translateY(-14px)}100%{transform:rotate(360deg) translateY(0)}}
 
 /* si no lo tocan (ni bien se abre el modal), se queda dormido.
    cls-6/cls-7 son la pupila oscura de cada ojo (ver assets/mago.svg)
