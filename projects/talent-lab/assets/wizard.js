@@ -29,7 +29,7 @@
   wizards.forEach(function (el) { scheduleBlink(el); });
 
   // la mirada sigue al puntero (mouse o touch) en toda la pantalla
-  var EYE_REACH = 3; // unidades del viewBox que se puede mover el ojo
+  var EYE_REACH = 10; // unidades del viewBox que se puede mover el ojo
   var pointerX = null;
   var pointerY = null;
 
@@ -45,7 +45,7 @@
         var dx = pointerX - cx;
         var dy = pointerY - cy;
         var dist = Math.hypot(dx, dy) || 1;
-        var r = Math.min(EYE_REACH, dist / 40);
+        var r = Math.min(EYE_REACH, dist / 15);
         var ox = (dx / dist) * r;
         var oy = (dy / dist) * r;
         eye.style.transform = 'translate(' + ox.toFixed(2) + 'px,' + oy.toFixed(2) + 'px)';
