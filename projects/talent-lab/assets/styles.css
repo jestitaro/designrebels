@@ -386,7 +386,13 @@ body.lightbox-open{overflow:hidden}
   .hero-title{font-size:clamp(36px,9.5vw,46px)}
   .eye-wrap{width:1.7em;height:.95em}
   .chrome-logo,.chrome-cta{padding:10px 14px;font-size:12px}
+  .scatter{padding:44px 8px 64px}
   .scatter-card{flex-basis:78vw;width:78vw;max-width:280px}
+  .scatter-card:nth-child(1){transform:rotate(-3deg)}
+  .scatter-card:nth-child(2){transform:rotate(2deg)}
+  .scatter-card:nth-child(3){transform:rotate(-2deg)}
+  .scatter-card:nth-child(4){transform:rotate(3deg)}
+  .scatter-card:nth-child(5){transform:rotate(-2deg)}
   .wizard{width:62px}
   .wizard-lg{width:132px}
   .ads-filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:20px;scrollbar-width:thin;scrollbar-color:var(--purple) transparent}
