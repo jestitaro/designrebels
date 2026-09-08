@@ -230,14 +230,24 @@ img{max-width:100%;display:block}
 .ad-info-btn{position:absolute;top:16px;right:16px;width:26px;height:26px;border-radius:50%;border:none;background:rgba(17,17,27,.06);color:var(--ink);opacity:.6;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .ad-info-btn:hover{opacity:1;background:rgba(17,17,27,.12)}
 .ad-info-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
-.ad-icon.dept-producto,.dept.dept-producto{color:var(--purple)}
-.ad-icon.dept-producto{background:rgba(112,37,224,.1)}
+.ad-icon.dept-producto-ux,.dept.dept-producto-ux{color:var(--purple)}
+.ad-icon.dept-producto-ux{background:rgba(112,37,224,.1)}
+.ad-icon.dept-ingenieria,.dept.dept-ingenieria{color:var(--ink-2)}
+.ad-icon.dept-ingenieria{background:rgba(52,12,116,.1)}
+.ad-icon.dept-calidad,.dept.dept-calidad{color:var(--cyan-deep)}
+.ad-icon.dept-calidad{background:var(--cyan-pale)}
+.ad-icon.dept-devops-seguridad,.dept.dept-devops-seguridad{color:var(--violet)}
+.ad-icon.dept-devops-seguridad{background:var(--violet-pale)}
+.ad-icon.dept-data,.dept.dept-data{color:var(--ink)}
+.ad-icon.dept-data{background:rgba(26,1,69,.08)}
 .ad-icon.dept-marketing,.dept.dept-marketing{color:var(--cyan)}
 .ad-icon.dept-marketing{background:rgba(26,160,255,.12)}
-.ad-icon.dept-rrhh,.dept.dept-rrhh{color:var(--violet)}
-.ad-icon.dept-rrhh{background:var(--violet-pale)}
-.ad-icon.dept-comercial,.dept.dept-comercial{color:var(--cyan-deep)}
-.ad-icon.dept-comercial{background:var(--cyan-pale)}
+.ad-icon.dept-comercial-clientes,.dept.dept-comercial-clientes{color:var(--cyan-deep)}
+.ad-icon.dept-comercial-clientes{background:rgba(11,111,191,.16)}
+.ad-icon.dept-personas-cultura,.dept.dept-personas-cultura{color:var(--violet)}
+.ad-icon.dept-personas-cultura{background:rgba(161,114,255,.2)}
+.ad-icon.dept-conocimiento,.dept.dept-conocimiento{color:var(--purple)}
+.ad-icon.dept-conocimiento{background:rgba(112,37,224,.18)}
 
 /* mission / pull-quote */
 .quote-stack{position:relative;max-width:820px;margin:0 auto}
