@@ -84,9 +84,10 @@ img{max-width:100%;display:block}
 .scatter{position:relative;display:flex;justify-content:center;gap:26px;flex-wrap:wrap;padding:20px 0 60px;max-width:1200px;margin:0 auto}
 .scatter-card{width:230px;min-height:300px;border-radius:26px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow);text-decoration:none;color:var(--ink);will-change:transform;transition:transform .9s cubic-bezier(.34,1.56,.64,1)}
 .scatter-card:hover{transform:translateY(-10px) rotate(0deg) !important;transition:transform .25s ease !important}
-.scatter-card:nth-child(1){transform:rotate(-6deg);background:var(--cyan)}
-.scatter-card:nth-child(2){transform:rotate(3deg) translateY(36px);background:#fff}
-.scatter-card:nth-child(3){transform:rotate(-2deg);background:var(--violet-pale)}
+.scatter-card:nth-child(1){transform:rotate(-6deg);background-image:radial-gradient(140% 160% at 15% 15%,var(--cyan-light) 0%,transparent 55%),radial-gradient(140% 160% at 90% 90%,var(--violet) 0%,transparent 55%),linear-gradient(135deg,var(--cyan),var(--violet-pale))}
+.scatter-card:nth-child(2){transform:rotate(3deg) translateY(36px);background-image:radial-gradient(140% 160% at 85% 10%,var(--violet-pale) 0%,transparent 55%),radial-gradient(140% 160% at 10% 95%,var(--cyan) 0%,transparent 55%),linear-gradient(135deg,var(--cyan-light),var(--violet))}
+.scatter-card:nth-child(3){transform:rotate(-2deg);background-image:radial-gradient(140% 160% at 20% 90%,var(--cyan-light) 0%,transparent 55%),radial-gradient(140% 160% at 90% 10%,var(--violet-pale) 0%,transparent 55%),linear-gradient(135deg,var(--cyan-pale),var(--violet-pale))}
+.scatter-card:nth-child(4){transform:rotate(4deg) translateY(18px)}
 .scatter-card h4{margin:0 0 8px;font-size:20px;letter-spacing:-.02em}
 .scatter-card p{margin:0;font-size:13px;line-height:1.5;opacity:.75}
 .scatter-card .tag{align-self:flex-start;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;background:rgba(17,17,27,.08);padding:6px 12px;border-radius:999px}
@@ -102,15 +103,18 @@ img{max-width:100%;display:block}
 .scatter:not(.is-visible) .scatter-card:nth-child(1){transform:translate(180px,-10px) rotate(-30deg) scale(.93)}
 .scatter:not(.is-visible) .scatter-card:nth-child(2){transform:translate(0,10px) rotate(42deg) scale(.93)}
 .scatter:not(.is-visible) .scatter-card:nth-child(3){transform:translate(-180px,-4px) rotate(-50deg) scale(.93)}
+.scatter:not(.is-visible) .scatter-card:nth-child(4){transform:translate(160px,20px) rotate(48deg) scale(.93)}
 .scatter.is-visible .scatter-card:nth-child(1){transition-delay:.04s}
 .scatter.is-visible .scatter-card:nth-child(2){transition-delay:.16s}
 .scatter.is-visible .scatter-card:nth-child(3){transition-delay:.28s}
+.scatter.is-visible .scatter-card:nth-child(4){transition-delay:.4s}
 
 /* case study */
 .case{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(30px,5vw,70px);align-items:center}
 .case-visual{position:relative;border-radius:32px;background:#fff;padding:14px;box-shadow:var(--shadow)}
 .case-visual img,.case-visual .ph{border-radius:22px;width:100%;display:block}
 .case-visual .ph{aspect-ratio:4/3;background:linear-gradient(135deg,var(--purple),var(--cyan));display:grid;place-items:center;color:#111;font-weight:800;font-size:15px;text-align:center;padding:20px}
+.ph-icon{width:40px;height:40px;fill:#fff;margin:0 auto 4px}
 .case h1{font-size:clamp(30px,3.6vw,48px);letter-spacing:-.03em;margin:14px 0 18px}
 .case p{font-size:16px;line-height:1.7;max-width:520px;margin:0 0 24px}
 .case-links{display:flex;flex-wrap:wrap;gap:10px}
@@ -139,10 +143,81 @@ img{max-width:100%;display:block}
 .ads-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:44px}
 .ads-head p{max-width:480px;line-height:1.6;margin:14px 0 0}
 .ads-head-side{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
-.oracle-btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
-.oracle-btn:hover{background:var(--ink);color:#fff}
+.oracle-btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:6px 22px 6px 10px;border-radius:999px;border:2px solid var(--ink);background:transparent;color:var(--ink);font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
+.oracle-btn:hover{border-color:var(--purple)}
+
+/* el mago: trigger animado del Oráculo (reemplaza la bola de cristal).
+   SVG real de Jesica (assets/mago.svg), embebido inline para poder
+   animar sus partes por separado (brazo-izquierdo/derecho, mano-
+   izquierda/derecha, ojo-izquierdo/derecho). Levita todo el tiempo
+   (.wizard-float, en un <span> aparte para que no choque con la
+   animación de "sale y vuela" del hover, que anima el propio
+   <svg class="wizard"> — dos elementos, dos transforms). */
+.wizard-float{position:relative;display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
+@keyframes wizard-levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.wizard{width:44px;height:auto;flex-shrink:0;overflow:visible;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+
+/* sombrita en el piso: se achica y se desvanece cuando levita más alto,
+   sincronizada con @keyframes wizard-levitate (misma duración) */
+.wizard-shadow{position:absolute;left:50%;bottom:-4px;width:60%;height:9px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(26,1,69,.35),transparent 75%);animation:wizard-shadow-pulse 3.4s ease-in-out infinite;pointer-events:none}
+@keyframes wizard-shadow-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.5}50%{transform:translateX(-50%) scale(.6);opacity:.22}}
+.oracle-btn:hover .wizard-shadow{transform:translateX(-50%) scale(.4);opacity:.14}
+
+/* brazos + manos: mismo pivote absoluto (coordenadas del viewBox) en
+   cada par para que giren sincronizados aunque el brazo se dibuje
+   antes del cuerpo y la mano después (para no romper el orden visual
+   del arte original). Vaivén constante, más amplio al volar (hover). */
+.wizard-hand-left{transform-box:view-box;transform-origin:265px 350px;animation:wizard-wave-left 2.6s ease-in-out infinite}
+.wizard-hand-right{transform-box:view-box;transform-origin:355px 325px;animation:wizard-wave-right 2.3s ease-in-out infinite .3s}
+@keyframes wizard-wave-left{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
+@keyframes wizard-wave-right{0%,100%{transform:rotate(0)}50%{transform:rotate(8deg)}}
+
+/* hover: el mago "sale y vuela" */
+.oracle-btn:hover .wizard{transform:translateY(-8px) rotate(-6deg) scale(1.1)}
+.oracle-btn:hover .wizard-hand-left{animation-duration:.7s}
+.oracle-btn:hover .wizard-hand-right{animation-duration:.6s}
+
+/* parpadeo y mirada (ver assets/wizard.js): la mirada sigue al cursor
+   o al dedo en tiempo real, así que la transition es cortita (si no,
+   se ve como si el ojo fuera atrás del puntero con delay). Dos <g>
+   anidados por ojo: el de afuera (wizard-eye-look) mueve la mirada,
+   el de adentro (wizard-eye) parpadea — un transform CSS por elemento
+   para que no se pisen entre sí. */
+.wizard-eye-look{transform-box:fill-box;transform-origin:50% 50%;transition:transform .08s ease-out}
+.wizard-eye{transform-box:fill-box;transform-origin:50% 50%;transition:transform .12s ease}
+.wizard.is-blinking .wizard-eye{transform:scaleY(.08)}
+
+/* se enoja si tarda en responder una pregunta del quiz (dura hasta
+   que interactúa de nuevo) o cada vez que le tocan el mago del modal
+   (ahí es un flash de unos segundos que se le pasa solo, ver
+   assets/wizard.js) */
+.wizard.is-angry .wizard-eye{transform:scaleY(.32)}
+.wizard.is-angry{animation:wizard-shake .35s ease-in-out infinite}
+@keyframes wizard-shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+
+/* mago del modal: responde al toque (ver assets/wizard.js). Sin el
+   recuadro de "tap highlight" del navegador, que tapaba al mago. */
+.oracle-wizard{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
+
+/* si no lo tocan (ni bien se abre el modal), se queda dormido.
+   cls-6/cls-7 son la pupila oscura de cada ojo (ver assets/mago.svg)
+   — al achicar el ojo se la oculta para que quede solo la línea
+   amarilla, sin el punto oscuro adentro. */
+.wizard.is-sleeping .wizard-eye{transform:scaleY(.08)}
+.wizard.is-sleeping .wizard-eye .cls-6,.wizard.is-sleeping .wizard-eye .cls-7{opacity:0}
+.wizard.is-sleeping .wizard-hand-left,.wizard.is-sleeping .wizard-hand-right{animation-play-state:paused}
+
+/* "zzz" (texto, no emoji) para que se note que está durmiendo */
+.wizard-zzz{position:absolute;top:2px;right:calc(50% - 92px);font-family:Georgia,serif;font-weight:700;font-style:italic;color:var(--violet);opacity:0;pointer-events:none}
+.wizard-zzz-2{font-size:17px;top:-6px;right:calc(50% - 104px)}
+.wizard-zzz-3{font-size:21px;top:-14px;right:calc(50% - 118px)}
+.oracle-wizard.is-sleeping .wizard-zzz-1{font-size:13px;animation:wizard-zzz-rise 2.6s ease-in infinite}
+.oracle-wizard.is-sleeping .wizard-zzz-2{animation:wizard-zzz-rise 2.6s ease-in infinite .5s}
+.oracle-wizard.is-sleeping .wizard-zzz-3{animation:wizard-zzz-rise 2.6s ease-in infinite 1s}
+@keyframes wizard-zzz-rise{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
-.ad-card{position:relative;background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06)}
+.ad-card{position:relative;background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06);cursor:pointer;transition:box-shadow .2s ease,transform .2s ease}
+.ad-card:hover{box-shadow:0 14px 34px rgba(17,17,27,.1);transform:translateY(-2px)}
 .ad-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ad-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .ad-card .dept{margin:0;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
@@ -196,9 +271,10 @@ body.lightbox-open{overflow:hidden}
 .lightbox-close:hover{background:var(--purple)}
 
 .lb-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,4vw,48px);align-items:center;clear:both}
+.lb-hero-solo{grid-template-columns:1fr}
 .lb-tag{margin:0 0 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}
 .lb-title{margin:0 0 16px;font-size:clamp(32px,4.4vw,54px);font-weight:800;letter-spacing:-.03em;color:var(--purple);line-height:1.05}
-.lb-emoji{display:inline-block;transform:rotate(-8deg)}
+.lb-title-icon{width:.75em;height:.75em;fill:var(--purple);vertical-align:middle;transform:rotate(-8deg)}
 .lb-intro{margin:0 0 26px;font-size:17px;line-height:1.6;max-width:440px}
 .lb-actions{display:flex;flex-wrap:wrap;gap:10px}
 .lb-actions a{display:inline-flex;align-items:center;gap:6px;min-height:42px;font-size:13px;font-weight:800;padding:0 16px;border:1px solid var(--ink);border-radius:999px;text-decoration:none;color:var(--ink)}
@@ -213,7 +289,8 @@ body.lightbox-open{overflow:hidden}
 .lb-doodle{position:absolute;font-size:26px;pointer-events:none}
 .lb-doodle.star{top:-18px;right:20px;color:var(--cyan)}
 .lb-doodle.spark{bottom:16px;right:-18px;color:var(--purple)}
-.lb-sticker-smiley{position:absolute;top:-16px;left:-16px;z-index:2;width:42px;height:42px;border-radius:50%;background:var(--violet-pale);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 22px rgba(17,17,27,.18);transform:rotate(-12deg)}
+.lb-sticker-smiley{position:absolute;top:-16px;left:-16px;z-index:2;width:42px;height:42px;border-radius:50%;background:var(--violet-pale);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px rgba(17,17,27,.18);transform:rotate(-12deg)}
+.lb-sticker-smiley svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lb-stamp{position:absolute;top:-30px;left:34%;z-index:2;width:76px;height:76px;border-radius:50%;border:2px dashed var(--ink);display:flex;align-items:center;justify-content:center;text-align:center;background:var(--paper);transform:rotate(-8deg)}
 .lb-stamp span{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;line-height:1.3}
 
@@ -221,7 +298,8 @@ body.lightbox-open{overflow:hidden}
 .lb-card{border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px}
 .lb-card-a{background:var(--violet-pale)}
 .lb-card-b{background:var(--cyan-pale)}
-.lb-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;background:rgba(255,255,255,.65)}
+.lb-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.65)}
+.lb-card-icon svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lb-card h4{margin:0;font-size:16px;letter-spacing:-.01em}
 .lb-card p{margin:0;font-size:14px;line-height:1.6;opacity:.8}
 
@@ -235,10 +313,17 @@ body.lightbox-open{overflow:hidden}
 
 /* El Oráculo de Talent Lab */
 .oracle-panel{max-width:640px}
-.oracle-eye{display:flex;justify-content:center;margin:4px 0 22px}
-.oracle-eye-wrap{font-size:72px;width:1.5em;height:.8em}
-.oracle-eye-wrap .eye-pupil{transition:transform .12s ease}
-.oracle-eye-wrap.blink .eye-pupil{transform:scaleY(.1)}
+.oracle-wizard{position:relative;display:flex;justify-content:center;margin:4px 0 18px}
+
+/* estrellitas alrededor del mago, solo mientras el modal está abierto
+   (la animación corre siempre pero .oracle-wizard no es visible salvo
+   con el modal abierto, así que en la práctica solo se ve ahí) */
+.oracle-sparkle{position:absolute;font-size:15px;line-height:1;pointer-events:none;animation:oracle-twinkle 2.4s ease-in-out infinite}
+.oracle-sparkle-1{top:6px;left:calc(50% - 88px);color:var(--cyan);animation-delay:0s}
+.oracle-sparkle-2{top:-2px;left:calc(50% + 68px);color:var(--purple);animation-delay:.6s;font-size:12px}
+.oracle-sparkle-3{bottom:14px;left:calc(50% - 100px);color:var(--purple);animation-delay:1.2s;font-size:11px}
+@keyframes oracle-twinkle{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.wizard-lg{width:96px}
 .oracle-eyebrow{margin:0 0 8px;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--purple)}
 .oracle-title{margin:0 0 16px;text-align:center;font-size:clamp(24px,3vw,30px);font-weight:800;letter-spacing:-.02em}
 .oracle-copy{margin:0 auto;max-width:440px;text-align:center;font-size:15px;line-height:1.6;opacity:.8}
@@ -256,7 +341,7 @@ body.lightbox-open{overflow:hidden}
 .oracle-option.is-selected{border-color:var(--purple);background:rgba(112,37,224,.1);font-weight:800}
 
 .oracle-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.oracle-nav-start{justify-content:center}
+.oracle-nav-start{justify-content:center;margin-top:22px}
 .oracle-back{border:none;background:none;font-family:inherit;font-size:13px;font-weight:800;color:var(--ink);opacity:.6;cursor:pointer;padding:0}
 .oracle-back:hover{opacity:1}
 .oracle-primary{min-height:46px;padding:0 22px;border-radius:999px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-weight:800;font-size:14px;cursor:pointer}
@@ -288,11 +373,15 @@ body.lightbox-open{overflow:hidden}
 }
 @media(max-width:640px){
   .panel{padding:100px 18px 70px}
+  .panel-paper{min-height:auto;padding-top:64px;padding-bottom:64px}
+  .panel-green{min-height:auto;padding-top:64px;padding-bottom:56px}
   .hero-panel{padding-bottom:0;padding-top:120px;justify-content:flex-start}
   .hero-title{font-size:clamp(36px,9.5vw,46px)}
   .eye-wrap{width:1.7em;height:.95em}
   .chrome-logo,.chrome-cta{padding:10px 14px;font-size:12px}
   .scatter-card{width:100%;max-width:280px}
+  .wizard{width:62px}
+  .wizard-lg{width:132px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -302,4 +391,5 @@ body.lightbox-open{overflow:hidden}
   .scatter:not(.is-visible) .scatter-card:nth-child(1){transform:rotate(-6deg)}
   .scatter:not(.is-visible) .scatter-card:nth-child(2){transform:rotate(3deg) translateY(36px)}
   .scatter:not(.is-visible) .scatter-card:nth-child(3){transform:rotate(-2deg)}
+  .scatter:not(.is-visible) .scatter-card:nth-child(4){transform:rotate(4deg) translateY(18px)}
 }
