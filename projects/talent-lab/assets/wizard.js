@@ -25,6 +25,8 @@
   var LOOK_SPOTS = [[0, 0], [-2.5, 0.5], [2.5, 0.5], [0, -1.5], [0, 0]];
 
   function look(el) {
+    // dormido no mira para ningún lado, solo tiene los ojos cerrados
+    if (el.classList.contains('is-sleeping')) return;
     var spot = LOOK_SPOTS[Math.floor(Math.random() * LOOK_SPOTS.length)];
     el.querySelectorAll('.wizard-eye-look').forEach(function (eye) {
       eye.style.transform = 'translate(' + spot[0] + 'px,' + spot[1] + 'px)';
@@ -59,9 +61,14 @@
 
     function wake() {
       modalWizard.classList.remove('is-sleeping');
+      modalWizardWrap.classList.remove('is-sleeping');
       clearTimeout(sleepTimer);
       sleepTimer = setTimeout(function () {
         modalWizard.classList.add('is-sleeping');
+        modalWizardWrap.classList.add('is-sleeping');
+        modalWizard.querySelectorAll('.wizard-eye-look').forEach(function (eye) {
+          eye.style.transform = 'translate(0,0)';
+        });
       }, SLEEP_DELAY);
     }
 

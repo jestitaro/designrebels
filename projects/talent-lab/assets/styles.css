@@ -198,6 +198,15 @@ img{max-width:100%;display:block}
 /* si no lo tocan (ni bien se abre el modal), se queda dormido */
 .wizard.is-sleeping .wizard-eye{transform:scaleY(.08)}
 .wizard.is-sleeping .wizard-hand-left,.wizard.is-sleeping .wizard-hand-right{animation-play-state:paused}
+
+/* "zzz" (texto, no emoji) para que se note que está durmiendo */
+.wizard-zzz{position:absolute;top:2px;right:calc(50% - 92px);font-family:Georgia,serif;font-weight:700;font-style:italic;color:var(--violet);opacity:0;pointer-events:none}
+.wizard-zzz-2{font-size:17px;top:-6px;right:calc(50% - 104px)}
+.wizard-zzz-3{font-size:21px;top:-14px;right:calc(50% - 118px)}
+.oracle-wizard.is-sleeping .wizard-zzz-1{font-size:13px;animation:wizard-zzz-rise 2.6s ease-in infinite}
+.oracle-wizard.is-sleeping .wizard-zzz-2{animation:wizard-zzz-rise 2.6s ease-in infinite .5s}
+.oracle-wizard.is-sleeping .wizard-zzz-3{animation:wizard-zzz-rise 2.6s ease-in infinite 1s}
+@keyframes wizard-zzz-rise{0%{opacity:0;transform:translateY(6px)}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(-16px)}}
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .ad-card{position:relative;background:#fff;border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:14px;color:var(--ink);box-shadow:0 10px 28px rgba(17,17,27,.06);border:1px solid rgba(17,17,27,.06)}
 .ad-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
