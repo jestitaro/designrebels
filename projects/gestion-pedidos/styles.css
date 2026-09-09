@@ -489,6 +489,22 @@ a { color: inherit; }
    Cómo funciona (v2): pestañas verticales que avanzan solas
    ========================================================= */
 .flow-panel { position: relative; }
+#flujo-interactivo {
+  border-radius: 0;
+  background: none;
+  overflow: visible;
+}
+#flujo-interactivo::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%; width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  background:
+    radial-gradient(circle at 88% 15%, rgba(161, 114, 255, .32), transparent 45%),
+    linear-gradient(150deg, #1B1454 0%, #0D0938 75%);
+}
 .flow-header { text-align: center; margin-bottom: 2.25rem; position: relative; z-index: 1; }
 .flow-tabs { display: grid; grid-template-columns: 1fr 1.15fr; gap: 3.5rem; align-items: start; position: relative; z-index: 1; }
 .flow-tabs__list { display: flex; flex-direction: column; }
