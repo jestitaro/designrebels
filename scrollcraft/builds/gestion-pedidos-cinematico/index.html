@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QuartzSales · Gestión de pedidos</title>
+<meta name="description" content="Un pedido entra por el punto de venta o el equipo comercial y llega, controlado, hasta el ERP. Sin doble carga, sin planillas sueltas.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237025E0'/><text x='16' y='22' font-family='Arial' font-weight='800' font-size='18' fill='white' text-anchor='middle'>Q</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header class="site-bar">
+  <a class="site-bar__mark" href="#top">QuartzSales<span>Gestión de pedidos</span></a>
+  <div class="site-bar__chapter" id="qs-nav-chapter">
+    <span id="qs-nav-chapter-label">Recorré el proceso</span>
+    <span class="site-bar__chapter-track"><span class="site-bar__chapter-fill" id="qs-nav-chapter-fill"></span></span>
+  </div>
+  <a class="site-bar__cta" href="#cta" data-sc-magnet="0.2" data-sc-rise="0">Solicitar demo</a>
+</header>
+
+<div id="qs-thread" aria-hidden="true">
+  <div id="qs-thread-rail">
+    <svg viewBox="0 0 24 100" preserveAspectRatio="none">
+      <path class="qs-line-bg" d="M12,0 L12,100" pathLength="100"></path>
+      <path class="qs-line-fg" id="qs-line-fg" d="M12,0 L12,100" pathLength="100"></path>
+    </svg>
+    <span class="qs-wp" data-wp="1" style="top:9%"></span>
+    <span class="qs-wp" data-wp="2" style="top:27%"></span>
+    <span class="qs-wp" data-wp="3" style="top:50%"></span>
+    <span class="qs-wp" data-wp="4" style="top:73%"></span>
+    <span class="qs-wp" data-wp="5" style="top:91%"></span>
+  </div>
+  <div id="qs-token">
+    <div class="qs-token__card" id="qs-token-card" data-state="idle">
+      <div class="qs-token__row"><span class="qs-token__dot"></span><span class="qs-token__id">PEDIDO #4821</span></div>
+      <p class="qs-token__state" id="qs-token-state">Listo para cargar</p>
+      <p class="qs-token__meta" id="qs-token-meta">Esperando el primer producto</p>
+    </div>
+  </div>
+</div>
+
+<div id="qs-thread-mobile" aria-hidden="true">
+  <span class="qs-token__dot" id="qs-token-dot-m"></span>
+  <span class="qs-token__state" id="qs-token-state-m">Pedido #4821 · Listo para cargar</span>
+  <span id="qs-thread-mobile-track"><span id="qs-thread-mobile-fill"></span></span>
+</div>
+
+<main id="top">
+
+  <!-- 1 · HERO — pin, calmo, con profundidad (Luciano hero-depth) -->
+  <section data-sc-act="pin" data-sc-span="2.4" data-sc-drift="#FFFFFF">
+    <div data-sc-stage class="qs-hero-stage">
+      <div class="qs-hero-copy" data-sc-cue="0 0.82 0">
+        <p class="sc-label">Gestión de pedidos · QuartzSales</p>
+        <h1 class="sc-display sc-display--lg" data-sc-kinetic="lines">Un pedido entra. Llega controlado al ERP.</h1>
+        <p class="sc-lede" style="margin-inline:auto;">Cargá pedidos desde el punto de venta o el equipo comercial y seguilos, en vivo, hasta que quedan transmitidos — sin doble carga ni planillas sueltas.</p>
+        <div class="qs-hero-token-seed"><span class="qs-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--sc-accent);"></span> El pedido <b>#4821</b> nace acá y te acompaña en todo el recorrido.</div>
+        <div class="qs-hero-actions">
+          <a class="qs-btn qs-btn--solid" href="#cta">Solicitar demo</a>
+          <a class="qs-btn qs-btn--outline" href="#flujo">Ver cómo funciona</a>
+        </div>
+      </div>
+      <div class="qs-hero-scene">
+        <div class="qs-hero-scene__glow" aria-hidden="true"></div>
+        <div class="qs-hero-scene__grid" aria-hidden="true"></div>
+        <img class="qs-hero-plane qs-hero-plane--chip qs-hero-plane--left" data-sc-parallax="-0.55"
+             src="assets/hero-slot-left-1.png" width="700" height="933" alt="">
+        <img class="qs-hero-plane qs-hero-plane--chip qs-hero-plane--top" data-sc-parallax="0.7"
+             src="assets/hero-slot-top-1.png" width="700" height="420" alt="">
+        <img class="qs-hero-plane qs-hero-plane--product" data-sc-parallax="-0.15"
+             src="assets/hero-desktop-mock.png" width="1100" height="733"
+             alt="Panel de QuartzSales con el listado de pedidos, estados y totales en tiempo real.">
+        <img class="qs-hero-plane qs-hero-plane--chip qs-hero-plane--right" data-sc-parallax="0.95"
+             src="assets/hero-slot-right-1.png" width="700" height="525" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · BENEFICIOS — flow, asimétrico (1 foto líder + 4 tejidos), atado al recorrido -->
+  <section class="sc-section" data-sc-act="flow" id="beneficios">
+    <div class="qs-wrap qs-benefits">
+      <div class="qs-benefits__lead-copy sc-stack" data-sc-in data-sc-stagger="70">
+        <p class="sc-label">Por qué cambia el día a día</p>
+        <h2 class="sc-display sc-display--lg">Un solo lugar para cargar, controlar y enviar cada pedido.</h2>
+        <p class="sc-body">Eso es lo primero que se nota: lo que antes eran dos o tres pasos sueltos — anotar, pasar en limpio, cargar en el sistema — pasa a ser uno solo, controlado de punta a punta.</p>
+        <div class="qs-benefits__photo" style="margin-top: var(--sc-7);">
+          <img src="assets/carga-guiada.png" width="700" height="766" loading="lazy"
+               alt="Vendedor cargando un pedido guiado desde la aplicación de QuartzSales.">
+        </div>
+      </div>
+      <ol class="qs-benefits__list" data-sc-in data-sc-stagger="60">
+        <li><span class="qs-benefits__num">01</span><div><h3>Sin doble carga</h3><p>Lo que entra por el pedido sale directo hacia el ERP: nadie lo vuelve a tipear.</p></div></li>
+        <li><span class="qs-benefits__num">02</span><div><h3>Control total</h3><p>Cada pedido respeta precios, stock y condiciones comerciales antes de avanzar.</p></div></li>
+        <li><span class="qs-benefits__num">03</span><div><h3>Gestión centralizada</h3><p>Equipo comercial, clientes y administración trabajan sobre el mismo pedido, no sobre copias.</p></div></li>
+        <li><span class="qs-benefits__num">04</span><div><h3>Integración en tiempo real</h3><p>Conectado en vivo con tu ERP: precios y stock están siempre al día.</p></div></li>
+        <li><span class="qs-benefits__num">05</span><div><h3>Visibilidad total</h3><p>Seguí el estado de cada pedido, del primer clic a la confirmación.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 3 · CARGA — scrub. El pedido nace de verdad: primer clip, primer capítulo. -->
+  <section id="flujo" data-sc-act="scrub" data-sc-span="2.6" data-sc-dwell="0.32" data-qs-chapter="1">
+    <div data-sc-stage>
+      <img class="sc-stage__poster" src="assets/carga-poster.png" alt="">
+      <video data-sc-scrub data-sc-src="assets/carga.mp4" data-sc-src-mobile="assets/carga-m.mp4" muted playsinline></video>
+      <div class="sc-scrim sc-scrim--lead" aria-hidden="true"></div>
+      <div class="sc-copy sc-copy--lead" data-sc-cue="0 0.8 0">
+        <h2 class="sc-display sc-display--lg" data-sc-kinetic="lines">Cargá el pedido como ya lo hacés.</h2>
+        <p class="sc-body">Cliente, sucursal, productos y cantidades. El carrito se arma solo mientras vos seguís vendiendo.</p>
+        <div class="qs-step-token-note"><span class="qs-dot"></span> El pedido #4821 empieza a tomar forma.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · VALIDACIÓN — pin. La imagen es el ground; el argumento entra en capas. -->
+  <section data-sc-act="pin" data-sc-span="2.2" data-sc-drift="#F7F4FC" data-qs-chapter="2">
+    <div data-sc-stage class="qs-step-stage">
+      <div class="qs-step-media">
+        <div class="qs-step-media__chrome" aria-hidden="true"><span></span><span></span><span></span></div>
+        <img src="assets/paso-2-validacion.png" width="900" height="833" alt="Pantalla de validación del pedido en QuartzSales, con reglas de precio, stock y condiciones comerciales.">
+      </div>
+      <div class="qs-step-copy">
+        <p class="sc-lede" data-sc-cue="0 0.36">El sistema empieza a controlar todo esto por vos.</p>
+        <p class="sc-lede" data-sc-cue="0.3 0.68">Precio, stock disponible y condiciones comerciales — cada línea se revisa antes de avanzar.</p>
+        <p class="sc-lede" data-sc-cue="0.62 1">Nada pasa a la siguiente etapa sin que las reglas se cumplan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · APROBACIÓN — flow + reveal iris. Salta la excepción, entra la lógica. -->
+  <section class="sc-section" data-sc-act="flow" data-qs-chapter="3">
+    <div class="qs-wrap qs-step-stage" style="grid-template-columns: 1.1fr 0.9fr;">
+      <div class="qs-step-copy sc-stack" data-sc-in data-sc-stagger="70" style="order:2;">
+        <h2 class="sc-display sc-display--md">Hay lógica detrás, no solo un carrito.</h2>
+        <p class="sc-body">Un descuento fuera de rango dispara una excepción y el pedido pide aprobación. Ni se pierde ni se frena solo: alguien lo revisa y el sistema sigue.</p>
+        <div class="qs-step-token-note"><span class="qs-dot"></span> El pedido #4821 queda marcado y avanza a revisión.</div>
+      </div>
+      <div class="qs-approve-stack" style="order:1;">
+        <img class="qs-approve-stack__base" src="assets/paso-2-validacion.png" width="900" height="833" alt=""
+             style="filter: grayscale(0.35) brightness(0.92);">
+        <span class="qs-approve-badge qs-approve-badge--flag">⚠ Excepción: requiere aprobación</span>
+        <img class="qs-approve-stack__over" data-sc-reveal="iris" data-sc-reveal-at="0.15 0.65"
+             src="assets/paso-3-aprobacion.png" width="900" height="619"
+             alt="Pantalla de aprobación de excepciones en QuartzSales, con el pedido ya autorizado.">
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · TRANSMISIÓN AL ERP — pin + spotlight. El pico: mayor span, mayor peso. -->
+  <section data-sc-act="pin" data-sc-span="2.8" data-sc-drift="#F3EEFD" data-qs-chapter="4">
+    <div data-sc-stage class="qs-erp-stage" data-sc-spotlight>
+      <div class="qs-erp-copy" data-sc-cue="0.04 0.9 0.15">
+        <p class="sc-label">El momento en que todo conecta</p>
+        <h2 class="sc-display sc-display--lg" data-sc-kinetic="lines">Ah, todo termina conectado automáticamente.</h2>
+        <p class="sc-body" style="margin-inline:auto;">El pedido validado y aprobado se transmite solo. Nada se reescribe del otro lado del ERP.</p>
+      </div>
+      <div class="qs-erp-receiver">
+        <div class="qs-erp-receiver__frame">
+          <img src="assets/paso-4-transmision.png" width="900" height="595" alt="Confirmación de transmisión del pedido hacia el ERP en QuartzSales.">
+        </div>
+        <div class="qs-erp-pulse" id="qs-erp-pulse" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · CONFIRMACIÓN — flow, quieta. Resolución. -->
+  <section class="sc-section" data-sc-act="flow" data-qs-chapter="5">
+    <div class="qs-wrap qs-confirm sc-stack" data-sc-in data-sc-stagger="80">
+      <p class="sc-label">Resolución</p>
+      <h2 class="sc-display sc-display--md">Esto ahorra doble carga y ordena todo el proceso.</h2>
+      <p class="sc-body" style="margin-inline:auto;">El pedido #4821 queda confirmado, trazable y disponible para todos los que lo necesitan tocar después.</p>
+      <div class="qs-confirm__frame">
+        <img src="assets/paso-5-confirmacion.png" width="900" height="508" alt="Pantalla de confirmación del pedido en QuartzSales, ya transmitido y registrado.">
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · PENSADO PARA — pan. Se abre el panorama a los roles. -->
+  <section data-sc-act="pan" data-sc-span="3.2">
+    <div data-sc-stage>
+      <div class="qs-rail" data-sc-pan="0.08">
+        <div class="qs-rail__lead sc-stack">
+          <p class="sc-label">Un mismo sistema, distintos roles</p>
+          <h2 class="sc-display sc-display--md">Pensado para todo el equipo.</h2>
+          <p class="sc-body">El mismo pedido, visto desde donde cada uno lo necesita.</p>
+        </div>
+        <article class="qs-role" data-sc-tilt="6">
+          <span class="qs-role__num">Equipo comercial</span>
+          <h3>Vende sin fricción</h3>
+          <p>Carga pedidos desde cualquier dispositivo, con precios y stock siempre al día.</p>
+        </article>
+        <article class="qs-role" data-sc-tilt="6">
+          <span class="qs-role__num">Clientes</span>
+          <h3>Pide y hace seguimiento</h3>
+          <p>Ve el estado real de su pedido, sin llamar a preguntar si ya salió.</p>
+        </article>
+        <article class="qs-role" data-sc-tilt="6">
+          <span class="qs-role__num">Administración</span>
+          <h3>Aprueba y controla</h3>
+          <p>Revisa excepciones y confirma transmisiones sin perseguir planillas.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · CIERRE — pin, último elemento de la página. El token llega a destino. -->
+  <section id="cta" data-sc-act="pin" data-sc-span="1.15" data-sc-drift="#4B12AE">
+    <div data-sc-stage class="qs-close-stage" data-sc-spotlight>
+      <div class="qs-close">
+        <div class="qs-close__token"><span class="qs-dot--done"></span> Pedido #4821 · Confirmado</div>
+        <h2 class="sc-display sc-display--lg" data-sc-cue="0.06" data-sc-kinetic="lines">Todo el proceso conectado. Una sola gestión.</h2>
+        <p class="sc-body" data-sc-cue="0.1" style="margin-inline:auto; margin-top: var(--sc-4);">De la carga a la confirmación en el ERP, sin planillas sueltas ni doble trabajo.</p>
+        <div class="qs-hero-actions" style="margin-top: var(--sc-6);">
+          <a class="qs-btn qs-btn--solid" href="#top" data-sc-magnet="0.26" data-sc-rise="0">Solicitar demo</a>
+        </div>
+      </div>
+      <footer class="foot">
+        <span>QuartzSales · Gestión de pedidos</span>
+        <a href="#top">Volver al inicio</a>
+      </footer>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>ScrollCraft.mount(document.body);</script>
+<script src="script.js"></script>
+</body>
+</html>
