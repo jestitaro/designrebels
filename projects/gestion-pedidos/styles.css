@@ -402,27 +402,19 @@ a { color: inherit; }
 }
 
 /* =========================================================
-   Beneficios (v2): mismo grid, versión flat y oscura
+   Beneficios (v2): mismo grid, versión con fondos claros
    ========================================================= */
-#beneficios-v2 .section-title { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
 #beneficios-v2 .beneficio-card {
-  background-image: none;
-  background-color: var(--dark-bg);
-  border: 1px solid rgba(255, 255, 255, .08);
-  box-shadow: 0 14px 32px rgba(5, 3, 25, .28);
+  background-image: linear-gradient(155deg, #ffffff 0%, #F3EEFD 100%);
+  border: 1px solid rgba(161, 114, 255, .18);
+  box-shadow: var(--shadow);
 }
-#beneficios-v2 .beneficio-card:hover { box-shadow: 0 20px 42px rgba(5, 3, 25, .36); }
-#beneficios-v2 .beneficio-card h3 { color: #fff; margin-bottom: .6rem; font-size: 1.55rem; }
-#beneficios-v2 .beneficio-card p { color: rgba(255, 255, 255, .7); font-size: .95rem; }
-.beneficio-card__number { position: absolute; top: 1.3rem; right: 1.5rem; font-size: .72rem; font-weight: 800; letter-spacing: .04em; color: rgba(255, 255, 255, .35); z-index: 2; }
+#beneficios-v2 .beneficio-card:hover { box-shadow: var(--shadow-hover); }
+#beneficios-v2 .beneficio-card h3 { color: var(--dark-bg); margin-bottom: .6rem; }
+#beneficios-v2 .beneficio-card p { color: var(--text-muted); }
+.beneficio-card__number { position: absolute; top: 1.3rem; right: 1.5rem; font-size: .72rem; font-weight: 800; letter-spacing: .04em; color: rgba(19, 13, 93, .32); z-index: 2; }
 .beneficio-card__icon-box { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin-bottom: .5rem; }
 .beneficio-card__icon-box img { width: 100%; height: 100%; object-fit: contain; }
-.beneficio-card__sparkle {
-  position: absolute; bottom: 1.4rem; right: 1.5rem; width: 16px; height: 16px;
-  color: rgba(255, 255, 255, .3); pointer-events: none; z-index: 1;
-}
-.beneficio-card__sparkle svg { display: block; width: 100%; height: 100%; }
-.beneficio-card--hero .beneficio-card__sparkle { top: 1.3rem; bottom: auto; right: 3.4rem; }
 
 /* =========================================================
    Cómo funciona (cards que se apilan con el scroll)
