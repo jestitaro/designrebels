@@ -413,13 +413,8 @@ a { color: inherit; }
 #beneficios-v2 .beneficio-card h3 { color: var(--dark-bg); margin-bottom: .6rem; }
 #beneficios-v2 .beneficio-card p { color: var(--text-muted); }
 .beneficio-card__number { position: absolute; top: 1.3rem; right: 1.5rem; font-size: .72rem; font-weight: 800; letter-spacing: .04em; color: rgba(19, 13, 93, .32); z-index: 2; }
-.beneficio-card__icon-box {
-  display: flex; align-items: center; justify-content: center;
-  width: 46px; height: 46px; border-radius: 13px; margin-bottom: .9rem;
-}
-.beneficio-card__icon-box img { width: 24px; height: 24px; object-fit: contain; }
-.beneficio-card__icon-box--violet { background: #EDE4FB; }
-.beneficio-card__icon-box--blue { background: #DFF0FE; }
+.beneficio-card__icon-box { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin-bottom: .5rem; }
+.beneficio-card__icon-box img { width: 100%; height: 100%; object-fit: contain; }
 
 /* =========================================================
    Cómo funciona (cards que se apilan con el scroll)
