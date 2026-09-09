@@ -53,7 +53,7 @@
   };
 
   const dinoImg = new Image();
-  dinoImg.src = '../meteorito-run/assets/dino-player.svg';
+  dinoImg.src = '../qs-league/assets/logo-dino-cup.png';
 
   let map = [];
   let dotsLeft = 0;
@@ -399,27 +399,26 @@
   function drawDino(now) {
     const x = player.x * TILE + TILE / 2;
     const y = player.y * TILE + TILE / 2;
-    const direction = DIR[player.dir];
     const powered = now < poweredUntil;
+
     ctx.save();
     ctx.translate(x, y);
-    ctx.rotate(direction.angle);
+    ctx.shadowColor = powered ? '#b8ff3d' : '#8347ff';
+    ctx.shadowBlur = powered ? 16 : 8;
+
     if (dinoImg.complete && dinoImg.naturalWidth) {
-      ctx.translate(-16, -16);
+      const size = 30;
       if (player.dir === 'left') {
-        ctx.translate(32, 0);
         ctx.scale(-1, 1);
       }
-      ctx.drawImage(dinoImg, 0, 0, 32, 31);
+      ctx.drawImage(dinoImg, -size / 2, -size / 2, size, size);
     } else {
-      ctx.fillStyle = powered ? '#b8ff3d' : '#79ef42';
-      ctx.fillRect(-12, -10, 24, 20);
+      ctx.fillStyle = '#f7f5ff';
+      ctx.beginPath();
+      ctx.arc(0, 0, 10, 0, Math.PI * 2);
+      ctx.fill();
     }
-    if (powered) {
-      ctx.globalCompositeOperation = 'source-atop';
-      ctx.fillStyle = 'rgba(184,255,61,.38)';
-      ctx.fillRect(-20, -20, 40, 40);
-    }
+
     ctx.restore();
   }
 
