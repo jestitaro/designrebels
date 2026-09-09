@@ -1,6 +1,22 @@
 (() => {
   'use strict';
 
+  const nativeSrc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+
+  if (nativeSrc?.get && nativeSrc?.set) {
+    Object.defineProperty(HTMLImageElement.prototype, 'src', {
+      configurable: nativeSrc.configurable,
+      enumerable: nativeSrc.enumerable,
+      get: nativeSrc.get,
+      set(value) {
+        const nextValue = String(value || '').includes('../meteorito-run/assets/dino-player.svg')
+          ? '../qs-league/assets/logo-dino-cup.png'
+          : value;
+        nativeSrc.set.call(this, nextValue);
+      }
+    });
+  }
+
   const quartzLogo = new Image();
   quartzLogo.decoding = 'async';
   quartzLogo.src = 'https://www.quartzsales.com/images/q-02.svg';
@@ -18,9 +34,8 @@
 
     this.save();
     this.shadowColor = '#ff35c7';
-    this.shadowBlur = 16;
-    this.clearRect(-12, -12, 24, 24);
-    this.drawImage(quartzLogo, -11, -11, 22, 22);
+    this.shadowBlur = 10;
+    this.drawImage(quartzLogo, -7, -7, 14, 14);
     this.restore();
   };
 })();
