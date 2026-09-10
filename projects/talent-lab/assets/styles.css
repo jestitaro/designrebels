@@ -168,7 +168,7 @@ img{max-width:100%;display:block}
    izquierda/derecha, ojo-izquierdo/derecho). Levita todo el tiempo
    (.wizard-float, en un <span> aparte para que no choque con la
    animación de "sale y vuela" del hover, que anima el propio
-   <svg class="wizard">) — dos elementos, dos transforms). */
+   <svg class="wizard"> — dos elementos, dos transforms). */
 .wizard-float{position:relative;display:inline-block;animation:wizard-levitate 3.4s ease-in-out infinite}
 @keyframes wizard-levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .wizard{width:44px;height:auto;flex-shrink:0;overflow:visible;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
