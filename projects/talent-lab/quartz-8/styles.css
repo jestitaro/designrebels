@@ -206,9 +206,53 @@ textarea:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(112,37,224,.
 .mode small{display:block;font-weight:700;color:#877995}.mode.active{border-color:var(--purple);background:var(--violet-pale)}
 .toast{
   position:fixed;right:24px;bottom:24px;background:var(--ink);color:white;padding:14px 18px;border-radius:14px;
-  font-size:13px;font-weight:800;z-index:120;transform:translateY(100px);opacity:0;transition:.3s ease
+  font-size:13px;font-weight:800;z-index:150;transform:translateY(100px);opacity:0;transition:.3s ease
 }
 .toast.show{transform:translateY(0);opacity:1}
+
+/* editor del mazo: panel de cartas + panel de detalle */
+.deck-editor{position:fixed;inset:0;z-index:130;display:flex;background:var(--ink)}
+.deck-editor[hidden]{display:none}
+.de-panel{overflow-y:auto}
+.de-panel-cards{flex:0 0 44%;background:var(--ink);color:#fff;padding:32px}
+.de-panel-detail{flex:1;background:var(--paper);color:var(--ink);padding:48px;display:flex;flex-direction:column;justify-content:center}
+.de-cards-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.de-brand{font-weight:900;font-size:13px;letter-spacing:.08em}
+.de-close{border:0;background:rgba(255,255,255,.12);color:#fff;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer}
+.de-close:hover{background:rgba(255,255,255,.22)}
+.de-idea{margin:0 0 22px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.72)}
+.de-idea span{font-weight:900;color:var(--cyan-light);margin-right:6px}
+.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.de-card{text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:16px;padding:14px;cursor:pointer;color:#fff;transition:.2s ease}
+.de-card:hover{border-color:rgba(255,255,255,.4)}
+.de-card.is-selected{border-color:var(--cyan);background:rgba(26,160,255,.14)}
+.de-card-cat{display:block;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan-light);margin-bottom:6px}
+.de-card b{display:block;font-size:14px;line-height:1.3;font-weight:700}
+.de-detail-tags{display:flex;gap:8px;margin-bottom:16px}
+.de-detail-tags span{background:var(--violet-pale);color:var(--purple);font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+#detailTitle{font-size:clamp(26px,3.2vw,38px);line-height:1.1;letter-spacing:-.02em;margin:0 0 16px}
+#detailPrompt{font-size:18px;line-height:1.6;color:#5b4c73;max-width:520px}
+.de-detail-buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.de-save-note{margin-top:16px;font-size:14px;font-weight:700;color:var(--cyan-deep)}
+.de-save-note .text-btn{position:static;display:inline;margin-left:6px;color:var(--purple);text-decoration:underline}
+
+/* elegir / explorar cartas */
+.swap-modal{position:fixed;inset:0;z-index:140;background:var(--ink);color:#fff;display:flex;flex-direction:column}
+.swap-modal[hidden]{display:none}
+.swap-head{display:flex;align-items:center;justify-content:space-between;padding:26px 32px}
+.swap-filters{padding:0 32px 18px}
+.swap-filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.swap-chip{border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:800;cursor:pointer}
+.swap-chip:hover{border-color:#fff}
+.swap-chip.is-active{background:#fff;color:var(--ink);border-color:#fff}
+.swap-body{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 380px;gap:24px;padding:0 32px 32px}
+.swap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;align-content:start}
+.swap-empty{opacity:.6;font-size:14px}
+.swap-preview{background:#fff;color:var(--ink);border-radius:22px;padding:28px;align-self:start;position:sticky;top:0}
+.swap-preview-empty{opacity:.5;font-size:14px}
+.swap-preview .de-detail-tags{margin-bottom:14px}
+.swap-preview h2{font-size:24px;line-height:1.15;margin:0 0 12px}
+.swap-preview p{font-size:15px;line-height:1.6;color:#5b4c73;margin:0 0 20px}
 
 @media (max-width: 1050px){
   .nav a{display:none}
@@ -244,6 +288,13 @@ textarea:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(112,37,224,.
   .manifesto-card{padding:34px 26px;flex-direction:column;align-items:flex-start}
   footer{grid-template-columns:1fr}
   .footer-back{justify-self:start}
+  .deck-editor{flex-direction:column}
+  .de-panel-cards{flex:0 0 46%;padding:22px}
+  .de-panel-detail{flex:1;padding:26px}
+  .de-grid{grid-template-columns:1fr 1fr}
+  .swap-head,.swap-filters{padding-left:20px;padding-right:20px}
+  .swap-body{grid-template-columns:1fr;padding:0 20px 20px}
+  .swap-preview{position:static;order:-1}
 }
 /* Talent Lab button system — hero */
 .hero-actions .btn{

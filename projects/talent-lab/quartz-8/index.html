@@ -40,6 +40,7 @@
         <div class="hero-actions">
           <button class="btn btn-primary" data-start>Mezclar las cartas</button>
           <a class="btn btn-secondary" href="#como-funciona">Ver cómo funciona</a>
+          <button class="btn btn-secondary" id="btnResumeDeck" hidden>Volver a mi último mazo</button>
         </div>
         <div class="hero-meta">
           <span><b>3</b> cartas para una partida rápida</span>
@@ -130,47 +131,47 @@
       </div>
 
       <div class="deck-grid">
-        <article class="deck-card product" data-deck="Producto">
+        <article class="deck-card product" data-deck="Producto" data-category="producto">
           <div class="deck-icon">◇</div>
           <span class="deck-label">PRODUCTO</span>
           <h3>Idea & MVP</h3>
           <p>Problema, alcance, valor, hipótesis y primera versión.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="producto">Ver cartas <span>↗</span></button>
         </article>
-        <article class="deck-card ux" data-deck="Diseño">
+        <article class="deck-card ux" data-deck="Diseño" data-category="diseno">
           <div class="deck-icon">◌</div>
           <span class="deck-label">DISEÑO</span>
           <h3>Design Critique</h3>
           <p>Jerarquía, feedback, accesibilidad, estados y edge cases.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="diseno">Ver cartas <span>↗</span></button>
         </article>
-        <article class="deck-card ai" data-deck="IA">
+        <article class="deck-card ai" data-deck="IA" data-category="ia">
           <div class="deck-icon">✦</div>
           <span class="deck-label">IA</span>
           <h3>AI Challenge</h3>
           <p>Automatización, asistencia, datos, riesgos y rol humano.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="ia">Ver cartas <span>↗</span></button>
         </article>
-        <article class="deck-card business" data-deck="Negocio">
+        <article class="deck-card business" data-deck="Negocio" data-category="negocio">
           <div class="deck-icon">↗</div>
           <span class="deck-label">NEGOCIO</span>
           <h3>Impacto</h3>
           <p>Adopción, métricas, costo, escalabilidad y valor real.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="negocio">Ver cartas <span>↗</span></button>
         </article>
-        <article class="deck-card user" data-deck="Usuario">
+        <article class="deck-card user" data-deck="Usuario" data-category="usuario">
           <div class="deck-icon">◑</div>
           <span class="deck-label">USUARIO</span>
           <h3>Perspectiva real</h3>
           <p>Qué entiende, qué necesita y dónde puede confundirse.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="usuario">Ver cartas <span>↗</span></button>
         </article>
-        <article class="deck-card wildcard" data-deck="Comodines">
+        <article class="deck-card wildcard" data-deck="Comodines" data-category="comodin">
           <div class="deck-icon">∞</div>
           <span class="deck-label">COMODÍN</span>
           <h3>Destrabar</h3>
           <p>Preguntas inesperadas para salir del camino obvio.</p>
-          <button class="text-btn">Ver cartas <span>↗</span></button>
+          <button class="text-btn" data-explore="comodin">Ver cartas <span>↗</span></button>
         </article>
       </div>
     </section>
@@ -260,8 +261,46 @@
     </div>
   </div>
 
+  <!-- MAZO: tu selección de cartas, se puede navegar, cambiar y guardar -->
+  <div class="deck-editor" id="deckEditor" hidden>
+    <div class="de-panel de-panel-cards">
+      <div class="de-cards-head">
+        <span class="de-brand">◆ QuartzEight</span>
+        <button class="de-close" type="button" id="deckEditorClose" aria-label="Cerrar mazo">×</button>
+      </div>
+      <p class="de-idea" id="deckEditorIdea" hidden></p>
+      <div class="de-grid" id="deckGrid"></div>
+    </div>
+    <div class="de-panel de-panel-detail">
+      <div class="de-detail-tags" id="detailTags"></div>
+      <h2 id="detailTitle"></h2>
+      <p id="detailPrompt"></p>
+      <div class="de-detail-buttons">
+        <button class="btn btn-primary" type="button" id="btnSwapCard">Cambiar esta carta ↻</button>
+        <button class="btn btn-secondary" type="button" id="btnSaveDeck">Guardar mi mazo</button>
+      </div>
+      <div class="de-save-note" id="saveNote" hidden></div>
+    </div>
+  </div>
+
+  <!-- CAMBIAR / EXPLORAR: elegir una carta del banco completo, filtrando por categoría y tipo -->
+  <div class="swap-modal" id="swapModal" hidden>
+    <div class="swap-head">
+      <span class="de-brand" id="swapHeadTitle">◆ Elegí una carta</span>
+      <button class="de-close" type="button" id="swapClose" aria-label="Cerrar">×</button>
+    </div>
+    <div class="swap-filters" id="swapFilters"></div>
+    <div class="swap-body">
+      <div class="swap-grid" id="swapGrid"></div>
+      <div class="swap-preview" id="swapPreview">
+        <p class="swap-preview-empty">Elegí una carta para ver el detalle.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast">✦ Mazo listo para mezclar</div>
 
+  <script src="cards.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
