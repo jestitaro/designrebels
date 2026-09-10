@@ -68,7 +68,7 @@ img{max-width:100%;display:block}
 .btn-outline:hover{border-color:#fff}
 .panel-paper .btn-outline{border-color:var(--ink);color:var(--ink)}
 
-/* Quartz 8 teaser */
+/* QuartzEight teaser */
 .quartz8-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 .quartz8-title{font-size:clamp(28px,4vw,46px);line-height:1.12;letter-spacing:-.03em;font-weight:800;margin:0 0 20px}
 .quartz8-title em{font-style:normal;color:var(--cyan-light)}
