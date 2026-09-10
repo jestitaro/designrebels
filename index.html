@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="assets/styles.css" />
   <link rel="stylesheet" href="assets/compact.css" />
   <link rel="stylesheet" href="assets/hero-motion.css" />
+  <link rel="stylesheet" href="assets/project-carousel.css" />
   <script src="assets/app.js" defer></script>
 </head>
 <body>
@@ -59,49 +60,64 @@
         <p>Cada iniciativa vive en su propio espacio, pero comparte una misma forma de pensar: diseño útil, tecnología aplicada y evolución constante.</p>
       </div>
 
-      <div class="project-layout">
-        <a class="project-card project-main reveal" href="prode2026/" aria-label="Abrir QuartzProde 2026">
-          <div class="project-meta"><span class="status">Live</span><span>01</span></div>
-          <div class="project-visual prode-visual" aria-hidden="true">
-            <span class="score-chip">Ranking live</span>
-            <div class="score-card"><small>Predicción</small><strong>ARG 2 — 1 ENG</strong></div>
-            <div class="mini-pill">Automatizado</div>
-          </div>
-          <div class="project-copy"><p>Producto interno</p><h3>QuartzProde 2026</h3><span>Resultados, ranking y automatizaciones para vivir el Mundial en equipo. ↗</span></div>
-        </a>
+      <div class="project-carousel reveal" role="region" aria-roledescription="carrusel" aria-label="Proyectos de Design Rebels" tabindex="0">
+        <div class="project-track">
+          <a class="project-card project-main" data-project-card data-index="0" data-position="0" href="prode2026/" aria-label="Abrir QuartzProde 2026">
+            <div class="project-meta"><span class="status">Live</span><span>01</span></div>
+            <div class="project-visual prode-visual" aria-hidden="true">
+              <span class="score-chip">Ranking live</span>
+              <div class="score-card"><small>Predicción</small><strong>ARG 2 — 1 ENG</strong></div>
+              <div class="mini-pill">Automatizado</div>
+            </div>
+            <div class="project-copy"><p>Producto interno</p><h3>QuartzProde 2026</h3><span>Resultados, ranking y automatizaciones para vivir el Mundial en equipo. ↗</span></div>
+          </a>
 
-        <a class="project-card project-side mint reveal" href="https://quartzsales-marketing-dashboard.pages.dev/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Dashboard de Marketing en una nueva pestaña">
-          <div class="project-meta"><span>Demo online</span><span>02</span></div>
-          <div class="project-visual dashboard-visual" aria-hidden="true">
-            <div class="dash-shell"><span></span><span></span><span></span><b></b><b></b><b></b></div>
-            <div class="dash-kpi">+24%</div>
-          </div>
-          <div class="project-copy"><p>Inteligencia de negocio</p><h3>Dashboard de Marketing</h3><span>Indicadores, campañas y lectura ejecutiva en un solo lugar. ↗</span></div>
-        </a>
+          <a class="project-card project-side mint" data-project-card data-index="1" data-position="1" href="https://quartzsales-marketing-dashboard.pages.dev/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Dashboard de Marketing en una nueva pestaña">
+            <div class="project-meta"><span>Demo online</span><span>02</span></div>
+            <div class="project-visual dashboard-visual" aria-hidden="true">
+              <div class="dash-shell"><span></span><span></span><span></span><b></b><b></b><b></b></div>
+              <div class="dash-kpi">+24%</div>
+            </div>
+            <div class="project-copy"><p>Inteligencia de negocio</p><h3>Dashboard de Marketing</h3><span>Indicadores, campañas y lectura ejecutiva en un solo lugar. ↗</span></div>
+          </a>
 
-        <a class="project-card project-side coral reveal" href="https://jestitaro.github.io/designrebels/projects/content-visual-editor/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Editor de noticias en una nueva pestaña">
-          <div class="project-meta"><span>Demo online</span><span>03</span></div>
-          <div class="project-visual editor-visual" aria-hidden="true"><div class="canvas-card">Aa</div><span>Mover</span><b>Crear</b></div>
-          <div class="project-copy"><p>Adiós al efecto Paint</p><h3>Editor de noticias</h3><span>Para dejar atrás las noticias hechas en Paint: piezas más lindas, claras y listas para publicar dentro de PS Mobile. ↗</span></div>
-        </a>
+          <a class="project-card project-side coral" data-project-card data-index="2" data-position="2" href="https://jestitaro.github.io/designrebels/projects/content-visual-editor/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Editor de noticias en una nueva pestaña">
+            <div class="project-meta"><span>Demo online</span><span>03</span></div>
+            <div class="project-visual editor-visual" aria-hidden="true"><div class="canvas-card">Aa</div><span>Mover</span><b>Crear</b></div>
+            <div class="project-copy"><p>Adiós al efecto Paint</p><h3>Editor de noticias</h3><span>Para dejar atrás las noticias hechas en Paint: piezas más lindas, claras y listas para publicar dentro de PS Mobile. ↗</span></div>
+          </a>
 
-        <a class="project-card project-side forest reveal" href="https://jestitaro.github.io/designrebels/projects/qs-league/" target="_blank" rel="noopener noreferrer" aria-label="Abrir QS League en una nueva pestaña">
-          <div class="project-meta"><span>MVP</span><span>04</span></div>
-          <div class="project-visual" aria-hidden="true">
-            <div class="rank-chip"><span>Ranking</span><strong>#01 TOP REBEL</strong><small>1.840 pts</small></div>
-            <div class="mini-pill">Desafío activo ↗</div>
-          </div>
-          <div class="project-copy"><p>La competencia también evoluciona</p><h3>QS League</h3><span>Puntos, desafíos y ranking en vivo entre equipos. ↗</span></div>
-        </a>
+          <a class="project-card project-side forest" data-project-card data-index="3" data-position="hidden" href="https://jestitaro.github.io/designrebels/projects/qs-league/" target="_blank" rel="noopener noreferrer" aria-label="Abrir QS League en una nueva pestaña">
+            <div class="project-meta"><span>MVP</span><span>04</span></div>
+            <div class="project-visual" aria-hidden="true">
+              <div class="rank-chip"><span>Ranking</span><strong>#01 TOP REBEL</strong><small>1.840 pts</small></div>
+              <div class="mini-pill">Desafío activo ↗</div>
+            </div>
+            <div class="project-copy"><p>La competencia también evoluciona</p><h3>QS League</h3><span>Puntos, desafíos y ranking en vivo entre equipos. ↗</span></div>
+          </a>
 
-        <a class="project-card project-side blue reveal" href="https://jestitaro.github.io/designrebels/projects/talent-lab/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Talent Lab en una nueva pestaña">
-          <div class="project-meta"><span>Landing</span><span>05</span></div>
-          <div class="project-visual" aria-hidden="true">
-            <div class="score-card"><small>Talent Games · Design Rebels</small><strong>Caso destacado</strong></div>
-            <div class="mini-pill">Clasificados ✦</div>
+          <a class="project-card project-side blue" data-project-card data-index="4" data-position="hidden" href="https://jestitaro.github.io/designrebels/projects/talent-lab/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Talent Lab en una nueva pestaña">
+            <div class="project-meta"><span>Landing</span><span>05</span></div>
+            <div class="project-visual" aria-hidden="true">
+              <div class="score-card"><small>Talent Games · Design Rebels</small><strong>Caso destacado</strong></div>
+              <div class="mini-pill">Clasificados ✦</div>
+            </div>
+            <div class="project-copy"><p>Vidriera + clasificados de talento</p><h3>Talent Lab</h3><span>Mostrá lo que tu equipo está creando y encontrá talento para lo que nadie se postuló. ↗</span></div>
+          </a>
+        </div>
+
+        <p class="carousel-hint" aria-hidden="true">Deslizá · click para abrir</p>
+        <div class="carousel-controls" aria-label="Controles del carrusel">
+          <button class="carousel-arrow carousel-prev" type="button" aria-label="Proyecto anterior">←</button>
+          <div class="carousel-dots" aria-label="Elegir proyecto">
+            <button class="carousel-dot is-active" type="button" data-carousel-dot="0" aria-label="Ir a proyecto 1" aria-current="true"></button>
+            <button class="carousel-dot" type="button" data-carousel-dot="1" aria-label="Ir a proyecto 2"></button>
+            <button class="carousel-dot" type="button" data-carousel-dot="2" aria-label="Ir a proyecto 3"></button>
+            <button class="carousel-dot" type="button" data-carousel-dot="3" aria-label="Ir a proyecto 4"></button>
+            <button class="carousel-dot" type="button" data-carousel-dot="4" aria-label="Ir a proyecto 5"></button>
           </div>
-          <div class="project-copy"><p>Vidriera + clasificados de talento</p><h3>Talent Lab</h3><span>Mostrá lo que tu equipo está creando y encontrá talento para lo que nadie se postuló. ↗</span></div>
-        </a>
+          <button class="carousel-arrow carousel-next" type="button" aria-label="Proyecto siguiente">→</button>
+        </div>
       </div>
     </section>
 
