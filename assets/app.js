@@ -5,6 +5,11 @@ heroWordStyles.rel = 'stylesheet';
 heroWordStyles.href = 'assets/hero-word-cycle.css';
 document.head.append(heroWordStyles);
 
+const labGridStyles = document.createElement('link');
+labGridStyles.rel = 'stylesheet';
+labGridStyles.href = 'assets/lab-grid.css';
+document.head.append(labGridStyles);
+
 const revealItems = document.querySelectorAll('.reveal');
 
 if (prefersReducedMotion || !('IntersectionObserver' in window)) {
