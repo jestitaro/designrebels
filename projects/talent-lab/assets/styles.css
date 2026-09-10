@@ -68,6 +68,19 @@ img{max-width:100%;display:block}
 .btn-outline:hover{border-color:#fff}
 .panel-paper .btn-outline{border-color:var(--ink);color:var(--ink)}
 
+/* Quartz 8 teaser */
+.quartz8-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.quartz8-title{font-size:clamp(28px,4vw,46px);line-height:1.12;letter-spacing:-.03em;font-weight:800;margin:0 0 20px}
+.quartz8-title em{font-style:normal;color:var(--cyan-light)}
+.quartz8-lead{max-width:480px;font-size:17px;line-height:1.6;color:rgba(255,255,255,.75);margin:0 0 32px}
+.quartz8-cards{position:relative;min-height:220px}
+.quartz8-card{position:absolute;width:min(280px,80vw);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.quartz8-card span{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--purple);margin-bottom:10px}
+.quartz8-card strong{display:block;font-size:17px;line-height:1.3;color:var(--ink)}
+.quartz8-card.c1{left:0;top:0;transform:rotate(-7deg);background:var(--violet-pale);z-index:3}
+.quartz8-card.c2{left:70px;top:56px;transform:rotate(4deg);background:var(--cyan-pale);z-index:2}
+.quartz8-card.c3{left:140px;top:112px;transform:rotate(-3deg);background:#fff;z-index:1}
+
 /* scroll cue: tells people there's more below, fades out once they actually scroll */
 .scroll-cue{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:10;width:46px;height:46px;border:2px solid rgba(255,255,255,.45);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:18px;transition:opacity .3s ease,visibility .3s ease;animation:scroll-cue-bounce 1.8s ease-in-out infinite}
 .scroll-cue:hover{border-color:#fff}
@@ -391,6 +404,10 @@ body.lightbox-open{overflow:hidden}
   .panel{padding:100px 18px 70px}
   .panel-paper{min-height:auto;padding-top:64px;padding-bottom:64px}
   .panel-green{min-height:auto;padding-top:64px;padding-bottom:56px}
+  .quartz8-panel{min-height:auto;padding-top:64px;padding-bottom:64px}
+  .quartz8-inner{grid-template-columns:1fr;gap:40px}
+  .quartz8-cards{min-height:260px}
+  .quartz8-card{width:min(260px,78vw)}
   .hero-panel{padding-bottom:0;padding-top:120px;justify-content:flex-start}
   .hero-title{font-size:clamp(36px,9.5vw,46px)}
   .eye-wrap{width:1.7em;height:.95em}
