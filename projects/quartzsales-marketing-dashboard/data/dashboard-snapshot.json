@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-12T12:46:47.615Z",
-  "group": "A",
+  "generatedAt": "2026-09-13T13:45:02.444Z",
+  "group": "B",
   "own": {
     "linkedin": {
       "followers": 2874,
       "employees": 8,
-      "lastSynced": "2026-09-12T12:46:24.004Z",
+      "lastSynced": "2026-09-13T13:44:29.877Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -178,7 +178,7 @@
       "gradEnd": "#ef4444",
       "size": "150-250",
       "stats": {
-        "followers": "8.7K",
+        "followers": "8.8K",
         "posts_mes": 12,
         "engagement": "2.1",
         "funding": "~$18M"
@@ -202,7 +202,7 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-09-10T13:28:42.978Z",
+      "lastSynced": "2026-09-13T13:44:46.827Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -276,7 +276,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-09-10T13:28:56.504Z",
+      "lastSynced": "2026-09-13T13:44:58.630Z",
       "syncStatus": "ok",
       "syncError": null
     },
