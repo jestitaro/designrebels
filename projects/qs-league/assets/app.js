@@ -185,6 +185,13 @@ function renderSeasonChip() {
    detected results: last place moderates the next session, second-to-last
    is the backup — same as the "el que sale último modera" house rule,
    with the moderator of that session excluded from the running. */
+/* Excepción puntual: el informe del 17/09/2026 se cargó a mano con el
+   último puesto y el anteúltimo invertidos, así que moderador/suplente
+   salían al revés. Corrige solo esa fecha puntual — no toca informes
+   futuros bien cargados. Sacar esta línea si se vuelve a corregir el
+   informe original en el panel admin. */
+const NEXT_MODERATOR_SWAP_DATES = new Set(['2026-09-17']);
+
 function computeNextModerator() {
   const lastMatch = matches
     .filter(match => match.status === 'APPLIED' && match.sessionDate)
@@ -192,10 +199,15 @@ function computeNextModerator() {
   const rows = (lastMatch?.detectedResults || [])
     .filter(row => row.playerId && row.playerId !== lastMatch.moderatorId)
     .sort((a, b) => a.rank - b.rank);
+  let moderator = rows[rows.length - 1]?.playerName || null;
+  let backup = rows[rows.length - 2]?.playerName || null;
+  if (lastMatch?.sessionDate && NEXT_MODERATOR_SWAP_DATES.has(lastMatch.sessionDate)) {
+    [moderator, backup] = [backup, moderator];
+  }
   return {
     sessionDate: lastMatch?.sessionDate || null,
-    moderator: rows[rows.length - 1]?.playerName || null,
-    backup: rows[rows.length - 2]?.playerName || null
+    moderator,
+    backup
   };
 }
 function renderNextModerator() {
