@@ -2151,6 +2151,48 @@ svg[data-lucide] {
   box-shadow: 0 0 24px rgba(184, 255, 61, 0.22);
 }
 
+.next-moderator {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.next-moderator__row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.next-moderator__label {
+  font-family: var(--font-display);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.next-moderator__name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.3;
+  color: currentColor;
+  text-shadow: 0 0 14px currentColor;
+  overflow-wrap: anywhere;
+}
+
+.next-moderator__row--main .next-moderator__name {
+  font-size: 1.6rem;
+}
+
+.next-moderator__name--backup {
+  font-size: 1.05rem;
+  opacity: 0.82;
+}
+
 .feature-cta--blue {
   color: #4ca7ff;
   background: rgba(76, 167, 255, 0.04);
@@ -2974,7 +3016,39 @@ svg[data-lucide] {
 }
 
 
-.ranking-preview { min-width: 0; }
+.ranking-preview { min-width: 0; position: relative; }
+
+/* Hides the placeholder/partial content on first paint until app.js has a
+   full, consistent snapshot from Firestore (players + movements + matches) —
+   otherwise an intermediate render briefly shows before the real one. */
+.ranking-preview.is-loading > * {
+  visibility: hidden;
+}
+
+.ranking-preview.is-loading::after {
+  content: 'Cargando ranking…';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  color: var(--cyan);
+  text-shadow: 0 0 14px var(--cyan);
+  animation: rankingLoadingPulse 1.3s ease-in-out infinite;
+}
+
+@keyframes rankingLoadingPulse {
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ranking-preview.is-loading::after {
+    animation: none;
+  }
+}
 .mobile-competitors { display: none; }
 
 @media (max-width: 760px) {

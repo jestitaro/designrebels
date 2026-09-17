@@ -506,14 +506,35 @@ function render() {
 }
 
 /* ---------- Firestore subscriptions ---------- */
+/* players/movements/matches arrive from three independent onSnapshot
+   listeners at different times — rendering after each one individually
+   flashes an inconsistent in-between state (e.g. players without their
+   matching movements yet). #ranking stays masked (.is-loading, see
+   styles.css) until all three have reported at least once, then everything
+   renders together for the first real paint. A timeout forces a reveal
+   anyway so a stalled/broken connection doesn't leave the spinner forever. */
+let rankingRevealed = false;
+const liveDataFlags = { players: false, movements: false, matches: false };
+function revealRanking() {
+  if (rankingRevealed) return;
+  rankingRevealed = true;
+  $('#ranking')?.classList.remove('is-loading');
+  render();
+  renderNextModerator();
+}
+function markLiveDataLoaded(key) {
+  liveDataFlags[key] = true;
+  if (!rankingRevealed && Object.values(liveDataFlags).every(Boolean)) revealRanking();
+}
 function initLiveData() {
   const fb = window.DinoCupFirebase;
   if (!fb) return;
   // Un jugador desactivado (isActive: false) sale del ranking público pero
   // conserva su historial real — admin.js es el único lugar que lo togglea.
-  fb.players.subscribe(data => { players = data.filter(p => p.isActive !== false); render(); });
-  fb.movements.subscribeApplied(data => { movements = data; render(); });
-  fb.matches.subscribe(data => { matches = data; renderNextModerator(); });
+  fb.players.subscribe(data => { players = data.filter(p => p.isActive !== false); markLiveDataLoaded('players'); if (rankingRevealed) render(); });
+  fb.movements.subscribeApplied(data => { movements = data; markLiveDataLoaded('movements'); if (rankingRevealed) render(); });
+  fb.matches.subscribe(data => { matches = data; markLiveDataLoaded('matches'); if (rankingRevealed) renderNextModerator(); });
+  window.setTimeout(revealRanking, 6000);
 }
 
 /* ---------- DOM refs ---------- */
