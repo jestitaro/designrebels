@@ -22,6 +22,15 @@ import {
   MapCard,
   MESSAGES,
   OfflineScreen,
+  PricesScreen,
+  GaugeCard,
+  GaugeTile,
+  IndicatorCard,
+  CategoryAccordion,
+  Shelf,
+  shelfLayout,
+  ShelfItem,
+  skusOf,
   PDVS,
   ProgressBar,
   ScanLine,
@@ -107,7 +116,7 @@ export const PageFoundations: React.FC = () => {
   const brandRoles = typeSpecimens.filter((t) => t.role === 'headline' || t.role === 'tagline');
   const uiRoles = typeSpecimens.filter((t) => t.role !== 'headline' && t.role !== 'tagline');
   return (
-    <Board title="Fundamentos" page="1/7" zoom={1}>
+    <Board title="Fundamentos" page="1/8" zoom={1}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 28, height: '100%' }}>
         <Section label="Tipografía de marca · Nunito · tamaño real">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: p(0) }}>
@@ -212,7 +221,7 @@ export const PageFoundations: React.FC = () => {
 export const PageNavigation: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 6);
   return (
-    <Board title="Navegación, listas y datos" page="2/7">
+    <Board title="Navegación, listas y datos" page="2/8">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
           <Section label="AppHeader">
@@ -290,7 +299,7 @@ export const PageNavigation: React.FC = () => {
 export const PageForms: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 5);
   return (
-    <Board title="Formularios, chat y estados" page="3/7">
+    <Board title="Formularios, chat y estados" page="3/8">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
           <Section label="FormField">
@@ -317,7 +326,7 @@ export const PageForms: React.FC = () => {
           <Section label="Toast">
             <Toast title="Visita finalizada" message="Supermercado San Martín · 42 min" progress={p(2)} width={390} />
             <Toast variant="info" title="Nuevo mensaje" message="Lucía: revisá precios del frente de caja" progress={p(2)} width={390} />
-            <Toast variant="warning" title="Quiebre detectado" message="Detergente 750 ml · 0 frentes" progress={p(2)} width={390} />
+            <Toast variant="warning" title="Quiebre detectado" message="Crema dental 90 g · 0 frentes" progress={p(2)} width={390} />
             <Toast variant="offline" title="Sin conexión" message="Seguís trabajando, guardamos todo" progress={p(2)} width={390} />
           </Section>
           <Section label="SyncIndicator · offline">
@@ -336,76 +345,138 @@ export const PageForms: React.FC = () => {
   );
 };
 
-/* ───────────── 4 · Mapas, gráficos y visión artificial ───────────── */
-
-const SHELF_ITEMS = [
-  { w: 46, h: 118 },
-  { w: 46, h: 118 },
-  { w: 58, h: 92 },
-  { w: 58, h: 92 },
-  { w: 40, h: 132 },
-  { w: 70, h: 84 },
-];
+/* ───────────── 4 · Indicadores y gráficos ───────────── */
 
 export const PageData: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 5);
   return (
-    <Board title="Mapas, gráficos y visión artificial" page="4/7">
+    <Board title="Indicadores y gráficos" page="4/8">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
-          <Section label="MapCard">
-            <MapCard progress={p(0)} width={390} />
-          </Section>
-          <Section label="ChartCard · line">
-            <ChartCard variant="line" progress={p(1)} width={390} />
-          </Section>
-        </Col>
-        <Col>
-          <Section label="ChartCard · bars">
-            <ChartCard variant="bars" progress={p(1)} width={390} />
-          </Section>
-          <Section label="ChartCard · donut">
-            <ChartCard variant="donut" value={KPIS.osa.value} progress={p(2)} width={390} />
-          </Section>
-        </Col>
-        <Col>
-          <Section label="DetectionBox · ScanLine">
-            <div style={{ position: 'relative', height: 420, borderRadius: radius.md, overflow: 'hidden', background: `linear-gradient(180deg, ${colors.dark}, ${ui.text})` }}>
-              {/* góndola abstracta de validación (los productos definitivos se diseñan en la escena 9) */}
-              {[188, 368].map((y) => (
-                <div key={y} style={{ position: 'absolute', left: 0, right: 0, top: y, height: 10, background: alpha(colors.white, 0.18) }} />
-              ))}
-              <div style={{ position: 'absolute', left: 18, top: 70, display: 'flex', gap: 12, alignItems: 'flex-end', height: 118 }}>
-                {SHELF_ITEMS.slice(0, 5).map((it, i) => (
-                  <div key={i} style={{ width: it.w, height: it.h, borderRadius: i % 2 ? 10 : 16, background: alpha(i % 3 === 0 ? colors.secondary : colors.gradStart, 0.45) }} />
-                ))}
-              </div>
-              <div style={{ position: 'absolute', left: 18, top: 276, display: 'flex', gap: 12, alignItems: 'flex-end', height: 92 }}>
-                {SHELF_ITEMS.slice(1).map((it, i) => (
-                  <div key={i} style={{ width: it.w, height: it.h * 0.9, borderRadius: 10, background: alpha(i % 2 ? colors.cyan : colors.secondary, 0.4) }} />
-                ))}
-              </div>
-              <div style={{ position: 'absolute', left: 12, top: 64 }}>
-                <DetectionBox width={104} height={130} label="Detergente 750 ml" confidence={0.97} status="valid" price="$1.890,50" progress={stagger(p(3), 0, 3)} />
-              </div>
-              <div style={{ position: 'absolute', left: 184, top: 82 }}>
-                <DetectionBox width={70} height={112} label="Suavizante" confidence={0.91} status="detected" progress={stagger(p(3), 1, 3)} />
-              </div>
-              <div style={{ position: 'absolute', left: 150, top: 270 }}>
-                <DetectionBox width={132} height={96} label="Fuera de planograma" status="missing" progress={stagger(p(3), 2, 3)} />
-              </div>
-              <ScanLine width={390} height={420} progress={0.72} />
-            </div>
-          </Section>
-          <Section label="Estados de detección">
-            <Row gap={8} wrap>
-              <Badge label="Detectado" variant="category" progress={p(4)} />
-              <Badge label="Validado" variant="done" icon="check" progress={p(4)} />
-              <Badge label="Precio" variant="warning" icon="tag" progress={p(4)} />
-              <Badge label="Faltante" variant="danger" icon="alert" progress={p(4)} />
+          <Section label="GaugeCard · fondo claro">
+            <Row gap={12}>
+              <GaugeCard label="OSA" value={91} target={85} progress={p(0)} width={122} />
+              <GaugeCard label="Exhibición" value={65} target={85} status="neutral" progress={p(0)} width={122} />
+              <GaugeCard label="Ef. Horas" value={79} target={85} progress={p(0)} width={122} />
             </Row>
           </Section>
+          <Section label="IndicatorCard · home">
+            <IndicatorCard width={390} progress={p(1)} />
+          </Section>
         </Col>
+        <Col>
+          <Section label="GaugeTile · sobre header">
+            <div style={{ padding: 16, borderRadius: radius.lg, background: app.header, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <GaugeTile label="OSA" value={64} target={85} progress={p(2)} width={171} />
+              <GaugeTile label="Exhibición" value={64} status="neutral" progress={p(2)} width={171} />
+              <GaugeTile label="Formularios" value={89} target={85} progress={p(2)} width={171} />
+              <GaugeTile label="Cuota" value={89} target={100} status="ok" progress={p(2)} width={171} />
+            </div>
+          </Section>
+        </Col>
+        <Col>
+          <Section label="MapCard">
+            <MapCard progress={p(3)} width={390} mapHeight={160} />
+          </Section>
+          <Section label="ChartCard · bars">
+            <ChartCard variant="bars" progress={p(4)} width={390} />
+          </Section>
+        </Col>
+      </div>
+    </Board>
+  );
+};
+
+/* ───────────── 5 · Productos y visión artificial ───────────── */
+
+const LINEUP: ShelfItem[] = [
+  { id: 'bidon-lavandina-amarillo' },
+  { id: 'detergente-liquido-celeste' },
+  { id: 'set-limpieza-celeste' },
+  { id: 'rociador-limpiador-verde' },
+  { id: 'bidon-limpiador-amarillo' },
+  { id: 'aerosol-verde' },
+  { id: 'lavavajillas-amarillo' },
+  { id: 'set-cosmetica-violeta' },
+  { id: 'shampoo-violeta' },
+  { id: 'dispensador-jabon-celeste' },
+  { id: 'tubo-crema-celeste' },
+  { id: 'set-desodorante-aerosol-rollon' },
+  { id: 'set-crema-rosa' },
+];
+
+const SHELF_TOP: ShelfItem[] = [
+  { id: 'detergente-liquido-celeste', facings: 2 },
+  { id: 'bidon-lavandina-amarillo', facings: 2 },
+  { id: 'bidon-limpiador-amarillo', facings: 2 },
+  { id: 'lavavajillas-amarillo', facings: 3 },
+];
+const SHELF_BOTTOM: ShelfItem[] = [
+  { id: 'shampoo-violeta', facings: 3 },
+  { id: 'dispensador-jabon-celeste', facings: 2 },
+  { id: 'set-desodorante-aerosol-rollon', facings: 2 },
+  { id: 'tubo-crema-celeste', facings: 3 },
+  { id: 'aerosol-verde', facings: 2 },
+];
+
+/** Caja de detección que envuelve los frentes de un grupo de la góndola. */
+const groupRect = (items: ShelfItem[], group: number, pxPerCm: number) => {
+  const { facings } = shelfLayout(items, pxPerCm);
+  const fs = facings.filter((f) => f.group === group);
+  const x0 = fs[0].x;
+  const x1 = fs[fs.length - 1].x + fs[fs.length - 1].width;
+  const h = Math.max(...fs.map((f) => f.height));
+  return { x: x0 - 4, width: x1 - x0 + 8, height: h + 6 };
+};
+
+export const PageProducts: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 5);
+  const PXC = 4.1;
+  const GX = 28;
+  const topY = 48;
+  const botY = 236;
+  const top = SHELF_TOP;
+  const bot = SHELF_BOTTOM;
+  const tallTop = Math.max(...shelfLayout(top, PXC).facings.map((f) => f.height));
+  const tallBot = Math.max(...shelfLayout(bot, PXC).facings.map((f) => f.height));
+  const det = [
+    { items: top, g: 0, y: topY, tall: tallTop, label: 'Jabón líquido ropa 3 L', conf: 0.97, status: 'valid' as const, price: '$8.890' },
+    { items: top, g: 2, y: topY, tall: tallTop, label: 'Lavandina en gel 1 L', conf: 0.94, status: 'detected' as const },
+    { items: bot, g: 0, y: botY, tall: tallBot, label: 'Shampoo 400 ml', conf: 0.92, status: 'valid' as const, price: '$3.420' },
+    { items: bot, g: 3, y: botY, tall: tallBot, label: 'Fuera de planograma', status: 'missing' as const },
+  ];
+  return (
+    <Board title="Productos y visión artificial" page="5/8">
+      <div style={{ display: 'flex', gap: 28 }}>
+        <Col>
+          <Section label="CategoryAccordion · productos por categoría">
+            <CategoryAccordion title="Lavandina" done progress={p(0)} />
+            <CategoryAccordion title="Cuidado personal" open items={skusOf('Cuidado personal').slice(0, 3)} activeRow={1} progress={p(0)} />
+            <CategoryAccordion title="Limpiadores" open items={skusOf('Limpiadores')} progress={p(1)} />
+          </Section>
+        </Col>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <Section label="Productos a escala real · la crema dental (17 cm) no mide lo mismo que la lavandina (30 cm)">
+            <div style={{ padding: '14px 26px 0', borderRadius: radius.md, background: colors.white, overflow: 'hidden', border: `1px solid ${ui.border}`, opacity: p(2) }}>
+              <Shelf items={LINEUP} pxPerCm={3.3} gap={7} />
+            </div>
+          </Section>
+          <Section label="DetectionBox · ScanLine sobre góndola con productos reales">
+            <div style={{ position: 'relative', height: 392, borderRadius: radius.md, overflow: 'hidden', background: `linear-gradient(180deg, ${colors.dark}, ${ui.text})` }}>
+              <Shelf items={top} pxPerCm={PXC} style={{ position: 'absolute', left: GX, top: topY }} />
+              <Shelf items={bot} pxPerCm={PXC} style={{ position: 'absolute', left: GX, top: botY }} />
+              {det.map((d, i) => {
+                const r = groupRect(d.items, d.g, PXC);
+                return (
+                  <div key={i} style={{ position: 'absolute', left: GX + r.x, top: d.y + d.tall - r.height + 2 }}>
+                    <DetectionBox width={r.width} height={r.height} label={d.label} confidence={d.conf} status={d.status} price={d.price} progress={stagger(p(3), i, det.length)} />
+                  </div>
+                );
+              })}
+              <ScanLine width={818} height={392} progress={0.8} />
+            </div>
+          </Section>
+        </div>
       </div>
     </Board>
   );
@@ -415,23 +486,25 @@ export const PageData: React.FC = () => {
 
 export const PageApp: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 4);
+  const PS = 0.8;
   const phones = [
     <VisitsScreen key="v" progress={p(0)} highlight={1} />,
     <FormScreen key="f" progress={p(1)} />,
     <ChatScreen key="c" progress={p(2)} />,
     <OfflineScreen key="o" progress={p(3)} state="offline" count={3} />,
+    <PricesScreen key="pr" progress={p(3)} />,
   ];
-  const labels = ['Visitas', 'Formulario', 'Comunicación', 'Offline'];
+  const labels = ['Visitas', 'Formulario', 'Comunicación', 'Offline', 'Precios por categoría'];
   return (
     <AbsoluteFill>
       <GradientBackground arc="solution" seed="showcase" />
       <div style={{ position: 'absolute', left: 64, top: 44, ...type.tagline, fontSize: 40, color: ui.text }}>Una sola app</div>
-      <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 5/7</div>
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 130, display: 'flex', justifyContent: 'center', gap: 44 }}>
+      <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 6/8</div>
+      <div style={{ position: 'absolute', left: 0, right: 0, top: 150, display: 'flex', justifyContent: 'center', gap: 34 }}>
         {phones.map((screen, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 414 * 0.94, height: 868 * 0.94, position: 'relative' }}>
-              <Phone scale={0.94} style={{ position: 'absolute', left: -12, top: -26 }}>
+            <div style={{ width: 414 * PS, height: 868 * PS, position: 'relative' }}>
+              <Phone scale={PS} style={{ position: 'absolute', left: (-414 * (1 - PS)) / 2, top: (-868 * (1 - PS)) / 2 }}>
                 {screen}
               </Phone>
             </div>
@@ -449,7 +522,7 @@ export const PageAssets: React.FC = () => {
   const frame = useCurrentFrame();
   const explode = progressFrames(frame, 10, 40, 'easeInOut');
   return (
-    <Board title="Marca y fondos" page="6/7" zoom={1}>
+    <Board title="Marca y fondos" page="7/8" zoom={1}>
       <div style={{ display: 'flex', gap: 48 }}>
         <div style={{ width: 760, display: 'flex', flexDirection: 'column', gap: 28 }}>
           <Section label="Logos oficiales · public/logos">
@@ -520,7 +593,7 @@ const Lineup: React.FC<{ who: 'caro' | 'nico' }> = ({ who }) => {
 };
 
 export const PagePeople: React.FC = () => (
-  <Board title="Personajes" page="7/7" zoom={1}>
+  <Board title="Personajes" page="8/8" zoom={1}>
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
       <Section label={`Caro · ${listPoses('caro').length} poses · misma altura de pie (${LINEUP_H} px), pies sobre la línea`}>
         <Lineup who="caro" />
@@ -537,6 +610,7 @@ export const SHOWCASE_PAGES = [
   { id: 'Navigation', C: PageNavigation },
   { id: 'Forms', C: PageForms },
   { id: 'Data', C: PageData },
+  { id: 'Products', C: PageProducts },
   { id: 'App', C: PageApp },
   { id: 'Assets', C: PageAssets },
   { id: 'People', C: PagePeople },

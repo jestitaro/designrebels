@@ -14,7 +14,9 @@ import { SyncIndicator, SyncState } from './SyncIndicator';
 import { Toast } from './Toast';
 import { Card } from './Card';
 import { Icon } from './Icon';
-import { MESSAGES, PDVS, SKUS, formatARS } from './data';
+import { MESSAGES, PDVS, SKUS, formatARS, skusOf } from './data';
+import { ProductThumb } from './Product';
+import { CategoryAccordion } from './CategoryAccordion';
 
 /** Estructura de pantalla PSMob: header + contenido con scroll + bottom nav. 390×844. */
 export const ScreenShell: React.FC<{
@@ -86,11 +88,14 @@ export const FormScreen: React.FC<{ progress?: number; press?: number; done?: bo
         <ProgressBar label="Avance del formulario" value={done ? 1 : 0.75} progress={sub(progress, 0.1, 0.9)} />
       </Card>
       <Card progress={stagger(fields, 0, 4, 0.5)} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Badge label={SKUS[0].category} variant="category" dot={false} />
-          <span style={{ ...type.uiCaption, color: ui.textSecondary, fontVariantNumeric: 'tabular-nums' }}>EAN {SKUS[0].ean}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <ProductThumb id={SKUS[0].product} size={56} framed />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Badge label={SKUS[0].category} variant="category" dot={false} />
+            <div style={{ ...type.uiBodyStrong, color: ui.text, marginTop: 6 }}>{SKUS[0].name}</div>
+            <div style={{ ...type.uiCaption, fontWeight: 400, color: ui.textMuted, fontVariantNumeric: 'tabular-nums' }}>EAN {SKUS[0].ean}</div>
+          </div>
         </div>
-        <div style={{ ...type.uiBodyStrong, color: ui.text, marginTop: -8 }}>{SKUS[0].name}</div>
         <FormField label="Precio en góndola" value={formatARS(SKUS[0].price)} progress={stagger(fields, 1, 4, 0.5)} />
         <FormField label="Frentes" value="6" suffix="unidades" progress={stagger(fields, 2, 4, 0.5)} />
         <FormField label="Producto en exhibición secundaria" kind="check" progress={stagger(fields, 3, 4, 0.5)} />
@@ -170,5 +175,28 @@ export const OfflineScreen: React.FC<{ progress?: number; state?: SyncState; cou
         <Icon name={state === 'synced' ? 'checkCircle' : 'device'} size={20} color={state === 'synced' ? ui.check : ui.textMuted} />
       </Card>
     ))}
+  </ScreenShell>
+);
+
+/** Carga de precios por categoría (Carga de formularios de PSMob). */
+export const PricesScreen: React.FC<{ progress?: number; activeRow?: number }> = ({ progress = 1, activeRow = 1 }) => (
+  <ScreenShell
+    header={
+      <AppHeader title="Carga de formularios" actions={[{ icon: 'store' }]} progress={sub(progress, 0, 0.25)}>
+        <SyncIndicator state="online" onPrimary progress={sub(progress, 0.05, 0.3)} />
+      </AppHeader>
+    }
+    overlay={
+      <div style={{ position: 'absolute', left: 16, right: 16, bottom: 24, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <Button label="Guardar borrador" variant="secondary" fullWidth progress={sub(progress, 0.7, 1)} />
+        <Button label="Enviar formulario" fullWidth progress={sub(progress, 0.75, 1)} />
+      </div>
+    }
+  >
+    <div style={{ ...type.uiTitle, color: ui.text, margin: '4px 2px 4px' }}>Precios mayoristas</div>
+    <CategoryAccordion title="Lavandina" done progress={stagger(sub(progress, 0.1, 0.8), 0, 4, 0.5)} />
+    <CategoryAccordion title="Cuidado personal" open items={skusOf('Cuidado personal').slice(0, 3)} activeRow={activeRow} progress={stagger(sub(progress, 0.1, 0.9), 1, 4, 0.5)} />
+    <CategoryAccordion title="Limpiadores" done progress={stagger(sub(progress, 0.1, 0.8), 2, 4, 0.5)} />
+    <CategoryAccordion title="Lavavajillas" progress={stagger(sub(progress, 0.1, 0.8), 3, 4, 0.5)} />
   </ScreenShell>
 );

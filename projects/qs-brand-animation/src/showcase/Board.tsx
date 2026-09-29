@@ -12,7 +12,7 @@ export const Board: React.FC<{ title: string; page: string; children: React.Reac
       <div style={{ ...type.uiTitle, color: dark ? alpha(colors.white, 0.6) : ui.textSecondary }}>PSMob · ComponentShowcase · {page}</div>
     </div>
     <div style={{ position: 'absolute', left: 64, top: 124, right: 64, bottom: 40 }}>
-      <div style={{ zoom, width: `${100 / zoom}%`, height: `${100 / zoom}%` }}>{children}</div>
+      <div style={{ zoom, width: '100%', height: '100%' }}>{children}</div>
     </div>
   </AbsoluteFill>
 );

@@ -17,3 +17,7 @@ export * from './SyncIndicator';
 export * from './DetectionBox';
 export * from './Screen';
 export * from './data';
+export * from './products';
+export * from './Product';
+export * from './Gauge';
+export * from './CategoryAccordion';

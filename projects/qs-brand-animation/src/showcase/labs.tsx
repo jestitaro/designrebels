@@ -8,7 +8,7 @@ import { Phone } from '../devices/Phone';
 import { GradientBackground } from '../shapes/GradientBackground';
 import { Rings } from '../shapes/Rings';
 import { Blob } from '../shapes/Blob';
-import { KPI, KPIS, Toast, VisitsScreen, MapCard, ChartCard, ListRow, PDVS } from '../ui';
+import { KPI, KPIS, Toast, VisitsScreen, MapCard, ChartCard, ListRow, PDVS, IndicatorCard } from '../ui';
 import { phoneScreenRect } from '../transitions/zoomThrough';
 import { ObjectWipe } from '../transitions/ObjectWipe';
 import { MaskReveal } from '../transitions/MaskReveal';
@@ -211,7 +211,7 @@ const DemoPushInOut: React.FC = () => {
           <KPI {...KPIS.osa} icon="chart" elevation="float" width={220} />
         </Place>
         <Place x={700} y={620}>
-          <ChartCard variant="donut" elevation="float" />
+          <IndicatorCard />
         </Place>
       </DepthLayer>
     </Camera>

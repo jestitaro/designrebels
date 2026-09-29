@@ -15,22 +15,24 @@ npm run list-assets      # logos y poses presentes en /public
 npm run export-markers   # markers.csv para sound design
 ```
 
-Composiciones: `Main` (timeline de las 14 escenas, hoy con slates), `ComponentShowcase` (7 láminas animadas),
+Composiciones: `Main` (timeline de las 14 escenas, hoy con slates), `ComponentShowcase` (8 láminas animadas),
 `Showcase-*` (cada lámina suelta), `CameraLab` (parallax + zoom through) y `TransitionsLab` (las 6 transiciones).
 En `Main`, `showMarkers: true` muestra el overlay de sound design.
 
 ## Assets
 
-Todo está cargado en `/public`: logos oficiales, 18 poses de Caro, 15 de Nico y 10 productos genéricos.
+Todo está cargado en `/public`: logos oficiales, 18 poses de Caro, 15 de Nico y 13 productos genéricos.
 
 | Asset | Ruta |
 |---|---|
 | Logos | `public/logos/iso-qs.svg`, `logo-qs-fullcolor.svg`, `tipo-qs-bg-light.svg` |
 | Caro / Nico | `public/characters/<nombre>/<pose>.png` |
-| Productos | `public/products/*.png` (fondo transparente, 1254×1254) |
+| Productos | `public/products/*.png` (fondo transparente) |
 
 - **Poses:** `src/characters/poses.ts` guarda el bounding box de cada pose. `<Character height={…}>` escala de forma uniforme para que la figura mida lo mismo de pie en todas las poses, con los pies en `y`. Las poses sentadas y la caída usan un factor aproximado.
 - **Caminata:** `<CharacterWalk frames={WALK_FRAMES.nico}>` alterna los fotogramas de la zancada con un leve rebote vertical. Los fotogramas entregados son de una sola fase; para un ciclo completo faltan los de la pierna contraria.
+- **Productos:** `src/ui/products.ts` guarda la categoría y la altura real (cm) de cada producto. `<Product>` y `<Shelf>` dibujan a escala real, así que una crema dental no mide lo mismo que una lavandina. `<ProductThumb>` es la miniatura para listas. Las alturas son aproximadas y se pueden ajustar.
+- **Indicadores:** `<Gauge>` es el medio círculo de `indicadores_svg`, con valor coloreado por estado y un punto que marca el objetivo. Tiene tres variantes: `GaugeCard` (fondo claro), `GaugeTile` (sobre el header) e `IndicatorCard` (resumen de la home). El estado sale de `gaugeStatus()` o se pasa explícito.
 - **Isotipo:** `src/brand/isoPaths.ts` separa el SVG oficial en 20 triángulos (uno por subpath) para la escena 13, sin redibujar nada. `<IsoTriangles triangle={(i) => …}>` los anima por separado.
 - **Referencia de pantallas PSMob:** `reference/psmob/`.
 

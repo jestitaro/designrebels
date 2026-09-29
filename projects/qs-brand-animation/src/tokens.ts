@@ -17,10 +17,10 @@ export const colors = {
   gradEnd: '#7025E0',
   // cyan del arco solución (aprobado)
   cyan: '#3CD6EB',
-  // semáforo (gauges de indicadores de PSMob)
-  success: '#02DBA7',
-  warning: '#FFCA12',
-  danger: '#F06C6C',
+  // semáforo (indicadores_svg de PSMob, versión oscura)
+  success: '#3FD073',
+  warning: '#FDE047',
+  danger: '#D24040',
 } as const;
 
 /**
@@ -36,6 +36,9 @@ export const app = {
   focus: '#3880FF',
   /** card de indicadores sobre el header */
   indicatorCard: '#143A8C',
+  /** pill "Últ. act." y track inferior de la card de indicadores */
+  updatePill: '#615EFF',
+  indicatorTrack: '#1C55A6',
   /** checks de validación (contraste sobre blanco) */
   check: '#0BB783',
   /** badge numérico de pendientes */
@@ -62,6 +65,20 @@ export const alpha = (hex: string, a: number): string => {
   const b = parseInt(h.slice(4, 6), 16);
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
+
+/**
+ * Indicadores (indicadores_svg de PSMob). El color del arco depende del estado y del fondo.
+ * `neutral` es para indicadores sin semáforo (ej. Exhibición).
+ */
+export type GaugeStatus = 'ok' | 'warn' | 'bad' | 'neutral';
+export const gaugeColors = {
+  light: { ok: '#86EFAC', warn: '#FDE047', bad: '#D24040', neutral: '#1D4ED8', track: '#F1F5F9', value: '#334155', unit: '#64748B', label: '#64748B' },
+  dark: { ok: '#41D175', warn: '#FDE047', bad: '#D24040', neutral: '#67A9F5', track: 'rgba(181, 202, 241, 0.3)', value: '#FFFFFF', unit: '#93C5FD', label: '#FFFFFF', target: '#3FD073', targetText: '#86EFAC', tile: 'rgba(0, 0, 0, 0.3)' },
+} as const;
+
+/** Estado por defecto respecto del objetivo: ≥ objetivo ok, hasta 10 puntos abajo warn, más abajo bad. */
+export const gaugeStatus = (value: number, target?: number): GaugeStatus =>
+  target === undefined ? 'neutral' : value >= target ? 'ok' : value >= target - 10 ? 'warn' : 'bad';
 
 /** Roles semánticos de UI, derivados de los tokens. */
 export const ui = {

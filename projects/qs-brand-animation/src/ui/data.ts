@@ -12,14 +12,25 @@ export const PDVS = [
 
 export type PdvStatus = (typeof PDVS)[number]['status'];
 
+/** SKUs genéricos, cada uno con su imagen de producto (public/products). EAN ficticios. */
 export const SKUS = [
-  { ean: '7790001234567', name: 'Detergente concentrado 750 ml', category: 'Limpieza', price: 1890.5 },
-  { ean: '7790002345678', name: 'Salsa de tomate 520 g', category: 'Almacén', price: 1245.0 },
-  { ean: '7790003456789', name: 'Shampoo reparación 400 ml', category: 'Personal care', price: 3420.75 },
-  { ean: '7790004567890', name: 'Desodorante aerosol 150 ml', category: 'Personal care', price: 2760.0 },
-  { ean: '7790005678901', name: 'Suavizante doypack 900 ml', category: 'Limpieza', price: 1530.25 },
-  { ean: '7790006789012', name: 'Mayonesa frasco 250 g', category: 'Almacén', price: 1180.0 },
+  { product: 'detergente-liquido-celeste', ean: '7790001234567', name: 'Jabón líquido para ropa 3 L', category: 'Jabón para la ropa', price: 8890.5 },
+  { product: 'bidon-lavandina-amarillo', ean: '7790002345678', name: 'Lavandina 2 L', category: 'Lavandina', price: 2345.0 },
+  { product: 'bidon-limpiador-amarillo', ean: '7790003456789', name: 'Lavandina en gel 1 L', category: 'Lavandina', price: 1990.75 },
+  { product: 'lavavajillas-amarillo', ean: '7790004567890', name: 'Lavavajillas 500 ml', category: 'Lavavajillas', price: 1760.0 },
+  { product: 'rociador-limpiador-verde', ean: '7790005678901', name: 'Limpiador multiuso 500 ml', category: 'Limpiadores', price: 2530.25 },
+  { product: 'aerosol-verde', ean: '7790006789012', name: 'Desinfectante aerosol 360 ml', category: 'Limpiadores', price: 3180.0 },
+  { product: 'shampoo-violeta', ean: '7790007890123', name: 'Shampoo 400 ml', category: 'Cuidado personal', price: 3420.75 },
+  { product: 'tubo-crema-celeste', ean: '7790008901234', name: 'Crema dental 90 g', category: 'Cuidado personal', price: 1299.0 },
+  { product: 'set-desodorante-aerosol-rollon', ean: '7790009012345', name: 'Desodorante aerosol 150 ml', category: 'Cuidado personal', price: 2760.0 },
+  { product: 'dispensador-jabon-celeste', ean: '7790000123456', name: 'Jabón líquido de manos 250 ml', category: 'Cuidado personal', price: 1845.5 },
 ] as const;
+
+export type Sku = (typeof SKUS)[number];
+
+/** Categorías del formulario de precios, en el orden de PSMob. */
+export const CATEGORIES = ['Lavandina', 'Jabón para la ropa', 'Lavavajillas', 'Limpiadores', 'Cuidado personal'] as const;
+export const skusOf = (category: (typeof CATEGORIES)[number]) => SKUS.filter((s) => s.category === category);
 
 export const KPIS = {
   osa: { label: 'OSA', value: 94, unit: '%', delta: '+3,2 pp' },
