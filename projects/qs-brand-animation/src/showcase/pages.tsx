@@ -370,7 +370,7 @@ export const PageData: React.FC = () => {
               <GaugeTile label="OSA" value={64} target={85} progress={p(2)} width={171} />
               <GaugeTile label="Exhibición" value={64} status="neutral" progress={p(2)} width={171} />
               <GaugeTile label="Formularios" value={89} target={85} progress={p(2)} width={171} />
-              <GaugeTile label="Cuota" value={89} target={100} status="ok" progress={p(2)} width={171} />
+              <GaugeTile label="Cuota" value={42} target={100} progress={p(2)} width={171} />
             </div>
           </Section>
         </Col>
@@ -431,10 +431,10 @@ const groupRect = (items: ShelfItem[], group: number, pxPerCm: number) => {
 
 export const PageProducts: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 5);
-  const PXC = 4.1;
+  const PXC = 4.8;
   const GX = 28;
   const topY = 48;
-  const botY = 236;
+  const botY = 256;
   const top = SHELF_TOP;
   const bot = SHELF_BOTTOM;
   const tallTop = Math.max(...shelfLayout(top, PXC).facings.map((f) => f.height));
@@ -456,9 +456,9 @@ export const PageProducts: React.FC = () => {
           </Section>
         </Col>
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <Section label="Productos a escala real · la crema dental (17 cm) no mide lo mismo que la lavandina (30 cm)">
+          <Section label="Productos a escala real · la crema dental (11,5 cm) no mide lo mismo que la lavandina (25 cm)">
             <div style={{ padding: '14px 26px 0', borderRadius: radius.md, background: colors.white, overflow: 'hidden', border: `1px solid ${ui.border}`, opacity: p(2) }}>
-              <Shelf items={LINEUP} pxPerCm={3.3} gap={7} />
+              <Shelf items={LINEUP} pxPerCm={3.5} gap={6} />
             </div>
           </Section>
           <Section label="DetectionBox · ScanLine sobre góndola con productos reales">

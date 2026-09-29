@@ -3,7 +3,7 @@ import { Img, staticFile } from 'remotion';
 import { alpha, colors, radius, ui } from '../tokens';
 import { PRODUCTS, ProductId, ProductMeta } from './products';
 
-/** Escala por defecto: px de pantalla por cm real. Con 7 px/cm una lavandina de 30 cm mide 210 px. */
+/** Escala por defecto: px de pantalla por cm real. Con 7 px/cm una lavandina de 25 cm mide 175 px. */
 export const PX_PER_CM = 7;
 
 const meta = (id: ProductId): ProductMeta => PRODUCTS[id];

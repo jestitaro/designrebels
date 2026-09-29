@@ -76,9 +76,16 @@ export const gaugeColors = {
   dark: { ok: '#41D175', warn: '#FDE047', bad: '#D24040', neutral: '#67A9F5', track: 'rgba(181, 202, 241, 0.3)', value: '#FFFFFF', unit: '#93C5FD', label: '#FFFFFF', target: '#3FD073', targetText: '#86EFAC', tile: 'rgba(0, 0, 0, 0.3)' },
 } as const;
 
-/** Estado por defecto respecto del objetivo: ≥ objetivo ok, hasta 10 puntos abajo warn, más abajo bad. */
-export const gaugeStatus = (value: number, target?: number): GaugeStatus =>
-  target === undefined ? 'neutral' : value >= target ? 'ok' : value >= target - 10 ? 'warn' : 'bad';
+/**
+ * Semáforo por cumplimiento del objetivo (valor ÷ objetivo):
+ * verde solo si llega al objetivo (≥ 100 %), amarillo de 50 % a 99 %, rojo por debajo de 50 %.
+ * Sin objetivo el indicador es neutral (azul).
+ */
+export const gaugeStatus = (value: number, target?: number): GaugeStatus => {
+  if (target === undefined || target <= 0) return 'neutral';
+  const pct = (value / target) * 100;
+  return pct >= 100 ? 'ok' : pct >= 50 ? 'warn' : 'bad';
+};
 
 /** Roles semánticos de UI, derivados de los tokens. */
 export const ui = {

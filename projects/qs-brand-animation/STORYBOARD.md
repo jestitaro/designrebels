@@ -175,7 +175,7 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
 
 ## 9 · AiFred — 37.4–42.4 s (f 1122–1271)
 
-**Qué pasa:** entorno de supermercado. Nico entra caminando con travelling lateral, sobre góndolas con `Shelf` a escala real (sin marcas ni texto legible). Levanta el celular y la cámara hace zoom through.
+**Qué pasa:** entorno de supermercado. Nico entra caminando con travelling lateral, sobre góndolas con `Shelf` a escala real (sin marcas ni texto legible; lavandina 25 cm, crema dental 11,5 cm). Levanta el celular y la cámara hace zoom through.
 
 - **Cámara**
   - t0: `600, 540, z 1`

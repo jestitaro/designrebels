@@ -139,7 +139,7 @@ export const IndicatorCard: React.FC<{
   items = [
     { label: 'OSA', value: 91, target: 85 },
     { label: 'Precios', value: 79, target: 85 },
-    { label: 'Cuota', value: 64, target: 85 },
+    { label: 'Cuota', value: 42, target: 100 },
   ],
   updated = '10:39',
   progress = 1,
