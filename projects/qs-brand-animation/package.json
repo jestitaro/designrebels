@@ -1,0 +1,30 @@
+{
+  "name": "qs-brand-animation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Brand animation QuartzSales — Remotion",
+  "scripts": {
+    "dev": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "still:showcase": "remotion still ComponentShowcase out/showcase.png",
+    "stills": "node scripts/render-stills.mjs",
+    "list-assets": "tsx scripts/list-assets.ts",
+    "export-markers": "tsx scripts/export-markers.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.530",
+    "@remotion/fonts": "4.0.530",
+    "@remotion/paths": "4.0.530",
+    "@remotion/transitions": "4.0.530",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "4.0.530",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

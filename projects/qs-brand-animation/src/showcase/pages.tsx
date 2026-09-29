@@ -1,0 +1,474 @@
+import React from 'react';
+import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { alpha, colors, gradients, radius, shadows, spacing, type, ui } from '../tokens';
+import { progressFrames, stagger } from '../lib/easing';
+import { MIN_LEGIBLE_PX } from '../tokens';
+import {
+  AppHeader,
+  Badge,
+  BottomNavigation,
+  Button,
+  Card,
+  ChartCard,
+  ChatBubble,
+  ChatScreen,
+  CountBadge,
+  DetectionBox,
+  FormField,
+  FormScreen,
+  KPI,
+  KPIS,
+  ListRow,
+  MapCard,
+  MESSAGES,
+  OfflineScreen,
+  PDVS,
+  ProgressBar,
+  ScanLine,
+  SKUS,
+  SyncIndicator,
+  Toast,
+  VisitsScreen,
+  formatARS,
+} from '../ui';
+import { Phone } from '../devices/Phone';
+import { Logo } from '../brand/Logo';
+import { Character } from '../characters/Character';
+import { characterPoses } from '../assets';
+import { GradientBackground } from '../shapes/GradientBackground';
+import { Board, Col, Row, Section } from './Board';
+
+/** Progreso de entrada de la lámina: todo entra en 1,6 s escalonado, después queda quieto para el still. */
+const usePageProgress = (i: number, n: number) => {
+  const frame = useCurrentFrame();
+  return stagger(progressFrames(frame, 4, 48, 'easeInOut'), i, n, 0.7);
+};
+
+/* ───────────── 1 · Fundamentos ───────────── */
+
+const swatches: { name: string; value: string; onDark?: boolean }[] = [
+  { name: 'primary', value: colors.primary, onDark: true },
+  { name: 'secondary', value: colors.secondary, onDark: true },
+  { name: 'dark', value: colors.dark, onDark: true },
+  { name: 'textDark', value: colors.textDark, onDark: true },
+  { name: 'light', value: colors.light },
+  { name: 'white', value: colors.white },
+  { name: 'gradStart', value: colors.gradStart, onDark: true },
+  { name: 'gradEnd', value: colors.gradEnd, onDark: true },
+  { name: 'cyan · pendiente', value: colors.cyan },
+  { name: 'success', value: colors.success },
+  { name: 'warning', value: colors.warning },
+  { name: 'danger', value: colors.danger, onDark: true },
+];
+
+const tints: { name: string; value: string }[] = [
+  { name: 'primaryTint', value: ui.primaryTint },
+  { name: 'secondaryTint', value: ui.secondaryTint },
+  { name: 'successTint', value: ui.successTint },
+  { name: 'warningTint', value: ui.warningTint },
+  { name: 'dangerTint', value: ui.dangerTint },
+  { name: 'infoTint', value: ui.infoTint },
+];
+
+const typeSpecimens: { role: keyof typeof type; sample: string; spec: string }[] = [
+  { role: 'headline', sample: 'Información en tiempo real', spec: 'Nunito 96 / 800' },
+  { role: 'tagline', sample: 'Llevá tu negocio al futuro.', spec: 'Nunito 48 / 700' },
+  { role: 'uiTitle', sample: 'Relevamiento góndola', spec: 'DM Sans 18 / 600 · UI título' },
+  { role: 'uiBodyStrong', sample: 'SUPERMERCADO SAN MARTÍN', spec: 'DM Sans 14 / 600 · pendiente' },
+  { role: 'uiBody', sample: 'Hoy priorizá la góndola de limpieza.', spec: 'DM Sans 14 / 400 · UI body' },
+  { role: 'uiCaption', sample: 'Programada · 10:15 – 11:00', spec: 'DM Sans 12 / 500 · caption' },
+  { role: 'kpi', sample: '94 %', spec: 'DM Sans 32 / 700 · KPI' },
+];
+
+export const PageFoundations: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 4);
+  const brandRoles = typeSpecimens.filter((t) => t.role === 'headline' || t.role === 'tagline');
+  const uiRoles = typeSpecimens.filter((t) => t.role !== 'headline' && t.role !== 'tagline');
+  return (
+    <Board title="Fundamentos" page="1/6" zoom={1}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 28, height: '100%' }}>
+        <Section label="Tipografía de marca · Nunito · tamaño real">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: p(0) }}>
+            {brandRoles.map((t) => (
+              <div key={t.role} style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
+                <div style={{ width: 170, flexShrink: 0, ...type.uiCaption, fontSize: 16, color: ui.textSecondary }}>{t.spec}</div>
+                <div style={{ ...type[t.role], color: t.role === 'headline' ? colors.textDark : colors.primary, whiteSpace: 'nowrap' }}>{t.sample}</div>
+              </div>
+            ))}
+          </div>
+        </Section>
+        <div style={{ display: 'flex', gap: 56 }}>
+          <div style={{ width: 700, display: 'flex', flexDirection: 'column', gap: 24, opacity: p(1) }}>
+            <Section label="Tipografía de UI · DM Sans · al 1,5× (escala 1 del teléfono entre paréntesis)">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {uiRoles.map((t) => (
+                  <div key={t.role} style={{ display: 'flex', alignItems: 'baseline', gap: 20, borderBottom: `1px solid ${ui.divider}`, paddingBottom: 10 }}>
+                    <div style={{ width: 170, flexShrink: 0, ...type.uiCaption, fontSize: 15, color: ui.textSecondary }}>{t.spec}</div>
+                    <div style={{ ...type[t.role], color: colors.textDark, whiteSpace: 'nowrap', fontSize: type[t.role].fontSize * 1.5 }}>{t.sample}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ ...type.uiBody, fontSize: 16, color: ui.textSecondary }}>
+                Regla de legibilidad: {MIN_LEGIBLE_PX} px efectivos mínimo (tamaño × zoom de cámara × escala del device).
+              </div>
+            </Section>
+          </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <Section label="Paleta · tokens y tintes derivados (alpha)">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10, opacity: p(2) }}>
+                {swatches.map((s) => (
+                  <div key={s.name} style={{ height: 76, borderRadius: radius.md, background: s.value, border: `1px solid ${ui.border}`, padding: 10, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', color: s.onDark ? colors.white : colors.textDark }}>
+                    <div style={{ ...type.uiCaption, fontSize: 13, fontWeight: 600 }}>{s.name}</div>
+                    <div style={{ ...type.uiCaption, fontSize: 12, opacity: 0.8 }}>{s.value}</div>
+                  </div>
+                ))}
+                {tints.map((s) => (
+                  <div key={s.name} style={{ height: 44, borderRadius: radius.sm, background: s.value, padding: '8px 10px', boxSizing: 'border-box', ...type.uiCaption, fontSize: 12, color: colors.textDark, display: 'flex', alignItems: 'flex-end' }}>
+                    {s.name}
+                  </div>
+                ))}
+              </div>
+            </Section>
+            <Section label="Gradientes · solo isotipo y fondos">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, opacity: p(2) }}>
+                {[
+                  ['brand', gradients.brand, true],
+                  ['problema', gradients.problem, true],
+                  ['solución', gradients.solution, false],
+                ].map(([n, g, dark]) => (
+                  <div key={n as string} style={{ height: 70, borderRadius: radius.md, background: g as string, padding: 12, boxSizing: 'border-box', display: 'flex', alignItems: 'flex-end', ...type.uiCaption, fontSize: 13, color: dark ? colors.white : colors.textDark }}>
+                    {n as string}
+                  </div>
+                ))}
+              </div>
+            </Section>
+            <div style={{ display: 'flex', gap: 40, opacity: p(3) }}>
+              <Section label="Spacing">
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14 }}>
+                  {spacing.map((s) => (
+                    <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                      <div style={{ width: s * 1.5, height: s * 1.5, background: colors.secondary, borderRadius: 2 }} />
+                      <span style={{ ...type.uiCaption, fontSize: 13, color: ui.textSecondary }}>{s}</span>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+              <Section label="Radius">
+                <div style={{ display: 'flex', gap: 12 }}>
+                  {Object.entries(radius).map(([k, v]) => (
+                    <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                      <div style={{ width: 52, height: 52, background: ui.surface, border: `2px solid ${colors.primary}`, borderRadius: Math.min(v, 26) }} />
+                      <span style={{ ...type.uiCaption, fontSize: 13, color: ui.textSecondary }}>
+                        {k} {v}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+              <Section label="Sombras">
+                <div style={{ display: 'flex', gap: 16 }}>
+                  {Object.entries(shadows).map(([k, v]) => (
+                    <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+                      <div style={{ width: 52, height: 52, background: k === 'fab' ? colors.primary : ui.surface, borderRadius: radius.md, boxShadow: v }} />
+                      <span style={{ ...type.uiCaption, fontSize: 13, color: ui.textSecondary }}>{k}</span>
+                    </div>
+                  ))}
+                </div>
+              </Section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Board>
+  );
+};
+
+/* ───────────── 2 · Navegación, listas y datos ───────────── */
+
+export const PageNavigation: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 6);
+  return (
+    <Board title="Navegación, listas y datos" page="2/6">
+      <div style={{ display: 'flex', gap: 28 }}>
+        <Col>
+          <Section label="AppHeader">
+            <div style={{ borderRadius: radius.md, overflow: 'hidden', boxShadow: shadows.card }}>
+              <AppHeader title="Visitas" subtitle="Martes 29/09 · 5 PDV" statusBar={false} actions={[{ icon: 'filter' }, { icon: 'bell', count: 4 }]} progress={p(0)}>
+                <Badge label="Hoy" dot={false} style={{ background: colors.white, color: colors.primary }} />
+                <Badge label="Semana" dot={false} style={{ background: alpha(colors.white, 0.16), color: colors.white }} />
+                <SyncIndicator state="online" onPrimary />
+              </AppHeader>
+            </div>
+          </Section>
+          <Section label="BottomNavigation">
+            <div style={{ borderRadius: radius.md, overflow: 'hidden', boxShadow: shadows.card }}>
+              <BottomNavigation progress={p(0)} style={{ paddingBottom: 0, height: 64 }} />
+            </div>
+          </Section>
+          <Section label="ListRow">
+            {PDVS.slice(0, 3).map((pdv, i) => (
+              <ListRow key={pdv.id} index={i + 1} title={pdv.name} address={pdv.address} time={pdv.time} status={pdv.status} highlighted={i === 1} progress={stagger(p(1), i, 3)} />
+            ))}
+          </Section>
+        </Col>
+        <Col>
+          <Section label="KPI">
+            <Row gap={12}>
+              <KPI {...KPIS.osa} icon="chart" progress={p(2)} width={189} />
+              <KPI {...KPIS.visits} icon="calendar" progress={p(2)} width={189} />
+            </Row>
+            <Row gap={12}>
+              <KPI {...KPIS.alerts} icon="alert" trend="down" positiveIsDown progress={p(2)} width={189} />
+              <KPI {...KPIS.compliance} icon="clipboard" progress={p(2)} width={189} />
+            </Row>
+          </Section>
+          <Section label="Card · ProgressBar">
+            <Card progress={p(3)} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <ProgressBar label="Ruta del día" value={0.4} progress={p(3)} />
+              <ProgressBar label="Formulario" value={1} progress={p(3)} />
+            </Card>
+          </Section>
+        </Col>
+        <Col>
+          <Section label="Button">
+            <Button label="Iniciar visita" icon="pin" fullWidth progress={p(4)} />
+            <Row gap={8}>
+              <Button label="Pausar" variant="secondary" progress={p(4)} style={{ flex: 1 }} />
+              <Button label="Eliminar" variant="danger" progress={p(4)} style={{ flex: 1 }} />
+            </Row>
+            <Row gap={8}>
+              <Button label="Tap" press={0.6} progress={p(4)} style={{ flex: 1 }} />
+              <Button label="Enviado" done progress={p(4)} style={{ flex: 1 }} />
+              <Button label="Ver más" variant="ghost" progress={p(4)} style={{ flex: 1 }} />
+            </Row>
+          </Section>
+          <Section label="Badge">
+            <Row gap={8} wrap>
+              <Badge label="Visita activa" variant="active" progress={p(5)} />
+              <Badge label="Programada" variant="scheduled" progress={p(5)} />
+              <Badge label="Completada" variant="done" progress={p(5)} />
+              <Badge label="Ruteo manual" variant="warning" progress={p(5)} />
+              <Badge label="Quiebre de stock" variant="danger" progress={p(5)} />
+              <Badge label="Limpieza" variant="category" dot={false} progress={p(5)} />
+              <Badge label="Nuevo planograma" variant="info" progress={p(5)} />
+              <Badge label="IA" variant="category" icon="sparkle" progress={p(5)} />
+              <CountBadge count={12} progress={p(5)} />
+            </Row>
+          </Section>
+        </Col>
+      </div>
+    </Board>
+  );
+};
+
+/* ───────────── 3 · Formularios, chat y estados ───────────── */
+
+export const PageForms: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 5);
+  return (
+    <Board title="Formularios, chat y estados" page="3/6">
+      <div style={{ display: 'flex', gap: 28 }}>
+        <Col>
+          <Section label="FormField">
+            <Card progress={p(0)} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <FormField label="Precio en góndola" value={formatARS(SKUS[0].price)} focused progress={p(0)} />
+              <FormField label="Frentes" value="6" suffix="unidades" progress={p(0)} />
+              <FormField label="Motivo de quiebre" kind="select" value="Sin stock en depósito" progress={p(0)} />
+              <FormField label="Exhibición secundaria" kind="check" checked progress={p(0)} />
+              <FormField label="Foto del exhibidor" kind="photo" checked={false} progress={p(0)} />
+            </Card>
+          </Section>
+        </Col>
+        <Col>
+          <Section label="ChatBubble">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: 16, borderRadius: radius.md, background: alpha(colors.secondary, 0.08) }}>
+              {MESSAGES.map((m, i) => (
+                <ChatBubble key={i} text={m.text} side={m.side} author={i === 0 ? m.from : undefined} time={m.time} progress={stagger(p(1), i, 4)} />
+              ))}
+              <ChatBubble text="" typing progress={stagger(p(1), 3, 4)} />
+            </div>
+          </Section>
+        </Col>
+        <Col>
+          <Section label="Toast">
+            <Toast title="Visita finalizada" message="Supermercado San Martín · 42 min" progress={p(2)} width={390} />
+            <Toast variant="info" title="Nuevo mensaje" message="Lucía: revisá precios del frente de caja" progress={p(2)} width={390} />
+            <Toast variant="warning" title="Quiebre detectado" message="Detergente 750 ml · 0 frentes" progress={p(2)} width={390} />
+            <Toast variant="offline" title="Sin conexión" message="Seguís trabajando, guardamos todo" progress={p(2)} width={390} />
+          </Section>
+          <Section label="SyncIndicator · offline">
+            <Row gap={8} wrap>
+              <SyncIndicator state="offline" count={3} progress={p(3)} />
+              <SyncIndicator state="saved" progress={p(3)} />
+              <SyncIndicator state="pending" count={3} progress={p(3)} />
+              <SyncIndicator state="syncing" syncProgress={0.6} progress={p(3)} />
+              <SyncIndicator state="synced" progress={p(3)} />
+              <SyncIndicator state="online" progress={p(3)} />
+            </Row>
+          </Section>
+        </Col>
+      </div>
+    </Board>
+  );
+};
+
+/* ───────────── 4 · Mapas, gráficos y visión artificial ───────────── */
+
+const SHELF_ITEMS = [
+  { w: 46, h: 118 },
+  { w: 46, h: 118 },
+  { w: 58, h: 92 },
+  { w: 58, h: 92 },
+  { w: 40, h: 132 },
+  { w: 70, h: 84 },
+];
+
+export const PageData: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 5);
+  return (
+    <Board title="Mapas, gráficos y visión artificial" page="4/6">
+      <div style={{ display: 'flex', gap: 28 }}>
+        <Col>
+          <Section label="MapCard">
+            <MapCard progress={p(0)} width={390} />
+          </Section>
+          <Section label="ChartCard · line">
+            <ChartCard variant="line" progress={p(1)} width={390} />
+          </Section>
+        </Col>
+        <Col>
+          <Section label="ChartCard · bars">
+            <ChartCard variant="bars" progress={p(1)} width={390} />
+          </Section>
+          <Section label="ChartCard · donut">
+            <ChartCard variant="donut" value={KPIS.osa.value} progress={p(2)} width={390} />
+          </Section>
+        </Col>
+        <Col>
+          <Section label="DetectionBox · ScanLine">
+            <div style={{ position: 'relative', height: 420, borderRadius: radius.md, overflow: 'hidden', background: `linear-gradient(180deg, ${colors.dark}, ${colors.textDark})` }}>
+              {/* góndola abstracta de validación (los productos definitivos se diseñan en la escena 9) */}
+              {[188, 368].map((y) => (
+                <div key={y} style={{ position: 'absolute', left: 0, right: 0, top: y, height: 10, background: alpha(colors.white, 0.18) }} />
+              ))}
+              <div style={{ position: 'absolute', left: 18, top: 70, display: 'flex', gap: 12, alignItems: 'flex-end', height: 118 }}>
+                {SHELF_ITEMS.slice(0, 5).map((it, i) => (
+                  <div key={i} style={{ width: it.w, height: it.h, borderRadius: i % 2 ? 10 : 16, background: alpha(i % 3 === 0 ? colors.secondary : colors.gradStart, 0.45) }} />
+                ))}
+              </div>
+              <div style={{ position: 'absolute', left: 18, top: 276, display: 'flex', gap: 12, alignItems: 'flex-end', height: 92 }}>
+                {SHELF_ITEMS.slice(1).map((it, i) => (
+                  <div key={i} style={{ width: it.w, height: it.h * 0.9, borderRadius: 10, background: alpha(i % 2 ? colors.cyan : colors.secondary, 0.4) }} />
+                ))}
+              </div>
+              <div style={{ position: 'absolute', left: 12, top: 64 }}>
+                <DetectionBox width={104} height={130} label="Detergente 750 ml" confidence={0.97} status="valid" price="$1.890,50" progress={stagger(p(3), 0, 3)} />
+              </div>
+              <div style={{ position: 'absolute', left: 184, top: 82 }}>
+                <DetectionBox width={70} height={112} label="Suavizante" confidence={0.91} status="detected" progress={stagger(p(3), 1, 3)} />
+              </div>
+              <div style={{ position: 'absolute', left: 150, top: 270 }}>
+                <DetectionBox width={132} height={96} label="Fuera de planograma" status="missing" progress={stagger(p(3), 2, 3)} />
+              </div>
+              <ScanLine width={390} height={420} progress={0.72} />
+            </div>
+          </Section>
+          <Section label="Estados de detección">
+            <Row gap={8} wrap>
+              <Badge label="Detectado" variant="category" progress={p(4)} />
+              <Badge label="Validado" variant="done" icon="check" progress={p(4)} />
+              <Badge label="Precio" variant="warning" icon="tag" progress={p(4)} />
+              <Badge label="Faltante" variant="danger" icon="alert" progress={p(4)} />
+            </Row>
+          </Section>
+        </Col>
+      </div>
+    </Board>
+  );
+};
+
+/* ───────────── 5 · Una sola app ───────────── */
+
+export const PageApp: React.FC = () => {
+  const p = (i: number) => usePageProgress(i, 4);
+  const phones = [
+    <VisitsScreen key="v" progress={p(0)} highlight={1} />,
+    <FormScreen key="f" progress={p(1)} />,
+    <ChatScreen key="c" progress={p(2)} />,
+    <OfflineScreen key="o" progress={p(3)} state="offline" count={3} />,
+  ];
+  const labels = ['Visitas', 'Formulario', 'Comunicación', 'Offline'];
+  return (
+    <AbsoluteFill>
+      <GradientBackground arc="solution" seed="showcase" />
+      <div style={{ position: 'absolute', left: 64, top: 44, ...type.tagline, fontSize: 40, color: colors.textDark }}>Una sola app</div>
+      <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 5/6</div>
+      <div style={{ position: 'absolute', left: 0, right: 0, top: 130, display: 'flex', justifyContent: 'center', gap: 44 }}>
+        {phones.map((screen, i) => (
+          <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 414 * 0.94, height: 868 * 0.94, position: 'relative' }}>
+              <Phone scale={0.94} style={{ position: 'absolute', left: -12, top: -26 }}>
+                {screen}
+              </Phone>
+            </div>
+            <div style={{ ...type.uiTitle, color: colors.textDark, marginTop: 8 }}>{labels[i]}</div>
+          </div>
+        ))}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/* ───────────── 6 · Assets pendientes y fondos ───────────── */
+
+export const PageAssets: React.FC = () => {
+  const caro = characterPoses('caro');
+  const nico = characterPoses('nico');
+  return (
+    <Board title="Assets y fondos" page="6/6" zoom={1}>
+      <div style={{ display: 'flex', gap: 48 }}>
+        <div style={{ width: 760, display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <Section label="Logos · public/logos (se reemplazan solos al copiar los SVG)">
+            <Row gap={20}>
+              <Logo variant="iso" height={120} />
+              <Logo variant="fullColor" height={120} />
+            </Row>
+            <Logo variant="wordmarkLight" height={100} />
+          </Section>
+          <Section label="Personajes · public/characters/<nombre>/<pose>.png">
+            <div style={{ position: 'relative', height: 330 }}>
+              <Character who="caro" pose={caro[0] ?? 'pose'} height={300} x={120} y={310} breath={0} tone="light" />
+              <Character who="nico" pose={nico[0] ?? 'pose'} height={300} x={360} y={310} breath={0} tone="light" />
+              <div style={{ position: 'absolute', left: 520, top: 20, ...type.uiBody, fontSize: 18, color: ui.textSecondary, lineHeight: 1.6 }}>
+                Poses Caro: {caro.length ? caro.join(', ') : 'sin archivos'}
+                <br />
+                Poses Nico: {nico.length ? nico.join(', ') : 'sin archivos'}
+              </div>
+            </div>
+          </Section>
+        </div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <Section label="Fondos · problema / solución / cierre">
+            {(['problem', 'solution', 'closing'] as const).map((arc) => (
+              <div key={arc} style={{ position: 'relative', height: 250, borderRadius: radius.lg, overflow: 'hidden', border: `1px solid ${ui.border}` }}>
+                <div style={{ position: 'absolute', left: 0, top: -151, width: 1920, height: 1080, transform: 'scale(0.5125)', transformOrigin: '0 0' }}>
+                  <GradientBackground arc={arc} seed={`sw-${arc}`} />
+                </div>
+                <div style={{ position: 'absolute', left: 16, bottom: 12, ...type.uiCaption, fontSize: 14, color: arc === 'problem' ? colors.white : colors.textDark }}>{arc}</div>
+              </div>
+            ))}
+          </Section>
+        </div>
+      </div>
+    </Board>
+  );
+};
+
+export const SHOWCASE_PAGES = [
+  { id: 'Foundations', C: PageFoundations },
+  { id: 'Navigation', C: PageNavigation },
+  { id: 'Forms', C: PageForms },
+  { id: 'Data', C: PageData },
+  { id: 'App', C: PageApp },
+  { id: 'Assets', C: PageAssets },
+] as const;
