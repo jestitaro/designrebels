@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-28T17:31:25.282Z",
-  "group": "B",
+  "generatedAt": "2026-09-29T15:36:33.895Z",
+  "group": "C",
   "own": {
     "linkedin": {
       "followers": 2876,
       "employees": 8,
-      "lastSynced": "2026-09-28T17:30:58.563Z",
+      "lastSynced": "2026-09-29T15:35:21.494Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -352,7 +352,7 @@
       ],
       "lastSynced": null,
       "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
+      "syncError": "Apify respondió 400: {\n  \"error\": {\n    \"type\": \"run-failed\",\n    \"message\": \"Actor run did not succeed (run ID: zTaifmYzZox3CuQZV, status: TIMED-OUT).\"\n  }\n}"
     },
     {
       "id": "retail-velocity",
@@ -363,7 +363,7 @@
       "gradEnd": "#d97706",
       "size": "11-50",
       "stats": {
-        "followers": "541",
+        "followers": "542",
         "posts_mes": 4,
         "engagement": "1.8",
         "funding": "Sin datos"
@@ -387,7 +387,7 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": "2026-09-26T13:42:00.758Z",
+      "lastSynced": "2026-09-29T15:36:30.467Z",
       "syncStatus": "ok",
       "syncError": null
     },
