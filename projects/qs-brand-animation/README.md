@@ -2,8 +2,7 @@
 
 Brand animation de QuartzSales en Remotion (React → MP4). 1920×1080, 30 fps.
 
-**Estado:** Fase 0, la infraestructura visual y técnica. Las escenas finales todavía no empezaron.
-Faltan los assets oficiales (logos y personajes) y la validación del ComponentShowcase.
+**Estado:** Fase 0 completa, con todos los assets cargados. Falta validar el ComponentShowcase antes de pasar a los style frames.
 
 ## Uso
 
@@ -16,23 +15,24 @@ npm run list-assets      # logos y poses presentes en /public
 npm run export-markers   # markers.csv para sound design
 ```
 
-Composiciones: `Main` (timeline de las 14 escenas, hoy con slates), `ComponentShowcase` (6 láminas animadas),
+Composiciones: `Main` (timeline de las 14 escenas, hoy con slates), `ComponentShowcase` (7 láminas animadas),
 `Showcase-*` (cada lámina suelta), `CameraLab` (parallax + zoom through) y `TransitionsLab` (las 6 transiciones).
 En `Main`, `showMarkers: true` muestra el overlay de sound design.
 
-## Assets pendientes
+## Assets
 
-Alcanza con copiar los archivos a estas rutas: los placeholders se reemplazan solos (se detectan con `getStaticFiles()`).
+Todo está cargado en `/public`: logos oficiales, 18 poses de Caro, 15 de Nico y 10 productos genéricos.
 
 | Asset | Ruta |
 |---|---|
-| Isotipo | `public/logos/iso-qs.svg` |
-| Logo full color | `public/logos/logo-qs-fullcolor.svg` |
-| Wordmark fondo claro | `public/logos/tipo-qs-bg-light.svg` |
-| Caro | `public/characters/caro/<pose>.png` |
-| Nico | `public/characters/nico/<pose>.png` |
+| Logos | `public/logos/iso-qs.svg`, `logo-qs-fullcolor.svg`, `tipo-qs-bg-light.svg` |
+| Caro / Nico | `public/characters/<nombre>/<pose>.png` |
+| Productos | `public/products/*.png` (fondo transparente, 1254×1254) |
 
-El nombre del archivo, sin la extensión, es el nombre de la pose: `<Character who="caro" pose="saludo" />`.
+- **Poses:** `src/characters/poses.ts` guarda el bounding box de cada pose. `<Character height={…}>` escala de forma uniforme para que la figura mida lo mismo de pie en todas las poses, con los pies en `y`. Las poses sentadas y la caída usan un factor aproximado.
+- **Caminata:** `<CharacterWalk frames={WALK_FRAMES.nico}>` alterna los fotogramas de la zancada con un leve rebote vertical. Los fotogramas entregados son de una sola fase; para un ciclo completo faltan los de la pierna contraria.
+- **Isotipo:** `src/brand/isoPaths.ts` separa el SVG oficial en 20 triángulos (uno por subpath) para la escena 13, sin redibujar nada. `<IsoTriangles triangle={(i) => …}>` los anima por separado.
+- **Referencia de pantallas PSMob:** `reference/psmob/`.
 
 ## Estructura
 

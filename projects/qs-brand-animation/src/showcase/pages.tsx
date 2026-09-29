@@ -33,8 +33,8 @@ import {
 } from '../ui';
 import { Phone } from '../devices/Phone';
 import { Logo } from '../brand/Logo';
-import { Character } from '../characters/Character';
-import { characterPoses } from '../assets';
+import { Character, listPoses } from '../characters/Character';
+import { IsoTriangles, triangleCenter } from '../brand/IsoTriangles';
 import { GradientBackground } from '../shapes/GradientBackground';
 import { Board, Col, Row, Section } from './Board';
 
@@ -107,7 +107,7 @@ export const PageFoundations: React.FC = () => {
   const brandRoles = typeSpecimens.filter((t) => t.role === 'headline' || t.role === 'tagline');
   const uiRoles = typeSpecimens.filter((t) => t.role !== 'headline' && t.role !== 'tagline');
   return (
-    <Board title="Fundamentos" page="1/6" zoom={1}>
+    <Board title="Fundamentos" page="1/7" zoom={1}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 28, height: '100%' }}>
         <Section label="Tipografía de marca · Nunito · tamaño real">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, opacity: p(0) }}>
@@ -212,7 +212,7 @@ export const PageFoundations: React.FC = () => {
 export const PageNavigation: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 6);
   return (
-    <Board title="Navegación, listas y datos" page="2/6">
+    <Board title="Navegación, listas y datos" page="2/7">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
           <Section label="AppHeader">
@@ -290,7 +290,7 @@ export const PageNavigation: React.FC = () => {
 export const PageForms: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 5);
   return (
-    <Board title="Formularios, chat y estados" page="3/6">
+    <Board title="Formularios, chat y estados" page="3/7">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
           <Section label="FormField">
@@ -350,7 +350,7 @@ const SHELF_ITEMS = [
 export const PageData: React.FC = () => {
   const p = (i: number) => usePageProgress(i, 5);
   return (
-    <Board title="Mapas, gráficos y visión artificial" page="4/6">
+    <Board title="Mapas, gráficos y visión artificial" page="4/7">
       <div style={{ display: 'flex', gap: 28 }}>
         <Col>
           <Section label="MapCard">
@@ -426,7 +426,7 @@ export const PageApp: React.FC = () => {
     <AbsoluteFill>
       <GradientBackground arc="solution" seed="showcase" />
       <div style={{ position: 'absolute', left: 64, top: 44, ...type.tagline, fontSize: 40, color: ui.text }}>Una sola app</div>
-      <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 5/6</div>
+      <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 5/7</div>
       <div style={{ position: 'absolute', left: 0, right: 0, top: 130, display: 'flex', justifyContent: 'center', gap: 44 }}>
         {phones.map((screen, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
@@ -443,31 +443,36 @@ export const PageApp: React.FC = () => {
   );
 };
 
-/* ───────────── 6 · Assets pendientes y fondos ───────────── */
+/* ───────────── 6 · Marca y fondos ───────────── */
 
 export const PageAssets: React.FC = () => {
-  const caro = characterPoses('caro');
-  const nico = characterPoses('nico');
+  const frame = useCurrentFrame();
+  const explode = progressFrames(frame, 10, 40, 'easeInOut');
   return (
-    <Board title="Assets y fondos" page="6/6" zoom={1}>
+    <Board title="Marca y fondos" page="6/7" zoom={1}>
       <div style={{ display: 'flex', gap: 48 }}>
         <div style={{ width: 760, display: 'flex', flexDirection: 'column', gap: 28 }}>
-          <Section label="Logos · public/logos (se reemplazan solos al copiar los SVG)">
-            <Row gap={20}>
-              <Logo variant="iso" height={120} />
-              <Logo variant="fullColor" height={120} />
-            </Row>
-            <Logo variant="wordmarkLight" height={100} />
+          <Section label="Logos oficiales · public/logos">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, padding: 28, borderRadius: radius.lg, background: colors.white, border: `1px solid ${ui.border}` }}>
+              <Logo variant="fullColor" height={90} />
+              <Row gap={40}>
+                <Logo variant="iso" height={110} />
+                <Logo variant="wordmarkLight" height={72} />
+              </Row>
+            </div>
           </Section>
-          <Section label="Personajes · public/characters/<nombre>/<pose>.png">
-            <div style={{ position: 'relative', height: 330 }}>
-              <Character who="caro" pose={caro[0] ?? 'pose'} height={300} x={120} y={310} breath={0} tone="light" />
-              <Character who="nico" pose={nico[0] ?? 'pose'} height={300} x={360} y={310} breath={0} tone="light" />
-              <div style={{ position: 'absolute', left: 520, top: 20, ...type.uiBody, fontSize: 18, color: ui.textSecondary, lineHeight: 1.6 }}>
-                Poses Caro: {caro.length ? caro.join(', ') : 'sin archivos'}
-                <br />
-                Poses Nico: {nico.length ? nico.join(', ') : 'sin archivos'}
-              </div>
+          <Section label="Isotipo · 20 triángulos independientes (escena 13)">
+            <div style={{ display: 'flex', gap: 28, alignItems: 'center', padding: 28, borderRadius: radius.lg, background: colors.white, border: `1px solid ${ui.border}` }}>
+              <IsoTriangles size={200} />
+              <IsoTriangles
+                size={200}
+                triangle={(i) => {
+                  const [cx, cy] = triangleCenter(i);
+                  const k = 0.35 * explode;
+                  return { x: (cx - 282.5) * k, y: (cy - 282.5) * k, rotate: ((i % 5) - 2) * 12 * explode };
+                }}
+              />
+              <div style={{ ...type.uiBody, fontSize: 16, color: ui.textSecondary, width: 220 }}>Mismos paths del SVG oficial, partidos por subpath. Cada triángulo se mueve, rota y escala por separado.</div>
             </div>
           </Section>
         </div>
@@ -488,6 +493,45 @@ export const PageAssets: React.FC = () => {
   );
 };
 
+/* ───────────── 7 · Personajes ───────────── */
+
+const LINEUP_H = 176;
+
+const Lineup: React.FC<{ who: 'caro' | 'nico' }> = ({ who }) => {
+  const poses = listPoses(who);
+  const rows = [poses.slice(0, Math.ceil(poses.length / 2)), poses.slice(Math.ceil(poses.length / 2))];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {rows.map((row, r) => (
+        <div key={r} style={{ position: 'relative', height: LINEUP_H + 40, borderBottom: `2px solid ${ui.border}` }}>
+          {row.map((pose, i) => {
+            const x = 70 + i * (1760 / row.length);
+            return (
+              <React.Fragment key={pose}>
+                <Character who={who} pose={pose as never} height={LINEUP_H} x={x} y={LINEUP_H + 14} breath={0} />
+                <div style={{ position: 'absolute', left: x, top: LINEUP_H + 20, transform: 'translateX(-50%)', ...type.uiCaption, fontSize: 12, color: ui.textSecondary, whiteSpace: 'nowrap' }}>{pose}</div>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const PagePeople: React.FC = () => (
+  <Board title="Personajes" page="7/7" zoom={1}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <Section label={`Caro · ${listPoses('caro').length} poses · misma altura de pie (${LINEUP_H} px), pies sobre la línea`}>
+        <Lineup who="caro" />
+      </Section>
+      <Section label={`Nico · ${listPoses('nico').length} poses`}>
+        <Lineup who="nico" />
+      </Section>
+    </div>
+  </Board>
+);
+
 export const SHOWCASE_PAGES = [
   { id: 'Foundations', C: PageFoundations },
   { id: 'Navigation', C: PageNavigation },
@@ -495,4 +539,5 @@ export const SHOWCASE_PAGES = [
   { id: 'Data', C: PageData },
   { id: 'App', C: PageApp },
   { id: 'Assets', C: PageAssets },
+  { id: 'People', C: PagePeople },
 ] as const;
