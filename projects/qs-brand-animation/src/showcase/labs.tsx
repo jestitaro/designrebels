@@ -78,7 +78,7 @@ const LegibilityHud: React.FC<{ deviceScale: number }> = ({ deviceScale }) => {
 };
 
 const LabLabel: React.FC<{ text: string; dark?: boolean }> = ({ text, dark }) => (
-  <div style={{ position: 'absolute', left: 32, top: 28, ...type.uiCaption, fontSize: 16, padding: '6px 12px', borderRadius: radius.sm, background: alpha(dark ? colors.white : colors.dark, 0.72), color: dark ? colors.textDark : colors.white }}>{text}</div>
+  <div style={{ position: 'absolute', left: 32, top: 28, ...type.uiCaption, fontSize: 16, padding: '6px 12px', borderRadius: radius.sm, background: alpha(dark ? colors.white : colors.dark, 0.72), color: dark ? ui.text : colors.white }}>{text}</div>
 );
 
 /* ───────────── TransitionsLab: las 6 transiciones ───────────── */

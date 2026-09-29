@@ -21,7 +21,7 @@ export const ChatBubble: React.FC<Props> = ({ text, side = 'in', author, time, r
   const out = side === 'out';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: out ? 'flex-end' : 'flex-start', ...enterStyle(progress, 12), ...style }}>
-      {author && !out && <span style={{ ...type.uiCaption, color: colors.primary, fontWeight: 600, margin: '0 0 4px 12px' }}>{author}</span>}
+      {author && !out && <span style={{ ...type.uiCaption, color: ui.action, fontWeight: 600, margin: '0 0 4px 12px' }}>{author}</span>}
       <div
         style={{
           ...type.uiBody,
@@ -29,9 +29,9 @@ export const ChatBubble: React.FC<Props> = ({ text, side = 'in', author, time, r
           padding: '10px 14px',
           borderRadius: radius.lg,
           [out ? 'borderBottomRightRadius' : 'borderBottomLeftRadius']: 6,
-          background: out ? colors.primary : ui.surface,
-          color: out ? colors.white : colors.textDark,
-          boxShadow: out ? `0 4px 12px ${alpha(colors.primary, 0.25)}` : `0 2px 8px ${alpha(colors.dark, 0.08)}`,
+          background: out ? ui.accent : ui.surface,
+          color: out ? colors.white : ui.text,
+          boxShadow: out ? `0 4px 12px ${alpha(ui.accent, 0.25)}` : `0 2px 8px ${alpha(colors.dark, 0.08)}`,
           border: out ? 'none' : `1px solid ${ui.border}`,
           transformOrigin: out ? '100% 100%' : '0 100%',
         }}

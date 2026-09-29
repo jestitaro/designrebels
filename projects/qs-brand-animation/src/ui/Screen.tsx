@@ -47,14 +47,14 @@ export const VisitsScreen: React.FC<{ progress?: number; highlight?: number }> =
   <ScreenShell
     header={
       <AppHeader title="Visitas" subtitle="Martes 29/09 · 5 PDV" actions={[{ icon: 'filter' }, { icon: 'bell', count: 4 }]} progress={sub(progress, 0, 0.3)}>
-        <Badge label="Hoy" variant="neutral" dot={false} style={{ background: colors.white, color: colors.primary }} />
+        <Badge label="Hoy" variant="neutral" dot={false} style={{ background: colors.white, color: ui.accent }} />
         <Badge label="Semana" variant="neutral" dot={false} style={{ background: alpha(colors.white, 0.16), color: colors.white }} />
         <Badge label="Solo mis PDV" variant="neutral" dot={false} style={{ background: alpha(colors.white, 0.16), color: colors.white }} />
       </AppHeader>
     }
     nav={<BottomNavigation active={2} progress={sub(progress, 0, 0.3)} />}
   >
-    <SectionTitle right={<span style={{ ...type.uiCaption, color: colors.primary, fontWeight: 600 }}>2/5 completadas</span>}>Ruta de hoy</SectionTitle>
+    <SectionTitle right={<span style={{ ...type.uiCaption, color: ui.focus, fontWeight: 600 }}>2/5 completadas</span>}>Ruta de hoy</SectionTitle>
     {PDVS.map((p, i) => (
       <ListRow
         key={p.id}
@@ -90,7 +90,7 @@ export const FormScreen: React.FC<{ progress?: number; press?: number; done?: bo
           <Badge label={SKUS[0].category} variant="category" dot={false} />
           <span style={{ ...type.uiCaption, color: ui.textSecondary, fontVariantNumeric: 'tabular-nums' }}>EAN {SKUS[0].ean}</span>
         </div>
-        <div style={{ ...type.uiBodyStrong, color: colors.textDark, marginTop: -8 }}>{SKUS[0].name}</div>
+        <div style={{ ...type.uiBodyStrong, color: ui.text, marginTop: -8 }}>{SKUS[0].name}</div>
         <FormField label="Precio en góndola" value={formatARS(SKUS[0].price)} progress={stagger(fields, 1, 4, 0.5)} />
         <FormField label="Frentes" value="6" suffix="unidades" progress={stagger(fields, 2, 4, 0.5)} />
         <FormField label="Producto en exhibición secundaria" kind="check" progress={stagger(fields, 3, 4, 0.5)} />
@@ -109,7 +109,7 @@ export const ChatScreen: React.FC<{ progress?: number }> = ({ progress = 1 }) =>
     overlay={
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '12px 16px 28px', background: ui.surface, borderTop: `1px solid ${ui.border}`, display: 'flex', gap: 8, alignItems: 'center' }}>
         <div style={{ ...type.uiBody, flex: 1, height: 44, borderRadius: 22, background: ui.background, display: 'flex', alignItems: 'center', padding: '0 16px', color: ui.textMuted }}>Escribí un mensaje</div>
-        <div style={{ width: 44, height: 44, borderRadius: 22, background: colors.primary, display: 'grid', placeItems: 'center' }}>
+        <div style={{ width: 44, height: 44, borderRadius: 22, background: ui.action, display: 'grid', placeItems: 'center' }}>
           <Icon name="send" size={20} color={colors.white} strokeWidth={2} />
         </div>
       </div>
@@ -161,13 +161,13 @@ export const OfflineScreen: React.FC<{ progress?: number; state?: SyncState; cou
     ].map((r, i) => (
       <Card key={r.t} progress={stagger(sub(progress, 0.15, 0.7), i, 3, 0.5)} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <div style={{ width: 36, height: 36, borderRadius: 10, background: ui.primaryTint, display: 'grid', placeItems: 'center' }}>
-          <Icon name={i === 2 ? 'camera' : i === 1 ? 'grid' : 'tag'} size={18} color={colors.primary} strokeWidth={2} />
+          <Icon name={i === 2 ? 'camera' : i === 1 ? 'grid' : 'tag'} size={18} color={ui.accent} strokeWidth={2} />
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ ...type.uiBodyStrong, color: colors.textDark }}>{r.t}</div>
+          <div style={{ ...type.uiBodyStrong, color: ui.text }}>{r.t}</div>
           <div style={{ ...type.uiCaption, fontWeight: 400, color: ui.textSecondary }}>{r.s}</div>
         </div>
-        <Icon name={state === 'synced' ? 'checkCircle' : 'device'} size={20} color={state === 'synced' ? colors.success : ui.textMuted} />
+        <Icon name={state === 'synced' ? 'checkCircle' : 'device'} size={20} color={state === 'synced' ? ui.check : ui.textMuted} />
       </Card>
     ))}
   </ScreenShell>

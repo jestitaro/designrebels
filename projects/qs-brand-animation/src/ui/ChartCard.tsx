@@ -42,7 +42,7 @@ export const ChartCard: React.FC<Props> = ({
     <Card progress={sub(progress, 0, 0.35)} width={width} elevation={elevation} style={style}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div style={{ ...type.uiBodyStrong, color: colors.textDark }}>{title}</div>
+          <div style={{ ...type.uiBodyStrong, color: ui.text }}>{title}</div>
           <div style={{ ...type.uiCaption, color: ui.textSecondary, marginTop: 2 }}>{caption}</div>
         </div>
       </div>
@@ -69,10 +69,10 @@ const Bars: React.FC<{ data: Props['data']; p: number }> = ({ data = WEEK, p }) 
                 width: '100%',
                 height: `${d.v * 80 * bp}%`,
                 borderRadius: 6,
-                background: top ? colors.primary : alpha(colors.secondary, 0.45),
+                background: top ? ui.accent : alpha(ui.accent, 0.22),
               }}
             />
-            <span style={{ ...type.uiCaption, fontSize: 11, color: top ? colors.textDark : ui.textSecondary }}>{d.d}</span>
+            <span style={{ ...type.uiCaption, fontSize: 11, color: top ? ui.text : ui.textSecondary }}>{d.d}</span>
           </div>
         );
       })}
@@ -93,18 +93,18 @@ const Donut: React.FC<{ value: number; p: number }> = ({ value, p }) => {
           cy="66"
           r={r}
           fill="none"
-          stroke={colors.primary}
+          stroke={ui.accent}
           strokeWidth="14"
           strokeLinecap="round"
           strokeDasharray={`${(c * shown) / 100} ${c}`}
           transform="rotate(-90 66 66)"
         />
-        <text x="66" y="74" textAnchor="middle" style={{ ...type.kpi, fontSize: 28 }} fill={colors.textDark}>
+        <text x="66" y="74" textAnchor="middle" style={{ ...type.kpi, fontSize: 28 }} fill={ui.text}>
           {Math.round(shown)}%
         </text>
       </svg>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <Legend color={colors.primary} label="Con stock" value={`${Math.round(shown)}%`} />
+        <Legend color={ui.accent} label="Con stock" value={`${Math.round(shown)}%`} />
         <Legend color={ui.primaryTint} label="Quiebre" value={`${Math.round(100 - shown)}%`} />
       </div>
     </div>
@@ -115,7 +115,7 @@ const Legend: React.FC<{ color: string; label: string; value: string }> = ({ col
   <div style={{ display: 'flex', alignItems: 'center', gap: 8, ...type.uiCaption, color: ui.textSecondary }}>
     <span style={{ width: 10, height: 10, borderRadius: 3, background: color }} />
     {label}
-    <span style={{ color: colors.textDark, fontWeight: 600 }}>{value}</span>
+    <span style={{ color: ui.text, fontWeight: 600 }}>{value}</span>
   </div>
 );
 
@@ -130,16 +130,16 @@ const Line: React.FC<{ data: Props['data']; p: number }> = ({ data = WEEK, p }) 
     <svg width="100%" height={h} viewBox={`0 0 ${w} ${h}`}>
       <defs>
         <linearGradient id="lineArea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={colors.primary} stopOpacity={0.18} />
-          <stop offset="100%" stopColor={colors.primary} stopOpacity={0} />
+          <stop offset="0%" stopColor={ui.accent} stopOpacity={0.18} />
+          <stop offset="100%" stopColor={ui.accent} stopOpacity={0} />
         </linearGradient>
       </defs>
       {[0.25, 0.5, 0.75].map((g) => (
         <line key={g} x1="0" x2={w} y1={h * g} y2={h * g} stroke={ui.divider} />
       ))}
       <path d={area} fill="url(#lineArea)" opacity={p} />
-      <path d={path} fill="none" stroke={colors.primary} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={ev.strokeDasharray} strokeDashoffset={ev.strokeDashoffset} />
-      {p > 0.98 && <circle cx={pts[pts.length - 2][0]} cy={pts[pts.length - 2][1]} r="5" fill={colors.white} stroke={colors.primary} strokeWidth="3" />}
+      <path d={path} fill="none" stroke={ui.accent} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={ev.strokeDasharray} strokeDashoffset={ev.strokeDashoffset} />
+      {p > 0.98 && <circle cx={pts[pts.length - 2][0]} cy={pts[pts.length - 2][1]} r="5" fill={colors.white} stroke={ui.accent} strokeWidth="3" />}
     </svg>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCurrentFrame } from 'remotion';
-import { colors, radius, type, ui } from '../tokens';
+import { alpha, colors, radius, type, ui } from '../tokens';
 import { enterStyle, sub } from '../lib/easing';
 import { Icon, IconName } from './Icon';
 
@@ -37,15 +37,15 @@ export const FormField: React.FC<Props> = ({ label, kind = 'text', value = '', p
             width: 24,
             height: 24,
             borderRadius: 6,
-            border: `2px solid ${on ? colors.primary : ui.textMuted}`,
-            background: on ? colors.primary : ui.surface,
+            border: `2px solid ${on ? ui.accent : ui.textMuted}`,
+            background: on ? ui.accent : ui.surface,
             display: 'grid',
             placeItems: 'center',
           }}
         >
           {on && <Icon name="check" size={16} color={colors.white} strokeWidth={3} />}
         </div>
-        <span style={{ ...type.uiBody, color: colors.textDark }}>{label}</span>
+        <span style={{ ...type.uiBody, color: ui.text }}>{label}</span>
       </div>
     );
   }
@@ -59,17 +59,17 @@ export const FormField: React.FC<Props> = ({ label, kind = 'text', value = '', p
           style={{
             height: 88,
             borderRadius: radius.sm,
-            border: `1.5px dashed ${on ? colors.success : ui.textMuted}`,
+            border: `1.5px dashed ${on ? ui.check : ui.textMuted}`,
             background: on ? ui.successTint : ui.surface,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
             ...type.uiCaption,
-            color: on ? colors.textDark : ui.textSecondary,
+            color: on ? ui.text : ui.textSecondary,
           }}
         >
-          <Icon name={on ? 'checkCircle' : 'camera'} size={22} color={on ? colors.success : ui.textSecondary} />
+          <Icon name={on ? 'checkCircle' : 'camera'} size={22} color={on ? ui.check : ui.textSecondary} />
           {on ? '3 fotos cargadas' : 'Tomar foto de góndola'}
         </div>
       </div>
@@ -89,14 +89,14 @@ export const FormField: React.FC<Props> = ({ label, kind = 'text', value = '', p
           padding: '0 14px',
           borderRadius: radius.sm,
           background: ui.surface,
-          border: `1.5px solid ${isFocused ? colors.primary : ui.border}`,
-          boxShadow: isFocused ? `0 0 0 3px ${ui.primaryTint}` : undefined,
+          border: `1.5px solid ${isFocused ? ui.focus : ui.border}`,
+          boxShadow: isFocused ? `0 0 0 3px ${alpha(ui.focus, 0.14)}` : undefined,
         }}
       >
         {icon && <Icon name={icon} size={18} color={ui.textSecondary} />}
-        <span style={{ ...type.uiBody, flex: 1, color: shownValue ? colors.textDark : ui.textMuted, fontVariantNumeric: 'tabular-nums', display: 'flex', alignItems: 'center' }}>
+        <span style={{ ...type.uiBody, flex: 1, color: shownValue ? ui.text : ui.textMuted, fontVariantNumeric: 'tabular-nums', display: 'flex', alignItems: 'center' }}>
           {shownValue || placeholder}
-          {caretOn && <span style={{ width: 1.5, height: 18, background: colors.primary, marginLeft: 1 }} />}
+          {caretOn && <span style={{ width: 1.5, height: 18, background: ui.focus, marginLeft: 1 }} />}
         </span>
         {suffix && <span style={{ ...type.uiCaption, color: ui.textSecondary }}>{suffix}</span>}
         {kind === 'select' && <Icon name="chevronDown" size={18} color={ui.textSecondary} />}

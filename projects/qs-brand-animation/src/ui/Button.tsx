@@ -19,9 +19,9 @@ type Props = {
 };
 
 const styles: Record<ButtonVariant, React.CSSProperties> = {
-  primary: { background: colors.primary, color: colors.white, boxShadow: shadows.fab },
-  secondary: { background: ui.surface, color: colors.textDark, border: `1.5px solid ${alpha(colors.textDark, 0.18)}` },
-  ghost: { background: 'transparent', color: colors.primary },
+  primary: { background: ui.action, color: colors.white, boxShadow: shadows.fab },
+  secondary: { background: ui.surface, color: ui.action, border: `1.5px solid ${ui.action}` },
+  ghost: { background: 'transparent', color: ui.focus },
   danger: { background: 'transparent', color: colors.danger, border: `1.5px solid ${alpha(colors.danger, 0.4)}` },
 };
 
@@ -52,7 +52,7 @@ export const Button: React.FC<Props> = ({
         boxSizing: 'border-box',
         width: fullWidth ? '100%' : undefined,
         ...s,
-        ...(done ? { background: colors.success, color: colors.white, boxShadow: 'none', border: 'none' } : null),
+        ...(done ? { background: ui.check, color: colors.white, boxShadow: 'none', border: 'none' } : null),
         ...enterStyle(progress, 10),
         transform: `${enterStyle(progress, 10).transform} scale(${1 - press * 0.035})`,
         ...style,
@@ -67,7 +67,7 @@ export const Button: React.FC<Props> = ({
             width: 260,
             height: 260,
             borderRadius: '50%',
-            background: alpha(variant === 'primary' ? colors.white : colors.primary, 0.18 * press),
+            background: alpha(variant === 'primary' ? colors.white : ui.action, 0.18 * press),
             transform: `translate(-50%, -50%) scale(${0.2 + press * 0.8})`,
           }}
         />

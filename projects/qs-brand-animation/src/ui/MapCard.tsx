@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, radius, type, ui } from '../tokens';
+import { radius, type, ui } from '../tokens';
 import { sub } from '../lib/easing';
 import { Card } from './Card';
 import { Icon } from './Icon';
@@ -30,10 +30,10 @@ export const MapCard: React.FC<Props> = ({
     </div>
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 16 }}>
       <div style={{ width: 36, height: 36, borderRadius: 10, background: ui.primaryTint, display: 'grid', placeItems: 'center' }}>
-        <Icon name="route" size={20} color={colors.primary} strokeWidth={2} />
+        <Icon name="route" size={20} color={ui.accent} strokeWidth={2} />
       </div>
       <div style={{ flex: 1 }}>
-        <div style={{ ...type.uiBodyStrong, color: colors.textDark }}>{title}</div>
+        <div style={{ ...type.uiBodyStrong, color: ui.text }}>{title}</div>
         <div style={{ ...type.uiCaption, color: ui.textSecondary, marginTop: 2 }}>{summary}</div>
       </div>
       <Icon name="chevronRight" size={20} color={ui.textMuted} />

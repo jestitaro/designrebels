@@ -1,5 +1,5 @@
 import React from 'react';
-import { alpha, colors, radius, type } from '../tokens';
+import { alpha, colors, radius, type, ui } from '../tokens';
 import { sub } from '../lib/easing';
 import { Icon } from './Icon';
 
@@ -7,7 +7,7 @@ export type DetectionStatus = 'detected' | 'valid' | 'missing' | 'price';
 
 const tone: Record<DetectionStatus, string> = {
   detected: colors.secondary,
-  valid: colors.success,
+  valid: ui.check,
   missing: colors.danger,
   price: colors.warning,
 };
@@ -62,7 +62,7 @@ export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence
           transform: `translateY(${(1 - lbl) * 6}px)`,
         }}
       >
-        {status === 'valid' && <Icon name="check" size={13} color={colors.success} strokeWidth={3} />}
+        {status === 'valid' && <Icon name="check" size={13} color={ui.check} strokeWidth={3} />}
         {status === 'missing' && <Icon name="alert" size={13} color={colors.danger} strokeWidth={2.4} />}
         <span>{label}</span>
         {confidence !== undefined && <span style={{ color: tone[status], fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>{Math.round(confidence * 100)}%</span>}
@@ -78,7 +78,7 @@ export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence
             padding: '3px 8px',
             borderRadius: radius.sm - 2,
             background: colors.white,
-            color: colors.textDark,
+            color: ui.text,
             boxShadow: `0 2px 8px ${alpha(colors.dark, 0.2)}`,
             opacity: sub(progress, 0.75, 1),
             fontVariantNumeric: 'tabular-nums',

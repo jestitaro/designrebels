@@ -1,6 +1,6 @@
 import React from 'react';
 import { evolvePath } from '@remotion/paths';
-import { alpha, colors, type } from '../tokens';
+import { alpha, colors, type, ui } from '../tokens';
 import { sub } from '../lib/easing';
 
 /**
@@ -44,8 +44,8 @@ export const StyledMap: React.FC<Props> = ({
     <svg viewBox={`0 0 ${MAP_VIEWBOX.w} ${MAP_VIEWBOX.h}`} width={width} height={height} preserveAspectRatio="xMidYMid slice" style={{ display: 'block', ...style }}>
       <rect width="400" height="260" fill={alpha(colors.gradStart, 0.1)} />
       {/* parque y plaza */}
-      <rect x="170" y="140" width="72" height="56" rx="10" fill={alpha(colors.success, 0.18)} />
-      <rect x="290" y="176" width="46" height="46" rx="23" fill={alpha(colors.success, 0.14)} />
+      <rect x="170" y="140" width="72" height="56" rx="10" fill={alpha(ui.check, 0.18)} />
+      <rect x="290" y="176" width="46" height="46" rx="23" fill={alpha(ui.check, 0.14)} />
       {/* calles secundarias */}
       {[20, 98, 206, 310, 380].map((x) => (
         <line key={`v${x}`} x1={x} y1="0" x2={x} y2="260" stroke={streetMinor} strokeWidth="6" />
@@ -63,8 +63,8 @@ export const StyledMap: React.FC<Props> = ({
       <line x1="-20" y1="250" x2="420" y2="-10" stroke={alpha(colors.secondary, 0.28)} strokeWidth="9" />
 
       {/* ruta: halo + línea */}
-      <path d={route} fill="none" stroke={alpha(colors.primary, 0.18)} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={evolved.strokeDasharray} strokeDashoffset={evolved.strokeDashoffset} />
-      <path d={route} fill="none" stroke={colors.primary} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={evolved.strokeDasharray} strokeDashoffset={evolved.strokeDashoffset} />
+      <path d={route} fill="none" stroke={alpha(ui.accent, 0.18)} strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={evolved.strokeDasharray} strokeDashoffset={evolved.strokeDashoffset} />
+      <path d={route} fill="none" stroke={ui.accent} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray={evolved.strokeDasharray} strokeDashoffset={evolved.strokeDashoffset} />
 
       {stops.map((s, i) => {
         const p = sub(routeProgress, (i / stops.length) * 0.92, (i / stops.length) * 0.92 + 0.14, 'softOvershoot');
@@ -72,13 +72,13 @@ export const StyledMap: React.FC<Props> = ({
         const r = isDest ? 13 : 10;
         return (
           <g key={i} transform={`translate(${s.x} ${s.y}) scale(${p})`} opacity={Math.min(1, p * 1.5)}>
-            {isDest && <circle r={r + 8} fill={alpha(colors.primary, 0.16)} />}
-            <circle r={r} fill={isDest ? colors.primary : colors.white} stroke={colors.primary} strokeWidth="3" />
+            {isDest && <circle r={r + 8} fill={alpha(ui.accent, 0.16)} />}
+            <circle r={r} fill={isDest ? ui.accent : colors.white} stroke={ui.accent} strokeWidth="3" />
             <text
               y="4"
               textAnchor="middle"
               style={{ ...type.uiCaption, fontSize: isDest ? 12 : 10, fontWeight: 700 }}
-              fill={isDest ? colors.white : colors.primary}
+              fill={isDest ? colors.white : ui.accent}
             >
               {s.label}
             </text>

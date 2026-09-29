@@ -6,7 +6,7 @@ import { alpha, colors, type, ui } from '../tokens';
 export const BOARD_ZOOM = 1.45;
 
 export const Board: React.FC<{ title: string; page: string; children: React.ReactNode; zoom?: number; dark?: boolean }> = ({ title, page, children, zoom = BOARD_ZOOM, dark }) => (
-  <AbsoluteFill style={{ background: dark ? colors.dark : ui.background, color: dark ? colors.white : colors.textDark }}>
+  <AbsoluteFill style={{ background: dark ? colors.dark : ui.background, color: dark ? colors.white : ui.text }}>
     <div style={{ position: 'absolute', left: 64, top: 44, right: 64, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
       <div style={{ ...type.tagline, fontSize: 40 }}>{title}</div>
       <div style={{ ...type.uiTitle, color: dark ? alpha(colors.white, 0.6) : ui.textSecondary }}>PSMob · ComponentShowcase · {page}</div>

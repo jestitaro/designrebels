@@ -6,11 +6,11 @@ import { Icon, IconName } from './Icon';
 export type ToastVariant = 'success' | 'info' | 'warning' | 'danger' | 'offline';
 
 const map: Record<ToastVariant, { icon: IconName; color: string; tint: string }> = {
-  success: { icon: 'checkCircle', color: colors.success, tint: ui.successTint },
-  info: { icon: 'bell', color: colors.primary, tint: ui.primaryTint },
+  success: { icon: 'checkCircle', color: ui.check, tint: ui.successTint },
+  info: { icon: 'bell', color: ui.accent, tint: ui.primaryTint },
   warning: { icon: 'alert', color: colors.warning, tint: ui.warningTint },
   danger: { icon: 'alert', color: colors.danger, tint: ui.dangerTint },
-  offline: { icon: 'wifiOff', color: colors.textDark, tint: ui.divider },
+  offline: { icon: 'wifiOff', color: ui.text, tint: ui.divider },
 };
 
 type Props = {
@@ -46,7 +46,7 @@ export const Toast: React.FC<Props> = ({ title, message, variant = 'success', ic
         <Icon name={icon ?? v.icon} size={20} color={v.color} strokeWidth={2} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ ...type.uiBodyStrong, color: colors.textDark }}>{title}</div>
+        <div style={{ ...type.uiBodyStrong, color: ui.text }}>{title}</div>
         {message && <div style={{ ...type.uiCaption, fontWeight: 400, color: ui.textSecondary, marginTop: 2 }}>{message}</div>}
       </div>
     </div>

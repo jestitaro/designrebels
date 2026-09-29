@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { alpha, colors, gradients, radius, shadows, spacing, type, ui } from '../tokens';
+import { alpha, app, colors, gradients, radius, shadows, spacing, type, ui } from '../tokens';
 import { progressFrames, stagger } from '../lib/easing';
 import { MIN_LEGIBLE_PX } from '../tokens';
 import {
@@ -46,29 +46,51 @@ const usePageProgress = (i: number, n: number) => {
 
 /* ───────────── 1 · Fundamentos ───────────── */
 
-const swatches: { name: string; value: string; onDark?: boolean }[] = [
-  { name: 'primary', value: colors.primary, onDark: true },
-  { name: 'secondary', value: colors.secondary, onDark: true },
-  { name: 'dark', value: colors.dark, onDark: true },
-  { name: 'textDark', value: colors.textDark, onDark: true },
-  { name: 'light', value: colors.light },
-  { name: 'white', value: colors.white },
-  { name: 'gradStart', value: colors.gradStart, onDark: true },
-  { name: 'gradEnd', value: colors.gradEnd, onDark: true },
-  { name: 'cyan · pendiente', value: colors.cyan },
-  { name: 'success', value: colors.success },
-  { name: 'warning', value: colors.warning },
-  { name: 'danger', value: colors.danger, onDark: true },
+type Swatch = { name: string; value: string; onDark?: boolean };
+const swatchGroups: { label: string; items: Swatch[] }[] = [
+  {
+    label: 'Marca · fondos, isotipo, kinetic type',
+    items: [
+      { name: 'primary', value: colors.primary, onDark: true },
+      { name: 'secondary', value: colors.secondary, onDark: true },
+      { name: 'dark', value: colors.dark, onDark: true },
+      { name: 'gradStart', value: colors.gradStart, onDark: true },
+      { name: 'cyan', value: colors.cyan },
+      { name: 'light', value: colors.light },
+    ],
+  },
+  {
+    label: 'App PSMob · UI de producto',
+    items: [
+      { name: 'header', value: app.header, onDark: true },
+      { name: 'action', value: app.action, onDark: true },
+      { name: 'focus', value: app.focus, onDark: true },
+      { name: 'indicatorCard', value: app.indicatorCard, onDark: true },
+      { name: 'check', value: app.check, onDark: true },
+      { name: 'badge', value: app.badge, onDark: true },
+    ],
+  },
+  {
+    label: 'Texto · niveles de lectura y superficies',
+    items: [
+      { name: 'textPrimary', value: app.textPrimary, onDark: true },
+      { name: 'textSecondary', value: app.textSecondary, onDark: true },
+      { name: 'textTertiary', value: app.textTertiary },
+      { name: 'border', value: app.border },
+      { name: 'background', value: app.background },
+      { name: 'white', value: colors.white },
+    ],
+  },
+  {
+    label: 'Semáforo',
+    items: [
+      { name: 'success', value: colors.success },
+      { name: 'warning', value: colors.warning },
+      { name: 'danger', value: colors.danger },
+    ],
+  },
 ];
 
-const tints: { name: string; value: string }[] = [
-  { name: 'primaryTint', value: ui.primaryTint },
-  { name: 'secondaryTint', value: ui.secondaryTint },
-  { name: 'successTint', value: ui.successTint },
-  { name: 'warningTint', value: ui.warningTint },
-  { name: 'dangerTint', value: ui.dangerTint },
-  { name: 'infoTint', value: ui.infoTint },
-];
 
 const typeSpecimens: { role: keyof typeof type; sample: string; spec: string }[] = [
   { role: 'headline', sample: 'Información en tiempo real', spec: 'Nunito 96 / 800' },
@@ -92,7 +114,7 @@ export const PageFoundations: React.FC = () => {
             {brandRoles.map((t) => (
               <div key={t.role} style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
                 <div style={{ width: 170, flexShrink: 0, ...type.uiCaption, fontSize: 16, color: ui.textSecondary }}>{t.spec}</div>
-                <div style={{ ...type[t.role], color: t.role === 'headline' ? colors.textDark : colors.primary, whiteSpace: 'nowrap' }}>{t.sample}</div>
+                <div style={{ ...type[t.role], color: t.role === 'headline' ? ui.text : colors.primary, whiteSpace: 'nowrap' }}>{t.sample}</div>
               </div>
             ))}
           </div>
@@ -104,7 +126,7 @@ export const PageFoundations: React.FC = () => {
                 {uiRoles.map((t) => (
                   <div key={t.role} style={{ display: 'flex', alignItems: 'baseline', gap: 20, borderBottom: `1px solid ${ui.divider}`, paddingBottom: 10 }}>
                     <div style={{ width: 170, flexShrink: 0, ...type.uiCaption, fontSize: 15, color: ui.textSecondary }}>{t.spec}</div>
-                    <div style={{ ...type[t.role], color: colors.textDark, whiteSpace: 'nowrap', fontSize: type[t.role].fontSize * 1.5 }}>{t.sample}</div>
+                    <div style={{ ...type[t.role], color: ui.text, whiteSpace: 'nowrap', fontSize: type[t.role].fontSize * 1.5 }}>{t.sample}</div>
                   </div>
                 ))}
               </div>
@@ -114,17 +136,19 @@ export const PageFoundations: React.FC = () => {
             </Section>
           </div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <Section label="Paleta · tokens y tintes derivados (alpha)">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 10, opacity: p(2) }}>
-                {swatches.map((s) => (
-                  <div key={s.name} style={{ height: 76, borderRadius: radius.md, background: s.value, border: `1px solid ${ui.border}`, padding: 10, boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', color: s.onDark ? colors.white : colors.textDark }}>
-                    <div style={{ ...type.uiCaption, fontSize: 13, fontWeight: 600 }}>{s.name}</div>
-                    <div style={{ ...type.uiCaption, fontSize: 12, opacity: 0.8 }}>{s.value}</div>
-                  </div>
-                ))}
-                {tints.map((s) => (
-                  <div key={s.name} style={{ height: 44, borderRadius: radius.sm, background: s.value, padding: '8px 10px', boxSizing: 'border-box', ...type.uiCaption, fontSize: 12, color: colors.textDark, display: 'flex', alignItems: 'flex-end' }}>
-                    {s.name}
+            <Section label="Paleta">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, opacity: p(2) }}>
+                {swatchGroups.map((g) => (
+                  <div key={g.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 130, flexShrink: 0, ...type.uiCaption, fontSize: 13, color: ui.textSecondary }}>{g.label}</div>
+                    <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
+                      {g.items.map((sw) => (
+                        <div key={sw.name} style={{ height: 58, borderRadius: radius.sm, background: sw.value, border: `1px solid ${ui.border}`, padding: '6px 8px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', color: sw.onDark ? colors.white : ui.text }}>
+                          <div style={{ ...type.uiCaption, fontSize: 12, fontWeight: 600 }}>{sw.name}</div>
+                          <div style={{ ...type.uiCaption, fontSize: 11, opacity: 0.85 }}>{sw.value}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -136,7 +160,7 @@ export const PageFoundations: React.FC = () => {
                   ['problema', gradients.problem, true],
                   ['solución', gradients.solution, false],
                 ].map(([n, g, dark]) => (
-                  <div key={n as string} style={{ height: 70, borderRadius: radius.md, background: g as string, padding: 12, boxSizing: 'border-box', display: 'flex', alignItems: 'flex-end', ...type.uiCaption, fontSize: 13, color: dark ? colors.white : colors.textDark }}>
+                  <div key={n as string} style={{ height: 70, borderRadius: radius.md, background: g as string, padding: 12, boxSizing: 'border-box', display: 'flex', alignItems: 'flex-end', ...type.uiCaption, fontSize: 13, color: dark ? colors.white : ui.text }}>
                     {n as string}
                   </div>
                 ))}
@@ -169,7 +193,7 @@ export const PageFoundations: React.FC = () => {
                 <div style={{ display: 'flex', gap: 16 }}>
                   {Object.entries(shadows).map(([k, v]) => (
                     <div key={k} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-                      <div style={{ width: 52, height: 52, background: k === 'fab' ? colors.primary : ui.surface, borderRadius: radius.md, boxShadow: v }} />
+                      <div style={{ width: 52, height: 52, background: k === 'fab' ? app.action : ui.surface, borderRadius: radius.md, boxShadow: v }} />
                       <span style={{ ...type.uiCaption, fontSize: 13, color: ui.textSecondary }}>{k}</span>
                     </div>
                   ))}
@@ -346,7 +370,7 @@ export const PageData: React.FC = () => {
         </Col>
         <Col>
           <Section label="DetectionBox · ScanLine">
-            <div style={{ position: 'relative', height: 420, borderRadius: radius.md, overflow: 'hidden', background: `linear-gradient(180deg, ${colors.dark}, ${colors.textDark})` }}>
+            <div style={{ position: 'relative', height: 420, borderRadius: radius.md, overflow: 'hidden', background: `linear-gradient(180deg, ${colors.dark}, ${ui.text})` }}>
               {/* góndola abstracta de validación (los productos definitivos se diseñan en la escena 9) */}
               {[188, 368].map((y) => (
                 <div key={y} style={{ position: 'absolute', left: 0, right: 0, top: y, height: 10, background: alpha(colors.white, 0.18) }} />
@@ -401,7 +425,7 @@ export const PageApp: React.FC = () => {
   return (
     <AbsoluteFill>
       <GradientBackground arc="solution" seed="showcase" />
-      <div style={{ position: 'absolute', left: 64, top: 44, ...type.tagline, fontSize: 40, color: colors.textDark }}>Una sola app</div>
+      <div style={{ position: 'absolute', left: 64, top: 44, ...type.tagline, fontSize: 40, color: ui.text }}>Una sola app</div>
       <div style={{ position: 'absolute', right: 64, top: 52, ...type.uiTitle, color: ui.textSecondary }}>PSMob · ComponentShowcase · 5/6</div>
       <div style={{ position: 'absolute', left: 0, right: 0, top: 130, display: 'flex', justifyContent: 'center', gap: 44 }}>
         {phones.map((screen, i) => (
@@ -411,7 +435,7 @@ export const PageApp: React.FC = () => {
                 {screen}
               </Phone>
             </div>
-            <div style={{ ...type.uiTitle, color: colors.textDark, marginTop: 8 }}>{labels[i]}</div>
+            <div style={{ ...type.uiTitle, color: ui.text, marginTop: 8 }}>{labels[i]}</div>
           </div>
         ))}
       </div>
@@ -454,7 +478,7 @@ export const PageAssets: React.FC = () => {
                 <div style={{ position: 'absolute', left: 0, top: -151, width: 1920, height: 1080, transform: 'scale(0.5125)', transformOrigin: '0 0' }}>
                   <GradientBackground arc={arc} seed={`sw-${arc}`} />
                 </div>
-                <div style={{ position: 'absolute', left: 16, bottom: 12, ...type.uiCaption, fontSize: 14, color: arc === 'problem' ? colors.white : colors.textDark }}>{arc}</div>
+                <div style={{ position: 'absolute', left: 16, bottom: 12, ...type.uiCaption, fontSize: 14, color: arc === 'problem' ? colors.white : ui.text }}>{arc}</div>
               </div>
             ))}
           </Section>

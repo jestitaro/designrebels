@@ -12,7 +12,7 @@ type Props = {
   style?: React.CSSProperties;
 };
 
-export const ProgressBar: React.FC<Props> = ({ label, value, progress = 1, showValue = true, color = colors.primary, style }) => {
+export const ProgressBar: React.FC<Props> = ({ label, value, progress = 1, showValue = true, color = ui.accent, style }) => {
   const v = value * sub(progress, 0.15, 1, 'settle');
   const complete = v >= 0.999;
   return (
@@ -20,11 +20,11 @@ export const ProgressBar: React.FC<Props> = ({ label, value, progress = 1, showV
       {(label || showValue) && (
         <div style={{ display: 'flex', justifyContent: 'space-between', ...type.uiCaption, marginBottom: 8 }}>
           <span style={{ color: ui.textSecondary }}>{label}</span>
-          {showValue && <span style={{ color: colors.textDark, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{Math.round(v * 100)}%</span>}
+          {showValue && <span style={{ color: ui.text, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{Math.round(v * 100)}%</span>}
         </div>
       )}
       <div style={{ height: 8, borderRadius: radius.pill, background: ui.primaryTint, overflow: 'hidden' }}>
-        <div style={{ width: `${v * 100}%`, height: '100%', borderRadius: radius.pill, background: complete ? colors.success : color }} />
+        <div style={{ width: `${v * 100}%`, height: '100%', borderRadius: radius.pill, background: complete ? ui.check : color }} />
       </div>
     </div>
   );

@@ -15,13 +15,41 @@ export const colors = {
   // gradiente de marca (solo isotipo y fondos)
   gradStart: '#3C9FF1',
   gradEnd: '#7025E0',
-  // PENDIENTE DE APROBACIÓN: el brief pide "azul → cyan → blanco" pero no define el cyan.
-  // Se usa solo en fondos del arco solución.
+  // cyan del arco solución (aprobado)
   cyan: '#3CD6EB',
-  // estados de UI
-  success: '#22C55E',
-  warning: '#F59E0B',
-  danger: '#EF4444',
+  // semáforo (gauges de indicadores de PSMob)
+  success: '#02DBA7',
+  warning: '#FFCA12',
+  danger: '#F06C6C',
+} as const;
+
+/**
+ * Paleta de la app PSMob, extraída de las pantallas oficiales (SVG de Figma).
+ * La UI de producto usa estos valores; la marca (primary, gradientes) queda para fondos, isotipo y kinetic type.
+ */
+export const app = {
+  /** header y cromo de la app */
+  header: '#1D4ED8',
+  /** CTA principal, FAB, nav activa, chips de categoría */
+  action: '#8258A4',
+  /** foco de inputs, acordeón abierto, links */
+  focus: '#3880FF',
+  /** card de indicadores sobre el header */
+  indicatorCard: '#143A8C',
+  /** checks de validación (contraste sobre blanco) */
+  check: '#0BB783',
+  /** badge numérico de pendientes */
+  badge: '#FF3D32',
+  /** fondo de chip de categoría */
+  chip: '#F3EEF6',
+  /** skeleton / placeholders de contenido */
+  skeleton: '#C6CCD3',
+  // niveles de lectura: un solo set de grises para toda la UI
+  textPrimary: '#1E293B',
+  textSecondary: '#64748B',
+  textTertiary: '#94A3B8',
+  border: '#E2E8F0',
+  background: '#F1F5F9',
 } as const;
 
 export type ColorToken = keyof typeof colors;
@@ -38,14 +66,21 @@ export const alpha = (hex: string, a: number): string => {
 /** Roles semánticos de UI, derivados de los tokens. */
 export const ui = {
   surface: colors.white,
-  background: colors.light,
-  text: colors.textDark,
-  textSecondary: alpha(colors.textDark, 0.6),
-  textMuted: alpha(colors.textDark, 0.4),
-  border: alpha(colors.textDark, 0.08),
-  divider: alpha(colors.textDark, 0.06),
-  primaryTint: alpha(colors.primary, 0.1),
-  secondaryTint: alpha(colors.secondary, 0.16),
+  background: app.background,
+  /** texto principal: gris oscuro */
+  text: app.textPrimary,
+  /** texto secundario: gris medio */
+  textSecondary: app.textSecondary,
+  /** texto terciario / íconos inactivos / placeholders: gris claro */
+  textMuted: app.textTertiary,
+  border: app.border,
+  divider: alpha(app.textPrimary, 0.06),
+  accent: app.header,
+  action: app.action,
+  focus: app.focus,
+  check: app.check,
+  primaryTint: alpha(app.header, 0.08),
+  secondaryTint: app.chip,
   successTint: alpha(colors.success, 0.14),
   warningTint: alpha(colors.warning, 0.16),
   dangerTint: alpha(colors.danger, 0.12),
@@ -87,7 +122,7 @@ export const shadows = {
   card: `0 1px 2px ${alpha(colors.dark, 0.06)}, 0 4px 12px ${alpha(colors.dark, 0.06)}`,
   float: `0 12px 32px ${alpha(colors.dark, 0.14)}, 0 2px 6px ${alpha(colors.dark, 0.08)}`,
   device: `0 40px 80px ${alpha(colors.dark, 0.28)}, 0 12px 24px ${alpha(colors.dark, 0.16)}`,
-  fab: `0 6px 16px ${alpha(colors.primary, 0.4)}`,
+  fab: `0 6px 16px ${alpha(app.action, 0.4)}`,
 } as const;
 
 /** Curvas de motion. Nada lineal. */

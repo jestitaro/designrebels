@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, radius, type, ui } from '../tokens';
+import { app, colors, radius, type, ui } from '../tokens';
 import { enterStyle } from '../lib/easing';
 import { Icon, IconName } from './Icon';
 
@@ -10,13 +10,13 @@ export type BadgeVariant = 'active' | 'scheduled' | 'done' | 'warning' | 'danger
  * y el color de estado se comunica con el punto/ícono.
  */
 const variants: Record<BadgeVariant, { bg: string; fg: string; dot: string }> = {
-  active: { bg: colors.success, fg: colors.white, dot: colors.white },
-  scheduled: { bg: ui.primaryTint, fg: colors.primary, dot: colors.primary },
-  done: { bg: ui.successTint, fg: colors.textDark, dot: colors.success },
-  warning: { bg: ui.warningTint, fg: colors.textDark, dot: colors.warning },
-  danger: { bg: ui.dangerTint, fg: colors.textDark, dot: colors.danger },
-  category: { bg: ui.secondaryTint, fg: colors.primary, dot: colors.secondary },
-  info: { bg: ui.infoTint, fg: colors.textDark, dot: colors.gradStart },
+  active: { bg: ui.check, fg: colors.white, dot: colors.white },
+  scheduled: { bg: ui.primaryTint, fg: ui.accent, dot: ui.accent },
+  done: { bg: ui.successTint, fg: ui.text, dot: ui.check },
+  warning: { bg: ui.warningTint, fg: ui.text, dot: colors.warning },
+  danger: { bg: ui.dangerTint, fg: ui.text, dot: colors.danger },
+  category: { bg: app.chip, fg: ui.action, dot: ui.action },
+  info: { bg: ui.infoTint, fg: ui.text, dot: colors.gradStart },
   neutral: { bg: ui.divider, fg: ui.textSecondary, dot: ui.textMuted },
 };
 
@@ -69,7 +69,7 @@ export const CountBadge: React.FC<{ count: number; progress?: number; style?: Re
       height: 18,
       padding: '0 5px',
       borderRadius: radius.pill,
-      background: colors.danger,
+      background: app.badge,
       color: colors.white,
       display: 'inline-flex',
       alignItems: 'center',

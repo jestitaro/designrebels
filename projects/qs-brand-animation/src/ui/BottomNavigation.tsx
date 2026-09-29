@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, type, ui } from '../tokens';
+import { type, ui } from '../tokens';
 import { Icon, IconName } from './Icon';
 import { CountBadge } from './Badge';
 
@@ -37,10 +37,10 @@ export const BottomNavigation: React.FC<Props> = ({ tabs = DEFAULT_TABS, active 
   >
     {tabs.map((t, i) => {
       const on = i === active;
-      const c = on ? colors.primary : ui.textMuted;
+      const c = on ? ui.action : ui.textMuted;
       return (
         <div key={t.label} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, position: 'relative' }}>
-          {on && <div style={{ position: 'absolute', top: 0, width: 28, height: 3, borderRadius: 2, background: colors.primary }} />}
+          {on && <div style={{ position: 'absolute', top: 0, width: 28, height: 3, borderRadius: 2, background: ui.action }} />}
           <div style={{ position: 'relative' }}>
             <Icon name={t.icon} size={22} color={c} strokeWidth={on ? 2 : 1.75} />
             {t.count ? <CountBadge count={t.count} style={{ position: 'absolute', top: -6, right: -10 }} /> : null}

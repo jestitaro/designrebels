@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors, radius, type, ui } from '../tokens';
+import { alpha, colors, radius, type, ui } from '../tokens';
 import { enterStyle } from '../lib/easing';
 import { Badge, BadgeVariant } from './Badge';
 import { Icon } from './Icon';
@@ -38,8 +38,8 @@ export const ListRow: React.FC<Props> = ({ title, address, time, status, meta, i
         padding: 16,
         background: ui.surface,
         borderRadius: radius.md,
-        border: `1px solid ${highlighted ? colors.primary : ui.border}`,
-        boxShadow: highlighted ? `0 0 0 3px ${ui.primaryTint}` : undefined,
+        border: `1px solid ${highlighted ? ui.focus : ui.border}`,
+        boxShadow: highlighted ? `0 0 0 3px ${alpha(ui.focus, 0.14)}` : undefined,
         ...enterStyle(progress, 14),
         ...style,
       }}
@@ -55,15 +55,15 @@ export const ListRow: React.FC<Props> = ({ title, address, time, status, meta, i
             flexShrink: 0,
             display: 'grid',
             placeItems: 'center',
-            background: status === 'done' ? colors.success : status === 'active' ? colors.primary : ui.primaryTint,
-            color: status === 'done' || status === 'active' ? colors.white : colors.primary,
+            background: status === 'done' ? ui.check : status === 'active' ? ui.accent : ui.primaryTint,
+            color: status === 'done' || status === 'active' ? colors.white : ui.accent,
           }}
         >
           {status === 'done' ? <Icon name="check" size={14} strokeWidth={2.6} /> : index}
         </div>
       )}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ ...type.uiBodyStrong, color: colors.textDark, textTransform: 'uppercase', letterSpacing: 0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        <div style={{ ...type.uiBodyStrong, color: ui.text, textTransform: 'uppercase', letterSpacing: 0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {title}
         </div>
         {address && (
@@ -79,7 +79,7 @@ export const ListRow: React.FC<Props> = ({ title, address, time, status, meta, i
                 <Icon name="clock" size={13} strokeWidth={2} /> {time}
               </span>
             )}
-            {meta && <span style={{ ...type.uiCaption, color: colors.primary, fontWeight: 600 }}>{meta}</span>}
+            {meta && <span style={{ ...type.uiCaption, color: ui.focus, fontWeight: 600 }}>{meta}</span>}
           </div>
         )}
       </div>

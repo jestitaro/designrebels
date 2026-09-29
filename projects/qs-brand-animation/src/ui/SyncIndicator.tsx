@@ -7,12 +7,12 @@ import { Icon, IconName } from './Icon';
 export type SyncState = 'online' | 'offline' | 'saved' | 'pending' | 'syncing' | 'synced';
 
 const states: Record<SyncState, { label: string; icon: IconName; color: string; bg: string; fg: string }> = {
-  online: { label: 'En línea', icon: 'wifi', color: colors.success, bg: ui.successTint, fg: colors.textDark },
-  offline: { label: 'Modo sin conexión', icon: 'wifiOff', color: colors.white, bg: colors.textDark, fg: colors.white },
-  saved: { label: 'Guardado localmente', icon: 'device', color: colors.primary, bg: ui.primaryTint, fg: colors.primary },
-  pending: { label: 'Sincronización pendiente', icon: 'cloudUp', color: colors.warning, bg: ui.warningTint, fg: colors.textDark },
-  syncing: { label: 'Sincronizando…', icon: 'refresh', color: colors.primary, bg: ui.primaryTint, fg: colors.primary },
-  synced: { label: 'Sincronizado', icon: 'checkCircle', color: colors.success, bg: ui.successTint, fg: colors.textDark },
+  online: { label: 'En línea', icon: 'wifi', color: ui.check, bg: ui.successTint, fg: ui.text },
+  offline: { label: 'Modo sin conexión', icon: 'wifiOff', color: colors.white, bg: ui.text, fg: colors.white },
+  saved: { label: 'Guardado localmente', icon: 'device', color: ui.accent, bg: ui.primaryTint, fg: ui.accent },
+  pending: { label: 'Sincronización pendiente', icon: 'cloudUp', color: colors.warning, bg: ui.warningTint, fg: ui.text },
+  syncing: { label: 'Sincronizando…', icon: 'refresh', color: ui.accent, bg: ui.primaryTint, fg: ui.accent },
+  synced: { label: 'Sincronizado', icon: 'checkCircle', color: ui.check, bg: ui.successTint, fg: ui.text },
 };
 
 type Props = {
@@ -54,12 +54,12 @@ export const SyncIndicator: React.FC<Props> = ({ state, count, syncProgress, pro
       }}
     >
       {state === 'syncing' && syncProgress !== undefined && (
-        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${syncProgress * 100}%`, background: alpha(colors.primary, 0.12) }} />
+        <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${syncProgress * 100}%`, background: alpha(ui.accent, 0.12) }} />
       )}
       <Icon name={s.icon} size={16} color={ic} strokeWidth={2} style={{ transform: `rotate(${spin}deg)`, position: 'relative' }} />
       <span style={{ position: 'relative' }}>{s.label}</span>
       {count !== undefined && (
-        <span style={{ position: 'relative', minWidth: 18, height: 18, padding: '0 5px', borderRadius: 9, background: state === 'offline' ? alpha(colors.white, 0.2) : alpha(colors.textDark, 0.08), display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 11 }}>
+        <span style={{ position: 'relative', minWidth: 18, height: 18, padding: '0 5px', borderRadius: 9, background: state === 'offline' ? alpha(colors.white, 0.2) : alpha(ui.text, 0.08), display: 'grid', placeItems: 'center', fontWeight: 700, fontSize: 11 }}>
           {count}
         </span>
       )}

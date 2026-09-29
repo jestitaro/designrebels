@@ -45,12 +45,12 @@ export const KPI: React.FC<Props> = ({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: ui.textSecondary }}>
         {icon && (
           <div style={{ width: 28, height: 28, borderRadius: 8, background: ui.primaryTint, display: 'grid', placeItems: 'center' }}>
-            <Icon name={icon} size={16} color={colors.primary} strokeWidth={2} />
+            <Icon name={icon} size={16} color={ui.accent} strokeWidth={2} />
           </div>
         )}
         <span style={{ ...type.uiCaption }}>{label}</span>
       </div>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, marginTop: 12, color: colors.textDark }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, marginTop: 12, color: ui.text }}>
         <span style={{ ...type.kpi, fontVariantNumeric: 'tabular-nums' }}>{formatInt(shown)}</span>
         {unit && <span style={{ ...type.uiTitle, color: ui.textSecondary }}>{unit}</span>}
       </div>
@@ -69,10 +69,10 @@ export const KPI: React.FC<Props> = ({
             }}
           >
             <svg width="10" height="10" viewBox="0 0 10 10">
-              <path d="M5 2 8.5 7h-7z" fill={good ? colors.success : colors.danger} />
+              <path d="M5 2 8.5 7h-7z" fill={good ? ui.check : colors.danger} />
             </svg>
           </span>
-          <span style={{ color: colors.textDark, fontWeight: 600 }}>{delta}</span> {deltaLabel}
+          <span style={{ color: ui.text, fontWeight: 600 }}>{delta}</span> {deltaLabel}
         </div>
       )}
     </Card>

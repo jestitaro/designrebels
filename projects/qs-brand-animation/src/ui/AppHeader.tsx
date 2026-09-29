@@ -1,5 +1,5 @@
 import React from 'react';
-import { alpha, colors, type } from '../tokens';
+import { alpha, colors, type, ui } from '../tokens';
 import { enterStyle } from '../lib/easing';
 import { STATUS_BAR_H } from '../devices/Phone';
 import { Icon, IconName } from './Icon';
@@ -34,7 +34,7 @@ export const AppHeader: React.FC<Props> = ({
 }) => (
   <div
     style={{
-      background: colors.primary,
+      background: ui.accent,
       color: colors.white,
       paddingTop: statusBar ? STATUS_BAR_H : 0,
       boxShadow: `0 2px 12px ${alpha(colors.dark, 0.18)}`,
@@ -52,7 +52,7 @@ export const AppHeader: React.FC<Props> = ({
       {actions.map((a, i) => (
         <div key={i} style={{ position: 'relative', width: 36, height: 36, display: 'grid', placeItems: 'center' }}>
           <Icon name={a.icon} size={22} />
-          {a.count ? <CountBadge count={a.count} style={{ position: 'absolute', top: 1, right: -2, boxShadow: `0 0 0 2px ${colors.primary}` }} /> : null}
+          {a.count ? <CountBadge count={a.count} style={{ position: 'absolute', top: 1, right: -2, boxShadow: `0 0 0 2px ${ui.accent}` }} /> : null}
         </div>
       ))}
     </div>
