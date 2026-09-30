@@ -1,6 +1,7 @@
 /* Generado por scripts/build-manifests.py (bounding box del alfa > 16). No editar a mano. */
 export type PoseKind = 'standing' | 'seated' | 'fallen' | 'closeup';
-export type PoseMeta = { w: number; h: number; bbox: [number, number, number, number]; kind: PoseKind };
+/** screen: rect de la pantalla del celular (poses con celular de frente), para el zoom through */
+export type PoseMeta = { w: number; h: number; bbox: [number, number, number, number]; kind: PoseKind; screen?: [number, number, number, number] };
 
 export const POSES = {
   caro: {
@@ -18,7 +19,7 @@ export const POSES = {
     'celular': { w: 1024, h: 1536, bbox: [257, 35, 759, 1513], kind: 'standing' },
     'durmiendo': { w: 1086, h: 1448, bbox: [243, 25, 861, 1418], kind: 'seated' },
     'estres': { w: 1024, h: 1536, bbox: [241, 36, 800, 1516], kind: 'standing' },
-    'mostrando-celu': { w: 1448, h: 1086, bbox: [170, 0, 1448, 1086], kind: 'closeup' },
+    'mostrando-celu': { w: 1448, h: 1086, bbox: [170, 0, 1448, 1086], kind: 'closeup', screen: [313, 218, 662, 908] },
     'mostrando-pantalla': { w: 1086, h: 1448, bbox: [276, 30, 772, 1429], kind: 'standing' },
     'pensando': { w: 1024, h: 1536, bbox: [249, 39, 728, 1510], kind: 'standing' },
     'producto-celular': { w: 1024, h: 1536, bbox: [162, 41, 917, 1498], kind: 'standing' },
@@ -38,7 +39,7 @@ export const POSES = {
     'celular': { w: 941, h: 1672, bbox: [219, 51, 770, 1643], kind: 'standing' },
     'durmiendo': { w: 1086, h: 1448, bbox: [225, 42, 902, 1416], kind: 'seated' },
     'explicando': { w: 941, h: 1672, bbox: [67, 48, 801, 1645], kind: 'standing' },
-    'mostrando-celu': { w: 1448, h: 1086, bbox: [263, 0, 1448, 1086], kind: 'closeup' },
+    'mostrando-celu': { w: 1448, h: 1086, bbox: [263, 0, 1448, 1086], kind: 'closeup', screen: [397, 317, 671, 888] },
     'mostrando-pantalla': { w: 1086, h: 1448, bbox: [261, 18, 868, 1423], kind: 'standing' },
     'producto-celular': { w: 1024, h: 1536, bbox: [191, 31, 823, 1502], kind: 'standing' },
     'sentado': { w: 1086, h: 1448, bbox: [180, 56, 962, 1409], kind: 'seated' },

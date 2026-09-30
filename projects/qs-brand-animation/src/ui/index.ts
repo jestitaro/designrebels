@@ -21,3 +21,5 @@ export * from './products';
 export * from './Product';
 export * from './Gauge';
 export * from './CategoryAccordion';
+export * from './Dashboard';
+export * from './CameraScreen';

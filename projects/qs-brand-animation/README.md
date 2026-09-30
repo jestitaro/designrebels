@@ -2,7 +2,7 @@
 
 Brand animation de QuartzSales en Remotion (React → MP4). 1920×1080, 30 fps.
 
-**Estado:** Fase 0 completa, con todos los assets cargados. Falta validar el ComponentShowcase antes de pasar a los style frames.
+**Estado:** Fase 2, style frames. Storyboard aprobado (`STORYBOARD.md`). Escenas construidas: 1, 3, 8, 10 y 14 (`src/scenes`); los style frames están en `review/fase-2/` (`npm run style-frames`).
 
 ## Uso
 

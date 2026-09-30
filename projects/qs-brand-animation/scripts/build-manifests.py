@@ -39,6 +39,46 @@ POSE_KIND = {
 }
 
 
+# Poses con un celular de frente: se mide el rect de la pantalla (región blanca) para el zoom through.
+SCREEN_SEED = {'mostrando-celu': 'auto'}
+
+
+def screen_rect(path):
+    """Rect de la pantalla blanca del celular: flood fill desde el punto blanco más denso de la mitad izquierda."""
+    from collections import deque
+    im = Image.open(path).convert('RGBA')
+    w, h = im.size
+    px = im.load()
+
+    def white(x, y):
+        r, g, b, a = px[x, y]
+        return r > 235 and g > 235 and b > 235 and a > 200
+
+    # semilla: primer píxel blanco en una grilla sobre la mitad izquierda con vecinos blancos
+    seed = None
+    for y in range(int(h * 0.3), int(h * 0.7), 8):
+        for x in range(int(w * 0.1), int(w * 0.5), 8):
+            if all(white(x + dx, y + dy) for dx in (-6, 0, 6) for dy in (-6, 0, 6)):
+                seed = (x, y)
+                break
+        if seed:
+            break
+    if not seed:
+        return None
+    seen = {seed}
+    q = deque([seed])
+    x0 = x1 = seed[0]
+    y0 = y1 = seed[1]
+    while q:
+        x, y = q.popleft()
+        x0, x1, y0, y1 = min(x0, x), max(x1, x), min(y0, y), max(y1, y)
+        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+            if 0 <= nx < w and 0 <= ny < h and (nx, ny) not in seen and white(nx, ny):
+                seen.add((nx, ny))
+                q.append((nx, ny))
+    return [x0, y0, x1, y1]
+
+
 def bbox(path):
     im = Image.open(path)
     bb = im.getchannel('A').point(lambda v: 255 if v > 16 else 0).getbbox()
@@ -53,7 +93,8 @@ def build_poses():
     lines = [
         '/* Generado por scripts/build-manifests.py (bounding box del alfa > 16). No editar a mano. */',
         "export type PoseKind = 'standing' | 'seated' | 'fallen' | 'closeup';",
-        'export type PoseMeta = { w: number; h: number; bbox: [number, number, number, number]; kind: PoseKind };',
+        '/** screen: rect de la pantalla del celular (poses con celular de frente), para el zoom through */',
+        'export type PoseMeta = { w: number; h: number; bbox: [number, number, number, number]; kind: PoseKind; screen?: [number, number, number, number] };',
         '',
         'export const POSES = {',
     ]
@@ -63,7 +104,12 @@ def build_poses():
             name = os.path.basename(f)[:-4]
             (w, h), bb = bbox(f)
             kind = POSE_KIND.get(name, 'standing')
-            lines.append(f"    '{name}': {{ w: {w}, h: {h}, bbox: [{', '.join(map(str, bb))}], kind: '{kind}' }},")
+            extra = ''
+            if name in SCREEN_SEED:
+                sr = screen_rect(f)
+                if sr:
+                    extra = f", screen: [{', '.join(map(str, sr))}]"
+            lines.append(f"    '{name}': {{ w: {w}, h: {h}, bbox: [{', '.join(map(str, bb))}], kind: '{kind}'{extra} }},")
         lines.append('  },')
     lines += [
         '} as const satisfies Record<string, Record<string, PoseMeta>>;',

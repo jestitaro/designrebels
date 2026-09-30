@@ -31,12 +31,24 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
 
 | Tipo | Veces | Escenas |
 |---|---|---|
-| Shape morph | 5 | 2, 5, 6, 8, 12 |
+| Shape morph | 5 | 2, 5, 6, 8, 12 (cinco comportamientos distintos, ver abajo) |
 | Zoom through | 2 | 3, 9 |
 | Match cut | 2 | 4, 10 |
 | Push-out | 2 | 7, 11 |
 | Object wipe | 1 | 1 |
 | Mask reveal | 1 | 13 |
+
+### Los 5 shape morph no son iguales
+
+Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite curva, duración y dirección.
+
+| Escena | Objeto | Duración | Curva | Comportamiento |
+|---|---|---|---|---|
+| 2 | cards → stack | 1.2 s | spring `firm`, stagger 0.06 s | Compresión: cada card se aplana en Y antes de moverse (anticipación 3 %), después se alinea en columna. Denso y mecánico. |
+| 5 | línea de ruta → burbuja | 0.6 s | `easeIn` → `settle` | Continuidad de trazo: el último tramo se engrosa desde la punta y se redondea. Rápido y lineal en el espacio. |
+| 6 | burbuja → form | 0.8 s | `softOvershoot` (4 %) | Crecimiento orgánico: la burbuja se infla desde la cola, pierde el pico y el texto se disuelve en los campos del form. |
+| 8 | barra → estante | 0.7 s | `easeInOut` con hold de 0.15 s | Estiramiento: la barra más alta se estira en horizontal, se afina y cambia a color de estante mientras la cámara baja. |
+| 12 | módulos → centro | 1.0 s | `easeIn` con rotación | Colapso radial: los módulos giran hacia el centro, se reducen a partículas y aceleran al final. Es el único morph que acelera. |
 
 ---
 
@@ -51,7 +63,7 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
 - **Capas**
   - sky: `GradientBackground arc="problem"`
   - bg: 6–8 cards chicas sobre tercios, con DepthBlur (única capa con blur)
-  - mg: Caro (`estres` → swap a `pensando` en t2.2) a 300 px de alto, en el tercio izquierdo, y 3 cards cercanas
+  - mg: Caro en `estres` toda la escena (sin swap: la sobrecarga solo crece), a 300 px de alto, en el tercio izquierdo, y 3 cards cercanas que la van rodeando
   - fg: 2 cards grandes que cruzan con drift
 - **Salida:** `ObjectWipe` de la card ChartCard `bars` desde (1320, 330), t3.6 → 4.5. Esa card es el primer plano de la escena 2.
 - **Markers:** 0.6 cardEntry · 1.4 cardEntry · 2.2 notification · 3.0 cardEntry · 3.9 whoosh
@@ -134,7 +146,7 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
   - sky: solución
   - bg: Caro `celular-sonriendo`, 380 px de alto, en (1450, 900)
   - mg: Phone a escala 0.8 con ChatScreen en (1160, 540) y ChatBubbles flotando entre los dos
-  - fg: Nico `celular`, 820 px de alto, en (560, 1180), cortado abajo
+  - fg: Nico `celular`, 820 px de alto, en (560, 1180). El recorte de abajo es intencional y solo afecta a las piernas: cara, manos y celular quedan completos dentro del safe area (margen del 5 %).
 - **Kinetic type:** "Optimiza la comunicación", headline 96/800, en el tercio superior izquierdo, t2.4 → 4.2 (entra por palabras)
 - **Salida:** shape morph del mensaje al form, t4.4 → 5. La última ChatBubble se interpola hasta el rect de la Card de formulario.
 - **Markers:** 0.3 notification · 1.4 notification · 2.4 cardEntry
@@ -187,7 +199,7 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
   - bg: Shelf × 2 con parallax 0.5
   - mg: góndola principal (lavandina, ropa, cuidado personal)
   - fg: Nico. Usa `CharacterWalk` en t0 → 3.2 y después hace swap a `producto-celular` → `celular`.
-- **Salida:** zoom through al celular de Nico. Queda pendiente el PNG con el celular en primer plano: hoy se usa `mostrando-pantalla`.
+- **Salida:** zoom through al celular de Nico. En t3.4 swap a `mostrando-celu` (PNG aprobado con el celular de frente) y la cámara entra al rect de su pantalla, medido en `poses.ts` (`screen`). No se usa ningún teléfono inclinado.
 - **Markers:** 0.3 whoosh · 3.4 tap · 4.6 whoosh
 
 ## 10 · Visión artificial — 42.4–49.4 s (f 1272–1481)
@@ -275,6 +287,6 @@ AiFred se presenta como IA aplicada: nada aparece de golpe.
 ## Pendientes y decisiones abiertas
 
 - **Caminata (escena 9):** resuelta. Hay un ciclo de 6 fotogramas por personaje y el travelling va a `walkSpeed()`, validado en `WalkLab`.
-- **Nico levantando el celular (escena 9 → 10):** el zoom through queda más limpio con un PNG del celular de frente. Hoy se resuelve con `mostrando-pantalla`.
+- **Nico con el celular de frente (escena 9 → 10):** se usa `nico/mostrando-celu`. Falta confirmar que ese es el PNG aprobado para el zoom through.
 - **Música:** los cortes se alinean al beat cuando llegue el BPM. Los markers están en `markers.ts`.
 - **Duración total:** 65,9 s contra los 68 del brief. Hay margen para estirar holds (escenas 4, 10 y 14) cuando esté la VO.

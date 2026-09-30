@@ -19,13 +19,16 @@ type Props = {
   confidence?: number;
   price?: string;
   status?: DetectionStatus;
+  /** 'bottom': label debajo y precio arriba (para no pisar al vecino) */
+  labelPlacement?: 'top' | 'bottom';
   /** 0→0.5 dibuja las esquinas, 0.4→0.8 relleno, 0.6→1 label */
   progress?: number;
   style?: React.CSSProperties;
 };
 
 /** Bounding box de visión artificial: esquinas que se dibujan + label con confianza. IA aplicada, no magia. */
-export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence, price, status = 'detected', progress = 1, style }) => {
+export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence, price, status = 'detected', labelPlacement = 'top', progress = 1, style }) => {
+  const below = labelPlacement === 'bottom';
   const c = tone[status];
   const corners = sub(progress, 0, 0.5, 'settle');
   const fill = sub(progress, 0.35, 0.8);
@@ -49,7 +52,7 @@ export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence
           ...type.uiCaption,
           position: 'absolute',
           left: -1.5,
-          bottom: `calc(100% + 6px)`,
+          ...(below ? { top: `calc(100% + 6px)` } : { bottom: `calc(100% + 6px)` }),
           display: 'flex',
           alignItems: 'center',
           gap: 6,
@@ -59,7 +62,7 @@ export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence
           color: colors.white,
           whiteSpace: 'nowrap',
           opacity: lbl,
-          transform: `translateY(${(1 - lbl) * 6}px)`,
+          transform: `translateY(${(1 - lbl) * (below ? -6 : 6)}px)`,
         }}
       >
         {status === 'valid' && <Icon name="check" size={13} color={ui.check} strokeWidth={3} />}
@@ -74,7 +77,7 @@ export const DetectionBox: React.FC<Props> = ({ width, height, label, confidence
             fontWeight: 700,
             position: 'absolute',
             right: -1.5,
-            top: `calc(100% + 6px)`,
+            ...(below ? { bottom: `calc(100% + 6px)` } : { top: `calc(100% + 6px)` }),
             padding: '3px 8px',
             borderRadius: radius.sm - 2,
             background: colors.white,

@@ -5,6 +5,11 @@ import { schedule } from './timeline';
 import { MarkerOverlay } from './MarkerOverlay';
 import { ScenePlaceholder } from './scenes/ScenePlaceholder';
 import { FPS } from './lib/time';
+import { S01Problema } from './scenes/S01Problema';
+import { S03Aparece } from './scenes/S03Aparece';
+import { S08TiempoReal } from './scenes/S08TiempoReal';
+import { S10VisionArtificial } from './scenes/S10VisionArtificial';
+import { S14Cierre } from './scenes/S14Cierre';
 
 export const mainSchema = z.object({ showMarkers: z.boolean() });
 
@@ -13,7 +18,13 @@ export const mainSchema = z.object({ showMarkers: z.boolean() });
  * las escenas finales se construyen después de validar el ComponentShowcase y los assets.
  * Para reemplazar una escena: agregar su componente al mapa SCENE_COMPONENTS.
  */
-const SCENE_COMPONENTS: Record<string, React.FC | undefined> = {};
+const SCENE_COMPONENTS: Record<string, React.FC | undefined> = {
+  S01: S01Problema,
+  S03: S03Aparece,
+  S08: S08TiempoReal,
+  S10: S10VisionArtificial,
+  S14: S14Cierre,
+};
 
 export const Main: React.FC<z.infer<typeof mainSchema>> = ({ showMarkers }) => (
   <AbsoluteFill>

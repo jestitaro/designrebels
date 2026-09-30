@@ -10,7 +10,8 @@
     "stills": "node scripts/render-stills.mjs",
     "list-assets": "tsx scripts/list-assets.ts",
     "export-markers": "tsx scripts/export-markers.ts",
-    "manifests": "python3 scripts/build-manifests.py"
+    "manifests": "python3 scripts/build-manifests.py",
+    "style-frames": "node scripts/render-style-frames.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.530",
