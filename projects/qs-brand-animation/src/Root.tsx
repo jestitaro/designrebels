@@ -5,7 +5,7 @@ import { FPS, HEIGHT, sec, WIDTH } from './lib/time';
 import { Main, mainSchema } from './Main';
 import { totalDurationInFrames } from './timeline';
 import { SHOWCASE_PAGES } from './showcase/pages';
-import { CameraLab, TransitionsLab, TRANSITION_DEMO_SEC } from './showcase/labs';
+import { CameraLab, TransitionsLab, TRANSITION_DEMO_SEC, WalkLab } from './showcase/labs';
 import { TRANSITION_TYPES } from './transitions/types';
 
 /** Cada lámina entra animada (valida la prop progress) y queda quieta para el still. */
@@ -29,6 +29,7 @@ export const RemotionRoot: React.FC = () => (
       <Composition key={id} id={`Showcase-${id}`} component={C} durationInFrames={sec(SHOWCASE_PAGE_SEC)} fps={FPS} width={WIDTH} height={HEIGHT} />
     ))}
     <Composition id="CameraLab" component={CameraLab} durationInFrames={sec(6)} fps={FPS} width={WIDTH} height={HEIGHT} />
+    <Composition id="WalkLab" component={WalkLab} durationInFrames={sec(5)} fps={FPS} width={WIDTH} height={HEIGHT} />
     <Composition id="TransitionsLab" component={TransitionsLab} durationInFrames={sec(TRANSITION_DEMO_SEC) * TRANSITION_TYPES.length} fps={FPS} width={WIDTH} height={HEIGHT} />
   </>
 );

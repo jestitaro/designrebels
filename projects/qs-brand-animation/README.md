@@ -12,6 +12,7 @@ npm run dev              # Remotion Studio
 npm run typecheck
 npm run stills           # stills de validación → out/
 npm run list-assets      # logos y poses presentes en /public
+npm run manifests        # regenera poses.ts y products.ts (Python 3 + Pillow)
 npm run export-markers   # markers.csv para sound design
 ```
 
@@ -21,7 +22,7 @@ En `Main`, `showMarkers: true` muestra el overlay de sound design.
 
 ## Assets
 
-Todo está cargado en `/public`: logos oficiales, 18 poses de Caro, 15 de Nico y 13 productos genéricos.
+Todo está cargado en `/public`: logos oficiales, 19 poses de Caro, 17 de Nico (con ciclo de caminata de 6 fotogramas) y 16 productos genéricos.
 
 | Asset | Ruta |
 |---|---|
@@ -30,7 +31,7 @@ Todo está cargado en `/public`: logos oficiales, 18 poses de Caro, 15 de Nico y
 | Productos | `public/products/*.png` (fondo transparente) |
 
 - **Poses:** `src/characters/poses.ts` guarda el bounding box de cada pose. `<Character height={…}>` escala de forma uniforme para que la figura mida lo mismo de pie en todas las poses, con los pies en `y`. Las poses sentadas y la caída usan un factor aproximado.
-- **Caminata:** `<CharacterWalk frames={WALK_FRAMES.nico}>` alterna los fotogramas de la zancada con un leve rebote vertical. Los fotogramas entregados son de una sola fase; para un ciclo completo faltan los de la pierna contraria.
+- **Caminata:** `<CharacterWalk frames={WALK_FRAMES.nico}>` recorre el ciclo de 6 fotogramas (contacto y paso alternados). `walkSpeed(height)` da la velocidad del travelling que acompaña la zancada sin que los pies patinen. Se valida en la composición `WalkLab`.
 - **Productos:** `src/ui/products.ts` guarda la categoría y la altura real (cm) de cada producto. `<Product>` y `<Shelf>` dibujan a escala real, así que una crema dental no mide lo mismo que una lavandina. `<ProductThumb>` es la miniatura para listas. Las alturas son aproximadas y se pueden ajustar.
 - **Indicadores:** `<Gauge>` es el medio círculo de `indicadores_svg`, con valor coloreado por estado y un punto que marca el objetivo. Tiene tres variantes: `GaugeCard` (fondo claro), `GaugeTile` (sobre el header) e `IndicatorCard` (resumen de la home). El color sale del cumplimiento del objetivo (valor ÷ objetivo): verde solo si llega al 100 %, amarillo de 50 % a 99 % y rojo por debajo de 50 %. Sin objetivo, el indicador va en azul neutral.
 - **Isotipo:** `src/brand/isoPaths.ts` separa el SVG oficial en 20 triángulos (uno por subpath) para la escena 13, sin redibujar nada. `<IsoTriangles triangle={(i) => …}>` los anima por separado.

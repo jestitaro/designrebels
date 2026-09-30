@@ -274,7 +274,7 @@ AiFred se presenta como IA aplicada: nada aparece de golpe.
 
 ## Pendientes y decisiones abiertas
 
-- **Caminata de Nico (escena 9):** los fotogramas actuales son una sola fase de la zancada. Esperamos los de la fase opuesta; mientras tanto se usa `CharacterWalk` con swap y rebote vertical.
+- **Caminata (escena 9):** resuelta. Hay un ciclo de 6 fotogramas por personaje y el travelling va a `walkSpeed()`, validado en `WalkLab`.
 - **Nico levantando el celular (escena 9 → 10):** el zoom through queda más limpio con un PNG del celular de frente. Hoy se resuelve con `mostrando-pantalla`.
 - **Música:** los cortes se alinean al beat cuando llegue el BPM. Los markers están en `markers.ts`.
 - **Duración total:** 65,9 s contra los 68 del brief. Hay margen para estirar holds (escenas 4, 10 y 14) cuando esté la VO.

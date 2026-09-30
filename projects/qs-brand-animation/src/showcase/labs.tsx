@@ -8,7 +8,8 @@ import { Phone } from '../devices/Phone';
 import { GradientBackground } from '../shapes/GradientBackground';
 import { Rings } from '../shapes/Rings';
 import { Blob } from '../shapes/Blob';
-import { KPI, KPIS, Toast, VisitsScreen, MapCard, ChartCard, ListRow, PDVS, IndicatorCard } from '../ui';
+import { KPI, KPIS, Toast, VisitsScreen, MapCard, ChartCard, ListRow, PDVS, IndicatorCard, Shelf, ShelfItem } from '../ui';
+import { CharacterWalk, WALK_FRAMES, walkSpeed } from '../characters/Character';
 import { phoneScreenRect } from '../transitions/zoomThrough';
 import { ObjectWipe } from '../transitions/ObjectWipe';
 import { MaskReveal } from '../transitions/MaskReveal';
@@ -241,5 +242,49 @@ export const TransitionsLab: React.FC = () => {
         );
       })}
     </AbsoluteFill>
+  );
+};
+
+/* ───────────── WalkLab: ciclo de caminata + travelling sin patinar ───────────── */
+
+const NICO_H = 620;
+const CARO_H = 380;
+const FLOOR_Y = 1000;
+const AISLE: ShelfItem[] = [
+  { id: 'detergente-liquido-celeste', facings: 3 },
+  { id: 'bidon-lavandina-amarillo', facings: 3 },
+  { id: 'lavavajillas-amarillo', facings: 4 },
+  { id: 'rociador-limpiador-verde', facings: 3 },
+  { id: 'shampoo-azul', facings: 4 },
+  { id: 'dispensador-jabon-rosa', facings: 3 },
+  { id: 'doypack-salsa-pizza', facings: 4 },
+];
+
+export const WalkLab: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const t = frame / fps;
+  const nicoX = 300 + walkSpeed(NICO_H) * t;
+  // Caro camina en el fondo (capa bg): su velocidad en pantalla ya queda escalada por el parallax
+  const caroX = 900 + walkSpeed(CARO_H) * t;
+  return (
+    <Camera state={{ x: nicoX + 260, y: 540, zoom: 1, rotate: 0 }}>
+      <DepthLayer depth="sky">
+        <GradientBackground arc="solution" seed="walk" />
+      </DepthLayer>
+      <DepthLayer depth="bg">
+        {[0, 1, 2, 3].map((k) => (
+          <Place key={k} x={-600 + k * 1520} y={640} anchor={[0, 1]} opacity={0.7}>
+            <Shelf items={AISLE} pxPerCm={3.2} />
+          </Place>
+        ))}
+        <CharacterWalk who="caro" frames={WALK_FRAMES.caro} height={CARO_H} x={caroX} y={720} offset={3} />
+      </DepthLayer>
+      <DepthLayer depth="mg">
+        <div style={{ position: 'absolute', left: -2000, width: 9000, top: FLOOR_Y - 8, height: 400, background: `linear-gradient(180deg, ${alpha(colors.white, 0.95)}, ${colors.light})` }} />
+        <CharacterWalk who="nico" frames={WALK_FRAMES.nico} height={NICO_H} x={nicoX} y={FLOOR_Y} />
+      </DepthLayer>
+      <LabLabel text={`WalkLab · ciclo de 6 fotogramas · ${Math.round(walkSpeed(NICO_H))} px/s`} />
+    </Camera>
   );
 };

@@ -2,14 +2,15 @@
   "name": "qs-brand-animation",
   "version": "0.1.0",
   "private": true,
-  "description": "Brand animation QuartzSales — Remotion",
+  "description": "Brand animation QuartzSales \u2014 Remotion",
   "scripts": {
     "dev": "remotion studio",
     "typecheck": "tsc --noEmit",
     "still:showcase": "remotion still ComponentShowcase out/showcase.png",
     "stills": "node scripts/render-stills.mjs",
     "list-assets": "tsx scripts/list-assets.ts",
-    "export-markers": "tsx scripts/export-markers.ts"
+    "export-markers": "tsx scripts/export-markers.ts",
+    "manifests": "python3 scripts/build-manifests.py"
   },
   "dependencies": {
     "@remotion/cli": "4.0.530",

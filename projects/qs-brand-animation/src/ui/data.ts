@@ -24,12 +24,15 @@ export const SKUS = [
   { product: 'tubo-crema-celeste', ean: '7790008901234', name: 'Crema dental 90 g', category: 'Cuidado personal', price: 1299.0 },
   { product: 'set-desodorante-aerosol-rollon', ean: '7790009012345', name: 'Desodorante aerosol 150 ml', category: 'Cuidado personal', price: 2760.0 },
   { product: 'dispensador-jabon-celeste', ean: '7790000123456', name: 'Jabón líquido de manos 250 ml', category: 'Cuidado personal', price: 1845.5 },
+  { product: 'dispensador-jabon-rosa', ean: '7790000234561', name: 'Jabón líquido de manos 300 ml', category: 'Cuidado personal', price: 2015.0 },
+  { product: 'shampoo-azul', ean: '7790000345672', name: 'Shampoo control caspa 400 ml', category: 'Cuidado personal', price: 3690.0 },
+  { product: 'doypack-salsa-pizza', ean: '7790000456783', name: 'Salsa para pizza doypack 340 g', category: 'Salsas y aderezos', price: 1390.0 },
 ] as const;
 
 export type Sku = (typeof SKUS)[number];
 
 /** Categorías del formulario de precios, en el orden de PSMob. */
-export const CATEGORIES = ['Lavandina', 'Jabón para la ropa', 'Lavavajillas', 'Limpiadores', 'Cuidado personal'] as const;
+export const CATEGORIES = ['Lavandina', 'Jabón para la ropa', 'Lavavajillas', 'Limpiadores', 'Cuidado personal', 'Salsas y aderezos'] as const;
 export const skusOf = (category: (typeof CATEGORIES)[number]) => SKUS.filter((s) => s.category === category);
 
 export const KPIS = {

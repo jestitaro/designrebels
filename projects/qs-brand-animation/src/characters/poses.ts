@@ -1,4 +1,4 @@
-/* Generado desde public/characters (bounding box del canal alfa > 16). No editar a mano: correr el script de assets. */
+/* Generado por scripts/build-manifests.py (bounding box del alfa > 16). No editar a mano. */
 export type PoseKind = 'standing' | 'seated' | 'fallen' | 'closeup';
 export type PoseMeta = { w: number; h: number; bbox: [number, number, number, number]; kind: PoseKind };
 
@@ -7,11 +7,12 @@ export const POSES = {
     'caida': { w: 1024, h: 1536, bbox: [52, 182, 1012, 1274], kind: 'fallen' },
     'caminando-cerca-2': { w: 1024, h: 1536, bbox: [204, 33, 918, 1493], kind: 'standing' },
     'caminando-cerca': { w: 1024, h: 1536, bbox: [178, 27, 936, 1493], kind: 'standing' },
-    'caminando-ciclo-01': { w: 1024, h: 1536, bbox: [187, 38, 935, 1495], kind: 'standing' },
-    'caminando-ciclo-02': { w: 1024, h: 1536, bbox: [200, 36, 897, 1497], kind: 'standing' },
-    'caminando-ciclo-03': { w: 1024, h: 1536, bbox: [193, 35, 954, 1478], kind: 'standing' },
-    'caminando-ciclo-04': { w: 1024, h: 1536, bbox: [189, 35, 948, 1482], kind: 'standing' },
-    'caminando-ciclo-05': { w: 1024, h: 1536, bbox: [203, 29, 921, 1493], kind: 'standing' },
+    'caminando-ciclo-01': { w: 1024, h: 1536, bbox: [136, 177, 797, 1418], kind: 'standing' },
+    'caminando-ciclo-02': { w: 1024, h: 1536, bbox: [161, 179, 719, 1416], kind: 'standing' },
+    'caminando-ciclo-03': { w: 1024, h: 1536, bbox: [171, 179, 730, 1416], kind: 'standing' },
+    'caminando-ciclo-04': { w: 1024, h: 1536, bbox: [204, 177, 664, 1418], kind: 'standing' },
+    'caminando-ciclo-05': { w: 1024, h: 1536, bbox: [185, 177, 715, 1417], kind: 'standing' },
+    'caminando-ciclo-06': { w: 1024, h: 1536, bbox: [177, 176, 798, 1419], kind: 'standing' },
     'caminando': { w: 1024, h: 1536, bbox: [197, 28, 877, 1487], kind: 'standing' },
     'celular-sonriendo': { w: 1024, h: 1536, bbox: [257, 34, 762, 1514], kind: 'standing' },
     'celular': { w: 1024, h: 1536, bbox: [257, 35, 759, 1513], kind: 'standing' },
@@ -26,10 +27,12 @@ export const POSES = {
   nico: {
     'caminando-cerca-2': { w: 1024, h: 1536, bbox: [224, 26, 893, 1495], kind: 'standing' },
     'caminando-cerca': { w: 1024, h: 1536, bbox: [164, 30, 932, 1495], kind: 'standing' },
-    'caminando-ciclo-01': { w: 1024, h: 1536, bbox: [189, 25, 904, 1489], kind: 'standing' },
-    'caminando-ciclo-02': { w: 1024, h: 1536, bbox: [172, 28, 932, 1469], kind: 'standing' },
-    'caminando-ciclo-03': { w: 1024, h: 1536, bbox: [171, 28, 940, 1476], kind: 'standing' },
-    'caminando-ciclo-04': { w: 1024, h: 1536, bbox: [189, 26, 912, 1495], kind: 'standing' },
+    'caminando-ciclo-01': { w: 1024, h: 1536, bbox: [226, 204, 844, 1452], kind: 'standing' },
+    'caminando-ciclo-02': { w: 1024, h: 1536, bbox: [304, 202, 686, 1452], kind: 'standing' },
+    'caminando-ciclo-03': { w: 1024, h: 1536, bbox: [187, 210, 870, 1452], kind: 'standing' },
+    'caminando-ciclo-04': { w: 1024, h: 1536, bbox: [348, 206, 684, 1452], kind: 'standing' },
+    'caminando-ciclo-05': { w: 1024, h: 1536, bbox: [213, 202, 848, 1452], kind: 'standing' },
+    'caminando-ciclo-06': { w: 1024, h: 1536, bbox: [277, 203, 696, 1451], kind: 'standing' },
     'caminando': { w: 1024, h: 1536, bbox: [163, 29, 875, 1507], kind: 'standing' },
     'celular-sonriendo': { w: 1024, h: 1536, bbox: [257, 39, 805, 1530], kind: 'standing' },
     'celular': { w: 941, h: 1672, bbox: [219, 51, 770, 1643], kind: 'standing' },

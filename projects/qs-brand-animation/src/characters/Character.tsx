@@ -88,32 +88,43 @@ export const Character = <W extends CharacterName>({ who, pose, height, x, y, br
 };
 
 type WalkProps<W extends CharacterName> = Omit<Props<W>, 'pose' | 'offsetY' | 'breath'> & {
-  /** fotogramas de la caminata, en orden */
+  /** fotogramas del ciclo, en orden */
   frames: PoseOf<W>[];
-  /** segundos por fotograma */
+  /** segundos por fotograma. 0.25 s ≈ 2 pasos por segundo (caminata natural) */
   frameSec?: number;
-  /** rebote vertical por paso (px) */
+  /** elevación en los fotogramas de paso (px); los de contacto quedan apoyados */
   bob?: number;
+  /** desfase del ciclo en fotogramas (para que dos personajes no pisen igual) */
+  offset?: number;
 };
 
+/** Largo de paso relativo a la altura de la figura (contacto a contacto). */
+export const STRIDE_RATIO = 0.42;
+
 /**
- * Caminata por swap de PNG + rebote leve. El desplazamiento lateral (travelling) lo hace la escena.
- * Nota: los fotogramas entregados son variantes de la misma zancada; para un ciclo completo
- * hacen falta los de la fase opuesta.
+ * Velocidad de travelling (px/s) que acompaña el ciclo sin que los pies patinen:
+ * un paso = 2 fotogramas del ciclo (contacto → paso).
  */
-export const CharacterWalk = <W extends CharacterName>({ frames, frameSec = 0.2, bob = 5, ...rest }: WalkProps<W>) => {
+export const walkSpeed = (height: number, frameSec = 0.25) => (STRIDE_RATIO * height) / (2 * frameSec);
+
+/**
+ * Caminata por swap de PNG: ciclo de 6 fotogramas (contacto / paso alternados) + leve elevación en los pasos.
+ * El desplazamiento lateral lo hace la escena, con walkSpeed() para que coincida con la zancada.
+ */
+export const CharacterWalk = <W extends CharacterName>({ frames, frameSec = 0.25, bob = 3, offset = 0, ...rest }: WalkProps<W>) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const step = Math.max(1, Math.round(frameSec * fps));
-  const i = Math.floor(frame / step) % frames.length;
-  const t = (frame % step) / step;
-  const offsetY = -Math.abs(Math.sin(t * Math.PI)) * bob;
+  const i = (Math.floor(frame / step) + offset) % frames.length;
+  // fotogramas pares del ciclo (índice 1, 3, 5) son de paso: el cuerpo sube un poco
+  const offsetY = i % 2 === 1 ? -bob : 0;
   return <Character {...(rest as Props<W>)} pose={frames[i]} breath={0} offsetY={offsetY} />;
 };
 
+const CYCLE = ['caminando-ciclo-01', 'caminando-ciclo-02', 'caminando-ciclo-03', 'caminando-ciclo-04', 'caminando-ciclo-05', 'caminando-ciclo-06'];
 export const WALK_FRAMES = {
-  caro: ['caminando-ciclo-01', 'caminando-ciclo-02', 'caminando-ciclo-03', 'caminando-ciclo-04', 'caminando-ciclo-05'] as PoseOf<'caro'>[],
-  nico: ['caminando-ciclo-01', 'caminando-ciclo-02', 'caminando-ciclo-03', 'caminando-ciclo-04'] as PoseOf<'nico'>[],
+  caro: CYCLE as PoseOf<'caro'>[],
+  nico: CYCLE as PoseOf<'nico'>[],
 };
 
 export const listPoses = (who: CharacterName) => Object.keys(POSES[who]);

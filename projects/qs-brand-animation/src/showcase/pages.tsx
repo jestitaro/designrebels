@@ -399,7 +399,10 @@ const LINEUP: ShelfItem[] = [
   { id: 'lavavajillas-amarillo' },
   { id: 'set-cosmetica-violeta' },
   { id: 'shampoo-violeta' },
+  { id: 'shampoo-azul' },
   { id: 'dispensador-jabon-celeste' },
+  { id: 'dispensador-jabon-rosa' },
+  { id: 'doypack-salsa-pizza' },
   { id: 'tubo-crema-celeste' },
   { id: 'set-desodorante-aerosol-rollon' },
   { id: 'set-crema-rosa' },
@@ -413,7 +416,8 @@ const SHELF_TOP: ShelfItem[] = [
 ];
 const SHELF_BOTTOM: ShelfItem[] = [
   { id: 'shampoo-violeta', facings: 3 },
-  { id: 'dispensador-jabon-celeste', facings: 2 },
+  { id: 'shampoo-azul', facings: 2 },
+  { id: 'dispensador-jabon-rosa', facings: 2 },
   { id: 'set-desodorante-aerosol-rollon', facings: 2 },
   { id: 'tubo-crema-celeste', facings: 3 },
   { id: 'aerosol-verde', facings: 2 },
@@ -443,7 +447,7 @@ export const PageProducts: React.FC = () => {
     { items: top, g: 0, y: topY, tall: tallTop, label: 'Jabón líquido ropa 3 L', conf: 0.97, status: 'valid' as const, price: '$8.890' },
     { items: top, g: 2, y: topY, tall: tallTop, label: 'Lavandina en gel 1 L', conf: 0.94, status: 'detected' as const },
     { items: bot, g: 0, y: botY, tall: tallBot, label: 'Shampoo 400 ml', conf: 0.92, status: 'valid' as const, price: '$3.420' },
-    { items: bot, g: 3, y: botY, tall: tallBot, label: 'Fuera de planograma', status: 'missing' as const },
+    { items: bot, g: 4, y: botY, tall: tallBot, label: 'Fuera de planograma', status: 'missing' as const },
   ];
   return (
     <Board title="Productos y visión artificial" page="5/8">
