@@ -26,8 +26,7 @@ const KEYS: CameraKeyframe[] = [
   { t: 4.5, ...zoomToRect(phoneScreenRect(PX, PY, PS)), ease: 'easeInOut' },
 ];
 
-/** Stack comprimido con el que termina la escena 2 (columna del ancho de la pantalla). */
-const stackPos = (i: number) => ({ x: 700, y: 300 + i * 100 });
+import { stackPos } from './S02Complejidad';
 /** Destino: la fila i de VisitsScreen dentro del teléfono (coordenadas de mundo). */
 const rowTarget = (i: number) => {
   const sx = PX - (PHONE.screenW * PS) / 2;

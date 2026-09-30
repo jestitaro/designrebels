@@ -1,6 +1,7 @@
 import React from 'react';
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
+import { Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { GradientBackground } from '../shapes/GradientBackground';
+import { MaskReveal } from '../transitions/MaskReveal';
 import { IsoTriangles } from '../brand/IsoTriangles';
 import { KineticText } from '../brand/KineticText';
 import { lerp, progressAt } from '../lib/easing';
@@ -38,8 +39,10 @@ export const S14Cierre: React.FC = () => {
   const pop = progressAt(frame, 0, 0.4, 'softOvershoot', fps);
   // wordmark: revelado lateral detrás del isotipo
   const reveal = progressAt(frame, 0.65, 0.6, 'easeInOut', fps);
+  // entrada: mask reveal desde el centro sobre el final de la escena 13 (overlap 0.5 s)
+  const reveal0 = progressAt(frame, 0, 0.5, 'easeInOut', fps);
   return (
-    <AbsoluteFill>
+    <MaskReveal progress={reveal0} shape="blob" seed="s14-mask">
       <GradientBackground arc="closing" seed="s14" />
       <div style={{ position: 'absolute', left: lx + LOCKUP.wordX * u, top: ly, height: H, clipPath: `inset(0 ${(1 - reveal) * 100}% 0 0)`, transform: `translateX(${(1 - reveal) * -24}px)` }}>
         <Img src={staticFile('logos/tipo-qs-bg-light.svg')} style={{ height: H, width: 'auto', display: 'block' }} />
@@ -53,6 +56,6 @@ export const S14Cierre: React.FC = () => {
       <div style={{ position: 'absolute', left: 0, right: 0, top: 690 }}>
         <KineticText text="Llevá tu negocio al futuro." role="tagline" color={colors.dark} align="center" progressIn={progressAt(frame, 1.8, 0.8, 'settle', fps)} />
       </div>
-    </AbsoluteFill>
+    </MaskReveal>
   );
 };
