@@ -2,6 +2,8 @@
 
 Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido salen de `src/markers.ts` (`npm run export-markers`).
 
+> **Dirección v2 (aprobada):** video de producto. PSMob es el protagonista y no hay personajes ilustrados. Las personas aparecen solo en material real de campo (`public/footage`), siempre enmascaradas en círculos, cards de video o la pantalla de un device, nunca a pantalla completa. Las marcas reales del material se dejan: es material real y tiene que verse realista.
+
 - **Duración:** 65,9 s. El brief pedía unos 68; se ajusta cuando llegue la VO.
 - **Frames:** van a 30 fps (animatic). A 60 fps se duplican; los segundos no cambian.
 - **Cámara:** `x`, `y` en px de mundo (1920×1080, centro 960/540) y `zoom`. Curva `easeInOut` salvo que se indique otra.
@@ -10,17 +12,17 @@ Fase 1. Fuente de verdad del timing: `src/timeline.ts`. Los markers de sonido sa
 
 ## Resumen
 
-| # | Escena | s | frames @30 | Entrada | Salida | Overlap | Personajes |
+| # | Escena | s | frames @30 | Entrada | Salida | Overlap | Material real |
 |---|---|---|---|---|---|---|---|
-| 1 | Problema | 0.0–4.5 | 0–134 | — | object wipe (card) | 0 | Caro |
+| 1 | Problema | 0.0–4.5 | 0–134 | — | object wipe (card) | 0 | pasillo (video B 0–4 s) |
 | 2 | Complejidad | 4.5–8.5 | 135–254 | object wipe | shape morph (compresión) | 0 | — |
-| 3 | Aparece QuartzSales | 8.5–13.0 | 255–389 | shape morph | zoom through | 0 | — |
+| 3 | Aparece QuartzSales | 8.5–13.0 | 255–389 | shape morph | zoom through | 0 | login en PSMob (video A 0–6 s) |
 | 4 | Planificación | 13.0–18.0 | 390–539 | zoom through | match cut (pin) | 0 | — |
 | 5 | Ruteo | 18.0–23.0 | 540–689 | match cut | shape morph (línea de ruta) | 0.4 | — |
-| 6 | Comunicación | 22.6–27.6 | 678–827 | shape morph | shape morph (mensaje → form) | 0.4 | Nico fg · Caro bg |
+| 6 | Comunicación | 22.6–27.6 | 678–827 | shape morph | shape morph (mensaje → form) | 0.4 | 2 avatares circulares (fotos 7 y 10) |
 | 7 | Captura de datos | 27.2–32.2 | 816–965 | shape morph | push-out | 0.3 | — |
 | 8 | Tiempo real | 31.9–37.9 | 957–1136 | push-out | shape morph (gráfico → góndola) | 0.5 | — |
-| 9 | AiFred | 37.4–42.4 | 1122–1271 | shape morph | zoom through | 0 | Nico |
+| 9 | AiFred | 37.4–42.4 | 1122–1271 | shape morph | zoom through | 0 | foto de góndola (video B 5–9 s) + foto 6 |
 | 10 | Visión artificial | 42.4–49.4 | 1272–1481 | zoom through | match cut | 0 | — |
 | 11 | Offline | 49.4–54.4 | 1482–1631 | match cut | push-out | 0 | — |
 | 12 | Ecosistema | 54.4–59.4 | 1632–1781 | push-out | shape morph (colapso) | 0 | — |
@@ -54,7 +56,7 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
 
 ## 1 · Problema — 0.0–4.5 s (f 0–134)
 
-**Qué pasa:** Caro aparece chica en una composición amplia sobre violeta oscuro. A su alrededor aparecen, en profundidad, cards reales: ListRow de visitas, Toast de alertas, FormField, KPI y MapCard. La cámara hace push-in y las cards se multiplican. Al final, una card pasa delante de cámara y cubre el frame.
+**Qué pasa:** en el tercio izquierdo hay una card de video enmascarada con el pasillo real (video B 0–4 s), chica dentro de una composición amplia sobre violeta oscuro: la góndola y su complejidad. A su alrededor aparecen, en profundidad, cards reales: ListRow de visitas, Toast de alertas, FormField, KPI y MapCard. La cámara hace push-in y las cards se multiplican hasta tapar parte del video: la sobrecarga la cuenta la UI. Al final, una card pasa delante de cámara y cubre el frame.
 
 - **Cámara**
   - t0: `960, 560, z 0.9`
@@ -63,7 +65,7 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
 - **Capas**
   - sky: `GradientBackground arc="problem"`
   - bg: 6–8 cards chicas sobre tercios, con DepthBlur (única capa con blur)
-  - mg: Caro en `estres` toda la escena (sin swap: la sobrecarga solo crece), a 300 px de alto, en el tercio izquierdo, y 3 cards cercanas que la van rodeando
+  - mg: `FootageCard` 4:3 del pasillo (video B desde 0 s), 520 px de ancho y radius lg, en el tercio izquierdo. La rodean 3 cards cercanas; la sobrecarga solo crece.
   - fg: 2 cards grandes que cruzan con drift
 - **Salida:** `ObjectWipe` de la card ChartCard `bars` desde (1320, 330), t3.6 → 4.5. Esa card es el primer plano de la escena 2.
 - **Markers:** 0.6 cardEntry · 1.4 cardEntry · 2.2 notification · 3.0 cardEntry · 3.9 whoosh
@@ -136,7 +138,7 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
 
 ## 6 · Comunicación — 22.6–27.6 s (f 678–827)
 
-**Qué pasa:** un elemento del mapa se transforma en burbuja de chat. Nico está en foreground y Caro más atrás; los mensajes flotan entre los dos y el teléfono queda como elemento intermedio. No van uno a cada lado.
+**Qué pasa:** un elemento del mapa se transforma en burbuja de chat. El chat de PSMob es el protagonista. Dos avatares circulares con material real quedan en profundidades distintas, no uno a cada lado: la repositora en góndola (foto 10) en foreground grande y la supervisión (foto 7) chica al fondo. Los mensajes viajan entre los dos pasando por el teléfono.
 
 - **Cámara**
   - t0: `960, 540, z 1.1`
@@ -144,9 +146,9 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
   - t5: `1040, 520, z 1.05`
 - **Capas**
   - sky: solución
-  - bg: Caro `celular-sonriendo`, 380 px de alto, en (1450, 900)
+  - bg: `FootageCard` circular (foto 7), 220 px, en (1450, 860)
   - mg: Phone a escala 0.8 con ChatScreen en (1160, 540) y ChatBubbles flotando entre los dos
-  - fg: Nico `celular`, 820 px de alto, en (560, 1180). El recorte de abajo es intencional y solo afecta a las piernas: cara, manos y celular quedan completos dentro del safe area (margen del 5 %).
+  - fg: `FootageCard` circular (foto 10), 460 px, en (520, 700). Cara, mano y celular quedan completos dentro del círculo y del safe area (margen del 5 %).
 - **Kinetic type:** "Optimiza la comunicación", headline 96/800, en el tercio superior izquierdo, t2.4 → 4.2 (entra por palabras)
 - **Salida:** shape morph del mensaje al form, t4.4 → 5. La última ChatBubble se interpola hasta el rect de la Card de formulario.
 - **Markers:** 0.3 notification · 1.4 notification · 2.4 cardEntry
@@ -187,7 +189,7 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
 
 ## 9 · AiFred — 37.4–42.4 s (f 1122–1271)
 
-**Qué pasa:** entorno de supermercado. Nico entra caminando con travelling lateral, sobre góndolas con `Shelf` a escala real (sin marcas ni texto legible; lavandina 25 cm, crema dental 11,5 cm). Levanta el celular y la cámara hace zoom through.
+**Qué pasa:** góndola real. Una card de video grande con el video B (5–9 s) muestra a la repositora levantando el celular y sacando la foto; alrededor flotan un ScanLine y chips de categoría. En t3.2 hay un match cut a la foto 6 (el reconocimiento de PSMob en uso, con el celular de frente) y la cámara hace zoom through a esa pantalla.
 
 - **Cámara**
   - t0: `600, 540, z 1`
@@ -195,11 +197,11 @@ Cada morph toma el comportamiento del objeto que se transforma. Ninguno repite c
   - t3.4: hold
   - t5: `zoomToRect(pantalla del celular)`
 - **Capas**
-  - sky: pasillo (gradiente claro con 2 góndolas de fondo)
-  - bg: Shelf × 2 con parallax 0.5
-  - mg: góndola principal (lavandina, ropa, cuidado personal)
-  - fg: Nico. Usa `CharacterWalk` en t0 → 3.2 y después hace swap a `producto-celular` → `celular`.
-- **Salida:** zoom through al celular de Nico. En t3.4 swap a `mostrando-celu` (PNG aprobado con el celular de frente) y la cámara entra al rect de su pantalla, medido en `poses.ts` (`screen`). No se usa ningún teléfono inclinado.
+  - sky: solución
+  - bg: Shelf a escala real con parallax 0.5 (continuidad del gráfico → góndola de la escena 8)
+  - mg: `FootageCard` 4:3 con el video B (desde 5 s), 1040 px de ancho
+  - fg: chips de categoría (Cuidado personal, Lavandina) y un contador "Fotos 3/5"
+- **Salida:** zoom through a la pantalla del celular de la foto 6. La foto se endereza unos grados para que el teléfono quede frontal y la cámara entra al rect medido de su pantalla. La escena 10 arranca con `CameraScreen` a escala 1 en ese mismo rect.
 - **Markers:** 0.3 whoosh · 3.4 tap · 4.6 whoosh
 
 ## 10 · Visión artificial — 42.4–49.4 s (f 1272–1481)
@@ -286,7 +288,7 @@ AiFred se presenta como IA aplicada: nada aparece de golpe.
 
 ## Pendientes y decisiones abiertas
 
-- **Caminata (escena 9):** resuelta. Hay un ciclo de 6 fotogramas por personaje y el travelling va a `walkSpeed()`, validado en `WalkLab`.
-- **Nico con el celular de frente (escena 9 → 10):** se usa `nico/mostrando-celu`. Falta confirmar que ese es el PNG aprobado para el zoom through.
+- **Personajes ilustrados:** fuera del video (dirección v2). El código (`Character`, `CharacterWalk`, `WalkLab`) queda en el repo sin usarse en las escenas.
+- **Material real:** 2 videos (login e ingreso, pasillo y foto de góndola) y 7 fotos en `public/footage` (registro en `src/footage.ts`). Las fotos 4 y 5 son de baja resolución (360 px): solo sirven en tamaños chicos, por ejemplo en el muro de videos. Si hay más clips cortos de campo (charla con supervisión, carga de formulario, góndola con quiebre), suman para las escenas 2, 6 y 12.
 - **Música:** los cortes se alinean al beat cuando llegue el BPM. Los markers están en `markers.ts`.
 - **Duración total:** 65,9 s contra los 68 del brief. Hay margen para estirar holds (escenas 4, 10 y 14) cuando esté la VO.

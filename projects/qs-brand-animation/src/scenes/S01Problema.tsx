@@ -2,15 +2,16 @@ import React from 'react';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Camera, CameraKeyframe, DepthBlur, DepthLayer, Place } from '../camera';
 import { GradientBackground } from '../shapes/GradientBackground';
-import { Character } from '../characters/Character';
+import { CLIPS } from '../footage';
+import { alpha, colors } from '../tokens';
 import { ObjectWipe } from '../transitions/ObjectWipe';
 import { drift, progressAt } from '../lib/easing';
 import { randSigned } from '../lib/random';
-import { Badge, CategoryAccordion, ChartCard, ChatBubble, FormField, GaugeCard, KPI, ListRow, MapCard, PDVS, SyncIndicator, Toast, Card } from '../ui';
+import { Badge, CategoryAccordion, ChartCard, ChatBubble, FormField, FootageCard, GaugeCard, KPI, ListRow, MapCard, PDVS, SyncIndicator, Toast, Card } from '../ui';
 
 /**
- * Escena 1 · Problema (4.5 s). Caro chica en una composición amplia; la UI de su día se acumula en profundidad.
- * La sobrecarga solo crece: Caro queda en `estres` toda la escena y las cards entran cada vez más seguido.
+ * Escena 1 · Problema (4.5 s). El pasillo real (card de video enmascarada) chico en una composición amplia;
+ * la UI del día se acumula en profundidad y lo va tapando. La sobrecarga solo crece: las cards entran cada vez más seguido.
  */
 export const S01_DURATION = 4.5;
 
@@ -73,7 +74,9 @@ export const S01Problema: React.FC = () => {
           <DepthBlur amount={3}>{layer('bg')}</DepthBlur>
         </DepthLayer>
         <DepthLayer depth="mg">
-          <Character who="caro" pose="estres" height={300} x={600} y={860} phase={0.4} />
+          <Place x={600} y={640} rotate={-2}>
+            <FootageCard clip="pasilloFoto" from={CLIPS.pasilloFoto.moments.pasillo} rate={0.5} width={520} progress={progressAt(frame, 0.1, 0.7, 'settle', fps)} tint={alpha(colors.secondary, 0.18)} />
+          </Place>
           {layer('mg')}
         </DepthLayer>
         <DepthLayer depth="fg">{layer('fg')}</DepthLayer>
