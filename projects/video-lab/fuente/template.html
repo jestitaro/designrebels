@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Corte, cámara, Claude · Design Rebels</title>
+<meta name="description" content="Video Lab de Design Rebels: qué herramienta usar para cada video, qué instalar y los briefs y manuales de marca (.md) para pedírselo a Claude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#11111b; --paper:#f7f6f1; --line:#d9d7ce; --purple:#7025e0; --violet:#a172ff;
+  --yellow:#ffc21c; --coral:#ff6f61; --mint:#b8f7cf; --blue:#b9d8ff; --white:#fff;
+  --body:#3c3c48; --muted:#5b5b66; --shadow:0 28px 70px rgba(28,18,63,.13);
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Roboto Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--body);background:var(--paper);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(18px,4vw,40px)}
+a{color:var(--purple)}
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:balance}
+p{margin:0}
+.grid-bg{background-image:linear-gradient(to right,rgba(17,17,27,.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(17,17,27,.06) 1px,transparent 1px);background-size:72px 72px}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.eyebrow::before{content:"";width:10px;height:10px;background:var(--purple);border-radius:2px;flex:none}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:6px}
+.skip-link{position:fixed;left:16px;top:12px;z-index:99;transform:translateY(-150%);background:var(--ink);color:#fff;padding:12px 16px;border-radius:8px}
+.skip-link:focus{transform:none}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,4vw,56px);background:rgba(247,246,241,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;color:var(--ink)}
+.brand-mark{display:grid;place-items:center;width:42px;height:42px;background:var(--ink);color:#fff;border-radius:50%;font-size:13px}
+.header-cta{text-decoration:none;font-size:14px;font-weight:700;color:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:11px 18px}
+.header-cta:hover{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--ink)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:clamp(64px,8vw,110px) clamp(18px,4vw,40px) clamp(110px,10vw,140px);text-align:center;position:relative}
+.hero h1{font-size:clamp(46px,8vw,112px);font-weight:800;letter-spacing:-.055em;line-height:.96;margin-top:22px}
+.hero h1 em{font-style:normal;color:var(--purple)}
+.hero h1 .dot{color:var(--coral)}
+.hero .eyebrow{justify-content:center}
+.hero-quote{max-width:640px;margin:28px auto 0;font-size:clamp(17px,1.6vw,21px);line-height:1.6;color:var(--ink)}
+.hero-quote small{display:block;margin-top:8px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+.btn{font:inherit;font-weight:800;font-size:15px;border-radius:999px;min-height:48px;padding:0 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--ink);line-height:1.2;transition:transform .2s ease,background .2s ease,color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:var(--purple);border-color:var(--purple)}
+.btn-secondary{background:var(--white);color:var(--ink)}
+.btn-secondary:hover{background:var(--yellow)}
+.btn-text{background:none;border-color:transparent;color:var(--ink);padding-inline:12px;text-decoration:underline;text-underline-offset:4px}
+.btn-text:hover{transform:none;color:var(--purple)}
+.float{position:absolute;color:#fff;font-weight:800;font-size:13px;padding:10px 14px;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.12);white-space:nowrap}
+.float.f1{top:14%;left:5%;background:var(--purple);transform:rotate(-4deg)}
+.float.f2{top:10%;right:7%;background:var(--coral);transform:rotate(3deg)}
+.float.f3{bottom:26%;left:8%;background:var(--ink);transform:rotate(2deg)}
+.float.f4{bottom:30%;right:9%;background:var(--yellow);color:var(--ink);transform:rotate(-3deg)}
+.ticker{overflow:hidden;border-block:1px solid var(--ink);background:var(--yellow)}
+.ticker-track{display:flex;align-items:center;width:max-content;gap:26px;padding:14px 0;font-size:14px;font-weight:800;color:var(--ink);animation:ticker 32s linear infinite}
+.ticker-track b{font-size:18px}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* selector */
+.selector{background:var(--white);border:2px solid var(--ink);box-shadow:var(--shadow);padding:clamp(20px,3vw,36px);margin-top:clamp(40px,5vw,64px);position:relative;z-index:2}
+.sel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.sel-head h2{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-.04em;margin-top:8px}
+.linkbtn{background:none;border:0;padding:8px 4px;font:inherit;font-weight:800;color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.linkbtn:hover{color:var(--purple)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:20px}
+.opt{font:inherit;text-align:left;background:var(--paper);border:1px solid var(--ink);padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:104px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.opt:nth-child(5n+1):hover{background:var(--mint)}
+.opt:nth-child(5n+2):hover{background:var(--yellow)}
+.opt:nth-child(5n+3):hover{background:var(--blue)}
+.opt:nth-child(5n+4):hover{background:#ffd0cc}
+.opt:nth-child(5n+5):hover{background:var(--violet)}
+.opt:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.opt strong{color:var(--ink);font-size:18px;font-weight:800;line-height:1.25;letter-spacing:-.02em}
+.opt span{color:var(--muted);font-size:14px;line-height:1.5}
+
+/* resultado */
+.badge{display:inline-block;background:var(--yellow);color:var(--ink);border:1px solid var(--ink);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+.res-title{font-size:clamp(30px,4.2vw,52px);font-weight:800;letter-spacing:-.05em;line-height:1;margin:10px 0 14px}
+.res-lead{font-size:18px;max-width:700px;line-height:1.6}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}
+.fact{background:var(--paper);border:1px solid var(--ink);padding:16px 18px;min-width:0}
+.fact:nth-child(1){background:var(--mint)}
+.fact:nth-child(2){background:var(--blue)}
+.fact:nth-child(3){background:#ffd0cc}
+.fact h3{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+.fact ul{margin:0;padding-left:18px}
+.fact li,.fact p{font-size:15px;line-height:1.5;color:var(--ink)}
+.block{margin-top:30px}
+.block>h3{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+.steps{margin:0;padding-left:0;display:grid;gap:8px;color:var(--ink);list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:14px;align-items:baseline}
+.steps li::before{content:counter(s,decimal-leading-zero);font-size:12px;font-weight:800;letter-spacing:.08em;flex:none;color:var(--purple)}
+.files{display:grid;gap:10px}
+.file{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;border:1px solid var(--ink);padding:14px 16px;background:var(--white)}
+.file-info{min-width:0;flex:1 1 280px}
+.file-info strong{display:block;color:var(--ink);font-weight:800;line-height:1.3}
+.file-info span{display:block;font-size:14px;color:var(--muted);line-height:1.45}
+.file-info code{font-family:var(--mono);font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.file-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.watch{background:var(--yellow);border:1px solid var(--ink);padding:18px 20px;color:var(--ink)}
+.watch h3{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.watch ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.res-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:18px;border-top:1px solid var(--ink)}
+
+/* secciones */
+section.sec{padding:clamp(64px,8vw,110px) 0 0}
+.sec-head{max-width:720px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(34px,4.6vw,64px);font-weight:800;letter-spacing:-.055em;line-height:.98;margin-top:14px}
+.sec-head p{margin-top:14px;font-size:18px;line-height:1.65}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{border:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0;min-height:230px}
+.card:nth-child(1){background:var(--mint)}
+.card:nth-child(2){background:var(--blue)}
+.card h3{font-size:clamp(22px,2.2vw,30px);font-weight:800;letter-spacing:-.04em;line-height:1.1}
+.card p{font-size:15px;color:var(--ink)}
+.card .file-actions{margin-top:auto;padding-top:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--ink);background:var(--white)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{background:var(--ink);color:#fff;text-align:left;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px;white-space:nowrap}
+td{padding:14px;vertical-align:top;border-top:1px solid var(--line);color:var(--body);line-height:1.5}
+tbody tr:nth-child(even) td{background:var(--paper)}
+td:first-child{font-weight:800;color:var(--ink)}
+.note{font-size:14px;color:var(--muted);margin-top:12px}
+details{background:var(--white);border:1px solid var(--ink);padding:0 20px}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-weight:800;color:var(--ink);padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;line-height:1;color:var(--purple);flex:none}
+details[open] summary::after{content:"–"}
+details[open]{background:var(--mint)}
+details p{padding:0 0 18px;max-width:720px;color:var(--ink)}
+footer{margin-top:clamp(72px,9vw,120px);border-top:1px solid var(--ink);padding:28px clamp(18px,5vw,72px);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;font-size:14px}
+footer a{text-decoration:none;font-weight:800;color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;box-shadow:var(--shadow);z-index:30}
+[hidden]{display:none!important}
+@media (max-width:760px){
+  .float.f3,.float.f4{display:none}
+  .float.f1{top:7%;left:4%}.float.f2{top:7%;right:4%}
+  .hero-inner{padding-top:96px;padding-bottom:80px}
+  .site-header .header-cta{padding:10px 14px}
+}
+@media (max-width:560px){
+  .file-actions,.file-actions .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.opt,.btn{transition:none}.ticker-track{animation:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#selector">Saltar al selector</a>
+
+<header class="site-header">
+  <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub"><span class="brand-mark" aria-hidden="true">DR</span><span>Design Rebels</span></a>
+  <a class="header-cta" href="#selector">Pedir un video</a>
+</header>
+
+<section class="hero grid-bg">
+  <div class="hero-inner">
+    <span class="float f1" aria-hidden="true">Escena 01 · Toma 1</span>
+    <span class="float f2" aria-hidden="true">9:16</span>
+    <span class="float f3" aria-hidden="true">.md</span>
+    <span class="float f4" aria-hidden="true">MP4 ▶</span>
+    <p class="eyebrow">Design Rebels · Video Lab</p>
+    <h1>Corte, cámara, <em>Claude</em><span class="dot">.</span></h1>
+    <p class="hero-quote">Elegí qué video necesitás y te decimos con qué herramienta hacerlo, qué instalar y qué .md adjuntar. Porque la vida es como una caja de .md: nunca sabés qué te va a salir… salvo que leas el brief.<small>Y no reparamos en tokens.</small></p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#selector">Elegir mi video ↓</a>
+      <a class="btn btn-secondary" href="#briefs">Ver los briefs</a>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span>Luces</span><b>✦</b><span>Cámara</span><b>✦</b><span>Claude</span><b>✦</b><span>No reparamos en tokens</span><b>✦</b><span>Una caja de .md</span><b>✦</b><span>Toma 1, aprobada</span><b>✦</b>
+    <span>Luces</span><b>✦</b><span>Cámara</span><b>✦</b><span>Claude</span><b>✦</b><span>No reparamos en tokens</span><b>✦</b><span>Una caja de .md</span><b>✦</b><span>Toma 1, aprobada</span><b>✦</b>
+  </div></div>
+</section>
+
+<main>
+<div class="wrap">
+  <section class="selector" id="selector" aria-labelledby="sel-title">
+    <div id="sel-body" aria-live="polite"></div>
+  </section>
+</div>
+
+<section class="sec" id="marca">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Manuales de marca</div>
+      <h2>Identidad de marca para video</h2>
+      <p>Son archivos de texto que se adjuntan en el chat de Claude junto con el brief. Claude los lee y aplica colores, tipografía, logo y tono. Sí, la caja de .md.</p>
+    </div>
+    <div class="cards" id="brand-cards"></div>
+  </div>
+</section>
+
+<section class="sec" id="briefs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Briefs</div>
+      <h2>Todos los briefs</h2>
+      <p>Cada brief trae los datos del pedido para completar y las instrucciones para Claude. Si ya sabés cuál necesitás, descargalo desde acá.</p>
+    </div>
+    <div class="files" id="all-files"></div>
+  </div>
+</section>
+
+<section class="sec" id="herramientas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramientas</div>
+      <h2>Qué hace cada una y qué hay que instalar</h2>
+      <p>Para la mayoría de los videos alcanza con un chat de Claude y no se instala nada. Lo demás es para series, terminación fina o imágenes generadas.</p>
+    </div>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de herramientas">
+      <table>
+        <thead><tr><th>Herramienta</th><th>Qué hace</th><th>Dónde se usa</th><th>Qué instalar</th><th>Cuenta y costo</th></tr></thead>
+        <tbody>
+          <tr><td>Claude en el chat · animación</td><td>Arma la animación en HTML y entrega el MP4.</td><td>Chat de Claude</td><td>Nada.</td><td>Tu cuenta de Claude.</td></tr>
+          <tr><td>Claude en el chat · edición</td><td>Recorta, pasa a vertical, subtitula y comprime videos que ya existen.</td><td>Chat de Claude</td><td>Nada.</td><td>Tu cuenta de Claude.</td></tr>
+          <tr><td>Remotion</td><td>Plantillas de video en código, para series con el mismo formato.</td><td>Claude Code</td><td>Claude Code o la app de escritorio, Node.js, el proyecto y las skills de Remotion.</td><td>Plan Pro, Max, Team o Enterprise. Licencia Company para empresas de 4 o más personas, desde US$100 por mes.</td></tr>
+          <tr><td>HyperFrames</td><td>La misma idea que Remotion, de código abierto.</td><td>Chat de Claude o Claude Code</td><td>En el chat, el conector de HeyGen. En Claude Code, Node.js 22 o posterior, FFmpeg y el plugin.</td><td>Sin costo por render en la versión local. El render en la nube usa una cuenta de HeyGen.</td></tr>
+          <tr><td>After Effects con Higgsfield</td><td>Claude arma composiciones en tu proyecto de After Effects y genera imágenes y video con IA.</td><td>After Effects y chat de Claude</td><td>After Effects 2025 (25.0) o posterior, el plugin de Higgsfield y su conector en Claude.</td><td>Adobe Creative Cloud y suscripción de Higgsfield. Cada generación descuenta créditos.</td></tr>
+          <tr><td>Conector de Adobe</td><td>Readapta videos a formatos de redes con Premiere, entre otras funciones. No incluye After Effects.</td><td>Chat de Claude</td><td>Nada en la computadora. Se conecta desde Claude.</td><td>Cuenta de Adobe opcional; con sesión iniciada hay más límite.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Datos verificados en octubre de 2026. Los precios y requisitos cambian: confirmalos en el sitio de cada herramienta antes de contratar. El detalle y las fuentes están en la <a href="descargas/comparativa-herramientas-video.xlsx" download>comparativa en Excel</a>.</p>
+  </div>
+</section>
+
+<section class="sec" id="formatos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Formatos</div>
+      <h2>Qué tamaño va en cada lugar</h2>
+    </div>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de formatos">
+      <table>
+        <thead><tr><th>Destino</th><th>Proporción</th><th>Tamaño en píxeles</th><th>Para tener en cuenta</th></tr></thead>
+        <tbody>
+          <tr><td>Instagram Reels e historias</td><td>9:16</td><td>1080 × 1920</td><td>Dejá libres la franja de arriba y la de abajo: ahí van los botones de la red.</td></tr>
+          <tr><td>YouTube Shorts</td><td>9:16</td><td>1080 × 1920</td><td>Mejor por debajo de un minuto.</td></tr>
+          <tr><td>Instagram feed</td><td>4:5</td><td>1080 × 1350</td><td>También admite cuadrado, 1080 × 1080.</td></tr>
+          <tr><td>LinkedIn</td><td>1:1 o 4:5</td><td>1080 × 1080 o 1080 × 1350</td><td>Ocupa más pantalla en el celular que el horizontal.</td></tr>
+          <tr><td>Web, YouTube y presentaciones</td><td>16:9</td><td>1920 × 1080</td><td>El formato de los videos institucionales e instructivos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Son los valores habituales. Las plataformas los cambian cada tanto.</p>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2>Antes de empezar</h2>
+    </div>
+    <details><summary>¿Necesito saber de video o de programación?</summary><p>No para la mayoría de los casos. Los saludos, los instructivos sueltos, las piezas para redes y las animaciones de PDF se piden en un chat de Claude, con el brief completo. Las series con plantilla y los videos institucionales sí necesitan a alguien con más experiencia.</p></details>
+    <details><summary>¿Qué es un archivo .md y qué hago con él?</summary><p>Es un archivo de texto simple. Lo descargás, lo abrís con cualquier editor de texto para completar la parte de "Datos del pedido", y lo adjuntás en el chat de Claude igual que adjuntarías un PDF. Si preferís, usá el botón Copiar y pegá el contenido directamente en el chat.</p></details>
+    <details><summary>¿Por qué tengo que adjuntar el manual de marca?</summary><p>Porque Claude no conoce nuestros colores, tipografías, logo ni tono si no se los das. Con el manual adjunto, el video sale con la identidad de QuartzSales desde el primer intento.</p></details>
+    <details><summary>¿Qué pasa si Claude no me devuelve un video?</summary><p>Para entregar un MP4, Claude necesita un chat donde pueda ejecutar código y crear archivos. Si te responde que no puede, o te devuelve solo código, avisale a Diseño para revisar qué tipo de chat estás usando.</p></details>
+    <details><summary>¿Por qué primero recibo una vista previa y no el video final?</summary><p>Porque el render en calidad final tarda. Mientras se ajusta la pieza, Claude muestra cuadros fijos o un borrador en baja calidad, que salen rápido. El video en calidad final se pide una sola vez, cuando la versión está aprobada. Con Remotion esto pesa todavía más, porque el render completo es el paso más lento.</p></details>
+    <details><summary>¿Puedo ponerle cualquier música?</summary><p>No en videos que se publican. Un tema comercial puede hacer que la red silencie o baje el video. Usá música con licencia, o pedile a Claude efectos de sonido generados para la pieza.</p></details>
+    <details><summary>¿Tengo que mostrarle el video a alguien antes de publicarlo?</summary><p>Si la pieza sale hacia afuera (redes, web, clientes), enviala a Diseño para su revisión antes de publicar. Para piezas internas alcanza con el checklist que trae cada brief.</p></details>
+    <details><summary>Mi caso no está en la lista. ¿Qué hago?</summary><p>Escribile a Diseño e indicá qué necesitás, para quién es y dónde se va a publicar. Si el caso se repite, lo sumamos como brief.</p></details>
+  </div>
+</section>
+</main>
+
+<footer><strong>Design Rebels · Video Lab</strong><span>Para QuartzSales y e·Saurio · Uso interno · Octubre 2026</span><a href="../../index.html">Volver al hub ↑</a></footer>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script type="application/json" id="docs">/*__DOCS__*/</script>
+<script>
+let DOCS = {}; try{ DOCS = JSON.parse(document.getElementById('docs').textContent) }catch(e){}
+const DIR = 'descargas/';
+const FILES = {
+  'marca-quartzsales-esaurio.md': {t:'Manual de marca · QuartzSales y e·Saurio', d:'Colores, tipografía, logo, tono y criterios para video.'},
+  'marca-psmob.md': {t:'Manual de marca · PSMob', d:'Colores, componentes y pantallas de la app, para mostrarla en un video.'},
+  'brief-saludo.md': {t:'Brief · Saludo o pieza única', d:'Fechas especiales, aniversarios y anuncios internos.'},
+  'brief-instructivo.md': {t:'Brief · Instructivo de una herramienta', d:'Un paso a paso con capturas de pantalla, hecho en el chat.'},
+  'brief-instructivo-serie.md': {t:'Brief · Serie de instructivos con plantilla', d:'Para quien mantiene la plantilla en Claude Code.'},
+  'brief-redes-adaptar.md': {t:'Brief · Adaptar un video para redes', d:'Recortar, pasar a vertical, subtitular y comprimir.'},
+  'brief-redes-pieza.md': {t:'Brief · Pieza nueva para redes', d:'Un dato, una novedad o una función, con texto y gráfica de marca.'},
+  'brief-institucional.md': {t:'Brief · Video institucional', d:'Guion, imágenes, pantallas de PSMob y armado, por etapas.'},
+  'brief-pdf-animado.md': {t:'Brief · Animación a partir de un PDF', d:'Un informe, un folleto o una presentación, en movimiento.'}
+};
+const CHAT_STEPS = (extra) => [
+  'Descargá el brief y el manual de marca.',
+  'Abrí el brief con un editor de texto y completá "Datos del pedido".',
+  'En un chat nuevo de Claude, adjuntá los archivos' + (extra ? ' ' + extra : '') + ' y enviá.',
+  'Revisá los cuadros de muestra que te devuelve y pedí los cambios.',
+  'Con la aprobación, descargá el MP4.'
+];
+const CHAT_WATCH = 'Si Claude te dice que no puede generar el MP4, ese chat no puede ejecutar código: avisale a Diseño.';
+
+const NEEDS = [
+  {id:'saludo', t:'Un saludo o pieza única', d:'Día de la Madre, un aniversario, un anuncio interno.', r:'saludo'},
+  {id:'instructivo', t:'Un instructivo', d:'Explicar paso a paso cómo se usa una herramienta.', q:'¿Cuántos vas a hacer?', opts:[
+    {t:'Uno solo, o es el primero', d:'Lo hacés vos en un chat, con capturas de pantalla.', r:'instructivo'},
+    {t:'Una serie con el mismo formato', d:'Conviene armar una plantilla una sola vez.', r:'instructivo-serie'}]},
+  {id:'redes', t:'Una pieza para redes', d:'Instagram, LinkedIn o Shorts de YouTube.', q:'¿De dónde partís?', opts:[
+    {t:'Ya tengo un video', d:'Hay que recortarlo, pasarlo a vertical o subtitularlo.', r:'redes-adaptar'},
+    {t:'Es una pieza nueva', d:'Un dato, una novedad o una función, con texto y gráfica.', r:'redes-pieza'}]},
+  {id:'institucional', t:'Un video institucional', d:'Para la web o una presentación comercial, con personas y la app.', q:'¿Tenés las imágenes de personas y lugares?', opts:[
+    {t:'Sí, hay filmación o stock', d:'Falta el guion, las pantallas de la app y el armado.', r:'institucional'},
+    {t:'No, hay que generarlas', d:'Se generan con IA y se terminan en After Effects.', r:'institucional-ia'}]},
+  {id:'pdf', t:'Animar un PDF', d:'Un informe, un folleto o una presentación, en movimiento.', r:'pdf'},
+  {id:'otro', t:'Otro tipo de video', d:'No coincide con ninguna de las opciones.', r:'otro'}
+];
+
+const RESULTS = {
+  'saludo': {title:'Saludo o pieza única', tool:'Claude en el chat', lead:'Lo pedís en un chat de Claude y te devuelve el MP4. Cada pieza es distinta, así que no hace falta plantilla.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS(),
+    files:['brief-saludo.md','marca-quartzsales-esaurio.md'],
+    watch:['Escribí los textos tal cual tienen que salir: Claude los usa sin cambiarlos.','No uses música comercial si el saludo se publica en redes.',CHAT_WATCH]},
+  'instructivo': {title:'Instructivo de una herramienta', tool:'Claude en el chat', lead:'Con una lista de pasos y una captura de pantalla por paso, Claude arma el video en el chat.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS('y las capturas'),
+    files:['brief-instructivo.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Tomá las capturas con la versión actual de la herramienta.','Ocultá o evitá los datos reales de clientes.','El manual de PSMob solo hace falta si el instructivo es de la app.',CHAT_WATCH]},
+  'instructivo-serie': {title:'Serie de instructivos con plantilla', tool:'Claude Code con Remotion', lead:'Una persona arma la plantilla una vez. Después, cada instructivo nuevo es cargar el título, los pasos y las capturas.',
+    where:'En Claude Code, dentro de una carpeta de proyecto.', install:['Claude Code o la app de escritorio de Claude.','Node.js.','El proyecto y las skills de Remotion.'],
+    cost:'Plan Pro, Max, Team o Enterprise de Claude. Licencia Company de Remotion desde US$100 por mes.',
+    steps:['Definí quién va a mantener la plantilla.','Resolvé la licencia de Remotion, o probá HyperFrames como alternativa sin costo.','Esa persona instala lo necesario y le pasa el brief a Claude Code con un instructivo de ejemplo.','Para cada video nuevo se copia la carpeta de ejemplo y se cambian los datos.','Se revisa con un borrador en baja calidad y, con la aprobación, se pide el render en calidad final.'],
+    files:['brief-instructivo-serie.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['El render en calidad final tarda: pedilo una sola vez, con la versión aprobada.','Remotion es pago para empresas de 4 o más personas. Confirmá el valor antes de empezar.','HyperFrames hace algo parecido sin licencia: conviene probarlo antes de decidir.','Si necesitás un solo instructivo, es más rápido la opción del chat.']},
+  'redes-adaptar': {title:'Adaptar un video para redes', tool:'Claude en el chat', lead:'Claude recorta el video, lo pasa a vertical o cuadrado, lo subtitula y lo deja liviano para subir.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.',
+    steps:['Descargá el brief.','Completá "Datos del pedido": para qué redes, qué tramo y si lleva subtítulos.','En un chat nuevo de Claude, adjuntá el brief y el video, y enviá.','Revisá el tramo y el reencuadre que te propone.','Descargá un archivo por formato.'],
+    files:['brief-redes-adaptar.md','marca-quartzsales-esaurio.md'],
+    watch:['Pasar de horizontal a vertical corta los costados: verificá que no queden textos ni caras cortados.','Si el video pesa mucho, puede que no se pueda adjuntar. Enviá una versión más liviana.','Revisá nombres y cifras en los subtítulos.','Si tenés cuenta de Adobe, el conector de Adobe también readapta formatos.']},
+  'redes-pieza': {title:'Pieza nueva para redes', tool:'Claude en el chat', lead:'Una animación corta con texto y gráfica de marca, pensada primero en vertical y derivada a los otros formatos.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS(),
+    files:['brief-redes-pieza.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Solo cifras y nombres que se puedan publicar.','Tiene que entenderse sin sonido.','El manual de PSMob solo hace falta si se ven pantallas de la app.',CHAT_WATCH]},
+  'institucional': {title:'Video institucional con material propio', tool:'Claude en el chat y, si hay, After Effects', lead:'Se hace por etapas: guion, pantallas de la app animadas y armado. Las imágenes de personas y lugares ya las tenés.',
+    where:'El guion, las pantallas y un armado simple, en un chat de Claude. La terminación fina, en After Effects o Premiere.', install:['Nada para el guion y las pantallas.','After Effects o Premiere, solo si alguien hace la terminación.'], cost:'Tu cuenta de Claude. Adobe Creative Cloud si se termina en After Effects.',
+    steps:['Descargá el brief y los dos manuales.','Empezá por el guion: adjuntá todo en un chat de Claude con "Datos del pedido" completo.','Con la lista de tomas aprobada, pedí las pantallas de PSMob animadas.','Armá el video: en el chat si son cortes y títulos, o pasale los clips a quien lo termine.'],
+    files:['brief-institucional.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Confirmá los derechos de la filmación, el stock, la música y la voz.','Las pantallas muestran solo funciones reales, con datos ficticios.','Un armado desde el chat sirve para cortes y títulos, no para terminación fina.']},
+  'institucional-ia': {title:'Video institucional con imágenes generadas', tool:'After Effects con Higgsfield', lead:'Las tomas de personas y lugares se generan con IA, y Claude trabaja dentro de tu proyecto de After Effects. Es el camino con más instalación y más revisión.',
+    where:'En After Effects, con Claude conectado por Higgsfield. El guion, antes, en un chat.', install:['After Effects 2025 (versión 25.0) o posterior.','El plugin de Higgsfield para After Effects.','El conector de Higgsfield, agregado en la configuración de Claude.'], cost:'Adobe Creative Cloud y suscripción de Higgsfield. Cada generación descuenta créditos.',
+    steps:['Descargá el brief y los dos manuales.','Hacé primero el guion y la lista de tomas en un chat de Claude.','Instalá el plugin de Higgsfield y conectalo a Claude.','Generá las tomas una por una y descartá las que no se vean naturales.','Pedí las pantallas de PSMob animadas y armá todo en After Effects.'],
+    files:['brief-institucional.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Los productos de góndola salen con marcas deformadas: usá planos donde no se lean.','Las personas cambian de una toma a otra: una persona por toma, o planos sin cara.','No generes productos ni logos de clientes o de terceros.','Las redes piden etiquetar el contenido realista hecho con IA.','Hacé una toma de prueba antes de comprometer una fecha.']},
+  'pdf': {title:'Animación a partir de un PDF', tool:'Claude en el chat', lead:'Claude lee el PDF, elige los mensajes más importantes con vos y los convierte en una pieza animada.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS('y el PDF'),
+    files:['brief-pdf-animado.md','marca-quartzsales-esaurio.md'],
+    watch:['Verificá que el PDF no tenga información confidencial antes de adjuntarlo.','Si es un escaneo, enviá una versión con texto seleccionable.','Revisá que las cifras del video coincidan con las del PDF.',CHAT_WATCH]},
+  'otro': {title:'Tu caso no está en la lista', tool:'Consultá con Diseño', lead:'Indicale a Diseño qué necesitás, para quién es y dónde se va a publicar. La tabla de herramientas resume qué hace cada una.',
+    where:'', install:[], cost:'', steps:[], files:['marca-quartzsales-esaurio.md'], watch:[]}
+};
+
+const body = document.getElementById('sel-body');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const li = a => a.map(x => `<li>${esc(x)}</li>`).join('');
+
+function fileRow(name, primary){
+  const f = FILES[name]; if(!f) return '';
+  const copy = DOCS[name] ? `<button class="btn btn-text" type="button" data-copy="${esc(name)}">Copiar</button>` : '';
+  return `<div class="file"><div class="file-info"><strong>${esc(f.t)}</strong><span>${esc(f.d)}</span><code>${esc(name)}</code></div>
+    <div class="file-actions"><a class="btn ${primary===true?'btn-primary':'btn-secondary'}" href="${DIR}${esc(name)}" download>Descargar</a>${copy}</div></div>`;
+}
+function optButtons(list, attr){
+  return `<div class="opts">` + list.map((o,i) => `<button class="opt" type="button" ${attr}="${i}"><strong>${esc(o.t)}</strong><span>${esc(o.d)}</span></button>`).join('') + `</div>`;
+}
+function showStart(focus){
+  body.innerHTML = `<div class="sel-head"><div><div class="eyebrow">Paso 1</div><h2 id="sel-title" tabindex="-1">Elegí el tipo de video</h2></div></div>` + optButtons(NEEDS,'data-need');
+  if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+  if(focus) document.getElementById('sel-title').focus();
+}
+function showQuestion(n){
+  body.innerHTML = `<div class="sel-head"><div><div class="eyebrow">Paso 2 · ${esc(n.t)}</div><h2 id="sel-title" tabindex="-1">${esc(n.q)}</h2></div>
+    <button class="linkbtn" type="button" data-back>← Volver</button></div>` + optButtons(n.opts,'data-opt');
+  body.dataset.need = n.id;
+  document.getElementById('sel-title').focus();
+}
+function showResult(id, focus){
+  const r = RESULTS[id]; if(!r) return showStart(false);
+  const facts = r.where ? `<div class="facts">
+      <div class="fact"><h3>Dónde se hace</h3><p>${esc(r.where)}</p></div>
+      <div class="fact"><h3>Qué instalar</h3>${r.install.length===1?`<p>${esc(r.install[0])}</p>`:`<ul>${li(r.install)}</ul>`}</div>
+      <div class="fact"><h3>Cuenta y costo</h3><p>${esc(r.cost)}</p></div></div>` : '';
+  const steps = r.steps.length ? `<div class="block"><h3>Cómo se hace</h3><ol class="steps">${li(r.steps)}</ol></div>` : '';
+  const files = r.files.length ? `<div class="block"><h3>${id==='otro'?'Material disponible':'Archivos para descargar'}</h3><div class="files">${r.files.map(n => fileRow(n, n.startsWith('brief-'))).join('')}</div></div>` : '';
+  const watch = r.watch.length ? `<div class="block watch"><h3>A tener en cuenta</h3><ul>${li(r.watch)}</ul></div>` : '';
+  body.innerHTML = `<div class="eyebrow">Recomendación</div>
+    <h2 class="res-title" id="sel-title" tabindex="-1">${esc(r.title)}</h2>
+    <p><span class="badge">${esc(r.tool)}</span></p>
+    <p class="res-lead" style="margin-top:12px">${esc(r.lead)}</p>
+    ${facts}${steps}${files}${watch}
+    <div class="res-foot"><button class="btn btn-text" type="button" data-restart>Empezar de nuevo</button>
+    <button class="btn btn-text" type="button" data-link>Copiar el link a este resultado</button>
+    ${id==='otro'?'<a class="btn btn-secondary" href="#herramientas">Ver las herramientas</a>':''}</div>`;
+  history.replaceState(null,'','#'+id);
+  if(focus){ document.getElementById('sel-title').focus({preventScroll:true}); const top = document.getElementById('selector').getBoundingClientRect().top; if(top < 0 || top > innerHeight * .45) window.scrollTo({top: scrollY + top - 16}); }
+}
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2200);
+}
+async function copyText(text, ok){
+  try{ await navigator.clipboard.writeText(text); toast(ok); }
+  catch(e){
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    let done = false; try{ done = document.execCommand('copy'); }catch(_){}
+    ta.remove(); toast(done ? ok : 'No se pudo copiar. Usá Descargar.');
+  }
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.need !== undefined){ const n = NEEDS[+b.dataset.need]; n.q ? showQuestion(n) : showResult(n.r, true); }
+  else if(b.dataset.opt !== undefined){ const n = NEEDS.find(x => x.id === body.dataset.need); showResult(n.opts[+b.dataset.opt].r, true); }
+  else if(b.hasAttribute('data-back') || b.hasAttribute('data-restart')){ showStart(true); }
+  else if(b.hasAttribute('data-link')){ copyText(location.href, 'Link copiado'); }
+  else if(b.dataset.copy){ copyText(DOCS[b.dataset.copy], 'Contenido copiado: pegalo en el chat de Claude'); }
+});
+
+document.getElementById('brand-cards').innerHTML = ['marca-quartzsales-esaurio.md','marca-psmob.md'].map(name => {
+  const f = FILES[name];
+  return `<div class="card"><h3>${esc(f.t)}</h3><p>${esc(f.d)}</p><code style="font-family:var(--mono);font-size:12.5px;color:var(--muted)">${esc(name)}</code>
+    <div class="file-actions"><a class="btn btn-secondary" href="${DIR}${esc(name)}" download>Descargar</a>${DOCS[name]?`<button class="btn btn-text" type="button" data-copy="${esc(name)}">Copiar</button>`:''}</div></div>`;
+}).join('');
+document.getElementById('all-files').innerHTML = Object.keys(FILES).filter(n => n.startsWith('brief-')).map(n => fileRow(n, false)).join('');
+
+const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if(RESULTS[id]){ showResult(id, false); return true } return false };
+if(!fromHash()) showStart(false);
+addEventListener('hashchange', fromHash);
+</script>
+</body>
+</html>
