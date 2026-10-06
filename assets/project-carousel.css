@@ -298,3 +298,6 @@
     transition: none !important;
   }
 }
+
+.project-carousel .project-side.yellow { background: var(--yellow); }
+.project-carousel .project-side.yellow .mini-pill { background: var(--ink); color: #fff; }

@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Corte, cámara, Clade · Design Rebels</title>
+<meta name="description" content="Video Lab de Design Rebels: qué herramienta usar para cada video, qué instalar y los briefs y manuales de marca (.md) para pedírselo a Claude.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#11111b; --paper:#f7f6f1; --line:#d9d7ce; --purple:#7025e0; --violet:#a172ff;
+  --yellow:#ffc21c; --coral:#ff6f61; --mint:#b8f7cf; --blue:#b9d8ff; --white:#fff;
+  --body:#3c3c48; --muted:#5b5b66; --shadow:0 28px 70px rgba(28,18,63,.13);
+  --font:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"Roboto Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);color:var(--body);background:var(--paper);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(18px,4vw,40px)}
+a{color:var(--purple)}
+h1,h2,h3{color:var(--ink);margin:0;text-wrap:balance}
+p{margin:0}
+.grid-bg{background-image:linear-gradient(to right,rgba(17,17,27,.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(17,17,27,.06) 1px,transparent 1px);background-size:72px 72px}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.eyebrow::before{content:"";width:10px;height:10px;background:var(--purple);border-radius:2px;flex:none}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px;border-radius:6px}
+.skip-link{position:fixed;left:16px;top:12px;z-index:99;transform:translateY(-150%);background:var(--ink);color:#fff;padding:12px 16px;border-radius:8px}
+.skip-link:focus{transform:none}
+
+/* header */
+.site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(18px,4vw,56px);background:rgba(247,246,241,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;font-weight:800;color:var(--ink)}
+.brand-mark{display:grid;place-items:center;width:42px;height:42px;background:var(--ink);color:#fff;border-radius:50%;font-size:13px}
+.header-cta{text-decoration:none;font-size:14px;font-weight:700;color:var(--ink);border:1px solid var(--ink);border-radius:999px;padding:11px 18px}
+.header-cta:hover{background:var(--ink);color:#fff}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--ink)}
+.hero-inner{max-width:1180px;margin:0 auto;padding:clamp(64px,8vw,110px) clamp(18px,4vw,40px) clamp(110px,10vw,140px);text-align:center;position:relative}
+.hero h1{font-size:clamp(46px,8vw,112px);font-weight:800;letter-spacing:-.055em;line-height:.96;margin-top:22px}
+.hero h1 em{font-style:normal;color:var(--purple)}
+.hero h1 .dot{color:var(--coral)}
+.hero .eyebrow{justify-content:center}
+.hero-quote{max-width:640px;margin:28px auto 0;font-size:clamp(17px,1.6vw,21px);line-height:1.6;color:var(--ink)}
+.hero-quote small{display:block;margin-top:8px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+.btn{font:inherit;font-weight:800;font-size:15px;border-radius:999px;min-height:48px;padding:0 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--ink);line-height:1.2;transition:transform .2s ease,background .2s ease,color .2s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:var(--purple);border-color:var(--purple)}
+.btn-secondary{background:var(--white);color:var(--ink)}
+.btn-secondary:hover{background:var(--yellow)}
+.btn-text{background:none;border-color:transparent;color:var(--ink);padding-inline:12px;text-decoration:underline;text-underline-offset:4px}
+.btn-text:hover{transform:none;color:var(--purple)}
+.float{position:absolute;color:#fff;font-weight:800;font-size:13px;padding:10px 14px;border-radius:6px;box-shadow:0 8px 20px rgba(0,0,0,.12);white-space:nowrap}
+.float.f1{top:14%;left:5%;background:var(--purple);transform:rotate(-4deg)}
+.float.f2{top:10%;right:7%;background:var(--coral);transform:rotate(3deg)}
+.float.f3{bottom:26%;left:8%;background:var(--ink);transform:rotate(2deg)}
+.float.f4{bottom:30%;right:9%;background:var(--yellow);color:var(--ink);transform:rotate(-3deg)}
+.ticker{overflow:hidden;border-block:1px solid var(--ink);background:var(--yellow)}
+.ticker-track{display:flex;align-items:center;width:max-content;gap:26px;padding:14px 0;font-size:14px;font-weight:800;color:var(--ink);animation:ticker 32s linear infinite}
+.ticker-track b{font-size:18px}
+@keyframes ticker{to{transform:translateX(-50%)}}
+
+/* selector */
+.selector{background:var(--white);border:2px solid var(--ink);box-shadow:var(--shadow);padding:clamp(20px,3vw,36px);margin-top:clamp(40px,5vw,64px);position:relative;z-index:2}
+.sel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.sel-head h2{font-size:clamp(26px,3vw,36px);font-weight:800;letter-spacing:-.04em;margin-top:8px}
+.linkbtn{background:none;border:0;padding:8px 4px;font:inherit;font-weight:800;color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+.linkbtn:hover{color:var(--purple)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:20px}
+.opt{font:inherit;text-align:left;background:var(--paper);border:1px solid var(--ink);padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:104px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.opt:nth-child(5n+1):hover{background:var(--mint)}
+.opt:nth-child(5n+2):hover{background:var(--yellow)}
+.opt:nth-child(5n+3):hover{background:var(--blue)}
+.opt:nth-child(5n+4):hover{background:#ffd0cc}
+.opt:nth-child(5n+5):hover{background:var(--violet)}
+.opt:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.opt strong{color:var(--ink);font-size:18px;font-weight:800;line-height:1.25;letter-spacing:-.02em}
+.opt span{color:var(--muted);font-size:14px;line-height:1.5}
+
+/* resultado */
+.badge{display:inline-block;background:var(--yellow);color:var(--ink);border:1px solid var(--ink);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+.res-title{font-size:clamp(30px,4.2vw,52px);font-weight:800;letter-spacing:-.05em;line-height:1;margin:10px 0 14px}
+.res-lead{font-size:18px;max-width:700px;line-height:1.6}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px}
+.fact{background:var(--paper);border:1px solid var(--ink);padding:16px 18px;min-width:0}
+.fact:nth-child(1){background:var(--mint)}
+.fact:nth-child(2){background:var(--blue)}
+.fact:nth-child(3){background:#ffd0cc}
+.fact h3{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-bottom:6px}
+.fact ul{margin:0;padding-left:18px}
+.fact li,.fact p{font-size:15px;line-height:1.5;color:var(--ink)}
+.block{margin-top:30px}
+.block>h3{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+.steps{margin:0;padding-left:0;display:grid;gap:8px;color:var(--ink);list-style:none;counter-reset:s}
+.steps li{counter-increment:s;display:flex;gap:14px;align-items:baseline}
+.steps li::before{content:counter(s,decimal-leading-zero);font-size:12px;font-weight:800;letter-spacing:.08em;flex:none;color:var(--purple)}
+.files{display:grid;gap:10px}
+.file{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;border:1px solid var(--ink);padding:14px 16px;background:var(--white)}
+.file-info{min-width:0;flex:1 1 280px}
+.file-info strong{display:block;color:var(--ink);font-weight:800;line-height:1.3}
+.file-info span{display:block;font-size:14px;color:var(--muted);line-height:1.45}
+.file-info code{font-family:var(--mono);font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.file-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.watch{background:var(--yellow);border:1px solid var(--ink);padding:18px 20px;color:var(--ink)}
+.watch h3{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.watch ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.res-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;padding-top:18px;border-top:1px solid var(--ink)}
+
+/* secciones */
+section.sec{padding:clamp(64px,8vw,110px) 0 0}
+.sec-head{max-width:720px;margin-bottom:28px}
+.sec-head h2{font-size:clamp(34px,4.6vw,64px);font-weight:800;letter-spacing:-.055em;line-height:.98;margin-top:14px}
+.sec-head p{margin-top:14px;font-size:18px;line-height:1.65}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.card{border:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;gap:10px;min-width:0;min-height:230px}
+.card:nth-child(1){background:var(--mint)}
+.card:nth-child(2){background:var(--blue)}
+.card h3{font-size:clamp(22px,2.2vw,30px);font-weight:800;letter-spacing:-.04em;line-height:1.1}
+.card p{font-size:15px;color:var(--ink)}
+.card .file-actions{margin-top:auto;padding-top:10px}
+.tablewrap{overflow-x:auto;border:1px solid var(--ink);background:var(--white)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14.5px}
+th{background:var(--ink);color:#fff;text-align:left;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px;white-space:nowrap}
+td{padding:14px;vertical-align:top;border-top:1px solid var(--line);color:var(--body);line-height:1.5}
+tbody tr:nth-child(even) td{background:var(--paper)}
+td:first-child{font-weight:800;color:var(--ink)}
+.note{font-size:14px;color:var(--muted);margin-top:12px}
+details{background:var(--white);border:1px solid var(--ink);padding:0 20px}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-weight:800;color:var(--ink);padding:18px 0;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:24px;line-height:1;color:var(--purple);flex:none}
+details[open] summary::after{content:"–"}
+details[open]{background:var(--mint)}
+details p{padding:0 0 18px;max-width:720px;color:var(--ink)}
+footer{margin-top:clamp(72px,9vw,120px);border-top:1px solid var(--ink);padding:28px clamp(18px,5vw,72px);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;font-size:14px}
+footer a{text-decoration:none;font-weight:800;color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;box-shadow:var(--shadow);z-index:30}
+[hidden]{display:none!important}
+@media (max-width:760px){
+  .float.f3,.float.f4{display:none}
+  .float.f1{top:7%;left:4%}.float.f2{top:7%;right:4%}
+  .hero-inner{padding-top:96px;padding-bottom:80px}
+  .site-header .header-cta{padding:10px 14px}
+}
+@media (max-width:560px){
+  .file-actions,.file-actions .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.opt,.btn{transition:none}.ticker-track{animation:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#selector">Saltar al selector</a>
+
+<header class="site-header">
+  <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub"><span class="brand-mark" aria-hidden="true">DR</span><span>Design Rebels</span></a>
+  <a class="header-cta" href="#selector">Pedir un video</a>
+</header>
+
+<section class="hero grid-bg">
+  <div class="hero-inner">
+    <span class="float f1" aria-hidden="true">Escena 01 · Toma 1</span>
+    <span class="float f2" aria-hidden="true">9:16</span>
+    <span class="float f3" aria-hidden="true">.md</span>
+    <span class="float f4" aria-hidden="true">MP4 ▶</span>
+    <p class="eyebrow">Design Rebels · Video Lab</p>
+    <h1>Corte, cámara, <em>Clade</em><span class="dot">.</span></h1>
+    <p class="hero-quote">Elegí qué video necesitás y te decimos con qué herramienta hacerlo, qué instalar y qué .md adjuntar. Porque la vida es como una caja de .md: nunca sabés qué te va a salir… salvo que leas el brief.<small>Y no reparamos en tokens.</small></p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#selector">Elegir mi video ↓</a>
+      <a class="btn btn-secondary" href="#briefs">Ver los briefs</a>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">
+    <span>Luces</span><b>✦</b><span>Cámara</span><b>✦</b><span>Clade</span><b>✦</b><span>No reparamos en tokens</span><b>✦</b><span>Una caja de .md</span><b>✦</b><span>Toma 1, aprobada</span><b>✦</b>
+    <span>Luces</span><b>✦</b><span>Cámara</span><b>✦</b><span>Clade</span><b>✦</b><span>No reparamos en tokens</span><b>✦</b><span>Una caja de .md</span><b>✦</b><span>Toma 1, aprobada</span><b>✦</b>
+  </div></div>
+</section>
+
+<main>
+<div class="wrap">
+  <section class="selector" id="selector" aria-labelledby="sel-title">
+    <div id="sel-body" aria-live="polite"></div>
+  </section>
+</div>
+
+<section class="sec" id="marca">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Manuales de marca</div>
+      <h2>Identidad de marca para video</h2>
+      <p>Son archivos de texto que se adjuntan en el chat de Claude junto con el brief. Claude los lee y aplica colores, tipografía, logo y tono. Sí, la caja de .md.</p>
+    </div>
+    <div class="cards" id="brand-cards"></div>
+  </div>
+</section>
+
+<section class="sec" id="briefs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Briefs</div>
+      <h2>Todos los briefs</h2>
+      <p>Cada brief trae los datos del pedido para completar y las instrucciones para Claude. Si ya sabés cuál necesitás, descargalo desde acá.</p>
+    </div>
+    <div class="files" id="all-files"></div>
+  </div>
+</section>
+
+<section class="sec" id="herramientas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Herramientas</div>
+      <h2>Qué hace cada una y qué hay que instalar</h2>
+      <p>Para la mayoría de los videos alcanza con un chat de Claude y no se instala nada. Lo demás es para series, terminación fina o imágenes generadas.</p>
+    </div>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de herramientas">
+      <table>
+        <thead><tr><th>Herramienta</th><th>Qué hace</th><th>Dónde se usa</th><th>Qué instalar</th><th>Cuenta y costo</th></tr></thead>
+        <tbody>
+          <tr><td>Claude en el chat · animación</td><td>Arma la animación en HTML y entrega el MP4.</td><td>Chat de Claude</td><td>Nada.</td><td>Tu cuenta de Claude.</td></tr>
+          <tr><td>Claude en el chat · edición</td><td>Recorta, pasa a vertical, subtitula y comprime videos que ya existen.</td><td>Chat de Claude</td><td>Nada.</td><td>Tu cuenta de Claude.</td></tr>
+          <tr><td>Remotion</td><td>Plantillas de video en código, para series con el mismo formato.</td><td>Claude Code</td><td>Claude Code o la app de escritorio, Node.js, el proyecto y las skills de Remotion.</td><td>Plan Pro, Max, Team o Enterprise. Licencia Company para empresas de 4 o más personas, desde US$100 por mes.</td></tr>
+          <tr><td>HyperFrames</td><td>La misma idea que Remotion, de código abierto.</td><td>Chat de Claude o Claude Code</td><td>En el chat, el conector de HeyGen. En Claude Code, Node.js 22 o posterior, FFmpeg y el plugin.</td><td>Sin costo por render en la versión local. El render en la nube usa una cuenta de HeyGen.</td></tr>
+          <tr><td>After Effects con Higgsfield</td><td>Claude arma composiciones en tu proyecto de After Effects y genera imágenes y video con IA.</td><td>After Effects y chat de Claude</td><td>After Effects 2025 (25.0) o posterior, el plugin de Higgsfield y su conector en Claude.</td><td>Adobe Creative Cloud y suscripción de Higgsfield. Cada generación descuenta créditos.</td></tr>
+          <tr><td>Conector de Adobe</td><td>Readapta videos a formatos de redes con Premiere, entre otras funciones. No incluye After Effects.</td><td>Chat de Claude</td><td>Nada en la computadora. Se conecta desde Claude.</td><td>Cuenta de Adobe opcional; con sesión iniciada hay más límite.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Datos verificados en octubre de 2026. Los precios y requisitos cambian: confirmalos en el sitio de cada herramienta antes de contratar. El detalle y las fuentes están en la <a href="descargas/comparativa-herramientas-video.xlsx" download>comparativa en Excel</a>.</p>
+  </div>
+</section>
+
+<section class="sec" id="formatos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Formatos</div>
+      <h2>Qué tamaño va en cada lugar</h2>
+    </div>
+    <div class="tablewrap" tabindex="0" role="region" aria-label="Tabla de formatos">
+      <table>
+        <thead><tr><th>Destino</th><th>Proporción</th><th>Tamaño en píxeles</th><th>Para tener en cuenta</th></tr></thead>
+        <tbody>
+          <tr><td>Instagram Reels e historias</td><td>9:16</td><td>1080 × 1920</td><td>Dejá libres la franja de arriba y la de abajo: ahí van los botones de la red.</td></tr>
+          <tr><td>YouTube Shorts</td><td>9:16</td><td>1080 × 1920</td><td>Mejor por debajo de un minuto.</td></tr>
+          <tr><td>Instagram feed</td><td>4:5</td><td>1080 × 1350</td><td>También admite cuadrado, 1080 × 1080.</td></tr>
+          <tr><td>LinkedIn</td><td>1:1 o 4:5</td><td>1080 × 1080 o 1080 × 1350</td><td>Ocupa más pantalla en el celular que el horizontal.</td></tr>
+          <tr><td>Web, YouTube y presentaciones</td><td>16:9</td><td>1920 × 1080</td><td>El formato de los videos institucionales e instructivos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Son los valores habituales. Las plataformas los cambian cada tanto.</p>
+  </div>
+</section>
+
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Preguntas frecuentes</div>
+      <h2>Antes de empezar</h2>
+    </div>
+    <details><summary>¿Necesito saber de video o de programación?</summary><p>No para la mayoría de los casos. Los saludos, los instructivos sueltos, las piezas para redes y las animaciones de PDF se piden en un chat de Claude, con el brief completo. Las series con plantilla y los videos institucionales sí necesitan a alguien con más experiencia.</p></details>
+    <details><summary>¿Qué es un archivo .md y qué hago con él?</summary><p>Es un archivo de texto simple. Lo descargás, lo abrís con cualquier editor de texto para completar la parte de "Datos del pedido", y lo adjuntás en el chat de Claude igual que adjuntarías un PDF. Si preferís, usá el botón Copiar y pegá el contenido directamente en el chat.</p></details>
+    <details><summary>¿Por qué tengo que adjuntar el manual de marca?</summary><p>Porque Claude no conoce nuestros colores, tipografías, logo ni tono si no se los das. Con el manual adjunto, el video sale con la identidad de QuartzSales desde el primer intento.</p></details>
+    <details><summary>¿Qué pasa si Claude no me devuelve un video?</summary><p>Para entregar un MP4, Claude necesita un chat donde pueda ejecutar código y crear archivos. Si te responde que no puede, o te devuelve solo código, avisale a Diseño para revisar qué tipo de chat estás usando.</p></details>
+    <details><summary>¿Por qué primero recibo una vista previa y no el video final?</summary><p>Porque el render en calidad final tarda. Mientras se ajusta la pieza, Claude muestra cuadros fijos o un borrador en baja calidad, que salen rápido. El video en calidad final se pide una sola vez, cuando la versión está aprobada. Con Remotion esto pesa todavía más, porque el render completo es el paso más lento.</p></details>
+    <details><summary>¿Puedo ponerle cualquier música?</summary><p>No en videos que se publican. Un tema comercial puede hacer que la red silencie o baje el video. Usá música con licencia, o pedile a Claude efectos de sonido generados para la pieza.</p></details>
+    <details><summary>¿Tengo que mostrarle el video a alguien antes de publicarlo?</summary><p>Si la pieza sale hacia afuera (redes, web, clientes), enviala a Diseño para su revisión antes de publicar. Para piezas internas alcanza con el checklist que trae cada brief.</p></details>
+    <details><summary>Mi caso no está en la lista. ¿Qué hago?</summary><p>Escribile a Diseño e indicá qué necesitás, para quién es y dónde se va a publicar. Si el caso se repite, lo sumamos como brief.</p></details>
+  </div>
+</section>
+</main>
+
+<footer><strong>Design Rebels · Video Lab</strong><span>Para QuartzSales y e·Saurio · Uso interno · Octubre 2026</span><a href="../../index.html">Volver al hub ↑</a></footer>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script type="application/json" id="docs">{"brief-institucional.md": "# Brief · Video institucional\n\nPara videos de la web o de presentaciones comerciales: quiénes somos, qué resuelve el producto, cómo se ve PSMob en uso. Suelen combinar imágenes de personas y lugares con pantallas de la app.\n\n**Cómo usarlo:** este video se hace por etapas. Empezá por el guion en un chat de Claude, adjuntando este archivo, `marca-quartzsales-esaurio.md` y, si aparece la app, `marca-psmob.md`.\n\n---\n\n## Datos del pedido\n\n- **Para qué es el video:** (página de inicio / página de producto / presentación comercial)\n- **Mensaje principal, en una frase:**\n- **A quién le habla:**\n- **Qué tiene que mostrar:** (personas en góndola, promotores, pantallas de PSMob, resultados)\n- **Funciones de PSMob que aparecen:**\n- **Duración:** (30 a 60 segundos es lo habitual)\n- **Imágenes de personas y lugares:** (tenemos filmación / tenemos stock / hay que generarlas)\n- **Voz en off:** (sí / no)\n- **Quién hace la terminación:** (sin terminación, sale del chat / una persona con After Effects o Premiere)\n\n---\n\n## Las cuatro etapas\n\n| Etapa | Con qué | Qué sale |\n|---|---|---|\n| 1. Guion y lista de tomas | Chat de Claude | Guion, texto en pantalla y toma por toma |\n| 2. Imágenes de personas y lugares | Filmación, stock o IA generativa | Clips de video |\n| 3. Pantallas de PSMob animadas | Chat de Claude | Clips de la app en uso |\n| 4. Armado y terminación | Chat de Claude o After Effects | El video final |\n\n### Si hay que generar las imágenes con IA\n\nSe hace con Higgsfield, que además conecta a Claude con After Effects.\n\n| Qué instalar | Notas |\n|---|---|\n| After Effects 2025 (versión 25.0) o posterior | Con Adobe Creative Cloud |\n| Plugin de Higgsfield para After Effects | Instalador para Mac o Windows, desde el sitio de Higgsfield |\n| Conector de Higgsfield en Claude | Se agrega como conector personalizado, desde la configuración de Claude |\n| Suscripción de Higgsfield | Cada generación descuenta créditos |\n\nCuidados con las imágenes generadas:\n\n- **Productos de góndola:** las marcas y etiquetas suelen salir deformadas. Usá planos donde no se lean, o desenfocalos.\n- **Personas:** cambian de una toma a otra. Usá una persona distinta por toma, o planos sin cara.\n- **Marcas reales:** no generes productos ni logos de clientes o de terceros.\n- **Aviso:** las redes piden etiquetar el contenido realista generado con IA. Marcalo al publicar.\n- Revisá cada toma una por una. Las tomas que no se vean naturales se descartan.\n\n---\n\n## Instrucciones para Claude\n\nVas a acompañar la producción de un video institucional por etapas. No intentes resolver todo en un solo paso.\n\n**Etapa 1 · Guion**\n\n- Leé los manuales adjuntos. Si falta el mensaje principal o el destino, preguntá eso primero.\n- Escribí un guion corto en rioplatense, con el tono del manual: cercano, claro y sin grandilocuencia.\n- Entregá una lista de tomas con: número, duración, qué se ve, texto en pantalla y de dónde sale la imagen (filmación, stock, IA o pantalla animada).\n- No inventes cifras, clientes ni funciones del producto.\n\n**Etapa 2 · Imágenes**\n\n- Si se generan con IA, escribí la descripción de cada toma: encuadre, luz, acción y qué no tiene que aparecer (marcas legibles, texto, caras en primer plano).\n- Indicá con claridad lo que la IA no resuelve bien y proponé un plano alternativo.\n- Si hay filmación o stock, indicá qué tramo de cada clip sirve para cada toma.\n\n**Etapa 3 · Pantallas de PSMob**\n\n- Recreá las pantallas siguiendo `marca-psmob.md`, dentro de un marco de celular neutro.\n- Solo funciones reales, con datos ficticios y verosímiles.\n- Una acción por clip, con acercamiento a la zona donde pasa. Entregá cada clip como MP4.\n\n**Etapa 4 · Armado**\n\n- Si lo arma una persona en After Effects o Premiere, entregá los clips sueltos, los textos y el orden. Si Higgsfield está conectado, podés armar la composición en el proyecto de After Effects para que la terminen ahí.\n- Si sale del chat, uní los clips con cortes simples, sumá títulos y placa de cierre según el manual, y exportá en MP4 H.264 a 1920×1080.\n- Avisá que un armado desde el chat sirve para cortes y títulos, no para una terminación fina de color y sonido.\n\n**Qué entregar en cada etapa**\n\n- El resultado de esa etapa y qué falta para la siguiente.\n- Qué decidiste por tu cuenta y qué no pudiste revisar.\n\n---\n\n## Checklist antes de publicar\n\n- [ ] El mensaje principal se entiende en los primeros segundos.\n- [ ] No hay marcas de terceros ni productos de clientes generados con IA.\n- [ ] Las personas y los lugares se ven naturales en todas las tomas.\n- [ ] Las pantallas de PSMob muestran funciones reales y datos ficticios.\n- [ ] Hay derechos sobre la filmación, el stock, la música y la voz.\n- [ ] Si hay contenido generado con IA, está etiquetado donde la red lo pide.\n- [ ] Lo aprobó Diseño.\n", "brief-instructivo-serie.md": "# Brief · Serie de instructivos con plantilla\n\nPara cuando hay que hacer varios instructivos con el mismo formato. Se arma una plantilla una vez y después cada video nuevo es solo cargar datos.\n\n**Para quién es:** para la persona que va a mantener la plantilla. Necesita Claude Code y manejarse con una carpeta de proyecto. Quien solo necesita un instructivo suelto usa `brief-instructivo.md`.\n\n---\n\n## Qué hay que tener instalado\n\n| Qué | Para qué | Notas |\n|---|---|---|\n| Claude Code (o la app de escritorio de Claude) | Trabajar dentro de la carpeta del proyecto | Requiere plan Pro, Max, Team o Enterprise |\n| Node.js | Correr el proyecto de video | Versión LTS actual |\n| Remotion | Convertir la plantilla en video | Se instala al crear el proyecto |\n| Skills de Remotion | Que Claude siga las buenas prácticas de Remotion | `npx skills add remotion-dev/skills` |\n\n**Licencia de Remotion:** es gratis para personas y empresas de hasta 3 personas. Una empresa de 4 o más necesita la licencia Company, desde US$100 por mes. Confirmá el valor en remotion.pro/license antes de empezar.\n\n**Alternativa sin licencia:** HyperFrames, de código abierto. Pide Node.js 22 o posterior y FFmpeg, y se instala en Claude Code con `claude plugin marketplace add heygen-com/hyperframes` y `claude plugin install hyperframes@hyperframes`. Conviene hacer una prueba corta antes de decidir.\n\n---\n\n## Datos del pedido (para armar la plantilla, una sola vez)\n\n- **Nombre de la serie:**\n- **Herramienta o producto:**\n- **Formato principal:** (horizontal 16:9) y derivados (vertical 9:16)\n- **Qué se repite en todos:** (apertura, numeración de pasos, cierre)\n- **Qué cambia en cada uno:** (título, pasos, capturas o grabaciones de pantalla)\n- **Instructivo de ejemplo para construirla:** adjuntá pasos y capturas de uno real.\n\n---\n\n## Instrucciones para Claude\n\nVas a construir una plantilla de video reutilizable y a dejarla lista para que cada instructivo nuevo se haga cargando datos.\n\n**Preparación**\n\n- Leé el manual de marca y, si la serie es de PSMob, también `marca-psmob.md`.\n- Creá el proyecto con `npx create-video@latest` y usá las skills de Remotion (`/remotion-best-practices` como punto de partida).\n- Avisá si la licencia de Remotion todavía no está resuelta: es una decisión de la empresa, no técnica.\n\n**Plantilla**\n\n- Una composición `Instructivo` que reciba todos sus datos por parámetros.\n- Tres bloques: `Apertura`, `Paso` y `Cierre`.\n- Cada `Paso` admite una captura o una grabación de pantalla, una zona de foco para el acercamiento y un texto corto.\n- Colores, tipografías y logo en un único archivo de marca, tomados del manual. Nada de valores sueltos en los componentes.\n- La duración de cada paso se calcula a partir del largo del texto, con un mínimo.\n- Una segunda composición vertical que reutilice los mismos bloques.\n\n**Borrador y render final**\n\n- El render en calidad final es el paso más lento. Mientras el video se está ajustando, no lo hagas: cada cambio lo dejaría desactualizado.\n- Para revisar, usá la vista previa de Remotion Studio o un borrador en baja calidad, a la mitad de resolución y con más compresión. Por ejemplo, sumando `--scale=0.5 --crf=30` al comando de render.\n- Entregá el borrador aclarando que es un borrador y pedí la aprobación.\n- Con la versión aprobada, hacé un único render en calidad final.\n\n**Datos de cada instructivo**\n\nUna carpeta por video, por ejemplo `instructivos/gestor-de-pedidos/`, con:\n\n```json\n{\n  \"titulo\": \"Cómo cargar un pedido\",\n  \"herramienta\": \"Gestor de pedidos\",\n  \"pasos\": [\n    {\n      \"titulo\": \"Elegí el cliente\",\n      \"texto\": \"Buscalo por nombre o por código.\",\n      \"media\": \"paso-1.png\",\n      \"foco\": { \"x\": 0.12, \"y\": 0.20, \"ancho\": 0.40, \"alto\": 0.18 }\n    }\n  ],\n  \"cierre\": \"Listo: el pedido ya quedó cargado.\"\n}\n```\n\n**Cómo se usa después**\n\n- Para un video nuevo: copiar la carpeta de ejemplo y cambiar el archivo de datos y las capturas.\n- Revisar con un borrador en baja calidad y, con la aprobación, renderizar en calidad final.\n- Dejá escrito en un `LEEME.md` el comando de vista previa, el de borrador en baja, el de render final y cómo sumar un paso.\n\n**Qué entregar**\n\n- El proyecto funcionando con el instructivo de ejemplo renderizado.\n- El `LEEME.md` para quien haga el próximo video.\n- Lo que no pudiste verificar.\n\n---\n\n## Checklist de la plantilla\n\n- [ ] Un instructivo nuevo se hace sin tocar el código, solo datos y capturas.\n- [ ] Colores, tipografía y logo salen del manual de marca.\n- [ ] Hay versión horizontal y vertical.\n- [ ] El `LEEME.md` explica cómo sacar un borrador y cómo hacer el render final.\n- [ ] El render final se hace una sola vez, con la versión aprobada.\n- [ ] La licencia de Remotion está resuelta, o se eligió HyperFrames.\n", "brief-instructivo.md": "# Brief · Instructivo de una herramienta (uno solo)\n\nPara explicar paso a paso cómo se usa una herramienta o una función, cuando es un video suelto o el primero de su tipo.\n\n**Cómo usarlo:** completá \"Datos del pedido\", abrí un chat nuevo de Claude, adjuntá este archivo, el manual de marca y las capturas de pantalla, y enviá. No hace falta instalar nada.\n\nSi vas a hacer varios instructivos con el mismo formato, conviene el brief `brief-instructivo-serie.md`.\n\n---\n\n## Datos del pedido\n\n- **Herramienta o función que se explica:**\n- **A quién le habla:** (clientes / equipo interno / promotores)\n- **Qué tiene que poder hacer la persona al terminar de verlo:**\n- **Pasos, en orden** (una línea por paso):\n  1.\n  2.\n  3.\n- **Capturas adjuntas:** una por paso, nombradas `paso-1.png`, `paso-2.png`…\n- **Dónde hay que hacer clic o mirar en cada captura:**\n- **Formato:** (horizontal 16:9 / vertical 9:16)\n- **Duración aproximada:** (60 a 90 segundos es lo habitual)\n- **Voz o solo texto en pantalla:**\n- **Es de PSMob:** (sí / no). Si es sí, adjuntá también `marca-psmob.md`.\n\n---\n\n## Instrucciones para Claude\n\nVas a hacer un video instructivo corto a partir de capturas de pantalla y una lista de pasos.\n\n**Antes de empezar**\n\n- Leé el manual de marca adjunto. Si el instructivo es de PSMob, lo que está dentro de la pantalla sigue `marca-psmob.md` y lo que la rodea sigue el manual de QuartzSales.\n- Revisá que haya una captura por paso. Si falta alguna o no se entiende dónde va el foco, preguntá.\n- No inventes pasos, botones ni pantallas que no estén en las capturas.\n\n**Estructura del video**\n\n1. **Apertura** (3 a 4 segundos): fondo oscuro de marca, nombre de la herramienta y qué se va a aprender.\n2. **Un bloque por paso:** número y título del paso, la captura, un acercamiento a la zona donde pasa la acción y un resaltado del clic o del dato.\n3. **Cierre** (3 a 4 segundos): resumen en una línea y logo.\n\n**Criterios**\n\n- Un paso, una idea. Si un paso tiene dos acciones, partilo en dos.\n- El texto de las capturas suele ser chico: acercá la imagen hasta que se lea en un celular.\n- Marcá el clic con un círculo o un recuadro en el violeta de marca, no con flechas grandes.\n- Texto en pantalla corto, en imperativo y en rioplatense: \"Elegí el cliente\", \"Confirmá el pedido\".\n- Cada paso queda en pantalla lo suficiente para leerlo dos veces.\n- Si las capturas muestran datos reales de clientes, avisá antes de seguir y ofrecé taparlos.\n\n**Cómo producirlo**\n\n- Animación en HTML/SVG dibujada cuadro a cuadro, capturada con un navegador sin interfaz y unida con ffmpeg en MP4 H.264.\n- Mostrá primero dos cuadros fijos (la apertura y un paso) para aprobar el estilo. Después renderizá todo.\n\n**Qué entregar**\n\n- El MP4, con duración y peso.\n- El guion paso a paso que quedó, para reutilizarlo como texto de ayuda.\n- Qué decidiste por tu cuenta y qué no pudiste revisar.\n\n---\n\n## Checklist antes de publicar\n\n- [ ] Los pasos están en el orden correcto y no falta ninguno.\n- [ ] Las pantallas son las de la versión actual de la herramienta.\n- [ ] No se ven datos reales de clientes.\n- [ ] Todo se lee en un celular.\n- [ ] Si sale hacia afuera, lo revisó Diseño.\n", "brief-pdf-animado.md": "# Brief · Animación a partir de un PDF\n\nPara convertir un PDF (un informe, un folleto, una presentación, una hoja de producto) en una pieza animada más llamativa.\n\n**Cómo usarlo:** completá \"Datos del pedido\", abrí un chat nuevo de Claude, adjuntá este archivo, el PDF y `marca-quartzsales-esaurio.md`, y enviá. No hace falta instalar nada.\n\n---\n\n## Datos del pedido\n\n- **PDF adjunto:** (nombre del archivo)\n- **Qué querés destacar:** (todo resumido / estas páginas: __ / estos datos: __)\n- **Para qué es:** (redes / web / reunión comercial / interno)\n- **Formato:** (horizontal 16:9 / vertical 9:16 / cuadrado 1:1)\n- **Duración:** (20 a 45 segundos es lo habitual)\n- **El PDF ya tiene diseño de marca:** (sí, respetalo / no, aplicá el manual)\n- **Hay datos que no se pueden mostrar:**\n\n---\n\n## Instrucciones para Claude\n\nVas a convertir un PDF en una pieza animada. El objetivo no es pasar las páginas una por una, sino contar lo importante con movimiento.\n\n**Antes de empezar**\n\n- Leé el PDF completo. Si es un escaneo y el texto no se puede leer bien, avisá y pedí una versión con texto seleccionable.\n- Si no se indica qué destacar, proponé de 3 a 5 mensajes y esperá la aprobación.\n- Si el PDF parece confidencial (precios, clientes, datos personales), preguntá qué se puede mostrar antes de seguir.\n\n**Cómo pensarlo**\n\n- Una idea por pantalla. Un PDF tiene mucho más texto del que entra en un video.\n- Convertí los datos en movimiento: una cifra que sube, una barra que crece, una lista que aparece de a un ítem.\n- Reutilizá del PDF lo que ya funciona: gráficos, fotos, íconos. Extraelos como imagen y animalos con acercamientos y resaltados.\n- Si el PDF ya tiene diseño de marca, mantené su estilo. Si no, aplicá el manual adjunto.\n- Usá las cifras y los nombres exactamente como están en el PDF. No redondees ni reescribas sin avisar.\n\n**Estructura**\n\n1. **Apertura:** título del documento o su idea principal.\n2. **Desarrollo:** los mensajes elegidos, uno por pantalla.\n3. **Cierre:** conclusión o llamado a la acción, y logo.\n\n**Cómo producirlo**\n\n- Animación en HTML/SVG dibujada cuadro a cuadro, capturada con un navegador sin interfaz y unida con ffmpeg en MP4 H.264.\n- Mostrá primero dos cuadros fijos para aprobar el estilo. Después renderizá todo.\n\n**Qué entregar**\n\n- El MP4, con duración y peso.\n- La lista de mensajes que usaste y de qué página salió cada uno.\n- Lo que quedó afuera, por si quieren una segunda pieza.\n\n---\n\n## Checklist antes de publicar\n\n- [ ] Las cifras coinciden con las del PDF.\n- [ ] No se muestra nada confidencial.\n- [ ] Cada pantalla tiene una sola idea y se llega a leer.\n- [ ] El estilo respeta el del PDF o el manual de marca.\n- [ ] Si sale hacia afuera, lo revisó Diseño.\n", "brief-redes-adaptar.md": "# Brief · Adaptar un video que ya existe para redes\n\nPara cuando el video ya está hecho y hay que recortarlo, pasarlo a vertical o cuadrado, subtitularlo o achicarlo para Instagram, LinkedIn o YouTube Shorts.\n\n**Cómo usarlo:** completá \"Datos del pedido\", abrí un chat nuevo de Claude, adjuntá este archivo y el video, y enviá. No hace falta instalar nada.\n\n---\n\n## Datos del pedido\n\n- **Video adjunto:** (nombre del archivo)\n- **Para qué redes:** (Instagram Reels / Instagram feed / LinkedIn / YouTube Shorts)\n- **Qué tramo usar:** (todo / del segundo __ al __ / \"elegí vos lo mejor\")\n- **Duración máxima:**\n- **Subtítulos:** (sí / no). Si es sí, pegá el texto o pedí que se transcriba.\n- **Texto de apertura o de cierre a sumar:**\n- **Logo al final:** (sí / no)\n\n---\n\n## Formatos habituales\n\n| Destino | Proporción | Tamaño |\n|---|---|---|\n| Instagram Reels e historias, YouTube Shorts | 9:16 | 1080 × 1920 |\n| Instagram feed | 4:5 | 1080 × 1350 |\n| LinkedIn feed | 1:1 o 4:5 | 1080 × 1080 o 1080 × 1350 |\n| Web, YouTube, presentaciones | 16:9 | 1920 × 1080 |\n\nLas plataformas cambian estos valores cada tanto. Si algo no encaja al subirlo, revisá la ayuda de la red.\n\n---\n\n## Instrucciones para Claude\n\nVas a adaptar un video existente a uno o más formatos de redes, sin rehacerlo.\n\n**Antes de empezar**\n\n- Mirá el video adjunto: duración, tamaño, si tiene audio y si tiene texto en pantalla.\n- Si no se indica qué tramo usar, proponé uno y esperá la aprobación antes de exportar.\n- Si el archivo no se puede abrir o pesa demasiado, decilo y pedí una versión más liviana.\n\n**Reencuadre**\n\n- Pasar de horizontal a vertical corta los costados. Revisá que no queden textos ni caras cortados.\n- Si el recorte rompe la imagen, usá la alternativa: el video completo centrado sobre un fondo de marca (`#130D5D`), con título arriba y subtítulos abajo.\n- En vertical, dejá libres la franja de arriba y la de abajo: ahí las redes ponen sus botones y textos.\n\n**Subtítulos**\n\n- Quemados en la imagen, en Nunito 700, blancos con fondo oscuro semitransparente.\n- Dos líneas como máximo, cortadas por sentido y no por largo.\n- Si transcribís vos, marcá las palabras dudosas para que las revisen: nombres propios, marcas, cifras.\n\n**Exportación**\n\n- MP4 H.264 con audio AAC, formato de píxel yuv420p e inicio rápido.\n- Un archivo por formato, con el destino en el nombre: `nombre-reels-9x16.mp4`, `nombre-linkedin-1x1.mp4`.\n- Buscá un peso razonable para subir desde el celular sin que se note pérdida de calidad.\n\n**Qué entregar**\n\n- Los archivos, con duración y peso de cada uno.\n- Qué tramo usaste y qué se perdió en el reencuadre, si se perdió algo.\n- Las palabras de los subtítulos que conviene revisar.\n\n---\n\n## Checklist antes de publicar\n\n- [ ] No quedó texto ni caras cortadas.\n- [ ] Los subtítulos están bien escritos, sobre todo nombres y cifras.\n- [ ] Nada importante quedó tapado por los botones de la red.\n- [ ] La música del video original se puede usar en redes.\n- [ ] Si sale hacia afuera, lo revisó Diseño.\n", "brief-redes-pieza.md": "# Brief · Pieza nueva para redes\n\nPara un video corto y nuevo pensado para Instagram, LinkedIn o YouTube Shorts: un dato, una novedad, una función, un caso.\n\n**Cómo usarlo:** completá \"Datos del pedido\", abrí un chat nuevo de Claude, adjuntá este archivo y `marca-quartzsales-esaurio.md`, y enviá. No hace falta instalar nada.\n\n---\n\n## Datos del pedido\n\n- **Mensaje principal, en una frase:**\n- **A quién le habla:**\n- **Datos, cifras o frases que tienen que aparecer, tal cual:**\n- **Qué querés que haga la persona después de verlo:** (visitar la web / escribir / pedir una demo)\n- **Redes:** (Instagram Reels / Instagram feed / LinkedIn / YouTube Shorts)\n- **Duración:** (10 a 20 segundos es lo habitual)\n- **Material adjunto:** (fotos, capturas, logo de un cliente con permiso)\n- **Muestra pantallas de PSMob:** (sí / no). Si es sí, adjuntá `marca-psmob.md`.\n\n---\n\n## Formatos habituales\n\n| Destino | Proporción | Tamaño |\n|---|---|---|\n| Instagram Reels e historias, YouTube Shorts | 9:16 | 1080 × 1920 |\n| Instagram feed | 4:5 | 1080 × 1350 |\n| LinkedIn feed | 1:1 o 4:5 | 1080 × 1080 o 1080 × 1350 |\n\nLas plataformas cambian estos valores cada tanto.\n\n---\n\n## Instrucciones para Claude\n\nVas a hacer una pieza animada corta para redes, con texto y gráfica de marca.\n\n**Antes de empezar**\n\n- Leé el manual de marca adjunto y aplicalo sin desvíos: estas piezas representan a la empresa hacia afuera.\n- Si falta el mensaje principal o las redes de destino, preguntá eso primero.\n- No inventes cifras, clientes ni resultados. Si un dato no está en el pedido, no va.\n\n**Estructura**\n\n1. **Gancho** en el primer segundo y medio: la frase o el dato más fuerte, grande.\n2. **Desarrollo:** dos o tres ideas, una por pantalla.\n3. **Cierre:** llamado a la acción y logo, quieto al menos 1,5 segundos.\n\n**Criterios**\n\n- Pensá primero la versión vertical. Las otras se derivan de esa, reacomodando y no solo recortando.\n- Poco texto por pantalla. Tiene que entenderse sin sonido.\n- En vertical, dejá libres la franja de arriba y la de abajo: ahí las redes ponen sus botones.\n- Apertura y cierre sobre fondo oscuro de marca; desarrollo sobre claro. Máximo 3 colores por escena.\n- Movimiento corto y suave. Sin rebotes exagerados.\n\n**Cómo producirlo**\n\n- Animación en HTML/SVG dibujada cuadro a cuadro, capturada con un navegador sin interfaz y unida con ffmpeg en MP4 H.264.\n- Mostrá primero dos cuadros fijos (gancho y cierre) en vertical para aprobar. Después renderizá todos los formatos.\n\n**Qué entregar**\n\n- Un MP4 por formato, con el destino en el nombre.\n- Una propuesta de texto para acompañar la publicación.\n- Qué decidiste por tu cuenta y qué no pudiste revisar.\n\n---\n\n## Checklist antes de publicar\n\n- [ ] El mensaje se entiende sin sonido y en los primeros dos segundos.\n- [ ] Las cifras y los nombres son correctos y se pueden publicar.\n- [ ] Colores, tipografía y logo siguen el manual.\n- [ ] Nada importante quedó tapado por los botones de la red.\n- [ ] Lo revisó Diseño.\n", "brief-saludo.md": "# Brief · Saludo o pieza única\n\nPara saludos de fechas especiales, aniversarios, anuncios internos y cualquier video corto que se hace una sola vez.\n\n**Cómo usarlo:** completá \"Datos del pedido\", abrí un chat nuevo de Claude, adjuntá este archivo y `marca-quartzsales-esaurio.md`, y enviá. No hace falta instalar nada.\n\n---\n\n## Datos del pedido\n\nCompletá lo que sepas. Lo que dejes vacío, Claude te lo pregunta.\n\n- **Ocasión o tema:**\n- **Idea central (si ya la tenés):**\n- **Textos que tienen que aparecer, tal cual:**\n- **Fecha que se menciona (si hay):**\n- **Estética que buscás (o una captura de referencia adjunta):**\n- **Dónde se publica:** (interno / LinkedIn / Instagram / web)\n- **Formato:** (horizontal 16:9 / vertical 9:16 / cuadrado 1:1)\n- **Duración aproximada:** (15 a 30 segundos es lo habitual)\n- **Sonido:** (sin sonido / efectos / música propia que adjunto)\n- **Firma:** (QuartzSales / e·Saurio / e·Saurio & QuartzSales)\n\n---\n\n## Instrucciones para Claude\n\nVas a hacer un video corto y único para QuartzSales. Quien te escribe puede no tener experiencia en video: guiá el proceso y evitá la jerga técnica.\n\n**Antes de empezar**\n\n- Leé el manual de marca adjunto y aplicalo. Si falta, pedilo.\n- Si en \"Datos del pedido\" falta la ocasión, los textos o el formato, preguntá eso antes de producir nada.\n- Si hay una referencia visual, tomá su técnica y su clima, no su composición exacta. No copies personajes, logos ni obras de terceros.\n\n**Cómo producirlo**\n\n- Armá la animación como una página HTML/SVG en la que cada cuadro se dibuja a partir del número de cuadro, así el resultado es siempre igual.\n- Capturá cuadro por cuadro con un navegador sin interfaz y uní los cuadros con ffmpeg en un MP4 H.264 (formato de píxel yuv420p, con inicio rápido para web).\n- Resolución según el formato pedido: 1920×1080, 1080×1920 o 1080×1080.\n- Usá los textos exactamente como están escritos en el pedido. No los reescribas sin avisar.\n- Las piezas temáticas pueden salir de la paleta en la ilustración, pero el violeta de marca aparece como acento y el cierre lleva la firma pedida.\n\n**Orden de trabajo**\n\n1. Proponé la idea en 3 o 4 líneas: qué pasa, en qué orden y con qué estética.\n2. Mostrá 2 o 3 cuadros fijos de momentos clave antes de renderizar todo. Corregir un cuadro es rápido; corregir el video entero, no.\n3. Con la aprobación, renderizá el video completo.\n4. Revisá cuadros de cada escena: que los textos entren, se lean y no se pisen.\n\n**Sonido**\n\n- Si piden efectos, generalos vos (teclas, golpes, papel) y mezclalos por niveles: el sonido principal de cada momento arriba y el resto abajo.\n- Si adjuntan música, usala solo si confirman que tienen derecho a usarla. Para piezas que se publican, avisá que un tema comercial puede hacer que la red silencie o baje el video.\n\n**Qué entregar**\n\n- El MP4, con su duración y su peso.\n- Una lista corta de las decisiones que tomaste por tu cuenta, para que se puedan cambiar.\n- Qué revisaste y qué no (por ejemplo, si no pudiste escuchar el audio).\n\n---\n\n## Checklist antes de publicar\n\n- [ ] Los textos están bien escritos y son los que pedí.\n- [ ] La fecha y los nombres son correctos.\n- [ ] Se lee bien en el celular.\n- [ ] La firma es la correcta.\n- [ ] La música o el sonido se pueden usar.\n- [ ] Si sale hacia afuera, lo revisó Diseño.\n", "marca-psmob.md": "# Manual de marca para video · PSMob\n\nVersión octubre 2026. Resumen del design system de PSMob para mostrar la app en un video.\n\n**Cómo usarlo:** adjuntalo en el chat de Claude cuando el video muestre pantallas de PSMob. Va junto con el brief del video y con `marca-quartzsales-esaurio.md`.\n\n**Regla de convivencia:** lo que está *dentro* de la pantalla del celular sigue este archivo. Todo lo que está *alrededor* (títulos, fondos, placa de cierre, logo) sigue el manual de QuartzSales.\n\n---\n\n## 1. Qué es PSMob\n\nLa app de campo de QuartzSales. La usan promotores y repositores para gestionar visitas a puntos de venta (PDV), formularios, relevamiento de productos, control de vencimientos, equipos y galerías de fotos.\n\n- App móvil, en vertical. Ancho de referencia: 390 px.\n- En un video, las pantallas van dentro de un marco de celular, con esa proporción.\n\n## 2. Colores\n\n### Primarios y acento\n\n| Token | Hex | Uso |\n|---|---|---|\n| `primary` | `#2196F3` | Encabezado, elementos activos, links |\n| `primary-dark` | `#1976D2` | Encabezado, botón de confirmar |\n| `primary-darker` | `#1565C0` | Parte alta del encabezado, degradés |\n| `primary-light` | `#E3F2FD` | Fondo de etiqueta \"Programado\" |\n| `accent` | `#7C5CFC` | Botón flotante (+), etiquetas de categoría |\n| `accent-light` | `#EDE9FE` | Fondo de etiquetas de categoría |\n| `accent-darker` | `#5B21B6` | Texto de etiquetas de categoría |\n\nDegradé de visita activa: `#2196F3 → #1976D2`, vertical.\n\n### Estados\n\n| Estado | Color | Fondo suave |\n|---|---|---|\n| Correcto | `#4CAF50` / `#2E7D32` | `#E8F5E9` |\n| Atención | `#FF9800` / `#E65100` | `#FFF3E0` |\n| Crítico | `#F44336` / `#B71C1C` | `#FFEBEE` |\n\n### Neutros\n\n| Token | Hex |\n|---|---|\n| Superficie (tarjetas) | `#FFFFFF` |\n| Fondo de pantalla | `#F5F5F5` |\n| Borde | `#E0E0E0` |\n| Texto principal | `#212121` |\n| Texto secundario | `#616161` |\n| Texto deshabilitado | `#9E9E9E` |\n| Insignia numérica | `#F44336` con texto blanco |\n\n## 3. Tipografía\n\n- Tipografía de sistema. Para recrear pantallas: **Roboto**, con respaldo del sistema.\n- Códigos y EAN: **Roboto Mono**.\n- Tamaños dentro de la pantalla: 10 a 22 px. Títulos de pantalla 18 px peso 600; título de tarjeta 14 px peso 600; subtexto 12 px; metadatos 11 px.\n\n## 4. Estructura de una pantalla\n\n```\nEncabezado (azul)          56 px · título + íconos a la derecha\nSubencabezado opcional     filtros, visita activa\nContenido                  fondo #F5F5F5 · margen 16 px · scroll vertical\nNavegación inferior        60 px · 4 o 5 pestañas con ícono y etiqueta\n```\n\n- **Encabezado:** degradé `#1976D2 → #2196F3` o sólido. Texto blanco 18 px peso 600. Flecha de volver a la izquierda.\n- **Navegación inferior:** fondo blanco, borde superior `#E0E0E0`. Activo en `#2196F3`; inactivo en `#9E9E9E`. Pestañas típicas: Inicio, Info PDV, Visitas, Forms, Productos.\n\n## 5. Componentes que más se ven\n\n- **Tarjeta de lista:** fondo blanco, esquinas 12 px, margen interno 16 px, sombra `0 1px 3px rgba(0,0,0,0.1)`. Título, dirección con ícono de pin, metadatos y etiquetas de estado.\n- **Etiquetas de estado:** forma de píldora, 11 a 12 px, peso 500.\n  - Visita activa: fondo `#2E7D32`, texto blanco, punto verde que late.\n  - Programado: fondo `#E3F2FD`, texto `#1565C0`.\n  - Completado: fondo `#E8F5E9`, texto `#2E7D32`.\n  - Advertencia: fondo `#FFF3E0`, texto `#E65100`.\n  - Categoría: fondo `#EDE9FE`, texto `#5B21B6`.\n- **Botón flotante (+):** `#7C5CFC`, 56 px, redondo, sombra `0 4px 12px rgba(124,92,252,0.4)`. Abajo a la derecha, sobre la navegación.\n- **Botones:** primario violeta `#7C5CFC` o azul `#1976D2`, texto blanco, esquinas 8 px. Secundario con borde gris.\n- **Campos:** borde `#E0E0E0` de 1,5 px, esquinas 8 px, foco en `#2196F3`, etiqueta arriba.\n- **Hoja inferior (modal):** esquinas superiores 16 px, título y X para cerrar.\n- **Cámara y reconocimiento:** fondo negro con la imagen de cámara, recuadros sobre los productos reconocidos y botón \"Finalizar reconocimiento\" translúcido abajo.\n- **Módulos de Inicio:** tarjetas cuadradas con ícono duotono (azul y violeta), nombre y subtexto, con insignia roja si hay pendientes.\n\n## 6. Pantallas principales\n\n| Pantalla | Qué se ve |\n|---|---|\n| Inicio | Grilla de módulos y \"Mantenimientos a realizar\" |\n| Visitas | Lista de PDV con etiquetas de estado, botón flotante violeta |\n| Visita activa | Fondo en degradé azul, tarjeta con el estado y botón Finalizar |\n| Info PDV / Producto | Encabezado azul, datos de precios, ventas y stock |\n| Formularios | Categorías desplegables con productos y campo de valor |\n| Galerías | Grilla de fotos en 3 columnas con etiquetas de categoría |\n| Cámara | Pantalla negra con reconocimiento superpuesto |\n| Vencimientos / OSA | Hoja inferior con la lista agrupada por PDV |\n\n## 7. Convenciones de contenido\n\n- Nombre del PDV en MAYÚSCULAS, dirección en minúscula.\n- Fechas: `DD/MM/AAAA`.\n- Moneda: `$1.234,07` (punto para miles, coma para decimales).\n- EAN y códigos en tipografía monoespaciada, color de texto secundario.\n- El estado de la visita siempre visible, en el encabezado o en una etiqueta destacada.\n\n## 8. Aplicación en video\n\nCriterios de trabajo para video. Si Diseño o Producto definen otra cosa, prevalece lo que definan.\n\n- Mostrá **pantallas reales** o recreadas fielmente. No inventes funciones que la app no tiene.\n- Usá **datos verosímiles pero ficticios**: nada de clientes, PDV ni precios reales sin permiso.\n- Una acción por escena: tocar, completar, confirmar. Marcá el toque con un círculo suave.\n- Acercá la cámara a la zona donde pasa la acción; el texto de la app es chico para un video.\n- El marco del celular es neutro, sin marca de fabricante.\n\n## 9. Checklist\n\n- [ ] Las pantallas usan los colores y componentes de este archivo.\n- [ ] No aparece ninguna función inexistente.\n- [ ] Los datos son ficticios y verosímiles.\n- [ ] Lo que rodea al celular sigue el manual de QuartzSales.\n- [ ] Lo importante de cada pantalla se llega a leer.\n", "marca-quartzsales-esaurio.md": "# Manual de marca para video · QuartzSales y e·Saurio\n\nVersión octubre 2026. Resumen operativo para hacer videos. Sale de la Identidad Visual Corporativa de QuartzSales y del Manual de Identidad Visual (Design System v3.0).\n\n**Cómo usarlo:** adjuntá este archivo en el chat de Claude junto con el brief del video que vas a hacer. Claude lo lee y aplica colores, tipografía, logo y tono. No hace falta que lo leas entero.\n\n---\n\n## 1. Nombres\n\n- **QuartzSales**: una sola palabra, con Q y S en mayúscula.\n- **e·Saurio**: \"e\" minúscula, punto medio y \"S\" mayúscula.\n- **PSMob**: la app de campo. Si el video muestra pantallas de la app, sumá también `marca-psmob.md`.\n- Piezas de las dos marcas: se firman \"e·Saurio & QuartzSales\".\n\nHoy QuartzSales y e·Saurio comunican casi como una sola marca. Este kit no trae una guía visual separada de e·Saurio: se usa esta, y el logo de e·Saurio se le pide a Diseño.\n\n## 2. Colores\n\n### Principales\n\n| Nombre | Hex | Uso |\n|---|---|---|\n| Primario profundo | `#130D5D` | Fondos de apertura y cierre, wordmark sobre claro |\n| Violeta QuartzSales | `#7025E0` | Botones, destacados, llamados a la acción |\n| Violeta principal | `#8b5cf6` | Acento: íconos, links, etiquetas |\n| Lila suave | `#A172FF` | Degradés, acentos secundarios |\n| Lila fondo | `#EDE9FE` | Fondos de etiquetas y áreas destacadas suaves |\n| Azul noche | `#0f0235` | Fondos muy oscuros de alto impacto |\n\n### Neutros y estados\n\n| Nombre | Hex | Uso |\n|---|---|---|\n| Blanco | `#FFFFFF` | Texto sobre oscuro, fondos de tarjetas |\n| Gris fondo | `#F9FAFB` | Fondo general claro |\n| Gris borde | `#DFE7EF` | Bordes y separadores |\n| Texto oscuro | `#111827` | Títulos sobre fondo claro |\n| Texto cuerpo | `#4b5563` | Párrafos |\n| Texto secundario | `#6b7280` | Subtítulos y notas |\n| Correcto | `#22C55E` | Confirmaciones, completado |\n| Atención | `#F59E0B` | Alertas, pendiente |\n| Información | `#3B82F6` | Datos, línea de tiempo |\n| Error | `#EF4444` | Errores, crítico |\n\n### Reglas\n\n- Fondos oscuros (`#130D5D`, `#0f0235`) para apertura y cierre; fondos claros para el contenido.\n- Máximo 3 colores por escena: primario, neutro y un acento.\n- El violeta es acento: no cubre toda la pantalla.\n- Contraste alto siempre: texto blanco sobre oscuro, texto oscuro sobre claro.\n\n## 3. Degradés\n\n| Nombre | Definición | Uso |\n|---|---|---|\n| Principal | `#130D5D → #7025E0 → #A172FF`, 135° | Aperturas, cierres, escenas de impacto |\n| Acento lineal | `#8b5cf6 → #a78bfa`, horizontal | Líneas y barras |\n| Progreso | `#8b5cf6 → #a78bfa → #3B82F6`, horizontal | Líneas de tiempo, barras de avance |\n| Isotipo | `#3C9FF1 → #7025E0`, 135° | **Solo** dentro del isotipo |\n\nEl degradé del isotipo (azul a violeta) va únicamente en el símbolo de triángulos. Nunca en el wordmark ni como fondo.\n\n## 4. Tipografía\n\n| Pieza | Fuente | Pesos |\n|---|---|---|\n| Video, redes, web y mails | **Nunito** | 400 cuerpo, 700 subtítulos, 800 títulos |\n| Datos, tablas y etiquetas técnicas | **Roboto** | 400, 500, 700 |\n| Documentos y presentaciones | **Poppins** (Manual v3.0) | 400 a 800 |\n| Pantallas de producto (ABM) | **Poppins** | 400 a 700 |\n\n- No más de 2 fuentes en una misma pieza.\n- Etiquetas superiores (eyebrow) en MAYÚSCULAS, peso 800, con espaciado amplio, en violeta.\n- Títulos de 3 a 6 palabras. Interlineado de títulos 1,1 a 1,25; de cuerpo 1,6.\n\n## 5. Logo\n\nLos archivos están en `https://www.quartzsales.com/images/svg_qs/`.\n\n| Fondo | Archivo |\n|---|---|\n| Blanco, claro o lila suave | `logo-qs-fullcolor.svg` (isotipo en degradé, wordmark `#130D5D`) |\n| Claro, versión de un color | `logo-qs-negativo-bg-light.svg` (todo `#130D5D`) |\n| Oscuro, foto oscura o color intenso | `logo-qs-fullcolor-negativo.svg` (isotipo en degradé, wordmark blanco) |\n| `#130D5D` sólido o degradé de marca | `logo-qs-negativo-bg-dark.svg` (todo blanco) |\n| Solo isotipo sobre claro | `iso-qs.svg` o `iso-qs-negativo-bg-light.svg` |\n| Solo isotipo sobre oscuro | `iso-qs-negativo-bg-dark.svg` |\n| Solo wordmark | `tipo-qs-bg-light.svg` (oscuro) o `tipo-qs-bg-dark.svg` (blanco) |\n\nReglas:\n\n- Elegí la versión según el fondo, no al revés.\n- El wordmark \"QuartzSales\" va siempre en color sólido.\n- Dejá zona de respeto alrededor: nada pegado al logo.\n- No se deforma, no se recolorea, no se le agregan sombras ni contornos.\n- Si no se puede cargar el archivo, escribí \"QuartzSales\" en Nunito 800 con el color que corresponda al fondo.\n\n## 6. Tono y voz\n\n- Cercano y positivo, no corporativo frío.\n- Claro y orientado a la acción, con verbos concretos.\n- Aspiracional sin grandilocuencia.\n- Español rioplatense (vos, no tú).\n- La gente escanea, no lee: poco texto por pantalla.\n\nEjemplos correctos:\n\n- \"Te damos la bienvenida a la revolución digital\"\n- \"Revisá cada sección a tu ritmo\"\n- \"Cada decisión marca la diferencia. Elegí dar el salto con nosotros.\"\n\n## 7. Aplicación en video\n\nEstos puntos no están en el manual original: son criterios de trabajo para video. Si Diseño define otra cosa, prevalece lo que defina Diseño.\n\n- **Apertura y cierre** sobre fondo oscuro (`#130D5D` o degradé principal). Contenido sobre fondo claro.\n- **Logo completo** en la placa de cierre, quieto al menos 1,5 segundos. Durante el video, como mucho el isotipo en una esquina.\n- **Tamaño de texto:** tiene que leerse en un celular. En un video de 1080 px de ancho, nada por debajo de 32 px.\n- **Tiempo de lectura:** cada texto queda en pantalla lo suficiente para leerlo dos veces a ritmo tranquilo.\n- **Subtítulos** siempre que haya voz: mucha gente mira sin sonido.\n- **Movimiento:** entradas cortas y suaves. Sin rebotes exagerados ni giros del logo.\n- **Íconos:** lineales o duotono suave. Emojis solo en piezas muy informales.\n- **Piezas temáticas** (saludos, fechas especiales): la ilustración puede salir de la paleta, pero el violeta de marca aparece como acento y el cierre lleva la firma.\n- **Música y sonido:** solo con licencia o generados para la pieza. Nada de temas comerciales en piezas que se publican.\n\n## 8. Checklist antes de publicar\n\n- [ ] Los nombres están bien escritos: QuartzSales, e·Saurio, PSMob.\n- [ ] Los colores son los hexadecimales exactos.\n- [ ] Hay como máximo 3 colores por escena.\n- [ ] El logo es la versión correcta para ese fondo.\n- [ ] El degradé azul a violeta aparece solo en el isotipo.\n- [ ] Los textos se leen en un celular y duran lo suficiente.\n- [ ] El tono es cercano, claro y en rioplatense.\n- [ ] La música o el sonido se pueden usar.\n"}</script>
+<script>
+let DOCS = {}; try{ DOCS = JSON.parse(document.getElementById('docs').textContent) }catch(e){}
+const DIR = 'descargas/';
+const FILES = {
+  'marca-quartzsales-esaurio.md': {t:'Manual de marca · QuartzSales y e·Saurio', d:'Colores, tipografía, logo, tono y criterios para video.'},
+  'marca-psmob.md': {t:'Manual de marca · PSMob', d:'Colores, componentes y pantallas de la app, para mostrarla en un video.'},
+  'brief-saludo.md': {t:'Brief · Saludo o pieza única', d:'Fechas especiales, aniversarios y anuncios internos.'},
+  'brief-instructivo.md': {t:'Brief · Instructivo de una herramienta', d:'Un paso a paso con capturas de pantalla, hecho en el chat.'},
+  'brief-instructivo-serie.md': {t:'Brief · Serie de instructivos con plantilla', d:'Para quien mantiene la plantilla en Claude Code.'},
+  'brief-redes-adaptar.md': {t:'Brief · Adaptar un video para redes', d:'Recortar, pasar a vertical, subtitular y comprimir.'},
+  'brief-redes-pieza.md': {t:'Brief · Pieza nueva para redes', d:'Un dato, una novedad o una función, con texto y gráfica de marca.'},
+  'brief-institucional.md': {t:'Brief · Video institucional', d:'Guion, imágenes, pantallas de PSMob y armado, por etapas.'},
+  'brief-pdf-animado.md': {t:'Brief · Animación a partir de un PDF', d:'Un informe, un folleto o una presentación, en movimiento.'}
+};
+const CHAT_STEPS = (extra) => [
+  'Descargá el brief y el manual de marca.',
+  'Abrí el brief con un editor de texto y completá "Datos del pedido".',
+  'En un chat nuevo de Claude, adjuntá los archivos' + (extra ? ' ' + extra : '') + ' y enviá.',
+  'Revisá los cuadros de muestra que te devuelve y pedí los cambios.',
+  'Con la aprobación, descargá el MP4.'
+];
+const CHAT_WATCH = 'Si Claude te dice que no puede generar el MP4, ese chat no puede ejecutar código: avisale a Diseño.';
+
+const NEEDS = [
+  {id:'saludo', t:'Un saludo o pieza única', d:'Día de la Madre, un aniversario, un anuncio interno.', r:'saludo'},
+  {id:'instructivo', t:'Un instructivo', d:'Explicar paso a paso cómo se usa una herramienta.', q:'¿Cuántos vas a hacer?', opts:[
+    {t:'Uno solo, o es el primero', d:'Lo hacés vos en un chat, con capturas de pantalla.', r:'instructivo'},
+    {t:'Una serie con el mismo formato', d:'Conviene armar una plantilla una sola vez.', r:'instructivo-serie'}]},
+  {id:'redes', t:'Una pieza para redes', d:'Instagram, LinkedIn o Shorts de YouTube.', q:'¿De dónde partís?', opts:[
+    {t:'Ya tengo un video', d:'Hay que recortarlo, pasarlo a vertical o subtitularlo.', r:'redes-adaptar'},
+    {t:'Es una pieza nueva', d:'Un dato, una novedad o una función, con texto y gráfica.', r:'redes-pieza'}]},
+  {id:'institucional', t:'Un video institucional', d:'Para la web o una presentación comercial, con personas y la app.', q:'¿Tenés las imágenes de personas y lugares?', opts:[
+    {t:'Sí, hay filmación o stock', d:'Falta el guion, las pantallas de la app y el armado.', r:'institucional'},
+    {t:'No, hay que generarlas', d:'Se generan con IA y se terminan en After Effects.', r:'institucional-ia'}]},
+  {id:'pdf', t:'Animar un PDF', d:'Un informe, un folleto o una presentación, en movimiento.', r:'pdf'},
+  {id:'otro', t:'Otro tipo de video', d:'No coincide con ninguna de las opciones.', r:'otro'}
+];
+
+const RESULTS = {
+  'saludo': {title:'Saludo o pieza única', tool:'Claude en el chat', lead:'Lo pedís en un chat de Claude y te devuelve el MP4. Cada pieza es distinta, así que no hace falta plantilla.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS(),
+    files:['brief-saludo.md','marca-quartzsales-esaurio.md'],
+    watch:['Escribí los textos tal cual tienen que salir: Claude los usa sin cambiarlos.','No uses música comercial si el saludo se publica en redes.',CHAT_WATCH]},
+  'instructivo': {title:'Instructivo de una herramienta', tool:'Claude en el chat', lead:'Con una lista de pasos y una captura de pantalla por paso, Claude arma el video en el chat.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS('y las capturas'),
+    files:['brief-instructivo.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Tomá las capturas con la versión actual de la herramienta.','Ocultá o evitá los datos reales de clientes.','El manual de PSMob solo hace falta si el instructivo es de la app.',CHAT_WATCH]},
+  'instructivo-serie': {title:'Serie de instructivos con plantilla', tool:'Claude Code con Remotion', lead:'Una persona arma la plantilla una vez. Después, cada instructivo nuevo es cargar el título, los pasos y las capturas.',
+    where:'En Claude Code, dentro de una carpeta de proyecto.', install:['Claude Code o la app de escritorio de Claude.','Node.js.','El proyecto y las skills de Remotion.'],
+    cost:'Plan Pro, Max, Team o Enterprise de Claude. Licencia Company de Remotion desde US$100 por mes.',
+    steps:['Definí quién va a mantener la plantilla.','Resolvé la licencia de Remotion, o probá HyperFrames como alternativa sin costo.','Esa persona instala lo necesario y le pasa el brief a Claude Code con un instructivo de ejemplo.','Para cada video nuevo se copia la carpeta de ejemplo y se cambian los datos.','Se revisa con un borrador en baja calidad y, con la aprobación, se pide el render en calidad final.'],
+    files:['brief-instructivo-serie.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['El render en calidad final tarda: pedilo una sola vez, con la versión aprobada.','Remotion es pago para empresas de 4 o más personas. Confirmá el valor antes de empezar.','HyperFrames hace algo parecido sin licencia: conviene probarlo antes de decidir.','Si necesitás un solo instructivo, es más rápido la opción del chat.']},
+  'redes-adaptar': {title:'Adaptar un video para redes', tool:'Claude en el chat', lead:'Claude recorta el video, lo pasa a vertical o cuadrado, lo subtitula y lo deja liviano para subir.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.',
+    steps:['Descargá el brief.','Completá "Datos del pedido": para qué redes, qué tramo y si lleva subtítulos.','En un chat nuevo de Claude, adjuntá el brief y el video, y enviá.','Revisá el tramo y el reencuadre que te propone.','Descargá un archivo por formato.'],
+    files:['brief-redes-adaptar.md','marca-quartzsales-esaurio.md'],
+    watch:['Pasar de horizontal a vertical corta los costados: verificá que no queden textos ni caras cortados.','Si el video pesa mucho, puede que no se pueda adjuntar. Enviá una versión más liviana.','Revisá nombres y cifras en los subtítulos.','Si tenés cuenta de Adobe, el conector de Adobe también readapta formatos.']},
+  'redes-pieza': {title:'Pieza nueva para redes', tool:'Claude en el chat', lead:'Una animación corta con texto y gráfica de marca, pensada primero en vertical y derivada a los otros formatos.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS(),
+    files:['brief-redes-pieza.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Solo cifras y nombres que se puedan publicar.','Tiene que entenderse sin sonido.','El manual de PSMob solo hace falta si se ven pantallas de la app.',CHAT_WATCH]},
+  'institucional': {title:'Video institucional con material propio', tool:'Claude en el chat y, si hay, After Effects', lead:'Se hace por etapas: guion, pantallas de la app animadas y armado. Las imágenes de personas y lugares ya las tenés.',
+    where:'El guion, las pantallas y un armado simple, en un chat de Claude. La terminación fina, en After Effects o Premiere.', install:['Nada para el guion y las pantallas.','After Effects o Premiere, solo si alguien hace la terminación.'], cost:'Tu cuenta de Claude. Adobe Creative Cloud si se termina en After Effects.',
+    steps:['Descargá el brief y los dos manuales.','Empezá por el guion: adjuntá todo en un chat de Claude con "Datos del pedido" completo.','Con la lista de tomas aprobada, pedí las pantallas de PSMob animadas.','Armá el video: en el chat si son cortes y títulos, o pasale los clips a quien lo termine.'],
+    files:['brief-institucional.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Confirmá los derechos de la filmación, el stock, la música y la voz.','Las pantallas muestran solo funciones reales, con datos ficticios.','Un armado desde el chat sirve para cortes y títulos, no para terminación fina.']},
+  'institucional-ia': {title:'Video institucional con imágenes generadas', tool:'After Effects con Higgsfield', lead:'Las tomas de personas y lugares se generan con IA, y Claude trabaja dentro de tu proyecto de After Effects. Es el camino con más instalación y más revisión.',
+    where:'En After Effects, con Claude conectado por Higgsfield. El guion, antes, en un chat.', install:['After Effects 2025 (versión 25.0) o posterior.','El plugin de Higgsfield para After Effects.','El conector de Higgsfield, agregado en la configuración de Claude.'], cost:'Adobe Creative Cloud y suscripción de Higgsfield. Cada generación descuenta créditos.',
+    steps:['Descargá el brief y los dos manuales.','Hacé primero el guion y la lista de tomas en un chat de Claude.','Instalá el plugin de Higgsfield y conectalo a Claude.','Generá las tomas una por una y descartá las que no se vean naturales.','Pedí las pantallas de PSMob animadas y armá todo en After Effects.'],
+    files:['brief-institucional.md','marca-quartzsales-esaurio.md','marca-psmob.md'],
+    watch:['Los productos de góndola salen con marcas deformadas: usá planos donde no se lean.','Las personas cambian de una toma a otra: una persona por toma, o planos sin cara.','No generes productos ni logos de clientes o de terceros.','Las redes piden etiquetar el contenido realista hecho con IA.','Hacé una toma de prueba antes de comprometer una fecha.']},
+  'pdf': {title:'Animación a partir de un PDF', tool:'Claude en el chat', lead:'Claude lee el PDF, elige los mensajes más importantes con vos y los convierte en una pieza animada.',
+    where:'En un chat de Claude.', install:['Nada.'], cost:'Tu cuenta de Claude.', steps:CHAT_STEPS('y el PDF'),
+    files:['brief-pdf-animado.md','marca-quartzsales-esaurio.md'],
+    watch:['Verificá que el PDF no tenga información confidencial antes de adjuntarlo.','Si es un escaneo, enviá una versión con texto seleccionable.','Revisá que las cifras del video coincidan con las del PDF.',CHAT_WATCH]},
+  'otro': {title:'Tu caso no está en la lista', tool:'Consultá con Diseño', lead:'Indicale a Diseño qué necesitás, para quién es y dónde se va a publicar. La tabla de herramientas resume qué hace cada una.',
+    where:'', install:[], cost:'', steps:[], files:['marca-quartzsales-esaurio.md'], watch:[]}
+};
+
+const body = document.getElementById('sel-body');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const li = a => a.map(x => `<li>${esc(x)}</li>`).join('');
+
+function fileRow(name, primary){
+  const f = FILES[name]; if(!f) return '';
+  const copy = DOCS[name] ? `<button class="btn btn-text" type="button" data-copy="${esc(name)}">Copiar</button>` : '';
+  return `<div class="file"><div class="file-info"><strong>${esc(f.t)}</strong><span>${esc(f.d)}</span><code>${esc(name)}</code></div>
+    <div class="file-actions"><a class="btn ${primary===true?'btn-primary':'btn-secondary'}" href="${DIR}${esc(name)}" download>Descargar</a>${copy}</div></div>`;
+}
+function optButtons(list, attr){
+  return `<div class="opts">` + list.map((o,i) => `<button class="opt" type="button" ${attr}="${i}"><strong>${esc(o.t)}</strong><span>${esc(o.d)}</span></button>`).join('') + `</div>`;
+}
+function showStart(focus){
+  body.innerHTML = `<div class="sel-head"><div><div class="eyebrow">Paso 1</div><h2 id="sel-title" tabindex="-1">Elegí el tipo de video</h2></div></div>` + optButtons(NEEDS,'data-need');
+  if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+  if(focus) document.getElementById('sel-title').focus();
+}
+function showQuestion(n){
+  body.innerHTML = `<div class="sel-head"><div><div class="eyebrow">Paso 2 · ${esc(n.t)}</div><h2 id="sel-title" tabindex="-1">${esc(n.q)}</h2></div>
+    <button class="linkbtn" type="button" data-back>← Volver</button></div>` + optButtons(n.opts,'data-opt');
+  body.dataset.need = n.id;
+  document.getElementById('sel-title').focus();
+}
+function showResult(id, focus){
+  const r = RESULTS[id]; if(!r) return showStart(false);
+  const facts = r.where ? `<div class="facts">
+      <div class="fact"><h3>Dónde se hace</h3><p>${esc(r.where)}</p></div>
+      <div class="fact"><h3>Qué instalar</h3>${r.install.length===1?`<p>${esc(r.install[0])}</p>`:`<ul>${li(r.install)}</ul>`}</div>
+      <div class="fact"><h3>Cuenta y costo</h3><p>${esc(r.cost)}</p></div></div>` : '';
+  const steps = r.steps.length ? `<div class="block"><h3>Cómo se hace</h3><ol class="steps">${li(r.steps)}</ol></div>` : '';
+  const files = r.files.length ? `<div class="block"><h3>${id==='otro'?'Material disponible':'Archivos para descargar'}</h3><div class="files">${r.files.map(n => fileRow(n, n.startsWith('brief-'))).join('')}</div></div>` : '';
+  const watch = r.watch.length ? `<div class="block watch"><h3>A tener en cuenta</h3><ul>${li(r.watch)}</ul></div>` : '';
+  body.innerHTML = `<div class="eyebrow">Recomendación</div>
+    <h2 class="res-title" id="sel-title" tabindex="-1">${esc(r.title)}</h2>
+    <p><span class="badge">${esc(r.tool)}</span></p>
+    <p class="res-lead" style="margin-top:12px">${esc(r.lead)}</p>
+    ${facts}${steps}${files}${watch}
+    <div class="res-foot"><button class="btn btn-text" type="button" data-restart>Empezar de nuevo</button>
+    <button class="btn btn-text" type="button" data-link>Copiar el link a este resultado</button>
+    ${id==='otro'?'<a class="btn btn-secondary" href="#herramientas">Ver las herramientas</a>':''}</div>`;
+  history.replaceState(null,'','#'+id);
+  if(focus){ document.getElementById('sel-title').focus({preventScroll:true}); const top = document.getElementById('selector').getBoundingClientRect().top; if(top < 0 || top > innerHeight * .45) window.scrollTo({top: scrollY + top - 16}); }
+}
+function toast(msg){
+  const t = document.getElementById('toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2200);
+}
+async function copyText(text, ok){
+  try{ await navigator.clipboard.writeText(text); toast(ok); }
+  catch(e){
+    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    let done = false; try{ done = document.execCommand('copy'); }catch(_){}
+    ta.remove(); toast(done ? ok : 'No se pudo copiar. Usá Descargar.');
+  }
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.need !== undefined){ const n = NEEDS[+b.dataset.need]; n.q ? showQuestion(n) : showResult(n.r, true); }
+  else if(b.dataset.opt !== undefined){ const n = NEEDS.find(x => x.id === body.dataset.need); showResult(n.opts[+b.dataset.opt].r, true); }
+  else if(b.hasAttribute('data-back') || b.hasAttribute('data-restart')){ showStart(true); }
+  else if(b.hasAttribute('data-link')){ copyText(location.href, 'Link copiado'); }
+  else if(b.dataset.copy){ copyText(DOCS[b.dataset.copy], 'Contenido copiado: pegalo en el chat de Claude'); }
+});
+
+document.getElementById('brand-cards').innerHTML = ['marca-quartzsales-esaurio.md','marca-psmob.md'].map(name => {
+  const f = FILES[name];
+  return `<div class="card"><h3>${esc(f.t)}</h3><p>${esc(f.d)}</p><code style="font-family:var(--mono);font-size:12.5px;color:var(--muted)">${esc(name)}</code>
+    <div class="file-actions"><a class="btn btn-secondary" href="${DIR}${esc(name)}" download>Descargar</a>${DOCS[name]?`<button class="btn btn-text" type="button" data-copy="${esc(name)}">Copiar</button>`:''}</div></div>`;
+}).join('');
+document.getElementById('all-files').innerHTML = Object.keys(FILES).filter(n => n.startsWith('brief-')).map(n => fileRow(n, false)).join('');
+
+const fromHash = () => { const id = decodeURIComponent(location.hash.slice(1)); if(RESULTS[id]){ showResult(id, false); return true } return false };
+if(!fromHash()) showStart(false);
+addEventListener('hashchange', fromHash);
+</script>
+</body>
+</html>
