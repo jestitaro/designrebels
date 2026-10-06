@@ -37,7 +37,8 @@ p{margin:0}
 .brand-mark{display:grid;place-items:center;width:42px;height:42px;background:var(--ink);color:#fff;border-radius:50%;font-size:13px}
 
 /* hero */
-.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--ink)}
+.hero{position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(to right,rgba(17,17,27,.06) 1px,transparent 1px),linear-gradient(to bottom,rgba(17,17,27,.06) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:linear-gradient(to bottom,#000 40%,transparent 96%);mask-image:linear-gradient(to bottom,#000 40%,transparent 96%);pointer-events:none}
 .hero-inner{max-width:1180px;margin:0 auto;padding:clamp(64px,8vw,110px) clamp(18px,4vw,40px) clamp(110px,10vw,140px);text-align:center;position:relative}
 .hero h1{font-size:clamp(46px,8vw,112px);font-weight:800;letter-spacing:-.055em;line-height:.96;margin-top:22px}
 .hero h1 em{font-style:normal;color:var(--purple)}
@@ -165,7 +166,7 @@ html:has(.modal[open]){overflow:hidden}
   <a class="brand" href="../../index.html" aria-label="Design Rebels, volver al hub"><span class="brand-mark" aria-hidden="true">DR</span><span>Design Rebels</span></a>
 </header>
 
-<section class="hero grid-bg">
+<section class="hero">
   <div class="hero-inner">
     <span class="float f1" aria-hidden="true">Escena 01 · Toma 1</span>
     <span class="float f2" aria-hidden="true">9:16</span>
