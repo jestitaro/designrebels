@@ -1,4 +1,4 @@
-# Corte, cámara, Clade · Video Lab
+# Corte, cámara, Claude · Video Lab
 
 Landing para elegir qué video hacer con Claude: recomienda herramienta, qué instalar y entrega los briefs y manuales de marca (`.md`) para descargar o copiar.
 
