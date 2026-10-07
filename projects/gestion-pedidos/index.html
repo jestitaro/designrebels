@@ -23,38 +23,6 @@
   <link href="styles.css" rel="stylesheet" />
 </head>
 <body>
-  <a class="skip-link" href="#main">Saltar al contenido</a>
-
-  <header id="site-header">
-    <div class="brand">
-      <img class="iso-badge" src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" loading="lazy" />
-      <div class="logo">QuartzSales <span class="logo-sub">Gestión de pedidos</span></div>
-    </div>
-
-    <nav class="nav-desktop">
-      <a href="#beneficios">Beneficios</a>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a class="nav-back" href="https://www.quartzsales.com/" target="_blank" rel="noopener">
-        <i class="fa-regular fa-arrow-up-right-from-square" aria-hidden="true"></i> Conocé QuartzSales
-      </a>
-      <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
-    </nav>
-
-    <button aria-expanded="false" aria-label="Menú" class="burger">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
-  <aside class="drawer">
-    <nav>
-      <button aria-label="Cerrar menú" class="drawer-close">×</button>
-      <a href="#beneficios">Beneficios</a>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="https://www.quartzsales.com/" target="_blank" rel="noopener">Conocé QuartzSales</a>
-      <button class="btn btn-gradient js-scroll-demo" type="button">Solicitar demo</button>
-    </nav>
-  </aside>
-  <div class="drawer-overlay"></div>
 
   <main id="main" tabindex="-1">
 
@@ -98,65 +66,10 @@
     </section>
 
     <!-- BENEFICIOS -->
-    <section class="reveal beneficios-section" id="beneficios">
-      <span aria-hidden="true" class="sentinel"></span>
-      <div class="container">
-        <h2 class="section-title">Beneficios clave</h2>
-        <div class="beneficios-bento">
-          <article class="beneficio-card beneficio-card--hero">
-            <span class="beneficio-card__sparkle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
-            <div class="beneficio-card__copy">
-              <h3>Carga guiada<br>y sin errores</h3>
-              <p>Las cantidades se corrigen automáticamente por múltiplo de bulto, y los precios y condiciones comerciales se aplican según cada cliente.</p>
-            </div>
-            <div class="beneficio-card__mock beneficio-card__mock--photo">
-              <div class="beneficio-card__mock-body">
-                <img src="media/carga_guiada.png" alt="Persona usando QuartzSales en su laptop" loading="lazy" />
-              </div>
-            </div>
-          </article>
-          <article class="beneficio-card">
-            <span class="beneficio-card__sparkle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
-            <div class="beneficio-card__head">
-              <h3>Control de<br>excepciones</h3>
-              <img class="beneficio-card__icon" src="media/icons/controlv2.png" alt="" loading="lazy" />
-            </div>
-            <p>Los pedidos con cambios de precio o descuento quedan sujetos a un flujo de aprobación configurable, con trazabilidad completa.</p>
-          </article>
-          <article class="beneficio-card">
-            <span class="beneficio-card__sparkle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
-            <div class="beneficio-card__head">
-              <h3>Gestión de<br>stock limitado</h3>
-              <img class="beneficio-card__icon" src="media/icons/gestionv2.png" alt="" loading="lazy" />
-            </div>
-            <p>Asignación de cuotas por producto y sucursal, con cálculo automático de backorder cuando la demanda supera lo disponible.</p>
-          </article>
-          <article class="beneficio-card">
-            <span class="beneficio-card__sparkle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
-            <div class="beneficio-card__head">
-              <h3>Integración<br>nativa con tu ERP</h3>
-              <img class="beneficio-card__icon" src="media/icons/integracionv2.png" alt="" loading="lazy" />
-            </div>
-            <p>Sincroniza clientes, artículos, listas de precios y condiciones comerciales; los pedidos confirmados se transmiten automáticamente.</p>
-          </article>
-          <article class="beneficio-card">
-            <span class="beneficio-card__sparkle" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
-            <div class="beneficio-card__head">
-              <h3>Visibilidad y<br>notificaciones</h3>
-              <img class="beneficio-card__icon" src="media/icons/visibilidadv2.png" alt="" loading="lazy" />
-            </div>
-            <p>Envía confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores en cada paso del proceso.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- BENEFICIOS (V2, mismo grid, estilo flat oscuro) -->
-    <section class="container reveal" id="beneficios-v2">
+    <section class="container reveal" id="beneficios">
       <span aria-hidden="true" class="sentinel"></span>
       <div class="flow-header">
-        <span class="pensado-kicker">Otra forma de verlo</span>
-        <h2 class="section-title">Beneficios clave, otra mirada</h2>
+        <h2 class="section-title">Beneficios clave</h2>
       </div>
       <div class="beneficios-bento beneficios-bento--light">
         <article class="beneficio-card beneficio-card--hero">
@@ -198,74 +111,8 @@
       </div>
     </section>
 
-    <!-- COMO FUNCIONA -->
-    <section class="container reveal" id="como-funciona">
-      <span aria-hidden="true" class="sentinel"></span>
-      <div class="section-title-sticky">
-        <h2 class="section-title">Cómo funciona, de punta a punta</h2>
-      </div>
-      <div class="stack">
-        <article class="stack-card">
-          <div class="stack-card__text">
-            <span class="stack-card__eyebrow">Paso 01</span>
-            <h3>Carga</h3>
-            <p>El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</p>
-          </div>
-          <div class="stack-card__visual">
-            <div class="stack-card__chrome"><span></span><span></span><span></span></div>
-            <video src="media/paso1.mp4" poster="media/flow/paso-1-carga.png" autoplay muted loop playsinline preload="auto"></video>
-          </div>
-        </article>
-        <article class="stack-card">
-          <div class="stack-card__text">
-            <span class="stack-card__eyebrow">Paso 02</span>
-            <h3>Validación</h3>
-            <p>El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</p>
-          </div>
-          <div class="stack-card__visual">
-            <div class="stack-card__chrome"><span></span><span></span><span></span></div>
-            <img src="media/flow/paso-2-validacion.png" alt="Vista de la app en el paso Validación" />
-          </div>
-        </article>
-        <article class="stack-card">
-          <div class="stack-card__text">
-            <span class="stack-card__eyebrow">Paso 03</span>
-            <h3>Aprobación</h3>
-            <p>Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</p>
-          </div>
-          <div class="stack-card__visual">
-            <div class="stack-card__chrome"><span></span><span></span><span></span></div>
-            <img src="media/flow/paso-3-aprobacion.png" alt="Vista de la app en el paso Aprobación" />
-          </div>
-        </article>
-        <article class="stack-card">
-          <div class="stack-card__text">
-            <span class="stack-card__eyebrow">Paso 04</span>
-            <h3>Transmisión al ERP</h3>
-            <p>Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</p>
-          </div>
-          <div class="stack-card__visual">
-            <div class="stack-card__chrome"><span></span><span></span><span></span></div>
-            <img src="media/flow/paso-4-transmision.png" alt="Vista de la app en el paso Transmisión al ERP" />
-          </div>
-        </article>
-        <article class="stack-card">
-          <div class="stack-card__text">
-            <span class="stack-card__eyebrow">Paso 05</span>
-            <h3>Confirmación y notificación</h3>
-            <p>El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</p>
-          </div>
-          <div class="stack-card__visual">
-            <div class="stack-card__chrome"><span></span><span></span><span></span></div>
-            <img src="media/flow/paso-5-confirmacion.png" alt="Vista de la app en el paso Confirmación y notificación" />
-          </div>
-        </article>
-        <div class="stack-spacer" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <!-- CÓMO FUNCIONA (V2, pestañas automáticas) -->
-    <section class="container reveal pensado-section flow-panel" id="flujo-interactivo">
+    <!-- CÓMO FUNCIONA (pestañas sincronizadas con el video) -->
+    <section class="container reveal pensado-section flow-panel" id="como-funciona">
       <span aria-hidden="true" class="sentinel"></span>
       <span class="flow-sparkle flow-sparkle--a" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
       <span class="flow-sparkle flow-sparkle--b" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.59 9.41L24 12l-9.41 2.59L12 24l-2.59-9.41L0 12l9.41-2.59z"/></svg></span>
@@ -273,12 +120,11 @@
       <span class="flow-dot flow-dot--b" aria-hidden="true"></span>
       <span class="flow-dot flow-dot--c" aria-hidden="true"></span>
       <div class="flow-header">
-        <span class="pensado-kicker">Otra forma de verlo</span>
         <h2 class="section-title">Cómo funciona, de punta a punta</h2>
       </div>
       <div class="flow-tabs">
         <div class="flow-tabs__list" role="tablist" aria-label="Pasos de Order Entry">
-          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-panel-1" id="flow-tab-1" data-index="0">
+          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-video" id="flow-tab-1" data-index="0" data-time="0">
             <span class="flow-tab__head">
               <span class="flow-tab__icon"><i class="fa-regular fa-cart-plus" aria-hidden="true"></i></span>
               <strong class="flow-tab__title">Carga</strong>
@@ -286,7 +132,7 @@
             <span class="flow-tab__caption">El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</span>
             <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-2" id="flow-tab-2" data-index="1">
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-2" data-index="1" data-time="19">
             <span class="flow-tab__head">
               <span class="flow-tab__icon"><i class="fa-regular fa-list-check" aria-hidden="true"></i></span>
               <strong class="flow-tab__title">Validación</strong>
@@ -294,7 +140,7 @@
             <span class="flow-tab__caption">El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</span>
             <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-3" id="flow-tab-3" data-index="2">
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-3" data-index="2" data-time="25">
             <span class="flow-tab__head">
               <span class="flow-tab__icon"><i class="fa-regular fa-stamp" aria-hidden="true"></i></span>
               <strong class="flow-tab__title">Aprobación</strong>
@@ -302,7 +148,7 @@
             <span class="flow-tab__caption">Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</span>
             <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-4" id="flow-tab-4" data-index="3">
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-4" data-index="3" data-time="28.3">
             <span class="flow-tab__head">
               <span class="flow-tab__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></span>
               <strong class="flow-tab__title">Transmisión al ERP</strong>
@@ -310,7 +156,7 @@
             <span class="flow-tab__caption">Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</span>
             <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-5" id="flow-tab-5" data-index="4">
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-5" data-index="4" data-time="29.3">
             <span class="flow-tab__head">
               <span class="flow-tab__icon"><i class="fa-regular fa-circle-check" aria-hidden="true"></i></span>
               <strong class="flow-tab__title">Confirmación y notificación</strong>
@@ -322,11 +168,9 @@
         <div class="flow-tabs__panel">
           <div class="flow-tabs__chrome"><span></span><span></span><span></span></div>
           <div class="flow-tabs__body">
-            <img class="flow-tabs__image" src="media/flow/paso-1-carga.png" alt="Vista de la app en el paso Carga" role="tabpanel" id="flow-panel-1" aria-labelledby="flow-tab-1" data-index="0" />
-            <img class="flow-tabs__image" src="media/flow/paso-2-validacion.png" alt="Vista de la app en el paso Validación" role="tabpanel" id="flow-panel-2" aria-labelledby="flow-tab-2" data-index="1" />
-            <img class="flow-tabs__image" src="media/flow/paso-3-aprobacion.png" alt="Vista de la app en el paso Aprobación" role="tabpanel" id="flow-panel-3" aria-labelledby="flow-tab-3" data-index="2" />
-            <img class="flow-tabs__image" src="media/flow/paso-4-transmision.png" alt="Vista de la app en el paso Transmisión al ERP" role="tabpanel" id="flow-panel-4" aria-labelledby="flow-tab-4" data-index="3" />
-            <img class="flow-tabs__image" src="media/flow/paso-5-confirmacion.png" alt="Vista de la app en el paso Confirmación y notificación" role="tabpanel" id="flow-panel-5" aria-labelledby="flow-tab-5" data-index="4" />
+            <video class="flow-tabs__video" id="flow-video" role="tabpanel" aria-label="Recorrido completo de un pedido en QuartzSales"
+                   src="media/flow/pedidos-flow.mp4" poster="media/flow/pedidos-flow-poster.png"
+                   autoplay muted loop playsinline preload="auto"></video>
           </div>
         </div>
       </div>
@@ -368,34 +212,6 @@
       <a class="btn btn-gradient" href="mailto:contacto@quartzsales.com">Solicitar demo</a>
     </section>
   </main>
-
-  <footer class="site-footer reveal">
-    <div class="footer-panels">
-      <div class="footer-panel footer-brand">
-        <img alt="QuartzSales" class="footer-iso" src="https://www.quartzsales.com/images/q-02.svg" loading="lazy" />
-        <div class="logo">QuartzSales</div>
-      </div>
-
-      <div class="footer-panel">
-        <h3>CONTENIDOS Y AYUDA</h3>
-        <a href="https://blog.quartzsales.com/tag/espa%C3%B1ol/" rel="noopener" target="_blank">Blog</a>
-        <a href="https://www.quartzsales.com/faqs.html" rel="noopener" target="_blank">FAQs</a>
-        <a href="https://www.quartzsales.com/privacypolicy.html" rel="noopener" target="_blank">Nuestras políticas</a>
-      </div>
-
-      <div class="footer-panel">
-        <h3>CONTACTO Y REDES</h3>
-        <a href="https://www.linkedin.com/company/quartz-sales" rel="noopener" target="_blank">LinkedIn</a>
-        <a href="mailto:contacto@quartzsales.com">Escribinos</a>
-        <a href="https://quartzsales.com/quartzrosco/" rel="noopener" target="_blank">🎯 Jugá al RoscoSales!</a>
-      </div>
-    </div>
-    <div class="offices">
-      Nuestras oficinas: 8333 NW 53rd St, Doral, FL 33166, Estados Unidos • C. de Ríos Rosas 42, 28003 Madrid
-      (Chamberí), España
-    </div>
-    <div class="footer-bottom">© 2026 QuartzSales. Todos los derechos reservados.</div>
-  </footer>
 
   <script src="app.js"></script>
 </body>
