@@ -115,6 +115,43 @@ document.addEventListener('DOMContentLoaded', () => {
       setFlowActive(0);
       if (!flowVideo.paused) startSync();
     }
+
+    /* ---- Ampliar: mueve el MISMO <video> a un modal más grande, sin
+       reiniciar la reproducción (es el mismo elemento, solo cambia de
+       padre), y lo trae de vuelta a la pantalla del monitor al cerrar. ---- */
+    const expandBtn = document.querySelector('.flow-tabs__expand');
+    const videoModal = document.getElementById('videoModal');
+    const videoModalFrame = document.getElementById('videoModalFrame');
+    const videoHome = document.querySelector('.flow-tabs__screen');
+
+    if (expandBtn && videoModal && videoModalFrame && videoHome) {
+      let videoHomeNextSibling = null;
+
+      function openVideoModal() {
+        videoHomeNextSibling = flowVideo.nextElementSibling;
+        videoModalFrame.appendChild(flowVideo);
+        videoModal.classList.add('is-open');
+        videoModal.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflowY = 'hidden';
+        videoModal.querySelector('.video-modal__close')?.focus();
+      }
+
+      function closeVideoModal() {
+        videoModal.classList.remove('is-open');
+        videoModal.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflowY = '';
+        videoHome.insertBefore(flowVideo, videoHomeNextSibling);
+        expandBtn.focus();
+      }
+
+      expandBtn.addEventListener('click', openVideoModal);
+      videoModal.querySelectorAll('[data-video-modal-close]').forEach(el => {
+        el.addEventListener('click', closeVideoModal);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && videoModal.classList.contains('is-open')) closeVideoModal();
+      });
+    }
   }
 
   /* ---------- Reveal on scroll ---------- */

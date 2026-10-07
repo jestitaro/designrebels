@@ -166,15 +166,31 @@
           </button>
         </div>
         <div class="flow-tabs__panel">
-          <div class="flow-tabs__chrome"><span></span><span></span><span></span></div>
-          <div class="flow-tabs__body">
-            <video class="flow-tabs__video" id="flow-video" role="tabpanel" aria-label="Recorrido completo de un pedido en QuartzSales"
-                   src="media/flow/pedidos-flow.mp4" poster="media/flow/pedidos-flow-poster.png"
-                   autoplay muted loop playsinline preload="auto"></video>
+          <div class="flow-tabs__monitor">
+            <span class="flow-tabs__cam" aria-hidden="true"></span>
+            <div class="flow-tabs__screen">
+              <video class="flow-tabs__video" id="flow-video" role="tabpanel" aria-label="Recorrido completo de un pedido en QuartzSales"
+                     src="media/flow/pedidos-flow.mp4" poster="media/flow/pedidos-flow-poster.png"
+                     autoplay muted loop playsinline preload="auto"></video>
+              <button class="flow-tabs__expand" type="button" aria-haspopup="dialog">
+                <i class="fa-regular fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+                Ampliar
+              </button>
+            </div>
           </div>
+          <div class="flow-tabs__neck" aria-hidden="true"></div>
+          <div class="flow-tabs__base" aria-hidden="true"></div>
         </div>
       </div>
     </section>
+
+    <div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Video ampliado: recorrido de un pedido">
+      <div class="video-modal__backdrop" data-video-modal-close></div>
+      <div class="video-modal__box">
+        <button class="video-modal__close" type="button" aria-label="Cerrar video ampliado" data-video-modal-close>×</button>
+        <div class="video-modal__frame" id="videoModalFrame"></div>
+      </div>
+    </div>
 
     <!-- PENSADO PARA -->
     <section class="container reveal" id="pensado-para">
