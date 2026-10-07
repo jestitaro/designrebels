@@ -1,9 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Scroll helpers ---------- */
-  document.querySelectorAll('.js-scroll-demo').forEach(btn => {
-    btn.addEventListener('click', () => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' }));
-  });
   document.querySelectorAll('.js-scroll-como-funciona').forEach(btn => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
