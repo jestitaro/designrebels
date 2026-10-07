@@ -156,7 +156,7 @@ a { color: inherit; }
    Hero
    ========================================================= */
 .hero-pedidos {
-  display: grid; grid-template-columns: .9fr 1.2fr; gap: 3rem; align-items: center;
+  display: grid; grid-template-columns: 1fr 1.15fr; gap: 3rem; align-items: center;
   max-width: 1180px; margin: 0 auto; padding: 4.5rem 1.5rem 5rem;
 }
 .eyebrow {
@@ -166,8 +166,9 @@ a { color: inherit; }
   margin-bottom: .75rem;
 }
 .hero-pedidos h1 {
-  font-size: 3rem; font-weight: 800; color: var(--dark-bg);
-  line-height: 3.1rem; margin: 0 0 1.1rem;
+  font-size: clamp(2rem, 2.9vw, 2.55rem); font-weight: 800; color: var(--dark-bg);
+  line-height: 1.14; letter-spacing: -.015em; margin: 0 0 1.1rem;
+  text-wrap: balance;
 }
 .hero-pedidos p { font-size: 1.08rem; color: var(--text-muted); max-width: 34rem; margin: 0 0 1.75rem; }
 .hero-pedidos__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
