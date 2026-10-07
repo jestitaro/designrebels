@@ -1,22 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Header scroll + drawer ---------- */
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  const burger = document.querySelector('.burger');
-  const drawer = document.querySelector('.drawer');
-  const drawerOverlay = document.querySelector('.drawer-overlay');
-  const drawerClose = document.querySelector('.drawer-close');
-  const openDrawer = () => { drawer.classList.add('is-open'); drawerOverlay.classList.add('is-open'); burger.setAttribute('aria-expanded', 'true'); lockBodyScroll(); };
-  const closeDrawer = () => { drawer.classList.remove('is-open'); drawerOverlay.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); unlockBodyScroll(); };
-  burger?.addEventListener('click', openDrawer);
-  drawerClose?.addEventListener('click', closeDrawer);
-  drawerOverlay?.addEventListener('click', closeDrawer);
-  drawer?.querySelectorAll('a, button').forEach(el => el.addEventListener('click', closeDrawer));
-
   /* ---------- Scroll helpers ---------- */
   document.querySelectorAll('.js-scroll-demo').forEach(btn => {
     btn.addEventListener('click', () => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' }));
@@ -24,20 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.js-scroll-como-funciona').forEach(btn => {
     btn.addEventListener('click', () => document.getElementById('como-funciona').scrollIntoView({ behavior: 'smooth' }));
   });
-
-  /* ---------- Cómo funciona: soltar el título fijo apenas la última
-     card empieza a despegarse (evita que quede tapando/tapada) ---------- */
-  const titleSticky = document.querySelector('.section-title-sticky');
-  const stackCards = document.querySelectorAll('.stack .stack-card');
-  const lastStackCard = stackCards[stackCards.length - 1];
-  if (titleSticky && lastStackCard) {
-    function syncTitleRelease() {
-      const released = lastStackCard.getBoundingClientRect().top < 198;
-      titleSticky.classList.toggle('is-released', released);
-    }
-    window.addEventListener('scroll', syncTitleRelease, { passive: true });
-    syncTitleRelease();
-  }
 
   /* ---------- Hero: mockups flotantes con rotación ---------- */
   const heroStage = document.getElementById('heroStage');
@@ -59,50 +28,93 @@ document.addEventListener('DOMContentLoaded', () => {
     rotateSlot('.slot-right', 5600);
   }
 
-  /* ---------- Cómo funciona (v2): pestañas que avanzan solas ---------- */
-  const flowTabs = document.querySelectorAll('.flow-tab');
-  const flowImages = document.querySelectorAll('.flow-tabs__image');
-  if (flowTabs.length) {
-    const FLOW_INTERVAL = 4500;
+  /* ---------- Cómo funciona: pestañas sincronizadas con el video ----------
+     Cada tab tiene un data-time (segundo del video donde arranca ese tramo).
+     El tramo activo y la barra de progreso se calculan en vivo contra
+     video.currentTime — no es un timer parejo, es el video real mandando. */
+  const flowTabs = Array.from(document.querySelectorAll('.flow-tab'));
+  const flowVideo = document.getElementById('flow-video');
+
+  if (flowTabs.length && flowVideo) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let flowIndex = 0;
-    let flowTimer;
+    const segments = flowTabs.map((tab, i) => ({
+      tab,
+      index: i,
+      start: parseFloat(tab.dataset.time),
+      bar: tab.querySelector('.flow-tab__progress-bar'),
+    }));
+    let activeIndex = -1;
+    let rafId = null;
+
+    function segmentEnd(i) {
+      return i < segments.length - 1 ? segments[i + 1].start : (flowVideo.duration || segments[i].start + 1);
+    }
 
     function setFlowActive(i) {
-      flowIndex = i;
-      flowTabs.forEach((tab, idx) => {
+      if (i === activeIndex) return;
+      activeIndex = i;
+      segments.forEach((seg, idx) => {
         const isActive = idx === i;
-        tab.classList.toggle('active', isActive);
-        tab.setAttribute('aria-selected', String(isActive));
+        seg.tab.classList.toggle('active', isActive);
+        seg.tab.setAttribute('aria-selected', String(isActive));
+        if (!isActive && seg.bar) seg.bar.style.width = '0%';
       });
-      flowImages.forEach((img, idx) => img.classList.toggle('active', idx === i));
-      if (!reduceMotion) restartFlowProgress();
     }
 
-    function restartFlowProgress() {
-      flowTabs.forEach(tab => tab.querySelector('.flow-tab__progress-bar')?.classList.remove('is-running'));
-      const activeBar = flowTabs[flowIndex].querySelector('.flow-tab__progress-bar');
-      if (!activeBar) return;
-      void activeBar.offsetWidth;
-      activeBar.classList.add('is-running');
+    function currentSegmentIndex(t) {
+      let i = 0;
+      for (let k = 0; k < segments.length; k++) {
+        if (t >= segments[k].start) i = k; else break;
+      }
+      return i;
     }
 
-    function nextFlow() { setFlowActive((flowIndex + 1) % flowTabs.length); }
+    function tick() {
+      const t = flowVideo.currentTime;
+      const i = currentSegmentIndex(t);
+      setFlowActive(i);
+      const seg = segments[i];
+      const end = segmentEnd(i);
+      const pct = end > seg.start ? Math.min(1, Math.max(0, (t - seg.start) / (end - seg.start))) : 0;
+      if (seg.bar) seg.bar.style.width = (pct * 100) + '%';
+      rafId = requestAnimationFrame(tick);
+    }
 
-    function startFlowTimer() {
-      clearInterval(flowTimer);
-      flowTimer = setInterval(nextFlow, FLOW_INTERVAL);
+    function startSync() {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(tick);
+    }
+    function stopSync() {
+      cancelAnimationFrame(rafId);
+      rafId = null;
     }
 
     flowTabs.forEach((tab, i) => {
       tab.addEventListener('click', () => {
+        const target = segments[i].start;
+        try {
+          flowVideo.currentTime = i === 0 ? 0 : target + 0.05;
+        } catch (e) { /* metadata aún no lista */ }
         setFlowActive(i);
-        startFlowTimer();
+        if (!reduceMotion) {
+          flowVideo.play().catch(() => {});
+        }
       });
     });
 
-    setFlowActive(0);
-    startFlowTimer();
+    if (reduceMotion) {
+      // Sin auto-avance ni autoplay: el video queda pausado en el primer
+      // cuadro y las tabs siguen siendo clickeables para saltar a cada tramo.
+      flowVideo.autoplay = false;
+      flowVideo.pause();
+      setFlowActive(0);
+    } else {
+      flowVideo.addEventListener('playing', startSync);
+      flowVideo.addEventListener('pause', stopSync);
+      flowVideo.addEventListener('seeking', () => setFlowActive(currentSegmentIndex(flowVideo.currentTime)));
+      setFlowActive(0);
+      if (!flowVideo.paused) startSync();
+    }
   }
 
   /* ---------- Reveal on scroll ---------- */
@@ -112,17 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  /* ---------- Bloqueo de scroll con modal abierto ---------- */
-  let scrollLockCount = 0;
-  function lockBodyScroll() {
-    scrollLockCount++;
-    document.documentElement.style.overflowY = 'hidden';
-  }
-  function unlockBodyScroll() {
-    scrollLockCount = Math.max(0, scrollLockCount - 1);
-    if (scrollLockCount === 0) document.documentElement.style.overflowY = '';
-  }
 
 });
 
