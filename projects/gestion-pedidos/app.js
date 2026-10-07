@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Hero: mockups flotantes con rotación ---------- */
   const heroStage = document.getElementById('heroStage');
   if (heroStage) {
-    requestAnimationFrame(() => heroStage.classList.add('is-active'));
+    const heroReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function rotateSlot(selector, interval) {
       const items = heroStage.querySelectorAll(selector + ' .slot-item');
@@ -20,9 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
         items[index].classList.add('active');
       }, interval);
     }
-    rotateSlot('.slot-left', 4800);
-    rotateSlot('.slot-top', 5200);
-    rotateSlot('.slot-right', 5600);
+
+    // Secuencia de entrada: violeta + compu primero; las tarjetas de UI
+    // aparecen cuando la compu ya está, y recién ahí empiezan a rotar.
+    requestAnimationFrame(() => heroStage.classList.add('is-active'));
+    setTimeout(() => {
+      heroStage.classList.add('slots-on');
+      setTimeout(() => {
+        rotateSlot('.slot-left', 4800);
+        rotateSlot('.slot-top', 5200);
+        rotateSlot('.slot-right', 5600);
+      }, heroReduce ? 0 : 1200);
+    }, heroReduce ? 0 : 1100);
   }
 
   /* ---------- Cómo funciona: pestañas sincronizadas con el video ----------
