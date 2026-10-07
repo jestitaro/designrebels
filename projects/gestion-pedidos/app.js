@@ -29,25 +29,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ---------- Cómo funciona: pestañas sincronizadas con el video ----------
-     Cada tab tiene un data-time (segundo del video donde arranca ese tramo).
-     El tramo activo y la barra de progreso se calculan en vivo contra
-     video.currentTime — no es un timer parejo, es el video real mandando. */
+     Cada tab tiene un data-time (segundo del video donde arranca ese tramo)
+     y un data-caption (la descripción que va debajo del video). El tramo
+     activo y la barra de progreso se calculan en vivo contra
+     video.currentTime: es el video real el que manda, no un timer. */
   const flowTabs = Array.from(document.querySelectorAll('.flow-tab'));
   const flowVideo = document.getElementById('flow-video');
+  const flowStage = document.getElementById('flow-stage');
+  const flowCaption = document.getElementById('flow-caption');
+  const flowList = document.querySelector('.flow-tabs__list');
+  const modalStep = document.getElementById('videoModalStep');
+  const modalCaption = document.getElementById('videoModalCaption');
 
   if (flowTabs.length && flowVideo) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const segments = flowTabs.map((tab, i) => ({
+    const segments = flowTabs.map((tab) => ({
       tab,
-      index: i,
       start: parseFloat(tab.dataset.time),
+      title: tab.querySelector('.flow-tab__title')?.textContent.trim() || '',
+      caption: tab.dataset.caption || '',
       bar: tab.querySelector('.flow-tab__progress-bar'),
     }));
     let activeIndex = -1;
     let rafId = null;
+    let captionTimer = null;
 
     function segmentEnd(i) {
       return i < segments.length - 1 ? segments[i + 1].start : (flowVideo.duration || segments[i].start + 1);
+    }
+
+    function showCaption(i) {
+      const seg = segments[i];
+      if (modalStep) modalStep.textContent = seg.title;
+      if (modalCaption) modalCaption.textContent = seg.caption;
+      if (!flowCaption) return;
+      clearTimeout(captionTimer);
+      if (reduceMotion) { flowCaption.textContent = seg.caption; return; }
+      flowCaption.classList.add('is-swapping');
+      captionTimer = setTimeout(() => {
+        flowCaption.textContent = seg.caption;
+        flowCaption.classList.remove('is-swapping');
+      }, 200);
+    }
+
+    // En mobile la lista es una fila desplazable: lleva el chip activo a la
+    // vista sin mover el scroll vertical de la página.
+    function revealTab(tab) {
+      if (!flowList || flowList.scrollWidth <= flowList.clientWidth) return;
+      const left = tab.offsetLeft - flowList.offsetLeft - 8;
+      flowList.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
     }
 
     function setFlowActive(i) {
@@ -57,8 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isActive = idx === i;
         seg.tab.classList.toggle('active', isActive);
         seg.tab.setAttribute('aria-selected', String(isActive));
+        seg.tab.tabIndex = isActive ? 0 : -1;
         if (!isActive && seg.bar) seg.bar.style.width = '0%';
       });
+      if (flowStage) flowStage.setAttribute('aria-labelledby', segments[i].tab.id);
+      showCaption(i);
+      revealTab(segments[i].tab);
     }
 
     function currentSegmentIndex(t) {
@@ -69,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return i;
     }
 
-    function tick() {
+    function syncToVideo() {
       const t = flowVideo.currentTime;
       const i = currentSegmentIndex(t);
       setFlowActive(i);
@@ -77,9 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const end = segmentEnd(i);
       const pct = end > seg.start ? Math.min(1, Math.max(0, (t - seg.start) / (end - seg.start))) : 0;
       if (seg.bar) seg.bar.style.width = (pct * 100) + '%';
-      rafId = requestAnimationFrame(tick);
     }
 
+    function tick() {
+      syncToVideo();
+      rafId = requestAnimationFrame(tick);
+    }
     function startSync() {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(tick);
@@ -89,31 +126,90 @@ document.addEventListener('DOMContentLoaded', () => {
       rafId = null;
     }
 
+    function goToStep(i) {
+      try {
+        flowVideo.currentTime = i === 0 ? 0 : segments[i].start + 0.05;
+      } catch (e) { /* metadata aún no lista */ }
+      setFlowActive(i);
+      if (!reduceMotion) flowVideo.play().catch(() => {});
+    }
+
     flowTabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => {
-        const target = segments[i].start;
-        try {
-          flowVideo.currentTime = i === 0 ? 0 : target + 0.05;
-        } catch (e) { /* metadata aún no lista */ }
-        setFlowActive(i);
-        if (!reduceMotion) {
-          flowVideo.play().catch(() => {});
-        }
+      tab.addEventListener('click', () => goToStep(i));
+      // Flechas para moverse entre pestañas (patrón ARIA de tabs).
+      tab.addEventListener('keydown', (e) => {
+        const keys = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+        let next = null;
+        if (e.key in keys) next = (i + keys[e.key] + segments.length) % segments.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = segments.length - 1;
+        if (next === null) return;
+        e.preventDefault();
+        segments[next].tab.focus();
+        goToStep(next);
       });
     });
 
+    flowVideo.addEventListener('seeked', syncToVideo);
+    flowVideo.addEventListener('playing', startSync);
+    flowVideo.addEventListener('pause', stopSync);
+
     if (reduceMotion) {
-      // Sin auto-avance ni autoplay: el video queda pausado en el primer
-      // cuadro y las tabs siguen siendo clickeables para saltar a cada tramo.
+      // Sin autoplay: el video queda pausado y las tabs siguen saltando a
+      // cada tramo; el usuario puede reproducirlo desde "Ampliar".
       flowVideo.autoplay = false;
       flowVideo.pause();
       setFlowActive(0);
     } else {
-      flowVideo.addEventListener('playing', startSync);
-      flowVideo.addEventListener('pause', stopSync);
-      flowVideo.addEventListener('seeking', () => setFlowActive(currentSegmentIndex(flowVideo.currentTime)));
       setFlowActive(0);
       if (!flowVideo.paused) startSync();
+
+      // Solo reproduce mientras la sección está en pantalla.
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) => {
+          if (document.getElementById('videoModal')?.classList.contains('is-open')) return;
+          if (entry.isIntersecting) flowVideo.play().catch(() => {});
+          else flowVideo.pause();
+        }, { threshold: 0.25 }).observe(flowVideo.closest('.flow-tabs__frame') || flowVideo);
+      }
+    }
+
+    /* ---- Ampliar: mueve el MISMO <video> a un modal más grande, sin
+       reiniciar la reproducción (es el mismo elemento, solo cambia de
+       padre), y lo trae de vuelta al recuadro al cerrar. ---- */
+    const expandBtn = document.querySelector('.flow-tabs__expand');
+    const videoModal = document.getElementById('videoModal');
+    const videoModalFrame = document.getElementById('videoModalFrame');
+    const videoHome = document.querySelector('.flow-tabs__frame');
+
+    if (expandBtn && videoModal && videoModalFrame && videoHome) {
+      function openVideoModal() {
+        videoModalFrame.appendChild(flowVideo);
+        flowVideo.controls = true;
+        videoModal.classList.add('is-open');
+        videoModal.setAttribute('aria-hidden', 'false');
+        document.documentElement.style.overflowY = 'hidden';
+        videoModal.querySelector('.video-modal__close')?.focus();
+        flowVideo.play().catch(() => {});
+      }
+
+      function closeVideoModal() {
+        videoModal.classList.remove('is-open');
+        videoModal.setAttribute('aria-hidden', 'true');
+        document.documentElement.style.overflowY = '';
+        flowVideo.controls = false;
+        videoHome.insertBefore(flowVideo, expandBtn);
+        if (reduceMotion) flowVideo.pause(); else flowVideo.play().catch(() => {});
+        expandBtn.focus();
+      }
+
+      expandBtn.addEventListener('click', openVideoModal);
+      videoModal.querySelectorAll('[data-video-modal-close]').forEach(el => {
+        el.addEventListener('click', closeVideoModal);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && videoModal.classList.contains('is-open')) closeVideoModal();
+      });
     }
   }
 
