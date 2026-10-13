@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-12T18:50:25.313Z",
-  "group": "A",
+  "generatedAt": "2026-10-13T16:50:24.044Z",
+  "group": "B",
   "own": {
     "linkedin": {
       "followers": 2878,
       "employees": 8,
-      "lastSynced": "2026-10-12T18:49:50.942Z",
+      "lastSynced": "2026-10-13T16:49:48.036Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -202,7 +202,7 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-10-10T15:09:12.478Z",
+      "lastSynced": "2026-10-13T16:49:55.254Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -241,7 +241,7 @@
       ],
       "lastSynced": null,
       "syncStatus": "error",
-      "syncError": "Apify respondió 502: <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "frogmi",
@@ -276,7 +276,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-10-10T15:09:24.557Z",
+      "lastSynced": "2026-10-13T16:50:20.599Z",
       "syncStatus": "ok",
       "syncError": null
     },
