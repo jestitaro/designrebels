@@ -30,14 +30,26 @@ Te van a llegar dos imágenes:
 1. La primera es el diseño original exportado desde Figma.
 2. La segunda es una captura de pantalla de la implementación real.
 
-Tu trabajo es compararlas exhaustivamente y listar cada diferencia relevante que encuentres: espaciado, alineación, tipografía (tamaño, peso, familia), color, bordes/radios, sombras, iconografía, contenido de texto, estados de componentes faltantes o distintos, y elementos agregados/faltantes.
+Tu trabajo es compararlas exhaustivamente y listar cada diferencia relevante que encuentres: espaciado, alineación, tipografía (tamaño, peso, familia), color, bordes/radios, sombras, iconografía, estados de componentes faltantes o distintos, y elementos agregados/faltantes.
+
+IMPORTANTE — qué NO reportar como diferencia:
+El diseño de Figma usa datos de ejemplo/mockup, mientras que la captura de implementación es de producción real. Por lo tanto, IGNORÁ por completo cualquier diferencia que sea solo de VALOR DE DATO, aunque el valor en sí se vea distinto:
+- Montos, cifras, porcentajes y cualquier número que represente un dato (no un diff de layout/tamaño).
+- Fechas y horas.
+- Nombres de personas, nombres de PDV/clientes/productos específicos, IDs, códigos.
+No reportes "el valor cambió de X a Y" para ningún dato de este tipo — es esperado y correcto que difieran.
+
+Sí reportá, aunque involucren texto o números:
+- Diferencias de FORMATO del dato (ej. separador de miles presente en el diseño pero ausente en la implementación, cantidad de decimales, uso de coma vs. punto, tamaño relativo del símbolo % respecto al número).
+- Diferencias en las ETIQUETAS/labels fijos de la interfaz (ej. el texto "Avance Total" cambiado a otro texto, un label faltante o agregado) — estas sí son parte del diseño, no datos variables.
+- Cualquier diferencia estructural, de layout, de componente o de estilo, sea donde sea que aparezca.
 
 Para cada diferencia devolvé:
 - description: qué cambió, concreto y accionable (no vago).
 - location: dónde está, en términos de la interfaz (sección, componente).
 - type: "visual" si es una diferencia de apariencia sin impacto funcional, "funcional" si afecta el comportamiento o la interacción, "menor" si es una diferencia trivial que probablemente no valga la pena reportar como bug.
 
-No inventes diferencias que no puedas justificar mirando las imágenes. Si las dos imágenes son visualmente equivalentes, devolvé una lista vacía.`;
+No inventes diferencias que no puedas justificar mirando las imágenes. Si las dos imágenes son visualmente equivalentes (descartando datos variables), devolvé una lista vacía.`;
 
 function detectImageMediaType(base64: string): "image/png" | "image/jpeg" {
   const header = Buffer.from(base64.slice(0, 16), "base64");

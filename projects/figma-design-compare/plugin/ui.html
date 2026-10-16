@@ -43,6 +43,11 @@
         box-sizing: border-box;
       }
 
+      html,
+      body {
+        height: 100%;
+      }
+
       body {
         margin: 0;
         padding: 14px;
@@ -50,6 +55,8 @@
         font-size: 12px;
         color: var(--text);
         background: var(--bg);
+        display: flex;
+        flex-direction: column;
       }
 
       header {
@@ -57,6 +64,7 @@
         align-items: center;
         gap: 10px;
         margin-bottom: 14px;
+        flex: none;
       }
 
       .logo {
@@ -94,14 +102,18 @@
         border-radius: 14px;
         padding: 12px;
         box-shadow: 0 2px 10px -4px rgba(93, 47, 191, 0.12);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
       }
 
       .columns {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1.3fr;
         gap: 10px;
-        margin-bottom: 10px;
-        align-items: start;
+        align-items: stretch;
+        flex: 1;
+        min-height: 0;
       }
 
       section h3 {
@@ -112,6 +124,7 @@
         font-weight: 700;
         color: var(--text);
         margin: 0 0 10px;
+        flex: none;
       }
 
       section h3 .step {
@@ -139,6 +152,7 @@
         font-weight: 600;
         text-align: center;
         cursor: pointer;
+        flex: none;
       }
 
       button:not(.secondary) {
@@ -186,6 +200,7 @@
         display: flex;
         align-items: center;
         gap: 6px;
+        flex: none;
       }
 
       .status.error {
@@ -211,17 +226,24 @@
       .preview-row {
         display: flex;
         gap: 8px;
-        margin-top: 10px;
+        margin-bottom: 10px;
+        flex: 1;
+        min-height: 0;
       }
 
       .preview {
         flex: 1;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
       }
 
       .preview img {
         width: 100%;
+        flex: 1;
+        min-height: 0;
         display: block;
+        object-fit: contain;
         border: 1px solid var(--border);
         border-radius: 10px;
         background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 50% / 12px 12px;
@@ -233,12 +255,22 @@
         font-size: 10px;
         color: var(--text-muted);
         word-break: break-all;
+        flex: none;
+      }
+
+      #resultBlock {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        margin-top: 8px;
       }
 
       textarea#resultOutput {
         width: 100%;
-        min-height: 140px;
-        resize: vertical;
+        flex: 1;
+        min-height: 0;
+        resize: none;
         font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
         font-size: 11px;
         color: var(--text);
@@ -246,7 +278,10 @@
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 8px;
-        margin-top: 10px;
+      }
+
+      #copyBtn {
+        margin-top: 8px;
       }
     </style>
   </head>
@@ -285,7 +320,13 @@
 
       <section>
         <h3><span class="step">2</span>Diseño implementado</h3>
-        <label for="implementationInput" class="file-btn">Subir archivo</label>
+        <div class="preview-row" id="implPreviewRow" style="display: none">
+          <div class="preview">
+            <img id="implPreview" alt="Preview de la captura subida" />
+            <span id="implPreviewLabel"></span>
+          </div>
+        </div>
+        <label for="implementationInput" class="file-btn" id="implFileBtn">Subir archivo</label>
         <input
           type="file"
           id="implementationInput"
@@ -293,29 +334,21 @@
           class="visually-hidden"
         />
         <div id="implFileName" class="status">Formatos aceptados: PNG o JPG.</div>
-        <div class="preview-row" id="implPreviewRow" style="display: none">
-          <div class="preview">
-            <img id="implPreview" alt="Preview de la captura subida" />
-            <span id="implPreviewLabel"></span>
-          </div>
+      </section>
+
+      <section>
+        <h3><span class="step">3</span>Comparar</h3>
+        <button id="compareBtn" disabled>Comparar con backend</button>
+        <div id="compareStatus" class="status">
+          <span id="compareSpinner" class="spinner" hidden></span>
+          <span id="compareStatusText"></span>
+        </div>
+        <div id="resultBlock" style="display: none">
+          <textarea id="resultOutput" readonly></textarea>
+          <button id="copyBtn" class="secondary">Copiar resultado</button>
         </div>
       </section>
     </div>
-
-    <section>
-      <h3><span class="step">3</span>Comparar</h3>
-      <button id="compareBtn" disabled>Comparar con backend</button>
-      <div id="compareStatus" class="status">
-        <span id="compareSpinner" class="spinner" hidden></span>
-        <span id="compareStatusText"></span>
-      </div>
-      <div id="resultBlock" style="display: none">
-        <textarea id="resultOutput" readonly></textarea>
-        <div style="margin-top: 8px">
-          <button id="copyBtn" class="secondary">Copiar resultado</button>
-        </div>
-      </div>
-    </section>
 
     <script>
       const state = {
@@ -332,6 +365,7 @@
       const designChangeHint = document.getElementById("designChangeHint");
 
       const implementationInput = document.getElementById("implementationInput");
+      const implFileBtn = document.getElementById("implFileBtn");
       const implFileName = document.getElementById("implFileName");
       const implPreviewRow = document.getElementById("implPreviewRow");
       const implPreview = document.getElementById("implPreview");
@@ -400,6 +434,7 @@
           const base64 = dataUrl.split(",")[1];
 
           state.implementation = { base64, fileName: file.name, mimeType: file.type };
+          implFileBtn.textContent = "Reemplazar archivo";
           implFileName.textContent = `Seleccionado: "${file.name}"`;
           implPreview.src = dataUrl;
           implPreviewLabel.textContent = file.name;
@@ -460,7 +495,7 @@
           const result = await compareWithBackend(state.design, state.implementation);
           resultOutput.value = formatDiffsAsPlainText(result);
           compareStatusText.textContent = `${result.diffs.length} diferencia(s) encontrada(s).`;
-          resultBlock.style.display = "block";
+          resultBlock.style.display = "flex";
         } catch (error) {
           compareStatusText.textContent = `Error: ${error.message}`;
           compareStatus.classList.add("error");
