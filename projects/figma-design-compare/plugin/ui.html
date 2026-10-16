@@ -93,8 +93,15 @@
         border: 1px solid var(--border);
         border-radius: 14px;
         padding: 12px;
-        margin-bottom: 10px;
         box-shadow: 0 2px 10px -4px rgba(93, 47, 191, 0.12);
+      }
+
+      .columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: start;
       }
 
       section h3 {
@@ -258,40 +265,42 @@
       </div>
     </header>
 
-    <section>
-      <h3><span class="step">1</span>Diseño original</h3>
-      <div id="exportStatus" class="status">
-        <span id="exportSpinner" class="spinner" hidden></span>
-        <span id="exportStatusText">Seleccioná un frame o componente en el canvas.</span>
-      </div>
-      <div class="preview-row" id="designPreviewRow" style="display: none">
-        <div class="preview">
-          <img id="designPreview" alt="Preview del diseño exportado" />
-          <span id="designPreviewLabel"></span>
+    <div class="columns">
+      <section>
+        <h3><span class="step">1</span>Diseño original</h3>
+        <div id="exportStatus" class="status">
+          <span id="exportSpinner" class="spinner" hidden></span>
+          <span id="exportStatusText">Seleccioná un frame o componente en el canvas.</span>
         </div>
-      </div>
-      <div id="designChangeHint" class="status" style="display: none">
-        Para cambiarlo, seleccioná otro frame o componente.
-      </div>
-    </section>
+        <div class="preview-row" id="designPreviewRow" style="display: none">
+          <div class="preview">
+            <img id="designPreview" alt="Preview del diseño exportado" />
+            <span id="designPreviewLabel"></span>
+          </div>
+        </div>
+        <div id="designChangeHint" class="status" style="display: none">
+          Para cambiarlo, seleccioná otro frame o componente.
+        </div>
+      </section>
 
-    <section>
-      <h3><span class="step">2</span>Diseño implementado</h3>
-      <label for="implementationInput" class="file-btn">Subir archivo</label>
-      <input
-        type="file"
-        id="implementationInput"
-        accept="image/png, image/jpeg"
-        class="visually-hidden"
-      />
-      <div id="implFileName" class="status">Formatos aceptados: PNG o JPG.</div>
-      <div class="preview-row" id="implPreviewRow" style="display: none">
-        <div class="preview">
-          <img id="implPreview" alt="Preview de la captura subida" />
-          <span id="implPreviewLabel"></span>
+      <section>
+        <h3><span class="step">2</span>Diseño implementado</h3>
+        <label for="implementationInput" class="file-btn">Subir archivo</label>
+        <input
+          type="file"
+          id="implementationInput"
+          accept="image/png, image/jpeg"
+          class="visually-hidden"
+        />
+        <div id="implFileName" class="status">Formatos aceptados: PNG o JPG.</div>
+        <div class="preview-row" id="implPreviewRow" style="display: none">
+          <div class="preview">
+            <img id="implPreview" alt="Preview de la captura subida" />
+            <span id="implPreviewLabel"></span>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
     <section>
       <h3><span class="step">3</span>Comparar</h3>
