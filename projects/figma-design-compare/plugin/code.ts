@@ -37,7 +37,9 @@ async function exportSelectionAsPng() {
   try {
     const bytes = await (node as ExportMixin).exportAsync({
       format: "PNG",
-      constraint: { type: "SCALE", value: 2 },
+      // @3x: coincide con la densidad nativa de la mayoría de celulares (ej. 360x800dp -> 1080x2400px),
+      // así el diseño y la captura de implementación llegan al análisis con resolución absoluta equivalente.
+      constraint: { type: "SCALE", value: 3 },
     });
 
     figma.ui.postMessage({
