@@ -283,6 +283,32 @@
       #copyBtn {
         margin-top: 8px;
       }
+
+      .empty-state {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+        color: var(--violet);
+      }
+
+      .empty-state svg {
+        width: 52px;
+        height: 52px;
+        opacity: 0.45;
+      }
+
+      .empty-state p {
+        margin: 0;
+        max-width: 190px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+      }
     </style>
   </head>
   <body>
@@ -303,9 +329,18 @@
     <div class="columns">
       <section>
         <h3><span class="step">1</span>Diseño original</h3>
-        <div id="exportStatus" class="status">
+        <div id="exportStatus" class="status" style="display: none">
           <span id="exportSpinner" class="spinner" hidden></span>
-          <span id="exportStatusText">Seleccioná un frame o componente en el canvas.</span>
+          <span id="exportStatusText"></span>
+        </div>
+        <div id="designEmptyState" class="empty-state">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M8 16V8h8" />
+            <path d="M32 8h8v8" />
+            <path d="M40 32v8h-8" />
+            <path d="M16 40H8v-8" />
+          </svg>
+          <p>Seleccioná un frame o componente en el canvas.</p>
         </div>
         <div class="preview-row" id="designPreviewRow" style="display: none">
           <div class="preview">
@@ -359,6 +394,7 @@
       const exportStatus = document.getElementById("exportStatus");
       const exportSpinner = document.getElementById("exportSpinner");
       const exportStatusText = document.getElementById("exportStatusText");
+      const designEmptyState = document.getElementById("designEmptyState");
       const designPreviewRow = document.getElementById("designPreviewRow");
       const designPreview = document.getElementById("designPreview");
       const designPreviewLabel = document.getElementById("designPreviewLabel");
@@ -390,6 +426,11 @@
         if (!msg) return;
 
         if (msg.type === "selection-changed") {
+          if (!state.design) {
+            // Todavía no se exportó nada: alternar entre el empty state y el status compacto.
+            designEmptyState.style.display = msg.hasValidSelection ? "none" : "flex";
+            exportStatus.style.display = msg.hasValidSelection ? "flex" : "none";
+          }
           exportStatus.classList.remove("error");
           exportSpinner.hidden = !msg.hasValidSelection;
           exportStatusText.textContent = msg.hasValidSelection
@@ -404,6 +445,8 @@
             width: msg.width,
             height: msg.height,
           };
+          designEmptyState.style.display = "none";
+          exportStatus.style.display = "flex";
           exportSpinner.hidden = true;
           exportStatusText.textContent = `Exportado: "${msg.fileName}"`;
           designPreview.src = `data:image/png;base64,${msg.base64}`;
@@ -416,6 +459,8 @@
         }
 
         if (msg.type === "export-error") {
+          designEmptyState.style.display = "none";
+          exportStatus.style.display = "flex";
           exportSpinner.hidden = true;
           exportStatusText.textContent = msg.message;
           exportStatus.classList.add("error");

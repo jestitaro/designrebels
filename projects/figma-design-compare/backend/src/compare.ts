@@ -9,7 +9,10 @@ const DiffSchema = z.object({
   location: z
     .string()
     .describe(
-      'Ubicación aproximada dentro de la pantalla (ej. "header, botón CTA superior derecho").'
+      'Ubicación dentro de la pantalla. Empezá SIEMPRE con el tercio vertical y horizontal ' +
+        '("tercio superior/medio/inferior" + "izquierda/centro/derecha"), y después una ' +
+        'referencia textual del componente o sección, separados por " — ". ' +
+        'Ej: "tercio superior, centro — header, gauge circular de porcentaje".'
     ),
   type: z
     .enum(["visual", "funcional", "menor"])
@@ -46,7 +49,7 @@ Sí reportá, aunque involucren texto o números:
 
 Para cada diferencia devolvé:
 - description: qué cambió, concreto y accionable (no vago).
-- location: dónde está, en términos de la interfaz (sección, componente).
+- location: dónde está. Empezá con el tercio vertical y horizontal de la pantalla donde aparece (ej. "tercio superior, centro"), y después una referencia textual del componente o sección (ej. "tercio superior, centro — header, gauge circular de porcentaje"), para que alguien pueda ubicarlo de un vistazo sin tener que leer toda la descripción.
 - type: "visual" si es una diferencia de apariencia sin impacto funcional, "funcional" si afecta el comportamiento o la interacción, "menor" si es una diferencia trivial que probablemente no valga la pena reportar como bug.
 
 No inventes diferencias que no puedas justificar mirando las imágenes. Si las dos imágenes son visualmente equivalentes (descartando datos variables), devolvé una lista vacía.`;
