@@ -35,6 +35,14 @@ Te van a llegar dos imágenes:
 
 Tu trabajo es compararlas exhaustivamente y listar cada diferencia relevante que encuentres: espaciado, alineación, tipografía (tamaño, peso, familia), color, bordes/radios, sombras, iconografía, estados de componentes faltantes o distintos, y elementos agregados/faltantes.
 
+Prestá especial atención y sé riguroso con estos aspectos — son prioritarios y no deben pasarse por alto:
+- Tamaño de fuente de cada texto (títulos, labels, valores).
+- Colores exactos (fondo, texto, bordes, iconografía) — no digas solo "cambió el color", nombrá ambos colores si podés distinguirlos (ej. "violeta #7c3aed en el diseño vs. azul en la implementación").
+- Tamaño de íconos, especialmente chevrons/flechas y otros íconos pequeños de interacción.
+- Padding (espacio interno de cada componente/tarjeta) y margin (espacio entre componentes).
+
+Cuando detectes una diferencia en cualquiera de estos aspectos, no te quedes en "es más grande/chico" — dá una estimación aproximada de magnitud cuando puedas inferirla visualmente (ej. "el padding se ve ~2x mayor que en el diseño", "el ícono es notablemente más grande, aprox. el doble", "la fuente parece 2-3px más chica").
+
 IMPORTANTE — qué NO reportar como diferencia:
 El diseño de Figma usa datos de ejemplo/mockup, mientras que la captura de implementación es de producción real. Por lo tanto, IGNORÁ por completo cualquier diferencia que sea solo de VALOR DE DATO, aunque el valor en sí se vea distinto:
 - Montos, cifras, porcentajes y cualquier número que represente un dato (no un diff de layout/tamaño).
