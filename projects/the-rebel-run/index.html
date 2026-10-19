@@ -135,13 +135,14 @@ body[data-theme="halloween"] .avatar{border-radius:50% 50% 42% 58%/58% 52% 48% 4
 .icon-btn:hover{background:var(--surface-2)}
 .icon-btn:active{transform:scale(.88)}
 .icon-btn svg{width:20px;height:20px}
-.icon-btn .ico-pumpkin,.icon-btn .ico-qs{position:absolute;width:24px;height:24px;transition:transform .6s var(--ease-spring),opacity .3s}
-.icon-btn .ico-qs{width:22px;height:22px;object-fit:contain}
-.icon-btn .ico-qs-txt{display:none;font-weight:900;font-size:12px;color:var(--accent)}
+.icon-btn .ico-pumpkin,.icon-btn .ico-sun{position:absolute;width:24px;height:24px;transition:transform .6s var(--ease-spring),opacity .3s}
+.icon-btn .ico-sun{width:22px;height:22px;color:var(--accent)}
 .icon-btn{position:relative}
-.icon-btn:hover .ico-pumpkin,.icon-btn:hover .ico-qs{transform:rotate(-12deg) scale(1.08)}
-body[data-theme="base"] .icon-btn .ico-pumpkin{transform:rotate(-90deg) scale(0);opacity:0}
-body[data-theme="halloween"] .icon-btn .ico-qs,body[data-theme="halloween"] .icon-btn .ico-qs-txt{transform:rotate(90deg) scale(0);opacity:0}
+.icon-btn:hover .ico-pumpkin{transform:rotate(-12deg) scale(1.08)}
+.icon-btn:hover .ico-sun{transform:rotate(45deg) scale(1.08)}
+/* El ícono muestra el tema al que cambiás: calabaza en QuartzSales, sol en Halloween */
+body[data-theme="halloween"] .icon-btn .ico-pumpkin{transform:rotate(-90deg) scale(0);opacity:0}
+body[data-theme="base"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opacity:0}
 
 .live-pill{display:none;align-items:center;gap:8px;padding:7px 12px 7px 9px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:900;font-size:13px;animation:pillIn .5s var(--ease-spring)}
 .live-pill.on{display:inline-flex}
@@ -200,6 +201,39 @@ body[data-theme="halloween"] .bar-fill{background:repeating-linear-gradient(-45d
 .team-row{display:flex;align-items:center;gap:12px}
 .team-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--team);color:var(--team-ink,#fff);font-weight:900;font-size:16px;flex:none}
 body[data-theme="halloween"] .team-badge{border-radius:48% 52% 44% 56%/58% 46% 54% 42%}
+/* Carrera de casas */
+.race{padding:18px}
+.race-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.race-top .h2{font-size:22px;line-height:1.1;max-width:15ch}
+.countdown{text-align:right;flex:none}
+.countdown b{display:block;font-size:40px;font-weight:900;line-height:.9;color:var(--accent);letter-spacing:-.02em}
+.countdown small{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.race-mine{margin-top:16px;padding:14px;border-radius:18px;background:var(--surface-2)}
+.race-mine .team-row b{font-size:17px}
+.pace{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--accent-soft)}
+.pace svg{width:22px;height:22px;flex:none;color:var(--accent)}
+.pace b{color:var(--accent)}
+.race-list{list-style:none;margin-top:6px}
+.race-list li{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.race-list li:last-child{border-bottom:0}
+.race-list .rank-pos{width:auto}
+.race-list .nm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.race-list .nm .dot-t{width:10px;height:10px}
+.race-list .km{font-weight:900;font-size:14px;text-align:right}
+.race-list .km small{display:block;font-size:11px;font-weight:700;color:var(--muted)}
+.race-list .mini{grid-column:2/4;height:6px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:-2px}
+.race-list .mini i{display:block;height:100%;border-radius:inherit;background:var(--team);width:0;transition:width 1.2s var(--ease-out)}
+.race-list li.me .nm{color:var(--accent)}
+.win-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:900;padding:3px 8px;border-radius:999px;background:var(--accent);color:var(--accent-ink);animation:pillIn .5s var(--ease-spring)}
+.rules{font-size:12px;color:var(--muted);line-height:1.45;margin-top:10px}
+/* Individual */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.stat{padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
+.stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
+.stat b{display:block;font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-.01em}
+.stat b small{font-size:13px;font-weight:700;color:var(--muted)}
+.stat span{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
+.section-h{margin:22px 0 2px}
 .rank-chip{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 
 .acts{list-style:none;margin-top:6px}
@@ -438,6 +472,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
     <symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4.5" r="1.8"/><path d="M6 20l3.5-5 3 2 1.5-4.5L17 15l3-1M9 9.5l4-2 2.5 3.5M8 12l1-3"/></g></symbol>
     <symbol id="i-rank" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 20h18M5 20v-6h4v6M10 20V9h4v11M15 20v-8h4v8"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-minus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 10 17l9-10"/></symbol>
@@ -475,7 +510,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
     <div class="theme-switch" role="group" aria-label="Tema">
       <span class="pill"></span>
       <button data-theme-set="halloween">Halloween</button>
-      <button data-theme-set="base">Sin temática</button>
+      <button data-theme-set="base">QuartzSales</button>
     </div>
     <p class="fine">Prototipo · los kilómetros se guardan en este dispositivo · GPS real con fallback demo</p>
   </section>
@@ -516,47 +551,38 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
           <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
           <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
           <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
-            <svg class="ico-pumpkin" viewBox="0 0 64 60" aria-hidden="true"><use href="#pumpkin"/></svg><img class="ico-qs" src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" aria-hidden="true" onerror="this.nextElementSibling.style.display='block';this.remove()" /><span class="ico-qs-txt" aria-hidden="true">QS</span>
+            <svg class="ico-pumpkin" viewBox="0 0 64 60" aria-hidden="true"><use href="#pumpkin"/></svg><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
           </button>
         </header>
 
         <div class="screens">
           <!-- HOME -->
           <section class="screen active" data-screen="home" aria-label="Inicio">
-            <div class="card hero">
-              <div class="ring">
-                <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="bar" id="ringBar" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
-                <div class="ring-center"><b class="num" id="myKm">0</b><small>de <span id="myGoal">10</span> km</small></div>
-                              </div>
-              <div class="hero-txt">
-                <span class="kicker" data-copy="homeKicker"></span>
-                <div class="h2 display" id="heroHeadline"></div>
-                <div class="next" id="nextMilestone"></div>
+            <div class="card race">
+              <div class="race-top">
+                <div><span class="kicker" id="raceKicker"></span><div class="h2 display" id="raceTitle"></div></div>
+                <div class="countdown"><b class="num" id="daysLeft">0</b><small id="daysLbl">días</small></div>
               </div>
+              <div class="race-mine" id="raceMine">
+                <div class="team-row">
+                  <div class="team-badge" id="myTeamBadge"></div>
+                  <div><span class="kicker">Tu casa</span><b style="display:block" id="myTeamName"></b></div>
+                  <span class="rank-chip num" id="myTeamPos"></span>
+                </div>
+                <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div>
+                  <div class="bar-walker" id="teamWalker"><svg class="hw" viewBox="0 0 64 72" width="28"><use href="#ghost"/></svg><div class="dot bs"></div></div>
+                </div>
+                <div class="bar-meta num"><span id="teamKmTxt"></span><span>meta <span id="teamGoalTxt"></span> km</span></div>
+              </div>
+              <div class="pace" id="pace2"><svg viewBox="0 0 24 24"><use href="#i-run"/></svg><span id="paceTxt"></span></div>
             </div>
             <div class="cta-row">
               <button class="btn btn-primary" id="goRun"><svg><use href="#i-play"/></svg><span data-copy="startCta"></span></button>
             </div>
-            <div class="card" id="teamCard">
-              <div class="team-row">
-                <div class="team-badge" id="myTeamBadge"></div>
-                <div><span class="kicker">Tu casa</span><b style="display:block;font-size:17px" id="myTeamName"></b></div>
-                <span class="rank-chip num" id="myTeamPos"></span>
-              </div>
-              <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div></div>
-              <div class="bar-meta num"><span id="teamKmTxt"></span><span>meta <span id="teamGoalTxt"></span> km</span></div>
-            </div>
             <div class="card">
-              <span class="kicker" data-copy="collectiveTitle"></span>
-              <p class="muted" style="font-size:13px;margin-top:4px" data-copy="collectiveSub"></p>
-              <div class="bar-wrap" style="margin-top:18px"><div class="bar-fill" id="coFill" style="--fill:var(--accent-2)"></div>
-                <div class="bar-walker" id="coWalker"><svg class="hw" viewBox="0 0 64 72" width="28"><use href="#ghost"/></svg><div class="dot bs"></div></div>
-              </div>
-              <div class="bar-meta num"><span id="coKmTxt"></span><span id="coGoalTxt"></span></div>
-            </div>
-            <div class="card">
-              <span class="kicker">Mi actividad</span>
-              <ul class="acts" id="acts"></ul>
+              <span class="kicker" data-copy="standTitle"></span>
+              <ol class="race-list" id="raceList"></ol>
+              <p class="rules" id="raceRules"></p>
             </div>
           </section>
 
@@ -618,10 +644,27 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
             <ol class="rank-list" id="rankList"></ol>
           </section>
 
-          <!-- ACHIEVEMENTS -->
-          <section class="screen" data-screen="ach" aria-label="Logros">
-            <span class="kicker" data-copy="achKicker"></span>
-            <div class="h2 display" data-copy="achTitle"></div>
+          <!-- INDIVIDUAL -->
+          <section class="screen" data-screen="me" aria-label="Mi carrera">
+            <span class="kicker" data-copy="meKicker"></span>
+            <div class="h2 display" data-copy="meTitle"></div>
+            <div class="card hero" style="margin-top:12px">
+              <div class="ring">
+                <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="bar" id="ringBar" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+                <div class="ring-center"><b class="num" id="myKm">0</b><small>de <span id="myGoal">10</span> km</small></div>
+              </div>
+              <div class="hero-txt">
+                <span class="kicker" data-copy="homeKicker"></span>
+                <div class="h2 display" id="heroHeadline"></div>
+                <div class="next" id="nextMilestone"></div>
+              </div>
+            </div>
+            <div class="stat-grid" id="statGrid"></div>
+            <div class="card" style="margin-top:14px">
+              <span class="kicker">Mi actividad</span>
+              <ul class="acts" id="acts"></ul>
+            </div>
+            <div class="section-h"><span class="kicker" data-copy="achKicker"></span><div class="h2 display" data-copy="achTitle"></div></div>
             <p class="muted" style="font-size:13px">Tocá una tarjeta para darla vuelta.</p>
             <div class="ach-grid" id="achGrid"></div>
             <button class="btn btn-text-danger reset" id="resetBtn">Reiniciar demo</button>
@@ -633,7 +676,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
           <button class="tab" role="tab" data-tab="home" aria-selected="true"><svg><use href="#i-home"/></svg>Inicio</button>
           <button class="tab" role="tab" data-tab="run" aria-selected="false"><span class="live-dot"></span><svg><use href="#i-run"/></svg>Correr</button>
           <button class="tab" role="tab" data-tab="rank" aria-selected="false"><svg><use href="#i-rank"/></svg>Ranking</button>
-          <button class="tab" role="tab" data-tab="ach" aria-selected="false"><svg><use href="#i-trophy"/></svg>Logros</button>
+          <button class="tab" role="tab" data-tab="me" aria-selected="false"><svg><use href="#i-trophy"/></svg>Mi carrera</button>
         </nav>
 
         <!-- SHEET -->
@@ -685,7 +728,10 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
-const TEAM_GOAL = 150, COMPANY_GOAL = 420;
+/* Carrera de casas: la define la organización (en producción, desde admin). Gana la primera casa en llegar a la meta. */
+const RACE = { goal: 60, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
+const TEAM_GOAL = RACE.goal;
+const WALK_KMH = 5; // para traducir km en minutos de caminata
 const TEAMS = [
   { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 0, members: 8 },
   { id: 'slytherin',  name: 'Slytherin',  short: 'S', seed: 0, members: 10 },
@@ -729,16 +775,16 @@ const GOALS = [5, 10, 21, 42];
 const COPY = {
   base: {
     eyebrow: 'QuartzSales · Carrera interna',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales. Sumá kilómetros caminando o corriendo, desde donde estés.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla. Gana la primera casa en completar la meta.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
-    step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
+    step3: 'Gana la primera casa que llegue a la meta antes de la fecha límite.',
     onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Una carrera a distancia entre las casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
-    onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal acorde a tu ritmo. La podés ajustar después.',
+    onb3Title: 'Tu objetivo personal', onb3Sub: 'Además de la meta de tu casa, definí una meta personal acorde a tu ritmo.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
     startCta: 'Iniciar actividad',
     nextM: 'Te faltan <b>{km} km</b> para «{m}»', allM: '<b>Completaste todos los hitos.</b>',
-    collectiveTitle: 'Meta de QuartzSales', collectiveSub: 'Si entre todas las casas llegamos a la meta, se habilita el premio colectivo.',
+    standTitle: 'Posiciones', meKicker: 'Individual', meTitle: 'Mi carrera',
     empty: 'Todavía no registraste actividad.',
     idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
     hold: 'Mantené presionado para terminar',
@@ -749,20 +795,20 @@ const COPY = {
     achKicker: 'Hitos personales', achTitle: 'Logros',
     unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
     m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
-    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'La distancia total del desafío.'],
+    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'Recorriste vos solo la meta de una casa.'],
   },
   halloween: {
     eyebrow: 'QuartzSales · Edición Halloween 2026',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales durante la temporada de Halloween. Sumá kilómetros caminando o corriendo, desde donde estés.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla. Arranca en Halloween y gana la primera casa en completar la meta.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
-    step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
+    step3: 'Gana la primera casa que llegue a la meta antes de la fecha límite.',
     onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
-    onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal para la temporada. La podés ajustar después.',
+    onb3Title: 'Tu objetivo personal', onb3Sub: 'Además de la meta de tu casa, definí una meta personal acorde a tu ritmo.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
     startCta: 'Iniciar actividad',
     nextM: 'Te faltan <b>{km} km</b> para «{m}»', allM: '<b>Completaste todos los hitos.</b>',
-    collectiveTitle: 'Meta de QuartzSales', collectiveSub: 'Si entre todas las casas llegamos a la meta antes del cierre de la temporada, se habilita el premio colectivo.',
+    standTitle: 'Posiciones', meKicker: 'Individual', meTitle: 'Mi carrera',
     empty: 'Todavía no registraste actividad.',
     idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
     hold: 'Mantené presionado para terminar',
@@ -773,7 +819,7 @@ const COPY = {
     achKicker: 'Hitos personales', achTitle: 'Logros',
     unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
     m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
-    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'La distancia total del desafío.'],
+    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'Recorriste vos solo la meta de una casa.'],
   }
 };
 
@@ -790,8 +836,30 @@ const myKm = () => S.acts.reduce((a, b) => a + b.km, 0);
 const team = id => TEAMS.find(x => x.id === id);
 const teamIdx = id => TEAMS.findIndex(x => x.id === id);
 const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
-const companyKm = () => TEAMS.reduce((a, x) => a + teamKm(x.id), 0);
-const teamsSorted = () => [...TEAMS].sort((a, b) => teamKm(b.id) - teamKm(a.id));
+const DAY = 864e5;
+const daysLeft = () => Math.max(0, Math.ceil((RACE.end - Date.now()) / DAY));
+const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' });
+/* Momento en que una casa cruzó la meta (prototipo: solo se conocen tus actividades) */
+function teamReachedAt(id) {
+  let acc = team(id).seed; if (acc >= RACE.goal) return RACE.start.getTime();
+  if (!S.user || S.user.team !== id) return null;
+  for (const a of [...S.acts].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= RACE.goal) return new Date(a.date).getTime(); }
+  return null;
+}
+const winner = () => TEAMS.map(x => ({ id: x.id, at: teamReachedAt(x.id) })).filter(x => x.at != null).sort((a, b) => a.at - b.at)[0] || null;
+const raceOver = () => !!winner() || Date.now() > RACE.end.getTime();
+const activeDays = () => new Set(S.acts.map(a => new Date(a.date).toDateString())).size;
+function streak() {
+  const days = new Set(S.acts.map(a => new Date(a.date).toDateString())); let n = 0, d = new Date();
+  if (!days.has(d.toDateString())) d = new Date(Date.now() - DAY);
+  while (days.has(d.toDateString())) { n++; d = new Date(d.getTime() - DAY); }
+  return n;
+}
+const teamsSorted = () => [...TEAMS].sort((a, b) => {
+  const ra = teamReachedAt(a.id), rb = teamReachedAt(b.id);
+  if (ra != null || rb != null) return (ra ?? Infinity) - (rb ?? Infinity);
+  return teamKm(b.id) - teamKm(a.id);
+});
 const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
 const teamVar = id => `var(--t${teamIdx(id)})`;
 const teamInk = id => `var(--t${teamIdx(id)}-ink)`;
@@ -839,6 +907,7 @@ function bindSeg(seg, cb) {
 
 /* ---- Copy & tema ---- */
 function applyCopy() {
+  $('#themeBtn').setAttribute('aria-label', theme() === 'halloween' ? 'Cambiar al tema QuartzSales' : 'Cambiar al tema Halloween');
   $$('[data-copy]').forEach(el => { el.innerHTML = t(el.dataset.copy); });
   const ts = $('.theme-switch');
   $$('button', ts).forEach(b => b.setAttribute('aria-pressed', b.dataset.themeSet === theme()));
@@ -867,28 +936,54 @@ function renderHead() {
 }
 function renderHome() {
   if (!S.user) return;
+  const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
+  const win = winner(), dl = daysLeft(), left = Math.max(0, RACE.goal - tk);
+  $('#raceKicker').textContent = `Carrera de casas · ${RACE.goal} km`;
+  $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : `Gana la primera casa en llegar a ${RACE.goal} km`;
+  tween($('#daysLeft'), dl, 0, 700); $('#daysLbl').textContent = dl === 1 ? 'día restante' : 'días restantes';
+  [$('#myTeamBadge')].forEach(b => { b.textContent = tm.short; b.style.setProperty('--team', teamVar(tm.id)); b.style.setProperty('--team-ink', teamInk(tm.id)); });
+  $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
+  const pct = Math.min(100, tk / RACE.goal * 100);
+  $('#teamFill').style.setProperty('--fill', teamVar(tm.id)); $('#teamFill').style.width = pct + '%'; $('#teamWalker').style.left = pct + '%';
+  $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = RACE.goal;
+  // ritmo necesario: traducido a minutos de caminata por persona por día
+  let pace;
+  if (win) pace = win.id === tm.id ? `<b>Meta cumplida.</b> Tus km siguen sumando a tu meta personal.` : `La carrera terminó. Tus km siguen sumando a tu meta personal.`;
+  else if (dl === 0) pace = 'La carrera terminó.';
+  else { const perDay = left / dl, perPerson = perDay / Math.max(1, tm.members), mins = Math.max(1, Math.ceil(perPerson / WALK_KMH * 60));
+    pace = `Faltan <b>${fmt(left, 1)} km</b>: ${fmt(perDay, 1)} km por día entre todos. Equivale a <b>${mins} min de caminata</b> por persona por día.`; }
+  $('#paceTxt').innerHTML = pace;
+  $('#raceList').innerHTML = sorted.map((x, i) => {
+    const k = teamKm(x.id), r = teamReachedAt(x.id), me = x.id === tm.id;
+    const sub = r != null ? (win && win.id === x.id ? '<span class="win-chip">Ganadora</span>' : `llegó el ${fmtDate(new Date(r))}`) : `faltan ${fmt(Math.max(0, RACE.goal - k), 1)}`;
+    return `<li class="${me ? 'me' : ''}" style="--team:${teamVar(x.id)}"><span class="rank-pos num">${i + 1}</span>
+      <span class="nm"><span class="dot-t"></span>${x.name}</span><span class="km num">${fmt(k, 1)} km<small>${sub}</small></span>
+      <span class="mini"><i data-w="${Math.min(100, k / RACE.goal * 100)}"></i></span></li>`;
+  }).join('');
+  requestAnimationFrame(() => $$('#raceList .mini i').forEach(i => i.style.width = i.dataset.w + '%'));
+  $('#raceRules').textContent = `Del ${fmtDate(RACE.start)} al ${fmtDate(RACE.end)}. Gana la primera casa que complete ${RACE.goal} km; si ninguna llega, gana la que más km sume al cierre.`;
+}
+function renderMe() {
+  if (!S.user) return;
   const km = myKm(), goal = S.user.goal, p = Math.min(1, km / goal);
   tween($('#myKm'), km, 1); $('#myGoal').textContent = goal;
   $('#ringBar').style.strokeDashoffset = 326.7 * (1 - p);
   const h = C().headline; $('#heroHeadline').textContent = h[p >= 1 ? 3 : p > .5 ? 2 : km > 0 ? 1 : 0];
   const nm = MILESTONES.findIndex(m => km < m);
   $('#nextMilestone').innerHTML = nm < 0 ? t('allM') : t('nextM', { km: fmt(MILESTONES[nm] - km, 1), m: C().m[nm] });
-  const tm = team(S.user.team), tk = teamKm(tm.id), pos = teamsSorted().findIndex(x => x.id === tm.id) + 1;
-  $('#myTeamBadge').textContent = tm.short; $('#myTeamBadge').style.setProperty('--team', teamVar(tm.id)); $('#myTeamBadge').style.setProperty('--team-ink', teamInk(tm.id));
-  $('#teamCard').style.setProperty('--fill', teamVar(tm.id));
-  $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = `#${pos} de ${TEAMS.length}`;
-  $('#teamFill').style.setProperty('--fill', teamVar(tm.id));
-  $('#teamFill').style.width = Math.min(100, tk / TEAM_GOAL * 100) + '%';
-  $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = TEAM_GOAL;
-  const ck = companyKm(), cp = Math.min(100, ck / COMPANY_GOAL * 100);
-  $('#coFill').style.width = cp + '%'; $('#coWalker').style.left = cp + '%';
-  $('#coKmTxt').textContent = fmt(ck, 1) + ' km'; $('#coGoalTxt').textContent = 'meta ' + COMPANY_GOAL + ' km';
+  const tk = teamKm(S.user.team), share = tk > 0 ? Math.round(km / tk * 100) : 0;
+  const best = S.acts.reduce((a, b) => Math.max(a, b.km), 0), mins = Math.round(S.acts.reduce((a, b) => a + b.secs, 0) / 60), st = streak();
+  $('#statGrid').innerHTML = [
+    [`${share}<small>%</small>`, `de los km de ${team(S.user.team).name}`],
+    [`${st}<small> ${st === 1 ? 'día' : 'días'}</small>`, 'de racha activa'],
+    [`${mins}<small> min</small>`, `en movimiento · ${activeDays()} ${activeDays() === 1 ? 'día activo' : 'días activos'}`],
+    [`${fmt(best, 1)}<small> km</small>`, 'tu mejor actividad'],
+  ].map(([v, l]) => `<div class="stat"><b class="num">${v}</b><span>${l}</span></div>`).join('');
   const ul = $('#acts');
-  if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${theme() === 'halloween' ? '<svg viewBox="0 0 30 34"><use href="#tomb"/></svg>' : ''}${t('empty')}</li>`; return; }
+  if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${t('empty')}</li>`; return; }
   ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
-    const d = new Date(a.date), mins = Math.round(a.secs / 60);
-    const src = a.source === 'gps' ? 'GPS' : a.source === 'sim' ? 'Demo' : 'Manual';
-    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-hand' : 'i-pin'}"/></svg></span>
+    const d = new Date(a.date), mins = Math.round(a.secs / 60), src = a.source === 'sim' ? 'Demo' : 'GPS';
+    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#i-pin"/></svg></span>
       <span class="meta"><b>${a.type === 'run' ? 'Corrida' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}</span>
       <span class="km num">${fmt(a.km, 2)} km</span></li>`;
   }).join('');
@@ -945,10 +1040,10 @@ function renderAch() {
   }).join('');
 }
 $('#achGrid').addEventListener('click', e => { const a = e.target.closest('.ach'); if (a) { a.classList.toggle('flipped'); vib(6); } });
-function renderAll(animateRank) { renderHead(); renderHome(); renderRank(animateRank); renderAch(); renderRunStatic(); }
+function renderAll(animateRank) { renderHead(); renderHome(); renderMe(); renderRank(animateRank); renderAch(); renderRunStatic(); }
 
 /* ---- Tabs ---- */
-const ORDER = ['home', 'run', 'rank', 'ach'];
+const ORDER = ['home', 'run', 'rank', 'me'];
 let current = 'home';
 function goto(name) {
   if (name === current) return;
@@ -1118,7 +1213,7 @@ function showUnlock() {
   setTimeout(() => { const [x, y] = centerOf($(`.unlock-card .big-ico.${theme() === 'halloween' ? 'hw' : 'bs'}`)); burst(x, y, 30); }, 350);
   $('#unlockOk').focus({ preventScroll: true });
 }
-$('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('on'); if (unlockQueue.length) setTimeout(showUnlock, 450); else setTimeout(() => goto('ach'), 300); });
+$('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('on'); if (unlockQueue.length) setTimeout(showUnlock, 450); else setTimeout(() => goto('me'), 300); });
 
 /* ---- Onboarding ---- */
 (() => {
