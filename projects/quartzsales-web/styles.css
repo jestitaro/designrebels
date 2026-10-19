@@ -2668,3 +2668,109 @@ header.scrolled .lang-switch__btn {
 .policy-lang-item[aria-current="page"] { font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 
 .flip-hint { display: none !important; }
+
+/* ====== Gestión de pedidos: CTA a la landing ====== */
+.tile--orders .tile-cta {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--brand-1);
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(19, 13, 93, .18);
+  transition: transform .3s var(--easing), box-shadow .3s var(--easing);
+}
+
+.tile--orders .tile-cta i {
+  font-size: .8em;
+  transition: transform .3s var(--easing);
+}
+
+.tile--orders .tile-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(19, 13, 93, .26);
+}
+
+.tile--orders .tile-cta:hover i {
+  transform: translateX(3px);
+}
+
+.tile--orders .tile-cta:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (min-width: 1024px) {
+  /* La fila crece si el CTA no entra en 260px (según idioma y ancho) */
+  .grid {
+    grid-auto-rows: minmax(260px, auto);
+  }
+
+  .tile--orders li {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .tile--orders .tile-cta {
+    font-size: 1.05rem;
+    padding: 10px 22px;
+  }
+}
+
+/* ====== Gestión de equipos: foto a sangre, degradé desde abajo y título abajo ====== */
+.tile--teams .card-face.front picture {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.tile--teams .card-face.front img {
+  object-position: center 30%;
+}
+
+.tile--teams .card-face.front::after {
+  background: linear-gradient(0deg, rgba(19, 13, 93, .8) 0%, rgba(112, 37, 224, .4) 26%, rgba(112, 37, 224, 0) 52%);
+}
+
+.tile--teams .card-face.front .overlay {
+  top: auto;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+}
+
+@media (max-width: 1023px) {
+  .tile--teams {
+    min-height: 0;
+    aspect-ratio: 3 / 4;
+    max-height: 600px;
+  }
+
+  .tile--teams .card-inner {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+
+  .tile--teams .card-face.front {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+}
+
+@media (max-width: 441px) {
+  .tile--teams .card-face.front .overlay {
+    top: auto;
+    bottom: 18px;
+    left: 18px;
+    right: 18px;
+  }
+}

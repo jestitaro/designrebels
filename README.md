@@ -16,6 +16,7 @@ Hub de productos, prototipos y herramientas internas creadas por Design Rebels p
 | **IA en el PDV** | Landing / WIP | [Abrir landing](https://jestitaro.github.io/designrebels/projects/ia-pdv-demo/) | [Ver proyecto](./projects/ia-pdv-demo/) |
 | **Talent Lab** | MVP | [Abrir Talent Lab](https://jestitaro.github.io/designrebels/projects/talent-lab/) | [Ver proyecto](./projects/talent-lab/) |
 | **Corte, cámara, Claude** (Video Lab) | Landing | [Abrir Video Lab](https://jestitaro.github.io/designrebels/projects/video-lab/) | [Ver proyecto](./projects/video-lab/) |
+| **QuartzSales Web** (site + landing Gestión de pedidos) | WIP | [Abrir site](https://jestitaro.github.io/designrebels/projects/quartzsales-web/) | [Ver proyecto](./projects/quartzsales-web/) |
 
 ## Estructura
 
