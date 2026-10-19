@@ -457,7 +457,6 @@ body[data-theme="halloween"] .race::before{content:"";position:absolute;left:0;r
 @keyframes spinSlow{to{transform:rotate(360deg)}}
 body[data-theme="halloween"] .race-top .h2{transform:rotate(-1deg);transform-origin:left}
 body[data-theme="halloween"] .tab-ind{background:var(--accent)}
-body[data-theme="halloween"] .tab-ind::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:3px;border-radius:2px;background:repeating-linear-gradient(90deg,#120d24 0 4px,transparent 4px 8px);opacity:.5}
 body[data-theme="halloween"] .bar-wrap{background:repeating-linear-gradient(90deg,var(--surface-3) 0 6px,color-mix(in srgb,var(--surface-3) 70%,#000) 6px 12px)}
 .tree{position:absolute;right:1vw;bottom:-10px;width:min(240px,18vw);transform:scaleX(-1);color:#0e0b20;opacity:.9;filter:url(#wobble)}
 body[data-theme="halloween"] .prize-ico{background:transparent;border:1.5px dashed rgba(239,234,248,.25)}
@@ -533,8 +532,8 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="bat" viewBox="0 0 48 22"><path fill="currentColor" d="M24 7c1.6-2.6 2.2-4.3 2.4-6 1 1.6 1.2 3 1 4.4C31 3 37 1.6 48 5c-5 1.2-7.6 3.6-8.4 7-2.4-1.6-5.2-1.8-7.6-.4-.8 2.6-3.4 5-8 9.4-4.6-4.4-7.2-6.8-8-9.4-2.4-1.4-5.2-1.2-7.6.4C7.6 8.6 5 6.2 0 5c11-3.4 17-2 20.6.4-.2-1.4 0-2.8 1-4.4.2 1.7.8 3.4 2.4 6z"/></symbol>
-    <symbol id="pumpkin" viewBox="0 0 64 60"><g stroke="#120d24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path fill="none" d="M32 12c0-4 1-7 4-9"/><path fill="none" d="M36 3c4-2 9 0 9 4s-4 4-5 1"/><path fill="#f08a24" d="M32 12c-9-2-22 3-25 17-2 13 6 27 25 28 19 1 27-13 25-27C55 15 42 10 32 12z"/><path fill="none" opacity=".5" d="M24 14c-6 8-7 28 2 42M41 14c6 8 7 28-2 42"/></g><path fill="#120d24" d="M18 31l8-6 2 8zM46 29l-9-4-1 8z"/><g stroke="#120d24" stroke-width="2" stroke-linecap="round" fill="none"><path d="M19 42c8 5 18 5 26-1"/><path d="M23 40l2 5M29 42v5M35 42l-1 5M41 40l-2 5"/></g></symbol>
-    <symbol id="ghost" viewBox="0 0 64 72"><path fill="#efeaf8" stroke="#120d24" stroke-width="2.4" stroke-linejoin="round" d="M30 3C17 4 11 16 12 30c1 12-3 22-8 30 6 1 10-2 13-5 1 6 6 9 10 6 3 5 9 5 12 0 4 3 9 1 10-4 3 2 7 2 10-1-6-6-8-16-7-27C53 14 44 2 30 3z"/><ellipse cx="24" cy="27" rx="4" ry="8" fill="#120d24" transform="rotate(-8 24 27)"/><ellipse cx="38.5" cy="26" rx="4" ry="8.5" fill="#120d24" transform="rotate(6 38.5 26)"/><path fill="none" stroke="#120d24" stroke-width="2" stroke-linecap="round" d="M27 43c2 3 6 3 8 0"/></symbol>
+    <symbol id="pumpkin" viewBox="0 0 64 60"><path fill="#7ea33a" stroke="#120d24" stroke-width="2" stroke-linejoin="round" d="M29 15c-6-5-13-3-15 1 5 3 11 3 15-1z"/><path fill="#5b7d2a" stroke="#120d24" stroke-width="2.2" stroke-linejoin="round" d="M30 19c0-6 1-10 4-13l3 2c-2 3-3 7-3 11z"/><path fill="none" stroke="#120d24" stroke-width="2" stroke-linecap="round" d="M36 8c5-3 10-1 10 3s-4 5-6 2"/><g stroke="#120d24" stroke-width="2.2" stroke-linejoin="round"><path fill="#d9681c" d="M20 16C9 17 4 27 5 37s8 18 19 18c4 0 6-1 8-2 2 1 4 2 8 2 11 0 18-8 19-18S55 17 44 16c-4 0-7 1-9 3-1-1-2-1-3-1s-2 0-3 1c-2-2-5-3-9-3z"/><path fill="#f08a24" d="M32 18c-7 0-11 8-11 18s4 18 11 18 11-8 11-18-4-18-11-18z"/></g><path fill="none" stroke="#120d24" stroke-width="1.6" stroke-linecap="round" opacity=".4" d="M13 23c-4 6-5 19 2 27M51 23c4 6 5 19-2 27"/><g fill="#ffd54a" stroke="#120d24" stroke-width="2" stroke-linejoin="round"><path d="M16 33l8-7 3 9zM48 33l-8-7-3 9z"/><path d="M30 39l2-4 2 4z"/><path d="M15 41c6 7 28 7 34 0-2 8-9 12-17 12s-15-4-17-12z"/></g><path fill="#d9681c" stroke="#120d24" stroke-width="1.6" stroke-linejoin="round" d="M25 44h4v4h-4zM35 44h4v4h-4z"/></symbol>
+    
     <symbol id="skull" viewBox="0 0 64 64"><path fill="#efeaf8" stroke="#120d24" stroke-width="2.4" stroke-linejoin="round" d="M32 4C17 4 8 14 8 28c0 8 4 13 9 16v9c0 3 2 5 5 5h20c3 0 5-2 5-5v-9c5-3 9-8 9-16C56 14 47 4 32 4z"/><path fill="#120d24" d="M14 28c1-7 11-8 13-2 2 5-3 10-8 9-4-1-6-3-5-7zM50 27c-2-6-11-7-13-1-1 5 4 9 8 8s6-3 5-7zM29 41l3-6 3 6z"/><g stroke="#120d24" stroke-width="2" stroke-linecap="round" fill="none"><path d="M26 50v6M32 50v6M38 50v6"/><path d="M18 12l9 9M20 17l3-3M24 21l3-3"/></g></symbol>
     <symbol id="spiral" viewBox="0 0 100 100"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M50 50c3-1 5 2 4 5-2 4-8 4-10 0-3-6 2-12 9-12 9 0 14 9 12 17-3 11-15 15-25 10-14-6-17-21-10-32 8-12 25-15 37-7 14 10 15 30 4 43"/></symbol>
     <filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
@@ -595,7 +594,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <div class="onb-dots"><i class="on"></i><i></i></div>
           <div class="onb-steps">
             <div class="onb-step on" data-step="0">
-              <svg class="onb-mascot hw" viewBox="0 0 64 72"><use href="#ghost"/></svg>
+              <svg class="onb-mascot hw" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>
               <svg class="onb-mascot bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg>
               <span class="kicker" data-copy="eyebrow"></span>
               <h2 class="display" data-copy="onb1Title"></h2>
@@ -640,7 +639,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
                   <span class="rank-chip num" id="myTeamPos"></span>
                 </div>
                 <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div>
-                  <div class="bar-walker" id="teamWalker"><svg class="hw" viewBox="0 0 64 72" width="28"><use href="#ghost"/></svg><div class="dot bs"></div></div>
+                  <div class="bar-walker" id="teamWalker"><svg class="hw" viewBox="0 0 64 60" width="30"><use href="#pumpkin"/></svg><div class="dot bs"></div></div>
                 </div>
                 <div class="bar-meta num"><span id="teamKmTxt"></span><span>meta <span id="teamGoalTxt"></span> km</span></div>
               </div>
@@ -829,7 +828,7 @@ const raceActs = () => S.acts.filter(counts);
 const PRIZES = [
   { who: '1.º puesto', title: 'Día de descanso', txt: 'Un día libre para cada integrante de la casa ganadora.', ico: 'skull' },
   { who: '2.º puesto', title: 'Salida anticipada', txt: 'Un viernes a elección, cada integrante termina 2 horas antes.', ico: 'pumpkin' },
-  { who: '3.º puesto', title: 'Dormir un rato más', txt: 'Una mañana para arrancar 2 horas más tarde.', ico: 'ghost' },
+  { who: '3.º puesto', title: 'Dormir un rato más', txt: 'Una mañana para arrancar 2 horas más tarde.', ico: 'pumpkin' },
   { who: 'Meta personal', title: 'Desayuno de cumpleaños', txt: 'Quien complete su meta personal recibe un desayuno en su casa el día de su cumpleaños.', ico: 'pumpkin' },
 ];
 const MANUAL_MAX_KM = 21, MAX_KMH = 20, BIKE_MAX_KMH = 40;
@@ -1151,7 +1150,7 @@ function renderAch() {
   const hw = theme() === 'halloween';
   $('#achGrid').innerHTML = ACH.map((a, i) => {
     const ok = achOk(a), left = a.need - achVal(a);
-    const ico = hw ? ['<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 72"><use href="#ghost"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 64"><use href="#skull"/></svg>'][i % 3] : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
+    const ico = hw ? ['<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 64"><use href="#skull"/></svg>'][i % 2] : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
     const miss = a.kind === 'km' ? `Faltan ${fmt(left, 1)} km` : a.kind === 'streak' ? `Te faltan ${left} ${left === 1 ? 'día' : 'días'} seguidos` : `Faltan ${left} ${left === 1 ? 'actividad' : 'actividades'}`;
     return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${a.name}, ${ok ? 'desbloqueado' : 'bloqueado'}">
       <div class="ach-inner"><div class="ach-face ach-front">${ok ? '' : '<svg class="lock"><use href="#i-lock"/></svg>'}${ico}
