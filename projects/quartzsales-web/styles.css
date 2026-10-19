@@ -2836,3 +2836,114 @@ header.scrolled .lang-switch__btn {
     margin: -6% auto 0;
   }
 }
+
+/* ====== Ejecución en PDV: mapa animado a todo el ancho, merchand a la derecha, chips a la izquierda ====== */
+.tile--exec .txt {
+  position: relative;
+  z-index: 3;
+}
+
+.tile--exec .exec-map {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 44%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.exec-map__pin,
+.exec-map__rings,
+.exec-map__end {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.exec-map__rings,
+.exec-map__end {
+  transform-origin: center;
+}
+
+.exec-map.is-in .exec-map__pin {
+  animation: execPin 2.8s ease-in-out infinite;
+}
+
+.exec-map.is-in .exec-map__rings {
+  animation: execPulse 2.8s ease-out infinite;
+}
+
+.exec-map.is-in .exec-map__end {
+  animation: execEnd 7s ease-in-out infinite;
+}
+
+@keyframes execPin {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6%); }
+}
+
+@keyframes execPulse {
+  0% { transform: scale(.7); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+@keyframes execEnd {
+  0%, 55% { transform: scale(1); }
+  62% { transform: scale(1.8); }
+  70%, 100% { transform: scale(1); }
+}
+
+.tile--exec .exec-person {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  height: 64%;
+  object-fit: contain;
+  object-position: right bottom;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tile--exec .exec-chips {
+  left: 28px;
+  right: auto;
+  top: auto;
+  bottom: 47%;
+  transform: none;
+  justify-items: start;
+}
+
+@media (max-width: 1023px) {
+  .tile--exec {
+    min-height: 600px;
+    padding-bottom: 0;
+  }
+
+  .tile--exec .exec-person {
+    width: 42%;
+    height: 60%;
+  }
+
+  .tile--exec .exec-chips {
+    left: 24px;
+    right: auto;
+    bottom: 47%;
+    transform: none;
+  }
+}
+
+@media (max-width: 667px) {
+  .tile--exec {
+    min-height: 580px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exec-map * {
+    animation: none !important;
+  }
+}
