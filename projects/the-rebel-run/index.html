@@ -377,6 +377,12 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
 .field{margin-top:22px}
 .field input{width:100%;height:56px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);padding:0 16px;font-size:18px;font-weight:700;transition:border-color .3s,box-shadow .3s}
 .field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.house-reveal{margin-top:14px;min-height:72px}
+.house-reveal .team-opt{display:flex;align-items:center;gap:12px;width:100%;cursor:default;animation:houseIn .5s var(--ease-spring)}
+.house-reveal .team-opt .team-badge{margin:0}
+.house-reveal .hint{color:var(--muted);font-size:13px;line-height:1.4}
+@keyframes houseIn{from{opacity:0;transform:translateY(8px) scale(.96)}}
+@media (prefers-reduced-motion:reduce){.house-reveal .team-opt{animation:none}}
 .team-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
 .team-opt{position:relative;padding:14px;border-radius:18px;background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:transform .4s var(--ease-spring),border-color .3s,box-shadow .3s}
 .team-opt:hover{transform:translateY(-3px)}
@@ -480,7 +486,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
 
         <!-- ONBOARDING -->
         <div class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Sumate a la carrera">
-          <div class="onb-dots"><i class="on"></i><i></i><i></i></div>
+          <div class="onb-dots"><i class="on"></i><i></i></div>
           <div class="onb-steps">
             <div class="onb-step on" data-step="0">
               <svg class="onb-mascot hw" viewBox="0 0 64 72"><use href="#ghost"/></svg>
@@ -488,14 +494,11 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <span class="kicker" data-copy="eyebrow"></span>
               <h2 class="display" data-copy="onb1Title"></h2>
               <p data-copy="onb1Sub"></p>
-              <label class="field"><span class="sr">Tu nombre</span><input id="onbName" maxlength="20" autocomplete="given-name" placeholder="¿Cómo te llamás?"></label>
+              <label class="field"><span class="sr">Tu nombre</span><input id="onbName" maxlength="20" autocomplete="off" list="rosterList" placeholder="¿Cómo te llamás?"></label>
+              <datalist id="rosterList"></datalist>
+              <div class="house-reveal" id="houseReveal" aria-live="polite"></div>
             </div>
             <div class="onb-step" data-step="1">
-              <h2 class="display" data-copy="onb2Title"></h2>
-              <p data-copy="onb2Sub"></p>
-              <div class="team-pick" role="radiogroup" aria-label="Casa" id="teamPick"></div>
-            </div>
-            <div class="onb-step" data-step="2">
               <h2 class="display" data-copy="onb3Title"></h2>
               <p data-copy="onb3Sub"></p>
               <div class="goal-pick" role="radiogroup" aria-label="Objetivo" id="goalPick"></div>
@@ -684,7 +687,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const KEY = 'rebelrun:v2';
+const KEY = 'rebelrun:v3';
 const TEAM_GOAL = 150, COMPANY_GOAL = 420;
 const TEAMS = [
   { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 58.2, members: 8 },
@@ -694,6 +697,44 @@ const TEAMS = [
 ];
 const PEOPLE = [['Mica','slytherin',18.4],['Nacho','ravenclaw',15.2],['Flor','gryffindor',14.9],['Tomi','hufflepuff',13.1],['Sofi','slytherin',11.7],['Juan','ravenclaw',9.8],['Lu','gryffindor',9.2],['Fede','hufflepuff',7.5],['Caro','slytherin',6.3]];
 const MILESTONES = [1, 5, 10, 21, 42, 60];
+
+/* ---- Casas: mismo roster que QuartzProde (endpoint Hogwarts + respaldo local) ---- */
+const HOGWARTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzN_N1r29vMrWXoHyko1pQ-Zd5k9fYDcMBxCAct00wrmQ4VMYpwDmEcvpO0hHNJRFB1oQ/exec';
+let ROSTER = {
+  'Agus':'Slytherin','Ale':'Hufflepuff','Chino':'Gryffindor','David':'Ravenclaw','Euge':'Ravenclaw','Fran':'Ravenclaw',
+  'Guille':'Hufflepuff','Javi':'Gryffindor','Jesi':'Gryffindor','Jona':'Hufflepuff','Lore':'Gryffindor','Lucre':'Hufflepuff',
+  'Marian':'Hufflepuff','Mati':'Slytherin','May(ra)':'Gryffindor','Menta':'Hufflepuff','Nico':'Slytherin','Pablo':'Slytherin',
+  'Picci':'Ravenclaw','Sebas':'Ravenclaw','Sergio':'Gryffindor','Vale':'Ravenclaw'
+};
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+const displayName = n => n.replace(/[()]/g, '').trim();
+function findMember(input) {
+  const q = norm(input); if (q.length < 2) return null;
+  for (const [n, casa] of Object.entries(ROSTER)) {
+    const keys = [norm(n), norm(n.replace(/\(.*?\)/g, '')), norm(displayName(n))];
+    const tm = TEAMS.find(x => x.id === norm(casa));
+    if (tm && keys.includes(q)) return { name: displayName(n), team: tm.id };
+  }
+  return null;
+}
+function loadRoster() {
+  return new Promise(resolve => {
+    const cb = '__qrRoster' + Date.now(), s = document.createElement('script');
+    const done = ok => { delete window[cb]; s.remove(); clearTimeout(to); resolve(ok); };
+    const to = setTimeout(() => done(false), 6000);
+    window[cb] = data => {
+      const next = {};
+      Object.entries((data && data.houses) || {}).forEach(([casa, h]) => (h.members || []).forEach(n => { if (n && n.trim()) next[n.trim()] = casa; }));
+      if (Object.keys(next).length) ROSTER = next;
+      done(true);
+    };
+    s.onerror = () => done(false);
+    s.src = `${HOGWARTS_ENDPOINT}?action=state&callback=${cb}`;
+    document.head.appendChild(s);
+  });
+}
+const syncMembers = () => TEAMS.forEach(x => { x.members = Object.values(ROSTER).filter(c => norm(c) === x.id).length; });
+syncMembers();
 const GOALS = [5, 10, 21, 42];
 
 /* ---- Copy por tema: el producto no cambia, la voz sí ---- */
@@ -701,11 +742,10 @@ const COPY = {
   base: {
     eyebrow: 'QuartzSales · Carrera interna',
     heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales. Sumá kilómetros caminando o corriendo, desde donde estés.',
-    step1: 'Elegí tu casa y tu objetivo personal.',
-    step2: 'Iniciá, pausá y terminá como en tu reloj. El GPS mide la distancia.',
+    step1: 'Ingresá tu nombre y representá a tu casa.',
+    step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
-    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Una carrera a distancia entre las casas de QuartzSales. Para empezar, ¿cómo te llamás?',
-    onb2Title: 'Elegí tu casa', onb2Sub: 'Tus kilómetros suman para la casa que elijas.',
+    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Una carrera a distancia entre las casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
     onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal acorde a tu ritmo. La podés ajustar después.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
     startCta: 'Iniciar actividad',
@@ -726,11 +766,10 @@ const COPY = {
   halloween: {
     eyebrow: 'QuartzSales · Edición Halloween 2026',
     heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales durante la temporada de Halloween. Sumá kilómetros caminando o corriendo, desde donde estés.',
-    step1: 'Elegí tu casa y tu objetivo personal.',
-    step2: 'Iniciá, pausá y terminá como en tu reloj. El GPS mide la distancia.',
+    step1: 'Ingresá tu nombre y representá a tu casa.',
+    step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
-    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Para empezar, ¿cómo te llamás?',
-    onb2Title: 'Elegí tu casa', onb2Sub: 'Tus kilómetros suman para la casa que elijas.',
+    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
     onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal para la temporada. La podés ajustar después.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
     startCta: 'Iniciar actividad',
@@ -1105,29 +1144,39 @@ $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('
 /* ---- Onboarding ---- */
 (() => {
   const onb = $('#onb'); let step = 0; const draft = { name: '', team: null, goal: 10 };
-  $('#teamPick').innerHTML = TEAMS.map(x => `<button class="team-opt" role="radio" aria-checked="false" data-id="${x.id}" style="--team:${teamVar(x.id)};--team-ink:${teamInk(x.id)}">
-    <span class="check"><svg width="14" height="14"><use href="#i-check"/></svg></span>
-    <span class="team-badge" style="--team:${teamVar(x.id)}">${x.short}</span><b>${x.name}</b><small>${x.members} personas</small></button>`).join('');
+  const fillList = () => { $('#rosterList').innerHTML = ''; Object.keys(ROSTER).forEach(n => { const o = document.createElement('option'); o.value = displayName(n); $('#rosterList').append(o); }); };
+  const reveal = () => {
+    const box = $('#houseReveal'), m = findMember(draft.name), prev = draft.team;
+    draft.team = m ? m.team : null; draft.match = m;
+    if (m && m.team === prev) return;
+    if (m) {
+      const x = team(m.team);
+      box.innerHTML = `<div class="team-opt" aria-checked="true" style="--team:${teamVar(x.id)};--team-ink:${teamInk(x.id)}">
+        <span class="team-badge" style="--team:${teamVar(x.id)}">${x.short}</span>
+        <div><small>Representás a</small><b>${x.name}</b></div></div>`;
+      vib(10); if (theme() === 'halloween') { const [cx, cy] = centerOf($('.team-badge', box)); burst(cx, cy, 6); }
+    } else {
+      box.innerHTML = norm(draft.name).length > 1 ? '<p class="hint">Escribí tu nombre como figura en las casas de QuartzSales (por ejemplo, el mismo que usás en el prode).</p>' : '';
+    }
+  };
+  fillList(); loadRoster().then(() => { syncMembers(); fillList(); reveal(); });
   $('#goalPick').innerHTML = GOALS.map(g => `<button class="goal-opt" role="radio" aria-checked="${g === 10}" data-g="${g}"><b class="num">${g}</b><small>km en total</small></button>`).join('');
-  const valid = () => step === 0 ? draft.name.trim().length > 1 : step === 1 ? !!draft.team : true;
+  const valid = () => step === 0 ? !!draft.team : true;
   const sync = () => {
     $$('.onb-step').forEach((s, i) => { s.classList.toggle('on', i === step); s.classList.toggle('past', i < step); });
     $$('.onb-dots i').forEach((d, i) => d.classList.toggle('on', i === step));
     $('#onbBack').hidden = step === 0; $('#onbNext').disabled = !valid();
-    $('#onbNext').textContent = step === 2 ? 'Empezar' : 'Seguir';
+    $('#onbNext').textContent = step === 1 ? 'Empezar' : 'Seguir';
   };
-  $('#onbName').addEventListener('input', e => { draft.name = e.target.value; sync(); });
+  $('#onbName').addEventListener('input', e => { draft.name = e.target.value; reveal(); sync(); });
   $('#onbName').addEventListener('keydown', e => { if (e.key === 'Enter' && valid()) $('#onbNext').click(); });
-  $('#teamPick').addEventListener('click', e => { const b = e.target.closest('.team-opt'); if (!b) return;
-    draft.team = b.dataset.id; $$('.team-opt').forEach(x => x.setAttribute('aria-checked', x === b)); vib(10);
-    const [x, y] = centerOf($('.team-badge', b)); if (theme() === 'halloween') burst(x, y, 6); sync(); });
   $('#goalPick').addEventListener('click', e => { const b = e.target.closest('.goal-opt'); if (!b) return;
     draft.goal = +b.dataset.g; $$('.goal-opt').forEach(x => x.setAttribute('aria-checked', x === b)); vib(8); });
   $('#onbBack').addEventListener('click', () => { step = Math.max(0, step - 1); sync(); });
   $('#onbNext').addEventListener('click', () => {
     if (!valid()) return;
-    if (step < 2) { step++; sync(); if (step === 0) $('#onbName').focus(); return; }
-    S.user = { name: draft.name.trim(), team: draft.team, goal: draft.goal }; save();
+    if (step < 1) { step++; sync(); return; }
+    S.user = { name: draft.match.name, team: draft.team, goal: draft.goal }; save();
     renderAll(false); onb.classList.add('out'); vib([15, 30, 15]);
     setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#avatar')); burst(x, y, 14); }, 500);
   });
