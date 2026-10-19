@@ -373,6 +373,8 @@ body[data-theme="halloween"] .sheet h3{color:var(--accent)}
 .stepper .val{min-width:140px;text-align:center}
 .stepper .val input{width:150px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em;color:inherit}
 .sheet:not(.is-manual) .manual-only{display:none}
+.bike-note{text-align:center;font-size:13px;font-weight:700;color:var(--accent);min-height:18px;margin-top:-4px;transition:opacity .3s}
+.bike-note:empty{opacity:0}
 .sheet:not(.is-manual) .stepper .val input{pointer-events:none;width:180px}
 .nudge{display:flex;align-items:center;gap:12px;padding:12px 14px;border-color:var(--accent);animation:rowIn .5s var(--ease-spring)}
 .nudge[hidden]{display:none}
@@ -738,8 +740,10 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <span class="pill"></span>
               <button data-type="walk" aria-pressed="true">Caminata</button>
               <button data-type="run" aria-pressed="false">Corrida</button>
+              <button data-type="bike" aria-pressed="false">Bici</button>
             </div>
           </div>
+          <p class="bike-note" id="bikeNote" aria-live="polite"></p>
           <div class="dur manual-only"><span>Duración</span><input id="durInput" class="num" inputmode="numeric" value="30" aria-label="Duración en minutos"><span>min</span></div>
           <p class="note" id="sheetNote"></p>
           <div class="sheet-actions">
@@ -778,7 +782,8 @@ const KEY = 'rebelrun:v3';
 const RACE = { perMember: 10, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
 /* Premios (en producción, desde admin; sujetos a aprobación de RRHH) */
 const PRIZES = { house: 'Un día de descanso para cada integrante de la casa ganadora.', personal: 'Quien cumpla su meta personal suma el día de su cumpleaños libre.' };
-const MANUAL_MAX_KM = 21, MAX_KMH = 20;
+const MANUAL_MAX_KM = 21, MAX_KMH = 20, BIKE_MAX_KMH = 40;
+const BIKE_FACTOR = 1 / 3; // en bici, cada 3 km recorridos cuentan 1
 const WALK_KMH = 5; // para traducir km en minutos de caminata
 const TEAMS = [
   { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 0, members: 8 },
@@ -1041,7 +1046,7 @@ function renderMe() {
   ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
     const d = new Date(a.date), mins = Math.round(a.secs / 60), src = a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : 'GPS';
     return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-plus' : 'i-pin'}"/></svg></span>
-      <span class="meta"><b>${a.type === 'run' ? 'Corrida' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}</span>
+      <span class="meta"><b>${a.type === 'run' ? 'Corrida' : a.type === 'bike' ? 'Bici' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}${a.type === 'bike' && a.kmRaw ? ` · ${fmt(a.kmRaw, 1)} km recorridos` : ''}</span>
       <span class="km num">${fmt(a.km, 2)} km</span></li>`;
   }).join('');
 }
@@ -1225,12 +1230,12 @@ function openSheet(p) {
   $('#sheetNote').textContent = manual ? `Máximo ${MANUAL_MAX_KM} km por carga. Las cargas manuales quedan identificadas en el ranking.` : 'La distancia la mide el GPS y no se puede editar.';
   $('#kmInput').value = fmt(p.km || (manual ? 2 : 0), 2);
   $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
-  requestAnimationFrame(() => segPill($('#typeSeg')));
+  requestAnimationFrame(() => { segPill($('#typeSeg')); updateBike(); });
   setTimeout(() => $('#saveBtn').focus({ preventScroll: true }), 350);
 }
 function closeSheet() { $('#backdrop').classList.remove('on'); const s = $('#sheet'); s.classList.remove('on'); s.style.transform = ''; }
 const kmVal = () => Math.max(0, parseFloat(($('#kmInput').value || '0').replace(',', '.')) || 0);
-function nudge(d) { const v = Math.min(MANUAL_MAX_KM, Math.max(0, Math.round((kmVal() + d) * 100) / 100)); const i = $('#kmInput'); i.value = fmt(v, 2); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); vib(5); }
+function nudge(d) { const v = Math.min(MANUAL_MAX_KM, Math.max(0, Math.round((kmVal() + d) * 100) / 100)); const i = $('#kmInput'); i.value = fmt(v, 2); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); vib(5); updateBike(); }
 [['#kmMinus', -0.1], ['#kmPlus', 0.1]].forEach(([sel, d]) => {
   const b = $(sel); let to;
   b.addEventListener('pointerdown', () => { nudge(d); let speed = 160; to = setTimeout(function rep() { nudge(d); speed = Math.max(40, speed * .85); to = setTimeout(rep, speed); }, 380); });
@@ -1238,30 +1243,37 @@ function nudge(d) { const v = Math.min(MANUAL_MAX_KM, Math.max(0, Math.round((km
   b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
 });
 $('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
-bindSeg($('#typeSeg'));
+const selType = () => $('#typeSeg [aria-pressed="true"]').dataset.type;
+function updateBike() {
+  const raw = kmVal(); $('#bikeNote').textContent = selType() === 'bike' ? `Para tu casa suman ${fmt(raw * BIKE_FACTOR, 2)} km (1 de cada 3)` : '';
+}
+bindSeg($('#typeSeg'), updateBike);
+$('#kmInput').addEventListener('input', updateBike);
 bindSeg($('#rankSeg'), b => { rankMode = b.dataset.rank; renderRank(true); });
 $('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
 $('#discardBtn').addEventListener('click', () => { const fromRun = pending && pending.source !== 'manual'; closeSheet(); pending = null; if (fromRun) resetRun(); toast('Actividad descartada'); });
 $('#saveBtn').addEventListener('click', e => {
   const km = Math.round(kmVal() * 100) / 100;
   if (km <= 0) { toast('No se registró distancia. Descartá la actividad o seguí moviéndote.'); const i = $('#kmInput'); i.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 }); vib([20, 30, 20]); return; }
-  const type = $('#typeSeg [aria-pressed="true"]').dataset.type;
+  const type = selType(), bike = type === 'bike';
   let secs = pending.secs;
   if (pending.source === 'manual') {
     const mins = parseInt($('#durInput').value, 10) || 0; secs = mins * 60;
     const shake = el => el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 });
-    if (km > MANUAL_MAX_KM) { toast(`El máximo por carga manual es ${MANUAL_MAX_KM} km.`); shake($('#kmInput')); return; }
+    if ((bike ? km * BIKE_FACTOR : km) > MANUAL_MAX_KM) { toast(`El máximo por carga manual es ${MANUAL_MAX_KM} km para la casa.`); shake($('#kmInput')); return; }
     if (mins <= 0) { toast('Indicá la duración de la actividad.'); shake($('#durInput')); return; }
-    if (km / (mins / 60) > MAX_KMH) { toast(`La velocidad supera los ${MAX_KMH} km/h. Revisá distancia y duración.`); shake($('#durInput')); return; }
+    const lim = bike ? BIKE_MAX_KMH : MAX_KMH;
+    if (km / (mins / 60) > lim) { toast(`La velocidad supera los ${lim} km/h. Revisá distancia y duración.`); shake($('#durInput')); return; }
   }
   const before = teamKm(S.user.team);
-  S.acts.unshift({ id: Date.now(), km, secs, type, source: pending.source, date: new Date().toISOString() }); save();
+  const counted = bike ? Math.round(km * BIKE_FACTOR * 100) / 100 : km;
+  S.acts.unshift({ id: Date.now(), km: counted, kmRaw: km, secs, type, source: pending.source, date: new Date().toISOString() }); save();
   $('#nudge').hidden = true;
   const [x, y] = centerOf(e.currentTarget);
-  flyNumber(`+${fmt(km, 2)}`, x, y);
+  flyNumber(`+${fmt(counted, 2)}`, x, y);
   closeSheet(); const wasRun = pending.source !== 'manual'; pending = null; if (wasRun) resetRun();
   goto('home');
-  setTimeout(() => { renderAll(true); burst(x, y - 80, 18); toast(t('saved', { km: fmt(km, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
+  setTimeout(() => { renderAll(true); burst(x, y - 80, 18); toast(t('saved', { km: fmt(counted, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
 });
 function flyNumber(txt, x, y) {
   if (reduce) return; const el = document.createElement('div'); el.className = 'fly-num num'; el.textContent = txt;
