@@ -135,10 +135,13 @@ body[data-theme="halloween"] .avatar{border-radius:50% 50% 42% 58%/58% 52% 48% 4
 .icon-btn:hover{background:var(--surface-2)}
 .icon-btn:active{transform:scale(.88)}
 .icon-btn svg{width:20px;height:20px}
-.icon-btn .ico-moon,.icon-btn .ico-sun{transition:transform .6s var(--ease-spring),opacity .3s;position:absolute}
+.icon-btn .ico-pumpkin,.icon-btn .ico-qs{position:absolute;width:24px;height:24px;transition:transform .6s var(--ease-spring),opacity .3s}
+.icon-btn .ico-qs{width:22px;height:22px;object-fit:contain}
+.icon-btn .ico-qs-txt{display:none;font-weight:900;font-size:12px;color:var(--accent)}
 .icon-btn{position:relative}
-body[data-theme="base"] .icon-btn .ico-moon{transform:rotate(-90deg) scale(0);opacity:0}
-body[data-theme="halloween"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opacity:0}
+.icon-btn:hover .ico-pumpkin,.icon-btn:hover .ico-qs{transform:rotate(-12deg) scale(1.08)}
+body[data-theme="base"] .icon-btn .ico-pumpkin{transform:rotate(-90deg) scale(0);opacity:0}
+body[data-theme="halloween"] .icon-btn .ico-qs,body[data-theme="halloween"] .icon-btn .ico-qs-txt{transform:rotate(90deg) scale(0);opacity:0}
 
 .live-pill{display:none;align-items:center;gap:8px;padding:7px 12px 7px 9px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:900;font-size:13px;animation:pillIn .5s var(--ease-spring)}
 .live-pill.on{display:inline-flex}
@@ -335,7 +338,7 @@ body[data-theme="halloween"] .sheet h3{color:var(--accent)}
 .stepper button:active{transform:scale(.86)}
 .stepper button svg{width:22px;height:22px}
 .stepper .val{min-width:140px;text-align:center}
-.stepper .val input{width:140px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em}
+.stepper .val input{width:180px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em;pointer-events:none;color:inherit}
 .stepper .val input.bump{animation:bump .25s var(--ease-spring)}
 @keyframes bump{50%{transform:scale(1.08)}}
 .stepper .val small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.1em}
@@ -435,8 +438,6 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
     <symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4.5" r="1.8"/><path d="M6 20l3.5-5 3 2 1.5-4.5L17 15l3-1M9 9.5l4-2 2.5 3.5M8 12l1-3"/></g></symbol>
     <symbol id="i-rank" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 20h18M5 20v-6h4v6M10 20V9h4v11M15 20v-8h4v8"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-minus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 10 17l9-10"/></symbol>
@@ -515,7 +516,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
           <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
           <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
           <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
-            <svg class="ico-moon"><use href="#i-moon"/></svg><svg class="ico-sun"><use href="#i-sun"/></svg>
+            <svg class="ico-pumpkin" viewBox="0 0 64 60" aria-hidden="true"><use href="#pumpkin"/></svg><img class="ico-qs" src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" aria-hidden="true" onerror="this.nextElementSibling.style.display='block';this.remove()" /><span class="ico-qs-txt" aria-hidden="true">QS</span>
           </button>
         </header>
 
@@ -535,7 +536,6 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
             </div>
             <div class="cta-row">
               <button class="btn btn-primary" id="goRun"><svg><use href="#i-play"/></svg><span data-copy="startCta"></span></button>
-              <button class="btn btn-ghost" id="manualBtn" aria-label="Cargar kilómetros a mano"><svg><use href="#i-hand"/></svg>Manual</button>
             </div>
             <div class="card" id="teamCard">
               <div class="team-row">
@@ -592,7 +592,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
                 </button>
               </div>
               <div class="hold-hint" id="holdHint"></div>
-              <p class="wake" id="wakeTxt">Dejá la pantalla encendida mientras corrés: el navegador puede pausar el GPS si se bloquea. Al terminar podés ajustar los km.</p>
+              <p class="wake" id="wakeTxt">Dejá la pantalla encendida mientras corrés: el navegador puede pausar el GPS si se bloquea.</p>
             </div>
           </section>
 
@@ -643,9 +643,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
           <h3 class="display" id="sheetTitle"></h3>
           <p class="sub" id="sheetSub"></p>
           <div class="stepper">
-            <button id="kmMinus" aria-label="Restar 0,1 km"><svg><use href="#i-minus"/></svg></button>
-            <div class="val"><input id="kmInput" class="num" inputmode="decimal" aria-label="Kilómetros"><small>KM</small></div>
-            <button id="kmPlus" aria-label="Sumar 0,1 km"><svg><use href="#i-plus"/></svg></button>
+            <div class="val"><input id="kmInput" class="num" readonly tabindex="-1" aria-label="Kilómetros medidos"><small>KM MEDIDOS</small></div>
           </div>
           <div class="sheet-row">
             <div class="seg" id="typeSeg" role="group" aria-label="Tipo de actividad">
@@ -654,7 +652,6 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <button data-type="run" aria-pressed="false">Corrida</button>
             </div>
           </div>
-          <div class="dur" id="durRow"><span>Duración</span><input id="durInput" class="num" inputmode="numeric" value="30" aria-label="Duración en minutos"><span>min</span></div>
           <p class="note" data-copy="sheetNote"></p>
           <div class="sheet-actions">
             <button class="btn btn-primary" id="saveBtn"><svg><use href="#i-check"/></svg><span data-copy="saveCta"></span></button>
@@ -746,7 +743,7 @@ const COPY = {
     idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
     hold: 'Mantené presionado para terminar',
     sheetTitle: 'Resumen de la actividad', sheetManual: 'Cargar kilómetros',
-    sheetNote: 'Si tu reloj registró otra distancia, ajustala antes de guardar.', saveCta: 'Guardar actividad',
+    sheetNote: 'La distancia la mide el GPS y no se puede editar.', saveCta: 'Guardar actividad',
     saved: '+{km} km para {team}',
     rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
     achKicker: 'Hitos personales', achTitle: 'Logros',
@@ -770,7 +767,7 @@ const COPY = {
     idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
     hold: 'Mantené presionado para terminar',
     sheetTitle: 'Resumen de la actividad', sheetManual: 'Cargar kilómetros',
-    sheetNote: 'Si tu reloj registró otra distancia, ajustala antes de guardar.', saveCta: 'Guardar actividad',
+    sheetNote: 'La distancia la mide el GPS y no se puede editar.', saveCta: 'Guardar actividad',
     saved: '+{km} km para {team}',
     rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
     achKicker: 'Hitos personales', achTitle: 'Logros',
@@ -987,7 +984,7 @@ function startGPS() {
       if (d < 3) return; if (dt > 0 && d / dt > 9) { run.last = pt; return; }
       run.dist += d / 1000; }
     run.last = pt;
-  }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · probá Demo o carga manual' : 'Sin señal · seguimos contando el tiempo'); },
+  }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · activala para registrar' : 'Sin señal · seguimos contando el tiempo'); },
   { enableHighAccuracy: true, maximumAge: 1000, timeout: 15000 });
   return true;
 }
@@ -1066,35 +1063,25 @@ function resetRun() { run.dist = 0; run.acc = 0; lastSec = -1; setRunState('idle
 /* ---- Sheet ---- */
 let pending = null;
 function openSheet(p) {
-  pending = p; const manual = p.source === 'manual';
-  $('#sheetTitle').textContent = manual ? t('sheetManual') : t('sheetTitle');
-  $('#sheetSub').textContent = manual ? 'Para actividades que hiciste sin el celular.' : `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
-  $('#kmInput').value = fmt(p.km || (manual ? 3 : 0), 2);
-  $('#durRow').style.display = manual ? '' : 'none';
+  pending = p;
+  $('#sheetTitle').textContent = t('sheetTitle');
+  $('#sheetSub').textContent = `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
+  $('#kmInput').value = fmt(p.km || 0, 2);
   $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
   requestAnimationFrame(() => segPill($('#typeSeg')));
   setTimeout(() => $('#saveBtn').focus({ preventScroll: true }), 350);
 }
 function closeSheet() { $('#backdrop').classList.remove('on'); const s = $('#sheet'); s.classList.remove('on'); s.style.transform = ''; }
 const kmVal = () => Math.max(0, parseFloat(($('#kmInput').value || '0').replace(',', '.')) || 0);
-function nudge(d) { const v = Math.max(0, Math.round((kmVal() + d) * 100) / 100); const i = $('#kmInput'); i.value = fmt(v, 2); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); vib(5); }
-[['#kmMinus', -0.1], ['#kmPlus', 0.1]].forEach(([sel, d]) => {
-  const b = $(sel); let to, iv;
-  const stop = () => { clearTimeout(to); clearInterval(iv); };
-  b.addEventListener('pointerdown', () => { nudge(d); let speed = 160; to = setTimeout(function rep() { nudge(d); speed = Math.max(40, speed * .85); iv = setTimeout(rep, speed); }, 380); });
-  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { clearTimeout(to); clearTimeout(iv); }));
-  b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
-});
 bindSeg($('#typeSeg'));
 bindSeg($('#rankSeg'), b => { rankMode = b.dataset.rank; renderRank(true); });
-$('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
 $('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
 $('#discardBtn').addEventListener('click', () => { const fromRun = pending && pending.source !== 'manual'; closeSheet(); pending = null; if (fromRun) resetRun(); toast('Actividad descartada'); });
 $('#saveBtn').addEventListener('click', e => {
   const km = Math.round(kmVal() * 100) / 100;
-  if (km <= 0) { const i = $('#kmInput'); i.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 }); vib([20, 30, 20]); return; }
+  if (km <= 0) { toast('No se registró distancia. Descartá la actividad o seguí moviéndote.'); const i = $('#kmInput'); i.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 }); vib([20, 30, 20]); return; }
   const type = $('#typeSeg [aria-pressed="true"]').dataset.type;
-  const secs = pending.source === 'manual' ? (parseInt($('#durInput').value, 10) || 0) * 60 : pending.secs;
+  const secs = pending.secs;
   const before = myKm();
   S.acts.unshift({ id: Date.now(), km, secs, type, source: pending.source, date: new Date().toISOString() }); save();
   const [x, y] = centerOf(e.currentTarget);
