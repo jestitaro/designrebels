@@ -371,7 +371,33 @@ body[data-theme="halloween"] .sheet h3{color:var(--accent)}
 .stepper button:active{transform:scale(.86)}
 .stepper button svg{width:22px;height:22px}
 .stepper .val{min-width:140px;text-align:center}
-.stepper .val input{width:180px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em;pointer-events:none;color:inherit}
+.stepper .val input{width:150px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em;color:inherit}
+.sheet:not(.is-manual) .manual-only{display:none}
+.sheet:not(.is-manual) .stepper .val input{pointer-events:none;width:180px}
+.nudge{display:flex;align-items:center;gap:12px;padding:12px 14px;border-color:var(--accent);animation:rowIn .5s var(--ease-spring)}
+.nudge[hidden]{display:none}
+.nudge>svg{width:24px;height:24px;color:var(--accent);flex:none;animation:ring 2.4s ease-in-out infinite;transform-origin:50% 10%}
+@keyframes ring{0%,80%,100%{transform:none}84%{transform:rotate(14deg)}88%{transform:rotate(-12deg)}92%{transform:rotate(8deg)}96%{transform:rotate(-4deg)}}
+.nudge div{flex:1;font-size:13px;line-height:1.35}.nudge b{display:block;font-size:14px}
+.nudge .btn{flex:none;height:40px;padding:0 14px;font-size:14px}
+.prize{display:flex;gap:12px;align-items:flex-start}
+.prize svg{width:36px;height:36px;flex:none}
+.prize p{font-size:13px;line-height:1.45;margin-top:2px}.prize p+p{margin-top:6px;color:var(--muted)}
+/* Recordatorios */
+.switch{position:relative;width:48px;height:28px;border-radius:999px;background:var(--surface-3);flex:none;transition:background .3s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .4s var(--ease-spring)}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.rem-head{display:flex;align-items:center;gap:12px}
+.rem-head div{flex:1}
+.rem-head b{display:block;font-size:15px}
+.rem-head small{font-size:12px;color:var(--muted);line-height:1.35;display:block;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;transition:opacity .3s}
+.chips.off{opacity:.4;pointer-events:none}
+.chip{height:36px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface-2);font-size:13px;font-weight:700;transition:transform .3s var(--ease-spring),background .3s,border-color .3s,color .3s}
+.chip:active{transform:scale(.92)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.rem-foot{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4}
 .stepper .val input.bump{animation:bump .25s var(--ease-spring)}
 @keyframes bump{50%{transform:scale(1.08)}}
 .stepper .val small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.1em}
@@ -472,6 +498,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
     <symbol id="i-rank" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 20h18M5 20v-6h4v6M10 20V9h4v11M15 20v-8h4v8"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9zM10 20a2 2 0 0 0 4 0"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-minus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M5 12h14"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 10 17l9-10"/></symbol>
@@ -576,11 +603,21 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
             </div>
             <div class="cta-row">
               <button class="btn btn-primary" id="goRun"><svg><use href="#i-play"/></svg><span data-copy="startCta"></span></button>
+              <button class="btn btn-ghost" id="manualBtn" aria-label="Cargar una actividad a mano"><svg><use href="#i-plus"/></svg>Cargar</button>
+            </div>
+            <div class="card nudge" id="nudge" hidden>
+              <svg viewBox="0 0 24 24"><use href="#i-bell"/></svg>
+              <div><b>Pausa activa</b><span id="nudgeTxt"></span></div>
+              <button class="btn btn-primary" id="nudgeGo">Iniciar</button>
             </div>
             <div class="card">
               <span class="kicker" data-copy="standTitle"></span>
               <ol class="race-list" id="raceList"></ol>
               <p class="rules" id="raceRules"></p>
+            </div>
+            <div class="card prize">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-medal"/></svg>
+              <div><span class="kicker">Premios</span><p id="prizeHouse"></p><p id="prizePersonal"></p></div>
             </div>
           </section>
 
@@ -658,6 +695,14 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               </div>
             </div>
             <div class="stat-grid" id="statGrid"></div>
+            <div class="card" style="margin-top:14px" id="remCard">
+              <div class="rem-head">
+                <div><b>Recordatorios de pausa activa</b><small>Un aviso para levantarte de la silla, de lunes a viernes, en el horario de tu dispositivo.</small></div>
+                <button class="switch" id="remSwitch" role="switch" aria-checked="false" aria-label="Activar recordatorios"></button>
+              </div>
+              <div class="chips off" id="remChips" role="group" aria-label="Horarios"></div>
+              <p class="rem-foot" id="remFoot"></p>
+            </div>
             <div class="card" style="margin-top:14px">
               <span class="kicker">Mi actividad</span>
               <ul class="acts" id="acts"></ul>
@@ -684,7 +729,9 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
           <h3 class="display" id="sheetTitle"></h3>
           <p class="sub" id="sheetSub"></p>
           <div class="stepper">
-            <div class="val"><input id="kmInput" class="num" readonly tabindex="-1" aria-label="Kilómetros medidos"><small>KM MEDIDOS</small></div>
+            <button id="kmMinus" class="manual-only" aria-label="Restar 0,1 km"><svg><use href="#i-minus"/></svg></button>
+            <div class="val"><input id="kmInput" class="num" inputmode="decimal" aria-label="Kilómetros"><small id="kmLbl">KM MEDIDOS</small></div>
+            <button id="kmPlus" class="manual-only" aria-label="Sumar 0,1 km"><svg><use href="#i-plus"/></svg></button>
           </div>
           <div class="sheet-row">
             <div class="seg" id="typeSeg" role="group" aria-label="Tipo de actividad">
@@ -693,7 +740,8 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <button data-type="run" aria-pressed="false">Corrida</button>
             </div>
           </div>
-          <p class="note" data-copy="sheetNote"></p>
+          <div class="dur manual-only"><span>Duración</span><input id="durInput" class="num" inputmode="numeric" value="30" aria-label="Duración en minutos"><span>min</span></div>
+          <p class="note" id="sheetNote"></p>
           <div class="sheet-actions">
             <button class="btn btn-primary" id="saveBtn"><svg><use href="#i-check"/></svg><span data-copy="saveCta"></span></button>
             <button class="btn btn-text-danger" id="discardBtn">Descartar</button>
@@ -727,8 +775,10 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
 /* Carrera de casas: la define la organización (en producción, desde admin). Gana la primera casa en llegar a la meta. */
-const RACE = { goal: 60, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
-const TEAM_GOAL = RACE.goal;
+const RACE = { perMember: 10, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
+/* Premios (en producción, desde admin; sujetos a aprobación de RRHH) */
+const PRIZES = { house: 'Un día de descanso para cada integrante de la casa ganadora.', personal: 'Quien cumpla su meta personal suma el día de su cumpleaños libre.' };
+const MANUAL_MAX_KM = 21, MAX_KMH = 20;
 const WALK_KMH = 5; // para traducir km en minutos de caminata
 const TEAMS = [
   { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 0, members: 8 },
@@ -736,7 +786,18 @@ const TEAMS = [
   { id: 'ravenclaw',  name: 'Ravenclaw',  short: 'R', seed: 0, members: 9 },
   { id: 'hufflepuff', name: 'Hufflepuff', short: 'H', seed: 0, members: 7 },
 ];
-const MILESTONES = [1, 5, 10, 21, 42, 60];
+const MILESTONES = [1, 3, 5, 10, 15, 21];
+const ACH = [
+  ...MILESTONES.map((m, i) => ({ id: 'km' + m, big: m, unit: 'km', kind: 'km', need: m,
+    name: ['Primer kilómetro', '3K', '5K', '10K', '15K', 'Media maratón'][i],
+    txt: ['Primera distancia registrada.', 'Tres kilómetros acumulados.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Quince kilómetros acumulados.', 'Equivalente a una media maratón.'][i] })),
+  { id: 'st3', big: 3, unit: 'días', kind: 'streak', need: 3, name: 'Racha de 3 días', txt: 'Te moviste tres días seguidos.' },
+  { id: 'st7', big: 7, unit: 'días', kind: 'streak', need: 7, name: 'Semana completa', txt: 'Siete días seguidos con actividad.' },
+  { id: 'ac5', big: 5, unit: 'pausas', kind: 'acts', need: 5, name: 'Cinco pausas activas', txt: 'Registraste cinco actividades.' },
+  { id: 'ac20', big: 20, unit: 'pausas', kind: 'acts', need: 20, name: 'Hábito', txt: 'Veinte actividades: ya es parte de tu rutina.' },
+];
+const achVal = a => a.kind === 'km' ? myKm() : a.kind === 'streak' ? streak() : S.acts.length;
+const achOk = a => achVal(a) >= a.need;
 
 /* ---- Casas: roster de HogQuartz (mismas casas que QuartzProde) ----
    name = cómo se muestra; alias = nombres y apodos con los que se puede ingresar. */
@@ -767,16 +828,17 @@ const ROSTER = [
 const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
 const findMember = input => { const q = norm(input); return q.length < 2 ? null : ROSTER.find(p => [p.name, ...p.alias].some(n => norm(n) === q)) || null; };
 TEAMS.forEach(x => { x.members = ROSTER.filter(p => p.team === x.id).length; });
+const teamGoal = id => RACE.perMember * team(id).members;
 const GOALS = [5, 10, 21, 42];
 
 /* ---- Copy por tema: el producto no cambia, la voz sí ---- */
 const COPY = {
   base: {
     eyebrow: 'QuartzSales · Carrera interna',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla. Gana la primera casa en completar la meta.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Gana la primera casa en completar su meta.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
-    step3: 'Gana la primera casa que llegue a la meta antes de la fecha límite.',
+    step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
     onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Una carrera a distancia entre las casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
     onb3Title: 'Tu objetivo personal', onb3Sub: 'Además de la meta de tu casa, definí una meta personal acorde a tu ritmo.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
@@ -792,15 +854,13 @@ const COPY = {
     rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
     achKicker: 'Hitos personales', achTitle: 'Logros',
     unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
-    m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
-    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'Recorriste vos solo la meta de una casa.'],
   },
   halloween: {
     eyebrow: 'QuartzSales · Edición Halloween 2026',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla. Arranca en Halloween y gana la primera casa en completar la meta.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Arranca en Halloween y gana la primera casa en completar su meta.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
-    step3: 'Gana la primera casa que llegue a la meta antes de la fecha límite.',
+    step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
     onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
     onb3Title: 'Tu objetivo personal', onb3Sub: 'Además de la meta de tu casa, definí una meta personal acorde a tu ritmo.',
     homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
@@ -816,8 +876,6 @@ const COPY = {
     rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
     achKicker: 'Hitos personales', achTitle: 'Logros',
     unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
-    m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
-    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'Recorriste vos solo la meta de una casa.'],
   }
 };
 
@@ -839,9 +897,9 @@ const daysLeft = () => Math.max(0, Math.ceil((RACE.end - Date.now()) / DAY));
 const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' });
 /* Momento en que una casa cruzó la meta (prototipo: solo se conocen tus actividades) */
 function teamReachedAt(id) {
-  let acc = team(id).seed; if (acc >= RACE.goal) return RACE.start.getTime();
+  let acc = team(id).seed; const g = teamGoal(id); if (acc >= g) return RACE.start.getTime();
   if (!S.user || S.user.team !== id) return null;
-  for (const a of [...S.acts].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= RACE.goal) return new Date(a.date).getTime(); }
+  for (const a of [...S.acts].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= g) return new Date(a.date).getTime(); }
   return null;
 }
 const winner = () => TEAMS.map(x => ({ id: x.id, at: teamReachedAt(x.id) })).filter(x => x.at != null).sort((a, b) => a.at - b.at)[0] || null;
@@ -856,7 +914,7 @@ function streak() {
 const teamsSorted = () => [...TEAMS].sort((a, b) => {
   const ra = teamReachedAt(a.id), rb = teamReachedAt(b.id);
   if (ra != null || rb != null) return (ra ?? Infinity) - (rb ?? Infinity);
-  return teamKm(b.id) - teamKm(a.id);
+  return teamKm(b.id) / teamGoal(b.id) - teamKm(a.id) / teamGoal(a.id);
 });
 const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
 const teamVar = id => `var(--t${teamIdx(id)})`;
@@ -935,15 +993,15 @@ function renderHead() {
 function renderHome() {
   if (!S.user) return;
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
-  const win = winner(), dl = daysLeft(), left = Math.max(0, RACE.goal - tk);
-  $('#raceKicker').textContent = `Carrera de casas · ${RACE.goal} km`;
-  $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : `Gana la primera casa en llegar a ${RACE.goal} km`;
+  const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
+  $('#raceKicker').textContent = `Carrera de casas · ${RACE.perMember} km por integrante`;
+  $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : 'Gana la primera casa en completar su meta';
   tween($('#daysLeft'), dl, 0, 700); $('#daysLbl').textContent = dl === 1 ? 'día restante' : 'días restantes';
   [$('#myTeamBadge')].forEach(b => { b.textContent = tm.short; b.style.setProperty('--team', teamVar(tm.id)); b.style.setProperty('--team-ink', teamInk(tm.id)); });
   $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
-  const pct = Math.min(100, tk / RACE.goal * 100);
+  const pct = Math.min(100, tk / goal * 100);
   $('#teamFill').style.setProperty('--fill', teamVar(tm.id)); $('#teamFill').style.width = pct + '%'; $('#teamWalker').style.left = pct + '%';
-  $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = RACE.goal;
+  $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = goal;
   // ritmo necesario: traducido a minutos de caminata por persona por día
   let pace;
   if (win) pace = win.id === tm.id ? `<b>Meta cumplida.</b> Tus km siguen sumando a tu meta personal.` : `La carrera terminó. Tus km siguen sumando a tu meta personal.`;
@@ -953,13 +1011,14 @@ function renderHome() {
   $('#paceTxt').innerHTML = pace;
   $('#raceList').innerHTML = sorted.map((x, i) => {
     const k = teamKm(x.id), r = teamReachedAt(x.id), me = x.id === tm.id;
-    const sub = r != null ? (win && win.id === x.id ? '<span class="win-chip">Ganadora</span>' : `llegó el ${fmtDate(new Date(r))}`) : `faltan ${fmt(Math.max(0, RACE.goal - k), 1)}`;
+    const sub = r != null ? (win && win.id === x.id ? '<span class="win-chip">Ganadora</span>' : `llegó el ${fmtDate(new Date(r))}`) : `${Math.round(Math.min(100, k / teamGoal(x.id) * 100))}% de ${teamGoal(x.id)} km`;
     return `<li class="${me ? 'me' : ''}" style="--team:${teamVar(x.id)}"><span class="rank-pos num">${i + 1}</span>
       <span class="nm"><span class="dot-t"></span>${x.name}</span><span class="km num">${fmt(k, 1)} km<small>${sub}</small></span>
-      <span class="mini"><i data-w="${Math.min(100, k / RACE.goal * 100)}"></i></span></li>`;
+      <span class="mini"><i data-w="${Math.min(100, k / teamGoal(x.id) * 100)}"></i></span></li>`;
   }).join('');
   requestAnimationFrame(() => $$('#raceList .mini i').forEach(i => i.style.width = i.dataset.w + '%'));
-  $('#raceRules').textContent = `Del ${fmtDate(RACE.start)} al ${fmtDate(RACE.end)}. Gana la primera casa que complete ${RACE.goal} km; si ninguna llega, gana la que más km sume al cierre.`;
+  $('#prizeHouse').textContent = PRIZES.house; $('#prizePersonal').textContent = PRIZES.personal;
+  $('#raceRules').textContent = `Del ${fmtDate(RACE.start)} al ${fmtDate(RACE.end)}. Cada casa tiene una meta de ${RACE.perMember} km por integrante, así compiten parejo sin importar cuántas personas tenga. Gana la primera en completarla; si ninguna llega, gana la de mayor porcentaje al cierre.`;
 }
 function renderMe() {
   if (!S.user) return;
@@ -968,7 +1027,7 @@ function renderMe() {
   $('#ringBar').style.strokeDashoffset = 326.7 * (1 - p);
   const h = C().headline; $('#heroHeadline').textContent = h[p >= 1 ? 3 : p > .5 ? 2 : km > 0 ? 1 : 0];
   const nm = MILESTONES.findIndex(m => km < m);
-  $('#nextMilestone').innerHTML = nm < 0 ? t('allM') : t('nextM', { km: fmt(MILESTONES[nm] - km, 1), m: C().m[nm] });
+  $('#nextMilestone').innerHTML = nm < 0 ? t('allM') : t('nextM', { km: fmt(MILESTONES[nm] - km, 1), m: ACH[nm].name });
   const tk = teamKm(S.user.team), share = tk > 0 ? Math.round(km / tk * 100) : 0;
   const best = S.acts.reduce((a, b) => Math.max(a, b.km), 0), mins = Math.round(S.acts.reduce((a, b) => a + b.secs, 0) / 60), st = streak();
   $('#statGrid').innerHTML = [
@@ -980,8 +1039,8 @@ function renderMe() {
   const ul = $('#acts');
   if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${t('empty')}</li>`; return; }
   ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
-    const d = new Date(a.date), mins = Math.round(a.secs / 60), src = a.source === 'sim' ? 'Demo' : 'GPS';
-    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#i-pin"/></svg></span>
+    const d = new Date(a.date), mins = Math.round(a.secs / 60), src = a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : 'GPS';
+    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-plus' : 'i-pin'}"/></svg></span>
       <span class="meta"><b>${a.type === 'run' ? 'Corrida' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}</span>
       <span class="km num">${fmt(a.km, 2)} km</span></li>`;
   }).join('');
@@ -990,8 +1049,8 @@ let rankMode = 'teams';
 function renderRank(animate = true) {
   // mapa
   const road = $('#road'), L = road.getTotalLength();
-  const marks = [.25, .5, .75].map(f => { const p = road.getPointAtLength(L * f);
-    return theme() === 'halloween' ? `<use href="#tomb" x="${p.x - 9}" y="${p.y - 28}" width="18" height="21"/>` : `<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--muted)" opacity=".5"/>`; }).join('');
+  const marks = [.1, .2, .3, .4, .5, .6, .7, .8, .9].map(f => { const p = road.getPointAtLength(L * f);
+    return `<circle cx="${p.x}" cy="${p.y}" r="${f === .5 ? 5 : 3}" fill="var(--muted)" opacity="${f === .5 ? .8 : .45}"/>` + (f === .5 ? `<text x="${p.x + 9}" y="${p.y + 4}" font-size="10" font-weight="700" fill="var(--muted)">50%</text>` : ''); }).join('');
   const end = road.getPointAtLength(L);
   $('#mapMarks').innerHTML = marks + (theme() === 'halloween'
     ? `<circle cx="${end.x}" cy="${end.y - 2}" r="15" fill="#f6dd8a" opacity=".95"/><circle cx="${end.x}" cy="${end.y - 2}" r="22" fill="#f6dd8a" opacity=".15"/>`
@@ -999,7 +1058,7 @@ function renderRank(animate = true) {
   const tok = $('#mapTokens');
   if (!tok.children.length) tok.innerHTML = TEAMS.map(x => `<g class="token" data-id="${x.id}"><circle r="12" fill="${teamVar(x.id)}"/><text style="fill:${teamInk(x.id)}">${x.short}</text></g>`).join('');
   TEAMS.forEach((x, i) => {
-    const f = Math.min(1, teamKm(x.id) / TEAM_GOAL), p = road.getPointAtLength(L * f);
+    const f = Math.min(1, teamKm(x.id) / teamGoal(x.id)), p = road.getPointAtLength(L * f);
     const g = $(`.token[data-id="${x.id}"]`, tok);
     g.classList.toggle('me', S.user && S.user.team === x.id);
     g.style.transform = `translate(${p.x + (i % 2 ? 5 : -5)}px, ${p.y + (i > 1 ? 5 : -5)}px)`;
@@ -1009,7 +1068,7 @@ function renderRank(animate = true) {
   const prev = new Map($$('li', list).map(li => [li.dataset.id, li.getBoundingClientRect().top]));
   let rows;
   if (rankMode === 'teams') {
-    rows = teamsSorted().map(x => ({ id: x.id, name: x.name, sub: `${x.members} personas`, km: teamKm(x.id), max: TEAM_GOAL, team: x.id, me: S.user && S.user.team === x.id }));
+    rows = teamsSorted().map(x => ({ id: x.id, name: x.name, sub: `${x.members} personas`, km: teamKm(x.id), max: teamGoal(x.id), team: x.id, me: S.user && S.user.team === x.id }));
   } else {
     const ppl = ROSTER.filter(p => !S.user || p.id !== S.user.id).map(p => ({ id: p.id, name: p.name, km: 0, team: p.team }));
     if (S.user) ppl.push({ id: '__me', name: S.user.name + ' (vos)', km: myKm(), team: S.user.team, me: true });
@@ -1027,18 +1086,19 @@ function renderRank(animate = true) {
     li.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.34,1.56,.64,1)' }); });
 }
 function renderAch() {
-  const km = myKm(), hw = theme() === 'halloween';
-  $('#achGrid').innerHTML = MILESTONES.map((m, i) => {
-    const ok = km >= m;
+  const hw = theme() === 'halloween';
+  $('#achGrid').innerHTML = ACH.map((a, i) => {
+    const ok = achOk(a), left = a.need - achVal(a);
     const ico = hw ? (i % 2 ? '<svg class="ach-ico" viewBox="0 0 64 72"><use href="#ghost"/></svg>' : '<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>') : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
-    return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${C().m[i]}, ${ok ? 'desbloqueado' : 'bloqueado'}">
+    const miss = a.kind === 'km' ? `Faltan ${fmt(left, 1)} km` : a.kind === 'streak' ? `Te faltan ${left} ${left === 1 ? 'día' : 'días'} seguidos` : `Faltan ${left} ${left === 1 ? 'actividad' : 'actividades'}`;
+    return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${a.name}, ${ok ? 'desbloqueado' : 'bloqueado'}">
       <div class="ach-inner"><div class="ach-face ach-front">${ok ? '' : '<svg class="lock"><use href="#i-lock"/></svg>'}${ico}
-        <div><div class="km-big num">${m}<small style="font-size:13px"> km</small></div><div class="ach-name">${C().m[i]}</div></div></div>
-      <div class="ach-face ach-back"><span class="kicker" style="color:inherit;opacity:.7">${ok ? 'Desbloqueado' : `Faltan ${fmt(m - km, 1)} km`}</span><p>${C().mTxt[i]}</p></div></div></button>`;
+        <div><div class="km-big num">${a.big}<small style="font-size:13px"> ${a.unit}</small></div><div class="ach-name">${a.name}</div></div></div>
+      <div class="ach-face ach-back"><span class="kicker" style="color:inherit;opacity:.7">${ok ? 'Desbloqueado' : miss}</span><p>${a.txt}</p></div></div></button>`;
   }).join('');
 }
 $('#achGrid').addEventListener('click', e => { const a = e.target.closest('.ach'); if (a) { a.classList.toggle('flipped'); vib(6); } });
-function renderAll(animateRank) { renderHead(); renderHome(); renderMe(); renderRank(animateRank); renderAch(); renderRunStatic(); }
+function renderAll(animateRank) { renderHead(); renderHome(); renderMe(); renderRem && renderRem(); renderRank(animateRank); renderAch(); renderRunStatic(); }
 
 /* ---- Tabs ---- */
 const ORDER = ['home', 'run', 'rank', 'me'];
@@ -1077,7 +1137,7 @@ function startGPS() {
       if (d < 3) return; if (dt > 0 && d / dt > 9) { run.last = pt; return; }
       run.dist += d / 1000; }
     run.last = pt;
-  }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · activala para registrar' : 'Sin señal · seguimos contando el tiempo'); },
+  }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · activala o cargá la actividad a mano' : 'Sin señal · seguimos contando el tiempo'); },
   { enableHighAccuracy: true, maximumAge: 1000, timeout: 15000 });
   return true;
 }
@@ -1156,16 +1216,28 @@ function resetRun() { run.dist = 0; run.acc = 0; lastSec = -1; setRunState('idle
 /* ---- Sheet ---- */
 let pending = null;
 function openSheet(p) {
-  pending = p;
-  $('#sheetTitle').textContent = t('sheetTitle');
-  $('#sheetSub').textContent = `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
-  $('#kmInput').value = fmt(p.km || 0, 2);
+  pending = p; const manual = p.source === 'manual';
+  $('#sheet').classList.toggle('is-manual', manual);
+  $('#kmInput').readOnly = !manual; $('#kmInput').tabIndex = manual ? 0 : -1;
+  $('#kmLbl').textContent = manual ? 'KM' : 'KM MEDIDOS';
+  $('#sheetTitle').textContent = manual ? 'Cargar actividad' : t('sheetTitle');
+  $('#sheetSub').textContent = manual ? 'Para cinta, gimnasio o salidas sin el celular.' : `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
+  $('#sheetNote').textContent = manual ? `Máximo ${MANUAL_MAX_KM} km por carga. Las cargas manuales quedan identificadas en el ranking.` : 'La distancia la mide el GPS y no se puede editar.';
+  $('#kmInput').value = fmt(p.km || (manual ? 2 : 0), 2);
   $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
   requestAnimationFrame(() => segPill($('#typeSeg')));
   setTimeout(() => $('#saveBtn').focus({ preventScroll: true }), 350);
 }
 function closeSheet() { $('#backdrop').classList.remove('on'); const s = $('#sheet'); s.classList.remove('on'); s.style.transform = ''; }
 const kmVal = () => Math.max(0, parseFloat(($('#kmInput').value || '0').replace(',', '.')) || 0);
+function nudge(d) { const v = Math.min(MANUAL_MAX_KM, Math.max(0, Math.round((kmVal() + d) * 100) / 100)); const i = $('#kmInput'); i.value = fmt(v, 2); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); vib(5); }
+[['#kmMinus', -0.1], ['#kmPlus', 0.1]].forEach(([sel, d]) => {
+  const b = $(sel); let to;
+  b.addEventListener('pointerdown', () => { nudge(d); let speed = 160; to = setTimeout(function rep() { nudge(d); speed = Math.max(40, speed * .85); to = setTimeout(rep, speed); }, 380); });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => clearTimeout(to)));
+  b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
+});
+$('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
 bindSeg($('#typeSeg'));
 bindSeg($('#rankSeg'), b => { rankMode = b.dataset.rank; renderRank(true); });
 $('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
@@ -1174,9 +1246,17 @@ $('#saveBtn').addEventListener('click', e => {
   const km = Math.round(kmVal() * 100) / 100;
   if (km <= 0) { toast('No se registró distancia. Descartá la actividad o seguí moviéndote.'); const i = $('#kmInput'); i.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 }); vib([20, 30, 20]); return; }
   const type = $('#typeSeg [aria-pressed="true"]').dataset.type;
-  const secs = pending.secs;
-  const before = myKm();
+  let secs = pending.secs;
+  if (pending.source === 'manual') {
+    const mins = parseInt($('#durInput').value, 10) || 0; secs = mins * 60;
+    const shake = el => el.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 });
+    if (km > MANUAL_MAX_KM) { toast(`El máximo por carga manual es ${MANUAL_MAX_KM} km.`); shake($('#kmInput')); return; }
+    if (mins <= 0) { toast('Indicá la duración de la actividad.'); shake($('#durInput')); return; }
+    if (km / (mins / 60) > MAX_KMH) { toast(`La velocidad supera los ${MAX_KMH} km/h. Revisá distancia y duración.`); shake($('#durInput')); return; }
+  }
+  const before = teamKm(S.user.team);
   S.acts.unshift({ id: Date.now(), km, secs, type, source: pending.source, date: new Date().toISOString() }); save();
+  $('#nudge').hidden = true;
   const [x, y] = centerOf(e.currentTarget);
   flyNumber(`+${fmt(km, 2)}`, x, y);
   closeSheet(); const wasRun = pending.source !== 'manual'; pending = null; if (wasRun) resetRun();
@@ -1199,19 +1279,62 @@ function flyNumber(txt, x, y) {
 
 /* ---- Milestones ---- */
 let unlockQueue = [];
-function checkMilestones(before) {
-  const now = myKm();
-  MILESTONES.forEach((m, i) => { if (before < m && now >= m && !S.unlocked.includes(m)) { S.unlocked.push(m); unlockQueue.push(i); } });
-  save(); if (unlockQueue.length) setTimeout(showUnlock, 900);
+function checkMilestones(beforeTeamKm) {
+  ACH.forEach(a => { if (achOk(a) && !S.unlocked.includes(a.id)) { S.unlocked.push(a.id); unlockQueue.push(a); } });
+  save();
+  // hitos de casa: cada 10% de la meta
+  const id = S.user.team, g = teamGoal(id), b = Math.floor(beforeTeamKm / g * 10), n = Math.min(10, Math.floor(teamKm(id) / g * 10));
+  if (n > b) setTimeout(() => toast(n >= 10 ? `${team(id).name} completó su meta` : `${team(id).name} llegó al ${n * 10}% de su meta`), 1400);
+  if (unlockQueue.length) setTimeout(showUnlock, 900);
 }
 function showUnlock() {
-  const i = unlockQueue.shift(); if (i == null) return;
-  $('#unlockName').textContent = C().m[i]; $('#unlockTxt').textContent = `${MILESTONES[i]} km · ${C().mTxt[i]}`;
+  const a = unlockQueue.shift(); if (!a) return;
+  $('#unlockName').textContent = a.name; $('#unlockTxt').textContent = a.txt;
   $('#unlock').classList.add('on'); vib([20, 50, 20, 50, 40]);
   setTimeout(() => { const [x, y] = centerOf($(`.unlock-card .big-ico.${theme() === 'halloween' ? 'hw' : 'bs'}`)); burst(x, y, 30); }, 350);
   $('#unlockOk').focus({ preventScroll: true });
 }
 $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('on'); if (unlockQueue.length) setTimeout(showUnlock, 450); else setTimeout(() => goto('me'), 300); });
+
+/* ---- Recordatorios de pausa activa ----
+   Prototipo: avisa mientras la página está abierta (notificación del sistema si hay permiso, si no, aviso en la app).
+   En producción: PWA + Web Push desde backend para avisar con la app cerrada. */
+const REM_HOURS = [10, 11, 12, 15, 16, 17];
+S.rem = S.rem || { on: false, hours: [11, 16], fired: {} };
+const todayKey = () => new Date().toDateString();
+const kmToday = () => S.acts.filter(a => new Date(a.date).toDateString() === todayKey()).reduce((x, a) => x + a.km, 0);
+function renderRem() {
+  $('#remSwitch').setAttribute('aria-checked', S.rem.on);
+  $('#remChips').classList.toggle('off', !S.rem.on);
+  $('#remChips').innerHTML = REM_HOURS.map(h => `<button class="chip num" aria-pressed="${S.rem.hours.includes(h)}" data-h="${h}">${h}:00</button>`).join('');
+  const perm = 'Notification' in window ? Notification.permission : 'unsupported';
+  $('#remFoot').textContent = !S.rem.on ? 'Desactivados.' : perm === 'granted' ? 'Vas a recibir una notificación en los horarios elegidos.' : 'Sin permiso de notificaciones: te avisamos dentro de la app cuando esté abierta.';
+}
+$('#remSwitch').addEventListener('click', async () => {
+  S.rem.on = !S.rem.on; vib(10);
+  if (S.rem.on && 'Notification' in window && Notification.permission === 'default') { try { await Notification.requestPermission(); } catch (e) {} }
+  save(); renderRem();
+});
+$('#remChips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; const h = +b.dataset.h;
+  S.rem.hours = S.rem.hours.includes(h) ? S.rem.hours.filter(x => x !== h) : [...S.rem.hours, h].sort((a, b) => a - b); vib(6); save(); renderRem(); });
+function showNudge() {
+  if (!S.user) return;
+  const msg = `10 minutos de caminata suman cerca de ${fmt(WALK_KMH / 6, 1)} km para ${team(S.user.team).name}.`;
+  $('#nudgeTxt').textContent = msg; $('#nudge').hidden = false;
+  return msg;
+}
+$('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; goto('run'); });
+function remTick() {
+  if (!S.rem.on || !S.user) return;
+  const now = new Date(), d = now.getDay(), h = now.getHours();
+  if (d === 0 || d === 6 || !S.rem.hours.includes(h) || now.getMinutes() > 20) return;
+  const k = todayKey() + '|' + h; if (S.rem.fired[k]) return;
+  S.rem.fired = { [k]: 1 }; save();
+  const msg = showNudge();
+  if ('Notification' in window && Notification.permission === 'granted' && document.visibilityState !== 'visible') { try { new Notification('Pausa activa', { body: msg, tag: 'pausa-activa' }); } catch (e) {} }
+  else if (current !== 'home') toast('Pausa activa: ' + msg);
+}
+setInterval(remTick, 30000); setTimeout(remTick, 1500);
 
 /* ---- Onboarding ---- */
 (() => {
