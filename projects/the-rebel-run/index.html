@@ -6,7 +6,7 @@
 <title>QuartzRun · QuartzSales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Mystery+Quest&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============ TOKENS ============ */
 :root{
@@ -23,19 +23,21 @@ body[data-theme="base"]{
   --display-w:700;--display-track:-.02em;
   --t0:#c0392b;--t1:#1f8a5b;--t2:#2f5fb3;--t3:#e0a91b;--t0-ink:#fff;--t1-ink:#fff;--t2-ink:#fff;--t3-ink:#1d1405;
   --shadow:0 1px 2px rgba(23,23,43,.06),0 8px 24px rgba(23,23,43,.06);
+  --glass:rgba(255,255,255,.55);--glass-line:rgba(255,255,255,.75);
   --stitch:transparent;
   color-scheme:light;
 }
 body[data-theme="halloween"]{
-  --bg:#130a1f;--bg-2:#241038;--surface:#221338;--surface-2:#2c1a47;--surface-3:#3a2459;
-  --ink:#f5ecd9;--muted:#b9a8d2;--line:rgba(245,236,217,.12);
-  --accent:#ff9a1f;--accent-ink:#1d0d12;--accent-soft:rgba(255,154,31,.14);
-  --accent-2:#8fd3c8;--danger:#ff6474;--glow:rgba(255,154,31,.5);
-  --display:'Mystery Quest',Georgia,serif;--body:'Lato',system-ui,sans-serif;
-  --display-w:400;--display-track:0;
+  --bg:#1b1736;--bg-2:#231e45;--surface:#241f47;--surface-2:#2d2756;--surface-3:#3a3368;
+  --ink:#f4f2ff;--muted:#a9a3cf;--line:rgba(255,255,255,.07);
+  --accent:#ffb627;--accent-ink:#1b1736;--accent-soft:rgba(255,182,39,.13);
+  --accent-2:#9be15d;--lav:#a78bfa;--danger:#ff6b81;--glow:rgba(255,182,39,.45);
+  --display:'Poppins',system-ui,sans-serif;--body:'Poppins',system-ui,sans-serif;
+  --display-w:700;--display-track:-.01em;
+  --glass:rgba(36,31,71,.5);--glass-line:rgba(255,255,255,.12);
   --t0:#e2493b;--t1:#2fa874;--t2:#4a7fd6;--t3:#efbe3a;--t0-ink:#fff;--t1-ink:#fff;--t2-ink:#fff;--t3-ink:#1d1405;
-  --shadow:0 10px 30px rgba(0,0,0,.35);
-  --stitch:rgba(245,236,217,.22);
+  --shadow:0 12px 32px rgba(8,6,24,.35);
+  --stitch:transparent;
   color-scheme:dark;
 }
 body[data-theme="base"] .hw{display:none!important}
@@ -87,7 +89,8 @@ input{font:inherit;color:inherit}
 .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:pulse 2.4s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 9px transparent}}
 .landing h1{font-size:clamp(56px,7vw,92px);margin:14px 0 18px}
-body[data-theme="halloween"] .landing h1{color:var(--accent);text-shadow:0 0 30px rgba(255,154,31,.35);transform:rotate(-2deg);animation:flicker 7s infinite}
+body[data-theme="halloween"] .landing h1{color:var(--ink);text-shadow:0 0 40px rgba(167,139,250,.35)}
+body[data-theme="halloween"] .landing h1 .w:last-child{color:var(--accent);text-shadow:0 0 36px var(--glow)}
 @keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}}
 .landing h1 .w{display:inline-block;transition:transform .5s var(--ease-spring)}
 .landing h1 .w:hover{transform:translateY(-6px) rotate(-3deg)}
@@ -96,7 +99,7 @@ body[data-theme="halloween"] .landing h1{color:var(--accent);text-shadow:0 0 30p
 .steps li{display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:var(--r-md);background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);backdrop-filter:blur(8px);transition:transform .3s var(--ease-out),border-color .3s}
 .steps li:hover{transform:translateX(6px);border-color:var(--accent)}
 .steps b{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:900}
-body[data-theme="halloween"] .steps b{border-radius:50% 50% 46% 54%/60% 60% 40% 40%;transform:rotate(-6deg)}
+
 .steps span{font-size:15px;line-height:1.4}
 .theme-switch{display:inline-flex;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line);position:relative;box-shadow:var(--shadow)}
 .theme-switch button{position:relative;z-index:1;padding:9px 16px;font-size:13px;font-weight:700;border-radius:999px;color:var(--muted);transition:color .3s}
@@ -119,14 +122,14 @@ body[data-theme="halloween"] .steps b{border-radius:50% 50% 46% 54%/60% 60% 40% 
 
 /* ============ APP ============ */
 .app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
-body[data-theme="halloween"] .app{background:radial-gradient(120% 60% at 50% 0%,#331a50 0%,var(--bg) 60%)}
+body[data-theme="halloween"] .app{background:radial-gradient(90% 45% at 50% 0%,#2e2763 0%,transparent 70%),radial-gradient(70% 40% at 100% 100%,rgba(155,225,93,.08),transparent 70%),var(--bg)}
 .app-noise{position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-.app-head{position:relative;z-index:5;display:flex;align-items:center;gap:10px;padding:56px 18px 10px}
+.app-head{position:relative;z-index:5;display:flex;align-items:center;gap:12px;padding:58px 22px 16px}
 @media (max-width:900px){.app-head{padding-top:max(14px,env(safe-area-inset-top))}}
 .avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:14px;background:var(--team,var(--accent));color:var(--team-ink,#fff);flex:none;transition:transform .4s var(--ease-spring)}
 .avatar:active{transform:scale(.9) rotate(-8deg)}
-body[data-theme="halloween"] .avatar{border-radius:50% 50% 42% 58%/58% 52% 48% 42%}
+
 .head-txt{flex:1;min-width:0}
 .head-txt small{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
 .head-txt strong{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -151,26 +154,26 @@ body[data-theme="base"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opac
 @keyframes pillIn{from{transform:scale(.4);opacity:0}}
 
 .screens{position:relative;flex:1;min-height:0}
-.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:6px 18px 110px;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),visibility 0s .45s;scrollbar-width:none}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:10px 22px 132px;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),visibility 0s .45s;scrollbar-width:none}
 .screen::-webkit-scrollbar{display:none}
 .screen.from-left{transform:translateX(-24px)}
 .screen.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),visibility 0s}
 
-.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow)}
-body[data-theme="halloween"] .card{outline:1.5px dashed var(--stitch);outline-offset:-7px}
-.card + .card{margin-top:14px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow)}
+
+.card + .card{margin-top:20px}
 .kicker{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .h2{font-size:26px;margin:4px 0 2px}
-body[data-theme="halloween"] .h2{color:var(--accent)}
+
 .muted{color:var(--muted)}
 
 /* Home hero ring */
-.hero{display:flex;align-items:center;gap:16px;padding:18px}
+.hero{display:flex;align-items:center;gap:18px;padding:22px}
 .ring{position:relative;width:132px;height:132px;flex:none}
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring .track{stroke:var(--surface-3)}
 .ring .bar{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s var(--ease-out)}
-body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 6px rgba(255,154,31,.7))}
+body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 8px var(--glow))}
 .ring-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .ring-center b{font-size:30px;font-weight:900;line-height:1}
 .ring-center small{font-size:12px;color:var(--muted);margin-top:4px}
@@ -180,40 +183,43 @@ body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 6px rgba(255,154,
 .next{margin-top:10px;font-size:13px;line-height:1.4;padding:8px 10px;border-radius:12px;background:var(--accent-soft)}
 .next b{color:var(--accent)}
 
-.cta-row{display:flex;gap:10px;margin:14px 0}
+.cta-row{display:flex;gap:12px;margin:20px 0}
+.cta-row .btn{height:54px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .25s var(--ease-spring),box-shadow .3s,background .3s}
 .btn:active{transform:scale(.95)}
 .btn svg{width:18px;height:18px}
 .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 24px -8px var(--glow);flex:1}
 .btn-primary:hover{box-shadow:0 12px 30px -8px var(--glow)}
+body[data-theme="halloween"] .btn-primary{border-radius:12px;transform:rotate(-1.2deg);font-weight:700}
+body[data-theme="halloween"] .btn-primary:active{transform:rotate(-1.2deg) scale(.95)}
+body[data-theme="halloween"] .btn-ghost{background:var(--surface-2);border-color:transparent}
 .btn-ghost{background:var(--surface);border:1px solid var(--line)}
 .btn-text-danger{color:var(--danger);background:none;height:44px}
 .btn-text-danger:hover{background:color-mix(in srgb,var(--danger) 10%,transparent)}
 
 .bar-wrap{position:relative;height:12px;border-radius:999px;background:var(--surface-3);overflow:visible;margin-top:12px}
 .bar-fill{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:var(--fill,var(--accent));width:0;transition:width 1.3s var(--ease-out)}
-body[data-theme="halloween"] .bar-fill{background:repeating-linear-gradient(-45deg,var(--fill,var(--accent)) 0 8px,color-mix(in srgb,var(--fill,var(--accent)) 75%,#000) 8px 16px);animation:candy 1.2s linear infinite}
-@keyframes candy{to{background-position:22.6px 0}}
+body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--fill,var(--accent)) 70%,#fff 0%),var(--fill,var(--accent)));box-shadow:0 0 14px -2px var(--fill,var(--accent))}
 .bar-walker{position:absolute;top:50%;width:28px;height:28px;translate:-50% -60%;transition:left 1.3s var(--ease-out);left:0}
 .bar-walker .dot{width:16px;height:16px;margin:6px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .bar-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
 .team-row{display:flex;align-items:center;gap:12px}
 .team-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--team);color:var(--team-ink,#fff);font-weight:900;font-size:16px;flex:none}
-body[data-theme="halloween"] .team-badge{border-radius:48% 52% 44% 56%/58% 46% 54% 42%}
+
 /* Carrera de casas */
-.race{padding:18px}
+.race{padding:24px 22px}
 .race-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
 .race-top .h2{font-size:22px;line-height:1.1;max-width:15ch}
 .countdown{text-align:right;flex:none}
 .countdown b{display:block;font-size:40px;font-weight:900;line-height:.9;color:var(--accent);letter-spacing:-.02em}
 .countdown small{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.race-mine{margin-top:16px;padding:14px;border-radius:18px;background:var(--surface-2)}
+.race-mine{margin-top:22px;padding:18px;border-radius:20px;background:var(--surface-2)}
 .race-mine .team-row b{font-size:17px}
-.pace{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:13px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--accent-soft)}
+.pace{display:flex;gap:12px;align-items:center;margin-top:16px;font-size:13px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--accent-soft)}
 .pace svg{width:22px;height:22px;flex:none;color:var(--accent)}
 .pace b{color:var(--accent)}
 .race-list{list-style:none;margin-top:6px}
-.race-list li{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.race-list li{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px 12px;padding:16px 0;border-bottom:1px solid var(--line)}
 .race-list li:last-child{border-bottom:0}
 .race-list .rank-pos{width:auto}
 .race-list .nm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
@@ -226,13 +232,13 @@ body[data-theme="halloween"] .team-badge{border-radius:48% 52% 44% 56%/58% 46% 5
 .win-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:900;padding:3px 8px;border-radius:999px;background:var(--accent);color:var(--accent-ink);animation:pillIn .5s var(--ease-spring)}
 .rules{font-size:12px;color:var(--muted);line-height:1.45;margin-top:10px}
 /* Individual */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.stat{padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.stat{padding:18px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
 .stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
 .stat b{display:block;font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-.01em}
 .stat b small{font-size:13px;font-weight:700;color:var(--muted)}
 .stat span{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
-.section-h{margin:22px 0 2px}
+.section-h{margin:36px 0 4px}
 .rank-chip{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 
 .acts{list-style:none;margin-top:6px}
@@ -274,7 +280,7 @@ body[data-theme="halloween"] .team-badge{border-radius:48% 52% 44% 56%/58% 46% 5
 .readout small{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .readout .time{font-size:22px;font-weight:700;margin-top:10px}
 .run-status{min-height:22px;font-size:15px;margin-top:4px}
-body[data-theme="halloween"] .run-status{font-family:var(--display);font-size:20px;color:var(--accent-2)}
+body[data-theme="halloween"] .run-status{color:var(--accent-2);font-weight:600}
 .stats{display:flex;gap:10px;width:100%;margin:12px 0 18px}
 .stats div{flex:1;padding:10px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .stats b{display:block;font-size:18px;font-weight:900}
@@ -313,7 +319,7 @@ body[data-theme="halloween"] .play{box-shadow:0 14px 40px -10px var(--glow),inse
 .map .token text{font:900 10px var(--body);fill:#fff;text-anchor:middle;dominant-baseline:central}
 .map .token.me circle{stroke:var(--ink)}
 .rank-list{list-style:none;margin-top:8px}
-.rank-list li{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;transition:background .3s}
+.rank-list li{display:flex;align-items:center;gap:12px;padding:14px 12px;border-radius:16px;transition:background .3s}
 .rank-list li.me{background:var(--accent-soft)}
 .rank-pos{width:24px;font-weight:900;font-size:16px;text-align:center;color:var(--muted)}
 .rank-list li:nth-child(1) .rank-pos{color:var(--accent)}
@@ -321,16 +327,17 @@ body[data-theme="halloween"] .play{box-shadow:0 14px 40px -10px var(--glow),inse
 .rank-name b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rank-name .mini{height:5px;border-radius:999px;background:var(--surface-3);margin-top:6px;overflow:hidden}
 .rank-name .mini i{display:block;height:100%;border-radius:inherit;background:var(--team,var(--accent));width:0;transition:width 1.2s var(--ease-out)}
-.rank-km{font-weight:900;font-size:15px}
+.rank-km{font-weight:900;font-size:15px;text-align:right}
+.rank-km small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
 .dot-t{width:12px;height:12px;border-radius:50%;background:var(--team);flex:none}
 
 /* ============ ACHIEVEMENTS ============ */
-.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
 .ach{perspective:800px;height:168px}
 .ach-inner{position:relative;height:100%;transition:transform .7s var(--ease-spring);transform-style:preserve-3d}
 .ach.flipped .ach-inner{transform:rotateY(180deg)}
 .ach-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;background:var(--surface);border:1px solid var(--line);text-align:left}
-body[data-theme="halloween"] .ach-face{background:linear-gradient(160deg,#3b2360,#22133a);outline:1.5px dashed var(--stitch);outline-offset:-7px}
+body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30% 20%,#342d6b,var(--surface))}
 .ach-back{transform:rotateY(180deg);background:var(--accent);color:var(--accent-ink);border:0}
 .ach .km-big{font-size:34px;font-weight:900;line-height:1}
 .ach .ach-ico{width:46px;height:46px}
@@ -338,21 +345,20 @@ body[data-theme="halloween"] .ach-face{background:linear-gradient(160deg,#3b2360
 .ach.locked .ach-ico{opacity:.4}
 .ach .lock{position:absolute;top:12px;right:12px;width:18px;height:18px;color:var(--muted)}
 .ach-name{font-size:14px;font-weight:700;line-height:1.25}
-body[data-theme="halloween"] .ach-name{font-family:var(--display);font-weight:400;font-size:17px}
+
 .ach-back p{font-size:13px;line-height:1.4}
 .ach.unlocked .ach-front{animation:glowIn 2.6s ease-in-out infinite}
 @keyframes glowIn{50%{box-shadow:0 0 22px -4px var(--glow)}}
 .reset{display:block;margin:22px auto 0;font-size:13px}
 
 /* ============ TABBAR ============ */
-.tabbar{position:absolute;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:10;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;border-radius:24px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+.tabbar{position:absolute;left:16px;right:16px;bottom:max(12px,env(safe-area-inset-bottom));z-index:10;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(28px) saturate(170%);-webkit-backdrop-filter:blur(28px) saturate(170%);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 12px 32px rgba(8,6,24,.28)}
 .tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 6px;font-size:11px;font-weight:700;color:var(--muted);transition:color .3s}
 .tab svg{width:22px;height:22px;transition:transform .45s var(--ease-spring)}
 .tab[aria-selected="true"]{color:var(--accent-ink)}
 .tab[aria-selected="true"] svg{transform:translateY(-2px) scale(1.1)}
 .tab:active svg{transform:scale(.8)}
 .tab-ind{position:absolute;top:6px;bottom:6px;left:6px;border-radius:18px;background:var(--accent);transition:transform .5s var(--ease-spring);width:calc((100% - 12px)/4)}
-.tab-ind .peek{position:absolute;top:-22px;left:50%;translate:-50% 0;width:26px;transition:transform .5s var(--ease-spring)}
 .tab .live-dot{position:absolute;top:6px;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:var(--danger);border:2px solid var(--surface);display:none;animation:blink 1s infinite}
 .is-live .tab[data-tab="run"] .live-dot{display:block}
 
@@ -364,7 +370,7 @@ body[data-theme="halloween"] .ach-name{font-family:var(--display);font-weight:40
 .sheet.dragging{transition:none}
 .grab{width:44px;height:5px;border-radius:9px;background:var(--surface-3);margin:4px auto 14px;cursor:grab}
 .sheet h3{font-size:26px;text-align:center}
-body[data-theme="halloween"] .sheet h3{color:var(--accent)}
+
 .sheet .sub{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
 .stepper{display:flex;align-items:center;justify-content:center;gap:18px;margin:18px 0 6px}
 .stepper button{width:52px;height:52px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;transition:transform .2s var(--ease-spring)}
@@ -382,6 +388,25 @@ body[data-theme="halloween"] .sheet h3{color:var(--accent)}
 @keyframes ring{0%,80%,100%{transform:none}84%{transform:rotate(14deg)}88%{transform:rotate(-12deg)}92%{transform:rotate(8deg)}96%{transform:rotate(-4deg)}}
 .nudge div{flex:1;font-size:13px;line-height:1.35}.nudge b{display:block;font-size:14px}
 .nudge .btn{flex:none;height:40px;padding:0 14px;font-size:14px}
+.prize-list{list-style:none;display:grid;gap:14px;margin-top:16px}
+.prize-item{display:flex;gap:16px;align-items:center;padding:18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
+.prize-ico{width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:16px;background:var(--surface-2)}
+.prize-ico svg{width:38px;height:38px}
+body[data-theme="halloween"] .prize-item:first-child .prize-ico svg{filter:drop-shadow(0 0 14px rgba(255,182,39,.6))}
+.prize-item small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.prize-item b{display:block;font-size:16px;margin-top:2px}
+.prize-item span span{display:block;font-size:13px;line-height:1.45;color:var(--muted);margin-top:4px}
+.rules + .rules{margin-top:8px}
+.prize-chip{display:inline-flex;align-items:center;gap:8px;margin-top:12px;height:34px;padding:0 14px 0 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700;transition:transform .3s var(--ease-spring),background .3s}
+.prize-chip:hover{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.prize-chip:active{transform:scale(.94)}
+.prize-chip svg{width:22px;height:22px}
+.info-sheet{z-index:22;max-height:88%;overflow-y:auto;text-align:center}
+.info-sheet .race-mascot{display:block;width:84px;height:84px;margin:6px auto 10px;animation:bob 3s ease-in-out infinite}
+.info-sheet h3{margin-bottom:8px}
+.info-block{text-align:left;padding:16px 0;border-bottom:1px solid var(--line)}
+.info-block:last-of-type{border-bottom:0}
+.info-block p{font-size:14px;line-height:1.5;margin-top:6px}
 .prize{display:flex;gap:12px;align-items:flex-start}
 .prize svg{width:36px;height:36px;flex:none}
 .prize p{font-size:13px;line-height:1.45;margin-top:2px}.prize p+p{margin-top:6px;color:var(--muted)}
@@ -415,16 +440,18 @@ body[data-theme="halloween"] .sheet h3{color:var(--accent)}
 .unlock{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:28px;background:rgba(8,4,14,.7);opacity:0;pointer-events:none;transition:opacity .4s}
 .unlock.on{opacity:1;pointer-events:auto}
 .unlock-card{width:100%;max-width:300px;text-align:center;padding:26px 20px;border-radius:28px;background:var(--surface);border:1px solid var(--line);transform:rotateY(90deg) scale(.7);transition:transform .8s var(--ease-spring)}
-body[data-theme="halloween"] .unlock-card{background:linear-gradient(160deg,#3b2360,#1f1134);outline:2px dashed var(--stitch);outline-offset:-9px}
+body[data-theme="halloween"] .unlock-card{background:radial-gradient(90% 60% at 50% 20%,#3a3274,var(--surface))}
 .unlock.on .unlock-card{transform:none}
-.unlock-card .big-ico{width:96px;height:96px;margin:0 auto 10px;animation:bob 2.6s ease-in-out infinite}
+.unlock-card .big-ico{width:104px;height:104px;margin:0 auto 14px;animation:bob 2.6s ease-in-out infinite}
+body[data-theme="halloween"] .unlock-card .big-ico,body[data-theme="halloween"] .onb-mascot,body[data-theme="halloween"] .ach.unlocked .ach-ico,body[data-theme="halloween"] .race-mascot{filter:drop-shadow(0 0 22px rgba(255,182,39,.55)) drop-shadow(0 0 48px rgba(155,225,93,.25))}
+body[data-theme="halloween"] .onb-mascot{filter:drop-shadow(0 0 26px rgba(167,139,250,.6)) drop-shadow(0 0 60px rgba(167,139,250,.25))}
 .unlock-card .kicker{color:var(--accent)}
 .unlock-card h3{font-size:30px;margin:8px 0}
 .unlock-card p{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:18px}
 
 /* ============ ONBOARDING ============ */
 .onb{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;padding:64px 22px 24px;background:var(--bg);transition:opacity .5s,transform .6s var(--ease-out)}
-body[data-theme="halloween"] .onb{background:radial-gradient(120% 70% at 50% 0%,#3a1d5a,var(--bg) 65%)}
+body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%,#2e2763,var(--bg) 70%)}
 @media (max-width:900px){.onb{padding-top:max(28px,env(safe-area-inset-top))}}
 .onb.out{opacity:0;transform:scale(1.04);pointer-events:none}
 .onb-dots{display:flex;gap:6px}
@@ -435,7 +462,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(120% 70% at 50% 0%,
 .onb-step.on{opacity:1;visibility:visible;transform:none;transition:opacity .4s,transform .5s var(--ease-out)}
 .onb-step.past{transform:translateX(-30px)}
 .onb h2{font-size:40px;margin:10px 0}
-body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5deg)}
+
 .onb p{color:var(--muted);line-height:1.5;font-size:15px}
 .onb-mascot{width:120px;margin:10px 0 6px;animation:bob 3s ease-in-out infinite}
 .field{margin-top:22px}
@@ -490,8 +517,9 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="bat" viewBox="0 0 48 22"><path fill="currentColor" d="M24 7c1.6-2.6 2.2-4.3 2.4-6 1 1.6 1.2 3 1 4.4C31 3 37 1.6 48 5c-5 1.2-7.6 3.6-8.4 7-2.4-1.6-5.2-1.8-7.6-.4-.8 2.6-3.4 5-8 9.4-4.6-4.4-7.2-6.8-8-9.4-2.4-1.4-5.2-1.2-7.6.4C7.6 8.6 5 6.2 0 5c11-3.4 17-2 20.6.4-.2-1.4 0-2.8 1-4.4.2 1.7.8 3.4 2.4 6z"/></symbol>
-    <symbol id="pumpkin" viewBox="0 0 64 60"><path fill="#3d6b2a" d="M30 4c3-3 7-3 8-1-4 1-5 4-5 8h-4c0-3 0-5 1-7z"/><ellipse cx="20" cy="36" rx="16" ry="20" fill="#e8780f"/><ellipse cx="44" cy="36" rx="16" ry="20" fill="#e8780f"/><ellipse cx="32" cy="36" rx="14" ry="22" fill="#ff9a1f"/><path fill="#2a0f06" d="M18 30l7-6 3 8zM46 30l-7-6-3 8zM20 42c4 5 20 5 24 0l-3 6-3-3-3 4-3-4-3 4-3-4-3 3z"/></symbol>
-    <symbol id="ghost" viewBox="0 0 64 72"><path fill="#f5ecd9" d="M32 2C16 2 6 15 6 32v34l8-6 7 7 6-7 5 7 5-7 6 7 7-7 8 6V32C58 15 48 2 32 2z"/><ellipse cx="23" cy="30" rx="4.5" ry="7" fill="#1d0d22"/><ellipse cx="41" cy="30" rx="4.5" ry="7" fill="#1d0d22"/><ellipse cx="32" cy="46" rx="5" ry="6" fill="#1d0d22"/><ellipse cx="17" cy="40" rx="4" ry="2.5" fill="#ff9a1f" opacity=".35"/><ellipse cx="47" cy="40" rx="4" ry="2.5" fill="#ff9a1f" opacity=".35"/></symbol>
+    <symbol id="pumpkin" viewBox="0 0 64 60"><defs><linearGradient id="pkG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset=".55" stop-color="#ff9a1f"/><stop offset="1" stop-color="#e2611a"/></linearGradient><radialGradient id="pkH" cx=".35" cy=".3" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><path fill="#7ed957" d="M30 3c3-3 8-3 9 0-4 1-6 4-6 9h-4c0-4 0-6 1-9z"/><ellipse cx="20" cy="36" rx="15" ry="19" fill="#e2611a"/><ellipse cx="44" cy="36" rx="15" ry="19" fill="#e2611a"/><ellipse cx="32" cy="35" rx="17" ry="22" fill="url(#pkG)"/><ellipse cx="32" cy="35" rx="17" ry="22" fill="url(#pkH)"/><circle cx="24" cy="31" r="5" fill="#2a1840"/><circle cx="40" cy="31" r="5" fill="#2a1840"/><path fill="#2a1840" d="M21 42c6 6 16 6 22 0-1 6-5 9-11 9s-10-3-11-9z"/><rect x="29" y="42" width="3" height="4" rx="1" fill="#ffd23f"/><rect x="34" y="42" width="3" height="4" rx="1" fill="#ffd23f"/></symbol>
+    <symbol id="ghost" viewBox="0 0 64 72"><defs><linearGradient id="ghG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ecff"/><stop offset="1" stop-color="#b9a6ff"/></linearGradient></defs><path fill="url(#ghG)" d="M32 2C16 2 6 15 6 32v34l8-6 7 7 6-7 5 7 5-7 6 7 7-7 8 6V32C58 15 48 2 32 2z"/><ellipse cx="23" cy="31" rx="5" ry="6.5" fill="#2a1840"/><ellipse cx="41" cy="31" rx="5" ry="6.5" fill="#2a1840"/><ellipse cx="32" cy="45" rx="4" ry="5" fill="#2a1840"/><ellipse cx="17" cy="40" rx="4" ry="2.5" fill="#ff7ab6" opacity=".45"/><ellipse cx="47" cy="40" rx="4" ry="2.5" fill="#ff7ab6" opacity=".45"/></symbol>
+    <symbol id="skull" viewBox="0 0 64 64"><defs><linearGradient id="skG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="1" stop-color="#f4b400"/></linearGradient></defs><path fill="url(#skG)" d="M32 4C17 4 7 14 7 28c0 8 4 14 10 17v9a4 4 0 0 0 4 4h22a4 4 0 0 0 4-4v-9c6-3 10-9 10-17C57 14 47 4 32 4z"/><circle cx="22" cy="29" r="7" fill="#2a1840"/><circle cx="42" cy="29" r="7" fill="#2a1840"/><path fill="#2a1840" d="M29 42l3-5 3 5z"/><path stroke="#c98a00" stroke-width="2" stroke-linecap="round" d="M26 50v5M32 50v5M38 50v5"/></symbol>
     <symbol id="tomb" viewBox="0 0 30 34"><path fill="#4a3468" d="M3 34V14C3 6 8 2 15 2s12 4 12 12v20z"/><path stroke="#b9a8d2" stroke-width="2" d="M15 10v12M10 15h10"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/></symbol>
@@ -517,10 +545,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
     <div class="sky"></div>
     <div class="moon"></div>
     <div class="fog"></div><div class="fog f2"></div>
-    <div class="bat-fly" style="animation-duration:18s;top:0"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
-    <div class="bat-fly" style="animation-duration:26s;animation-delay:-9s;top:10vh;width:30px"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
-    <div class="bat-fly" style="animation-duration:22s;animation-delay:-15s;top:40vh;width:24px"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
-    <div class="noise"></div>
+    
   </div>
 </div>
 
@@ -545,7 +570,6 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
   <div class="device">
     <div class="device-screen">
       <div class="app" id="app">
-        <div class="app-noise hw"></div>
 
         <!-- ONBOARDING -->
         <div class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Sumate a la carrera">
@@ -612,15 +636,6 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <div><b>Pausa activa</b><span id="nudgeTxt"></span></div>
               <button class="btn btn-primary" id="nudgeGo">Iniciar</button>
             </div>
-            <div class="card">
-              <span class="kicker" data-copy="standTitle"></span>
-              <ol class="race-list" id="raceList"></ol>
-              <p class="rules" id="raceRules"></p>
-            </div>
-            <div class="card prize">
-              <svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-medal"/></svg>
-              <div><span class="kicker">Premios</span><p id="prizeHouse"></p><p id="prizePersonal"></p></div>
-            </div>
           </section>
 
           <!-- RUN -->
@@ -679,13 +694,20 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <button data-rank="people" aria-pressed="false">Personas</button>
             </div>
             <ol class="rank-list" id="rankList"></ol>
+            <div class="section-h"><span class="kicker">Lo que está en juego</span><div class="h2 display">Premios</div></div>
+            <ul class="prize-list" id="prizeList"></ul>
+            <div class="card" style="margin-top:20px">
+              <span class="kicker">Cómo se gana</span>
+              <p class="rules" id="raceRules"></p>
+              <p class="rules" id="raceCounts"></p>
+            </div>
           </section>
 
           <!-- INDIVIDUAL -->
           <section class="screen" data-screen="me" aria-label="Mi carrera">
             <span class="kicker" data-copy="meKicker"></span>
             <div class="h2 display" data-copy="meTitle"></div>
-            <div class="card hero" style="margin-top:12px">
+            <div class="card hero" style="margin-top:18px">
               <div class="ring">
                 <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="bar" id="ringBar" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
                 <div class="ring-center"><b class="num" id="myKm">0</b><small>de <span id="myGoal">10</span> km</small></div>
@@ -697,7 +719,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               </div>
             </div>
             <div class="stat-grid" id="statGrid"></div>
-            <div class="card" style="margin-top:14px" id="remCard">
+            <div class="card" style="margin-top:20px" id="remCard">
               <div class="rem-head">
                 <div><b>Recordatorios de pausa activa</b><small>Un aviso para levantarte de la silla, de lunes a viernes, en el horario de tu dispositivo.</small></div>
                 <button class="switch" id="remSwitch" role="switch" aria-checked="false" aria-label="Activar recordatorios"></button>
@@ -705,7 +727,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
               <div class="chips off" id="remChips" role="group" aria-label="Horarios"></div>
               <p class="rem-foot" id="remFoot"></p>
             </div>
-            <div class="card" style="margin-top:14px">
+            <div class="card" style="margin-top:20px">
               <span class="kicker">Mi actividad</span>
               <ul class="acts" id="acts"></ul>
             </div>
@@ -717,7 +739,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
         </div>
 
         <nav class="tabbar" role="tablist" aria-label="Navegación">
-          <span class="tab-ind" id="tabInd"><svg class="peek hw" viewBox="0 0 48 22"><use href="#bat"/></svg></span>
+          <span class="tab-ind" id="tabInd"></span>
           <button class="tab" role="tab" data-tab="home" aria-selected="true"><svg><use href="#i-home"/></svg>Inicio</button>
           <button class="tab" role="tab" data-tab="run" aria-selected="false"><span class="live-dot"></span><svg><use href="#i-run"/></svg>Correr</button>
           <button class="tab" role="tab" data-tab="rank" aria-selected="false"><svg><use href="#i-rank"/></svg>Ranking</button>
@@ -781,7 +803,12 @@ const KEY = 'rebelrun:v3';
 /* Carrera de casas: la define la organización (en producción, desde admin). Gana la primera casa en llegar a la meta. */
 const RACE = { perMember: 10, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
 /* Premios (en producción, desde admin; sujetos a aprobación de RRHH) */
-const PRIZES = { house: 'Un día de descanso para cada integrante de la casa ganadora.', personal: 'Quien cumpla su meta personal suma el día de su cumpleaños libre.' };
+const PRIZES = [
+  { who: '1.º puesto', title: 'Día de descanso', txt: 'Un día libre para cada integrante de la casa ganadora.', ico: 'skull' },
+  { who: '2.º puesto', title: 'Salida anticipada', txt: 'Un viernes a elección, cada integrante termina 2 horas antes.', ico: 'pumpkin' },
+  { who: '3.º puesto', title: 'Dormir un rato más', txt: 'Una mañana para arrancar 2 horas más tarde.', ico: 'ghost' },
+  { who: 'Meta personal', title: 'Desayuno de cumpleaños', txt: 'Quien complete su meta personal recibe un desayuno en su casa el día de su cumpleaños.', ico: 'pumpkin' },
+];
 const MANUAL_MAX_KM = 21, MAX_KMH = 20, BIKE_MAX_KMH = 40;
 const BIKE_FACTOR = 1 / 3; // en bici, cada 3 km recorridos cuentan 1
 const WALK_KMH = 5; // para traducir km en minutos de caminata
@@ -999,8 +1026,8 @@ function renderHome() {
   if (!S.user) return;
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
   const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
-  $('#raceKicker').textContent = `Carrera de casas · ${RACE.perMember} km por integrante`;
-  $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : 'Gana la primera casa en completar su meta';
+  $('#raceKicker').textContent = `${RACE.perMember} km por integrante`;
+  $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : 'Gana la primera casa en llegar';
   tween($('#daysLeft'), dl, 0, 700); $('#daysLbl').textContent = dl === 1 ? 'día restante' : 'días restantes';
   [$('#myTeamBadge')].forEach(b => { b.textContent = tm.short; b.style.setProperty('--team', teamVar(tm.id)); b.style.setProperty('--team-ink', teamInk(tm.id)); });
   $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
@@ -1014,15 +1041,18 @@ function renderHome() {
   else { const perDay = left / dl, perPerson = perDay / Math.max(1, tm.members), mins = Math.max(1, Math.ceil(perPerson / WALK_KMH * 60));
     pace = `Faltan <b>${fmt(left, 1)} km</b>: ${fmt(perDay, 1)} km por día entre todos. Equivale a <b>${mins} min de caminata</b> por persona por día.`; }
   $('#paceTxt').innerHTML = pace;
-  $('#raceList').innerHTML = sorted.map((x, i) => {
+  if ($('#raceList')) $('#raceList').innerHTML = sorted.map((x, i) => {
     const k = teamKm(x.id), r = teamReachedAt(x.id), me = x.id === tm.id;
     const sub = r != null ? (win && win.id === x.id ? '<span class="win-chip">Ganadora</span>' : `llegó el ${fmtDate(new Date(r))}`) : `${Math.round(Math.min(100, k / teamGoal(x.id) * 100))}% de ${teamGoal(x.id)} km`;
     return `<li class="${me ? 'me' : ''}" style="--team:${teamVar(x.id)}"><span class="rank-pos num">${i + 1}</span>
       <span class="nm"><span class="dot-t"></span>${x.name}</span><span class="km num">${fmt(k, 1)} km<small>${sub}</small></span>
       <span class="mini"><i data-w="${Math.min(100, k / teamGoal(x.id) * 100)}"></i></span></li>`;
   }).join('');
+  $('#prizeList').innerHTML = PRIZES.map((x, i) => `<li class="prize-item" style="animation-delay:${i * 60}ms">
+    <span class="prize-ico"><svg class="hw" viewBox="${x.ico === 'ghost' ? '0 0 64 72' : x.ico === 'skull' ? '0 0 64 64' : '0 0 64 60'}"><use href="#${x.ico}"/></svg><svg class="bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg></span>
+    <span><small>${x.who}</small><b>${x.title}</b><span>${x.txt}</span></span></li>`).join('');
   requestAnimationFrame(() => $$('#raceList .mini i').forEach(i => i.style.width = i.dataset.w + '%'));
-  $('#prizeHouse').textContent = PRIZES.house; $('#prizePersonal').textContent = PRIZES.personal;
+  $('#raceCounts').textContent = `Caminata y corrida suman el 100% de los km. En bici, cada 3 km cuentan 1. Las cargas manuales tienen un máximo de ${MANUAL_MAX_KM} km.`;
   $('#raceRules').textContent = `Del ${fmtDate(RACE.start)} al ${fmtDate(RACE.end)}. Cada casa tiene una meta de ${RACE.perMember} km por integrante, así compiten parejo sin importar cuántas personas tenga. Gana la primera en completarla; si ninguna llega, gana la de mayor porcentaje al cierre.`;
 }
 function renderMe() {
@@ -1083,7 +1113,7 @@ function renderRank(animate = true) {
   list.innerHTML = rows.map((r, i) => `<li data-id="${r.id}" class="${r.me ? 'me' : ''}" style="--team:${teamVar(r.team)}">
     <span class="rank-pos num">${i + 1}</span><span class="dot-t"></span>
     <span class="rank-name"><b>${r.name}</b><span class="mini"><i data-w="${Math.min(100, r.km / r.max * 100)}"></i></span></span>
-    <span class="rank-km num">${fmt(r.km, 1)}</span></li>`).join('');
+    <span class="rank-km num">${fmt(r.km, 1)} km${rankMode === 'teams' ? `<small>${Math.round(Math.min(100, r.km / r.max * 100))}% de ${r.max}</small>` : ''}</span></li>`).join('');
   requestAnimationFrame(() => $$('.mini i', list).forEach(i => i.style.width = i.dataset.w + '%'));
   if (!animate || reduce) return;
   $$('li', list).forEach(li => { const old = prev.get(li.dataset.id); if (old == null) return;
@@ -1094,7 +1124,7 @@ function renderAch() {
   const hw = theme() === 'halloween';
   $('#achGrid').innerHTML = ACH.map((a, i) => {
     const ok = achOk(a), left = a.need - achVal(a);
-    const ico = hw ? (i % 2 ? '<svg class="ach-ico" viewBox="0 0 64 72"><use href="#ghost"/></svg>' : '<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>') : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
+    const ico = hw ? ['<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 72"><use href="#ghost"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 64"><use href="#skull"/></svg>'][i % 3] : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
     const miss = a.kind === 'km' ? `Faltan ${fmt(left, 1)} km` : a.kind === 'streak' ? `Te faltan ${left} ${left === 1 ? 'día' : 'días'} seguidos` : `Faltan ${left} ${left === 1 ? 'actividad' : 'actividades'}`;
     return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${a.name}, ${ok ? 'desbloqueado' : 'bloqueado'}">
       <div class="ach-inner"><div class="ach-face ach-front">${ok ? '' : '<svg class="lock"><use href="#i-lock"/></svg>'}${ico}
