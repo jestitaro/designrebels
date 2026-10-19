@@ -114,7 +114,7 @@ body[data-theme="halloween"] .landing h1 .w:last-child{color:var(--accent);text-
 
 @media (max-width:900px){
   .stage{display:block;padding:0;max-width:none}
-  .landing,.world .moon{display:none}
+  .landing,.world .moon,.world .tree{display:none}
   .device{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
   .device::before{display:none}
   .device-screen{border-radius:0}
@@ -131,7 +131,9 @@ body[data-theme="halloween"] .app{background:radial-gradient(90% 45% at 50% 0%,#
 .avatar:active{transform:scale(.9) rotate(-8deg)}
 
 .head-txt{flex:1;min-width:0}
-.head-txt small{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.head-txt small{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.head-txt small::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--team,var(--accent))}
+.avatar[hidden]{display:none}
 .head-txt strong{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);transition:transform .3s var(--ease-spring),background .3s}
 .icon-btn:hover{background:var(--surface-2)}
@@ -207,15 +209,18 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .team-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--team);color:var(--team-ink,#fff);font-weight:900;font-size:16px;flex:none}
 
 /* Carrera de casas */
-.race{padding:24px 22px}
-.race-top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
-.race-top .h2{font-size:22px;line-height:1.1;max-width:15ch}
+.race{padding:28px 24px 24px;overflow:hidden}
+.race-top{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.race-top .h2{font-size:22px;line-height:1.15;max-width:14ch;margin-top:8px}
 .countdown{text-align:right;flex:none}
 .countdown b{display:block;font-size:40px;font-weight:900;line-height:.9;color:var(--accent);letter-spacing:-.02em}
-.countdown small{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.race-mine{margin-top:22px;padding:18px;border-radius:20px;background:var(--surface-2)}
-.race-mine .team-row b{font-size:17px}
-.pace{display:flex;gap:12px;align-items:center;margin-top:16px;font-size:13px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--accent-soft)}
+.countdown small{display:block;max-width:10ch;margin-left:auto;line-height:1.3;margin-top:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.race-mine{margin-top:28px;padding:22px 22px 20px;border-radius:20px;background:var(--surface-2);border-left:4px solid var(--team,var(--accent))}
+.race-mine .team-row{align-items:flex-start}
+.house-name{display:block;font-size:22px;font-weight:700;margin-top:4px;letter-spacing:-.01em}
+.race-mine .bar-wrap{margin-top:22px}
+.race-mine .bar-meta{margin-top:12px}
+.pace{display:flex;gap:12px;align-items:center;margin-top:20px;font-size:13px;line-height:1.4;padding:10px 12px;border-radius:12px;background:var(--accent-soft)}
 .pace svg{width:22px;height:22px;flex:none;color:var(--accent)}
 .pace b{color:var(--accent)}
 .race-list{list-style:none;margin-top:6px}
@@ -232,10 +237,10 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .win-chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:900;padding:3px 8px;border-radius:999px;background:var(--accent);color:var(--accent-ink);animation:pillIn .5s var(--ease-spring)}
 .rules{font-size:12px;color:var(--muted);line-height:1.45;margin-top:10px}
 /* Individual */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
-.stat{padding:18px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;margin-top:28px}
+.stat{padding:18px 4px 6px;border-top:1px solid var(--line);animation:rowIn .5s var(--ease-out) both}
 .stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
-.stat b{display:block;font-size:26px;font-weight:900;line-height:1.05;letter-spacing:-.01em}
+.stat b{display:block;font-size:30px;font-weight:900;line-height:1.05;letter-spacing:-.01em}
 .stat b small{font-size:13px;font-weight:700;color:var(--muted)}
 .stat span{display:block;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
 .section-h{margin:36px 0 4px}
@@ -443,8 +448,19 @@ body[data-theme="halloween"] .prize-item:first-child .prize-ico svg{filter:drop-
 body[data-theme="halloween"] .unlock-card{background:radial-gradient(90% 60% at 50% 20%,#3a3274,var(--surface))}
 .unlock.on .unlock-card{transform:none}
 .unlock-card .big-ico{width:104px;height:104px;margin:0 auto 14px;animation:bob 2.6s ease-in-out infinite}
-body[data-theme="halloween"] .unlock-card .big-ico,body[data-theme="halloween"] .onb-mascot,body[data-theme="halloween"] .ach.unlocked .ach-ico,body[data-theme="halloween"] .race-mascot{filter:drop-shadow(0 0 22px rgba(255,182,39,.55)) drop-shadow(0 0 48px rgba(155,225,93,.25))}
-body[data-theme="halloween"] .onb-mascot{filter:drop-shadow(0 0 26px rgba(167,139,250,.6)) drop-shadow(0 0 60px rgba(167,139,250,.25))}
+body[data-theme="halloween"] .unlock-card .big-ico,body[data-theme="halloween"] .onb-mascot,body[data-theme="halloween"] .ach-ico,body[data-theme="halloween"] .prize-ico svg,body[data-theme="halloween"] .bar-walker svg{filter:url(#wobble)}
+body[data-theme="halloween"] .onb-mascot{transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-4px)}}
+/* Rayas tipo media a rayas, espirales y líneas torcidas: guiños originales, sin elementos de ninguna película */
+body[data-theme="halloween"] .race::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(90deg,#efeaf8 0 9px,#120d24 9px 18px);opacity:.85}
+.race-spiral{position:absolute;right:-26px;top:-22px;width:150px;height:150px;color:var(--lav);opacity:.16;pointer-events:none;animation:spinSlow 40s linear infinite;filter:url(#wobble)}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+body[data-theme="halloween"] .race-top .h2{transform:rotate(-1deg);transform-origin:left}
+body[data-theme="halloween"] .tab-ind{background:var(--accent)}
+body[data-theme="halloween"] .tab-ind::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:3px;border-radius:2px;background:repeating-linear-gradient(90deg,#120d24 0 4px,transparent 4px 8px);opacity:.5}
+body[data-theme="halloween"] .bar-wrap{background:repeating-linear-gradient(90deg,var(--surface-3) 0 6px,color-mix(in srgb,var(--surface-3) 70%,#000) 6px 12px)}
+.tree{position:absolute;right:1vw;bottom:-10px;width:min(240px,18vw);transform:scaleX(-1);color:#0e0b20;opacity:.9;filter:url(#wobble)}
+body[data-theme="halloween"] .prize-ico{background:transparent;border:1.5px dashed rgba(239,234,248,.25)}
 .unlock-card .kicker{color:var(--accent)}
 .unlock-card h3{font-size:30px;margin:8px 0}
 .unlock-card p{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:18px}
@@ -517,9 +533,11 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="bat" viewBox="0 0 48 22"><path fill="currentColor" d="M24 7c1.6-2.6 2.2-4.3 2.4-6 1 1.6 1.2 3 1 4.4C31 3 37 1.6 48 5c-5 1.2-7.6 3.6-8.4 7-2.4-1.6-5.2-1.8-7.6-.4-.8 2.6-3.4 5-8 9.4-4.6-4.4-7.2-6.8-8-9.4-2.4-1.4-5.2-1.2-7.6.4C7.6 8.6 5 6.2 0 5c11-3.4 17-2 20.6.4-.2-1.4 0-2.8 1-4.4.2 1.7.8 3.4 2.4 6z"/></symbol>
-    <symbol id="pumpkin" viewBox="0 0 64 60"><defs><linearGradient id="pkG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd23f"/><stop offset=".55" stop-color="#ff9a1f"/><stop offset="1" stop-color="#e2611a"/></linearGradient><radialGradient id="pkH" cx=".35" cy=".3" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><path fill="#7ed957" d="M30 3c3-3 8-3 9 0-4 1-6 4-6 9h-4c0-4 0-6 1-9z"/><ellipse cx="20" cy="36" rx="15" ry="19" fill="#e2611a"/><ellipse cx="44" cy="36" rx="15" ry="19" fill="#e2611a"/><ellipse cx="32" cy="35" rx="17" ry="22" fill="url(#pkG)"/><ellipse cx="32" cy="35" rx="17" ry="22" fill="url(#pkH)"/><circle cx="24" cy="31" r="5" fill="#2a1840"/><circle cx="40" cy="31" r="5" fill="#2a1840"/><path fill="#2a1840" d="M21 42c6 6 16 6 22 0-1 6-5 9-11 9s-10-3-11-9z"/><rect x="29" y="42" width="3" height="4" rx="1" fill="#ffd23f"/><rect x="34" y="42" width="3" height="4" rx="1" fill="#ffd23f"/></symbol>
-    <symbol id="ghost" viewBox="0 0 64 72"><defs><linearGradient id="ghG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1ecff"/><stop offset="1" stop-color="#b9a6ff"/></linearGradient></defs><path fill="url(#ghG)" d="M32 2C16 2 6 15 6 32v34l8-6 7 7 6-7 5 7 5-7 6 7 7-7 8 6V32C58 15 48 2 32 2z"/><ellipse cx="23" cy="31" rx="5" ry="6.5" fill="#2a1840"/><ellipse cx="41" cy="31" rx="5" ry="6.5" fill="#2a1840"/><ellipse cx="32" cy="45" rx="4" ry="5" fill="#2a1840"/><ellipse cx="17" cy="40" rx="4" ry="2.5" fill="#ff7ab6" opacity=".45"/><ellipse cx="47" cy="40" rx="4" ry="2.5" fill="#ff7ab6" opacity=".45"/></symbol>
-    <symbol id="skull" viewBox="0 0 64 64"><defs><linearGradient id="skG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="1" stop-color="#f4b400"/></linearGradient></defs><path fill="url(#skG)" d="M32 4C17 4 7 14 7 28c0 8 4 14 10 17v9a4 4 0 0 0 4 4h22a4 4 0 0 0 4-4v-9c6-3 10-9 10-17C57 14 47 4 32 4z"/><circle cx="22" cy="29" r="7" fill="#2a1840"/><circle cx="42" cy="29" r="7" fill="#2a1840"/><path fill="#2a1840" d="M29 42l3-5 3 5z"/><path stroke="#c98a00" stroke-width="2" stroke-linecap="round" d="M26 50v5M32 50v5M38 50v5"/></symbol>
+    <symbol id="pumpkin" viewBox="0 0 64 60"><g stroke="#120d24" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path fill="none" d="M32 12c0-4 1-7 4-9"/><path fill="none" d="M36 3c4-2 9 0 9 4s-4 4-5 1"/><path fill="#f08a24" d="M32 12c-9-2-22 3-25 17-2 13 6 27 25 28 19 1 27-13 25-27C55 15 42 10 32 12z"/><path fill="none" opacity=".5" d="M24 14c-6 8-7 28 2 42M41 14c6 8 7 28-2 42"/></g><path fill="#120d24" d="M18 31l8-6 2 8zM46 29l-9-4-1 8z"/><g stroke="#120d24" stroke-width="2" stroke-linecap="round" fill="none"><path d="M19 42c8 5 18 5 26-1"/><path d="M23 40l2 5M29 42v5M35 42l-1 5M41 40l-2 5"/></g></symbol>
+    <symbol id="ghost" viewBox="0 0 64 72"><path fill="#efeaf8" stroke="#120d24" stroke-width="2.4" stroke-linejoin="round" d="M30 3C17 4 11 16 12 30c1 12-3 22-8 30 6 1 10-2 13-5 1 6 6 9 10 6 3 5 9 5 12 0 4 3 9 1 10-4 3 2 7 2 10-1-6-6-8-16-7-27C53 14 44 2 30 3z"/><ellipse cx="24" cy="27" rx="4" ry="8" fill="#120d24" transform="rotate(-8 24 27)"/><ellipse cx="38.5" cy="26" rx="4" ry="8.5" fill="#120d24" transform="rotate(6 38.5 26)"/><path fill="none" stroke="#120d24" stroke-width="2" stroke-linecap="round" d="M27 43c2 3 6 3 8 0"/></symbol>
+    <symbol id="skull" viewBox="0 0 64 64"><path fill="#efeaf8" stroke="#120d24" stroke-width="2.4" stroke-linejoin="round" d="M32 4C17 4 8 14 8 28c0 8 4 13 9 16v9c0 3 2 5 5 5h20c3 0 5-2 5-5v-9c5-3 9-8 9-16C56 14 47 4 32 4z"/><path fill="#120d24" d="M14 28c1-7 11-8 13-2 2 5-3 10-8 9-4-1-6-3-5-7zM50 27c-2-6-11-7-13-1-1 5 4 9 8 8s6-3 5-7zM29 41l3-6 3 6z"/><g stroke="#120d24" stroke-width="2" stroke-linecap="round" fill="none"><path d="M26 50v6M32 50v6M38 50v6"/><path d="M18 12l9 9M20 17l3-3M24 21l3-3"/></g></symbol>
+    <symbol id="spiral" viewBox="0 0 100 100"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M50 50c3-1 5 2 4 5-2 4-8 4-10 0-3-6 2-12 9-12 9 0 14 9 12 17-3 11-15 15-25 10-14-6-17-21-10-32 8-12 25-15 37-7 14 10 15 30 4 43"/></symbol>
+    <filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
     <symbol id="tomb" viewBox="0 0 30 34"><path fill="#4a3468" d="M3 34V14C3 6 8 2 15 2s12 4 12 12v20z"/><path stroke="#b9a8d2" stroke-width="2" d="M15 10v12M10 15h10"/></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/></symbol>
@@ -545,6 +563,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
     <div class="sky"></div>
     <div class="moon"></div>
     <div class="fog"></div><div class="fog f2"></div>
+    <svg class="tree" viewBox="0 0 200 300" aria-hidden="true"><path fill="currentColor" d="M92 300c4-40 2-70-6-98-6-22-22-34-40-38 16-2 30 4 40 14-4-22-18-38-36-46 20 2 34 14 42 32 2-24-6-46-22-62 22 10 32 32 32 56 6-20 22-34 42-38-16 12-26 28-30 46 14-10 32-12 46-6-18 2-34 10-44 24-6 30-2 66 4 116z"/><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M46 164c-12-2-22 6-20 16 2 8 12 8 14 2"/><path d="M50 72c-10-8-24-4-24 6 0 8 10 10 12 4"/><path d="M78 26c-4-12 6-22 16-18 8 4 4 14-2 12"/><path d="M152 94c10-8 24-2 22 8-2 8-12 6-12 0"/><path d="M174 148c12 0 18 12 10 18-6 4-12-2-8-6"/></g></svg>
     
   </div>
 </div>
@@ -598,7 +617,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
         </div>
 
         <header class="app-head">
-          <button class="avatar" id="avatar" aria-label="Tu perfil"></button>
+          <span class="avatar" id="avatar" hidden></span>
           <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
           <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
           <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
@@ -610,14 +629,14 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <!-- HOME -->
           <section class="screen active" data-screen="home" aria-label="Inicio">
             <div class="card race">
+              <svg class="race-spiral hw" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
               <div class="race-top">
                 <div><span class="kicker" id="raceKicker"></span><div class="h2 display" id="raceTitle"></div></div>
                 <div class="countdown"><b class="num" id="daysLeft">0</b><small id="daysLbl">días</small></div>
               </div>
               <div class="race-mine" id="raceMine">
                 <div class="team-row">
-                  <div class="team-badge" id="myTeamBadge"></div>
-                  <div><span class="kicker">Tu casa</span><b style="display:block" id="myTeamName"></b></div>
+                  <div><span class="kicker">Tu casa</span><b class="house-name" id="myTeamName"></b></div>
                   <span class="rank-chip num" id="myTeamPos"></span>
                 </div>
                 <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div>
@@ -801,7 +820,11 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
 /* Carrera de casas: la define la organización (en producción, desde admin). Gana la primera casa en llegar a la meta. */
-const RACE = { perMember: 10, start: new Date('2026-10-19T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
+const RACE = { perMember: 10, launch: new Date('2026-10-31T00:00:00-03:00'), start: new Date('2026-11-01T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
+const started = () => Date.now() >= RACE.start.getTime();
+/* Solo suman las actividades dentro de la ventana de la carrera; antes de la largada quedan como práctica */
+const counts = a => { const t = new Date(a.date).getTime(); return t >= RACE.start.getTime() && t <= RACE.end.getTime(); };
+const raceActs = () => S.acts.filter(counts);
 /* Premios (en producción, desde admin; sujetos a aprobación de RRHH) */
 const PRIZES = [
   { who: '1.º puesto', title: 'Día de descanso', txt: 'Un día libre para cada integrante de la casa ganadora.', ico: 'skull' },
@@ -828,7 +851,7 @@ const ACH = [
   { id: 'ac5', big: 5, unit: 'pausas', kind: 'acts', need: 5, name: 'Cinco pausas activas', txt: 'Registraste cinco actividades.' },
   { id: 'ac20', big: 20, unit: 'pausas', kind: 'acts', need: 20, name: 'Hábito', txt: 'Veinte actividades: ya es parte de tu rutina.' },
 ];
-const achVal = a => a.kind === 'km' ? myKm() : a.kind === 'streak' ? streak() : S.acts.length;
+const achVal = a => a.kind === 'km' ? myKm() : a.kind === 'streak' ? streak() : raceActs().length;
 const achOk = a => achVal(a) >= a.need;
 
 /* ---- Casas: roster de HogQuartz (mismas casas que QuartzProde) ----
@@ -867,7 +890,7 @@ const GOALS = [5, 10, 21, 42];
 const COPY = {
   base: {
     eyebrow: 'QuartzSales · Carrera interna',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Gana la primera casa en completar su meta.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 1 de diciembre.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
@@ -889,7 +912,7 @@ const COPY = {
   },
   halloween: {
     eyebrow: 'QuartzSales · Edición Halloween 2026',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Arranca en Halloween y gana la primera casa en completar su meta.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se presenta en Halloween y se corre del 1 de noviembre al 1 de diciembre.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
@@ -920,7 +943,7 @@ const theme = () => document.body.dataset.theme;
 const C = () => COPY[theme()];
 const t = (k, v = {}) => String(C()[k] ?? '').replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const fmt = (n, d = 1) => n.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
-const myKm = () => S.acts.reduce((a, b) => a + b.km, 0);
+const myKm = () => raceActs().reduce((a, b) => a + b.km, 0);
 const team = id => TEAMS.find(x => x.id === id);
 const teamIdx = id => TEAMS.findIndex(x => x.id === id);
 const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
@@ -931,14 +954,14 @@ const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'lon
 function teamReachedAt(id) {
   let acc = team(id).seed; const g = teamGoal(id); if (acc >= g) return RACE.start.getTime();
   if (!S.user || S.user.team !== id) return null;
-  for (const a of [...S.acts].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= g) return new Date(a.date).getTime(); }
+  for (const a of [...raceActs()].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= g) return new Date(a.date).getTime(); }
   return null;
 }
 const winner = () => TEAMS.map(x => ({ id: x.id, at: teamReachedAt(x.id) })).filter(x => x.at != null).sort((a, b) => a.at - b.at)[0] || null;
 const raceOver = () => !!winner() || Date.now() > RACE.end.getTime();
-const activeDays = () => new Set(S.acts.map(a => new Date(a.date).toDateString())).size;
+const activeDays = () => new Set(raceActs().map(a => new Date(a.date).toDateString())).size;
 function streak() {
-  const days = new Set(S.acts.map(a => new Date(a.date).toDateString())); let n = 0, d = new Date();
+  const days = new Set(raceActs().map(a => new Date(a.date).toDateString())); let n = 0, d = new Date();
   if (!days.has(d.toDateString())) d = new Date(Date.now() - DAY);
   while (days.has(d.toDateString())) { n++; d = new Date(d.getTime() - DAY); }
   return n;
@@ -1019,7 +1042,7 @@ function renderHead() {
   if (!S.user) return;
   const tm = team(S.user.team);
   const av = $('#avatar'); av.textContent = S.user.name.slice(0, 1).toUpperCase(); av.style.setProperty('--team', teamVar(tm.id)); av.style.setProperty('--team-ink', teamInk(tm.id));
-  $('#headKicker').textContent = tm.name;
+  $('#headKicker').textContent = tm.name; $('#headKicker').style.setProperty('--team', teamVar(tm.id));
   $('#headTitle').textContent = 'Hola, ' + S.user.name;
 }
 function renderHome() {
@@ -1028,15 +1051,19 @@ function renderHome() {
   const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
   $('#raceKicker').textContent = `${RACE.perMember} km por integrante`;
   $('#raceTitle').textContent = win ? (win.id === tm.id ? `${tm.name} ganó la carrera` : `${team(win.id).name} ganó la carrera`) : 'Gana la primera casa en llegar';
-  tween($('#daysLeft'), dl, 0, 700); $('#daysLbl').textContent = dl === 1 ? 'día restante' : 'días restantes';
-  [$('#myTeamBadge')].forEach(b => { b.textContent = tm.short; b.style.setProperty('--team', teamVar(tm.id)); b.style.setProperty('--team-ink', teamInk(tm.id)); });
+  const pre = !started(), toStart = Math.max(0, Math.ceil((RACE.start - Date.now()) / DAY));
+  if (pre) $('#raceTitle').textContent = 'Largamos el 1 de noviembre';
+  tween($('#daysLeft'), pre ? toStart : dl, 0, 700);
+  $('#daysLbl').textContent = pre ? (toStart === 1 ? 'día para la largada' : 'días para la largada') : (dl === 1 ? 'día restante' : 'días restantes');
+  $('#raceMine').style.setProperty('--team', teamVar(tm.id));
   $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
   const pct = Math.min(100, tk / goal * 100);
   $('#teamFill').style.setProperty('--fill', teamVar(tm.id)); $('#teamFill').style.width = pct + '%'; $('#teamWalker').style.left = pct + '%';
   $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = goal;
   // ritmo necesario: traducido a minutos de caminata por persona por día
   let pace;
-  if (win) pace = win.id === tm.id ? `<b>Meta cumplida.</b> Tus km siguen sumando a tu meta personal.` : `La carrera terminó. Tus km siguen sumando a tu meta personal.`;
+  if (pre) pace = `Cada casa necesita <b>${RACE.perMember} km por integrante</b> en un mes. Podés probar el registro desde ahora: lo que hagas antes del 1/11 queda como práctica.`;
+  else if (win) pace = win.id === tm.id ? `<b>Meta cumplida.</b> Tus km siguen sumando a tu meta personal.` : `La carrera terminó. Tus km siguen sumando a tu meta personal.`;
   else if (dl === 0) pace = 'La carrera terminó.';
   else { const perDay = left / dl, perPerson = perDay / Math.max(1, tm.members), mins = Math.max(1, Math.ceil(perPerson / WALK_KMH * 60));
     pace = `Faltan <b>${fmt(left, 1)} km</b>: ${fmt(perDay, 1)} km por día entre todos. Equivale a <b>${mins} min de caminata</b> por persona por día.`; }
@@ -1064,7 +1091,7 @@ function renderMe() {
   const nm = MILESTONES.findIndex(m => km < m);
   $('#nextMilestone').innerHTML = nm < 0 ? t('allM') : t('nextM', { km: fmt(MILESTONES[nm] - km, 1), m: ACH[nm].name });
   const tk = teamKm(S.user.team), share = tk > 0 ? Math.round(km / tk * 100) : 0;
-  const best = S.acts.reduce((a, b) => Math.max(a, b.km), 0), mins = Math.round(S.acts.reduce((a, b) => a + b.secs, 0) / 60), st = streak();
+  const ra = raceActs(), best = ra.reduce((a, b) => Math.max(a, b.km), 0), mins = Math.round(ra.reduce((a, b) => a + b.secs, 0) / 60), st = streak();
   $('#statGrid').innerHTML = [
     [`${share}<small>%</small>`, `de los km de ${team(S.user.team).name}`],
     [`${st}<small> ${st === 1 ? 'día' : 'días'}</small>`, 'de racha activa'],
@@ -1074,7 +1101,7 @@ function renderMe() {
   const ul = $('#acts');
   if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${t('empty')}</li>`; return; }
   ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
-    const d = new Date(a.date), mins = Math.round(a.secs / 60), src = a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : 'GPS';
+    const d = new Date(a.date), mins = Math.round(a.secs / 60), src = (a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : 'GPS') + (counts(a) ? '' : ' · Práctica');
     return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-plus' : 'i-pin'}"/></svg></span>
       <span class="meta"><b>${a.type === 'run' ? 'Corrida' : a.type === 'bike' ? 'Bici' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}${a.type === 'bike' && a.kmRaw ? ` · ${fmt(a.kmRaw, 1)} km recorridos` : ''}</span>
       <span class="km num">${fmt(a.km, 2)} km</span></li>`;
@@ -1303,7 +1330,8 @@ $('#saveBtn').addEventListener('click', e => {
   flyNumber(`+${fmt(counted, 2)}`, x, y);
   closeSheet(); const wasRun = pending.source !== 'manual'; pending = null; if (wasRun) resetRun();
   goto('home');
-  setTimeout(() => { renderAll(true); burst(x, y - 80, 18); toast(t('saved', { km: fmt(counted, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
+  const isPractice = !counts(S.acts[0]);
+  setTimeout(() => { renderAll(true); if (isPractice) { toast(`Práctica guardada. Desde el 1 de noviembre tus km suman para ${team(S.user.team).name}.`); return; } burst(x, y - 80, 18); toast(t('saved', { km: fmt(counted, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
 });
 function flyNumber(txt, x, y) {
   if (reduce) return; const el = document.createElement('div'); el.className = 'fly-num num'; el.textContent = txt;
@@ -1414,12 +1442,12 @@ setInterval(remTick, 30000); setTimeout(remTick, 1500);
     if (step < 1) { step++; sync(); return; }
     S.user = { id: draft.match.id, name: draft.match.name.split(' ')[0], team: draft.team, goal: draft.goal }; save();
     renderAll(false); onb.classList.add('out'); vib([15, 30, 15]);
-    setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#avatar')); burst(x, y, 14); }, 500);
+    setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#headTitle')); burst(x, y, 14); }, 500);
   });
   if (S.user) onb.style.display = 'none'; else sync();
 })();
 
-$('#avatar').addEventListener('click', () => { const [x, y] = centerOf($('#avatar')); burst(x, y, 8); });
+
 $('#resetBtn').addEventListener('click', () => {
   if (!confirm('¿Borrar tu progreso y volver a empezar?')) return;
   localStorage.removeItem(KEY); location.reload();
