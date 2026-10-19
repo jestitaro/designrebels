@@ -476,7 +476,7 @@ body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5de
       <button data-theme-set="halloween">Halloween</button>
       <button data-theme-set="base">Sin temática</button>
     </div>
-    <p class="fine">Prototipo · datos de equipos simulados · GPS real con fallback demo</p>
+    <p class="fine">Prototipo · los kilómetros se guardan en este dispositivo · GPS real con fallback demo</p>
   </section>
 
   <div class="device">
@@ -690,51 +690,42 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
 const TEAM_GOAL = 150, COMPANY_GOAL = 420;
 const TEAMS = [
-  { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 58.2, members: 8 },
-  { id: 'slytherin',  name: 'Slytherin',  short: 'S', seed: 71.5, members: 10 },
-  { id: 'ravenclaw',  name: 'Ravenclaw',  short: 'R', seed: 49.9, members: 9 },
-  { id: 'hufflepuff', name: 'Hufflepuff', short: 'H', seed: 64.3, members: 7 },
+  { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 0, members: 8 },
+  { id: 'slytherin',  name: 'Slytherin',  short: 'S', seed: 0, members: 10 },
+  { id: 'ravenclaw',  name: 'Ravenclaw',  short: 'R', seed: 0, members: 9 },
+  { id: 'hufflepuff', name: 'Hufflepuff', short: 'H', seed: 0, members: 7 },
 ];
-const PEOPLE = [['Mica','slytherin',18.4],['Nacho','ravenclaw',15.2],['Flor','gryffindor',14.9],['Tomi','hufflepuff',13.1],['Sofi','slytherin',11.7],['Juan','ravenclaw',9.8],['Lu','gryffindor',9.2],['Fede','hufflepuff',7.5],['Caro','slytherin',6.3]];
 const MILESTONES = [1, 5, 10, 21, 42, 60];
 
-/* ---- Casas: mismo roster que QuartzProde (endpoint Hogwarts + respaldo local) ---- */
-const HOGWARTS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzN_N1r29vMrWXoHyko1pQ-Zd5k9fYDcMBxCAct00wrmQ4VMYpwDmEcvpO0hHNJRFB1oQ/exec';
-let ROSTER = {
-  'Agus':'Slytherin','Ale':'Hufflepuff','Chino':'Gryffindor','David':'Ravenclaw','Euge':'Ravenclaw','Fran':'Ravenclaw',
-  'Guille':'Hufflepuff','Javi':'Gryffindor','Jesi':'Gryffindor','Jona':'Hufflepuff','Lore':'Gryffindor','Lucre':'Hufflepuff',
-  'Marian':'Hufflepuff','Mati':'Slytherin','May(ra)':'Gryffindor','Menta':'Hufflepuff','Nico':'Slytherin','Pablo':'Slytherin',
-  'Picci':'Ravenclaw','Sebas':'Ravenclaw','Sergio':'Gryffindor','Vale':'Ravenclaw'
-};
-const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-const displayName = n => n.replace(/[()]/g, '').trim();
-function findMember(input) {
-  const q = norm(input); if (q.length < 2) return null;
-  for (const [n, casa] of Object.entries(ROSTER)) {
-    const keys = [norm(n), norm(n.replace(/\(.*?\)/g, '')), norm(displayName(n))];
-    const tm = TEAMS.find(x => x.id === norm(casa));
-    if (tm && keys.includes(q)) return { name: displayName(n), team: tm.id };
-  }
-  return null;
-}
-function loadRoster() {
-  return new Promise(resolve => {
-    const cb = '__qrRoster' + Date.now(), s = document.createElement('script');
-    const done = ok => { delete window[cb]; s.remove(); clearTimeout(to); resolve(ok); };
-    const to = setTimeout(() => done(false), 6000);
-    window[cb] = data => {
-      const next = {};
-      Object.entries((data && data.houses) || {}).forEach(([casa, h]) => (h.members || []).forEach(n => { if (n && n.trim()) next[n.trim()] = casa; }));
-      if (Object.keys(next).length) ROSTER = next;
-      done(true);
-    };
-    s.onerror = () => done(false);
-    s.src = `${HOGWARTS_ENDPOINT}?action=state&callback=${cb}`;
-    document.head.appendChild(s);
-  });
-}
-const syncMembers = () => TEAMS.forEach(x => { x.members = Object.values(ROSTER).filter(c => norm(c) === x.id).length; });
-syncMembers();
+/* ---- Casas: roster de HogQuartz (mismas casas que QuartzProde) ----
+   name = cómo se muestra; alias = nombres y apodos con los que se puede ingresar. */
+const ROSTER = [
+  { id: 'adolfo',   name: 'Adolfo',               team: 'gryffindor', alias: ['Chino'] },
+  { id: 'ciro',     name: 'Ciro Cerruti',         team: 'gryffindor', alias: ['Ciro', 'Cirito'] },
+  { id: 'javier',   name: 'Javier',               team: 'gryffindor', alias: ['Javi'] },
+  { id: 'jesica',   name: 'Jesica',               team: 'gryffindor', alias: ['Jesi', 'Jes'] },
+  { id: 'loreana',  name: 'Loreana',              team: 'gryffindor', alias: ['Lore'] },
+  { id: 'mayra',    name: 'Mayra Azul Milanesio', team: 'gryffindor', alias: ['Mayra', 'May', 'May(ra)'] },
+  { id: 'sergio',   name: 'Sergio',               team: 'gryffindor', alias: ['Ser'] },
+  { id: 'guillermo',name: 'Guillermo',            team: 'hufflepuff', alias: ['Guille', 'Turco'] },
+  { id: 'jona',     name: 'Jona',                 team: 'hufflepuff', alias: [] },
+  { id: 'lucrecia', name: 'Lucrecia',             team: 'hufflepuff', alias: ['Lucre', 'Luly'] },
+  { id: 'mariana',  name: 'Mariana',              team: 'hufflepuff', alias: ['Marian', 'Maru', 'Mari'] },
+  { id: 'menta',    name: 'Matías Herrera',       team: 'hufflepuff', alias: ['Menta'] },
+  { id: 'agustin',  name: 'Agustín',              team: 'slytherin',  alias: ['Agus', 'Héroe'] },
+  { id: 'mati',     name: 'Mati',                 team: 'slytherin',  alias: [] },
+  { id: 'nicolas',  name: 'Nicolás',              team: 'slytherin',  alias: ['Nico', 'Nicho', 'Vikingo'] },
+  { id: 'pablo',    name: 'Pablo Giménez',        team: 'slytherin',  alias: ['Pablo', 'Tuki'] },
+  { id: 'david',    name: 'David Troila',         team: 'ravenclaw',  alias: ['David', 'Carlu'] },
+  { id: 'eugenio',  name: 'Eugenio',              team: 'ravenclaw',  alias: ['Euge'] },
+  { id: 'franco',   name: 'Franco Rivero Segura', team: 'ravenclaw',  alias: ['Fran', 'Franco', 'Francisco'] },
+  { id: 'julieta',  name: 'Julieta Piccioni',     team: 'ravenclaw',  alias: ['Julieta', 'Juli', 'Picci'] },
+  { id: 'sebastian',name: 'Sebastián Carnota',    team: 'ravenclaw',  alias: ['Sebastián', 'Sebas'] },
+  { id: 'valeria',  name: 'Valeria',              team: 'ravenclaw',  alias: ['Vale', 'Val'] },
+];
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+const findMember = input => { const q = norm(input); return q.length < 2 ? null : ROSTER.find(p => [p.name, ...p.alias].some(n => norm(n) === q)) || null; };
+TEAMS.forEach(x => { x.members = ROSTER.filter(p => p.team === x.id).length; });
 const GOALS = [5, 10, 21, 42];
 
 /* ---- Copy por tema: el producto no cambia, la voz sí ---- */
@@ -791,7 +782,7 @@ const COPY = {
 
 /* ---- State ---- */
 let S = load() || { user: null, acts: [], unlocked: [], theme: 'halloween' };
-if (S.user && !TEAMS.some(x => x.id === S.user.team)) S.user = null; // equipos renombrados: re-onboarding
+if (S.user && !ROSTER.some(p => p.id === S.user.id)) S.user = null; // equipos renombrados: re-onboarding
 function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 const theme = () => document.body.dataset.theme;
@@ -930,9 +921,9 @@ function renderRank(animate = true) {
   if (rankMode === 'teams') {
     rows = teamsSorted().map(x => ({ id: x.id, name: x.name, sub: `${x.members} personas`, km: teamKm(x.id), max: TEAM_GOAL, team: x.id, me: S.user && S.user.team === x.id }));
   } else {
-    const ppl = PEOPLE.map(([n, tid, k]) => ({ id: n, name: n, km: k, team: tid }));
+    const ppl = ROSTER.filter(p => !S.user || p.id !== S.user.id).map(p => ({ id: p.id, name: p.name, km: 0, team: p.team }));
     if (S.user) ppl.push({ id: '__me', name: S.user.name + ' (vos)', km: myKm(), team: S.user.team, me: true });
-    ppl.sort((a, b) => b.km - a.km);
+    ppl.sort((a, b) => b.km - a.km || !!b.me - !!a.me || a.name.localeCompare(b.name, 'es'));
     rows = ppl.map(p => ({ ...p, sub: team(p.team).name, max: ppl[0].km || 1 }));
   }
   list.innerHTML = rows.map((r, i) => `<li data-id="${r.id}" class="${r.me ? 'me' : ''}" style="--team:${teamVar(r.team)}">
@@ -1095,6 +1086,7 @@ function nudge(d) { const v = Math.max(0, Math.round((kmVal() + d) * 100) / 100)
   b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
 });
 bindSeg($('#typeSeg'));
+bindSeg($('#rankSeg'), b => { rankMode = b.dataset.rank; renderRank(true); });
 $('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
 $('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
 $('#discardBtn').addEventListener('click', () => { const fromRun = pending && pending.source !== 'manual'; closeSheet(); pending = null; if (fromRun) resetRun(); toast('Actividad descartada'); });
@@ -1144,7 +1136,7 @@ $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('
 /* ---- Onboarding ---- */
 (() => {
   const onb = $('#onb'); let step = 0; const draft = { name: '', team: null, goal: 10 };
-  const fillList = () => { $('#rosterList').innerHTML = ''; Object.keys(ROSTER).forEach(n => { const o = document.createElement('option'); o.value = displayName(n); $('#rosterList').append(o); }); };
+  ROSTER.forEach(p => { const o = document.createElement('option'); o.value = p.name; $('#rosterList').append(o); });
   const reveal = () => {
     const box = $('#houseReveal'), m = findMember(draft.name), prev = draft.team;
     draft.team = m ? m.team : null; draft.match = m;
@@ -1156,10 +1148,9 @@ $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('
         <div><small>Representás a</small><b>${x.name}</b></div></div>`;
       vib(10); if (theme() === 'halloween') { const [cx, cy] = centerOf($('.team-badge', box)); burst(cx, cy, 6); }
     } else {
-      box.innerHTML = norm(draft.name).length > 1 ? '<p class="hint">Escribí tu nombre como figura en las casas de QuartzSales (por ejemplo, el mismo que usás en el prode).</p>' : '';
+      box.innerHTML = norm(draft.name).length > 1 ? '<p class="hint">No encontramos ese nombre en las casas. Probá con tu nombre o tu apodo.</p>' : '';
     }
   };
-  fillList(); loadRoster().then(() => { syncMembers(); fillList(); reveal(); });
   $('#goalPick').innerHTML = GOALS.map(g => `<button class="goal-opt" role="radio" aria-checked="${g === 10}" data-g="${g}"><b class="num">${g}</b><small>km en total</small></button>`).join('');
   const valid = () => step === 0 ? !!draft.team : true;
   const sync = () => {
@@ -1176,7 +1167,7 @@ $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('
   $('#onbNext').addEventListener('click', () => {
     if (!valid()) return;
     if (step < 1) { step++; sync(); return; }
-    S.user = { name: draft.match.name, team: draft.team, goal: draft.goal }; save();
+    S.user = { id: draft.match.id, name: draft.match.name.split(' ')[0], team: draft.team, goal: draft.goal }; save();
     renderAll(false); onb.classList.add('out'); vib([15, 30, 15]);
     setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#avatar')); burst(x, y, 14); }, 500);
   });
