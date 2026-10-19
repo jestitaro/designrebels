@@ -1,45 +1,1152 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Rebel Run · QuartzSales Halloween Edition</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
-:root{--ink:#24243b;--muted:#77788d;--orange:#f08d43;--purple:#7954a9;--line:#e9e5ef}*{box-sizing:border-box}body{margin:0;background:#f1eef6;color:var(--ink);font:14px/1.5 Inter,system-ui,-apple-system,sans-serif}.app{max-width:460px;min-height:100vh;margin:auto;background:white;box-shadow:0 15px 70px #332b4719}.hero{background:#211b35;color:white;padding:26px 23px 24px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;background:#7b4a9533;right:-95px;top:-80px}.brand{font-size:12px;letter-spacing:2px;font-weight:800;color:#d8b5ed}.edition{font-size:11px;color:#efad77;margin-top:29px;font-weight:700;letter-spacing:1.2px}.hero h1{font-size:35px;letter-spacing:-1.5px;line-height:1.07;margin:8px 0}.hero p{color:#c9bfd5;margin:10px 0 22px;font-size:13px}.metrics{display:flex;justify-content:space-between;align-items:end}.big{font-size:32px;font-weight:800}.muted{color:#c7b9d6;font-size:11px}.bar{height:10px;background:#4b405c;border-radius:20px;overflow:hidden;margin-top:10px}.bar span{display:block;height:100%;background:linear-gradient(90deg,#f3a665,#f07b42);transition:width .3s}.tabs{display:flex;gap:6px;padding:11px;border-bottom:1px solid var(--line)}button{font:inherit;cursor:pointer}.tab{flex:1;border:0;background:transparent;color:#77748a;border-radius:9px;padding:11px 2px;font-size:12px}.tab.active{background:#f2eafa;color:#64418f;font-weight:750}main{padding:20px}.screen{display:none}.screen.active{display:block}h2{font-size:21px;margin:0 0 3px;letter-spacing:-.4px}.subtitle{color:var(--muted);font-size:12px;margin:0 0 19px}.card{border:1px solid var(--line);border-radius:17px;padding:17px;margin-bottom:13px;background:white}.card.soft{background:#faf7fd}.between{display:flex;align-items:center;justify-content:space-between;gap:10px}.pill{font-size:10px;font-weight:800;border-radius:50px;background:#f5e9dc;color:#a65a21;padding:5px 9px}.pill.green{background:#e4f4eb;color:#28744b}.card h3{margin:8px 0 5px;font-size:17px}.card p{margin:5px 0;color:var(--muted);font-size:12px}.button{border:0;background:#69469a;color:white;font-weight:750;border-radius:11px;padding:13px;width:100%;margin-top:12px}.button.alt{background:#f1eaf7;color:#684894}.button:disabled{opacity:.5;cursor:default}.map{background:#f7f3fa;border-radius:16px;padding:8px 12px 13px;margin-bottom:15px}.map svg{width:100%;display:block}.steps{display:flex;gap:7px}.step{flex:1;background:white;border:1px solid #ddd1e9;border-radius:9px;padding:9px;color:#74568f}.step.active{background:#69469a;color:white}.inputrow{display:flex;gap:8px;align-items:center}.inputrow input,.inputrow select{width:100%;min-width:0;padding:12px;border:1px solid #d9d1e2;border-radius:10px;background:white;font:inherit}.inputrow input{flex:1}.inputrow select{flex:1}.inputrow button{width:auto;white-space:nowrap;margin:0}.stat{font-weight:800;font-size:23px;color:#6a4897}.mini{height:7px;background:#eee7f3;border-radius:8px;overflow:hidden;margin-top:9px}.mini span{display:block;height:100%;background:#a079c7}.rewards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.reward{text-align:center;background:#faf8fc;border:1px solid #e8e2ed;border-radius:15px;padding:17px 9px}.reward.unlocked{background:#fff5e9;border-color:#f2cda8}.reward .emoji{font-size:30px}.reward strong{display:block;font-size:13px;margin:9px 0 3px}.reward small{color:#817b8c;font-size:11px}.notice{background:#fff8ee;border:1px solid #f1dbbd;border-radius:12px;padding:12px;font-size:12px;color:#82592f;margin:14px 0}.log{padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;display:flex;justify-content:space-between}footer{padding:15px;text-align:center;background:#faf8fc;color:#8d8799;font-size:10px;letter-spacing:.6px}@media(min-width:550px){.app{margin:28px auto;border-radius:24px;overflow:hidden;min-height:0}}
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Rebel Run · QuartzSales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Mystery+Quest&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --r-lg:24px;--r-md:16px;--r-sm:10px;
+}
+body[data-theme="base"]{
+  --bg:#f3f3fa;--bg-2:#e7e7f6;--surface:#ffffff;--surface-2:#f2f2fa;--surface-3:#e9e9f5;
+  --ink:#17172b;--muted:#6b6b88;--line:#e2e2ee;
+  --accent:#6366f1;--accent-ink:#ffffff;--accent-soft:rgba(99,102,241,.12);
+  --accent-2:#10b981;--danger:#ef4444;--glow:rgba(99,102,241,.35);
+  --display:'Poppins',system-ui,sans-serif;--body:'Poppins',system-ui,sans-serif;
+  --display-w:700;--display-track:-.02em;
+  --t0:#c0392b;--t1:#1f8a5b;--t2:#2f5fb3;--t3:#e0a91b;--t0-ink:#fff;--t1-ink:#fff;--t2-ink:#fff;--t3-ink:#1d1405;
+  --shadow:0 1px 2px rgba(23,23,43,.06),0 8px 24px rgba(23,23,43,.06);
+  --stitch:transparent;
+  color-scheme:light;
+}
+body[data-theme="halloween"]{
+  --bg:#130a1f;--bg-2:#241038;--surface:#221338;--surface-2:#2c1a47;--surface-3:#3a2459;
+  --ink:#f5ecd9;--muted:#b9a8d2;--line:rgba(245,236,217,.12);
+  --accent:#ff9a1f;--accent-ink:#1d0d12;--accent-soft:rgba(255,154,31,.14);
+  --accent-2:#8fd3c8;--danger:#ff6474;--glow:rgba(255,154,31,.5);
+  --display:'Mystery Quest',Georgia,serif;--body:'Lato',system-ui,sans-serif;
+  --display-w:400;--display-track:0;
+  --t0:#e2493b;--t1:#2fa874;--t2:#4a7fd6;--t3:#efbe3a;--t0-ink:#fff;--t1-ink:#fff;--t2-ink:#fff;--t3-ink:#1d1405;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --stitch:rgba(245,236,217,.22);
+  color-scheme:dark;
+}
+body[data-theme="base"] .hw{display:none!important}
+body[data-theme="halloween"] .bs{display:none!important}
 
-/* QuartzSales Halloween — dark violet theme */
-:root{color-scheme:dark;--ink:#f5f0ff;--muted:#a99cbe;--orange:#aa7df5;--purple:#9d67ee;--line:#3a2b55}
-body{background:#0c0915;color:#f5f0ff;font-family:Manrope,Inter,system-ui,-apple-system,sans-serif}
-.app{background:#151020;box-shadow:0 20px 80px #0008}
-.hero{background:linear-gradient(150deg,#2b164d,#160e2a 75%);border-bottom:1px solid #4a2a75}
-.hero:after{background:#8c40d822}.brand{color:#e4caff}.edition{color:#c19cff}.hero p,.muted{color:#b7a7cf}.bar{background:#46335d}.bar span{background:linear-gradient(90deg,#7b44d4,#d0a1ff)}
-.tabs{background:#1a1327;border-bottom-color:#392a50}.tab{color:#ab9abe}.tab.active{background:#56327d;color:#fff}
-main{background:#151020}.subtitle{color:#a99cbe}
-.card,.card.soft{background:#21182f;border-color:#3a2b55}
-.card p,.reward small{color:#b4a5c6}
-.pill{background:#3c2857;color:#d5b0ff}.pill.green{background:#294537;color:#a9e3bf}
-.button{background:#8652d5;color:white}.button.alt{background:#38264e;color:#e4c8ff}
-.map{background:#1d152b;border:1px solid #3c2a56}
-.step{background:#281c3b;border-color:#50346c;color:#c7a5f3}.step.active{background:#8851d0;color:white}
-.inputrow input,.inputrow select{background:#2b203d;border-color:#513a6e;color:#fff}
-.stat{color:#c6a0ff}.mini{background:#3b2a51}.mini span{background:#a677f0}
-.reward{background:#261b36;border-color:#47315e}.reward.unlocked{background:#37214e;border-color:#9b6bd3}
-.notice{background:#30203c;border-color:#6d467c;color:#e0c6ef}
-.log{border-bottom-color:#3a2b55}footer{background:#120d1b;color:#a899bb}
-.map svg text{fill:#b9a4d6}.map svg #route{stroke:#493359}.map svg #doneRoute{stroke:#a76be8}
-.gps-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0}.gps-stat{background:#302242;border-radius:12px;padding:12px}.gps-stat strong{display:block;font-size:23px;color:#dec0ff}.gps-stat small{color:#a998bd}.gps-actions{display:flex;gap:8px}.gps-actions button{flex:1}.gps-status{color:#cbb7dd;font-size:12px;min-height:18px}.gps-live{display:inline-flex;align-items:center;gap:7px;color:#bba4d8;font-size:11px}.gps-live:before{content:"";width:8px;height:8px;border-radius:50%;background:#6f617e}.gps-live.on:before{background:#65db9e;box-shadow:0 0 0 4px #65db9e22}</style></head><body><div class="app"><header class="hero"><div class="brand">DESIGN REBELS</div><div class="edition">HALLOWEEN EDITION · 2026</div><h1>THE<br>REBEL RUN.</h1><p>Escapá del escritorio. Sobreviví al sprint.</p><div class="metrics"><div><div class="muted">MIS KILÓMETROS</div><div class="big" id="personalKm">0 km</div></div><div style="text-align:right"><div class="muted">OBJETIVO PERSONAL</div><strong id="goalText">10 km</strong></div></div><div class="bar"><span id="personalFill" style="width:0%"></span></div></header><nav class="tabs"><button class="tab active" data-tab="recorrido">Recorrido</button><button class="tab" data-tab="actividad">Mi actividad</button><button class="tab" data-tab="premios">Premios</button></nav><main>
-<section id="recorrido" class="screen active"><h2>La oficina embrujada</h2><p class="subtitle">Cinco pesadillas internas. Kilómetros reales para escapar.</p><div class="map"><svg viewBox="0 0 320 350" aria-label="Recorrido de cinco etapas"><path id="route" d="M58 313 C270 316 274 254 177 223 S36 185 98 140 S260 99 195 53 S130 28 180 19" fill="none" stroke="#e0d4ec" stroke-width="13" stroke-linecap="round"/><path id="doneRoute" d="M58 313 C270 316 274 254 177 223 S36 185 98 140 S260 99 195 53 S130 28 180 19" fill="none" stroke="#ed9653" stroke-width="8" stroke-linecap="round"/><g id="nodes"></g><g fill="#7b638e" font-size="11" font-weight="750"><text x="92" y="340">ESCAPE</text><text x="205" y="260">MOVETE</text><text x="20" y="177">RITMO</text><text x="211" y="90">ENERGÍA</text><text x="212" y="25">LIBRE</text></g></svg><div class="steps" id="steps"></div></div><div class="card"><div class="between"><span class="pill" id="stageLabel">ETAPA 1</span><span id="stageState" class="pill">Bloqueada</span></div><h3 id="stageTitle">La silla maldita</h3><p id="stageDesc"></p><button class="button" onclick="showTab('actividad')">Sumar actividad →</button></div><div class="card soft"><div class="between"><strong>Desafío del equipo</strong><span class="pill">Colectivo</span></div><p>Si el equipo alcanza su meta, todos desbloquean el premio grupal.</p><div class="between"><span class="stat" id="teamKm">0 km</span><span style="color:#8b7b9b;font-size:12px">/ 100 km · demo</span></div><div class="mini"><span id="teamFill" style="width:0%"></span></div></div></section>
-<section id="actividad" class="screen"><h2>Registrá tu escape</h2><p class="subtitle">Caminá o corré para escapar de los horrores de la oficina. Activá el GPS para registrar tu recorrido o cargá kilómetros manualmente.</p><div class="card"><strong>Tu objetivo</strong><p>Elegí una meta acorde a tu ritmo. Podés cambiarla en esta demo.</p><div class="inputrow"><select id="goal"><option value="5">5 km</option><option value="10">10 km</option><option value="20">20 km</option><option value="30">30 km</option></select></div></div><div class="card soft"><div class="between"><strong>Seguimiento por GPS</strong><span class="pill">BETA</span></div><p>Iniciá una caminata o corrida y llevá el celular con vos. Permití el acceso a ubicación cuando te lo pida.</p><span id="gpsLive" class="gps-live">Sin seguimiento</span><div class="gps-stats"><div class="gps-stat"><small>Distancia</small><strong id="gpsKm">0,00 km</strong></div><div class="gps-stat"><small>Tiempo</small><strong id="gpsTime">00:00</strong></div></div><div class="gps-actions"><button class="button" id="gpsStart">Iniciar caminata</button><button class="button alt" id="gpsPause" hidden>Pausar</button><button class="button" id="gpsFinish" hidden>Finalizar</button></div><p class="gps-status" id="gpsStatus" role="status">Esperando que inicies una actividad.</p><p>Funciona mejor al aire libre, con la pantalla activa. Si bloqueás el celular, el navegador podría detener el GPS. La distancia es aproximada.</p></div><div class="card"><strong>Carga manual</strong><p>Ingresá los kilómetros de tu caminata o corrida.</p><div class="inputrow"><select id="activityType"><option value="Caminata">Caminata</option><option value="Corrida">Corrida</option></select><input id="kmInput" type="number" inputmode="decimal" min=".1" max="42.2" step=".1" placeholder="Km" aria-label="Kilómetros"/></div><button class="button" id="addKm">Registrar kilómetros</button><p id="feedback" role="status"></p></div><div class="card"><div class="between"><strong>Mis registros</strong><span class="pill" id="logCount">0 actividades</span></div><div id="logs"><p>Todavía no registraste actividad.</p></div></div><div class="notice">Demo local: las actividades se guardan únicamente en este navegador. El GPS funciona solo mientras el navegador permite recibir ubicaciones. No hay integración con apps deportivas ni validación de comprobantes. El total del equipo es ilustrativo.</div><button class="button alt" id="clear">Reiniciar mi demo</button></section>
-<section id="premios" class="screen"><h2>Premios para sobrevivientes</h2><p class="subtitle">Los verdaderos tesoros están fuera de Jira.</p><div class="notice"><strong>Propuesta para aprobación.</strong> Los días libres, horas libres y otros beneficios no están autorizados ni se entregan desde esta demo. Los umbrales son ilustrativos y deberán adaptarse a objetivos equitativos.</div><div class="rewards" id="rewards"></div><div class="card soft" style="margin-top:13px"><span class="pill">PREMIO COLECTIVO</span><h3>El día que nadie loguea horas</h3><p>Propuesta: un día libre adicional para el equipo si alcanzamos la meta grupal y la empresa lo aprueba. Sin reuniones, tickets ni horas que loguear.</p></div></section></main><footer>QUARTZSALES · DESIGN REBELS · HALLOWEEN 2026 · DEMO</footer></div><script>
-const key='designrebels-rebel-run-demo-v1';
-let gpsWatch=null,gpsActive=false,gpsPaused=false,gpsLast=null,gpsMeters=0,gpsStarted=0,gpsElapsed=0,gpsTicker=null,gpsType='Caminata';
-const gpsStartBtn=document.getElementById('gpsStart'),gpsPauseBtn=document.getElementById('gpsPause'),gpsFinishBtn=document.getElementById('gpsFinish'),gpsStatus=document.getElementById('gpsStatus');
-function gpsMessage(t){gpsStatus.textContent=t}
-function distanceMeters(a,b){const R=6371000,toRad=Math.PI/180,dLat=(b.lat-a.lat)*toRad,dLon=(b.lon-a.lon)*toRad,q=Math.sin(dLat/2)**2+Math.cos(a.lat*toRad)*Math.cos(b.lat*toRad)*Math.sin(dLon/2)**2;return 2*R*Math.atan2(Math.sqrt(q),Math.sqrt(1-q))}
-function gpsTick(){let sec=Math.floor((gpsElapsed+(gpsActive&&!gpsPaused?Date.now()-gpsStarted:0))/1000);document.getElementById('gpsTime').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');document.getElementById('gpsKm').textContent=(gpsMeters/1000).toLocaleString('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2})+' km'}
-function gpsStopWatch(){if(gpsWatch!==null){navigator.geolocation.clearWatch(gpsWatch);gpsWatch=null}}
-function gpsTrack(){gpsStopWatch();gpsWatch=navigator.geolocation.watchPosition(p=>{if(!gpsActive||gpsPaused)return;const c=p.coords;if(c.accuracy>45){gpsMessage('GPS con poca precisión ('+Math.round(c.accuracy)+' m). Buscando mejor señal…');return}const point={lat:c.latitude,lon:c.longitude,time:p.timestamp};if(gpsLast){const meters=distanceMeters(gpsLast,point),seconds=(point.time-gpsLast.time)/1000;if(seconds<=0)return;if(meters>3&&meters/seconds<=3.5&&meters<=100){gpsMeters+=meters;gpsTick();gpsMessage('GPS activo · precisión '+Math.round(c.accuracy)+' m')}else if(meters>3){gpsMessage('Se descartó un salto de ubicación poco confiable.')}}else{gpsMessage('GPS conectado. Empezá a caminar.')}gpsLast=point},err=>{const msg=err.code===1?'Permiso de ubicación rechazado. Habilitalo en el navegador.':err.code===2?'No se pudo obtener ubicación. Probá al aire libre.':'Esperando señal GPS…';gpsMessage(msg);if(err.code===1){gpsStopWatch();gpsPauseSession()}},{enableHighAccuracy:true,maximumAge:0,timeout:20000})}
-function gpsUI(){gpsStartBtn.hidden=gpsActive;gpsPauseBtn.hidden=!gpsActive;gpsFinishBtn.hidden=!gpsActive;gpsPauseBtn.textContent=gpsPaused?'Reanudar':'Pausar';document.getElementById('gpsLive').classList.toggle('on',gpsActive&&!gpsPaused);document.getElementById('gpsLive').textContent=!gpsActive?'Sin seguimiento':gpsPaused?'En pausa':'Registrando ubicación';gpsTick()}
-function gpsPauseSession(){if(!gpsActive||gpsPaused)return;gpsElapsed+=Date.now()-gpsStarted;gpsPaused=true;gpsLast=null;gpsStopWatch();gpsMessage('Actividad en pausa.');gpsUI()}
-gpsStartBtn.onclick=()=>{if(!window.isSecureContext||!navigator.geolocation){gpsMessage('El GPS requiere HTTPS y un navegador con acceso a ubicación.');return}gpsActive=true;gpsPaused=false;gpsMeters=0;gpsElapsed=0;gpsLast=null;gpsStarted=Date.now();gpsType=document.getElementById('activityType').value;gpsTrack();gpsTicker=setInterval(gpsTick,1000);gpsMessage('Solicitando permiso de ubicación…');gpsUI()};
-gpsPauseBtn.onclick=()=>{if(gpsPaused){gpsPaused=false;gpsStarted=Date.now();gpsLast=null;gpsTrack();gpsMessage('Retomando GPS…')}else gpsPauseSession();gpsUI()};
-gpsFinishBtn.onclick=()=>{if(!gpsActive)return;const meters=gpsMeters;gpsStopWatch();clearInterval(gpsTicker);gpsTicker=null;gpsActive=false;gpsPaused=false;gpsLast=null;gpsElapsed=0;gpsMeters=0;gpsUI();if(meters<50){gpsMessage('Actividad finalizada. Se necesitan al menos 50 metros GPS válidos para registrarla.');return}const km=Math.round(meters/10)/100;if(!confirm('¿Guardar '+km.toLocaleString('es-AR')+' km registrados por GPS?')){gpsMessage('Actividad descartada.');return}state.logs.unshift({km,type:gpsType+' · GPS',date:new Date().toLocaleDateString('es-AR')});save();render();gpsMessage('¡Escape registrado! Sumaste '+km.toLocaleString('es-AR')+' km.')};
-document.addEventListener('visibilitychange',()=>{if(gpsActive&&!gpsPaused&&document.hidden)gpsMessage('Atención: con la pantalla bloqueada el navegador puede suspender el GPS.')});
-window.addEventListener('pagehide',()=>{gpsStopWatch()});
-gpsUI();
-let state;try{state=JSON.parse(localStorage.getItem(key))||{goal:10,logs:[],selected:0}}catch(e){state={goal:10,logs:[],selected:0}};const stages=[['El despertar','La silla te atrapó. Caminá para romper el hechizo.'],['La reunión infinita','Una reunión que podría haber sido un mensaje. Escapá.'],['El cementerio de tickets','Los tickets cerrados vuelven a abrirse. Seguí caminando.'],['El deadline poseído','El deadline se adelantó solo. Corré, literalmente.'],['La maldición de loguear horas','Sobreviviste al peor monstruo: ¿ya logueaste las horas?']];const rewards=[['☕','Desayuno especial',.2],['⏰','Una hora libre',.5],['🌤️','Medio día libre',.8],['🏖️','Un día libre',1]];function total(){return state.logs.reduce((n,l)=>n+l.km,0)}function save(){localStorage.setItem(key,JSON.stringify(state))}function showTab(tab){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===tab));render()}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));document.getElementById('goal').onchange=e=>{state.goal=Number(e.target.value);save();render()};document.getElementById('addKm').onclick=()=>{let km=Number(document.getElementById('kmInput').value);if(!Number.isFinite(km)||km<=0||km>42.2){document.getElementById('feedback').textContent='Ingresá una distancia entre 0,1 y 42,2 km.';return}state.logs.unshift({km,type:document.getElementById('activityType').value,date:new Date().toLocaleDateString('es-AR')});document.getElementById('kmInput').value='';document.getElementById('feedback').textContent='Actividad registrada en esta demo.';save();render()};document.getElementById('clear').onclick=()=>{if(confirm('¿Reiniciar los registros de esta demo?')){state.logs=[];save();render()}};function render(){let km=total(),pct=Math.min(100,km/state.goal*100),completed=Math.floor(pct/20);document.getElementById('personalKm').textContent=km.toLocaleString('es-AR',{maximumFractionDigits:1})+' km';document.getElementById('goalText').textContent=state.goal+' km';document.getElementById('personalFill').style.width=pct+'%';document.getElementById('goal').value=state.goal;let path=document.getElementById('doneRoute'),len=path.getTotalLength();path.style.strokeDasharray=len;path.style.strokeDashoffset=len*(1-pct/100);let coords=[[58,313],[177,223],[98,140],[195,53],[180,19]];document.getElementById('nodes').innerHTML=coords.map(([x,y],i)=>'<circle cx="'+x+'" cy="'+y+'" r="21" fill="'+(pct>=(i+1)*20?'#ef9250':'#fff')+'" stroke="'+(state.selected===i?'#7954a9':'#d1c2e0')+'" stroke-width="'+(state.selected===i?5:2)+'"/><text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="16" font-weight="800" fill="'+(pct>=(i+1)*20?'#fff':'#9c87ae')+'">'+(pct>=(i+1)*20?'✓':i+1)+'</text>').join('');document.getElementById('steps').innerHTML=stages.map((s,i)=>'<button class="step '+(state.selected===i?'active':'')+'" onclick="state.selected='+i+';save();render()">'+(i+1)+'</button>').join('');document.getElementById('stageLabel').textContent='ETAPA '+(state.selected+1);document.getElementById('stageState').textContent=pct>=(state.selected+1)*20?'Completada':'Meta '+((state.selected+1)*20)+'%';document.getElementById('stageTitle').textContent=stages[state.selected][0];document.getElementById('stageDesc').textContent=stages[state.selected][1];document.getElementById('teamKm').textContent='42 km';document.getElementById('teamFill').style.width='42%';document.getElementById('logCount').textContent=state.logs.length+' actividades';document.getElementById('logs').innerHTML=state.logs.length?state.logs.map(l=>'<div class="log"><span>'+l.type+' · '+l.date+'</span><strong>'+l.km.toLocaleString('es-AR')+' km</strong></div>').join(''):'<p>Todavía no registraste actividad.</p>';document.getElementById('rewards').innerHTML=rewards.map(r=>{let unlocked=pct>=r[2]*100;return '<div class="reward '+(unlocked?'unlocked':'')+'"><div class="emoji">'+(unlocked?r[0]:'🔒')+'</div><strong>'+r[1]+'</strong><small>'+(unlocked?'Hito alcanzado · pendiente de aprobación':'Al '+Math.round(r[2]*100)+'% de tu meta')+'</small></div>'}).join('')}render();
-</script></body></html>
+/* ============ BASE ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--body);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden;transition:background .5s,color .5s}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.num{font-variant-numeric:tabular-nums}
+.display{font-family:var(--display);font-weight:var(--display-w);letter-spacing:var(--display-track);line-height:1.02}
+
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:reveal .75s var(--ease-out)}
+@keyframes reveal{from{clip-path:circle(0 at var(--vx,50%) var(--vy,50%))}to{clip-path:circle(160% at var(--vx,50%) var(--vy,50%))}}
+
+/* ============ WORLD (fondo) ============ */
+.world{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.world .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.55}
+.world .b1{width:520px;height:520px;background:#c7c8ff;top:-160px;left:-120px}
+.world .b2{width:420px;height:420px;background:#bff0dd;bottom:-140px;right:20%}
+.world .grid{position:absolute;inset:0;background-image:radial-gradient(rgba(23,23,43,.08) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+.world .sky{position:absolute;inset:0;background:radial-gradient(1200px 700px at 30% 0%,#3a1a5c 0%,transparent 60%),radial-gradient(900px 600px at 90% 100%,#2a0f3d 0%,transparent 60%)}
+.world .noise{position:absolute;inset:-50%;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.moon{position:absolute;top:-60px;left:-50px;width:220px;height:220px;opacity:.9;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#fff7d6 0%,#f6dd8a 45%,#d9a94a 100%);
+  box-shadow:0 0 80px 20px rgba(246,221,138,.25),0 0 200px 60px rgba(246,221,138,.12);
+  animation:moonGlow 6s ease-in-out infinite}
+.moon::before,.moon::after{content:"";position:absolute;border-radius:50%;background:rgba(184,130,40,.25)}
+.moon::before{width:34px;height:28px;top:52px;left:96px}
+.moon::after{width:18px;height:16px;top:112px;left:52px}
+@keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.32),0 0 240px 80px rgba(246,221,138,.14)}}
+.fog{position:absolute;left:-20%;right:-20%;height:220px;bottom:-40px;background:radial-gradient(closest-side,rgba(200,180,230,.18),transparent);filter:blur(10px);animation:fog 22s ease-in-out infinite alternate}
+.fog.f2{bottom:30px;opacity:.6;animation-duration:30s;animation-direction:alternate-reverse}
+@keyframes fog{to{transform:translateX(8%)}}
+.web{position:absolute;top:0;right:0;width:220px;opacity:.28}
+.bat-fly{position:absolute;width:44px;color:#0b0512;animation:batPath linear infinite;offset-rotate:0deg}
+.bat-fly svg{animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
+@keyframes flap{to{transform:scaleY(.45)}}
+@keyframes batPath{0%{transform:translate(-10vw,30vh)}50%{transform:translate(50vw,8vh) }100%{transform:translate(115vw,22vh)}}
+
+/* ============ STAGE / LANDING ============ */
+.stage{position:relative;height:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:56px;max-width:1180px;margin:0 auto;padding:24px 40px}
+.landing{max-width:520px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 9px transparent}}
+.landing h1{font-size:clamp(56px,7vw,92px);margin:14px 0 18px}
+body[data-theme="halloween"] .landing h1{color:var(--accent);text-shadow:0 0 30px rgba(255,154,31,.35);transform:rotate(-2deg);animation:flicker 7s infinite}
+@keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}}
+.landing h1 .w{display:inline-block;transition:transform .5s var(--ease-spring)}
+.landing h1 .w:hover{transform:translateY(-6px) rotate(-3deg)}
+.landing p.lead{font-size:18px;line-height:1.55;color:var(--muted);max-width:44ch}
+.steps{list-style:none;display:grid;gap:12px;margin:28px 0}
+.steps li{display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:var(--r-md);background:color-mix(in srgb,var(--surface) 70%,transparent);border:1px solid var(--line);backdrop-filter:blur(8px);transition:transform .3s var(--ease-out),border-color .3s}
+.steps li:hover{transform:translateX(6px);border-color:var(--accent)}
+.steps b{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:900}
+body[data-theme="halloween"] .steps b{border-radius:50% 50% 46% 54%/60% 60% 40% 40%;transform:rotate(-6deg)}
+.steps span{font-size:15px;line-height:1.4}
+.theme-switch{display:inline-flex;padding:4px;border-radius:999px;background:var(--surface);border:1px solid var(--line);position:relative;box-shadow:var(--shadow)}
+.theme-switch button{position:relative;z-index:1;padding:9px 16px;font-size:13px;font-weight:700;border-radius:999px;color:var(--muted);transition:color .3s}
+.theme-switch button[aria-pressed="true"]{color:var(--accent-ink)}
+.theme-switch .pill{position:absolute;top:4px;bottom:4px;border-radius:999px;background:var(--accent);transition:left .45s var(--ease-spring),width .45s var(--ease-spring)}
+.fine{margin-top:14px;font-size:12px;color:var(--muted)}
+
+/* ============ DEVICE ============ */
+.device{position:relative;width:390px;height:min(844px,calc(100dvh - 48px));border-radius:52px;padding:12px;background:#0d0d14;box-shadow:0 0 0 2px #2a2a36,0 40px 80px rgba(0,0,0,.35),0 0 120px var(--glow);transition:box-shadow .6s}
+.device::before{content:"";position:absolute;top:22px;left:50%;translate:-50% 0;width:110px;height:30px;border-radius:20px;background:#000;z-index:50}
+.device-screen{position:relative;height:100%;border-radius:40px;overflow:hidden;background:var(--bg)}
+
+@media (max-width:900px){
+  .stage{display:block;padding:0;max-width:none}
+  .landing,.world .moon,.world .web{display:none}
+  .device{width:100%;height:100dvh;border-radius:0;padding:0;box-shadow:none;background:var(--bg)}
+  .device::before{display:none}
+  .device-screen{border-radius:0}
+}
+
+/* ============ APP ============ */
+.app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+body[data-theme="halloween"] .app{background:radial-gradient(120% 60% at 50% 0%,#331a50 0%,var(--bg) 60%)}
+.app-noise{position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.app-head{position:relative;z-index:5;display:flex;align-items:center;gap:10px;padding:56px 18px 10px}
+@media (max-width:900px){.app-head{padding-top:max(14px,env(safe-area-inset-top))}}
+.avatar{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900;font-size:14px;background:var(--team,var(--accent));color:var(--team-ink,#fff);flex:none;transition:transform .4s var(--ease-spring)}
+.avatar:active{transform:scale(.9) rotate(-8deg)}
+body[data-theme="halloween"] .avatar{border-radius:50% 50% 42% 58%/58% 52% 48% 42%}
+.head-txt{flex:1;min-width:0}
+.head-txt small{display:block;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.head-txt strong{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);transition:transform .3s var(--ease-spring),background .3s}
+.icon-btn:hover{background:var(--surface-2)}
+.icon-btn:active{transform:scale(.88)}
+.icon-btn svg{width:20px;height:20px}
+.icon-btn .ico-moon,.icon-btn .ico-sun{transition:transform .6s var(--ease-spring),opacity .3s;position:absolute}
+.icon-btn{position:relative}
+body[data-theme="base"] .icon-btn .ico-moon{transform:rotate(-90deg) scale(0);opacity:0}
+body[data-theme="halloween"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opacity:0}
+
+.live-pill{display:none;align-items:center;gap:8px;padding:7px 12px 7px 9px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:900;font-size:13px;animation:pillIn .5s var(--ease-spring)}
+.live-pill.on{display:inline-flex}
+.live-pill i{width:8px;height:8px;border-radius:50%;background:currentColor;animation:blink 1s infinite}
+.live-pill.paused i{animation:none;opacity:.4}
+@keyframes blink{50%{opacity:.2}}
+@keyframes pillIn{from{transform:scale(.4);opacity:0}}
+
+.screens{position:relative;flex:1;min-height:0}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:6px 18px 110px;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),visibility 0s .45s;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen.from-left{transform:translateX(-24px)}
+.screen.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s var(--ease-out),transform .45s var(--ease-out),visibility 0s}
+
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px;box-shadow:var(--shadow)}
+body[data-theme="halloween"] .card{outline:1.5px dashed var(--stitch);outline-offset:-7px}
+.card + .card{margin-top:14px}
+.kicker{font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.h2{font-size:26px;margin:4px 0 2px}
+body[data-theme="halloween"] .h2{color:var(--accent)}
+.muted{color:var(--muted)}
+
+/* Home hero ring */
+.hero{display:flex;align-items:center;gap:16px;padding:18px}
+.ring{position:relative;width:132px;height:132px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--surface-3)}
+.ring .bar{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s var(--ease-out)}
+body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 6px rgba(255,154,31,.7))}
+.ring-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring-center b{font-size:30px;font-weight:900;line-height:1}
+.ring-center small{font-size:12px;color:var(--muted);margin-top:4px}
+.ring .ghost{position:absolute;right:-6px;top:-10px;width:40px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(6deg)}}
+.hero-txt .h2{font-size:24px}
+.next{margin-top:10px;font-size:13px;line-height:1.4;padding:8px 10px;border-radius:12px;background:var(--accent-soft)}
+.next b{color:var(--accent)}
+
+.cta-row{display:flex;gap:10px;margin:14px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:14px;font-weight:700;font-size:15px;transition:transform .25s var(--ease-spring),box-shadow .3s,background .3s}
+.btn:active{transform:scale(.95)}
+.btn svg{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 24px -8px var(--glow);flex:1}
+.btn-primary:hover{box-shadow:0 12px 30px -8px var(--glow)}
+.btn-ghost{background:var(--surface);border:1px solid var(--line)}
+.btn-text-danger{color:var(--danger);background:none;height:44px}
+.btn-text-danger:hover{background:color-mix(in srgb,var(--danger) 10%,transparent)}
+
+.bar-wrap{position:relative;height:12px;border-radius:999px;background:var(--surface-3);overflow:visible;margin-top:12px}
+.bar-fill{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:var(--fill,var(--accent));width:0;transition:width 1.3s var(--ease-out)}
+body[data-theme="halloween"] .bar-fill{background:repeating-linear-gradient(-45deg,var(--fill,var(--accent)) 0 8px,color-mix(in srgb,var(--fill,var(--accent)) 75%,#000) 8px 16px);animation:candy 1.2s linear infinite}
+@keyframes candy{to{background-position:22.6px 0}}
+.bar-walker{position:absolute;top:50%;width:28px;height:28px;translate:-50% -60%;transition:left 1.3s var(--ease-out);left:0}
+.bar-walker .dot{width:16px;height:16px;margin:6px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.bar-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
+.team-row{display:flex;align-items:center;gap:12px}
+.team-badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--team);color:var(--team-ink,#fff);font-weight:900;font-size:16px;flex:none}
+body[data-theme="halloween"] .team-badge{border-radius:48% 52% 44% 56%/58% 46% 54% 42%}
+.rank-chip{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+
+.acts{list-style:none;margin-top:6px}
+.acts li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);animation:rowIn .5s var(--ease-out) both}
+.acts li:last-child{border-bottom:0}
+@keyframes rowIn{from{opacity:0;transform:translateY(8px)}}
+.acts .ico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:var(--surface-2);flex:none}
+.acts .ico svg{width:18px;height:18px}
+.acts .meta{flex:1;font-size:13px;color:var(--muted)}
+.acts .meta b{display:block;color:var(--ink);font-size:15px}
+.acts .km{font-weight:900}
+.empty{text-align:center;padding:22px 8px;color:var(--muted);font-size:14px}
+.empty svg{width:56px;margin:0 auto 8px;display:block;opacity:.8}
+
+/* ============ RUN ============ */
+.run{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:100%;padding-bottom:20px}
+.seg{display:inline-flex;padding:4px;border-radius:12px;background:var(--surface);border:1px solid var(--line);position:relative}
+.seg button{position:relative;z-index:1;padding:8px 14px;font-size:13px;font-weight:700;color:var(--muted);border-radius:9px;transition:color .3s}
+.seg button[aria-pressed="true"]{color:var(--accent-ink)}
+.seg .pill{position:absolute;top:4px;bottom:4px;border-radius:9px;background:var(--accent);transition:left .4s var(--ease-spring),width .4s var(--ease-spring)}
+.seg:has(button:disabled){opacity:.5}
+.signal{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;font-weight:700;color:var(--muted)}
+.signal .bars{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+.signal .bars i{width:4px;border-radius:2px;background:var(--surface-3);transition:background .3s}
+.signal .bars i:nth-child(1){height:5px}.signal .bars i:nth-child(2){height:8px}.signal .bars i:nth-child(3){height:12px}
+.signal[data-q="1"] .bars i:nth-child(-n+1),.signal[data-q="2"] .bars i:nth-child(-n+2),.signal[data-q="3"] .bars i:nth-child(-n+3){background:var(--accent-2)}
+
+.dial{position:relative;width:270px;height:270px;margin:18px auto 6px;display:grid;place-items:center}
+.dial svg.orbit{position:absolute;inset:0;width:100%;height:100%}
+.dial .o-track{stroke:var(--line);stroke-dasharray:2 8;stroke-linecap:round}
+.dial .o-progress{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset .6s var(--ease-out);transform:rotate(-90deg);transform-origin:center}
+.orbiter{position:absolute;inset:0;animation:spin 8s linear infinite;animation-play-state:paused}
+.run-state-running .orbiter{animation-play-state:running}
+.orbiter .rider{position:absolute;top:-4px;left:50%;translate:-50% 0;width:30px;color:var(--accent)}
+.orbiter .rider .dotr{width:14px;height:14px;margin:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
+.orbiter .rider svg{animation:flap .2s ease-in-out infinite alternate;animation-play-state:inherit}
+@keyframes spin{to{transform:rotate(360deg)}}
+.readout b{display:block;font-size:56px;font-weight:900;line-height:1;letter-spacing:-.02em}
+.readout small{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.readout .time{font-size:22px;font-weight:700;margin-top:10px}
+.run-status{min-height:22px;font-size:15px;margin-top:4px}
+body[data-theme="halloween"] .run-status{font-family:var(--display);font-size:20px;color:var(--accent-2)}
+.stats{display:flex;gap:10px;width:100%;margin:12px 0 18px}
+.stats div{flex:1;padding:10px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.stats b{display:block;font-size:18px;font-weight:900}
+.stats small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+
+.controls{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:auto;height:120px}
+.play{position:relative;width:104px;height:104px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;box-shadow:0 14px 40px -10px var(--glow);transition:transform .35s var(--ease-spring),border-radius .45s var(--ease-spring),background .3s}
+.play:active{transform:scale(.9)}
+.play svg{position:absolute;width:38px;height:38px;transition:transform .45s var(--ease-spring),opacity .25s}
+.play .i-pause{transform:scale(0) rotate(-90deg);opacity:0}
+.run-state-running .play .i-play{transform:scale(0) rotate(90deg);opacity:0}
+.run-state-running .play .i-pause{transform:none;opacity:1}
+.run-state-running .play{border-radius:32px}
+.play::after{content:"";position:absolute;inset:-8px;border-radius:inherit;border:2px solid var(--accent);opacity:0}
+.run-state-running .play::after{animation:ripple 2s var(--ease-out) infinite}
+@keyframes ripple{0%{opacity:.6;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
+body[data-theme="halloween"] .play{box-shadow:0 14px 40px -10px var(--glow),inset 0 -8px 0 rgba(0,0,0,.15)}
+.finish{position:relative;width:72px;height:72px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;transition:transform .35s var(--ease-spring),opacity .3s;touch-action:none;user-select:none;-webkit-user-select:none}
+.finish[hidden]{display:grid;opacity:0;transform:scale(.4);pointer-events:none}
+.finish svg.sq{width:22px;height:22px;color:var(--danger)}
+.finish .hold{position:absolute;inset:-5px;width:calc(100% + 10px);height:calc(100% + 10px);transform:rotate(-90deg)}
+.finish .hold circle{stroke:var(--danger);stroke-linecap:round}
+.finish.holding{transform:scale(1.08)}
+.hold-hint{font-size:12px;color:var(--muted);height:16px;margin-top:4px;transition:opacity .3s}
+.side-btn{width:72px;height:72px}
+.wake{margin-top:10px;font-size:11.5px;color:var(--muted);max-width:30ch;line-height:1.4}
+
+/* ============ RANK ============ */
+.map{position:relative;margin:12px 0 4px}
+.map svg{width:100%;height:auto;display:block;overflow:visible}
+.map .road{fill:none;stroke:var(--surface-3);stroke-width:16;stroke-linecap:round}
+.map .road-dash{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:3 9;stroke-linecap:round;opacity:.6;animation:march 1.5s linear infinite}
+@keyframes march{to{stroke-dashoffset:-24}}
+.map .token{transition:transform 1.4s var(--ease-out)}
+.map .token circle{stroke:var(--surface);stroke-width:3}
+.map .token text{font:900 10px var(--body);fill:#fff;text-anchor:middle;dominant-baseline:central}
+.map .token.me circle{stroke:var(--ink)}
+.rank-list{list-style:none;margin-top:8px}
+.rank-list li{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;transition:background .3s}
+.rank-list li.me{background:var(--accent-soft)}
+.rank-pos{width:24px;font-weight:900;font-size:16px;text-align:center;color:var(--muted)}
+.rank-list li:nth-child(1) .rank-pos{color:var(--accent)}
+.rank-name{flex:1;min-width:0}
+.rank-name b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-name .mini{height:5px;border-radius:999px;background:var(--surface-3);margin-top:6px;overflow:hidden}
+.rank-name .mini i{display:block;height:100%;border-radius:inherit;background:var(--team,var(--accent));width:0;transition:width 1.2s var(--ease-out)}
+.rank-km{font-weight:900;font-size:15px}
+.dot-t{width:12px;height:12px;border-radius:50%;background:var(--team);flex:none}
+
+/* ============ ACHIEVEMENTS ============ */
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.ach{perspective:800px;height:168px}
+.ach-inner{position:relative;height:100%;transition:transform .7s var(--ease-spring);transform-style:preserve-3d}
+.ach.flipped .ach-inner{transform:rotateY(180deg)}
+.ach-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;background:var(--surface);border:1px solid var(--line);text-align:left}
+body[data-theme="halloween"] .ach-face{background:linear-gradient(160deg,#3b2360,#22133a);outline:1.5px dashed var(--stitch);outline-offset:-7px}
+.ach-back{transform:rotateY(180deg);background:var(--accent);color:var(--accent-ink);border:0}
+.ach .km-big{font-size:34px;font-weight:900;line-height:1}
+.ach .ach-ico{width:46px;height:46px}
+.ach.locked .ach-front{filter:grayscale(1);opacity:.55}
+.ach.locked .ach-ico{opacity:.4}
+.ach .lock{position:absolute;top:12px;right:12px;width:18px;height:18px;color:var(--muted)}
+.ach-name{font-size:14px;font-weight:700;line-height:1.25}
+body[data-theme="halloween"] .ach-name{font-family:var(--display);font-weight:400;font-size:17px}
+.ach-back p{font-size:13px;line-height:1.4}
+.ach.unlocked .ach-front{animation:glowIn 2.6s ease-in-out infinite}
+@keyframes glowIn{50%{box-shadow:0 0 22px -4px var(--glow)}}
+.reset{display:block;margin:22px auto 0;font-size:13px}
+
+/* ============ TABBAR ============ */
+.tabbar{position:absolute;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:10;display:grid;grid-template-columns:repeat(4,1fr);padding:6px;border-radius:24px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:var(--shadow)}
+.tab{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 6px;font-size:11px;font-weight:700;color:var(--muted);transition:color .3s}
+.tab svg{width:22px;height:22px;transition:transform .45s var(--ease-spring)}
+.tab[aria-selected="true"]{color:var(--accent-ink)}
+.tab[aria-selected="true"] svg{transform:translateY(-2px) scale(1.1)}
+.tab:active svg{transform:scale(.8)}
+.tab-ind{position:absolute;top:6px;bottom:6px;left:6px;border-radius:18px;background:var(--accent);transition:transform .5s var(--ease-spring);width:calc((100% - 12px)/4)}
+.tab-ind .peek{position:absolute;top:-22px;left:50%;translate:-50% 0;width:26px;transition:transform .5s var(--ease-spring)}
+.tab .live-dot{position:absolute;top:6px;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:var(--danger);border:2px solid var(--surface);display:none;animation:blink 1s infinite}
+.is-live .tab[data-tab="run"] .live-dot{display:block}
+
+/* ============ SHEET ============ */
+.backdrop{position:absolute;inset:0;z-index:20;background:rgba(8,4,14,.45);opacity:0;pointer-events:none;transition:opacity .35s}
+.backdrop.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:21;padding:10px 18px max(18px,env(safe-area-inset-bottom));border-radius:28px 28px 0 0;background:var(--surface);border-top:1px solid var(--line);transform:translateY(105%);transition:transform .5s var(--ease-out);touch-action:none}
+.sheet.on{transform:translateY(0)}
+.sheet.dragging{transition:none}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--surface-3);margin:4px auto 14px;cursor:grab}
+.sheet h3{font-size:26px;text-align:center}
+body[data-theme="halloween"] .sheet h3{color:var(--accent)}
+.sheet .sub{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+.stepper{display:flex;align-items:center;justify-content:center;gap:18px;margin:18px 0 6px}
+.stepper button{width:52px;height:52px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;transition:transform .2s var(--ease-spring)}
+.stepper button:active{transform:scale(.86)}
+.stepper button svg{width:22px;height:22px}
+.stepper .val{min-width:140px;text-align:center}
+.stepper .val input{width:140px;border:0;background:none;text-align:center;font-size:48px;font-weight:900;outline:none;letter-spacing:-.02em}
+.stepper .val input.bump{animation:bump .25s var(--ease-spring)}
+@keyframes bump{50%{transform:scale(1.08)}}
+.stepper .val small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.1em}
+.sheet-row{display:flex;gap:10px;align-items:center;justify-content:center;margin:14px 0}
+.dur{display:flex;align-items:center;gap:8px;justify-content:center;font-size:13px;color:var(--muted)}
+.dur input{width:64px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);text-align:center;font-weight:700}
+.sheet-actions{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.sheet-actions .btn{flex:none;width:100%}
+.btn[hidden]{display:none}
+.sheet .note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
+
+/* ============ UNLOCK ============ */
+.unlock{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:28px;background:rgba(8,4,14,.7);opacity:0;pointer-events:none;transition:opacity .4s}
+.unlock.on{opacity:1;pointer-events:auto}
+.unlock-card{width:100%;max-width:300px;text-align:center;padding:26px 20px;border-radius:28px;background:var(--surface);border:1px solid var(--line);transform:rotateY(90deg) scale(.7);transition:transform .8s var(--ease-spring)}
+body[data-theme="halloween"] .unlock-card{background:linear-gradient(160deg,#3b2360,#1f1134);outline:2px dashed var(--stitch);outline-offset:-9px}
+.unlock.on .unlock-card{transform:none}
+.unlock-card .big-ico{width:96px;height:96px;margin:0 auto 10px;animation:bob 2.6s ease-in-out infinite}
+.unlock-card .kicker{color:var(--accent)}
+.unlock-card h3{font-size:30px;margin:8px 0}
+.unlock-card p{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:18px}
+
+/* ============ ONBOARDING ============ */
+.onb{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;padding:64px 22px 24px;background:var(--bg);transition:opacity .5s,transform .6s var(--ease-out)}
+body[data-theme="halloween"] .onb{background:radial-gradient(120% 70% at 50% 0%,#3a1d5a,var(--bg) 65%)}
+@media (max-width:900px){.onb{padding-top:max(28px,env(safe-area-inset-top))}}
+.onb.out{opacity:0;transform:scale(1.04);pointer-events:none}
+.onb-dots{display:flex;gap:6px}
+.onb-dots i{height:6px;width:18px;border-radius:9px;background:var(--surface-3);transition:width .5s var(--ease-spring),background .3s}
+.onb-dots i.on{width:34px;background:var(--accent)}
+.onb-steps{position:relative;flex:1;margin-top:18px}
+.onb-step{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;visibility:hidden;transform:translateX(30px);transition:opacity .4s,transform .5s var(--ease-out),visibility 0s .5s}
+.onb-step.on{opacity:1;visibility:visible;transform:none;transition:opacity .4s,transform .5s var(--ease-out)}
+.onb-step.past{transform:translateX(-30px)}
+.onb h2{font-size:40px;margin:10px 0}
+body[data-theme="halloween"] .onb h2{color:var(--accent);transform:rotate(-1.5deg)}
+.onb p{color:var(--muted);line-height:1.5;font-size:15px}
+.onb-mascot{width:120px;margin:10px 0 6px;animation:bob 3s ease-in-out infinite}
+.field{margin-top:22px}
+.field input{width:100%;height:56px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);padding:0 16px;font-size:18px;font-weight:700;transition:border-color .3s,box-shadow .3s}
+.field input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.team-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.team-opt{position:relative;padding:14px;border-radius:18px;background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:transform .4s var(--ease-spring),border-color .3s,box-shadow .3s}
+.team-opt:hover{transform:translateY(-3px)}
+.team-opt[aria-checked="true"]{border-color:var(--team);box-shadow:0 10px 26px -12px var(--team);transform:translateY(-3px) rotate(-1.5deg)}
+.team-opt .team-badge{width:38px;height:38px;font-size:14px;margin-bottom:10px;transition:transform .5s var(--ease-spring)}
+.team-opt[aria-checked="true"] .team-badge{transform:rotate(-10deg) scale(1.1)}
+.team-opt b{display:block;font-size:14px}
+.team-opt small{color:var(--muted);font-size:12px}
+.team-opt .check{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--team);color:var(--team-ink,#fff);display:grid;place-items:center;transform:scale(0);transition:transform .4s var(--ease-spring)}
+.team-opt[aria-checked="true"] .check{transform:scale(1)}
+.goal-pick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}
+.goal-opt{padding:16px;border-radius:18px;background:var(--surface);border:1.5px solid var(--line);text-align:left;transition:transform .35s var(--ease-spring),border-color .3s,background .3s}
+.goal-opt b{display:block;font-size:28px;font-weight:900}
+.goal-opt small{color:var(--muted);font-size:12px}
+.goal-opt[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft);transform:scale(1.03)}
+.onb-foot{display:flex;gap:10px;margin-top:14px}
+.onb .btn-primary[disabled]{opacity:.45;pointer-events:none}
+
+/* ============ TOAST + FX ============ */
+.toasts{position:absolute;top:58px;left:16px;right:16px;z-index:60;display:grid;gap:8px;pointer-events:none}
+@media (max-width:900px){.toasts{top:max(12px,env(safe-area-inset-top))}}
+.toast{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:16px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.25);animation:toastIn .5s var(--ease-spring) both}
+.toast.bye{animation:toastOut .35s var(--ease-out) forwards}
+.toast svg{width:22px;height:22px;flex:none}
+@keyframes toastIn{from{opacity:0;transform:translateY(-20px) scale(.9)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-14px)}}
+.fx{position:absolute;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+.p{position:absolute;width:22px;height:22px;margin:-11px;animation:burst 1.2s var(--ease-out) forwards}
+.p.dot{width:9px;height:9px;margin:-4px;border-radius:2px;background:var(--c)}
+@keyframes burst{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}}
+.fly-num{position:absolute;z-index:70;font-weight:900;font-size:28px;color:var(--accent);pointer-events:none;transition:transform .9s var(--ease-out),opacity .9s}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body data-theme="halloween">
+
+<!-- SVG symbols (originales) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bat" viewBox="0 0 48 22"><path fill="currentColor" d="M24 7c1.6-2.6 2.2-4.3 2.4-6 1 1.6 1.2 3 1 4.4C31 3 37 1.6 48 5c-5 1.2-7.6 3.6-8.4 7-2.4-1.6-5.2-1.8-7.6-.4-.8 2.6-3.4 5-8 9.4-4.6-4.4-7.2-6.8-8-9.4-2.4-1.4-5.2-1.2-7.6.4C7.6 8.6 5 6.2 0 5c11-3.4 17-2 20.6.4-.2-1.4 0-2.8 1-4.4.2 1.7.8 3.4 2.4 6z"/></symbol>
+    <symbol id="pumpkin" viewBox="0 0 64 60"><path fill="#3d6b2a" d="M30 4c3-3 7-3 8-1-4 1-5 4-5 8h-4c0-3 0-5 1-7z"/><ellipse cx="20" cy="36" rx="16" ry="20" fill="#e8780f"/><ellipse cx="44" cy="36" rx="16" ry="20" fill="#e8780f"/><ellipse cx="32" cy="36" rx="14" ry="22" fill="#ff9a1f"/><path fill="#2a0f06" d="M18 30l7-6 3 8zM46 30l-7-6-3 8zM20 42c4 5 20 5 24 0l-3 6-3-3-3 4-3-4-3 4-3-4-3 3z"/></symbol>
+    <symbol id="ghost" viewBox="0 0 64 72"><path fill="#f5ecd9" d="M32 2C16 2 6 15 6 32v34l8-6 7 7 6-7 5 7 5-7 6 7 7-7 8 6V32C58 15 48 2 32 2z"/><ellipse cx="23" cy="30" rx="4.5" ry="7" fill="#1d0d22"/><ellipse cx="41" cy="30" rx="4.5" ry="7" fill="#1d0d22"/><ellipse cx="32" cy="46" rx="5" ry="6" fill="#1d0d22"/><ellipse cx="17" cy="40" rx="4" ry="2.5" fill="#ff9a1f" opacity=".35"/><ellipse cx="47" cy="40" rx="4" ry="2.5" fill="#ff9a1f" opacity=".35"/></symbol>
+    <symbol id="tomb" viewBox="0 0 30 34"><path fill="#4a3468" d="M3 34V14C3 6 8 2 15 2s12 4 12 12v20z"/><path stroke="#b9a8d2" stroke-width="2" d="M15 10v12M10 15h10"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4.5" r="1.8"/><path d="M6 20l3.5-5 3 2 1.5-4.5L17 15l3-1M9 9.5l4-2 2.5 3.5M8 12l1-3"/></g></symbol>
+    <symbol id="i-rank" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 20h18M5 20v-6h4v6M10 20V9h4v11M15 20v-8h4v8"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 10 17l9-10"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h6V8a3 3 0 0 0-6 0z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 19h16M7 19V9l5-5 5 5v10M10 13h4"/></symbol>
+    <symbol id="i-medal" viewBox="0 0 48 48"><path fill="var(--accent-2)" d="M14 2h8l4 14h-8zM34 2h-8l-4 14h8z"/><circle cx="24" cy="30" r="15" fill="var(--accent)"/><circle cx="24" cy="30" r="10" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="3"/><path fill="rgba(255,255,255,.85)" d="m24 22 2.4 5 5.4.6-4 3.7 1.1 5.3L24 34l-4.9 2.6 1.1-5.3-4-3.7 5.4-.6z"/></symbol>
+  </defs>
+</svg>
+
+<div class="world" aria-hidden="true">
+  <div class="bs"><div class="blob b1"></div><div class="blob b2"></div><div class="grid"></div></div>
+  <div class="hw">
+    <div class="sky"></div>
+    <div class="moon"></div>
+    <svg class="web" viewBox="0 0 200 200" fill="none" stroke="#e9dcff" stroke-width="1"><path d="M200 0 60 140M200 0 120 180M200 0 20 80M200 0 0 20M200 0 180 200"/><path d="M160 4q4 22 26 30M120 8q8 48 58 70M80 12q12 76 98 108M40 16q16 110 136 150"/></svg>
+    <div class="fog"></div><div class="fog f2"></div>
+    <div class="bat-fly" style="animation-duration:18s;top:0"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
+    <div class="bat-fly" style="animation-duration:26s;animation-delay:-9s;top:10vh;width:30px"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
+    <div class="bat-fly" style="animation-duration:22s;animation-delay:-15s;top:40vh;width:24px"><svg viewBox="0 0 48 22"><use href="#bat"/></svg></div>
+    <div class="noise"></div>
+  </div>
+</div>
+
+<main class="stage">
+  <section class="landing">
+    <span class="eyebrow"><i></i><span data-copy="eyebrow"></span></span>
+    <h1 class="display"><span class="w">The</span> <span class="w">Rebel</span> <span class="w">Run</span></h1>
+    <p class="lead" data-copy="heroSub"></p>
+    <ol class="steps">
+      <li><b>1</b><span data-copy="step1"></span></li>
+      <li><b>2</b><span data-copy="step2"></span></li>
+      <li><b>3</b><span data-copy="step3"></span></li>
+    </ol>
+    <div class="theme-switch" role="group" aria-label="Tema">
+      <span class="pill"></span>
+      <button data-theme-set="halloween">Halloween</button>
+      <button data-theme-set="base">Sin temática</button>
+    </div>
+    <p class="fine">Prototipo · datos de equipos simulados · GPS real con fallback demo</p>
+  </section>
+
+  <div class="device">
+    <div class="device-screen">
+      <div class="app" id="app">
+        <div class="app-noise hw"></div>
+
+        <!-- ONBOARDING -->
+        <div class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Sumate a la carrera">
+          <div class="onb-dots"><i class="on"></i><i></i><i></i></div>
+          <div class="onb-steps">
+            <div class="onb-step on" data-step="0">
+              <svg class="onb-mascot hw" viewBox="0 0 64 72"><use href="#ghost"/></svg>
+              <svg class="onb-mascot bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg>
+              <span class="kicker" data-copy="eyebrow"></span>
+              <h2 class="display" data-copy="onb1Title"></h2>
+              <p data-copy="onb1Sub"></p>
+              <label class="field"><span class="sr">Tu nombre</span><input id="onbName" maxlength="20" autocomplete="given-name" placeholder="¿Cómo te llamás?"></label>
+            </div>
+            <div class="onb-step" data-step="1">
+              <h2 class="display" data-copy="onb2Title"></h2>
+              <p data-copy="onb2Sub"></p>
+              <div class="team-pick" role="radiogroup" aria-label="Casa" id="teamPick"></div>
+            </div>
+            <div class="onb-step" data-step="2">
+              <h2 class="display" data-copy="onb3Title"></h2>
+              <p data-copy="onb3Sub"></p>
+              <div class="goal-pick" role="radiogroup" aria-label="Objetivo" id="goalPick"></div>
+            </div>
+          </div>
+          <div class="onb-foot">
+            <button class="btn btn-ghost" id="onbBack" hidden>Atrás</button>
+            <button class="btn btn-primary" id="onbNext" disabled>Seguir</button>
+          </div>
+        </div>
+
+        <header class="app-head">
+          <button class="avatar" id="avatar" aria-label="Tu perfil"></button>
+          <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
+          <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
+          <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
+            <svg class="ico-moon"><use href="#i-moon"/></svg><svg class="ico-sun"><use href="#i-sun"/></svg>
+          </button>
+        </header>
+
+        <div class="screens">
+          <!-- HOME -->
+          <section class="screen active" data-screen="home" aria-label="Inicio">
+            <div class="card hero">
+              <div class="ring">
+                <svg viewBox="0 0 120 120"><circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="bar" id="ringBar" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+                <div class="ring-center"><b class="num" id="myKm">0</b><small>de <span id="myGoal">10</span> km</small></div>
+                              </div>
+              <div class="hero-txt">
+                <span class="kicker" data-copy="homeKicker"></span>
+                <div class="h2 display" id="heroHeadline"></div>
+                <div class="next" id="nextMilestone"></div>
+              </div>
+            </div>
+            <div class="cta-row">
+              <button class="btn btn-primary" id="goRun"><svg><use href="#i-play"/></svg><span data-copy="startCta"></span></button>
+              <button class="btn btn-ghost" id="manualBtn" aria-label="Cargar kilómetros a mano"><svg><use href="#i-hand"/></svg>Manual</button>
+            </div>
+            <div class="card" id="teamCard">
+              <div class="team-row">
+                <div class="team-badge" id="myTeamBadge"></div>
+                <div><span class="kicker">Tu casa</span><b style="display:block;font-size:17px" id="myTeamName"></b></div>
+                <span class="rank-chip num" id="myTeamPos"></span>
+              </div>
+              <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div></div>
+              <div class="bar-meta num"><span id="teamKmTxt"></span><span>meta <span id="teamGoalTxt"></span> km</span></div>
+            </div>
+            <div class="card">
+              <span class="kicker" data-copy="collectiveTitle"></span>
+              <p class="muted" style="font-size:13px;margin-top:4px" data-copy="collectiveSub"></p>
+              <div class="bar-wrap" style="margin-top:18px"><div class="bar-fill" id="coFill" style="--fill:var(--accent-2)"></div>
+                <div class="bar-walker" id="coWalker"><svg class="hw" viewBox="0 0 64 72" width="28"><use href="#ghost"/></svg><div class="dot bs"></div></div>
+              </div>
+              <div class="bar-meta num"><span id="coKmTxt"></span><span id="coGoalTxt"></span></div>
+            </div>
+            <div class="card">
+              <span class="kicker">Mi actividad</span>
+              <ul class="acts" id="acts"></ul>
+            </div>
+          </section>
+
+          <!-- RUN -->
+          <section class="screen" data-screen="run" aria-label="Correr">
+            <div class="run" id="runRoot">
+              <div class="seg" id="modeSeg" role="group" aria-label="Modo de registro">
+                <span class="pill"></span>
+                <button data-mode="gps" aria-pressed="true">GPS</button>
+                <button data-mode="sim" aria-pressed="false">Demo ×8</button>
+              </div>
+              <div class="signal" id="signal" data-q="0"><span class="bars"><i></i><i></i><i></i></span><span id="signalTxt">GPS en espera</span></div>
+              <div class="dial">
+                <svg class="orbit" viewBox="0 0 270 270"><circle class="o-track" cx="135" cy="135" r="126" fill="none" stroke-width="3"/><circle class="o-progress" id="oProg" cx="135" cy="135" r="126" fill="none" stroke-width="5" stroke-dasharray="791.7" stroke-dashoffset="791.7"/></svg>
+                <div class="orbiter"><div class="rider"><svg class="hw" viewBox="0 0 48 22"><use href="#bat"/></svg><div class="dotr bs"></div></div></div>
+                <div class="readout">
+                  <b class="num" id="runKm">0,00</b>
+                  <small>kilómetros</small>
+                  <div class="time num" id="runTime">00:00</div>
+                </div>
+              </div>
+              <div class="run-status" id="runStatus" aria-live="polite"></div>
+              <div class="stats">
+                <div><b class="num" id="pace">–'––"</b><small>Ritmo /km</small></div>
+                <div><b class="num" id="todayKm">0,0</b><small>Total</small></div>
+              </div>
+              <div class="controls">
+                <span class="side-btn"></span>
+                <button class="play" id="playBtn" aria-label="Iniciar"><svg class="i-play"><use href="#i-play"/></svg><svg class="i-pause"><use href="#i-pause"/></svg></button>
+                <button class="finish" id="finishBtn" hidden aria-label="Mantené presionado para terminar">
+                  <svg class="hold" viewBox="0 0 82 82"><circle id="holdRing" cx="41" cy="41" r="38" fill="none" stroke-width="4" stroke-dasharray="238.8" stroke-dashoffset="238.8"/></svg>
+                  <svg class="sq" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="3" fill="currentColor"/></svg>
+                </button>
+              </div>
+              <div class="hold-hint" id="holdHint"></div>
+              <p class="wake" id="wakeTxt">Dejá la pantalla encendida mientras corrés: el navegador puede pausar el GPS si se bloquea. Al terminar podés ajustar los km.</p>
+            </div>
+          </section>
+
+          <!-- RANK -->
+          <section class="screen" data-screen="rank" aria-label="Ranking">
+            <span class="kicker" data-copy="rankKicker"></span>
+            <div class="h2 display" data-copy="rankTitle"></div>
+            <div class="card" style="padding:12px 12px 6px">
+              <div class="map">
+                <svg viewBox="0 0 340 230" id="mapSvg">
+                  <path id="road" class="road" d="M26 206 C 80 210, 70 150, 128 148 S 210 170, 222 120 S 180 66, 240 52 S 318 54, 318 18"/>
+                  <path class="road-dash" d="M26 206 C 80 210, 70 150, 128 148 S 210 170, 222 120 S 180 66, 240 52 S 318 54, 318 18"/>
+                  <g id="mapMarks"></g>
+                  <g id="mapTokens"></g>
+                </svg>
+              </div>
+            </div>
+            <div class="seg" id="rankSeg" role="group" aria-label="Ver ranking" style="margin-top:14px">
+              <span class="pill"></span>
+              <button data-rank="teams" aria-pressed="true">Casas</button>
+              <button data-rank="people" aria-pressed="false">Personas</button>
+            </div>
+            <ol class="rank-list" id="rankList"></ol>
+          </section>
+
+          <!-- ACHIEVEMENTS -->
+          <section class="screen" data-screen="ach" aria-label="Logros">
+            <span class="kicker" data-copy="achKicker"></span>
+            <div class="h2 display" data-copy="achTitle"></div>
+            <p class="muted" style="font-size:13px">Tocá una tarjeta para darla vuelta.</p>
+            <div class="ach-grid" id="achGrid"></div>
+            <button class="btn btn-text-danger reset" id="resetBtn">Reiniciar demo</button>
+          </section>
+        </div>
+
+        <nav class="tabbar" role="tablist" aria-label="Navegación">
+          <span class="tab-ind" id="tabInd"><svg class="peek hw" viewBox="0 0 48 22"><use href="#bat"/></svg></span>
+          <button class="tab" role="tab" data-tab="home" aria-selected="true"><svg><use href="#i-home"/></svg>Inicio</button>
+          <button class="tab" role="tab" data-tab="run" aria-selected="false"><span class="live-dot"></span><svg><use href="#i-run"/></svg>Correr</button>
+          <button class="tab" role="tab" data-tab="rank" aria-selected="false"><svg><use href="#i-rank"/></svg>Ranking</button>
+          <button class="tab" role="tab" data-tab="ach" aria-selected="false"><svg><use href="#i-trophy"/></svg>Logros</button>
+        </nav>
+
+        <!-- SHEET -->
+        <div class="backdrop" id="backdrop"></div>
+        <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+          <div class="grab" id="grab"></div>
+          <h3 class="display" id="sheetTitle"></h3>
+          <p class="sub" id="sheetSub"></p>
+          <div class="stepper">
+            <button id="kmMinus" aria-label="Restar 0,1 km"><svg><use href="#i-minus"/></svg></button>
+            <div class="val"><input id="kmInput" class="num" inputmode="decimal" aria-label="Kilómetros"><small>KM</small></div>
+            <button id="kmPlus" aria-label="Sumar 0,1 km"><svg><use href="#i-plus"/></svg></button>
+          </div>
+          <div class="sheet-row">
+            <div class="seg" id="typeSeg" role="group" aria-label="Tipo de actividad">
+              <span class="pill"></span>
+              <button data-type="walk" aria-pressed="true">Caminata</button>
+              <button data-type="run" aria-pressed="false">Corrida</button>
+            </div>
+          </div>
+          <div class="dur" id="durRow"><span>Duración</span><input id="durInput" class="num" inputmode="numeric" value="30" aria-label="Duración en minutos"><span>min</span></div>
+          <p class="note" data-copy="sheetNote"></p>
+          <div class="sheet-actions">
+            <button class="btn btn-primary" id="saveBtn"><svg><use href="#i-check"/></svg><span data-copy="saveCta"></span></button>
+            <button class="btn btn-text-danger" id="discardBtn">Descartar</button>
+          </div>
+        </div>
+
+        <!-- UNLOCK -->
+        <div class="unlock" id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlockName">
+          <div class="unlock-card">
+            <svg class="big-ico hw" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>
+            <svg class="big-ico bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg>
+            <span class="kicker" data-copy="unlockKicker"></span>
+            <h3 class="display" id="unlockName"></h3>
+            <p id="unlockTxt"></p>
+            <button class="btn btn-primary" id="unlockOk" style="width:100%" data-copy="unlockCta"></button>
+          </div>
+        </div>
+
+        <div class="toasts" id="toasts" aria-live="polite"></div>
+        <div class="fx" id="fx"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const KEY = 'rebelrun:v2';
+const TEAM_GOAL = 150, COMPANY_GOAL = 420;
+const TEAMS = [
+  { id: 'gryffindor', name: 'Gryffindor', short: 'G', seed: 58.2, members: 8 },
+  { id: 'slytherin',  name: 'Slytherin',  short: 'S', seed: 71.5, members: 10 },
+  { id: 'ravenclaw',  name: 'Ravenclaw',  short: 'R', seed: 49.9, members: 9 },
+  { id: 'hufflepuff', name: 'Hufflepuff', short: 'H', seed: 64.3, members: 7 },
+];
+const PEOPLE = [['Mica','slytherin',18.4],['Nacho','ravenclaw',15.2],['Flor','gryffindor',14.9],['Tomi','hufflepuff',13.1],['Sofi','slytherin',11.7],['Juan','ravenclaw',9.8],['Lu','gryffindor',9.2],['Fede','hufflepuff',7.5],['Caro','slytherin',6.3]];
+const MILESTONES = [1, 5, 10, 21, 42, 60];
+const GOALS = [5, 10, 21, 42];
+
+/* ---- Copy por tema: el producto no cambia, la voz sí ---- */
+const COPY = {
+  base: {
+    eyebrow: 'QuartzSales · Carrera interna',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales. Sumá kilómetros caminando o corriendo, desde donde estés.',
+    step1: 'Elegí tu casa y tu objetivo personal.',
+    step2: 'Iniciá, pausá y terminá como en tu reloj. El GPS mide la distancia.',
+    step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
+    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Una carrera a distancia entre las casas de QuartzSales. Para empezar, ¿cómo te llamás?',
+    onb2Title: 'Elegí tu casa', onb2Sub: 'Tus kilómetros suman para la casa que elijas.',
+    onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal acorde a tu ritmo. La podés ajustar después.',
+    homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
+    startCta: 'Iniciar actividad',
+    nextM: 'Te faltan <b>{km} km</b> para «{m}»', allM: '<b>Completaste todos los hitos.</b>',
+    collectiveTitle: 'Meta de QuartzSales', collectiveSub: 'Si entre todas las casas llegamos a la meta, se habilita el premio colectivo.',
+    empty: 'Todavía no registraste actividad.',
+    idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
+    hold: 'Mantené presionado para terminar',
+    sheetTitle: 'Resumen de la actividad', sheetManual: 'Cargar kilómetros',
+    sheetNote: 'Si tu reloj registró otra distancia, ajustala antes de guardar.', saveCta: 'Guardar actividad',
+    saved: '+{km} km para {team}',
+    rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
+    achKicker: 'Hitos personales', achTitle: 'Logros',
+    unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
+    m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
+    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'La distancia total del desafío.'],
+  },
+  halloween: {
+    eyebrow: 'QuartzSales · Edición Halloween 2026',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales durante la temporada de Halloween. Sumá kilómetros caminando o corriendo, desde donde estés.',
+    step1: 'Elegí tu casa y tu objetivo personal.',
+    step2: 'Iniciá, pausá y terminá como en tu reloj. El GPS mide la distancia.',
+    step3: 'Cada kilómetro suma al ranking de casas y a la meta de la empresa.',
+    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Para empezar, ¿cómo te llamás?',
+    onb2Title: 'Elegí tu casa', onb2Sub: 'Tus kilómetros suman para la casa que elijas.',
+    onb3Title: 'Tu objetivo', onb3Sub: 'Definí una meta personal para la temporada. La podés ajustar después.',
+    homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
+    startCta: 'Iniciar actividad',
+    nextM: 'Te faltan <b>{km} km</b> para «{m}»', allM: '<b>Completaste todos los hitos.</b>',
+    collectiveTitle: 'Meta de QuartzSales', collectiveSub: 'Si entre todas las casas llegamos a la meta antes del cierre de la temporada, se habilita el premio colectivo.',
+    empty: 'Todavía no registraste actividad.',
+    idle: 'Listo para empezar', running: 'Actividad en curso', paused: 'Actividad en pausa',
+    hold: 'Mantené presionado para terminar',
+    sheetTitle: 'Resumen de la actividad', sheetManual: 'Cargar kilómetros',
+    sheetNote: 'Si tu reloj registró otra distancia, ajustala antes de guardar.', saveCta: 'Guardar actividad',
+    saved: '+{km} km para {team}',
+    rankKicker: 'Ranking en vivo', rankTitle: 'Ranking de casas',
+    achKicker: 'Hitos personales', achTitle: 'Logros',
+    unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
+    m: ['Primer kilómetro', '5K', '10K', 'Media maratón', 'Maratón', '60K'],
+    mTxt: ['Primera distancia registrada.', 'Cinco kilómetros acumulados.', 'Llegaste a los dos dígitos.', 'Equivalente a una media maratón.', 'Equivalente a una maratón completa.', 'La distancia total del desafío.'],
+  }
+};
+
+/* ---- State ---- */
+let S = load() || { user: null, acts: [], unlocked: [], theme: 'halloween' };
+if (S.user && !TEAMS.some(x => x.id === S.user.team)) S.user = null; // equipos renombrados: re-onboarding
+function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+const theme = () => document.body.dataset.theme;
+const C = () => COPY[theme()];
+const t = (k, v = {}) => String(C()[k] ?? '').replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
+const fmt = (n, d = 1) => n.toLocaleString('es-AR', { minimumFractionDigits: d, maximumFractionDigits: d });
+const myKm = () => S.acts.reduce((a, b) => a + b.km, 0);
+const team = id => TEAMS.find(x => x.id === id);
+const teamIdx = id => TEAMS.findIndex(x => x.id === id);
+const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
+const companyKm = () => TEAMS.reduce((a, x) => a + teamKm(x.id), 0);
+const teamsSorted = () => [...TEAMS].sort((a, b) => teamKm(b.id) - teamKm(a.id));
+const vib = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
+const teamVar = id => `var(--t${teamIdx(id)})`;
+const teamInk = id => `var(--t${teamIdx(id)}-ink)`;
+
+/* ---- Helpers de animación ---- */
+function tween(el, to, d = 1, dur = 1000) {
+  const from = parseFloat(el.dataset.v || '0'); el.dataset.v = to;
+  if (reduce || Math.abs(from - to) < 0.001) { el.textContent = fmt(to, d); return; }
+  const t0 = performance.now();
+  const step = now => { const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+    el.textContent = fmt(from + (to - from) * e, d); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function burst(x, y, n = 22) {
+  if (reduce) return;
+  const fx = $('#fx'), hw = theme() === 'halloween';
+  const cols = ['var(--accent)', 'var(--accent-2)', 'var(--t2)', 'var(--t3)'];
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('span');
+    const a = Math.random() * Math.PI * 2, r = 70 + Math.random() * 120;
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    p.style.setProperty('--dx', Math.cos(a) * r + 'px'); p.style.setProperty('--dy', Math.sin(a) * r - 40 + 'px');
+    p.style.setProperty('--rot', (Math.random() * 540 - 270) + 'deg');
+    if (hw) { p.className = 'p'; p.style.color = i % 4 ? '#0b0512' : '#ff9a1f';
+      p.innerHTML = i % 5 === 0 ? '<svg viewBox="0 0 64 60" width="22"><use href="#pumpkin"/></svg>' : '<svg viewBox="0 0 48 22" width="26"><use href="#bat"/></svg>'; }
+    else { p.className = 'p dot'; p.style.setProperty('--c', cols[i % 4]); }
+    fx.appendChild(p); setTimeout(() => p.remove(), 1300);
+  }
+}
+function centerOf(el) { const a = $('#app').getBoundingClientRect(), b = el.getBoundingClientRect(); return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2]; }
+function toast(html) {
+  const el = document.createElement('div'); el.className = 'toast';
+  el.innerHTML = (theme() === 'halloween' ? '<svg viewBox="0 0 64 60"><use href="#pumpkin"/></svg>' : '<svg viewBox="0 0 24 24" style="color:var(--accent-2)"><use href="#i-check"/></svg>') + `<span>${html}</span>`;
+  $('#toasts').appendChild(el);
+  setTimeout(() => { el.classList.add('bye'); setTimeout(() => el.remove(), 400); }, 2800);
+}
+function segPill(seg) {
+  const on = $('[aria-pressed="true"]', seg), pill = $('.pill', seg); if (!on || !pill) return;
+  pill.style.left = on.offsetLeft + 'px'; pill.style.width = on.offsetWidth + 'px';
+}
+function bindSeg(seg, cb) {
+  seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return;
+    $$('button', seg).forEach(x => x.setAttribute('aria-pressed', x === b)); segPill(seg); vib(8); cb && cb(b); });
+}
+
+/* ---- Copy & tema ---- */
+function applyCopy() {
+  $$('[data-copy]').forEach(el => { el.innerHTML = t(el.dataset.copy); });
+  const ts = $('.theme-switch');
+  $$('button', ts).forEach(b => b.setAttribute('aria-pressed', b.dataset.themeSet === theme()));
+  const on = $('[aria-pressed="true"]', ts); const pill = $('.pill', ts);
+  pill.style.left = on.offsetLeft + 'px'; pill.style.width = on.offsetWidth + 'px';
+}
+function setTheme(th, origin) {
+  if (th === theme()) return;
+  const apply = () => { document.body.dataset.theme = th; S.theme = th; save(); applyCopy(); renderAll(true); $$('.seg').forEach(segPill); };
+  if (document.startViewTransition && !reduce) {
+    if (origin) { const r = origin.getBoundingClientRect(); document.documentElement.style.setProperty('--vx', r.left + r.width / 2 + 'px'); document.documentElement.style.setProperty('--vy', r.top + r.height / 2 + 'px'); }
+    document.startViewTransition(apply);
+  } else apply();
+  vib(12);
+}
+$$('[data-theme-set]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.themeSet, b)));
+$('#themeBtn').addEventListener('click', e => setTheme(theme() === 'halloween' ? 'base' : 'halloween', e.currentTarget));
+
+/* ---- Render ---- */
+function renderHead() {
+  if (!S.user) return;
+  const tm = team(S.user.team);
+  const av = $('#avatar'); av.textContent = S.user.name.slice(0, 1).toUpperCase(); av.style.setProperty('--team', teamVar(tm.id)); av.style.setProperty('--team-ink', teamInk(tm.id));
+  $('#headKicker').textContent = tm.name;
+  $('#headTitle').textContent = 'Hola, ' + S.user.name;
+}
+function renderHome() {
+  if (!S.user) return;
+  const km = myKm(), goal = S.user.goal, p = Math.min(1, km / goal);
+  tween($('#myKm'), km, 1); $('#myGoal').textContent = goal;
+  $('#ringBar').style.strokeDashoffset = 326.7 * (1 - p);
+  const h = C().headline; $('#heroHeadline').textContent = h[p >= 1 ? 3 : p > .5 ? 2 : km > 0 ? 1 : 0];
+  const nm = MILESTONES.findIndex(m => km < m);
+  $('#nextMilestone').innerHTML = nm < 0 ? t('allM') : t('nextM', { km: fmt(MILESTONES[nm] - km, 1), m: C().m[nm] });
+  const tm = team(S.user.team), tk = teamKm(tm.id), pos = teamsSorted().findIndex(x => x.id === tm.id) + 1;
+  $('#myTeamBadge').textContent = tm.short; $('#myTeamBadge').style.setProperty('--team', teamVar(tm.id)); $('#myTeamBadge').style.setProperty('--team-ink', teamInk(tm.id));
+  $('#teamCard').style.setProperty('--fill', teamVar(tm.id));
+  $('#myTeamName').textContent = tm.name; $('#myTeamPos').textContent = `#${pos} de ${TEAMS.length}`;
+  $('#teamFill').style.setProperty('--fill', teamVar(tm.id));
+  $('#teamFill').style.width = Math.min(100, tk / TEAM_GOAL * 100) + '%';
+  $('#teamKmTxt').textContent = fmt(tk, 1) + ' km'; $('#teamGoalTxt').textContent = TEAM_GOAL;
+  const ck = companyKm(), cp = Math.min(100, ck / COMPANY_GOAL * 100);
+  $('#coFill').style.width = cp + '%'; $('#coWalker').style.left = cp + '%';
+  $('#coKmTxt').textContent = fmt(ck, 1) + ' km'; $('#coGoalTxt').textContent = 'meta ' + COMPANY_GOAL + ' km';
+  const ul = $('#acts');
+  if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${theme() === 'halloween' ? '<svg viewBox="0 0 30 34"><use href="#tomb"/></svg>' : ''}${t('empty')}</li>`; return; }
+  ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
+    const d = new Date(a.date), mins = Math.round(a.secs / 60);
+    const src = a.source === 'gps' ? 'GPS' : a.source === 'sim' ? 'Demo' : 'Manual';
+    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-hand' : 'i-pin'}"/></svg></span>
+      <span class="meta"><b>${a.type === 'run' ? 'Corrida' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}</span>
+      <span class="km num">${fmt(a.km, 2)} km</span></li>`;
+  }).join('');
+}
+let rankMode = 'teams';
+function renderRank(animate = true) {
+  // mapa
+  const road = $('#road'), L = road.getTotalLength();
+  const marks = [.25, .5, .75].map(f => { const p = road.getPointAtLength(L * f);
+    return theme() === 'halloween' ? `<use href="#tomb" x="${p.x - 9}" y="${p.y - 28}" width="18" height="21"/>` : `<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--muted)" opacity=".5"/>`; }).join('');
+  const end = road.getPointAtLength(L);
+  $('#mapMarks').innerHTML = marks + (theme() === 'halloween'
+    ? `<circle cx="${end.x}" cy="${end.y - 2}" r="15" fill="#f6dd8a" opacity=".95"/><circle cx="${end.x}" cy="${end.y - 2}" r="22" fill="#f6dd8a" opacity=".15"/>`
+    : `<path d="M${end.x - 2} ${end.y + 10}V${end.y - 16}l16 6-16 6" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>`);
+  const tok = $('#mapTokens');
+  if (!tok.children.length) tok.innerHTML = TEAMS.map(x => `<g class="token" data-id="${x.id}"><circle r="12" fill="${teamVar(x.id)}"/><text style="fill:${teamInk(x.id)}">${x.short}</text></g>`).join('');
+  TEAMS.forEach((x, i) => {
+    const f = Math.min(1, teamKm(x.id) / TEAM_GOAL), p = road.getPointAtLength(L * f);
+    const g = $(`.token[data-id="${x.id}"]`, tok);
+    g.classList.toggle('me', S.user && S.user.team === x.id);
+    g.style.transform = `translate(${p.x + (i % 2 ? 5 : -5)}px, ${p.y + (i > 1 ? 5 : -5)}px)`;
+  });
+  // lista con FLIP
+  const list = $('#rankList');
+  const prev = new Map($$('li', list).map(li => [li.dataset.id, li.getBoundingClientRect().top]));
+  let rows;
+  if (rankMode === 'teams') {
+    rows = teamsSorted().map(x => ({ id: x.id, name: x.name, sub: `${x.members} personas`, km: teamKm(x.id), max: TEAM_GOAL, team: x.id, me: S.user && S.user.team === x.id }));
+  } else {
+    const ppl = PEOPLE.map(([n, tid, k]) => ({ id: n, name: n, km: k, team: tid }));
+    if (S.user) ppl.push({ id: '__me', name: S.user.name + ' (vos)', km: myKm(), team: S.user.team, me: true });
+    ppl.sort((a, b) => b.km - a.km);
+    rows = ppl.map(p => ({ ...p, sub: team(p.team).name, max: ppl[0].km || 1 }));
+  }
+  list.innerHTML = rows.map((r, i) => `<li data-id="${r.id}" class="${r.me ? 'me' : ''}" style="--team:${teamVar(r.team)}">
+    <span class="rank-pos num">${i + 1}</span><span class="dot-t"></span>
+    <span class="rank-name"><b>${r.name}</b><span class="mini"><i data-w="${Math.min(100, r.km / r.max * 100)}"></i></span></span>
+    <span class="rank-km num">${fmt(r.km, 1)}</span></li>`).join('');
+  requestAnimationFrame(() => $$('.mini i', list).forEach(i => i.style.width = i.dataset.w + '%'));
+  if (!animate || reduce) return;
+  $$('li', list).forEach(li => { const old = prev.get(li.dataset.id); if (old == null) return;
+    const dy = old - li.getBoundingClientRect().top; if (!dy) return;
+    li.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.34,1.56,.64,1)' }); });
+}
+function renderAch() {
+  const km = myKm(), hw = theme() === 'halloween';
+  $('#achGrid').innerHTML = MILESTONES.map((m, i) => {
+    const ok = km >= m;
+    const ico = hw ? (i % 2 ? '<svg class="ach-ico" viewBox="0 0 64 72"><use href="#ghost"/></svg>' : '<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>') : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
+    return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${C().m[i]}, ${ok ? 'desbloqueado' : 'bloqueado'}">
+      <div class="ach-inner"><div class="ach-face ach-front">${ok ? '' : '<svg class="lock"><use href="#i-lock"/></svg>'}${ico}
+        <div><div class="km-big num">${m}<small style="font-size:13px"> km</small></div><div class="ach-name">${C().m[i]}</div></div></div>
+      <div class="ach-face ach-back"><span class="kicker" style="color:inherit;opacity:.7">${ok ? 'Desbloqueado' : `Faltan ${fmt(m - km, 1)} km`}</span><p>${C().mTxt[i]}</p></div></div></button>`;
+  }).join('');
+}
+$('#achGrid').addEventListener('click', e => { const a = e.target.closest('.ach'); if (a) { a.classList.toggle('flipped'); vib(6); } });
+function renderAll(animateRank) { renderHead(); renderHome(); renderRank(animateRank); renderAch(); renderRunStatic(); }
+
+/* ---- Tabs ---- */
+const ORDER = ['home', 'run', 'rank', 'ach'];
+let current = 'home';
+function goto(name) {
+  if (name === current) return;
+  const dir = ORDER.indexOf(name) > ORDER.indexOf(current);
+  $$('.screen').forEach(s => { s.classList.remove('active', 'from-left'); if (s.dataset.screen === name) { if (!dir) s.classList.add('from-left'); void s.offsetWidth; s.classList.add('active'); s.scrollTop = 0; } });
+  $$('.tab').forEach(tb => tb.setAttribute('aria-selected', tb.dataset.tab === name));
+  $('#tabInd').style.transform = `translateX(${ORDER.indexOf(name) * 100}%)`;
+  current = name; vib(6); updateLive();
+  if (name === 'rank') renderRank(false);
+}
+$$('.tab').forEach(tb => tb.addEventListener('click', () => goto(tb.dataset.tab)));
+$('#goRun').addEventListener('click', () => goto('run'));
+$('#livePill').addEventListener('click', () => goto('run'));
+
+/* ---- Run engine ---- */
+const run = { state: 'idle', acc: 0, t0: 0, dist: 0, mode: 'gps', watch: null, last: null, gpsAcc: null, wake: null, raf: 0, lastSim: 0 };
+const elapsed = () => run.acc + (run.state === 'running' ? (performance.now() - run.t0) : 0);
+const fmtTime = ms => { const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, ss = s % 60;
+  return (h ? h + ':' + String(m).padStart(2, '0') : String(m).padStart(2, '0')) + ':' + String(ss).padStart(2, '0'); };
+function hav(a, b) { const R = 6371000, r = Math.PI / 180, dLa = (b.la - a.la) * r, dLo = (b.lo - a.lo) * r;
+  const x = Math.sin(dLa / 2) ** 2 + Math.cos(a.la * r) * Math.cos(b.la * r) * Math.sin(dLo / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); }
+function setSignal(q, txt) { $('#signal').dataset.q = q; $('#signalTxt').textContent = txt; }
+function startGPS() {
+  if (!('geolocation' in navigator)) { setSignal(0, 'Sin GPS en este dispositivo'); return false; }
+  setSignal(1, 'Buscando señal…');
+  run.watch = navigator.geolocation.watchPosition(p => {
+    const { latitude: la, longitude: lo, accuracy } = p.coords; run.gpsAcc = accuracy;
+    setSignal(accuracy < 15 ? 3 : accuracy < 35 ? 2 : 1, `Precisión ±${Math.round(accuracy)} m`);
+    if (run.state !== 'running') { run.last = null; return; }
+    if (accuracy > 35) return;
+    const pt = { la, lo, t: p.timestamp };
+    if (run.last) { const d = hav(run.last, pt), dt = (pt.t - run.last.t) / 1000;
+      if (d < 3) return; if (dt > 0 && d / dt > 9) { run.last = pt; return; }
+      run.dist += d / 1000; }
+    run.last = pt;
+  }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · probá Demo o carga manual' : 'Sin señal · seguimos contando el tiempo'); },
+  { enableHighAccuracy: true, maximumAge: 1000, timeout: 15000 });
+  return true;
+}
+function stopGPS() { if (run.watch != null) navigator.geolocation.clearWatch(run.watch); run.watch = null; run.last = null; }
+async function lockWake() { try { if ('wakeLock' in navigator) run.wake = await navigator.wakeLock.request('screen'); } catch (e) {} }
+function freeWake() { try { run.wake && run.wake.release(); } catch (e) {} run.wake = null; }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && run.state === 'running') lockWake(); });
+
+function setRunState(s) {
+  run.state = s;
+  const root = $('#runRoot'); root.classList.remove('run-state-idle', 'run-state-running', 'run-state-paused'); root.classList.add('run-state-' + s);
+  $('#playBtn').setAttribute('aria-label', s === 'running' ? 'Pausar' : s === 'paused' ? 'Reanudar' : 'Iniciar');
+  $('#finishBtn').hidden = s === 'idle';
+  $('#holdHint').textContent = s === 'idle' ? '' : t('hold');
+  $('#runStatus').textContent = t(s);
+  $$('#modeSeg button').forEach(b => b.disabled = s !== 'idle');
+  $('#app').classList.toggle('is-live', s !== 'idle');
+  updateLive();
+}
+function renderRunStatic() { if (run.state) { $('#runStatus').textContent = t(run.state); $('#holdHint').textContent = run.state === 'idle' ? '' : t('hold'); }
+  $('#todayKm').textContent = fmt(myKm() + run.dist, 1); }
+function updateLive() {
+  const pill = $('#livePill'); const on = run.state !== 'idle' && current !== 'run';
+  pill.classList.toggle('on', on); pill.classList.toggle('paused', run.state === 'paused');
+}
+let lastSec = -1;
+function loop(now) {
+  if (run.state === 'running' && run.mode === 'sim') {
+    const dt = (now - (run.lastSim || now)) / 1000; run.lastSim = now;
+    run.dist += (3.1 + Math.sin(now / 1500) * .6) * 8 * dt / 1000; // ~3 m/s ×8
+  }
+  const ms = elapsed(), sec = Math.floor(ms / 1000);
+  $('#runKm').textContent = fmt(run.dist, 2);
+  if (sec !== lastSec) {
+    lastSec = sec; const tt = fmtTime(ms); $('#runTime').textContent = tt; $('#liveTxt').textContent = tt + ' · ' + fmt(run.dist, 2) + ' km';
+    const pace = run.dist > 0.02 ? (ms / 1000 / 60) / run.dist : 0;
+    $('#pace').textContent = pace && pace < 60 ? `${Math.floor(pace)}'${String(Math.round((pace % 1) * 60)).padStart(2, '0')}"` : `–'––"`;
+    $('#todayKm').textContent = fmt(myKm() + run.dist, 1);
+  }
+  const lap = (run.dist % 1); $('#oProg').style.strokeDashoffset = 791.7 * (1 - lap);
+  if (run.state !== 'idle') run.raf = requestAnimationFrame(loop);
+}
+$('#playBtn').addEventListener('click', e => {
+  if (run.state === 'idle' || run.state === 'paused') {
+    if (run.state === 'idle') { run.dist = 0; run.acc = 0; lastSec = -1; if (run.mode === 'gps') startGPS(); else setSignal(3, 'Modo demo · velocidad ×8'); }
+    run.t0 = performance.now(); run.lastSim = 0; setRunState('running'); lockWake(); vib([18, 40, 18]);
+    cancelAnimationFrame(run.raf); run.raf = requestAnimationFrame(loop);
+    const [x, y] = centerOf(e.currentTarget); if (!reduce && theme() === 'halloween') burst(x, y, 8);
+  } else {
+    run.acc += performance.now() - run.t0; run.last = null; setRunState('paused'); freeWake(); vib(30);
+  }
+});
+bindSeg($('#modeSeg'), b => { run.mode = b.dataset.mode; setSignal(0, run.mode === 'gps' ? 'GPS en espera' : 'Modo demo listo'); });
+
+/* Mantener para terminar */
+(() => {
+  const btn = $('#finishBtn'), ring = $('#holdRing'), DUR = 1100, CIRC = 238.8; let h0 = 0, raf = 0;
+  const set = p => ring.style.strokeDashoffset = CIRC * (1 - p);
+  const tick = now => { const p = Math.min(1, (now - h0) / DUR); set(p); if (p < 1) raf = requestAnimationFrame(tick); else { btn.classList.remove('holding'); set(0); finishRun(); } };
+  btn.addEventListener('pointerdown', e => { if (run.state === 'idle') return; btn.setPointerCapture(e.pointerId); h0 = performance.now(); btn.classList.add('holding'); vib(10); raf = requestAnimationFrame(tick); });
+  const cancel = () => { if (!btn.classList.contains('holding')) return; cancelAnimationFrame(raf); btn.classList.remove('holding');
+    const cur = parseFloat(ring.style.strokeDashoffset || CIRC); ring.animate([{ strokeDashoffset: cur }, { strokeDashoffset: CIRC }], { duration: 300, easing: 'ease-out' }); set(0);
+    if (!reduce) btn.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(5px)' }, { transform: 'none' }], { duration: 260 }); };
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => btn.addEventListener(ev, cancel));
+  btn.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && run.state !== 'idle') { e.preventDefault(); finishRun(); } });
+})();
+function finishRun() {
+  if (run.state === 'running') run.acc += performance.now() - run.t0;
+  const secs = Math.round(run.acc / 1000), km = Math.round(run.dist * 100) / 100, source = run.mode;
+  stopGPS(); freeWake(); cancelAnimationFrame(run.raf); vib([30, 60, 30]);
+  setRunState('paused'); // congela UI mientras está el sheet
+  openSheet({ km, secs, source });
+}
+function resetRun() { run.dist = 0; run.acc = 0; lastSec = -1; setRunState('idle'); $('#runKm').textContent = '0,00'; $('#runTime').textContent = '00:00'; $('#pace').textContent = `–'––"`; $('#oProg').style.strokeDashoffset = 791.7; setSignal(0, run.mode === 'gps' ? 'GPS en espera' : 'Modo demo listo'); }
+
+/* ---- Sheet ---- */
+let pending = null;
+function openSheet(p) {
+  pending = p; const manual = p.source === 'manual';
+  $('#sheetTitle').textContent = manual ? t('sheetManual') : t('sheetTitle');
+  $('#sheetSub').textContent = manual ? 'Para actividades que hiciste sin el celular.' : `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
+  $('#kmInput').value = fmt(p.km || (manual ? 3 : 0), 2);
+  $('#durRow').style.display = manual ? '' : 'none';
+  $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
+  requestAnimationFrame(() => segPill($('#typeSeg')));
+  setTimeout(() => $('#saveBtn').focus({ preventScroll: true }), 350);
+}
+function closeSheet() { $('#backdrop').classList.remove('on'); const s = $('#sheet'); s.classList.remove('on'); s.style.transform = ''; }
+const kmVal = () => Math.max(0, parseFloat(($('#kmInput').value || '0').replace(',', '.')) || 0);
+function nudge(d) { const v = Math.max(0, Math.round((kmVal() + d) * 100) / 100); const i = $('#kmInput'); i.value = fmt(v, 2); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); vib(5); }
+[['#kmMinus', -0.1], ['#kmPlus', 0.1]].forEach(([sel, d]) => {
+  const b = $(sel); let to, iv;
+  const stop = () => { clearTimeout(to); clearInterval(iv); };
+  b.addEventListener('pointerdown', () => { nudge(d); let speed = 160; to = setTimeout(function rep() { nudge(d); speed = Math.max(40, speed * .85); iv = setTimeout(rep, speed); }, 380); });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, () => { clearTimeout(to); clearTimeout(iv); }));
+  b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
+});
+bindSeg($('#typeSeg'));
+$('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
+$('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
+$('#discardBtn').addEventListener('click', () => { const fromRun = pending && pending.source !== 'manual'; closeSheet(); pending = null; if (fromRun) resetRun(); toast('Actividad descartada'); });
+$('#saveBtn').addEventListener('click', e => {
+  const km = Math.round(kmVal() * 100) / 100;
+  if (km <= 0) { const i = $('#kmInput'); i.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(8px)' }, { transform: 'none' }], { duration: 300 }); vib([20, 30, 20]); return; }
+  const type = $('#typeSeg [aria-pressed="true"]').dataset.type;
+  const secs = pending.source === 'manual' ? (parseInt($('#durInput').value, 10) || 0) * 60 : pending.secs;
+  const before = myKm();
+  S.acts.unshift({ id: Date.now(), km, secs, type, source: pending.source, date: new Date().toISOString() }); save();
+  const [x, y] = centerOf(e.currentTarget);
+  flyNumber(`+${fmt(km, 2)}`, x, y);
+  closeSheet(); const wasRun = pending.source !== 'manual'; pending = null; if (wasRun) resetRun();
+  goto('home');
+  setTimeout(() => { renderAll(true); burst(x, y - 80, 18); toast(t('saved', { km: fmt(km, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
+});
+function flyNumber(txt, x, y) {
+  if (reduce) return; const el = document.createElement('div'); el.className = 'fly-num num'; el.textContent = txt;
+  el.style.left = x - 40 + 'px'; el.style.top = y - 30 + 'px'; $('#app').appendChild(el);
+  requestAnimationFrame(() => { el.style.transform = 'translate(-60px,-420px) scale(.6)'; el.style.opacity = '0'; });
+  setTimeout(() => el.remove(), 1000);
+}
+/* drag-to-close */
+(() => {
+  const s = $('#sheet'); let y0 = null, dy = 0;
+  $('#grab').addEventListener('pointerdown', e => { y0 = e.clientY; s.classList.add('dragging'); $('#grab').setPointerCapture(e.pointerId); });
+  $('#grab').addEventListener('pointermove', e => { if (y0 == null) return; dy = Math.max(0, e.clientY - y0); s.style.transform = `translateY(${dy}px)`; });
+  $('#grab').addEventListener('pointerup', () => { s.classList.remove('dragging'); if (dy > 110 && pending && pending.source === 'manual') { closeSheet(); pending = null; } else s.style.transform = ''; y0 = null; dy = 0; });
+})();
+
+/* ---- Milestones ---- */
+let unlockQueue = [];
+function checkMilestones(before) {
+  const now = myKm();
+  MILESTONES.forEach((m, i) => { if (before < m && now >= m && !S.unlocked.includes(m)) { S.unlocked.push(m); unlockQueue.push(i); } });
+  save(); if (unlockQueue.length) setTimeout(showUnlock, 900);
+}
+function showUnlock() {
+  const i = unlockQueue.shift(); if (i == null) return;
+  $('#unlockName').textContent = C().m[i]; $('#unlockTxt').textContent = `${MILESTONES[i]} km · ${C().mTxt[i]}`;
+  $('#unlock').classList.add('on'); vib([20, 50, 20, 50, 40]);
+  setTimeout(() => { const [x, y] = centerOf($(`.unlock-card .big-ico.${theme() === 'halloween' ? 'hw' : 'bs'}`)); burst(x, y, 30); }, 350);
+  $('#unlockOk').focus({ preventScroll: true });
+}
+$('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('on'); if (unlockQueue.length) setTimeout(showUnlock, 450); else setTimeout(() => goto('ach'), 300); });
+
+/* ---- Onboarding ---- */
+(() => {
+  const onb = $('#onb'); let step = 0; const draft = { name: '', team: null, goal: 10 };
+  $('#teamPick').innerHTML = TEAMS.map(x => `<button class="team-opt" role="radio" aria-checked="false" data-id="${x.id}" style="--team:${teamVar(x.id)};--team-ink:${teamInk(x.id)}">
+    <span class="check"><svg width="14" height="14"><use href="#i-check"/></svg></span>
+    <span class="team-badge" style="--team:${teamVar(x.id)}">${x.short}</span><b>${x.name}</b><small>${x.members} personas</small></button>`).join('');
+  $('#goalPick').innerHTML = GOALS.map(g => `<button class="goal-opt" role="radio" aria-checked="${g === 10}" data-g="${g}"><b class="num">${g}</b><small>km en total</small></button>`).join('');
+  const valid = () => step === 0 ? draft.name.trim().length > 1 : step === 1 ? !!draft.team : true;
+  const sync = () => {
+    $$('.onb-step').forEach((s, i) => { s.classList.toggle('on', i === step); s.classList.toggle('past', i < step); });
+    $$('.onb-dots i').forEach((d, i) => d.classList.toggle('on', i === step));
+    $('#onbBack').hidden = step === 0; $('#onbNext').disabled = !valid();
+    $('#onbNext').textContent = step === 2 ? 'Empezar' : 'Seguir';
+  };
+  $('#onbName').addEventListener('input', e => { draft.name = e.target.value; sync(); });
+  $('#onbName').addEventListener('keydown', e => { if (e.key === 'Enter' && valid()) $('#onbNext').click(); });
+  $('#teamPick').addEventListener('click', e => { const b = e.target.closest('.team-opt'); if (!b) return;
+    draft.team = b.dataset.id; $$('.team-opt').forEach(x => x.setAttribute('aria-checked', x === b)); vib(10);
+    const [x, y] = centerOf($('.team-badge', b)); if (theme() === 'halloween') burst(x, y, 6); sync(); });
+  $('#goalPick').addEventListener('click', e => { const b = e.target.closest('.goal-opt'); if (!b) return;
+    draft.goal = +b.dataset.g; $$('.goal-opt').forEach(x => x.setAttribute('aria-checked', x === b)); vib(8); });
+  $('#onbBack').addEventListener('click', () => { step = Math.max(0, step - 1); sync(); });
+  $('#onbNext').addEventListener('click', () => {
+    if (!valid()) return;
+    if (step < 2) { step++; sync(); if (step === 0) $('#onbName').focus(); return; }
+    S.user = { name: draft.name.trim(), team: draft.team, goal: draft.goal }; save();
+    renderAll(false); onb.classList.add('out'); vib([15, 30, 15]);
+    setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#avatar')); burst(x, y, 14); }, 500);
+  });
+  if (S.user) onb.style.display = 'none'; else sync();
+})();
+
+$('#avatar').addEventListener('click', () => { const [x, y] = centerOf($('#avatar')); burst(x, y, 8); });
+$('#resetBtn').addEventListener('click', () => {
+  if (!confirm('¿Borrar tu progreso y volver a empezar?')) return;
+  localStorage.removeItem(KEY); location.reload();
+});
+
+/* ---- Init ---- */
+document.body.dataset.theme = S.theme || 'halloween';
+applyCopy(); setRunState('idle'); renderAll(false);
+requestAnimationFrame(() => $$('.seg').forEach(segPill));
+window.addEventListener('resize', () => { $$('.seg').forEach(segPill); applyCopy(); });
+document.fonts && document.fonts.ready.then(() => { $$('.seg').forEach(segPill); applyCopy(); });
+})();
+</script>
+</body>
+</html>
