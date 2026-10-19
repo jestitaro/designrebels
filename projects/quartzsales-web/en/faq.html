@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <title>QuartzSales</title>
+        <link rel="shortcut icon" href="../images/favicon.ico">
+        <link href="../styles/flexslider.css" rel="stylesheet" type="text/css">
+        <link href="../styles/styles.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+        <!-- <script>
+            let usrLang = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();
+            let urlPath = window.location.pathname;
+            let isEn = 0;
+            let cookieData = getCookie('qs_lang');
+
+            // If there is cookie data, the language shouldn't be overwritten
+            if (cookieData === undefined) {
+                // Check browser language
+                if (usrLang.indexOf("es") > -1) {
+                } else {
+                    isEn = 1;
+                }
+
+                // Redirect if needed
+                if (isEn) {
+                    window.location.href = 'https://www.quartzsales.com/en';
+                } else {
+                    window.location.href = 'https://www.quartzsales.com/es';
+                }
+            }
+
+            // Cookie logic
+            function setCookie(cName, cValue, expDays) {
+                let date = new Date();
+                date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+            }
+
+            function getCookie(cName) {
+                const name = cName + "=";
+                const cDecoded = decodeURIComponent(document.cookie); //to be careful
+                const cArr = cDecoded.split('; ');
+                let res;
+                cArr.forEach(val => {
+                    if (val.indexOf(name) === 0) res = val.substring(name.length);
+                })
+                return res;
+            }
+        </script>-->
+        <script src="https://kit.fontawesome.com/4240add9be.js" crossorigin="anonymous"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115919076-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-115919076-1');
+        </script>
+
+        <!-- Hotjar Tracking Code for https://www.e-saurio.com/ -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:2558543,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.js"></script>
+    </head>
+    <body>
+        <input type="checkbox" id="theme-toggle" class="theme-toggle">
+        <label for="theme-toggle" class="theme-switch"></label>
+        <div class="theme-label">Dark Mode</div>
+        <div class="content">
+            <div id="main">
+        
+            <!-- Header --> 
+                <header class="animate__animated animate__fadeInDown">
+                    <div class="menu-mobile-container">
+                        <!--<a href="https://www.quartzsales.com/"><svg height="30px"></svg></a> -->
+                        <a href="https://www.quartzsales.com/en/"><img src="../images/logo-qs.svg" alt="Home de QuartzSales"></a>
+                        <input class="menu-btn" type="checkbox" id="menu-btn">
+                        <label class="menu-icon-container" for="menu-btn"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+                        <ul class="navbar-mobile">
+                            <li>
+                                <div id="language-mobile">
+                                    <ul>
+                                        <li><a class="active lang-btn lang-en" href="/en/faq.html"><i class="flag-icon flag-icon-us"></i> English</a></li>
+                                        <li><a href="/es/faq.html"><i class="flag-icon flag-icon-es"></i> Español</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a class="mobile-menu-item" href="https://www.quartzsales.com/en/#customers">Clients</a></li>
+                            <li><a class="mobile-menu-item" href="https://www.quartzsales.com/en/#success-stories">Case studies</a></li>
+                            <li><a class="mobile-menu-item" href="https://www.quartzsales.com/en/#differential">Solutions</a></li>
+                            <li><a style="color:#7025E0;">FAQ</a></li>
+                            <li><a class="mobile-menu-item" href="https://blog.quartzsales.com/" target="_blank">Blog</a></li>
+                            <li><a class="mobile-menu-item" href="https://www.quartzsales.com/en/#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <nav>
+                        <ul class="navbar">
+                            <li><a href="https://www.quartzsales.com/en/#customers">Cliente</a></li>
+                            <li><a href="https://www.quartzsales.com/en/#success-stories">Case studies</a></li>
+                            <li><a href="https://www.quartzsales.com/en/#differential">Solutions</a></li>
+                            <li><a style="color:#7025E0;">FAQ</a></li>
+                            <li><a href="https://blog.quartzsales.com/" target="_blank">Blog</a></li>
+                            <li><a href="https://www.quartzsales.com/en/#contact">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <div class="demo">
+                        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                            <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                            <a class="link-mode" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/alessio-uyema/30min'});return false;" role="button">Schedule meeting</a>
+                    </div>
+                </header>
+
+            <!-- FAQS --> 
+            <section id="questions">
+                <div class="container">
+                        <h1>FAQ</h1>
+          
+                        <ul>
+                            <li>
+                              <input type="checkbox" checked>
+                              <i></i>
+                              <h2>What is QuartzSales?</h2>
+                              <p>QuartzSales is a mobile and web software solution designed to achieve the perfect store and optimize retail execution. Our mobile and web software provides a user-friendly and intuitive platform that allows you to organize your processes efficiently. With QuartzSales, you can enhance communication and management of your sales team, obtain detailed information about the point of sale (360 POS), and centralize relevant information to have a strategic overview at all times. Trust QuartzSales to take your retail execution to the next level.</p>
+                            </li>
+
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>What are the benefits of using QuartzSales?</h2>
+                                    <p><strong>Efficiency:</strong> QuartzSales allows you to optimize your processes, resulting in increased productivity and time savings for your team.</p>
+                                    <p><strong>Informed Decision Making:</strong> With a comprehensive and detailed view of your POS' performance, you can make strategic decisions based on real and objective data.</p>
+                                    <p><strong>Adaptability and Customization:</strong> QuartzSales platform can be tailored to your specific needs and is fully customizable, providing you with the flexibility to align it with your business model and internal processes.</p>
+                                    <p><strong>Enhanced Visibility at the Point of Sale:</strong> With QuartzSales, you can closely track your visits to the points of sale, ensuring proper product display and maximizing visibility to boost sales.</p>
+                                    <p><strong>Collaboration and Effective Communication:</strong> QuartzSales facilitates communication and collaboration among different teams in your company, ensuring a constant flow of information and enabling efficient execution of your trade marketing strategies.</p>
+                                </li>  
+                            
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>What are the key features of QuartzSales?</h2>
+                                    <p>Here are some of the key features of QuartzSales:</p>
+                                    <p><br><strong>Retail Execution:</strong></p>
+                                    <p><br><strong>Routing and Visits:</strong> Maximize your sales team's efficiency by optimizing their routes and accurately tracking their visits to the points of sale.</p>
+                                    <p><strong>Forms and Data Capture:</strong> Record and collect important data in the field. Obtain key information on stockouts, share of shelf, pricing, and displays to make informed and strategic decisions.</p>
+                                    <p><strong>Planograms:</strong> Design and manage customized planograms to improve the arrangement of your products at the point of sale. Increase brand visibility and enhance sales opportunities with optimal shelf presentation.</p>
+                        
+                                    <p><br><strong>Communication and Sales Team Management:</strong></p>
+                                    <p><br><strong>News:</strong> Keep your sales team informed about the latest company news, new products, and relevant promotions. We help you ensure smooth communication and keep your team well-informed to drive success in their sales activities.</p>
+                                    <p><strong>Goals and Incentives:</strong> Through QuartzSales, establish and communicate clear and measurable goals to your sales team. Foster exceptional performance by offering attractive incentives and rewards that drive their performance towards outstanding results.</p>
+                                    <p><strong>Training:</strong> Drive the professional growth of your sales team through effective training and continuous updates. Enhance their skills and knowledge, equipping them with the best tools and strategies to achieve success in their tasks.</p>
+                                    <p><strong>Licenses and Replacements:</strong> Simplify the management of licenses and permissions with QuartzSales. Ensure efficient allocation of replacements when needed, maintain work continuity, and avoid disruptions in your business activities.</p>
+                                    
+                                    <p><br><strong>360 POS · Comprehensive Point of Sale Information from Every Angle.</strong></p>
+                                    <p><br><strong>Indicators:</strong> Access key indicators such as OSA, SoS, operational efficiency, product assortment, launches, pricing, sales, among others. Gain relevant information that aids strategic decision-making and improves business performance.</p>
+                                    <p><strong>Work Team:</strong> Manage and visualize information about your work team, including contact details, roles, and responsibilities. Maintain effective communication and optimize coordination among team members.</p>
+                                    <p><strong>Portfolio, Efficient Assortment, and Must-Haves:</strong> Analyze and optimize your product portfolio, ensuring an efficient assortment and highlighting the essential products for each point of sale. Improve brand visibility and positioning.</p>
+                                    <p><strong>Notes:</strong> Record and access important notes related to each point of sale. Maintain a history of relevant information for informed decision-making.</p>
+                                    <p><strong>Expirations:</strong> Track product expirations and prevent stock loss due to expired items. Maintain precise control of products at the point of sale and optimize inventory rotation.</p>
+                                    <p><strong>Sales and Product Stock:</strong> Visualize and analyze sales and stock levels at each point of sale. Obtain real-time information that helps you make data-driven decisions and optimize inventory management.</p>
+
+                                    <p><br><strong>Centralized Information:</strong></p>
+                                    <p><strong>Chain Sellout and Stock:</strong> Access up-to-date data on sales and stock levels in different retail chains. Obtain a comprehensive view of commercial performance and optimize inventory management at each location.</p>
+                                    <p><strong>Predictive Analysis and Intelligent Task Generation:</strong> QuartzSales utilizes predictive analysis to generate intelligent tasks that optimize sales operations. Improve your team's efficiency and maximize your results.</p>
+                                    <p><strong>Artificial Intelligence for Product and Price Recognition:</strong> QuartzSales applies artificial intelligence technology to quickly and accurately recognize products and prices. Streamline the information capture process, reduce errors, and improve data accuracy.</p>
+                                    <p><strong>Integration with BI Platforms:</strong> Seamlessly integrate your software with Business Intelligence (BI) platforms to leverage the collected data to its fullest potential. Generate advanced reports and analysis that provide strategic information for decision-making.</p>
+                            </li>
+
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>Is QuartzSales compatible with other tools and systems?</h2>
+                                    <p>Yes, QuartzSales is compatible with other commonly used tools and systems in the business environment. Our platform is designed to seamlessly integrate with CRM (Customer Relationship Management), ERP (Enterprise Resource Planning), and other software solutions you may already be using in your company.</p>
+                                    <p><br>At QuartzSales, we understand the importance of working together with other tools and systems, so we strive to provide a versatile and compatible platform that adapts to the specific needs and requirements of your company.</p>
+                            </li>  
+                            
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>How can I request a QuartzSales demonstration?</h2>
+                                    <p>To learn more and explore how our solution can help you build the perfect store, we invite you to visit our website and request a meeting.</p>
+                                    <p><br>Our team will be delighted to assist you, answer all your questions, and provide a detailed demonstration of how QuartzSales can adapt to your specific needs.</p>
+                            </li>
+                            
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>Does QuartzSales offer technical support and training?</h2>
+                                    <p>Yes, at QuartzSales, we provide comprehensive technical support and training to ensure that our clients get the most out of our platform.</p>
+                            </li>  
+
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>Is QuartzSales a customizable solution?</h2>
+                                    <p>Yes, QuartzSales is a highly customizable solution that can be tailored to the specific needs of each company. We recognize that every organization has unique requirements, so we offer the ability to customize the platform according to your preferences and business processes.</p>
+                            </li> 
+
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>Does QuartzSales work offline?</h2>
+                                    <p>Yes, QuartzSales is designed to work both online and offline, allowing you to access and use the platform even when you have no internet connection.</p>
+                            </li>
+
+                            <li>
+                                <input type="checkbox" checked>
+                                    <i></i>
+                                    <h2>Does QuartzSales work on Android and iOS?</h2>
+                                    <p>QuartzSales is compatible with both Android and iOS devices, providing you with the flexibility to use the platform regardless of the preferred operating system.</p>
+                            </li>
+                        </ul>        
+                </div>
+            </section>
+
+            <!-- Footer --> 
+            <footer>
+                <div id="button-container">
+                    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                    <a class="button" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/alessio-uyema/30min'});return false;" role="button">Schedule a meeting</a>
+                </div>
+                <div id="canvas-container"></div>
+                <div id="contact" class="footer-container">
+                    <div id="language">
+                        <ul>
+                            <li><a class="active lang-btn lang-en" href="/en/faq.html"><i class="flag-icon flag-icon-us"></i> English</a></li>
+                            <li><a href="/es/faq.html"><i class="flag-icon flag-icon-es"></i> Español</a></li>
+                        </ul>
+                    </div>
+                    <div class="information">
+                        <div class="direction">
+                            <p>8333 NW 53rd Street, Suite 450. Miami. Florida. EE.UU</p>
+                            <p><a href="tel:+13057672777">+1 (305) 767-2777</a></p>
+                            <p><a href="mailto:info@quartzsales.com"> info@quartzsales.com</a></p>
+                        </div>
+                    </div>
+                    <div class="social">
+                        <div class="logo-footer">
+                            <img src="../images/logo-qs.svg" alt="Logotipo QuartzSales">
+                        </div>
+                        <div class="socialmedia">
+                            <a href="https://www.linkedin.com/showcase/quartz-sales" target="blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/quartzsales/" target="blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            </div>
+
+        <script src="../js/lenguage.js"></script>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/jquery.flexslider-min.js"></script>
+        <script src="../js/main.js?v=4"></script>
+        <script src="../js/hyper.js"></script>
+
+        <script>
+            function expandDiv(elemento) {
+                // Agrega la clase "expandido" al div para aplicar los estilos de expansión
+                elemento.classList.toggle("expandido");
+            }
+        </script>
+
+        <!--Principio del widget de globo de Calendly
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <script>window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/e-saurio/15min', text: 'Programar reunión', color: '#0BABC8', textColor: '#ffffff', branding: true }); }</script>
+        -->
+        
+        </div>
+    </body>
+</html>

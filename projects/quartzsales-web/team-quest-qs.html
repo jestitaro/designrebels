@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>QuartzSales · Team Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+<style>
+  :root{
+    --qs-dark:#130D5D;
+    --grad-start:#3C9FF1;
+    --grad-mid:#463DE1;
+    --grad-end:#7025E0;
+    --gradient: linear-gradient(135deg, var(--grad-start) 0%, #3C96EF 3%, var(--grad-mid) 42%, #5932E0 60%, #6A28E0 83%, var(--grad-end) 100%);
+    --surface:#ffffff;
+    --surface-alt:#f8fafc;
+    --surface-soft:#f1f5f9;
+    --surface-100:#f3f4f6;
+    --surface-200:#e5e7eb;
+    --border:#e2e8f0;
+    --text:#1e293b;
+    --text-900:#111827;
+    --text-500:#6b7280;
+    --text-400:#9ca3af;
+    --text-muted:#64748b;
+    --success:#16a34a;
+    --danger:#dc2626;
+    --radius-lg:20px;
+    --radius-md:14px;
+    --radius-sm:10px;
+    --shadow-card: 0 1px 2px rgba(19,13,93,.04), 0 8px 24px rgba(19,13,93,.08);
+    --shadow-hover: 0 4px 10px rgba(19,13,93,.06), 0 16px 36px rgba(19,13,93,.12);
+    --font:'Nunito',sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{height:100%; overflow:hidden;}
+  body{
+    font-family:var(--font);
+    color:var(--text);
+    background:var(--surface-alt);
+    height:100%;
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+  }
+  button{font-family:inherit;}
+  a{color:inherit;}
+
+  /* ═══ HEADER ═══ */
+  .app-header{
+    z-index:50; flex-shrink:0;
+    border-bottom:1px solid var(--border);
+  }
+  .app-header-inner{
+    max-width:1120px; margin:0 auto;
+    display:flex; align-items:center; gap:12px;
+    padding:14px 20px;
+  }
+  .app-header img{height:28px; width:auto;}
+  .app-header .brand-text{font-weight:900; font-size:15px; color:var(--qs-dark); letter-spacing:.2px;}
+  .app-header .hdr-divider{width:1px; height:18px; background:var(--border); margin:0 2px;}
+  .app-header .brand-quest{
+    font-weight:800; font-size:15px;
+    background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .progress-track{height:4px; background:var(--surface-soft); position:relative; overflow:hidden; flex-shrink:0;}
+  .progress-fill{height:100%; width:0%; background:var(--gradient); transition:width .45s cubic-bezier(.4,0,.2,1);}
+
+  /* ═══ LAYOUT ═══ */
+  .app-shell{
+    max-width:1120px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 220px; grid-template-rows:minmax(0,1fr);
+    align-items:stretch;
+    gap:0 28px; padding:12px 20px 0;
+    flex:1; min-height:0; overflow:hidden;
+  }
+  @media (max-width:860px){
+    /* Viewport bloqueado: la card tiene alto fijo y el contenido scrollea adentro */
+    body{height:100vh; height:100dvh;}
+    .app-shell{grid-template-columns:1fr; grid-template-rows:minmax(0,1fr); padding:0 14px;}
+    .stage{padding:12px 0;}
+    .step{width:100%; min-width:0;}
+    #stepsContainer{display:contents;}
+    .card-body{padding:22px 18px; -webkit-overflow-scrolling:touch;}
+    .intro-card{justify-content:flex-start; padding:32px 20px 40px;}
+    /* Footer sticky dentro de la card: Siguiente arriba, Atrás abajo, full width */
+    .step-actions{
+      flex-direction:column-reverse; gap:10px;
+      padding:12px 18px calc(12px + env(safe-area-inset-bottom));
+    }
+    .step-actions .spacer{display:none;}
+    .step-actions .btn{width:100%; justify-content:center;}
+    .step-counter{order:1;}
+  }
+
+  /* ═══ SIDE NAV — estilo onboarding ═══ */
+  .side-nav{align-self:start; padding:20px 0; order:2; overflow-y:auto; max-height:100%;}
+  .side-nav-header{display:flex; align-items:center; gap:14px; margin-bottom:4px;}
+  .side-nav-icon{
+    width:32px; height:32px; border-radius:50%;
+    border:1px solid var(--surface-200); background:#fff;
+    display:grid; place-items:center; flex-shrink:0; position:relative; z-index:10;
+  }
+  .side-nav-icon i{font-size:.7rem; color:var(--text-900);}
+  .side-nav-header span{color:var(--text-500); font-size:.88rem;}
+  .toc-list{position:relative; list-style:none;}
+  .toc-line{position:absolute; left:16px; top:-20px; width:1px; background:var(--surface-200); pointer-events:none;}
+  .toc-indicator{
+    position:absolute; left:16px; width:2px; border-radius:4px;
+    background:var(--text-900); height:24px;
+    transition:transform .3s ease, opacity .3s ease;
+    transform:translateY(13px) translateX(-0.5px);
+    opacity:0;
+  }
+  .toc-endcap{
+    position:absolute; left:16px; width:8px; height:8px; border-radius:50%;
+    background:var(--surface-200); transform:translateX(-3px); z-index:10;
+  }
+  .toc-item{
+    display:flex; align-items:center; gap:20px; height:44px; cursor:pointer;
+    color:var(--text-500); font-size:.82rem; transition:color .15s; font-weight:400;
+    border:none; background:none; width:100%; text-align:left; font-family:var(--font); padding:0;
+  }
+  .toc-item .spacer-col{width:32px; flex-shrink:0;}
+  .toc-item span:last-child{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .toc-item.is-active{color:var(--text-900); font-weight:600;}
+  .toc-item.is-done{color:var(--text-900);}
+  @media (max-width:860px){.side-nav{display:none;}}
+
+  /* ═══ MOBILE FAB + DRAWER ═══ */
+  .toc-fab{
+    position:fixed; bottom:20px; right:20px; z-index:200;
+    width:48px; height:48px; border-radius:50%;
+    background:var(--gradient); color:#fff; border:none; cursor:pointer;
+    box-shadow:0 4px 16px rgba(70,61,225,.45);
+    display:none; align-items:center; justify-content:center;
+    font-size:1.1rem; transition:transform .2s;
+  }
+  .toc-fab:hover{transform:scale(1.08);}
+  @media (max-width:860px){
+    /* En mobile el botón de índice va al header, no puede flotar sobre el footer sticky */
+    .toc-fab{
+      display:flex;
+      top:10px; right:14px; bottom:auto;
+      width:36px; height:36px; font-size:.9rem;
+      background:#fff; color:var(--qs-dark);
+      border:1px solid var(--border); box-shadow:none;
+    }
+  }
+  .toc-drawer{position:fixed; inset:0; z-index:300; display:none;}
+  .toc-drawer.open{display:block;}
+  .toc-drawer-overlay{position:absolute; inset:0; background:rgba(0,0,0,.4);}
+  .toc-drawer-panel{
+    position:absolute; bottom:0; left:0; right:0;
+    background:#fff; border-radius:16px 16px 0 0;
+    padding:20px 20px 32px; max-height:75vh; overflow-y:auto;
+  }
+  .toc-drawer-handle{width:40px; height:4px; border-radius:2px; background:var(--surface-200); margin:0 auto 20px;}
+  .toc-drawer-title{
+    font-size:.78rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--text-400); margin-bottom:12px;
+  }
+  .drawer-nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 8px; cursor:pointer; font-size:.88rem;
+    color:var(--text); font-weight:500; border-radius:6px;
+    transition:background .12s, color .12s; text-decoration:none;
+    border:none; background:none; width:100%; text-align:left; font-family:var(--font);
+  }
+  .drawer-nav-item:hover{background:rgba(99,102,241,.08); color:var(--qs-dark);}
+  .drawer-nav-item.is-active{background:rgba(99,102,241,.08); color:var(--qs-dark); font-weight:700;}
+  .drawer-nav-item .dnum{
+    min-width:22px; height:22px; border-radius:50%;
+    background:var(--surface-100); display:grid; place-items:center;
+    font-size:.62rem; font-weight:700; color:var(--text-500); flex-shrink:0;
+  }
+  .drawer-nav-item.is-active .dnum{background:var(--gradient); color:#fff;}
+
+  /* ═══ MAIN / CARDS ═══ */
+  .stage{
+    min-width:0; min-height:0; order:1;
+    height:100%;
+    padding:12px 0;
+    display:flex;
+    justify-content:center;
+    width:100%;
+  }
+  .step{display:none; height:100%; width:700px; max-width:100%; min-height:0; flex-shrink:1;}
+  .step.is-active{display:flex; flex-direction:column; min-height:0; animation:stepIn .35s ease;}
+  @keyframes stepIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+  .card{
+    background:var(--surface); border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card); border:1px solid var(--border);
+    display:flex; flex-direction:column;
+    width:100%; height:100%; min-height:0; overflow:hidden;
+  }
+  .card-body{
+    flex:1; min-height:0; overflow-y:auto;
+    padding:32px clamp(20px,4vw,40px);
+    scrollbar-width:thin;
+  }
+  .card-body::-webkit-scrollbar{width:6px;}
+  .card-body::-webkit-scrollbar-thumb{background:var(--surface-200); border-radius:4px;}
+  .step-eyebrow{
+    font-size:11.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin:0 0 6px;
+  }
+  .step h2{margin:0 0 6px; font-size:26px; font-weight:900; color:var(--qs-dark); display:flex; align-items:center; gap:10px;}
+  .step h2 .icon{font-size:26px;}
+  .step .step-sub{margin:0 0 26px; color:var(--text-muted); font-size:14.5px; line-height:1.5;}
+
+  /* ═══ FORM FIELDS ═══ */
+  .field{margin-bottom:20px;}
+  .field:last-child{margin-bottom:0;}
+  .field-label{display:block; font-weight:700; font-size:14px; color:var(--text); margin-bottom:7px;}
+  .field-label .req{color:var(--danger); margin-left:2px;}
+  .field-note{font-size:12.5px; color:var(--text-muted); margin:5px 0 0; line-height:1.4;}
+  input[type=text], input[type=email], input[type=date], select, textarea{
+    width:100%; padding:11px 13px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
+    font-size:14.5px; font-family:var(--font); color:var(--text); background:#fff;
+    transition:border-color .15s, box-shadow .15s;
+    appearance:none; -webkit-appearance:none;
+  }
+  select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%236b7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 14px center; padding-right:36px;
+  }
+  textarea{resize:vertical; min-height:78px; line-height:1.5;}
+  input:focus, select:focus, textarea:focus{
+    outline:none; border-color:var(--grad-end);
+    box-shadow:0 0 0 3px rgba(112,37,224,.15);
+  }
+  input.has-error, select.has-error, textarea.has-error{border-color:var(--danger);}
+  .error-msg{display:none; color:var(--danger); font-size:12.5px; font-weight:700; margin-top:6px;}
+  .error-msg.show{display:block;}
+
+  .fields-row{display:grid; gap:16px;}
+  .fields-row.cols-2{grid-template-columns:1fr 1fr;}
+  .fields-row.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:560px){.fields-row.cols-2, .fields-row.cols-3{grid-template-columns:1fr;}}
+
+  .options-grid{display:flex; flex-wrap:wrap; gap:9px;}
+  .option-chip{position:relative;}
+  .option-chip input{position:absolute; opacity:0; pointer-events:none;}
+  .option-chip label{
+    display:flex; align-items:center; gap:8px; cursor:pointer;
+    border:1.5px solid var(--border); border-radius:var(--radius-sm);
+    padding:10px 14px; font-size:13.5px; font-weight:700; color:var(--text);
+    transition:border-color .15s, background .15s, color .15s;
+    white-space:nowrap;
+  }
+  .option-chip input:checked + label{border-color:var(--grad-end); background:#f5f0ff; color:var(--qs-dark);}
+  .option-chip label .dot{
+    width:16px; height:16px; border:2px solid var(--border); flex:none;
+    display:flex; align-items:center; justify-content:center; transition:border-color .15s;
+  }
+  .option-chip input[type=radio] + label .dot{border-radius:50%;}
+  .option-chip input[type=checkbox] + label .dot{border-radius:4px;}
+  .option-chip input:checked + label .dot{border-color:var(--grad-end); background:var(--gradient);}
+  .option-chip input:checked + label .dot::after{content:''; width:6px; height:6px; border-radius:50%; background:#fff;}
+  .option-chip input[type=checkbox]:checked + label .dot{border-radius:4px;}
+  .option-chip input[type=checkbox]:checked + label .dot::after{width:8px; height:8px; border-radius:2px;}
+
+  .checkbox-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:9px;}
+  .checkbox-grid .option-chip label{white-space:normal; min-height:44px;}
+
+  .range-field{display:flex; align-items:center; gap:14px;}
+  input[type=range]{flex:1; accent-color:var(--grad-end);}
+  .range-value{
+    min-width:34px; height:34px; border-radius:50%; background:var(--gradient); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex:none;
+  }
+  .range-labels{display:flex; justify-content:space-between; font-size:11.5px; color:var(--text-muted); margin-top:6px;}
+
+  .fun-banner{
+    display:flex; gap:10px; align-items:flex-start;
+    background:linear-gradient(0deg, rgba(60,159,241,.06), rgba(112,37,224,.06));
+    border:1px dashed rgba(112,37,224,.35);
+    border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:22px; font-size:13px; color:var(--qs-dark);
+  }
+  .fun-banner .emoji{font-size:18px; flex:none;}
+
+  /* ═══ INTRO ═══ */
+  .intro-card{
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    text-align:center; padding:44px clamp(20px,5vw,56px);
+  }
+  .intro-badge{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#eef2ff; color:var(--qs-dark); font-weight:800; font-size:12px;
+    padding:6px 14px; border-radius:999px; margin-bottom:18px;
+  }
+  .intro-card h1{font-size:clamp(26px,4vw,38px); margin:0 0 14px; font-weight:900; color:var(--qs-dark); line-height:1.2;}
+  .intro-card h1 .grad{background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .intro-card p.lead{color:var(--text-muted); font-size:15px; max-width:540px; margin:0 auto 28px; line-height:1.65;}
+  .intro-stats{display:flex; justify-content:center; gap:28px; margin-bottom:30px; flex-wrap:wrap;}
+  .intro-stats div{font-family:'Roboto',sans-serif;}
+  .intro-stats strong{display:block; font-size:20px; font-weight:800; color:var(--qs-dark); font-family:var(--font);}
+  .intro-stats span{font-size:12px; color:var(--text-muted);}
+  .intro-hint{font-size:12px; color:var(--text-muted); margin-top:14px; font-style:italic;}
+
+  /* ═══ BUTTONS ═══ */
+  .btn{
+    border:none; border-radius:999px; font-weight:800; font-size:14.5px; cursor:pointer;
+    padding:12px 26px; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s, box-shadow .15s, opacity .15s; font-family:var(--font);
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--gradient); color:#fff; box-shadow:0 8px 20px rgba(70,61,225,.28);}
+  .btn-primary:hover{box-shadow:0 10px 26px rgba(70,61,225,.36);}
+  .btn-primary:disabled{opacity:.45; cursor:not-allowed; box-shadow:none;}
+  .btn-ghost{background:var(--surface-soft); color:var(--qs-dark);}
+  .btn-ghost:hover{background:var(--border);}
+  .step-actions{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px clamp(20px,4vw,40px); border-top:1px solid var(--border); gap:12px;
+    flex-shrink:0;
+  }
+  .step-actions .spacer{flex:1;}
+  .step-counter{font-size:12.5px; color:var(--text-muted); font-family:'Roboto',sans-serif; font-weight:500;}
+
+  /* ═══ SUCCESS ═══ */
+  .success-card{
+    text-align:center; padding:48px clamp(20px,5vw,56px);
+    position:relative; overflow:hidden;
+  }
+  .success-emoji{font-size:56px; margin-bottom:6px; display:inline-block; animation:pop .5s cubic-bezier(.34,1.56,.64,1);}
+  @keyframes pop{0%{transform:scale(0.3); opacity:0;} 70%{transform:scale(1.1);} 100%{transform:scale(1); opacity:1;}}
+  .success-card h2{font-size:26px; font-weight:900; color:var(--qs-dark); margin:6px 0 8px; justify-content:center;}
+  .success-card p{color:var(--text-muted); font-size:14.5px; max-width:480px; margin:0 auto 28px; line-height:1.6;}
+  .confetti{position:absolute; top:-10px; border-radius:2px; opacity:.9; animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(420px) rotate(340deg); opacity:0;}}
+
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--qs-dark); color:#fff; padding:11px 20px; border-radius:999px;
+    font-size:13.5px; font-weight:700; opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+    box-shadow:0 10px 30px rgba(19,13,93,.35); z-index:100;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  @media (max-width:860px){
+    .toast{bottom:calc(178px + env(safe-area-inset-bottom)); width:max-content; max-width:calc(100vw - 40px); text-align:center;}
+  }
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <img src="https://www.quartzsales.com/images/svg_qs/iso-qs.svg" alt="" aria-hidden="true">
+    <span class="brand-text">QuartzSales</span>
+    <span class="hdr-divider"></span>
+    <span class="brand-quest">Team Quest</span>
+  </div>
+</header>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="app-shell">
+  <nav class="side-nav" id="sideNav" aria-label="Secciones del Team Quest">
+    <div class="side-nav-header">
+      <div class="side-nav-icon"><i class="fa-solid fa-list"></i></div>
+      <span>Secciones</span>
+    </div>
+    <ol class="toc-list" id="tocList">
+      <div class="toc-line" id="tocLine"></div>
+      <div class="toc-indicator" id="tocIndicator"></div>
+      <div class="toc-endcap" id="tocEndcap"></div>
+    </ol>
+  </nav>
+
+  <main class="stage">
+    <!-- INTRO -->
+    <section class="step is-active" data-step="intro">
+      <div class="card"><div class="card-body intro-card">
+        <span class="intro-badge">🎮 Edición 2026</span>
+        <h1>QuartzSales y la cámara de los <span class="grad">talentos ocultos</span>...</h1>
+        <p class="lead">En QuartzSales queremos conocernos un poco más en detalle, así que armamos este recorrido simple y divertido para completar el perfil de cada persona del equipo.</p>
+        <div class="intro-stats">
+          <div><strong>8</strong><span>secciones</span></div>
+          <div><strong>~9 min</strong><span>duración</span></div>
+          <div><strong>0</strong><span>preguntas aburridas</span></div>
+        </div>
+        <button class="btn btn-primary" id="startBtn" type="button">Abrir la cámara →</button>
+        <p class="intro-hint">Tranqui, no necesitás hablar pársel, este botón ya viene encantado.</p>
+      </div></div>
+    </section>
+    <div id="stepsContainer"></div>
+    <!-- SUCCESS -->
+    <section class="step" data-step="success">
+      <div class="card"><div class="card-body success-card" id="successCard">
+        <span class="success-emoji">🎉</span>
+        <h2>¡Cámara cerrada!</h2>
+        <p>Gracias por bancarte las preguntas raras, las decisiones difíciles y el juicio final del ananá. Ya tenemos tu perfil para conocer un poco mejor al Team QuartzSales.</p>
+      </div></div>
+    </section>
+  </main>
+</div>
+
+<button aria-label="Índice" class="toc-fab" id="tocFab" type="button"><i class="fa-solid fa-list"></i></button>
+<div class="toc-drawer" id="tocDrawer">
+  <div class="toc-drawer-overlay" id="drawerOverlay"></div>
+  <div class="toc-drawer-panel" id="drawerPanel">
+    <div class="toc-drawer-handle"></div>
+    <div class="toc-drawer-title">Secciones Team Quest</div>
+    <div id="drawerItems"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRyrNAvukXFkG4PN2gTKudeWFhvmuS2tMA-gwT7_PfnokX5_ZCYw4g9XoYODa3mwwP1A/exec";
+
+const SECTIONS = [
+  { id:'basicos', icon:'👤', title:'Datos básicos', sub:'Para saber quién sos y dónde encontrarte.',
+    fields:[
+      {id:'nombre', label:'Nombre', type:'text', required:true, inline:'row1', inlineCols:2},
+      {id:'apodo', label:'Apodo', type:'text', inline:'row1', inlineCols:2},
+      {id:'ciudad_pais', label:'Ciudad / País', type:'text', placeholder:'Ej: Melmac, Nebulosa Aldente.'},
+      {id:'cumpleanos', label:'Cumpleaños', type:'date'},
+      {id:'equipo_area', label:'Equipo / Área', type:'text', placeholder:'Ej: Auror, Maestro Jedi o Guardaparques de Jurassic Park.'},
+    ]},
+  { id:'gustos', icon:'🎬', title:'Gustos y entretenimiento',
+    sub:'Lo que ves, leés, escuchás o hacés cuando no estás quartzsaleando o hablando con Claude.',
+    fields:[
+      {id:'pelicula_favorita', label:'Película favorita', type:'text'},
+      {id:'saga_favorita', label:'Saga favorita', type:'select', options:['Star Wars','Harry Potter','Marvel','El Señor de los Anillos','Jurassic Park','Otra']},
+      {id:'serie_favorita', label:'Serie favorita', type:'text'},
+      {id:'libro_favorito', label:'Libro favorito', type:'text'},
+      {id:'videojuego_favorito', label:'Videojuego favorito', type:'text'},
+      {id:'banda_cantante', label:'Banda o cantante favorito', type:'text'},
+    ]},
+  { id:'hobbies', icon:'🎯', title:'Hobbies', sub:'Tu vida fuera de la pantalla (si es que existe).',
+    fields:[
+      {id:'hobby_principal', label:'Hobby principal', type:'text'},
+      {id:'deporte_favorito', label:'Deporte favorito', type:'text'},
+      {id:'equipo_futbol', label:'Equipo de fútbol', type:'text', inline:'equipos', inlineCols:3},
+      {id:'equipo_basquet', label:'Equipo de básquet', type:'text', inline:'equipos', inlineCols:3},
+      {id:'equipo_otro_deporte', label:'Equipo de otro deporte', type:'text', inline:'equipos', inlineCols:3},
+    ]},
+  { id:'comida', icon:'🍕', title:'Comida', sub:'El terreno más peligroso de toda la encuesta.',
+    fields:[
+      {id:'comida_favorita', label:'Comida favorita', type:'text'},
+      {id:'pizza_anana', label:'Pizza con ananá', type:'radio', options:['Sí','No'], note:'⚠️ Esta pregunta puede iniciar un debate interno. Respondé bajo tu propio riesgo.'},
+    ]},
+  { id:'personalidad', icon:'🧭', title:'Personalidad',
+    sub:'Si el ananá en la pizza abrió el debate, esta sección viene a revelar tu verdadera identidad.',
+    fields:[
+      {id:'team_invierno', label:'Team invierno', type:'radio', options:['Sí','No']},
+      {id:'playa_montana', label:'Playa o montaña', type:'radio', options:['Playa','Montaña']},
+      {id:'cafe_mate', label:'Café o mate', type:'radio', options:['Café','Mate']},
+      {id:'manana_noche', label:'Mañana o noche', type:'radio', options:['Mañana','Noche']},
+      {id:'dulce_salado', label:'Dulce o salado', type:'radio', options:['Dulce','Salado']},
+    ]},
+  { id:'trabajo', icon:'💻', title:'Trabajo', sub:'Cómo trabajás y hacia dónde querés crecer.',
+    fields:[
+      {id:'herramienta_mas_usada', label:'Herramienta que más usás', type:'text'},
+      {id:'tecnologia_favorita', label:'Tecnología favorita', type:'text'},
+      {id:'que_gusta_trabajo', label:'Qué es lo que más te gusta de tu trabajo', type:'textarea'},
+      {id:'habilidad_aprender', label:'Qué habilidad te gustaría aprender este año', type:'textarea'},
+    ]},
+  { id:'recursos', icon:'🖥️', title:'Recursos de trabajo',
+    sub:'Este bloque es para RRHH / Operaciones — nos ayuda a mejorar tu setup.',
+    fields:[
+      {id:'tipo_equipo', label:'Tipo de equipo principal', type:'select', options:['Laptop de empresa','Desktop de empresa','Equipo propio']},
+      {id:'sistema_operativo', label:'Sistema operativo', type:'select', options:['Windows 10','Windows 11','macOS','Linux','Otro']},
+      {id:'procesador', label:'Procesador', type:'text', placeholder:'Ej: Apple M1, Intel i5-11400...'},
+      {id:'ram', label:'RAM', type:'select', options:['4 GB','8 GB','16 GB','32 GB o más','No sé']},
+      {id:'monitores_adicionales', label:'Monitores adicionales', type:'select', options:['Ninguno','1','2','3 o más']},
+      {id:'otros_dispositivos', label:'Otros dispositivos', type:'checkboxes', options:['Teléfono corporativo','Teléfono personal para trabajo','Tablet','Auriculares / headset','Cámara web externa','Dock / hub USB-C']},
+      {id:'herramientas_comunicacion', label:'Herramientas de comunicación', type:'checkboxes', options:['Slack','Microsoft Teams','Google Meet','Zoom','Gmail / Google Workspace','Outlook / Microsoft 365','Notion','Confluence']},
+      {id:'herramientas_gestion', label:'Herramientas de gestión / desarrollo / diseño / IA', type:'checkboxes', options:['Jira','Trello','VS Code','JetBrains','Docker','Git / GitHub / GitLab','Postman / Insomnia','Figma','Adobe','Canva','Claude','ChatGPT','GitHub Copilot','Gemini','No uso IA']},
+      {id:'software_adicional', label:'Software adicional frecuente', type:'text'},
+      {id:'satisfaccion_recursos', label:'Satisfacción con recursos actuales', type:'range', min:1, max:5},
+      {id:'problemas_frecuentes', label:'Problemas frecuentes con recursos', type:'textarea'},
+      {id:'recurso_necesario', label:'Qué recurso necesitarías para trabajar mejor', type:'textarea'},
+    ]},
+  { id:'extra', icon:'✨', title:'Random',
+    sub:'Acá van las respuestas que no entran en ningún casillero: talentos ocultos, confesiones random, datos innecesarios pero importantes y alguna que otra verdad reveladora.',
+    fields:[
+      {id:'dato_curioso', label:'Un dato curioso sobre vos', type:'textarea'},
+      {id:'talento_oculto', label:'Un talento oculto', type:'text'},
+      {id:'sueno_pendiente', label:'Un sueño pendiente', type:'text'},
+      {id:'personaje_ficcion', label:'Si fueras un personaje de ficción, cuál serías', type:'text'},
+      {id:'cena_historia', label:'Si pudieras cenar con cualquier persona de la historia, quién sería', type:'text'},
+      {id:'a_quien_admiras', label:'A quién admirás', type:'text'},
+      {id:'sobrevalorado', label:'Quién o qué sentís que está sobrevalorado', type:'text'},
+      {id:'meme_favorito', label:'Meme favorito o que te define', type:'text', placeholder:'Pegá el link o describilo'},
+      {id:'comentarios_adicionales', label:'Comentarios adicionales', type:'textarea', placeholder:'Ej: Consejo, contraten un diseñador más cuerdo. O no...'},
+    ]},
+];
+
+const FLAT_FIELDS = SECTIONS.flatMap(s => s.fields);
+const STEP_ORDER = ['intro', ...SECTIONS.map(s => s.id), 'success'];
+const TOC_ITEM_H = 44;
+let currentIndex = 0;
+
+/* ─── RENDER ─── */
+function fieldMarkup(f){
+  const reqStar = f.required ? '<span class="req">*</span>' : '';
+  let inner = '';
+  switch(f.type){
+    case 'text': case 'email': case 'date':
+      inner = '<input type="'+f.type+'" id="'+f.id+'" name="'+f.id+'" placeholder="'+(f.placeholder||'')+'" '+(f.required?'required':'')+'>';
+      break;
+    case 'textarea':
+      inner = '<textarea id="'+f.id+'" name="'+f.id+'" placeholder="'+(f.placeholder||'')+'" '+(f.required?'required':'')+'></textarea>';
+      break;
+    case 'select':
+      inner = '<select id="'+f.id+'" name="'+f.id+'" '+(f.required?'required':'')+'><option value="">Elegí una opción</option>'+f.options.map(function(o){return '<option value="'+o+'">'+o+'</option>';}).join('')+'</select>';
+      break;
+    case 'radio':
+      inner = '<div class="options-grid">'+f.options.map(function(o,i){return '<div class="option-chip"><input type="radio" id="'+f.id+'_'+i+'" name="'+f.id+'" value="'+o+'"><label for="'+f.id+'_'+i+'"><span class="dot"></span>'+o+'</label></div>';}).join('')+'</div>';
+      break;
+    case 'checkboxes':
+      inner = '<div class="checkbox-grid">'+f.options.map(function(o,i){return '<div class="option-chip"><input type="checkbox" id="'+f.id+'_'+i+'" name="'+f.id+'" value="'+o+'"><label for="'+f.id+'_'+i+'"><span class="dot"></span>'+o+'</label></div>';}).join('')+'</div>';
+      break;
+    case 'range':
+      var mid = Math.round((f.min+f.max)/2);
+      inner = '<div class="range-field"><input type="range" id="'+f.id+'" name="'+f.id+'" min="'+f.min+'" max="'+f.max+'" value="'+mid+'"><span class="range-value" id="'+f.id+'_val">'+mid+'</span></div><div class="range-labels"><span>Poco conforme</span><span>Muy conforme</span></div>';
+      break;
+  }
+  var note = f.note ? '<p class="field-note">'+f.note+'</p>' : '';
+  var err = f.required ? '<p class="error-msg" id="err_'+f.id+'">Este campo es obligatorio.</p>' : '';
+  var forAttr = ['text','email','date','textarea','select'].indexOf(f.type)!==-1 ? ' for="'+f.id+'"' : '';
+  return '<div class="field" data-field="'+f.id+'"><label class="field-label"'+forAttr+'>'+f.label+' '+reqStar+'</label>'+inner+note+err+'</div>';
+}
+
+function buildFieldsHtml(fields){
+  var html = '', i = 0;
+  while(i < fields.length){
+    var f = fields[i];
+    if(f.inline){
+      var group = [], key = f.inline, cols = f.inlineCols || 2;
+      while(i < fields.length && fields[i].inline === key){ group.push(fields[i]); i++; }
+      html += '<div class="fields-row cols-'+cols+'">'+group.map(fieldMarkup).join('')+'</div>';
+    } else { html += fieldMarkup(f); i++; }
+  }
+  return html;
+}
+
+function renderSteps(){
+  var container = document.getElementById('stepsContainer');
+  container.innerHTML = SECTIONS.map(function(s, idx){
+    return '<section class="step" data-step="'+s.id+'"><div class="card"><div class="card-body"><p class="step-eyebrow">Misión '+(idx+1)+' de '+SECTIONS.length+'</p><h2><span class="icon">'+s.icon+'</span>'+s.title+'</h2><p class="step-sub">'+s.sub+'</p>'+(s.note?'<div class="fun-banner"><span class="emoji">💡</span><span>'+s.note+'</span></div>':'')+buildFieldsHtml(s.fields)+'</div><div class="step-actions"><button class="btn btn-ghost" type="button" data-action="back">← Atrás</button><span class="spacer"></span><span class="step-counter">'+(idx+1)+' / '+SECTIONS.length+'</span><span class="spacer"></span><button class="btn btn-primary" type="button" data-action="'+(idx===SECTIONS.length-1?'finish':'next')+'">'+(idx===SECTIONS.length-1?'Cerrar cámara de los talentos':'Siguiente →')+'</button></div></div></section>';
+  }).join('');
+
+  container.querySelectorAll('[data-action="next"]').forEach(function(btn){ btn.addEventListener('click', function(){ attemptAdvance(false); }); });
+  container.querySelectorAll('[data-action="finish"]').forEach(function(btn){ btn.addEventListener('click', function(){ attemptAdvance(true); }); });
+  container.querySelectorAll('[data-action="back"]').forEach(function(btn){ btn.addEventListener('click', goBack); });
+  container.querySelectorAll('input[type=range]').forEach(function(r){
+    r.addEventListener('input', function(){ var out = document.getElementById(r.id+'_val'); if(out) out.textContent = r.value; });
+  });
+}
+
+/* ─── NAV ─── */
+function renderNav(){
+  var items = SECTIONS.map(function(s,i){ return {idx:i, id:s.id, label:s.title, icon:s.icon}; });
+  var tocList = document.getElementById('tocList');
+  items.forEach(function(it){
+    var li = document.createElement('li');
+    li.innerHTML = '<button class="toc-item" type="button" data-jump="'+it.id+'"><span class="spacer-col"></span><span>'+it.label+'</span></button>';
+    tocList.appendChild(li);
+  });
+  document.getElementById('tocLine').style.height = (items.length * TOC_ITEM_H + 20) + 'px';
+  document.getElementById('tocEndcap').style.top = (items.length * TOC_ITEM_H - 4) + 'px';
+
+  var drawerItems = document.getElementById('drawerItems');
+  drawerItems.innerHTML = items.map(function(it){
+    return '<button class="drawer-nav-item" type="button" data-jump="'+it.id+'"><span class="dnum">'+(it.idx+1)+'</span> '+it.label+'</button>';
+  }).join('');
+
+  document.querySelectorAll('[data-jump]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var targetIdx = STEP_ORDER.indexOf(btn.getAttribute('data-jump'));
+      if(targetIdx > 0){
+        if(!document.querySelector('[data-step="basicos"]')){ renderSteps(); loadDraft(true); }
+        goToStep(targetIdx); closeDrawer();
+      }
+    });
+  });
+}
+
+function updateTocIndicator(){
+  var sectionIdx = currentIndex - 1;
+  var indicator = document.getElementById('tocIndicator');
+  if(sectionIdx >= 0 && sectionIdx < SECTIONS.length){
+    indicator.style.opacity = '1';
+    indicator.style.transform = 'translateY('+(sectionIdx * TOC_ITEM_H + 13)+'px) translateX(-0.5px)';
+  } else {
+    indicator.style.opacity = '0';
+  }
+  document.querySelectorAll('.side-nav .toc-item').forEach(function(item, i){
+    item.classList.toggle('is-active', i === sectionIdx);
+    item.classList.toggle('is-done', i < sectionIdx);
+  });
+  document.querySelectorAll('.drawer-nav-item').forEach(function(item, i){
+    item.classList.toggle('is-active', i === sectionIdx);
+  });
+}
+
+function openDrawer(){ document.getElementById('tocDrawer').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeDrawer(){ document.getElementById('tocDrawer').classList.remove('open'); document.body.style.overflow=''; }
+document.getElementById('tocFab').addEventListener('click', openDrawer);
+document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+var touchStartY = 0;
+var drawerPanel = document.getElementById('drawerPanel');
+drawerPanel.addEventListener('touchstart', function(e){ touchStartY = e.touches[0].clientY; });
+drawerPanel.addEventListener('touchend', function(e){ if(e.changedTouches[0].clientY - touchStartY > 60) closeDrawer(); });
+
+/* ─── NAVEGACIÓN ─── */
+function updateProgress(){
+  var total = STEP_ORDER.length - 1;
+  var pct = Math.min(100, Math.round((currentIndex / total) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function goToStep(index){
+  currentIndex = Math.max(0, Math.min(STEP_ORDER.length-1, index));
+  document.querySelectorAll('.step').forEach(function(sec){
+    sec.classList.toggle('is-active', sec.getAttribute('data-step') === STEP_ORDER[currentIndex]);
+  });
+  updateProgress();
+  updateTocIndicator();
+  var activeBody = document.querySelector('.step.is-active .card-body');
+  if(activeBody) activeBody.scrollTop = 0;
+  window.scrollTo(0, 0);
+  if(currentIndex > 0 && currentIndex < STEP_ORDER.length -1) saveDraft();
+}
+
+function goBack(){ goToStep(currentIndex - 1); }
+
+function attemptAdvance(isLast){
+  var stepId = STEP_ORDER[currentIndex];
+  var section = SECTIONS.find(function(s){ return s.id===stepId; });
+  var ok = true;
+  if(section){
+    section.fields.filter(function(f){ return f.required; }).forEach(function(f){
+      var el = document.getElementById(f.id);
+      var val = el ? el.value.trim() : '';
+      var errEl = document.getElementById('err_'+f.id);
+      if(!val){ ok = false; el.classList.add('has-error'); if(errEl) errEl.classList.add('show'); }
+      else { el.classList.remove('has-error'); if(errEl) errEl.classList.remove('show'); }
+    });
+  }
+  if(!ok){ showToast('Faltan datos obligatorios en esta sección'); return; }
+  saveDraft();
+  if(isLast) finishQuest(); else goToStep(currentIndex + 1);
+}
+
+document.getElementById('startBtn').addEventListener('click', function(){
+  renderSteps();
+  loadDraft(true);
+  goToStep(1);
+});
+
+/* ─── COLLECT / CSV ─── */
+function collectFormData(){
+  var data = {};
+  FLAT_FIELDS.forEach(function(f){
+    if(f.type === 'checkboxes'){
+      data[f.id] = Array.from(document.querySelectorAll('input[name="'+f.id+'"]:checked')).map(function(i){ return i.value; }).join(' | ');
+    } else if(f.type === 'radio'){
+      var sel = document.querySelector('input[name="'+f.id+'"]:checked');
+      data[f.id] = sel ? sel.value : '';
+    } else {
+      var el = document.getElementById(f.id);
+      data[f.id] = el ? el.value : '';
+    }
+  });
+  data.timestamp = new Date().toISOString();
+  return data;
+}
+
+function csvEscape(value){
+  var str = String(value == null ? '' : value);
+  if(/[",\n;]/.test(str)) return '"' + str.replace(/"/g, '""') + '"';
+  return str;
+}
+
+function buildCsv(data){
+  var headers = ['Marca temporal'].concat(FLAT_FIELDS.map(function(f){ return f.label; }));
+  var row = [data.timestamp].concat(FLAT_FIELDS.map(function(f){ return data[f.id] || ''; }));
+  return '\uFEFF' + [headers, row].map(function(r){ return r.map(csvEscape).join(','); }).join('\r\n');
+}
+
+function todayStr(){
+  var d = new Date(), pad = function(n){ return String(n).padStart(2,'0'); };
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+}
+
+function downloadCsv(){
+  var data = collectFormData();
+  var blob = new Blob([buildCsv(data)], {type:'text/csv;charset=utf-8;'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'team-quest-quartzsales-'+todayStr()+'.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  showToast('CSV descargado ✓');
+}
+
+/* ─── PERSISTENCIA ─── */
+var DRAFT_KEY = 'teamquest_draft_v2';
+function saveDraft(){
+  var data = collectFormData();
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+}
+function loadDraft(silent){
+  var raw = localStorage.getItem(DRAFT_KEY);
+  if(!raw) return;
+  try{
+    var data = JSON.parse(raw);
+    FLAT_FIELDS.forEach(function(f){
+      if(data[f.id] === undefined) return;
+      if(f.type === 'checkboxes'){
+        String(data[f.id]).split(' | ').filter(Boolean).forEach(function(val){
+          var cb = document.querySelector('input[name="'+f.id+'"][value="'+CSS.escape(val)+'"]');
+          if(cb) cb.checked = true;
+        });
+      } else if(f.type === 'radio'){
+        var rb = document.querySelector('input[name="'+f.id+'"][value="'+CSS.escape(data[f.id])+'"]');
+        if(rb) rb.checked = true;
+      } else {
+        var el = document.getElementById(f.id);
+        if(el){ el.value = data[f.id]; if(f.type === 'range'){ var out = document.getElementById(f.id+'_val'); if(out) out.textContent = data[f.id]; } }
+      }
+    });
+    if(!silent) showToast('Recuperamos tu borrador anterior');
+  }catch(e){}
+}
+function clearDraft(){ localStorage.removeItem(DRAFT_KEY); }
+
+/* ─── ENVÍO SHEETS ─── */
+function submitToSheet(data){
+  if(!APPS_SCRIPT_URL) return;
+  fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(data) }).catch(function(err){ console.warn('No se pudo enviar a Sheets:', err); });
+}
+
+/* ─── SUCCESS ─── */
+function launchConfetti(){
+  var colors = ['#3C9FF1','#7025E0','#463DE1','#5932E0'];
+  var card = document.getElementById('successCard');
+  for(var i=0;i<24;i++){
+    var el = document.createElement('span');
+    el.className = 'confetti';
+    el.style.left = Math.random()*100 + '%';
+    el.style.width = el.style.height = (4+Math.random()*5)+'px';
+    el.style.background = colors[i % colors.length];
+    el.style.animationDuration = (1.4 + Math.random()*1.1) + 's';
+    el.style.animationDelay = (Math.random()*.3)+'s';
+    card.appendChild(el);
+    setTimeout((function(e){ return function(){ e.remove(); }; })(el), 3000);
+  }
+}
+function finishQuest(){
+  var data = collectFormData();
+  goToStep(STEP_ORDER.length - 1);
+  launchConfetti();
+  submitToSheet(data);
+  clearDraft();
+}
+
+/* ─── TOAST ─── */
+function showToast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(function(){ t.classList.remove('show'); }, 2400);
+}
+
+document.addEventListener('input', function(e){
+  if(e.target.closest('.step.is-active') && STEP_ORDER[currentIndex] !== 'intro'){
+    clearTimeout(document._autosave);
+    document._autosave = setTimeout(saveDraft, 600);
+  }
+});
+
+renderNav();
+updateProgress();
+</script>
+</body>
+</html>

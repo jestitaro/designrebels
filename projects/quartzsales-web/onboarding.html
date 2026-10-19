@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>QuartzSales · Virtual Onboarding</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════
+       APOLLO TOKENS
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --primary:       #8b5cf6;
+      --primary-light: #ede9fe;
+      --primary-dark:  #6d28d9;
+      --primary-bg:    #f5f3ff;
+      --text:          #4b5563;
+      --text-900:      #111827;
+      --text-500:      #6b7280;
+      --text-400:      #9ca3af;
+      --surface-0:     #ffffff;
+      --surface-50:    #f9fafb;
+      --surface-100:   #f3f4f6;
+      --surface-200:   #e5e7eb;
+      --surface-300:   #d1d5db;
+      --surface-700:   #374151;
+      --border:        #dfe7ef;
+      --border-radius: 12px;
+      --card-shadow:   0 4px 30px rgba(221, 224, 255, .54);
+      --sidebar-shadow:0 4px 50px #D9DDFC;
+      --font:          'Poppins', sans-serif;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 14px;
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--surface-50);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100%;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════ */
+    .app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* page-wrapper: card + TOC */
+    .page-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      padding: 1.25rem;
+      height: calc(100vh - 53px);
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       MAIN CARD  (grid layout: content + TOC side by side)
+    ═══════════════════════════════════════════════════ */
+    .main-card {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      box-shadow: var(--card-shadow);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      align-items: start;
+      column-gap: 1.25rem;
+      padding: 1.25rem;
+      overflow: hidden;
+    }
+
+    /* hero wrapper: spans full grid width */
+    .hero-wrapper {
+      flex-shrink: 0;
+    }
+
+    .hero-wrapper .hero,
+    .hero {
+      width: 100%;
+      margin: 0;
+    }
+
+    /* content column scrolls */
+    .sections-scroll {
+      min-width: 0;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .sections-scroll::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    /* TOC inside card */
+    #tocWrap {
+      width: 220px;
+      min-width: 220px;
+      max-width: 220px;
+      height: calc(100vh - 53px - 2.5rem - 2px - 2.5rem);
+      align-self: start;
+      position: sticky;
+      top: 1.25rem;
+      padding: 1.25rem 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-left: 0;
+      background: transparent;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    #tocWrap::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       SECTION
+    ═══════════════════════════════════════════════════ */
+    .section {
+      padding: 2rem;
+    }
+
+    .eyebrow,
+    .section-title,
+    .section-sub {
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: .62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--primary);
+      margin-bottom: .35rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-900);
+      line-height: 1.2;
+      margin-bottom: .35rem;
+    }
+
+    .section-title .hl {
+      color: var(--primary);
+    }
+
+    .section-sub {
+      font-size: .82rem;
+      color: var(--text-500);
+      line-height: 1.65;
+      max-width: 900px;
+      margin: 0 auto 1.75rem;
+    }
+
+    .section > .btn,
+    .section > a.btn {
+      display: inline-flex;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════ */
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .25; transform: scale(.5); }
+    }
+    @keyframes twinkle-b {
+      0%, 100% { opacity: .8; transform: scale(1); }
+      60%       { opacity: .1; transform: scale(.4); }
+    }
+    @keyframes glow-pulse {
+      0%, 100% { opacity: .7; filter: blur(0px); }
+      50%       { opacity: .15; filter: blur(1px); }
+    }
+
+
+    .hero {
+      background: #080120;
+      border-radius: var(--border-radius);
+      padding: 2.5rem 3rem 0 3rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      overflow: hidden;
+      position: relative;
+      min-height: 380px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 65% at 25% 55%, rgba(139,92,246,.22) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 75% 80%, rgba(109,40,217,.15) 0%, transparent 60%);
+    }
+
+    /* Stars layer — dense field */
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        /* small dim */
+        radial-gradient(1px 1px at  5%  9%, rgba(255,255,255,.5)  0%, transparent),
+        radial-gradient(1px 1px at 12% 72%, rgba(255,255,255,.35) 0%, transparent),
+        radial-gradient(1px 1px at 18% 28%, rgba(255,255,255,.45) 0%, transparent),
+        radial-gradient(1px 1px at 24% 55%, rgba(200,200,255,.4)  0%, transparent),
+        radial-gradient(1px 1px at 31% 18%, rgba(255,255,255,.5)  0%, transparent),
+        radial-gradient(1px 1px at 37% 82%, rgba(255,255,255,.3)  0%, transparent),
+        radial-gradient(1px 1px at 43% 44%, rgba(200,200,255,.4)  0%, transparent),
+        radial-gradient(1px 1px at 49% 67%, rgba(255,255,255,.35) 0%, transparent),
+        radial-gradient(1px 1px at 56% 11%, rgba(255,255,255,.5)  0%, transparent),
+        radial-gradient(1px 1px at 62% 90%, rgba(200,200,255,.3)  0%, transparent),
+        radial-gradient(1px 1px at 68% 35%, rgba(255,255,255,.4)  0%, transparent),
+        radial-gradient(1px 1px at 74% 58%, rgba(255,255,255,.35) 0%, transparent),
+        radial-gradient(1px 1px at 80% 22%, rgba(200,200,255,.45) 0%, transparent),
+        radial-gradient(1px 1px at 86% 78%, rgba(255,255,255,.3)  0%, transparent),
+        radial-gradient(1px 1px at 92% 48%, rgba(255,255,255,.5)  0%, transparent),
+        radial-gradient(1px 1px at 97% 14%, rgba(200,200,255,.4)  0%, transparent),
+        /* medium bright */
+        radial-gradient(1.5px 1.5px at  8% 12%, rgba(255,255,255,.85) 0%, transparent),
+        radial-gradient(1.5px 1.5px at 22% 38%, rgba(255,255,255,.7)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 40%  8%, rgba(255,255,255,.65) 0%, transparent),
+        radial-gradient(1.5px 1.5px at 55% 55%, rgba(200,200,255,.8)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 70% 22%, rgba(255,255,255,.6)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 84% 75%, rgba(255,255,255,.7)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 91% 42%, rgba(200,200,255,.65) 0%, transparent),
+        radial-gradient(1.5px 1.5px at 15% 68%, rgba(255,255,255,.6)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 33% 50%, rgba(255,255,255,.55) 0%, transparent),
+        radial-gradient(1.5px 1.5px at 77% 10%, rgba(200,200,255,.7)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 48% 30%, rgba(255,255,255,.6)  0%, transparent),
+        radial-gradient(1.5px 1.5px at 60% 86%, rgba(255,255,255,.5)  0%, transparent),
+        /* large glow */
+        radial-gradient(2px 2px at 28%  5%, rgba(255,255,255,.9)  0%, transparent),
+        radial-gradient(2px 2px at 64% 16%, rgba(200,200,255,.85) 0%, transparent),
+        radial-gradient(2px 2px at 88% 60%, rgba(255,255,255,.8)  0%, transparent),
+        radial-gradient(2px 2px at  3% 45%, rgba(200,200,255,.75) 0%, transparent);
+    }
+
+    /* Twinkling layer A */
+    .hero-stars::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 19% 23%, rgba(255,255,255,.95) 0%, transparent 100%),
+        radial-gradient(2px 2px at 52% 73%, rgba(200,200,255,.95) 0%, transparent 100%),
+        radial-gradient(2.5px 2.5px at 73% 41%, rgba(255,255,255,.95) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 36% 92%, rgba(255,255,255,.8) 0%, transparent 100%),
+        radial-gradient(2.5px 2.5px at 90% 17%, rgba(200,200,255,.95) 0%, transparent 100%),
+        radial-gradient(2px 2px at 11% 51%, rgba(255,255,255,.85) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 66% 29%, rgba(200,200,255,.8) 0%, transparent 100%);
+      animation: twinkle 3.5s ease-in-out infinite;
+    }
+
+    /* Twinkling layer B — offset timing so they don't all pulse together */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 44% 14%, rgba(255,255,255,.9) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 79% 63%, rgba(200,200,255,.85) 0%, transparent 100%),
+        radial-gradient(2.5px 2.5px at 25% 85%, rgba(255,255,255,.9) 0%, transparent 100%),
+        radial-gradient(2px 2px at 58% 37%, rgba(200,200,255,.8) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 95% 82%, rgba(255,255,255,.75) 0%, transparent 100%);
+      animation: twinkle-b 4.2s ease-in-out 1.1s infinite;
+    }
+
+    /* Glow halos — soft radials that pulse, no cross shape */
+    .hero-stars::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(5px 5px at 28%  5%,  rgba(167,139,250,.6) 0%, transparent 100%),
+        radial-gradient(4px 4px at 64% 16%,  rgba(196,181,253,.5) 0%, transparent 100%),
+        radial-gradient(6px 6px at 88% 60%,  rgba(167,139,250,.55) 0%, transparent 100%),
+        radial-gradient(4px 4px at  3% 45%,  rgba(196,181,253,.45) 0%, transparent 100%),
+        radial-gradient(5px 5px at 50% 88%,  rgba(167,139,250,.5) 0%, transparent 100%),
+        radial-gradient(4px 4px at 75%  8%,  rgba(196,181,253,.55) 0%, transparent 100%);
+      animation: glow-pulse 5s ease-in-out .6s infinite;
+    }
+
+
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 440px;
+      padding-bottom: 2.5rem;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: rgba(139,92,246,.18);
+      border: 1px solid rgba(139,92,246,.3);
+      border-radius: 100px;
+      padding: .22rem .85rem;
+      font-size: .68rem;
+      font-weight: 600;
+      color: #c4b5fd;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: .9rem;
+    }
+
+    .hero h1 span { color: #a78bfa; }
+
+    .hero p {
+      font-size: .82rem;
+      color: rgba(255,255,255,.6);
+      line-height: 1.7;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 3;
+      flex-shrink: 0;
+      align-self: flex-end;
+    }
+
+    .hero-img {
+      width: 340px;
+      height: 340px;
+      object-fit: contain;
+      object-position: bottom;
+      display: block;
+      filter: drop-shadow(0 -4px 32px rgba(139,92,246,.35)) drop-shadow(0 16px 32px rgba(0,0,0,.5));
+    }
+
+    /* ═══════════════════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--font);
+      font-size: .8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: .18s;
+      border: none;
+      padding: .55rem 1.3rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(139,92,246,.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 16px rgba(139,92,246,.4);
+    }
+
+    .btn-ghost {
+      background: none;
+      color: var(--primary);
+      border: 1px solid var(--primary-light);
+    }
+
+    .btn-ghost:hover { background: var(--primary-light); }
+
+    .btn-link {
+      background: none;
+      color: var(--text-900);
+      border: none;
+      padding: 0;
+      font-size: .8rem;
+      font-weight: 600;
+      gap: .3rem;
+      cursor: pointer;
+      transition: gap .15s;
+      font-family: var(--font);
+    }
+
+    .btn-link:hover { gap: .55rem; }
+
+    /* ═══════════════════════════════════════════════════
+       FEATURE GRID
+    ═══════════════════════════════════════════════════ */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.5rem;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .feature-icon-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      background: var(--surface-100);
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      transition: background .2s, transform .2s;
+    }
+
+    .feature-item:hover .feature-icon-box {
+      background: var(--primary-light);
+      transform: translateY(-4px);
+    }
+
+    .feature-item h3 {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .4rem;
+    }
+
+    .feature-item p {
+      font-size: .78rem;
+      color: var(--text-500);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       TOOL CARDS
+    ═══════════════════════════════════════════════════ */
+    .tool-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .tool-card {
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .2s;
+    }
+
+    .tool-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+      transform: translateY(-3px);
+    }
+
+    .tool-card-header {
+      height: 110px;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+
+    .tool-card-img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+    }
+
+    .tool-card-body { padding: 1rem 1.25rem 1.25rem; }
+
+    .tool-card-body h3 {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .35rem;
+    }
+
+    .tool-card-body p {
+      font-size: .75rem;
+      color: var(--text-500);
+      line-height: 1.6;
+      margin-bottom: .75rem;
+    }
+
+    .explore-link {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-900);
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      transition: gap .15s;
+    }
+
+    .tool-card:hover .explore-link { gap: .55rem; }
+
+    /* ═══════════════════════════════════════════════════
+       STAT ACCENT GRID
+    ═══════════════════════════════════════════════════ */
+    .stat-section-head {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .stat-eyebrow {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: .35rem;
+    }
+
+    .stat-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-900);
+    }
+
+    .stats-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card-accent {
+      background: var(--primary-bg);
+      border-radius: var(--border-radius);
+      padding: 1.75rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform .2s;
+    }
+
+    .stat-card-accent:hover { transform: translateY(-3px); }
+
+    .stat-card-accent i {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: .75rem;
+    }
+
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .25rem;
+    }
+
+    .stat-label {
+      font-size: .8rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       STAT WHITE CARD
+    ═══════════════════════════════════════════════════ */
+    .stat-card-white {
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      padding: 1.75rem;
+      box-shadow: var(--card-shadow);
+    }
+
+    .stats-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
+
+    .stat-item i {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: .6rem;
+      display: block;
+    }
+
+    .stat-item .stat-big {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .3rem;
+    }
+
+    .stat-item p {
+      font-size: .75rem;
+      color: var(--text-500);
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       VALUE CARD
+    ═══════════════════════════════════════════════════ */
+    .value-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .value-card {
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      box-shadow: var(--card-shadow);
+      cursor: default;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .value-card:hover {
+      border-color: rgba(139,92,246,.3);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 36px rgba(139,92,246,.12);
+    }
+
+    .value-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), #a78bfa);
+      transform: scaleX(0);
+      transition: transform .25s;
+    }
+
+    .value-card:hover::after { transform: scaleX(1); }
+
+    .val-label {
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--primary);
+      margin-bottom: .3rem;
+    }
+
+    .value-card h3 {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .35rem;
+    }
+
+    .value-card p {
+      font-size: .75rem;
+      color: var(--text-500);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       EOS CARD
+    ═══════════════════════════════════════════════════ */
+    .eos-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .eos-card {
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      box-shadow: var(--card-shadow);
+      cursor: default;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .eos-card:hover {
+      border-color: rgba(139,92,246,.3);
+      transform: translateY(-2px);
+    }
+
+    .eos-num {
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--primary);
+      margin-bottom: .3rem;
+    }
+
+    .eos-card h3 {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .7rem;
+    }
+
+    .eos-list { list-style: none; }
+
+    .eos-list li {
+      font-size: .75rem;
+      color: var(--text-500);
+      padding: .25rem 0;
+      border-bottom: 1px solid var(--surface-100);
+      display: flex;
+      gap: .4rem;
+      line-height: 1.5;
+      align-items: flex-start;
+    }
+
+    .eos-list li:last-child { border-bottom: none; }
+
+    .eos-list li::before {
+      content: '·';
+      color: var(--primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .eos-list strong {
+      color: var(--text-900);
+      font-weight: 600;
+    }
+
+    .wow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .2rem;
+      background: #fdf4ff;
+      color: #9333ea;
+      font-size: .62rem;
+      font-weight: 700;
+      padding: .1rem .45rem;
+      border-radius: 100px;
+      border: 1px solid #e9d5ff;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       PRACTICE LIST
+    ═══════════════════════════════════════════════════ */
+    .practice-item {
+      display: flex;
+      gap: .6rem;
+      align-items: flex-start;
+      padding: .6rem .4rem;
+      border-bottom: 1px solid var(--border);
+      transition: background .12s;
+      border-radius: 4px;
+    }
+
+    .practice-item:last-child { border-bottom: none; }
+    .practice-item:hover { background: var(--surface-50); }
+
+    .practice-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      margin-top: .45rem;
+      transition: transform .15s;
+    }
+
+    .practice-item:hover .practice-dot { transform: scale(1.5); }
+
+    .practice-item p {
+      font-size: .78rem;
+      color: var(--text-500);
+      line-height: 1.6;
+    }
+
+    .practice-item strong {
+      color: var(--text-900);
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       TOOL ROW
+    ═══════════════════════════════════════════════════ */
+    .tool-row {
+      background: var(--surface-0);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .9rem 1.1rem;
+      display: flex;
+      gap: .9rem;
+      align-items: center;
+      transition: border-color .2s, transform .15s, box-shadow .2s;
+      cursor: default;
+    }
+
+    .tool-row:hover {
+      border-color: rgba(139,92,246,.25);
+      transform: translateX(4px);
+      box-shadow: 0 4px 18px rgba(139,92,246,.1);
+    }
+
+    .tool-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--primary-light);
+      display: grid;
+      place-items: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: background .18s;
+    }
+
+    .tool-row:hover .tool-icon { background: rgba(139,92,246,.2); }
+
+    .tool-row h3 {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--text-900);
+      margin-bottom: .15rem;
+    }
+
+    .tool-row p {
+      font-size: .73rem;
+      color: var(--text-500);
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       DIVIDER & UTILS
+    ═══════════════════════════════════════════════════ */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.25rem 0;
+    }
+
+    .mt-1 { margin-top: .5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .flex-col { display: flex; flex-direction: column; }
+    .gap-3 { gap: .75rem; }
+
+    /* ═══════════════════════════════════════════════════
+       SCROLLBAR (global)
+    ═══════════════════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface-50); }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(139,92,246,.25);
+      border-radius: 3px;
+    }
+
+    /* ── EOS DARK CARD (negativo, fondo violeta) ─────── */
+    .eos-dark-card {
+      background: #080120;
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .eos-dark-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 70% at 20% 50%, rgba(139,92,246,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .eos-dark-card .stats-inner { position: relative; z-index: 1; }
+
+    .eos-dark-card .stat-item i {
+      color: #a78bfa;
+    }
+
+    .eos-dark-card .stat-big {
+      color: #fff;
+    }
+
+    .eos-dark-card .stat-item p {
+      color: rgba(255,255,255,.65);
+    }
+
+    /* ═══════════════════════════════════════════════════
+       SECTION-SPECIFIC TWEAKS
+    ═══════════════════════════════════════════════════ */
+    #metodologia > div { text-align: center; }
+    #metodologia > div > div[style*="display:flex"] { justify-content: center; }
+    #metodologia > div > p[style] { margin-left: auto; margin-right: auto; }
+
+    #closing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: none;
+    }
+
+    #closing > div {
+      width: 100%;
+      max-width: 900px;
+      text-align: center;
+    }
+
+    #closing > div > p[style] {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 900px;
+    }
+
+    #organigrama a.btn, #politicas a.btn,
+    #organigrama .btn, #politicas .btn {
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       MOBILE FAB + DRAWER
+    ═══════════════════════════════════════════════════ */
+    .toc-fab {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 200;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(139,92,246,.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: transform .2s;
+    }
+
+    .toc-fab:hover { transform: scale(1.08); }
+
+    .toc-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: none;
+    }
+
+    .toc-drawer.open { display: block; }
+
+    .toc-drawer-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+    }
+
+    .toc-drawer-panel {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--surface-0);
+      border-radius: 16px 16px 0 0;
+      padding: 1.25rem 1.25rem 2rem;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .toc-drawer-handle {
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--surface-200);
+      margin: 0 auto 1.25rem;
+    }
+
+    .toc-drawer-title {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-400);
+      margin-bottom: .75rem;
+    }
+
+    .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .65rem .5rem;
+      cursor: pointer;
+      font-size: .88rem;
+      color: var(--text);
+      font-weight: 500;
+      border-radius: 6px;
+      transition: background .12s, color .12s;
+      text-decoration: none;
+    }
+
+    .drawer-nav-item:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .drawer-nav-item .dnum {
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface-100);
+      display: grid;
+      place-items: center;
+      font-size: .62rem;
+      font-weight: 700;
+      color: var(--text-500);
+      flex-shrink: 0;
+    }
+
+    .drawer-nav-group {
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text-400);
+      padding: .5rem .5rem .15rem;
+    }
+
+    /* ═══════════════════════════════════════════════════
+       RESPONSIVE  ── mobile-first breakpoints
+    ═══════════════════════════════════════════════════ */
+
+    /* ── < 640px (base / mobile) ──────────────────── */
+    @media (max-width: 639px) {
+      body { overflow: auto; height: auto; }
+      .app { height: auto; overflow: visible; }
+      .main { overflow: visible; }
+
+      .page-wrapper {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+        padding: .75rem;
+        gap: .75rem;
+      }
+
+      .main-card {
+        height: auto;
+        overflow: visible;
+        grid-template-columns: 1fr;
+        padding: .75rem;
+      }
+
+      .sections-scroll { height: auto; overflow: visible; }
+
+      .section { padding: 1.25rem 1rem; }
+      .section-title { font-size: 1.25rem; }
+
+      .hero {
+        flex-direction: column;
+        padding: 1.75rem 1.5rem 0;
+        gap: .5rem;
+        min-height: auto;
+        align-items: center;
+      }
+
+      .hero-content { max-width: 100%; padding-bottom: 0; }
+      .hero h1 { font-size: 1.75rem; }
+      .hero-visual {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-self: flex-end;
+      }
+      .hero-img { width: 280px; height: 280px; }
+
+      .feature-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
+      .eos-cards, .value-cards, .stats-grid-2col { grid-template-columns: 1fr; }
+      .tool-cards { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+
+      #tocWrap { display: none; }
+
+      .eos-dark-card .stats-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── 640px – 1023px (tablet) ──────────────────── */
+    @media (min-width: 640px) and (max-width: 1023px) {
+      body { overflow: auto; height: auto; }
+      .app { height: auto; overflow: visible; }
+      .main { overflow: visible; }
+
+      .page-wrapper {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+        padding: .75rem;
+        gap: .75rem;
+      }
+
+      .main-card {
+        height: auto;
+        overflow: visible;
+        grid-template-columns: 1fr;
+        padding: .75rem;
+      }
+
+      .sections-scroll { height: auto; overflow: visible; }
+
+      .section { padding: 1.5rem; }
+
+      .hero {
+        flex-direction: row;
+        padding: 2rem 2.5rem 0;
+        min-height: auto;
+        align-items: flex-end;
+      }
+
+      .hero-content { padding-bottom: 2rem; }
+      .hero-img { width: 260px; height: 260px; }
+      .hero h1 { font-size: 2rem; }
+      .hero-visual { width: auto; align-self: flex-end; }
+
+      .eos-cards, .value-cards, .tool-cards, .stats-grid-2col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+
+      #tocWrap { display: none; }
+      .toc-fab { display: flex; }
+    }
+
+    /* ── ≥ 1024px (desktop) ───────────────────────── */
+    @media (min-width: 1024px) {
+      .section { padding: 2rem; }
+      .hero { padding: 2.5rem 3rem 0; }
+      .hero-img { width: 340px; height: 340px; }
+      .hero h1 { font-size: 2.2rem; }
+      .feature-grid { grid-template-columns: repeat(3, 1fr); }
+      #tocWrap { display: block; }
+      .toc-fab { display: none; }
+    }
+</style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- ══ MAIN ══════════════════════════════════════ -->
+    <main class="main">
+      <div class="page-wrapper">
+        <div class="main-card">
+
+          <div class="sections-scroll" id="sectionsScroll">
+            <div class="hero-wrapper">
+              <div class="hero" id="hero">
+                <div class="hero-bg"></div>
+                <div class="hero-stars"></div>
+                <div class="hero-content">
+                  <div class="hero-badge"><i class="fa-solid fa-bolt" style="font-size:.65rem"></i> Virtual Onboarding</div>
+                  <h1>Te damos la bienvenida a <span>la era  de la revolución digital</span></h1>
+                  <p>Todo lo que necesitás saber para evolucionar en QuartzSales.</p>
+                </div>
+                <div class="hero-visual">
+                  <img alt="Bienvenida al equipo QuartzSales" class="hero-img" src="https://quartzsales.com/images/trex_v2.webp">
+                </div>
+              </div>
+            </div>
+            <!-- ── 01 HISTORIA ────────────────────────── -->
+            <section class="section" id="historia">
+              <div>
+                <p class="eyebrow">La empresa</p>
+                <h2 class="section-title">Historia &amp; <span class="hl">Quiénes somos</span></h2>
+                <!-- Timeline -->
+                <div style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin: 2rem 0 1.75rem 0;">
+                  <div style="position:absolute;top:36px;left:4%;right:4%;height:2px;background:linear-gradient(90deg,var(--primary),#a78bfa,#3b82f6)"></div>
+
+                  <div class="tl-item" style="text-align:center;cursor:default">
+                    <div style="height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;position:relative;z-index:1">
+                      <img src="https://www.quartzsales.com/images/iso-esaurio.svg" alt="e·Saurio"
+                        style="width:36px;height:36px;object-fit:contain;transition:transform .2s;margin-bottom:1rem">
+                    </div>
+                    <div style="font-size:.8rem;font-weight:700;color:var(--primary);margin-bottom:.2rem">2012</div>
+                    <p style="font-size:.7rem;color:var(--text-500);line-height:1.5">Pablo y Nicolás le dieron vida a <strong>e·Saurio.</strong></p>
+                  </div>
+
+                  <div class="tl-item" style="text-align:center;cursor:default">
+                    <div style="height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;position:relative;z-index:1">
+                      <img src="https://www.quartzsales.com/images/iso-quartzsales.svg" alt="QuartzSales"
+                        style="width:36px;height:36px;object-fit:contain;transition:transform .2s;margin-bottom:1rem">
+                    </div>
+                    <div style="font-size:.8rem;font-weight:700;color:var(--primary);margin-bottom:.2rem">2014</div>
+                    <p style="font-size:.7rem;color:var(--text-500);line-height:1.5">Nació <strong>QuartzSales.</strong> App líder en trade marketing.</p>
+                  </div>
+
+                  <div class="tl-item" style="text-align:center;cursor:default">
+                    <div style="height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;position:relative;z-index:1">
+                      <img src="https://www.quartzsales.com/images/iso-turbo.svg" alt="TURBO"
+                        style="width:36px;height:36px;object-fit:contain;transition:transform .2s;margin-bottom:1rem">
+                    </div>
+                    <div style="font-size:.8rem;font-weight:700;color:var(--primary);margin-bottom:.2rem">2022</div>
+                    <p style="font-size:.7rem;color:var(--text-500);line-height:1.5">Desarrollamos <strong>TURBO.</strong> Nuestro propio framework.</p>
+                  </div>
+
+                  <div class="tl-item" style="text-align:center;cursor:default">
+                    <div style="height:36px;display:flex;align-items:center;justify-content:center;margin-bottom:.7rem;position:relative;z-index:1">
+                      <div style="width:10px;height:10px;border-radius:50%;background:#3b82f6;border:2px solid #fff;box-shadow:0 0 0 3px #3b82f6;transition:transform .2s"></div>
+                    </div>
+                    <div style="font-size:.8rem;font-weight:700;color:#3b82f6;margin-bottom:.2rem">HOY 😎</div>
+                    <p style="font-size:.7rem;color:var(--text-500);line-height:1.5">Te estábamos esperando.</p>
+                  </div>
+                </div>
+                <p style="font-size:.8rem;color:var(--text-500);line-height:1.75;margin-bottom:.65rem">
+                  Fundada en 2012, somos una empresa nacida en Argentina con sede en Estados Unidos, especializada en
+                  aplicaciones Enterprise / SaaS.
+                </p>
+                <p style="font-size:.8rem;color:var(--text-500);line-height:1.75;margin-bottom:.65rem">
+                  Nuestra amplia experiencia dentro de la industria tecnológica nos permite ofrecer soluciones
+                  accesibles, funcionales y robustas de manera rápida, sin dejar atrás la innovación que nos
+                  caracteriza.
+                </p>
+                <p style="font-size:.8rem;color:var(--text-500);line-height:1.75">
+                  Contamos con los mejores profesionales de IT para el análisis, diseño, desarrollo, gestión,
+                  implementación y soporte. Además desarrollamos nuestra propia plataforma (web y móvil) para la gestión
+                  integral de trade marketing.
+                </p>
+              </div>
+            </section>
+            <!-- ── 02 SERVICIOS (feature grid, img-2 style) ── -->
+            <section class="section" id="servicios" style="text-align:center">
+              <p class="eyebrow" style="text-align:center">Lo que hacemos</p>
+              <h2 class="section-title" style="text-align:center">Nuestros <span class="hl">servicios</span></h2>
+              <p class="section-sub" style="text-align:center;margin:0 auto 1.75rem">Somos especialistas en desarrollo
+                de aplicaciones nativas e híbridas para dispositivos móviles y web responsive.</p>
+              <div class="feature-grid">
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                  <h3>Apps nativas e híbridas</h3>
+                  <p>Soluciones accesibles, funcionales, robustas y estéticas para mobile y web responsive.</p>
+                </div>
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-microchip"></i></div>
+                  <h3>IA &amp; IoT</h3>
+                  <p>Beacons, sensores, cámaras e inteligencia artificial aplicada al análisis predictivo del negocio.
+                  </p>
+                </div>
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-diagram-project"></i></div>
+                  <h3>Digitalización empresarial</h3>
+                  <p>Ayudamos a nuestros clientes en todo el mundo a digitalizar sus procesos comerciales.</p>
+                </div>
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                  <h3>Trade Marketing</h3>
+                  <p>Gestión integral personalizable por sector, cliente y país. Tienda perfecta.</p>
+                </div>
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-plug"></i></div>
+                  <h3>Integraciones ERP / CRM</h3>
+                  <p>Conectamos con los sistemas que ya usás: ERP, CRM y otros sistemas de gestión.</p>
+                </div>
+                <div class="feature-item">
+                  <div class="feature-icon-box"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                  <h3>Soporte &amp; mantenimiento</h3>
+                  <p>Equipo dedicado para el soporte, mantenimiento y evolución continua de las soluciones.</p>
+                </div>
+              </div>
+            </section>
+            <!-- ── 03 VISIÓN EOS ───────────────────────── -->
+            <section class="section" id="eos">
+              <div>
+                <p class="eyebrow">Cómo lo hacemos</p>
+                <h2 class="section-title">Nuestra <span class="hl">Visión EOS</span></h2>
+                <p class="section-sub">Usamos EOS (Entrepreneurial Operating System) para alinear y ejecutar nuestra
+                  visión. Está compuesta por 5 componentes:</p>
+                <div class="eos-cards">
+                  <div class="eos-card">
+                    <p class="eos-num">01 · Core Values</p>
+                    <h3>Valores Centrales</h3>
+                    <ul class="eos-list">
+                      <li>
+                        <div><span class="wow-badge">⭐ WOW Service</span>
+                          <div style="font-size:.7rem;color:var(--text-500);margin-top:.18rem">Resultados rápidos y
+                            sorprendentes.</div>
+                        </div>
+                      </li>
+                      <li>Buenas Personas</li>
+                      <li>Enfoque Práctico</li>
+                      <li>Orientados al Crecimiento</li>
+                      <li>Somos un verdadero equipo</li>
+                      <li>Confiables</li>
+                    </ul>
+                  </div>
+                  <div class="eos-card">
+                    <p class="eos-num">02 · Core Focus</p>
+                    <h3>Foco Central</h3>
+                    <p style="font-size:.75rem;color:var(--text-500);line-height:1.6;margin-bottom:.75rem">Lo más
+                      cercano al concepto clásico de misión: nuestro propósito central y el negocio en el que estamos.
+                    </p>
+                    <p class="eos-num" style="margin-top:.75rem">03 · Objetivos</p>
+                    <ul class="eos-list">
+                      <li>Meta a 10 años</li>
+                      <li>Visión a 3 años</li>
+                      <li>Plan anual</li>
+                      <li>Prioridades Trimestrales <span
+                          style="display:inline-flex;align-items:center;background:var(--primary-light);color:var(--primary);font-size:.6rem;font-weight:700;padding:.08rem .4rem;border-radius:100px;margin-left:.2rem">Rocks</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="eos-card">
+                    <p class="eos-num">04 · Estrategia de Marketing</p>
+                    <h3>Marketing Strategy</h3>
+                    <ul class="eos-list">
+                      <li>
+                        <div><strong>3 Uniques</strong>
+                          <div style="font-size:.7rem;color:var(--text-500);margin-top:.15rem">WOW Service · Smart.
+                            Flexible. Yours. · Turbo (powered by Claude)</div>
+                        </div>
+                      </li>
+                      <li><strong>Process:</strong> Agile Design Thinking</li>
+                      <li><strong>Guarantee:</strong> We fulfill our promises</li>
+                    </ul>
+                  </div>
+                  <div class="eos-card">
+                    <p class="eos-num">05 · Issues List</p>
+                    <h3>Lista de Problemas</h3>
+                    <p style="font-size:.75rem;color:var(--text-500);line-height:1.6">Lista de problemas e impedimentos
+                      del equipo. Se revisa y prioriza periódicamente para mantener el foco en lo que realmente importa.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 04 EOS SISTEMA (stat white card, img-5 style) ── -->
+            <section class="section" id="eos-sistema">
+              <div class="eos-dark-card">
+                <p class="eyebrow" style="color:#a78bfa">Framework</p>
+                <h2 class="section-title" style="color:#fff;margin-bottom:.35rem">EOS, el Sistema Operativo <span style="color:#a78bfa">Emprendedor®</span></h2>
+                <p style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.65;max-width:900px;margin:0 auto 1.75rem;text-align:center">Mejoramos en tres áreas clave que nos permiten crecer como organización.</p>
+                <div class="stats-inner">
+                  <div class="stat-item">
+                    <i class="fa-solid fa-eye"></i>
+                    <div class="stat-big">Visión</div>
+                    <p>Todos en nuestra organización al 100% alineados sobre hacia dónde nos dirigimos y cómo planeamos
+                      llegar.</p>
+                  </div>
+                  <div class="stat-item">
+                    <i class="fa-solid fa-bolt"></i>
+                    <div class="stat-big">Tracción</div>
+                    <p>Enfoque, disciplina y responsabilidad para que todos ejecuten esa visión, todos los días.</p>
+                  </div>
+                  <div class="stat-item">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="stat-big">Organización</div>
+                    <p>Líderes que se convierten en un equipo de liderazgo más cohesivo, funcional y saludable.</p>
+                  </div>
+                  <div class="stat-item">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <div class="stat-big">Crecimiento</div>
+                    <p>Implementamos reuniones de Nivel 10, Scorecard y Rocks trimestrales para medir nuestro progreso.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 05 METODOLOGÍA ─────────────────────── -->
+            <section class="section" id="metodologia">
+              <div>
+                <p class="eyebrow">Cómo trabajamos</p>
+                <h2 class="section-title">Nuestra <span class="hl">metodología</span></h2>
+                <p class="section-sub">Para lograr ofrecer a nuestros clientes una mejor relación costo/beneficio y
+                  tiempos de desarrollo reducidos, creamos TURBO.</p>
+                <p style="font-size:.8rem;color:var(--text-500);line-height:1.7;margin-bottom:1rem">
+                  Framework de desarrollo de aplicaciones Enterprise / SaaS optimizado para construir apps móviles y
+                  web. Nuestro objetivo: el 80% de esfuerzos en el 20% más crítico del desarrollo.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">Stack
+                    tecnológico</span>
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">Arquitectura</span>
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">Framework</span>
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">Metodología
+                    de trabajo</span>
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">Estándares
+                    de desarrollo</span>
+                  <span
+                    style="display:inline-flex;background:var(--primary-light);color:var(--primary);font-size:.68rem;font-weight:600;padding:.2rem .65rem;border-radius:100px;border:1px solid rgba(139,92,246,.2)">RAD</span>
+                </div>
+              </div>
+            </section>
+            <!-- ── 06 QUARTZSALES ── -->
+            <section class="section" id="quartzsales">
+              <div>
+                <p class="eyebrow">Nuestra estrella</p>
+                <h2 class="section-title">QuartzSales <span class="hl">Platform</span></h2>
+                <p class="section-sub">La solución que permite alcanzar la Tienda Perfecta mediante plataformas
+                  robustas, amigables e intuitivas.</p>
+                <div class="stats-grid-2col">
+                  <div class="stat-card-accent">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="stat-num">Fuerza de ventas</div>
+                    <span class="stat-label">PDV · Agenda · Fichada · Formularios</span>
+                  </div>
+                  <div class="stat-card-accent">
+                    <i class="fa-solid fa-link"></i>
+                    <div class="stat-num">Integraciones</div>
+                    <span class="stat-label">ERP · CRM · IoT · POP</span>
+                  </div>
+                  <div class="stat-card-accent">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <div class="stat-num">Business Intelligence</div>
+                    <span class="stat-label">IA predictiva · Power BI · Tableau</span>
+                  </div>
+                  <div class="stat-card-accent">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="stat-num">Geolocalización</div>
+                    <span class="stat-label">Tracking en tiempo real · Cobertura</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 07 ORGANIGRAMA ─────────────────────── -->
+            <section class="section" id="organigrama">
+              <div class="stat-card-white" style="text-align:center;padding:2.5rem 2rem">
+                <p class="eyebrow">Organigrama</p>
+                <h2 class="section-title">Nuestra <span class="hl">manada</span></h2>
+                <p class="section-sub" style="margin-bottom:1.5rem">Conocé la estructura completa del equipo.</p>
+                <a class="btn btn-primary" href="#" target="_blank">Ver organigrama completo <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.65rem"></i></a>
+              </div>
+            </section>
+            <!-- ── 08 FILOSOFÍA (value cards) ────────────── -->
+            <section class="section" id="filosofia">
+              <div>
+                <p class="eyebrow">Cultura</p>
+                <h2 class="section-title">Nuestra <span class="hl">filosofía</span></h2>
+                <p class="section-sub">Los valores que nos definen como equipo y como empresa.</p>
+                <div class="value-cards">
+                  <div class="value-card">
+                    <div class="val-label">Work-life</div>
+                    <h3>Balance Trabajo-Vida</h3>
+                    <p>Política flexible y conciliadora que garantiza las mejores condiciones para lograr el balance.
+                    </p>
+                  </div>
+                  <div class="value-card">
+                    <div class="val-label">Cultura</div>
+                    <h3>Innovación</h3>
+                    <p>Fomentamos la creatividad y animamos a proponer nuevas ideas y soluciones en todo momento.</p>
+                  </div>
+                  <div class="value-card">
+                    <div class="val-label">Modalidad</div>
+                    <h3>Remote-First</h3>
+                    <p>Todos nuestros puestos son remotos. Mejor manejo del tiempo y mayor eficiencia personal.</p>
+                  </div>
+                  <div class="value-card">
+                    <div class="val-label">Comunicación</div>
+                    <h3>Libertad de expresión</h3>
+                    <p>Escuchamos y aceptamos la visión del mundo de cada una de las personas del equipo.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 09 HORAS ───────────────────────────── -->
+            <section class="section" id="horas">
+              <div>
+                <p class="eyebrow">Operaciones</p>
+                <h2 class="section-title">Registro de <span class="hl">horas</span></h2>
+                <p class="section-sub">Establecé un uso consistente de estas herramientas para facilitar el seguimiento
+                  de tus tareas.</p>
+                <div class="flex-col gap-3">
+                  <div class="tool-row">
+                    <div class="tool-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div>
+                      <h3>Jira</h3>
+                      <p>Establece un uso consistente para facilitar el seguimiento de tus tareas.</p>
+                      <a class="btn-link" href="https://e-saurio.atlassian.net/wiki/spaces/ppzos/pages/605388833" target="_blank" rel="noopener">Manual de uso Jira →</a>
+                    </div>
+                  </div>
+                  <div class="tool-row">
+                    <div class="tool-icon"><i class="fa-solid fa-stopwatch"></i></div>
+                    <div>
+                      <h3>Tempo</h3>
+                      <p>Registrá tu tiempo todos los días en el ticket asignado.</p>
+                      <a class="btn-link" href="https://e-saurio.atlassian.net/wiki/spaces/ntscw/pages/605421596" target="_blank" rel="noopener">Instructivo de registro de horas →</a>
+                    </div>
+                  </div>
+                  <div class="tool-row">
+                    <div class="tool-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <div>
+                      <h3>Confluence</h3>
+                      <p>Documentá y usá ROVO, la IA de Jira, para acceder a la info más rápido.</p>
+                      <a class="btn-link" href="https://e-saurio.atlassian.net/wiki/spaces" target="_blank" rel="noopener">Wiki →</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 10 COMUNICACIÓN (tool cards img-4 style) ── -->
+            <section class="section" id="comunicacion">
+              <p class="eyebrow">Comunicación</p>
+              <h2 class="section-title">Comunicación <span class="hl">interna</span></h2>
+              <p class="section-sub">Todo lo interno pasa por Slack: mensajes, archivos y llamadas.</p>
+              <div style="display:flex;align-items:flex-start;gap:1.5rem">
+                <div style="flex:1;min-width:0">
+                  <div class="tool-cards">
+                    <div class="tool-card">
+                      <div class="tool-card-header" style="background:#fef9ee">
+                        <i class="fa-brands fa-slack" style="font-size:2.5rem;color:var(--primary)"></i>
+                      </div>
+                      <div class="tool-card-body">
+                        <h3>Slack</h3>
+                        <p>Mensajes, archivos y llamadas internas. Iniciás las llamadas desde Slack, aún si hay link de
+                          Google Meet.</p>
+                        <a href="https://join.slack.com/t/e-saurio/shared_invite/zt-3vccdy62u-bejCqfPgg5DIJAR4u19rYg" target="_blank" rel="noopener" class="explore-link">Abrir Slack <span>→</span></a>
+                      </div>
+                    </div>
+                    <div class="tool-card">
+                      <div class="tool-card-header" style="background:#eef2ff">
+                        <div style="font-size:2.5rem"><i class="fa-solid fa-clipboard-check"></i></div>
+                      </div>
+                      <div class="tool-card-body">
+                        <h3>Buenas prácticas</h3>
+                        <p>Usá hilos, @menciones solo a quien corresponda y el canal #general para saludos y avisos.</p>
+                        <!--<div class="explore-link">Ver guía <span>→</span></div>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 11 RECURSOS VISUALES ───────────────── -->
+            <section class="section" id="recursos">
+              <div>
+                <p class="eyebrow">Identidad</p>
+                <h2 class="section-title">Recursos <span class="hl">visuales</span></h2>
+                <p class="section-sub">Todo lo que necesitás para mantener una imagen profesional y coherente.</p>
+                <div class="tool-cards">
+                  <div class="tool-card">
+                    <div class="tool-card-header" style="background:#f5f3ff">
+                      <div style="font-size:2.5rem"><i class="fa-solid fa-signature"></i></div>
+                    </div>
+                    <div class="tool-card-body">
+                      <h3>Firma digital</h3>
+                      <p>Enviá tu foto a <span style="color:var(--primary)">jesica.titaro@quartzsales.com</span>.
+                        Quien te ayudará a configurarla.</p>
+                      <a class="explore-link" href="https://e-saurio.atlassian.net/wiki/spaces/ckmdo/pages/2212429825" target="_blank" rel="noopener">Manual de configuración <span>→</span></a>
+                    </div>
+                  </div>
+                  <div class="tool-card">
+                    <div class="tool-card-header" style="background:#eff6ff">
+                      <div style="font-size:2.5rem"><i class="fa-brands fa-linkedin" style="color:var(--primary)"></i></div>
+                    </div>
+                    <div class="tool-card-body">
+                      <h3>Banners LinkedIn</h3>
+                      <p>Banners oficiales para mantener una imagen profesional y coherente en tu perfil.</p>
+                      <a class="explore-link" href="https://www.quartzsales.com/resources/banners-in.zip" target="_blank" rel="noopener">Descargar banners <span>→</span></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- ── 12 POLÍTICAS ───────────────────────── -->
+            <section class="section" id="politicas">
+              <p class="eyebrow">Reglamento</p>
+              <h2 class="section-title">Nuestras <span class="hl">políticas</span></h2>
+              <p class="section-sub">Antes de empezar, revisá nuestras políticas: son la guía de cómo trabajamos y
+                tomamos decisiones cada día.</p>
+              <div style="text-align:center"><a class="btn btn-primary" href="https://e-saurio.atlassian.net/wiki/spaces/_/pages/2136637441?atlOrigin=eyJpIjoiYmQ1ZWM0ODAzNzA5NGQwODlmNzY2OWQ5YWUwNzQ5N2IiLCJwIjoiYyJ9" target="_blank" rel="noopener">Ver políticas de QuartzSales <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:.65rem"></i></a></div>             </section>
+            <!-- ── CLOSING ────────────────────────────── -->
+            <section class="section" id="closing"
+              style="display:flex;align-items:center;justify-content:center;gap:2rem;border-bottom:none">
+              <div style="max-width:420px">
+                <p class="eyebrow">Subite a la e·Saurioneta</p>
+                <h2 class="section-title">Nosotros estamos listos,<span class="hl"> y vos?</span></h2>
+                <p style="font-size:.82rem;color:var(--text-500);line-height:1.7;margin-bottom:1.25rem">El futuro está por escribirse…
+                  hagamos que sea una gran historia. 🚀</p>
+                <a href="#hero" style="font-size:.82rem;font-weight:600;color:var(--primary);text-decoration:none;display:inline-flex;align-items:center;gap:.35rem">↑ Volver al principio</a>
+              </div>
+            </section>
+          </div>
+          <div id="tocWrap">
+            <div style="display:flex;align-items:center;gap:1.25rem">
+              <div
+                style="width:32px;height:32px;border-radius:50%;border:1px solid #e5e7eb;background:#fff;display:grid;place-items:center;position:relative;z-index:10;flex-shrink:0">
+                <i class="fa-solid fa-list" style="font-size:.7rem;color:#111827"></i>
+              </div>
+              <span style="color:#6b7280;font-size:.88rem">Secciones onboarding</span>
+            </div>
+            <div id="tocItems" style="position:relative;margin-top:0">
+              <div id="tocLine" style="position:absolute;left:16px;top:-20px;width:1px;background:#e5e7eb"></div>
+              <div id="tocIndicator"
+                style="position:absolute;left:16px;width:2px;border-radius:4px;background:#111827;height:24px;transition:transform .3s ease;transform:translateY(13px) translateX(-0.5px)">
+              </div>
+              <div id="tocEndcap"
+                style="position:absolute;left:16px;width:8px;height:8px;border-radius:50%;background:#e5e7eb;transform:translateX(-3px);z-index:10">
+              </div>
+              <div class="toc-item" data-target="historia"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">La historia</span>
+              </div>
+              <div class="toc-item" data-target="servicios"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nuestros servicios</span>
+              </div>
+              <div class="toc-item" data-target="eos"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Visión EOS</span>
+              </div>
+              <div class="toc-item" data-target="eos-sistema"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">EOS</span>
+              </div>
+              <div class="toc-item" data-target="metodologia"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Metodología</span>
+              </div>
+              <div class="toc-item" data-target="quartzsales"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">QuartzSales</span>
+              </div>
+              <div class="toc-item" data-target="organigrama"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Organigrama</span>
+              </div>
+              <div class="toc-item" data-target="filosofia"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nuestra filosofía</span>
+              </div>
+              <div class="toc-item" data-target="horas"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Registro de horas</span>
+              </div>
+              <div class="toc-item" data-target="comunicacion"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Comunicación interna</span>
+              </div>
+              <div class="toc-item" data-target="recursos"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Recursos visuales</span>
+              </div>
+              <div class="toc-item" data-target="politicas"
+                style="display:flex;align-items:center;gap:1.25rem;height:44px;cursor:pointer;color:#6b7280;font-size:.82rem;transition:color .15s">
+                <div style="width:32px;flex-shrink:0"></div><span
+                  style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Nuestras políticas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const ITEM_H = 44;
+    const scrollRoot = document.getElementById('sectionsScroll');
+    const tocItems = Array.from(document.querySelectorAll('.toc-item[data-target]'));
+    const indicator = document.getElementById('tocIndicator');
+    const line = document.getElementById('tocLine');
+    const endcap = document.getElementById('tocEndcap');
+    const sections = tocItems
+      .map(item => document.getElementById(item.dataset.target))
+      .filter(Boolean);
+
+    function updateTocLine() {
+      if (!line || !endcap || !tocItems.length) return;
+      line.style.height = (tocItems.length * ITEM_H + 20) + 'px';
+      endcap.style.top = (tocItems.length * ITEM_H - 4) + 'px';
+    }
+
+    function setTocActive(idx) {
+      tocItems.forEach((item, i) => {
+        item.style.color = i === idx ? '#111827' : '#6b7280';
+        item.style.fontWeight = i === idx ? '600' : '400';
+      });
+      if (indicator) {
+        indicator.style.transform = `translateY(${idx * ITEM_H + 13}px) translateX(-0.5px)`;
+      }
+    }
+
+    function scrollToSection(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      if (scrollRoot && window.innerWidth >= 1024) {
+        const top = target.offsetTop;
+        scrollRoot.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function updateActiveSection() {
+      if (!sections.length) return;
+
+      let activeIndex = 0;
+
+      if (scrollRoot && window.innerWidth >= 1024) {
+        const currentTop = scrollRoot.scrollTop + 120;
+        sections.forEach((section, index) => {
+          if (section.offsetTop <= currentTop) activeIndex = index;
+        });
+      } else {
+        let closestDistance = Infinity;
+        sections.forEach((section, index) => {
+          const distance = Math.abs(section.getBoundingClientRect().top - 120);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            activeIndex = index;
+          }
+        });
+      }
+
+      setTocActive(activeIndex);
+    }
+
+    updateTocLine();
+    setTocActive(0);
+    updateActiveSection();
+
+    if (scrollRoot) {
+      scrollRoot.addEventListener('scroll', updateActiveSection, { passive: true });
+    }
+    window.addEventListener('scroll', updateActiveSection, { passive: true });
+    window.addEventListener('resize', () => {
+      updateTocLine();
+      updateActiveSection();
+    });
+
+    // Timeline dot hover
+    Array.from(document.querySelectorAll('.tl-item')).forEach(item => {
+      const dot = item.querySelector('img, div');
+      item.addEventListener('mouseenter', () => { if (dot) dot.style.transform = 'scale(1.5)'; });
+      item.addEventListener('mouseleave', () => { if (dot) dot.style.transform = ''; });
+    });
+
+    // Desktop TOC clicks
+    Array.from(document.querySelectorAll('.toc-item[data-target]')).forEach((item, idx) => {
+      item.addEventListener('click', () => {
+        setTocActive(idx);
+        scrollToSection(item.dataset.target);
+      });
+    });
+
+    // Smooth anchor scroll for hero button + mobile drawer links
+    Array.from(document.querySelectorAll('a[href^="#"]')).forEach(link => {
+      link.addEventListener('click', (event) => {
+        const id = link.getAttribute('href')?.slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        event.preventDefault();
+        scrollToSection(id);
+        if (typeof closeDrawer === 'function') closeDrawer();
+      });
+    });
+
+    function openDrawer() {
+      const drawer = document.getElementById('tocDrawer');
+      if (!drawer) return;
+      drawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('tocDrawer');
+      if (!drawer) return;
+      drawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    let touchStartY = 0;
+    const tocDrawer = document.getElementById('tocDrawer');
+    tocDrawer?.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    });
+    tocDrawer?.addEventListener('touchend', e => {
+      if (e.changedTouches[0].clientY - touchStartY > 60) closeDrawer();
+    });
+  </script>
+  <!-- ── MOBILE TOC FAB + DRAWER ────────────────── -->
+  <button aria-label="Índice" class="toc-fab" id="tocFab" onclick="openDrawer()">
+    <i class="fa-solid fa-list"></i>
+  </button>
+  <div class="toc-drawer" id="tocDrawer">
+    <div class="toc-drawer-overlay" onclick="closeDrawer()"></div>
+    <div class="toc-drawer-panel">
+      <div class="toc-drawer-handle"></div>
+      <div class="toc-drawer-title">Secciones onboarding</div>
+      <span class="drawer-nav-group">La empresa</span>
+      <a class="drawer-nav-item" href="#historia" onclick="closeDrawer()"><span class="dnum">1</span> La historia</a>
+      <a class="drawer-nav-item" href="#servicios" onclick="closeDrawer()"><span class="dnum">2</span> Nuestros
+        servicios</a>
+      <a class="drawer-nav-item" href="#eos" onclick="closeDrawer()"><span class="dnum">3</span> Visión EOS</a>
+      <a class="drawer-nav-item" href="#eos-sistema" onclick="closeDrawer()"><span class="dnum">4</span> EOS</a>
+      <a class="drawer-nav-item" href="#metodologia" onclick="closeDrawer()"><span class="dnum">5</span> Metodología</a>
+      <a class="drawer-nav-item" href="#quartzsales" onclick="closeDrawer()"><span class="dnum">6</span> QuartzSales</a>
+      <span class="drawer-nav-group">El equipo</span>
+      <a class="drawer-nav-item" href="#organigrama" onclick="closeDrawer()"><span class="dnum">7</span> Organigrama</a>
+      <a class="drawer-nav-item" href="#filosofia" onclick="closeDrawer()"><span class="dnum">8</span> Nuestra
+        filosofía</a>
+      <span class="drawer-nav-group">Operaciones</span>
+      <a class="drawer-nav-item" href="#horas" onclick="closeDrawer()"><span class="dnum">9</span> Registro de horas</a>
+      <a class="drawer-nav-item" href="#comunicacion" onclick="closeDrawer()"><span class="dnum">10</span> Comunicación
+        interna</a>
+      <a class="drawer-nav-item" href="#recursos" onclick="closeDrawer()"><span class="dnum">11</span> Recursos
+        visuales</a>
+      <a class="drawer-nav-item" href="#politicas" onclick="closeDrawer()"><span class="dnum">12</span> Nuestras
+        políticas</a>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <title>QuartzSales</title>
+        <link rel="shortcut icon" href="../images/favicon.ico">
+        <link href="../styles/flexslider.css" rel="stylesheet" type="text/css">
+        <link href="../styles/styles.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+        <!-- <script>
+            let usrLang = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();
+            let urlPath = window.location.pathname;
+            let isEn = 0;
+            let cookieData = getCookie('qs_lang');
+
+            // If there is cookie data, the language shouldn't be overwritten
+            if (cookieData === undefined) {
+                // Check browser language
+                if (usrLang.indexOf("es") > -1) {
+                } else {
+                    isEn = 1;
+                }
+
+                // Redirect if needed
+                if (isEn) {
+                    window.location.href = 'https://www.quartzsales.com/en';
+                } else {
+                    window.location.href = 'https://www.quartzsales.com/es';
+                }
+            }
+
+            // Cookie logic
+            function setCookie(cName, cValue, expDays) {
+                let date = new Date();
+                date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+            }
+
+            function getCookie(cName) {
+                const name = cName + "=";
+                const cDecoded = decodeURIComponent(document.cookie); //to be careful
+                const cArr = cDecoded.split('; ');
+                let res;
+                cArr.forEach(val => {
+                    if (val.indexOf(name) === 0) res = val.substring(name.length);
+                })
+                return res;
+            }
+        </script>-->
+        <script src="https://kit.fontawesome.com/4240add9be.js" crossorigin="anonymous"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115919076-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-115919076-1');
+        </script>
+
+        <!-- Hotjar Tracking Code for https://www.e-saurio.com/ -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:2558543,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.js"></script>
+    </head>
+    <body>
+        <input type="checkbox" id="theme-toggle" class="theme-toggle">
+        <label for="theme-toggle" class="theme-switch"></label>
+        <div class="theme-label">Modo oscuro</div>
+        <div class="content">
+            <div id="main">
+        
+            <!-- Header --> 
+            <header class="animate__animated animate__fadeInDown">
+                <div class="menu-mobile-container">
+                    <!--<a href="https://www.quartzsales.com/"><svg height="30px"></svg></a> -->
+                    <a href="https://www.quartzsales.com/"><img src="../images/logo-qs.svg" alt="Home de QuartzSales"></a>
+                    </ul>
+                </div>
+            </header>
+
+            <!-- Form --> 
+                <section id="form">
+                    <div class="container">
+                        <img src="../images/thnk.png" alt="">
+                        <h1>¡Gracias por escribirnos!</h1>
+                        <p>Nos pondremos en contacto muy pronto.</p>
+                        <div class="cta-group">
+                            <a class="link-mode" href="../es/index.html">Ir a la Página Principal</a>
+                            <a href="../es/form.html">Enviar otra consulta</a>
+                        </div>
+                    </div>
+                </section>
+
+            <!-- Footer--> 
+            <footer>
+                <div id="contact" class="footer-container">
+                    <div id="language">
+                        <ul>
+                            <li><a href="/en/"><i class="flag-icon flag-icon-us"></i> English</a></li>
+                            <li><a class="active lang-btn lang-es" href="/es/"><i class="flag-icon flag-icon-es"></i> Español</a></li>
+                        </ul>
+                    </div>
+                    <div class="information">
+                        <div class="direction">
+                            <p>8333 NW 53rd Street, Suite 450. Miami. Florida. Estados Unidos.</p>
+                            <p><a href="tel:+541152356660">+54 11 5235-6660</a></p>
+                            <p><a href="mailto:info@quartzsales.com"> info@quartzsales.com</a></p>
+                        </div>
+                    </div>
+                    <div class="social">
+                        <div class="logo-footer">
+                            <img src="../images/logo-qs.svg" alt="Logotipo QuartzSales">
+                        </div>
+                        <div class="socialmedia">
+                            <a href="https://www.linkedin.com/showcase/quartz-sales" target="blank"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://www.instagram.com/quartzsales/" target="blank"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+            </div>
+
+        <script src="../js/lenguage.js"></script>
+        <script src="../js/jquery-3.6.0.min.js"></script>
+        <script src="../js/jquery.flexslider-min.js"></script>
+        <script src="../js/main.js?v=4"></script>
+        <script src="../js/hyper.js"></script>
+
+        <script>
+            function actualizarLabel() {
+              // Obtén el valor del campo "empresa"
+              var nombreEmpresa = document.getElementById("empresa").value;
+              
+              // Actualiza el texto del label "rolLabel"
+              var rolLabel = document.getElementById("rolLabel");
+              rolLabel.textContent = "Su rol dentro de '" + nombreEmpresa + "'";
+            }
+        </script>
+
+        <!--Principio del widget de globo de Calendly
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <script>window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/e-saurio/15min', text: 'Programar reunión', color: '#0BABC8', textColor: '#ffffff', branding: true }); }</script>
+        -->
+        
+        </div>
+    </body>
+</html>

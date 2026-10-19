@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://www.quartzsales.com/</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>1.00</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.quartzsales.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.quartzsales.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.quartzsales.com/pt/"/>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/en/</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.quartzsales.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.quartzsales.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.quartzsales.com/pt/"/>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/pt/</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.quartzsales.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.quartzsales.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.quartzsales.com/pt/"/>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/faqs.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/en/faqs.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/pt/faqs.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/resources.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/privacypolicy.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.30</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/en/privacypolicy.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.30</priority>
+  </url>
+  <url>
+    <loc>https://www.quartzsales.com/pt/privacypolicy.html</loc>
+    <lastmod>2026-06-11</lastmod>
+    <priority>0.30</priority>
+  </url>
+</urlset>

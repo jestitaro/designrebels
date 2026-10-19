@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <title>QuartzSales</title>
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link href="styles/flexslider.css" rel="stylesheet" type="text/css">
+        <link href="styles/styles.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+        <!--<script>
+            let usrLang = navigator.language.toLowerCase() || navigator.userLanguage.toLowerCase();
+            let urlPath = window.location.pathname;
+            let isEn = 0;
+            let cookieData = getCookie('qs_lang');
+
+            // If there is cookie data, the language shouldn't be overwritten
+            if (cookieData === undefined) {
+                // Check browser language
+                if (usrLang.indexOf("es") > -1) {
+                } else {
+                    isEn = 1;
+                }
+
+                // Redirect if needed
+                if (isEn) {
+                    window.location.href = 'https://www.quartzsales.com/en';
+                } else {
+                    window.location.href = 'https://www.quartzsales.com/es';
+                }
+            }
+
+            // Cookie logic
+            function setCookie(cName, cValue, expDays) {
+                let date = new Date();
+                date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+            }
+
+            function getCookie(cName) {
+                const name = cName + "=";
+                const cDecoded = decodeURIComponent(document.cookie); //to be careful
+                const cArr = cDecoded.split('; ');
+                let res;
+                cArr.forEach(val => {
+                    if (val.indexOf(name) === 0) res = val.substring(name.length);
+                })
+                return res;
+            }
+        </script>-->
+        
+        <script src="https://kit.fontawesome.com/4240add9be.js" crossorigin="anonymous"></script>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-115919076-1"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-115919076-1');
+        </script>
+
+        <!-- Hotjar Tracking Code for https://www.e-saurio.com/ -->
+        <script>
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:2558543,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.js"></script>
+    </head>
+    <body>
+        <input type="checkbox" id="theme-toggle" class="theme-toggle">
+        <label for="theme-toggle" class="theme-switch"></label>
+        <div class="theme-label">Modo oscuro</div>
+        <div class="content">
+            <div id="main">
+            <!-- Header --> 
+                <header class="animate__animated animate__fadeInDown">
+                    <div class="menu-mobile-container">
+                        <!--<a href="https://www.quartzsales.com/"><svg height="30px"></svg></a> -->
+                        <a href="https://www.quartzsales.com/"><img src="images/logo-qs.svg" alt="Home de QuartzSales"></a>
+                        <input class="menu-btn" type="checkbox" id="menu-btn">
+                        <label class="menu-icon-container" for="menu-btn"><i class="fas fa-bars"></i><i class="fas fa-times"></i></label>
+                        <ul class="navbar-mobile">
+                            <li>
+                                <div id="language-mobile">
+                                    <ul>
+                                        <li><a href="/en/"><i class="flag-icon flag-icon-us"></i> English</a></li>
+                                        <li><a class="active lang-btn lang-es" href="/es/"><i class="flag-icon flag-icon-es"></i> Español</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li><a class="mobile-menu-item" href="#customers">Clientes</a></li>
+                            <li><a class="mobile-menu-item" href="#success-stories">Casos de éxito</a></li>
+                            <li><a class="mobile-menu-item" href="#differential">Soluciones</a></li>
+                            <li><a class="mobile-menu-item" href="https://www.quartzsales.com/es/faq.html">FAQ</a></li>
+                            <li><a class="mobile-menu-item" href="https://blog.quartzsales.com/" target="_blank">Blog</a></li>
+                            <li><a class="mobile-menu-item" href="#contact">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <nav>
+                        <ul class="navbar">
+                            <li><a href="#customers">Clientes</a></li>
+                            <li><a href="#success-stories">Casos de éxito</a></li>
+                            <li><a href="#differential">Soluciones</a></li>
+                            <li><a href="https://www.quartzsales.com/es/faq.html">FAQ</a></li>
+                            <li><a href="https://blog.quartzsales.com/" target="_blank">Blog</a></li>
+                            <li><a href="#contact">Contacto</a></li>
+                        </ul>
+                    </nav>
+                    <div class="demo">
+                        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                            <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                            <a class="link-mode" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/alessio-uyema/30min'});return false;" role="button">Solicitar demo</a>
+                    </div>
+                </header>
+
+            <!-- Prices --> 
+                <section id="prices">
+                    <h1>Nuestros <span style="color: #7025E0;">Paquetes</span></h1>
+                    <div class="prices-container">
+
+                        <div class="container">
+                            <h2>Basic</h2>
+                            <p>Ideal para quienes que recién comienzan y quieren ir escalando.</p>
+                            <ul>
+                                <li><span class="check">&#10003;</span> Análisis de mercado básico</li>
+                                <li><span class="check">&#10003;</span> Alertas comerciales</li>
+                                <li><span class="check">&#10003;</span> Soporte por correo electrónico</li>
+                            </ul>
+                            <p>Precio: $19.99/mes</p>
+                            <div><a href="#" class="link-mode">Obtener ahora</a></div>
+                        </div>
+
+                        <div class="container">
+                            <h2>Standard</h2>
+                            <p>El más elegido por quienes desean llevar su negocio al siguiente nivel.</p>
+                            <ul>
+                                <li><span class="check">&#10003;</span> Análisis de mercado avanzado</li>
+                                <li><span class="check">&#10003;</span> Alertas comerciales personalizadas</li>
+                                <li><span class="check">&#10003;</span> Soporte por correo electrónico y chat en vivo</li>
+                            </ul>
+                            <p>Precio: $39.99/mes</p>
+                            <div><a href="#" class="link-mode">Obtener ahora</a></div>
+                        </div>
+
+                        <div class="container">
+                            <div class="popular">Más popular</div>
+                            <h2>Enterprise</h2>
+                            <p>Ideal para traders avanzados que buscan herramientas a medida.</p>
+                            <ul>
+                                <li><span class="check">&#10003;</span> Análisis de mercado premium</li>
+                                <li><span class="check">&#10003;</span> Alertas comerciales personalizadas y notificaciones móviles</li>
+                                <li><span class="check">&#10003;</span> Soporte prioritario 24/7</li>
+                            </ul>
+                            <p>Precio: $59.99/mes</p>
+                            <div><a href="#" class="link-mode">Obtener ahora</a></div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-table">
+                        <table>
+                            <tr>
+                                <th></th>
+                                <th>Basic</th>
+                                <th>Standard</th>
+                                <th>Enterprise</th>
+                            </tr>
+                            <tr>
+                                <td>Precio</td>
+                                <td>$19.99/mes</td>
+                                <td>$39.99/mes</td>
+                                <td>$59.99/mes</td>
+                            </tr>
+                            <tr>
+                                <td>Beneficios</td>
+                                <td>
+                                    <span class="check">&#10003;</span> Análisis de mercado básico<br>
+                                    <span class="check">&#10003;</span> Alertas comerciales<br>
+                                    <span class="check">&#10003;</span> Soporte por correo electrónico
+                                </td>
+                                <td>
+                                    <span class="check">&#10003;</span> Análisis de mercado avanzado<br>
+                                    <span class="check">&#10003;</span> Alertas comerciales personalizadas<br>
+                                    <span class="check">&#10003;</span> Soporte por correo electrónico y chat en vivo
+                                </td>
+                                <td>
+                                    <span class="check">&#10003;</span> Análisis de mercado premium<br>
+                                    <span class="check">&#10003;</span> Alertas comerciales personalizadas y notificaciones móviles<br>
+                                    <span class="check">&#10003;</span> Soporte prioritario 24/7
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+            <!-- Footer --> 
+                <footer>
+                    <div id="button-container">
+                        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+                        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+                        <a class="button" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/alessio-uyema/30min'});return false;" role="button">Solicitar demo</a>
+                    </div>
+                    <div id="canvas-container"></div>
+                    <div id="contact" class="footer-container">
+                        <div id="language">
+                            <ul>
+                                <li><a href="/en/"><i class="flag-icon flag-icon-us"></i> English</a></li>
+                                <li><a class="active lang-btn lang-es" href="/es/"><i class="flag-icon flag-icon-es"></i> Español</a></li>
+                            </ul>
+                        </div>
+                        <div class="information">
+                            <div class="direction">
+                                <p>8333 NW 53rd Street, Suite 450. Miami. Florida. Estados Unidos.</p>
+                                <p><a href="tel:+541152356660">+54 11 5235-6660</a></p>
+                                <p><a href="mailto:info@quartzsales.com"> info@quartzsales.com</a></p>
+                            </div>
+                        </div>
+                        <div class="social">
+                            <div class="logo-footer">
+                                <img src="images/logo-qs.svg" alt="Logotipo QuartzSales">
+                            </div>
+                            <div class="socialmedia">
+                                <a href="https://www.linkedin.com/showcase/quartz-sales" target="blank"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="https://www.instagram.com/quartzsales/" target="blank"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+                <div id="section-bg-banner"><img src="images/banner-web-default.png" alt=""></div>
+            </div>
+
+        <script src="js/lenguage.js"></script>
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/jquery.flexslider-min.js"></script>
+        <script src="js/main.js?v=4"></script>
+        <script src="js/hyper.js"></script>
+
+        <script>
+            function expandDiv(elemento) {
+                // Agrega la clase "expandido" al div para aplicar los estilos de expansión
+                elemento.classList.toggle("expandido");
+            }
+        </script>
+
+        <!--Principio del widget de globo de Calendly
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <script>window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/e-saurio/15min', text: 'Programar reunión', color: '#0BABC8', textColor: '#ffffff', branding: true }); }</script>
+        -->
+        
+        </div>
+    </body>
+</html>

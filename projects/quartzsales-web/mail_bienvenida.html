@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenida a QuartzSales</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #110f1c;
+    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+    color: #ffffff;
+    padding: 20px 16px;
+  }
+
+  .email-wrapper { max-width: 600px; margin: 0 auto; }
+
+  /* ── VIEW IN BROWSER ── */
+  .preheader {
+    text-align: center;
+    padding: 8px 0 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #a896d4;
+    font-family: 'Space Mono', monospace;
+  }
+  .preheader a { color: #b090ff; text-decoration: underline; }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(160deg, #1a1040 0%, #120d30 60%, #0f0a25 100%);
+    border-radius: 16px 16px 0 0;
+    padding: 40px 32px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(160,120,255,0.3);
+    border-bottom: none;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(100,60,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(60,120,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .qs-logo {
+    display: block;
+    margin: 0 auto 28px;
+    height: 32px;
+    width: auto;
+    align-items: center;
+  }
+
+  .header-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: #b18df0;
+    margin-bottom: 10px;
+  }
+  .header-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .header-title span { color: #c8aaff; }
+  .header-sub {
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.65;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  /* ── SORTING BANNER ── */
+  .sorting-banner {
+    background: linear-gradient(135deg, #1e1250 0%, #160e40 100%);
+    border: 1px solid rgba(160,120,255,0.28);
+    border-top: none;
+    border-bottom: none;
+    padding: 32px 32px;
+    text-align: center;
+  }
+  .sorting-hat {
+    display: block;
+    margin: 0 auto 16px;
+    width: 68px;
+    height: auto;
+    filter: drop-shadow(0 0 16px rgba(151, 78, 255, 0.55));
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50%       { transform: translateY(-7px) rotate(3deg); }
+  }
+  .sorting-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #a080d8;
+    margin-bottom: 10px;
+  }
+  .sorting-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f0e8ff;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .sorting-desc {
+    font-size: 14px;
+    color: #b8a8d8;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+
+  /* ── BUTTON ── */
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 100px;
+  }
+
+  /* ── BODY ── */
+  .body {
+    background: #181340;
+    border: 1px solid rgba(130,90,230,0.2);
+    border-top: none;
+    border-bottom: none;
+    padding: 0 32px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(110,70,210,0.18);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .section-emoji {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8dcff;
+  }
+  .section-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #7a6aaa;
+    margin-bottom: 14px;
+    margin-left: 30px;
+  }
+  .section-body {
+    font-size: 14px;
+    color: #c0b4dc;
+    line-height: 1.75;
+  }
+
+  /* ── VALUES ── */
+  .value-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(90,55,175,0.15);
+  }
+  .value-item:last-child { border-bottom: none; }
+  .value-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #d0b0ff;
+    background: rgba(124,58,237,0.2);
+    border: 1px solid rgba(180,130,255,0.35);
+    border-radius: 100px;
+    padding: 3px 12px;
+    margin-bottom: 6px;
+  }
+  .value-text {
+    font-size: 14px;
+    color: #d5caf3;
+    line-height: 1.65;
+  }
+
+  /* ── TOOL ROWS ── */
+  .tool-item {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(90,55,175,0.15);
+  }
+  .tool-item:last-child { border-bottom: none; }
+  .tool-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 3px;
+  }
+  .tool-name {
+    font-weight: 600;
+    color: #d5caf3;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tool-dot {
+    display: inline-block;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #aa80ff;
+    flex-shrink: 0;
+  }
+  .tool-link {
+    display: inline-block;
+    font-family: 'DM Sans', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #c0a0ff !important;
+    text-decoration: none;
+    border: 1px solid rgba(160,110,255,0.38);
+    padding: 4px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tool-desc {
+    font-size: 14px;
+    color: #9888c0;
+    line-height: 1.5;
+    padding-left: 15px;
+  }
+
+  /* ── COMM LIST ── */
+  .comm-item {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(90,55,175,0.12);
+    align-items: flex-start;
+  }
+  .comm-item:last-child { border-bottom: none; }
+  .comm-arrow {
+    color: #7850b8;
+    font-size: 16px;
+    font-weight: 600;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+  .comm-text {
+    font-size: 14px;
+    color: #baaed8;
+    line-height: 1.65;
+  }
+  .comm-text strong { color: #dcc8ff; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: linear-gradient(160deg, #0f0c23 0%, #0d0b1a 100%);
+    border: 1px solid rgba(110,70,210,0.2);
+    border-top: 1px solid rgba(130,90,230,0.25);
+    border-radius: 0 0 16px 16px;
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .footer-icon { font-size: 36px; display: block; margin-bottom: 14px; }
+  .footer-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f0e8ff;
+    margin-bottom: 8px;
+  }
+  .footer-text {
+    font-size: 14px;
+    color: #9080c0;
+    line-height: 1.65;
+  }
+  .footer-sig {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #4a3870;
+    text-transform: uppercase;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(90,55,175,0.2);
+  }
+  .footer-sig span { color: #7850b8; }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <!-- VIEW IN BROWSER -->
+  <p class="preheader">
+    Ver este mail correctamente &rarr;
+    <a href="https://www.quartzsales.com/resources/mail_bienvenida.html" target="_blank">abrir en el navegador</a>
+  </p>
+
+  <!-- HEADER -->
+  <div class="header">
+    <img
+      class="qs-logo"
+      src="https://www.quartzsales.com/images/logo-qs-negativo-bg-dark.png"
+      alt="QuartzSales"
+    />
+    <p class="header-eyebrow">Welcome to the jungle</p>
+    <h1 class="header-title">Hola, <span>probando un nombre muy largo</span></h1>
+    <p class="header-sub">
+      A continuaci&oacute;n vas a encontrar la informaci&oacute;n necesaria para arrancar
+      y dar tus primeros pasos dentro del equipo.
+    </p>
+  </div>
+
+  <!-- SORTING BANNER -->
+  <div class="sorting-banner">
+    <img
+      class="sorting-hat"
+      src="https://www.quartzsales.com/images/sombrero.gif"
+      alt="Sombrero Seleccionador"
+    />
+    <p class="sorting-eyebrow">Primero lo primero</p>
+    <p class="sorting-title">&iquest;Cu&aacute;l es tu casa en HogQuartz?</p>
+    <p class="sorting-desc">
+      Antes de empezar, el sombrero chamuyador te asignar&aacute; tu team.
+    </p>
+    <a href="https://www.quartzsales.com/hogquartz/sortingquartz/" target="_blank" class="btn-primary">
+      Ir al SortingQuartz &rarr;
+    </a>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- Valores -->
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-title">Nuestros valores</span>
+      </div>
+      <div class="value-item">
+        <div class="value-badge">Personas</div>
+        <div class="value-text">Actuamos con honestidad, respeto e integridad. Nos comunicamos con claridad y damos apoyo real.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-badge">Pr&aacute;ctico</div>
+        <div class="value-text">Vamos a lo simple. Resolvemos con lo que tenemos y consultamos antes de frenar.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-badge">Crecimiento</div>
+        <div class="value-text">Cuestionamos lo de siempre, aprendemos r&aacute;pido y asumimos nuevos desaf&iacute;os.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-badge">Equipo</div>
+        <div class="value-text"><em>We are smarter than me</em> &mdash; juntos pensamos mejor y llegamos m&aacute;s lejos.</div>
+      </div>
+      <div class="value-item">
+        <div class="value-badge">Ownership</div>
+        <div class="value-text">Nos hacemos cargo. Cumplimos, resolvemos y hacemos que las cosas pasen.</div>
+      </div>
+    </div>
+
+    <!-- Registro de horas -->
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-emoji">&#x23F1;</span>
+        <span class="section-title">Registro de horas y seguimiento</span>
+      </div>
+      <p class="section-body" style="margin-bottom:16px;">
+        Estas tres herramientas te van a acompañar desde el d&iacute;a uno para que no se te escape nada.
+      </p>
+
+      <div class="tool-item">
+        <div class="tool-top">
+          <span class="tool-name">Jira</span>
+          <a href="https://e-saurio.atlassian.net/wiki/x/IYAVJ" target="_blank" class="tool-link">Manual &rarr;</a>
+        </div>
+        <div class="tool-desc">Seguimiento claro de tus tareas.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-top">
+          <span class="tool-name">Tempo</span>
+          <a href="https://e-saurio.atlassian.net/wiki/x/HAAWJ" target="_blank" class="tool-link">Instructivo &rarr;</a>
+        </div>
+        <div class="tool-desc">Carg&aacute; tus horas todos los d&iacute;as en el ticket que corresponda.</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-top">
+          <span class="tool-name">Confluence</span>
+          <a href="https://e-saurio.atlassian.net/wiki" target="_blank" class="tool-link">Wiki &rarr;</a>
+        </div>
+        <div class="tool-desc">Document&aacute; todo y aprovech&aacute; ROVO para encontrar info r&aacute;pido</div>
+      </div>
+    </div>
+
+    <!-- Recursos visuales -->
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-emoji">&#x1F3A8;</span>
+        <span class="section-title">Firma digital y LinkedIn</span>
+      </div>
+
+      <div class="tool-item">
+        <div class="tool-top">
+          <span class="tool-name">Firma digital</span>
+          <a href="https://e-saurio.atlassian.net/wiki/x/AQDfgw" target="_blank" class="tool-link">Instructivo &rarr;</a>
+        </div>
+        <div class="tool-desc">Envi&aacute; tu foto a jesica.titaro@quartzsales.com</div>
+      </div>
+      <div class="tool-item">
+        <div class="tool-top">
+          <span class="tool-name">LinkedIn banner</span>
+          <a href="https://www.quartzsales.com/resources/banners-in.zip" class="tool-link">Descargar &rarr;</a>
+        </div>
+        <div class="tool-desc">Actualiz&aacute; tu perfil con los banners oficiales</div>
+      </div>
+    </div>
+
+    <!-- Políticas -->
+    <div class="section">
+      <div class="section-heading">
+        <span class="section-title">Nuestras pol&iacute;ticas</span>
+      </div>
+      <p class="section-body" style="margin-bottom:20px;">
+        Son la gu&iacute;a de c&oacute;mo trabajamos y tomamos decisiones cada d&iacute;a.
+        Le&eacute;las antes de empezar.
+      </p>
+      <div style="text-align:center;">
+        <a href="https://e-saurio.atlassian.net/l/cp/Yc51F4eR" target="_blank" class="btn-primary">
+          Ver Pol&iacute;ticas
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="footer-icon">&#x1F680;</span>
+    <div class="footer-title">El futuro est&aacute; por escribirse.</div>
+    <div class="footer-text">
+      Hagamos que sea una gran historia.
+    </div>
+    <div class="footer-sig">
+      <span>QuartzSales</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
