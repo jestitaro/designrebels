@@ -218,11 +218,12 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .countdown small{display:block;max-width:10ch;margin-left:auto;line-height:1.3;margin-top:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 .race-mine{margin-top:28px;padding:22px 22px 20px;border-radius:20px;background:var(--surface-2);border-left:4px solid var(--team,var(--accent))}
 .hero-race{position:relative;padding:22px 2px 30px}
+body[data-theme="halloween"] .hero-race{padding-top:64px}
+.snake{position:absolute;left:0;right:0;top:0;width:100%;height:48px;pointer-events:none}
 .hero-race .race-top{align-items:flex-start}
 .hero-title{font-size:38px;line-height:1;margin-top:10px;letter-spacing:-.02em}
 .hero-title .yr{display:block}
 body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-origin:left}
-body[data-theme="halloween"] .hero-race::before{content:"";position:absolute;left:2px;width:96px;top:0;height:6px;background:repeating-linear-gradient(90deg,#efeaf8 0 8px,#120d24 8px 16px);opacity:.8}
 .hero-race .countdown b{font-size:52px}
 .hh-row{display:flex;align-items:center;gap:10px;margin-top:34px}
 .hh-row .rank-chip{margin-left:auto}
@@ -506,8 +507,8 @@ body[data-theme="halloween"] .onb-mascot{transform-origin:50% 100%;animation:swa
 @keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-4px)}}
 /* Rayas tipo media a rayas, espirales y líneas torcidas: guiños originales, sin elementos de ninguna película */
 body[data-theme="halloween"] .race::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(90deg,#efeaf8 0 9px,#120d24 9px 18px);opacity:.85}
-.race-spiral{position:absolute;right:-26px;top:-22px;width:150px;height:150px;color:var(--lav);opacity:.16;pointer-events:none;animation:spinSlow 40s linear infinite;filter:url(#wobble)}
-@keyframes spinSlow{to{transform:rotate(360deg)}}
+.race-spiral{position:absolute;right:-26px;top:20px;width:150px;height:150px;color:var(--lav);opacity:.16;pointer-events:none;animation:spinBurst 7s cubic-bezier(.65,0,.35,1) infinite;filter:url(#wobble)}
+@keyframes spinBurst{0%,72%{transform:rotate(0)}100%{transform:rotate(720deg)}}
 body[data-theme="halloween"] .race-top .h2{transform:rotate(-1deg);transform-origin:left}
 body[data-theme="halloween"] .tab-ind{background:var(--accent)}
 body[data-theme="halloween"] .bar-wrap{background:repeating-linear-gradient(90deg,var(--surface-3) 0 6px,color-mix(in srgb,var(--surface-3) 70%,#000) 6px 12px)}
@@ -683,6 +684,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <!-- HOME -->
           <section class="screen active" data-screen="home" aria-label="Inicio">
             <div class="hero-race" id="raceMine">
+              <canvas class="snake hw" id="snake" aria-hidden="true"></canvas>
               <svg class="race-spiral hw" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
               <div class="race-top">
                 <div><span class="kicker" id="raceKicker"></span><h1 class="hero-title display" id="raceTitle">QuartzRun<span class="yr">2026</span></h1></div>
@@ -1498,6 +1500,45 @@ function spawnGhost() {
   app.insertBefore(g, app.querySelector('.screens')); setTimeout(() => g.remove(), 14500);
 }
 setTimeout(function loopGhost() { spawnGhost(); setTimeout(loopGhost, 16000 + Math.random() * 10000); }, 4000);
+/* Víbora a rayas que se mueve como en el juego Snake (solo Halloween, decorativa) */
+(() => {
+  const cv = $('#snake'), ctx = cv.getContext('2d'), C = 8, LEN = 14, STEP = 110;
+  let cols = 0, rows = 0, body = [], dir = [1, 0], food = null, last = 0;
+  const fit = () => { const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1; if (!r.width) return false;
+    cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+    cols = Math.floor(r.width / C); rows = Math.floor(r.height / C); return true; };
+  const reset = () => { body = Array.from({ length: LEN }, (_, i) => [LEN - i, 2]); dir = [1, 0]; placeFood(); };
+  const placeFood = () => { food = [2 + Math.floor(Math.random() * (cols - 4)), 1 + Math.floor(Math.random() * (rows - 2))]; };
+  const free = ([x, y]) => x >= 0 && y >= 0 && x < cols && y < rows && !body.slice(0, -1).some(b => b[0] === x && b[1] === y);
+  function step() {
+    const h = body[0], opts = [dir, [dir[1], -dir[0]], [-dir[1], dir[0]]];
+    // prefiere ir hacia la comida, a veces dobla por gusto, nunca se choca
+    opts.sort((a, b) => { const da = Math.abs(h[0] + a[0] - food[0]) + Math.abs(h[1] + a[1] - food[1]), db = Math.abs(h[0] + b[0] - food[0]) + Math.abs(h[1] + b[1] - food[1]); return da - db; });
+    if (Math.random() < .12) opts.reverse();
+    const nd = opts.find(o => free([h[0] + o[0], h[1] + o[1]]));
+    if (!nd) { reset(); return; }
+    dir = nd; body.unshift([h[0] + dir[0], h[1] + dir[1]]); body.pop();
+    if (body[0][0] === food[0] && body[0][1] === food[1]) placeFood();
+  }
+  function draw() {
+    ctx.clearRect(0, 0, cols * C, rows * C);
+    if (food) { ctx.fillStyle = '#ff9a1f'; ctx.beginPath(); ctx.arc(food[0] * C + C / 2, food[1] * C + C / 2, C / 2.6, 0, 7); ctx.fill(); }
+    body.forEach(([x, y], i) => { ctx.globalAlpha = 1 - i / (LEN * 2.4);
+      ctx.fillStyle = '#efeaf8';
+      if (i === 0) { ctx.beginPath(); ctx.roundRect(x * C, y * C, C, C, 3); ctx.fill(); ctx.fillStyle = '#120d24'; ctx.fillRect(x * C + 2, y * C + 2, 1.6, 1.6); ctx.fillRect(x * C + C - 3.6, y * C + 2, 1.6, 1.6); }
+      else { ctx.fillRect(x * C, y * C, C, C); if (i % 2) { ctx.fillStyle = '#120d24'; ctx.fillRect(x * C + 1.2, y * C + 1.2, C - 2.4, C - 2.4); } } });
+    ctx.globalAlpha = 1;
+  }
+  function loop(t) {
+    if (theme() === 'halloween' && current === 'home') {
+      if (!cols && fit()) reset();
+      if (cols && t - last > STEP) { last = t; if (!reduce) step(); draw(); }
+    }
+    requestAnimationFrame(loop);
+  }
+  addEventListener('resize', () => { if (fit()) reset(); });
+  requestAnimationFrame(loop);
+})();
 $('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; goto('run'); });
 function remTick() {
   if (!S.rem.on || !S.user) return;
