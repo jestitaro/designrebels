@@ -2891,17 +2891,17 @@ header.scrolled .lang-switch__btn {
 }
 
 @keyframes execEnd {
-  0%, 55% { transform: scale(1); }
-  62% { transform: scale(1.8); }
-  70%, 100% { transform: scale(1); }
+  0% { transform: scale(1); }
+  6% { transform: scale(1.8); }
+  14%, 100% { transform: scale(1); }
 }
 
 .tile--exec .exec-person {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: 40%;
-  height: 64%;
+  width: 50%;
+  height: 66%;
   object-fit: contain;
   object-position: right bottom;
   z-index: 2;
@@ -2924,8 +2924,8 @@ header.scrolled .lang-switch__btn {
   }
 
   .tile--exec .exec-person {
-    width: 42%;
-    height: 60%;
+    width: 50%;
+    height: 62%;
   }
 
   .tile--exec .exec-chips {

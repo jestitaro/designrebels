@@ -149,27 +149,24 @@
         <div class="stage-wrap">
           <div class="violet-back"></div>
 
+          <div class="desktop-card">
+            <img src="gestion-pedidos/media/hero/hero-laptop.webp" alt="" width="1400" height="944" fetchpriority="high" />
+          </div>
+
           <div class="slot slot-left">
-            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-slot-left-1.webp" alt="" />
-            <img class="slot-item" src="gestion-pedidos/media/hero/hero-slot-left-2.webp" alt="" />
+            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-editar-pedido.webp" alt="" width="640" height="567" />
+            <img class="slot-item" src="gestion-pedidos/media/hero/hero-total.webp" alt="" width="640" height="719" />
           </div>
 
           <div class="slot slot-top">
-            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-slot-top-1.webp" alt="" />
-            <img class="slot-item" src="gestion-pedidos/media/hero/hero-slot-top-2.webp" alt="" />
+            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-notif-creado.webp" alt="" width="820" height="168" />
+            <img class="slot-item" src="gestion-pedidos/media/hero/hero-notif-confirmado.webp" alt="" width="820" height="179" />
           </div>
 
           <div class="slot slot-right">
-            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-slot-right-1.webp" alt="" />
-            <img class="slot-item" src="gestion-pedidos/media/hero/hero-slot-right-2.webp" alt="" />
-          </div>
-
-          <div class="desktop-card hero-laptop">
-            <div class="hero-laptop__screen">
-              <img src="gestion-pedidos/media/flow/pedidos-flow-poster.webp" alt="" fetchpriority="high" />
-            </div>
-            <div class="hero-laptop__hinge" aria-hidden="true"></div>
-            <div class="hero-laptop__base" aria-hidden="true"><span class="hero-laptop__notch"></span></div>
+            <img class="slot-item active" src="gestion-pedidos/media/hero/hero-tipo-pedido.webp" alt="" width="760" height="450" />
+            <img class="slot-item" src="gestion-pedidos/media/hero/hero-cliente.webp" alt="" width="900" height="493" />
+            <img class="slot-item" src="gestion-pedidos/media/hero/hero-producto.webp" alt="" width="900" height="227" />
           </div>
         </div>
       </div>
@@ -229,62 +226,53 @@
       </div>
       <div class="flow-tabs">
         <div class="flow-tabs__list" role="tablist" aria-label="Pasos de Order Entry">
-          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-video" id="flow-tab-1" data-index="0" data-time="0">
-            <span class="flow-tab__head">
-              <span class="flow-tab__icon"><i class="fa-regular fa-cart-plus" aria-hidden="true"></i></span>
+          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-stage" id="flow-tab-1" data-time="0" data-caption="El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-cart-plus" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
               <strong class="flow-tab__title">Carga</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
             </span>
-            <span class="flow-tab__caption">El cliente o el equipo comercial inicia el pedido y selecciona cliente, sucursal y productos.</span>
-            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-2" data-index="1" data-time="19">
-            <span class="flow-tab__head">
-              <span class="flow-tab__icon"><i class="fa-regular fa-list-check" aria-hidden="true"></i></span>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-2" data-time="13.2" data-caption="Al sumar productos, el sistema controla múltiplos de bulto, cuotas, topes, precios y monto mínimo antes de dejar enviar el pedido.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-list-check" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
               <strong class="flow-tab__title">Validación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
             </span>
-            <span class="flow-tab__caption">El sistema controla monto mínimo, múltiplos de bulto, cuotas, topes, precios y condiciones comerciales.</span>
-            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-3" data-index="2" data-time="25">
-            <span class="flow-tab__head">
-              <span class="flow-tab__icon"><i class="fa-regular fa-stamp" aria-hidden="true"></i></span>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-3" data-time="28.6" data-caption="Si hay cambios de precio, descuentos u otras excepciones, el pedido queda pendiente y pasa por un flujo de aprobación configurable y trazable.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-stamp" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
               <strong class="flow-tab__title">Aprobación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
             </span>
-            <span class="flow-tab__caption">Cuando hay cambios de precio, descuentos u otras excepciones, el pedido entra en un flujo configurable y trazable.</span>
-            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-4" data-index="3" data-time="28.3">
-            <span class="flow-tab__head">
-              <span class="flow-tab__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></span>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-4" data-time="34.8" data-caption="Una vez aprobado, el pedido se transmite automáticamente al ERP, sin recargar datos.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
               <strong class="flow-tab__title">Transmisión al ERP</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
             </span>
-            <span class="flow-tab__caption">Una vez confirmado o aprobado, el pedido se transmite automáticamente al ERP.</span>
-            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
-          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-video" id="flow-tab-5" data-index="4" data-time="29.3">
-            <span class="flow-tab__head">
-              <span class="flow-tab__icon"><i class="fa-regular fa-circle-check" aria-hidden="true"></i></span>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-5" data-time="36.1" data-caption="El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-circle-check" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
               <strong class="flow-tab__title">Confirmación y notificación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
             </span>
-            <span class="flow-tab__caption">El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.</span>
-            <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
           </button>
         </div>
-        <div class="flow-tabs__panel">
-          <div class="flow-tabs__monitor">
-            <span class="flow-tabs__cam" aria-hidden="true"></span>
-            <div class="flow-tabs__screen">
-              <video class="flow-tabs__video" id="flow-video" role="tabpanel" aria-label="Recorrido completo de un pedido en QuartzSales"
-                     src="gestion-pedidos/media/flow/pedidos-flow.mp4" poster="gestion-pedidos/media/flow/pedidos-flow-poster.webp"
-                     autoplay muted loop playsinline preload="auto"></video>
-              <button class="flow-tabs__expand" type="button" aria-haspopup="dialog">
-                <i class="fa-regular fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
-                Ampliar
-              </button>
-            </div>
+        <div class="flow-tabs__panel" id="flow-stage" role="tabpanel" aria-labelledby="flow-tab-1">
+          <div class="flow-tabs__frame">
+            <video class="flow-tabs__video" id="flow-video" aria-label="Recorrido completo de un pedido en QuartzSales"
+                   src="gestion-pedidos/media/flow/pedidos-flow.mp4" poster="gestion-pedidos/media/flow/pedidos-flow-poster.webp"
+                   autoplay muted loop playsinline preload="metadata"></video>
+            <button class="flow-tabs__expand" type="button" aria-haspopup="dialog" aria-label="Ampliar video">
+              <i class="fa-regular fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+              <span>Ampliar</span>
+            </button>
           </div>
-          <div class="flow-tabs__neck" aria-hidden="true"></div>
-          <div class="flow-tabs__base" aria-hidden="true"></div>
+          <p class="flow-tabs__caption" id="flow-caption">El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.</p>
         </div>
       </div>
     </section>
@@ -294,6 +282,7 @@
       <div class="video-modal__box">
         <button class="video-modal__close" type="button" aria-label="Cerrar video ampliado" data-video-modal-close>×</button>
         <div class="video-modal__frame" id="videoModalFrame"></div>
+        <p class="video-modal__caption"><strong id="videoModalStep">Carga</strong><span id="videoModalCaption">El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.</span></p>
       </div>
     </div>
 
@@ -320,11 +309,6 @@
       </div>
     </section>
 
-    <!-- CTA DEMO -->
-    <section class="cta reveal" id="demo">
-      <h3>Cada decisión marca la diferencia. Elegí dar el salto con nosotros.</h3>
-      <button class="js-open-meetings btn btn-gradient" type="button">Solicitar demo</button>
-    </section>
   </main>
 
   <footer class="site-footer reveal">
