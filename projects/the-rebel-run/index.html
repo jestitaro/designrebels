@@ -429,6 +429,10 @@ body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30%
 .tab-ind{position:absolute;top:6px;bottom:6px;left:6px;border-radius:18px;background:var(--accent);transition:transform .5s var(--ease-spring);width:calc((100% - 12px)/4)}
 .tab .live-dot{position:absolute;top:6px;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:var(--danger);border:2px solid var(--surface);display:none;animation:blink 1s infinite}
 .is-live .tab[data-tab="run"] .live-dot{display:block}
+.no-gps .tab[data-tab="run"],.no-gps #goRun{display:none}
+.no-gps .tabbar{grid-template-columns:repeat(3,1fr)}
+.no-gps .tab-ind{width:calc((100% - 12px)/3)}
+.no-gps #captureBtn{margin-top:0}
 
 /* ============ SHEET ============ */
 .backdrop{position:absolute;inset:0;z-index:20;background:rgba(8,4,14,.45);opacity:0;pointer-events:none;transition:opacity .35s}
@@ -944,6 +948,9 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 (() => {
 'use strict';
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Funcionalidades activables. El cronómetro con GPS queda apagado: el navegador no mide km con el celular
+   bloqueado, así que la carga es por captura (o manual). Para volver a mostrarlo, poné gpsRun en true. */
+const FEATURES = { gpsRun: false };
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
@@ -1325,7 +1332,7 @@ $('#achGrid').addEventListener('click', e => { const a = e.target.closest('.ach'
 function renderAll(animateRank) { renderHead(); renderHome(); renderMe(); renderRem && renderRem(); renderRank(animateRank); renderAch(); renderRunStatic(); }
 
 /* ---- Tabs ---- */
-const ORDER = ['home', 'run', 'rank', 'me'];
+const ORDER = FEATURES.gpsRun ? ['home', 'run', 'rank', 'me'] : ['home', 'rank', 'me'];
 let current = 'home';
 function goto(name) {
   if (name === current) return;
@@ -1524,7 +1531,13 @@ async function makeThumb(url) {
 }
 async function sha256(file) { try { const b = await crypto.subtle.digest('SHA-256', await file.arrayBuffer()); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return null; } }
 function setType(type) { $$('#typeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.type === type)); segPill($('#typeSeg')); updateBike(); }
-$('#captureBtn').addEventListener('click', () => $('#captureInput').click());
+$('#captureBtn').addEventListener('click', e => { if (!FEATURES.gpsRun) { const [x, y] = centerOf(e.currentTarget); batFlock(x, y, 7); } $('#captureInput').click(); });
+if (!FEATURES.gpsRun) {
+  document.body.classList.add('no-gps');
+  $('#captureBtn').className = 'btn btn-primary levitate alt-btn';
+  $('#nudgeGo').textContent = 'Entendido';
+  COPY.base.step2 = COPY.halloween.step2 = 'Grabá tu salida con la app que uses y subí la captura.';
+}
 $('#capChips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return;
   $$('#capChips .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); $('#kmInput').value = fmt(+b.dataset.km, 2); vib(6); updateBike(); });
 $('#captureInput').addEventListener('change', async e => {
@@ -1723,7 +1736,7 @@ function spawnGhost() {
   app.insertBefore(g, app.querySelector('.screens')); setTimeout(() => g.remove(), 14500);
 }
 setTimeout(function loopGhost() { spawnGhost(); setTimeout(loopGhost, 16000 + Math.random() * 10000); }, 4000);
-$('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; goto('run'); });
+$('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; if (FEATURES.gpsRun) goto('run'); });
 function remTick() {
   if (!S.rem.on || !S.user) return;
   const now = new Date(), d = now.getDay(), h = now.getHours();
