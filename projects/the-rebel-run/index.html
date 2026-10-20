@@ -218,8 +218,6 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .countdown small{display:block;max-width:10ch;margin-left:auto;line-height:1.3;margin-top:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 .race-mine{margin-top:28px;padding:22px 22px 20px;border-radius:20px;background:var(--surface-2);border-left:4px solid var(--team,var(--accent))}
 .hero-race{position:relative;padding:22px 2px 30px}
-body[data-theme="halloween"] .hero-race{padding-top:72px}
-.snake{position:absolute;left:-22px;right:-22px;top:0;width:calc(100% + 44px);height:64px;pointer-events:none}
 .hero-race .race-top{align-items:flex-start}
 .hero-title{font-size:38px;line-height:1;margin-top:10px;letter-spacing:-.02em}
 .hero-title .yr{display:block}
@@ -451,6 +449,9 @@ body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30%
 .sheet:not(.is-manual):not(.is-capture) .manual-only{display:none}
 .sheet:not(.is-capture) .capture-only{display:none}
 .alt-btn{width:100%;height:48px;margin-top:6px}
+.gps-fallback{display:flex;flex-direction:column;align-items:stretch;gap:4px;margin-top:12px}
+.gps-fallback[hidden]{display:none}
+.gps-fallback .btn{height:48px}
 .cap-preview{position:relative;width:96px;height:128px;margin:14px auto 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--surface-2)}
 .cap-preview img{width:100%;height:100%;object-fit:cover;display:block}
 .cap-scan{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--accent) 45%,transparent),transparent);opacity:0}
@@ -598,6 +599,8 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 .p{position:absolute;width:22px;height:22px;margin:-11px;animation:burst 1.2s var(--ease-out) forwards}
 .p.dot{width:9px;height:9px;margin:-4px;border-radius:2px;background:var(--c)}
 @keyframes burst{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}}
+.bat-fx{position:absolute;pointer-events:none;color:#0b0817;filter:drop-shadow(0 0 1.2px #efeaf8) drop-shadow(0 0 10px rgba(167,139,250,.7))}
+.bat-fx svg{display:block;width:100%;height:auto;animation:flap .18s ease-in-out infinite alternate}
 .fly-num{position:absolute;z-index:70;font-weight:900;font-size:28px;color:var(--accent);pointer-events:none;transition:transform .9s var(--ease-out),opacity .9s}
 
 @media (prefers-reduced-motion:reduce){
@@ -710,7 +713,6 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <!-- HOME -->
           <section class="screen active" data-screen="home" aria-label="Inicio">
             <div class="hero-race" id="raceMine">
-              <canvas class="snake hw" id="snake" aria-hidden="true"></canvas>
               <svg class="race-spiral hw" viewBox="0 0 100 100" aria-hidden="true"><use href="#spiral"/></svg>
               <div class="race-top">
                 <div><span class="kicker" id="raceKicker"></span><h1 class="hero-title display" id="raceTitle">QuartzRun<span class="yr">2026</span></h1></div>
@@ -783,7 +785,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
                 </button>
               </div>
               <div class="hold-hint" id="holdHint"></div>
-              <p class="wake" id="wakeTxt">Dejá la pantalla encendida mientras corrés: el navegador puede pausar el GPS si se bloquea.</p>
+              <p class="wake" id="wakeTxt">Con el celular bloqueado el navegador pausa el GPS. Si salís así, grabá con Strava o tu reloj y subí la captura.</p>
             </div>
           </section>
 
@@ -885,6 +887,10 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <div class="dur manual-only"><span>Duración</span><input id="durInput" class="num" inputmode="numeric" value="30" aria-label="Duración en minutos"><span>min</span></div>
           <div class="dur capture-only"><span>Fecha</span><input id="dateInput" type="date" aria-label="Fecha de la actividad"></div>
           <p class="note" id="sheetNote"></p>
+          <div class="gps-fallback" id="gpsFallback" hidden>
+            <button class="btn btn-ghost" id="fbCapture"><svg><use href="#i-image"/></svg>Subir captura de tu app</button>
+            <button class="link-btn" id="fbManual">Escribir los km</button>
+          </div>
           <div class="sheet-actions">
             <button class="btn btn-primary" id="saveBtn"><svg><use href="#i-check"/></svg><span data-copy="saveCta"></span></button>
             <button class="btn btn-text-danger" id="discardBtn">Descartar</button>
@@ -1129,6 +1135,24 @@ function burst(x, y, n = 22) {
     fx.appendChild(p); setTimeout(() => p.remove(), 1300);
   }
 }
+/* Bandada de murciélagos que salen volando desde un botón (Halloween) */
+function batFlock(x, y, n = 9) {
+  if (reduce || theme() !== 'halloween') return;
+  const fx = $('#fx'), W = $('#app').clientWidth;
+  for (let i = 0; i < n; i++) {
+    const b = document.createElement('span'), size = 18 + Math.random() * 22, side = Math.random() > .5 ? 1 : -1;
+    const dx = side * (60 + Math.random() * (W * .55)), dy = -(260 + Math.random() * 420), dur = 1300 + Math.random() * 900;
+    b.className = 'bat-fx'; b.style.left = x + 'px'; b.style.top = y + 'px'; b.style.width = size + 'px';
+    b.innerHTML = `<svg viewBox="0 0 48 22" style="animation-duration:${.14 + Math.random() * .1}s"><use href="#bat"/></svg>`;
+    fx.appendChild(b);
+    const mid = { x: dx * .35 + side * (20 + Math.random() * 40), y: dy * .45 + (Math.random() * 60 - 30) };
+    b.animate([
+      { transform: 'translate(-50%,-50%) scale(.3)', opacity: 0 },
+      { transform: `translate(calc(-50% + ${mid.x}px), calc(-50% + ${mid.y}px)) scale(1) rotate(${side * 8}deg)`, opacity: 1, offset: .35 },
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.8) rotate(${-side * 10}deg)`, opacity: 0 }
+    ], { duration: dur, delay: i * 45, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'both' }).onfinish = () => b.remove();
+  }
+}
 function centerOf(el) { const a = $('#app').getBoundingClientRect(), b = el.getBoundingClientRect(); return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2]; }
 function toast(html) {
   const el = document.createElement('div'); el.className = 'toast';
@@ -1313,11 +1337,11 @@ function goto(name) {
   if (name === 'rank') renderRank(false);
 }
 $$('.tab').forEach(tb => tb.addEventListener('click', () => goto(tb.dataset.tab)));
-$('#goRun').addEventListener('click', () => goto('run'));
+$('#goRun').addEventListener('click', e => { const [x, y] = centerOf(e.currentTarget); batFlock(x, y, 7); setTimeout(() => goto('run'), 220); });
 $('#livePill').addEventListener('click', () => goto('run'));
 
 /* ---- Run engine ---- */
-const run = { state: 'idle', acc: 0, t0: 0, dist: 0, mode: 'gps', watch: null, last: null, gpsAcc: null, wake: null, raf: 0, lastSim: 0 };
+const run = { state: 'idle', acc: 0, t0: 0, dist: 0, est: 0, gap: false, mode: 'gps', watch: null, last: null, gpsAcc: null, wake: null, raf: 0, lastSim: 0 };
 const elapsed = () => run.acc + (run.state === 'running' ? (performance.now() - run.t0) : 0);
 const fmtTime = ms => { const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60, ss = s % 60;
   return (h ? h + ':' + String(m).padStart(2, '0') : String(m).padStart(2, '0')) + ':' + String(ss).padStart(2, '0'); };
@@ -1331,10 +1355,17 @@ function startGPS() {
     const { latitude: la, longitude: lo, accuracy } = p.coords; run.gpsAcc = accuracy;
     setSignal(accuracy < 15 ? 3 : accuracy < 35 ? 2 : 1, `Precisión ±${Math.round(accuracy)} m`);
     if (run.state !== 'running') { run.last = null; return; }
-    if (accuracy > 35) return;
+    if (accuracy > 50) return;
     const pt = { la, lo, t: p.timestamp };
     if (run.last) { const d = hav(run.last, pt), dt = (pt.t - run.last.t) / 1000;
-      if (d < 3) return; if (dt > 0 && d / dt > 9) { run.last = pt; return; }
+      if (d < 3) return;
+      if (dt > 20) {
+        // volvió la señal después de un hueco (pantalla bloqueada o app en segundo plano):
+        // sumamos el tramo en línea recta si la velocidad es posible a pie, en bici o corriendo
+        if (d / dt <= 8) { run.dist += d / 1000; run.est += d / 1000; }
+        run.last = pt; run.gap = false; return;
+      }
+      if (dt > 0 && d / dt > 9) { run.last = pt; return; }
       run.dist += d / 1000; }
     run.last = pt;
   }, err => { setSignal(0, err.code === 1 ? 'Ubicación denegada · activala o cargá la actividad a mano' : 'Sin señal · seguimos contando el tiempo'); },
@@ -1344,7 +1375,11 @@ function startGPS() {
 function stopGPS() { if (run.watch != null) navigator.geolocation.clearWatch(run.watch); run.watch = null; run.last = null; }
 async function lockWake() { try { if ('wakeLock' in navigator) run.wake = await navigator.wakeLock.request('screen'); } catch (e) {} }
 function freeWake() { try { run.wake && run.wake.release(); } catch (e) {} run.wake = null; }
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && run.state === 'running') lockWake(); });
+document.addEventListener('visibilitychange', () => {
+  if (run.state !== 'running' || run.mode !== 'gps') { if (document.visibilityState === 'visible' && run.state === 'running') lockWake(); return; }
+  if (document.visibilityState === 'hidden') run.gap = true;
+  else { lockWake(); if (run.gap) setTimeout(() => toast('Con el celular bloqueado el navegador pausa el GPS. Sumamos ese tramo en línea recta.'), 400); }
+});
 
 function setRunState(s) {
   run.state = s;
@@ -1382,10 +1417,10 @@ function loop(now) {
 }
 $('#playBtn').addEventListener('click', e => {
   if (run.state === 'idle' || run.state === 'paused') {
-    if (run.state === 'idle') { run.dist = 0; run.acc = 0; lastSec = -1; if (run.mode === 'gps') startGPS(); else setSignal(3, 'Modo demo · velocidad ×8'); }
+    if (run.state === 'idle') { run.dist = 0; run.est = 0; run.gap = false; run.acc = 0; lastSec = -1; if (run.mode === 'gps') startGPS(); else setSignal(3, 'Modo demo · velocidad ×8'); }
     run.t0 = performance.now(); run.lastSim = 0; setRunState('running'); lockWake(); vib([18, 40, 18]);
     cancelAnimationFrame(run.raf); run.raf = requestAnimationFrame(loop);
-    const [x, y] = centerOf(e.currentTarget); if (!reduce && theme() === 'halloween') burst(x, y, 8);
+    const [x, y] = centerOf(e.currentTarget); batFlock(x, y, 10);
   } else {
     run.acc += performance.now() - run.t0; run.last = null; setRunState('paused'); freeWake(); vib(30);
   }
@@ -1409,9 +1444,9 @@ function finishRun() {
   const secs = Math.round(run.acc / 1000), km = Math.round(run.dist * 100) / 100, source = run.mode;
   stopGPS(); freeWake(); cancelAnimationFrame(run.raf); vib([30, 60, 30]);
   setRunState('paused'); // congela UI mientras está el sheet
-  openSheet({ km, secs, source });
+  openSheet({ km, secs, source, est: Math.round(run.est * 100) / 100 });
 }
-function resetRun() { run.dist = 0; run.acc = 0; lastSec = -1; setRunState('idle'); $('#runKm').textContent = '0,00'; $('#runTime').textContent = '00:00'; $('#pace').textContent = `–'––"`; $('#oProg').style.strokeDashoffset = 791.7; setSignal(0, run.mode === 'gps' ? 'GPS en espera' : 'Modo demo listo'); }
+function resetRun() { run.dist = 0; run.est = 0; run.acc = 0; lastSec = -1; setRunState('idle'); $('#runKm').textContent = '0,00'; $('#runTime').textContent = '00:00'; $('#pace').textContent = `–'––"`; $('#oProg').style.strokeDashoffset = 791.7; setSignal(0, run.mode === 'gps' ? 'GPS en espera' : 'Modo demo listo'); }
 
 /* ---- Sheet ---- */
 let pending = null;
@@ -1425,6 +1460,11 @@ function openSheet(p) {
   $('#sheetNote').textContent = cap ? 'Revisá y corregí si hace falta. La captura queda guardada con la actividad y solo la ves vos.' : manual ? `Máximo ${MANUAL_MAX_KM} km por carga. Las cargas manuales quedan identificadas en el ranking.` : 'La distancia la mide el GPS y no se puede editar.';
   $('#kmInput').value = fmt(p.km || (manual ? 2 : 0), 2);
   if (cap) { $('#durInput').value = p.mins || ''; $('#dateInput').value = p.day; $('#dateInput').max = localDay(new Date()); }
+  if (manual && p.mins) $('#durInput').value = p.mins;
+  const noDist = p.source === 'gps' && (p.km || 0) < .05 && p.secs >= 60;
+  $('#gpsFallback').hidden = !noDist;
+  if (noDist) $('#sheetNote').textContent = 'El GPS no registró distancia: puede pasar con el celular bloqueado, sin permiso de ubicación o bajo techo. Si grabaste con otra app, subí la captura.';
+  else if (p.source === 'gps' && p.est > 0) $('#sheetNote').textContent = `Incluye ${fmt(p.est, 2)} km estimados en línea recta mientras el celular estuvo bloqueado.`;
   $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
   requestAnimationFrame(() => { segPill($('#typeSeg')); updateBike(); });
   setTimeout(() => $('#saveBtn').focus({ preventScroll: true }), 350);
@@ -1440,6 +1480,8 @@ function nudge(d) { const v = Math.min(MANUAL_MAX_KM, Math.max(0, Math.round((km
   b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nudge(d); } });
 });
 $('#manualBtn').addEventListener('click', () => openSheet({ km: 0, secs: 0, source: 'manual' }));
+$('#fbManual').addEventListener('click', () => { const mins = Math.max(1, Math.round((pending?.secs || 0) / 60)); closeSheet(); resetRun(); setTimeout(() => openSheet({ km: 0, secs: 0, source: 'manual', mins }), 350); });
+$('#fbCapture').addEventListener('click', () => { closeSheet(); pending = null; resetRun(); setTimeout(() => $('#captureInput').click(), 300); });
 
 /* ---- Captura de la app de actividad ----
    Prototipo: lee la imagen en el navegador con OCR (Tesseract.js, se carga solo al usarlo).
@@ -1565,6 +1607,7 @@ $('#saveBtn').addEventListener('click', e => {
   closeSheet(); const wasRun = !['manual', 'capture'].includes(pending.source); pending = null; if (wasRun) resetRun();
   goto('home');
   const isPractice = !counts(S.acts[0]);
+  batFlock(x, y, 12);
   setTimeout(() => { renderAll(true); if (isPractice) { toast(`Práctica guardada. Desde el 1 de noviembre tus km suman para ${team(S.user.team).name}.`); return; } burst(x, y - 80, 18); toast(t('saved', { km: fmt(counted, 2), team: team(S.user.team).name })); checkMilestones(before); }, 380);
 });
 function flyNumber(txt, x, y) {
@@ -1680,56 +1723,6 @@ function spawnGhost() {
   app.insertBefore(g, app.querySelector('.screens')); setTimeout(() => g.remove(), 14500);
 }
 setTimeout(function loopGhost() { spawnGhost(); setTimeout(loopGhost, 16000 + Math.random() * 10000); }, 4000);
-/* Víbora a rayas que se arrastra por el hero (solo Halloween, decorativa).
-   El cuerpo sigue exactamente el rastro de la cabeza, así ondula como una serpiente real. */
-(() => {
-  const cv = $('#snake'), ctx = cv.getContext('2d');
-  const LEN = 170, GAP = 2.2, BAND = 13, W0 = 11, W1 = 2.5, SPEED = 34; // px, px/s
-  let W = 0, H = 0, trail = [], x = 0, dirX = 1, ph = 0, baseY = 30, pause = 0, last = 0, tongue = 0, nextTongue = 2;
-  const fit = () => { const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1; if (!r.width) return false;
-    cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); W = r.width; H = r.height; return true; };
-  const enter = () => { dirX = Math.random() > .5 ? 1 : -1; x = dirX > 0 ? -LEN - 20 : W + LEN + 20; baseY = 22 + Math.random() * (H - 44); ph = Math.random() * 6; trail = []; };
-  const headY = () => baseY + Math.sin(ph) * 9 + Math.sin(ph * .37) * 5;
-  function advance(dt) {
-    if (pause > 0) { pause -= dt; if (pause <= 0) enter(); return; }
-    x += dirX * SPEED * dt; ph += dt * 2.1;
-    const p = { x, y: headY() };
-    if (!trail.length || Math.hypot(p.x - trail[0].x, p.y - trail[0].y) >= GAP) trail.unshift(p);
-    const max = Math.ceil(LEN / GAP) + 2; if (trail.length > max) trail.length = max;
-    if ((dirX > 0 && x > W + LEN + 20) || (dirX < 0 && x < -LEN - 20)) pause = 3 + Math.random() * 5;
-    tongue = Math.max(0, tongue - dt); nextTongue -= dt; if (nextTongue <= 0) { tongue = .35; nextTongue = 2.5 + Math.random() * 3; }
-  }
-  const width = i => W0 - (W0 - W1) * Math.pow(i / (trail.length - 1 || 1), 1.4) - (i < 4 ? (4 - i) * .6 : 0);
-  function draw() {
-    ctx.clearRect(0, 0, W, H); if (trail.length < 3) return;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    // contorno claro para que las rayas oscuras se lean sobre el fondo
-    for (let i = 0; i < trail.length - 1; i++) { ctx.strokeStyle = '#efeaf8'; ctx.lineWidth = width(i) + 2.4; ctx.beginPath(); ctx.moveTo(trail[i].x, trail[i].y); ctx.lineTo(trail[i + 1].x, trail[i + 1].y); ctx.stroke(); }
-    // rayas
-    for (let i = 0; i < trail.length - 1; i++) { const dark = Math.floor(i * GAP / BAND) % 2 === 1; if (!dark) continue;
-      ctx.strokeStyle = '#120d24'; ctx.lineWidth = width(i); ctx.beginPath(); ctx.moveTo(trail[i].x, trail[i].y); ctx.lineTo(trail[i + 1].x, trail[i + 1].y); ctx.stroke(); }
-    // cabeza
-    const h = trail[0], n = trail[3] || trail[1], a = Math.atan2(h.y - n.y, h.x - n.x);
-    ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(a);
-    if (tongue > 0) { ctx.strokeStyle = '#ff6b81'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(13, 0); ctx.lineTo(16, -2.5); ctx.moveTo(13, 0); ctx.lineTo(16, 2.5); ctx.stroke(); }
-    ctx.fillStyle = '#efeaf8'; ctx.beginPath(); ctx.ellipse(1, 0, 8, 6.4, 0, 0, 7); ctx.fill();
-    ctx.fillStyle = '#120d24'; ctx.beginPath(); ctx.arc(3.5, -2.6, 1.3, 0, 7); ctx.arc(3.5, 2.6, 1.3, 0, 7); ctx.fill();
-    ctx.restore();
-  }
-  function still() { // pose quieta en S para reduced motion
-    trail = []; for (let i = 0; i < LEN / GAP; i++) { const xx = W * .62 - i * GAP; trail.push({ x: xx, y: H / 2 + Math.sin(i * GAP / 26) * 10 }); } draw();
-  }
-  function loop(t) {
-    const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
-    if (theme() === 'halloween' && current === 'home') {
-      if (!W && fit()) { if (reduce) still(); else enter(); }
-      if (W && !reduce) { advance(dt); draw(); }
-    }
-    requestAnimationFrame(loop);
-  }
-  addEventListener('resize', () => { if (fit()) { if (reduce) still(); else enter(); } });
-  requestAnimationFrame(loop);
-})();
 $('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; goto('run'); });
 function remTick() {
   if (!S.rem.on || !S.user) return;
