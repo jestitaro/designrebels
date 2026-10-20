@@ -239,6 +239,8 @@ body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-ori
 .mc-top>div{flex:1}
 .mc-name{display:block;font-size:22px;font-weight:700;margin-top:6px;letter-spacing:-.01em}
 .mc-progress{display:flex;align-items:baseline;gap:8px;margin-top:20px;font-size:13px;color:var(--muted)}
+.practice{margin-top:10px;font-size:13px;line-height:1.45;color:var(--accent-2);font-weight:600}
+.practice[hidden]{display:none}
 .mc-progress b{font-size:28px;font-weight:800;color:var(--ink)}
 .me-card .bar-wrap{margin-top:12px}
 .me-card .cta-stack{display:flex;margin-top:28px}
@@ -448,11 +450,13 @@ body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30%
 @keyframes scan{from{transform:translateY(-30%)}to{transform:translateY(260%)}}
 .cap-status{text-align:center;font-size:13px;font-weight:600;color:var(--muted);margin-top:10px;min-height:18px}
 .cap-status.ok{color:var(--accent-2)}
+.cap-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+.cap-chips:empty{display:none}
 .dur input[type=date]{width:150px;text-align:center}
 .sheet .btn[disabled]{opacity:.5;pointer-events:none}
 .bike-note{text-align:center;font-size:13px;font-weight:700;color:var(--accent);min-height:18px;margin-top:-4px;transition:opacity .3s}
 .bike-note:empty{opacity:0}
-.sheet:not(.is-manual) .stepper .val input{pointer-events:none;width:180px}
+.sheet:not(.is-manual):not(.is-capture) .stepper .val input{pointer-events:none;width:180px}
 .nudge{display:flex;align-items:center;gap:12px;padding:12px 14px;border-color:var(--accent);animation:rowIn .5s var(--ease-spring)}
 .nudge[hidden]{display:none}
 .nudge>svg{width:24px;height:24px;color:var(--accent);flex:none;animation:ring 2.4s ease-in-out infinite;transform-origin:50% 10%}
@@ -721,6 +725,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
                 <button class="info-btn" id="paceInfo" aria-label="Ver cuánto le falta a tu casa"><svg viewBox="0 0 24 24"><use href="#i-info"/></svg></button>
               </div>
               <div class="mc-progress"><b class="num" id="meKm">0</b><span>de <span id="meGoal">10</span> km de tu meta personal</span></div>
+              <p class="practice" id="practice" hidden></p>
               <div class="bar-wrap"><div class="bar-fill" id="meFill" style="--fill:var(--accent)"></div></div>
               <div class="cta-stack">
                 <button class="btn btn-primary levitate" id="goRun"><svg><use href="#i-play"/></svg><span data-copy="startCta"></span></button>
@@ -853,9 +858,10 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <p class="sub" id="sheetSub"></p>
           <div class="cap-preview capture-only" id="capPreview"><img id="capImg" alt="Captura subida"><span class="cap-scan"></span></div>
           <p class="cap-status capture-only" id="capStatus" aria-live="polite"></p>
+          <div class="cap-chips capture-only" id="capChips" role="group" aria-label="Distancias encontradas"></div>
           <div class="stepper">
             <button id="kmMinus" class="manual-only" aria-label="Restar 0,1 km"><svg><use href="#i-minus"/></svg></button>
-            <div class="val"><input id="kmInput" class="num" inputmode="decimal" aria-label="Kilómetros"><small id="kmLbl">KM MEDIDOS</small></div>
+            <div class="val"><input id="kmInput" class="num" type="text" inputmode="decimal" enterkeyhint="done" aria-label="Kilómetros"><small id="kmLbl">KM MEDIDOS</small></div>
             <button id="kmPlus" class="manual-only" aria-label="Sumar 0,1 km"><svg><use href="#i-plus"/></svg></button>
           </div>
           <div class="sheet-row">
@@ -1160,6 +1166,9 @@ function renderHome() {
   $('#meCard').style.setProperty('--team', teamVar(tm.id));
   $('#meHouse').textContent = tm.name; $('#meName').textContent = ROSTER.find(r => r.id === S.user.id)?.name || S.user.name;
   tween($('#meKm'), mk, 1); $('#meGoal').textContent = mg; $('#meFill').style.width = Math.min(100, mk / mg * 100) + '%';
+  const prac = S.acts.filter(a => !counts(a) && new Date(a.date) < RACE.start), pk = prac.reduce((a, b) => a + b.km, 0);
+  $('#practice').hidden = !(pre && prac.length);
+  $('#practice').textContent = `Práctica: ${fmt(pk, 1)} km en ${prac.length} ${prac.length === 1 ? 'actividad' : 'actividades'}. Desde el 1 de noviembre tus km empiezan a sumar para ${tm.name}.`;
   // ritmo necesario: traducido a minutos de caminata por persona por día
   let pace;
   if (pre) pace = `Cada casa necesita <b>${RACE.perMember} km por integrante</b> en un mes. Podés probar el registro desde ahora: lo que hagas antes del 1/11 queda como práctica.`;
@@ -1422,30 +1431,53 @@ function parseActivity(text) {
   const pick = arr => { const v = arr.filter(x => x >= 60 && x < 8 * 3600); return v.length ? Math.max(...v) : null; };
   const secs = pick(hms) ?? pick(hm) ?? pick(mn) ?? pick(ms);
   const type = /ride|bici|cicl|cycl|bike/i.test(t) ? 'bike' : /\brun\b|running|corr|carrera/i.test(t) ? 'run' : /walk|camin|hike|senderis/i.test(t) ? 'walk' : null;
-  return { km: dists.length ? Math.max(...dists) : null, secs, type };
+  const kms = [...new Set(dists.map(v => Math.round(v * 100) / 100))];
+  return { kms, km: kms[0] ?? null, secs, type };
+}
+async function prepImage(url) {
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const k = Math.min(3, Math.max(1, 1600 / img.naturalWidth)), c = document.createElement('canvas');
+    c.width = img.naturalWidth * k; c.height = img.naturalHeight * k;
+    const g = c.getContext('2d'); g.filter = 'grayscale(1) contrast(1.4)'; g.drawImage(img, 0, 0, c.width, c.height);
+    return c;
+  } catch (e) { return url; }
 }
 async function sha256(file) { try { const b = await crypto.subtle.digest('SHA-256', await file.arrayBuffer()); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return null; } }
 function setType(type) { $$('#typeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.type === type)); segPill($('#typeSeg')); updateBike(); }
 $('#captureBtn').addEventListener('click', () => $('#captureInput').click());
+$('#capChips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return;
+  $$('#capChips .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); $('#kmInput').value = fmt(+b.dataset.km, 2); vib(6); updateBike(); });
 $('#captureInput').addEventListener('change', async e => {
   const file = e.target.files[0]; e.target.value = ''; if (!file) return;
   const hash = await sha256(file);
   if (hash && (S.capHashes || []).includes(hash)) { toast('Esta captura ya fue cargada.'); return; }
   const url = URL.createObjectURL(file);
+  $('#capChips').innerHTML = '';
   openSheet({ km: 0, secs: 0, source: 'capture', day: localDay(new Date()), capHash: hash, capUrl: url });
   $('#capImg').src = url; $('#capPreview').classList.add('reading');
   const st = $('#capStatus'); st.classList.remove('ok'); st.textContent = 'Leyendo la captura…'; $('#saveBtn').disabled = true;
   let r = null;
   try {
     const T = await Promise.race([loadTess(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 15000))]);
-    const out = await Promise.race([T.recognize(file, 'eng'), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 25000))]);
+    const out = await Promise.race([T.recognize(await prepImage(url), 'eng'), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 25000))]);
     r = parseActivity(out.data.text);
   } catch (err) { r = null; }
   if (pending !== null && pending.capUrl === url) {
     $('#capPreview').classList.remove('reading'); $('#saveBtn').disabled = false;
+    $('#capChips').innerHTML = '';
     if (r && r.km) {
-      $('#kmInput').value = fmt(r.km, 2); if (r.secs) $('#durInput').value = Math.round(r.secs / 60); if (r.type) setType(r.type);
-      st.classList.add('ok'); st.textContent = 'Listo. Revisá los datos antes de guardar.'; vib([10, 40, 10]);
+      $('#kmInput').value = fmt(r.km, 2); if (r.type) setType(r.type);
+      if (r.kms.length > 1) {
+        // varias actividades en la misma captura: que la persona elija o sume
+        const sum = Math.round(r.kms.reduce((a, b) => a + b, 0) * 100) / 100, opts = [...r.kms.map(v => [v, `${fmt(v, 2)} km`]), [sum, `Sumar todo: ${fmt(sum, 2)} km`]];
+        $('#capChips').innerHTML = opts.map(([v, l], i) => `<button class="chip num" aria-pressed="${i === 0}" data-km="${v}">${l}</button>`).join('');
+        $('#durInput').value = ''; st.classList.add('ok'); st.textContent = 'Encontramos varias actividades. Elegí cuál cargar y completá la duración.';
+      } else {
+        if (r.secs) $('#durInput').value = Math.round(r.secs / 60);
+        st.classList.add('ok'); st.textContent = 'Listo. Revisá los datos antes de guardar.';
+      }
+      vib([10, 40, 10]);
     } else { st.textContent = 'No pudimos leer todos los datos. Completalos a mano.'; $('#kmInput').focus(); }
     updateBike();
   }
@@ -1456,6 +1488,8 @@ function updateBike() {
 }
 bindSeg($('#typeSeg'), updateBike);
 $('#kmInput').addEventListener('input', updateBike);
+$('#kmInput').addEventListener('focus', e => { if (!e.target.readOnly) setTimeout(() => e.target.select(), 0); });
+$('#kmInput').addEventListener('blur', e => { if (!e.target.readOnly) { e.target.value = fmt(kmVal(), 2); updateBike(); } });
 bindSeg($('#rankSeg'), b => { rankMode = b.dataset.rank; renderRank(true); });
 $('#backdrop').addEventListener('click', () => { if (pending && pending.source === 'manual') { closeSheet(); pending = null; } });
 $('#discardBtn').addEventListener('click', () => { const fromRun = pending && !['manual', 'capture'].includes(pending.source); if (pending && pending.capUrl) URL.revokeObjectURL(pending.capUrl); closeSheet(); pending = null; if (fromRun) resetRun(); toast('Actividad descartada'); });
