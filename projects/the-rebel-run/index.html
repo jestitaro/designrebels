@@ -218,8 +218,8 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .countdown small{display:block;max-width:10ch;margin-left:auto;line-height:1.3;margin-top:4px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 .race-mine{margin-top:28px;padding:22px 22px 20px;border-radius:20px;background:var(--surface-2);border-left:4px solid var(--team,var(--accent))}
 .hero-race{position:relative;padding:22px 2px 30px}
-body[data-theme="halloween"] .hero-race{padding-top:64px}
-.snake{position:absolute;left:0;right:0;top:0;width:100%;height:48px;pointer-events:none}
+body[data-theme="halloween"] .hero-race{padding-top:72px}
+.snake{position:absolute;left:-22px;right:-22px;top:0;width:calc(100% + 44px);height:64px;pointer-events:none}
 .hero-race .race-top{align-items:flex-start}
 .hero-title{font-size:38px;line-height:1;margin-top:10px;letter-spacing:-.02em}
 .hero-title .yr{display:block}
@@ -1680,43 +1680,54 @@ function spawnGhost() {
   app.insertBefore(g, app.querySelector('.screens')); setTimeout(() => g.remove(), 14500);
 }
 setTimeout(function loopGhost() { spawnGhost(); setTimeout(loopGhost, 16000 + Math.random() * 10000); }, 4000);
-/* Víbora a rayas que se mueve como en el juego Snake (solo Halloween, decorativa) */
+/* Víbora a rayas que se arrastra por el hero (solo Halloween, decorativa).
+   El cuerpo sigue exactamente el rastro de la cabeza, así ondula como una serpiente real. */
 (() => {
-  const cv = $('#snake'), ctx = cv.getContext('2d'), C = 8, LEN = 14, STEP = 110;
-  let cols = 0, rows = 0, body = [], dir = [1, 0], food = null, last = 0;
+  const cv = $('#snake'), ctx = cv.getContext('2d');
+  const LEN = 170, GAP = 2.2, BAND = 13, W0 = 11, W1 = 2.5, SPEED = 34; // px, px/s
+  let W = 0, H = 0, trail = [], x = 0, dirX = 1, ph = 0, baseY = 30, pause = 0, last = 0, tongue = 0, nextTongue = 2;
   const fit = () => { const r = cv.getBoundingClientRect(), d = devicePixelRatio || 1; if (!r.width) return false;
-    cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0);
-    cols = Math.floor(r.width / C); rows = Math.floor(r.height / C); return true; };
-  const reset = () => { body = Array.from({ length: LEN }, (_, i) => [LEN - i, 2]); dir = [1, 0]; placeFood(); };
-  const placeFood = () => { food = [2 + Math.floor(Math.random() * (cols - 4)), 1 + Math.floor(Math.random() * (rows - 2))]; };
-  const free = ([x, y]) => x >= 0 && y >= 0 && x < cols && y < rows && !body.slice(0, -1).some(b => b[0] === x && b[1] === y);
-  function step() {
-    const h = body[0], opts = [dir, [dir[1], -dir[0]], [-dir[1], dir[0]]];
-    // prefiere ir hacia la comida, a veces dobla por gusto, nunca se choca
-    opts.sort((a, b) => { const da = Math.abs(h[0] + a[0] - food[0]) + Math.abs(h[1] + a[1] - food[1]), db = Math.abs(h[0] + b[0] - food[0]) + Math.abs(h[1] + b[1] - food[1]); return da - db; });
-    if (Math.random() < .12) opts.reverse();
-    const nd = opts.find(o => free([h[0] + o[0], h[1] + o[1]]));
-    if (!nd) { reset(); return; }
-    dir = nd; body.unshift([h[0] + dir[0], h[1] + dir[1]]); body.pop();
-    if (body[0][0] === food[0] && body[0][1] === food[1]) placeFood();
+    cv.width = r.width * d; cv.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); W = r.width; H = r.height; return true; };
+  const enter = () => { dirX = Math.random() > .5 ? 1 : -1; x = dirX > 0 ? -LEN - 20 : W + LEN + 20; baseY = 22 + Math.random() * (H - 44); ph = Math.random() * 6; trail = []; };
+  const headY = () => baseY + Math.sin(ph) * 9 + Math.sin(ph * .37) * 5;
+  function advance(dt) {
+    if (pause > 0) { pause -= dt; if (pause <= 0) enter(); return; }
+    x += dirX * SPEED * dt; ph += dt * 2.1;
+    const p = { x, y: headY() };
+    if (!trail.length || Math.hypot(p.x - trail[0].x, p.y - trail[0].y) >= GAP) trail.unshift(p);
+    const max = Math.ceil(LEN / GAP) + 2; if (trail.length > max) trail.length = max;
+    if ((dirX > 0 && x > W + LEN + 20) || (dirX < 0 && x < -LEN - 20)) pause = 3 + Math.random() * 5;
+    tongue = Math.max(0, tongue - dt); nextTongue -= dt; if (nextTongue <= 0) { tongue = .35; nextTongue = 2.5 + Math.random() * 3; }
   }
+  const width = i => W0 - (W0 - W1) * Math.pow(i / (trail.length - 1 || 1), 1.4) - (i < 4 ? (4 - i) * .6 : 0);
   function draw() {
-    ctx.clearRect(0, 0, cols * C, rows * C);
-    if (food) { ctx.fillStyle = '#ff9a1f'; ctx.beginPath(); ctx.arc(food[0] * C + C / 2, food[1] * C + C / 2, C / 2.6, 0, 7); ctx.fill(); }
-    body.forEach(([x, y], i) => { ctx.globalAlpha = 1 - i / (LEN * 2.4);
-      ctx.fillStyle = '#efeaf8';
-      if (i === 0) { ctx.beginPath(); ctx.roundRect(x * C, y * C, C, C, 3); ctx.fill(); ctx.fillStyle = '#120d24'; ctx.fillRect(x * C + 2, y * C + 2, 1.6, 1.6); ctx.fillRect(x * C + C - 3.6, y * C + 2, 1.6, 1.6); }
-      else { ctx.fillRect(x * C, y * C, C, C); if (i % 2) { ctx.fillStyle = '#120d24'; ctx.fillRect(x * C + 1.2, y * C + 1.2, C - 2.4, C - 2.4); } } });
-    ctx.globalAlpha = 1;
+    ctx.clearRect(0, 0, W, H); if (trail.length < 3) return;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    // contorno claro para que las rayas oscuras se lean sobre el fondo
+    for (let i = 0; i < trail.length - 1; i++) { ctx.strokeStyle = '#efeaf8'; ctx.lineWidth = width(i) + 2.4; ctx.beginPath(); ctx.moveTo(trail[i].x, trail[i].y); ctx.lineTo(trail[i + 1].x, trail[i + 1].y); ctx.stroke(); }
+    // rayas
+    for (let i = 0; i < trail.length - 1; i++) { const dark = Math.floor(i * GAP / BAND) % 2 === 1; if (!dark) continue;
+      ctx.strokeStyle = '#120d24'; ctx.lineWidth = width(i); ctx.beginPath(); ctx.moveTo(trail[i].x, trail[i].y); ctx.lineTo(trail[i + 1].x, trail[i + 1].y); ctx.stroke(); }
+    // cabeza
+    const h = trail[0], n = trail[3] || trail[1], a = Math.atan2(h.y - n.y, h.x - n.x);
+    ctx.save(); ctx.translate(h.x, h.y); ctx.rotate(a);
+    if (tongue > 0) { ctx.strokeStyle = '#ff6b81'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(13, 0); ctx.lineTo(16, -2.5); ctx.moveTo(13, 0); ctx.lineTo(16, 2.5); ctx.stroke(); }
+    ctx.fillStyle = '#efeaf8'; ctx.beginPath(); ctx.ellipse(1, 0, 8, 6.4, 0, 0, 7); ctx.fill();
+    ctx.fillStyle = '#120d24'; ctx.beginPath(); ctx.arc(3.5, -2.6, 1.3, 0, 7); ctx.arc(3.5, 2.6, 1.3, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+  function still() { // pose quieta en S para reduced motion
+    trail = []; for (let i = 0; i < LEN / GAP; i++) { const xx = W * .62 - i * GAP; trail.push({ x: xx, y: H / 2 + Math.sin(i * GAP / 26) * 10 }); } draw();
   }
   function loop(t) {
+    const dt = Math.min(.05, (t - (last || t)) / 1000); last = t;
     if (theme() === 'halloween' && current === 'home') {
-      if (!cols && fit()) reset();
-      if (cols && t - last > STEP) { last = t; if (!reduce) step(); draw(); }
+      if (!W && fit()) { if (reduce) still(); else enter(); }
+      if (W && !reduce) { advance(dt); draw(); }
     }
     requestAnimationFrame(loop);
   }
-  addEventListener('resize', () => { if (fit()) reset(); });
+  addEventListener('resize', () => { if (fit()) { if (reduce) still(); else enter(); } });
   requestAnimationFrame(loop);
 })();
 $('#nudgeGo').addEventListener('click', () => { $('#nudge').hidden = true; goto('run'); });
