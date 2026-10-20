@@ -303,11 +303,20 @@ body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-ori
 .rank-chip{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 
 .acts{list-style:none;margin-top:6px}
-.acts li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);animation:rowIn .5s var(--ease-out) both}
+.acts li{display:flex;align-items:center;gap:12px;padding:12px 6px;margin:0 -6px;border-radius:12px;cursor:pointer;transition:background .2s;border-bottom:1px solid var(--line);animation:rowIn .5s var(--ease-out) both}
 .acts li:last-child{border-bottom:0}
 @keyframes rowIn{from{opacity:0;transform:translateY(8px)}}
 .acts .ico{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:var(--surface-2);flex:none}
 .acts .ico svg{width:18px;height:18px}
+.acts li:hover{background:var(--surface-2)}
+.acts .ico{overflow:hidden}
+.acts .ico img{width:100%;height:100%;object-fit:cover}
+.act-img{display:block;width:100%;max-height:46vh;object-fit:contain;border-radius:16px;background:var(--surface-2);margin-bottom:16px}
+.act-rows{text-align:left;margin:4px 0 18px;font-size:14px}
+.act-rows div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.act-rows div:last-child{border-bottom:0}
+.act-rows span{color:var(--muted)}
+.act-del{width:100%;margin-top:6px}
 .acts .meta{flex:1;font-size:13px;color:var(--muted)}
 .acts .meta b{display:block;color:var(--ink);font-size:15px}
 .acts .km{font-weight:900}
@@ -882,6 +891,18 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           </div>
         </div>
 
+        <!-- DETALLE DE ACTIVIDAD -->
+        <div class="unlock lightbox" id="actBox" role="dialog" aria-modal="true" aria-labelledby="actTitle">
+          <div class="unlock-card lb-card">
+            <img class="act-img" id="actImg" alt="Captura de la actividad" hidden>
+            <span class="kicker" id="actKicker"></span>
+            <h3 class="display" id="actTitle"></h3>
+            <div class="act-rows" id="actRows"></div>
+            <button class="btn btn-primary" id="actOk" style="width:100%">Cerrar</button>
+            <button class="btn btn-text-danger act-del" id="actDel">Eliminar actividad</button>
+          </div>
+        </div>
+
         <!-- RITMO NECESARIO -->
         <div class="unlock lightbox" id="paceBox" role="dialog" aria-modal="true" aria-labelledby="paceTitle">
           <div class="unlock-card lb-card">
@@ -1039,7 +1060,14 @@ const COPY = {
 let S = load() || { user: null, acts: [], unlocked: [], theme: 'halloween' };
 if (S.user && !ROSTER.some(p => p.id === S.user.id)) S.user = null; // equipos renombrados: re-onboarding
 function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+function save() {
+  for (let i = 0; i < 40; i++) {
+    try { localStorage.setItem(KEY, JSON.stringify(S)); return; } catch (e) {
+      // sin espacio: se descartan las capturas más viejas, nunca los datos
+      const old = [...(S.acts || [])].reverse().find(a => a.thumb); if (!old) return; delete old.thumb;
+    }
+  }
+}
 const theme = () => document.body.dataset.theme;
 const C = () => COPY[theme()];
 const t = (k, v = {}) => String(C()[k] ?? '').replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
@@ -1210,9 +1238,9 @@ function renderMe() {
   ].map(([v, l]) => `<div class="stat"><b class="num">${v}</b><span>${l}</span></div>`).join('');
   const ul = $('#acts');
   if (!S.acts.length) { ul.innerHTML = `<li class="empty" style="display:block;border:0">${t('empty')}</li>`; return; }
-  ul.innerHTML = S.acts.slice(0, 5).map((a, i) => {
+  ul.innerHTML = S.acts.map((a, i) => {
     const d = new Date(a.date), mins = Math.round(a.secs / 60), src = (a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : a.source === 'capture' ? 'Captura' : 'GPS') + (counts(a) ? '' : ' · Práctica');
-    return `<li style="animation-delay:${i * 60}ms"><span class="ico"><svg><use href="#${a.source === 'manual' ? 'i-plus' : a.source === 'capture' ? 'i-image' : 'i-pin'}"/></svg></span>
+    return `<li style="animation-delay:${Math.min(i, 8) * 50}ms" data-id="${a.id}" role="button" tabindex="0" aria-label="Ver actividad"><span class="ico">${a.thumb ? `<img src="${a.thumb}" alt="">` : `<svg><use href="#${a.source === 'manual' ? 'i-plus' : a.source === 'capture' ? 'i-image' : 'i-pin'}"/></svg>`}</span>
       <span class="meta"><b>${a.type === 'run' ? 'Corrida' : a.type === 'bike' ? 'Bici' : 'Caminata'}</b>${d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' })} · ${mins} min · ${src}${a.type === 'bike' && a.kmRaw ? ` · ${fmt(a.kmRaw, 1)} km recorridos` : ''}</span>
       <span class="km num">${fmt(a.km, 2)} km</span></li>`;
   }).join('');
@@ -1394,7 +1422,7 @@ function openSheet(p) {
   $('#kmLbl').textContent = edit ? 'KM' : 'KM MEDIDOS';
   $('#sheetTitle').textContent = cap ? 'Revisá tu actividad' : manual ? 'Cargar actividad' : t('sheetTitle');
   $('#sheetSub').textContent = cap ? 'Completamos los datos a partir de tu captura.' : manual ? 'Para cinta, gimnasio o salidas sin el celular.' : `Tiempo ${fmtTime(p.secs * 1000)} · ${p.source === 'sim' ? 'modo demo' : 'medido por GPS'}`;
-  $('#sheetNote').textContent = cap ? 'Revisá y corregí si hace falta. La imagen no se guarda, solo los datos.' : manual ? `Máximo ${MANUAL_MAX_KM} km por carga. Las cargas manuales quedan identificadas en el ranking.` : 'La distancia la mide el GPS y no se puede editar.';
+  $('#sheetNote').textContent = cap ? 'Revisá y corregí si hace falta. La captura queda guardada con la actividad y solo la ves vos.' : manual ? `Máximo ${MANUAL_MAX_KM} km por carga. Las cargas manuales quedan identificadas en el ranking.` : 'La distancia la mide el GPS y no se puede editar.';
   $('#kmInput').value = fmt(p.km || (manual ? 2 : 0), 2);
   if (cap) { $('#durInput').value = p.mins || ''; $('#dateInput').value = p.day; $('#dateInput').max = localDay(new Date()); }
   $('#backdrop').classList.add('on'); $('#sheet').classList.add('on');
@@ -1442,6 +1470,15 @@ async function prepImage(url) {
     const g = c.getContext('2d'); g.filter = 'grayscale(1) contrast(1.4)'; g.drawImage(img, 0, 0, c.width, c.height);
     return c;
   } catch (e) { return url; }
+}
+async function makeThumb(url) {
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const k = Math.min(1, 420 / img.naturalWidth), c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL('image/jpeg', .62);
+  } catch (e) { return null; }
 }
 async function sha256(file) { try { const b = await crypto.subtle.digest('SHA-256', await file.arrayBuffer()); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return null; } }
 function setType(type) { $$('#typeSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.type === type)); segPill($('#typeSeg')); updateBike(); }
@@ -1516,10 +1553,12 @@ $('#saveBtn').addEventListener('click', e => {
   }
   const before = teamKm(S.user.team);
   const counted = bike ? Math.round(km * BIKE_FACTOR * 100) / 100 : km;
-  S.acts.unshift({ id: Date.now(), km: counted, kmRaw: km, secs, type, source: pending.source, date: date.toISOString() });
+  const act = { id: Date.now(), km: counted, kmRaw: km, secs, type, source: pending.source, date: date.toISOString() };
+  if (pending.capHash) act.capHash = pending.capHash;
+  S.acts.unshift(act);
   if (pending.capHash) S.capHashes = [...(S.capHashes || []), pending.capHash];
-  if (pending.capUrl) URL.revokeObjectURL(pending.capUrl);
   save();
+  if (pending.capUrl) { const u = pending.capUrl; makeThumb(u).then(th => { URL.revokeObjectURL(u); if (th) { act.thumb = th; save(); renderMe(); } }); }
   $('#nudge').hidden = true;
   const [x, y] = centerOf(e.currentTarget);
   flyNumber(`+${fmt(counted, 2)}`, x, y);
@@ -1588,6 +1627,35 @@ function showNudge() {
   $('#nudgeTxt').textContent = msg; $('#nudge').hidden = false;
   return msg;
 }
+/* ---- Detalle y borrado de actividades ---- */
+let actOpen = null, delArmed = 0;
+function openAct(id) {
+  const a = S.acts.find(x => x.id === id); if (!a) return; actOpen = a; delArmed = 0;
+  const d = new Date(a.date), src = a.source === 'sim' ? 'Demo' : a.source === 'manual' ? 'Manual' : a.source === 'capture' ? 'Captura' : 'GPS';
+  $('#actKicker').textContent = d.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' });
+  $('#actTitle').textContent = `${a.type === 'run' ? 'Corrida' : a.type === 'bike' ? 'Bici' : 'Caminata'} · ${fmt(a.kmRaw ?? a.km, 2)} km`;
+  const rows = [['Duración', `${Math.round(a.secs / 60)} min`], ['Registro', src], ['Suma para la casa', counts(a) ? `${fmt(a.km, 2)} km` : 'No (práctica)']];
+  $('#actRows').innerHTML = rows.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('');
+  const img = $('#actImg'); img.hidden = !a.thumb; if (a.thumb) img.src = a.thumb;
+  $('#actDel').textContent = 'Eliminar actividad';
+  $('#actBox').classList.add('on'); vib(8); setTimeout(() => $('#actOk').focus({ preventScroll: true }), 300);
+}
+function closeAct() { $('#actBox').classList.remove('on'); actOpen = null; }
+$('#acts').addEventListener('click', e => { const li = e.target.closest('li[data-id]'); if (li) openAct(+li.dataset.id); });
+$('#acts').addEventListener('keydown', e => { const li = e.target.closest('li[data-id]'); if (li && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openAct(+li.dataset.id); } });
+$('#actOk').addEventListener('click', closeAct);
+$('#actBox').addEventListener('click', e => { if (e.target.id === 'actBox') closeAct(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#actBox').classList.contains('on')) closeAct(); });
+$('#actDel').addEventListener('click', () => {
+  if (!actOpen) return;
+  // doble toque para confirmar, sin diálogos del sistema
+  if (Date.now() - delArmed > 3000) { delArmed = Date.now(); $('#actDel').textContent = 'Tocá de nuevo para eliminar'; vib(20); setTimeout(() => { if (actOpen && Date.now() - delArmed >= 3000) $('#actDel').textContent = 'Eliminar actividad'; }, 3100); return; }
+  const a = actOpen;
+  S.acts = S.acts.filter(x => x.id !== a.id);
+  if (a.capHash) S.capHashes = (S.capHashes || []).filter(h => h !== a.capHash);
+  save(); closeAct(); vib([20, 40, 20]); renderAll(true);
+  toast(counts(a) ? `Actividad eliminada: ${fmt(a.km, 2)} km menos para ${team(S.user.team).name}.` : 'Actividad de práctica eliminada.');
+});
 function openPace() { $('#paceBox').classList.add('on'); vib(8); setTimeout(() => $('#paceOk').focus({ preventScroll: true }), 300); }
 function closePace() { $('#paceBox').classList.remove('on'); $('#paceInfo').focus({ preventScroll: true }); }
 $('#paceInfo').addEventListener('click', openPace);
