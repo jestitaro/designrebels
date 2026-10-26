@@ -2819,13 +2819,31 @@ header.scrolled .lang-switch__btn {
 }
 /* Ubicación en la card: muestra del teléfono a los tiles; el resto se corta abajo */
 .tile--pdv .qs-pdv {
-  --pdv-w: clamp(300px, 28vw, 370px);
+  --pdv-w: clamp(340px, 34vw, 470px);
   position: absolute;
-  right: 20px;
-  top: calc(var(--pdv-w) * -0.27);
+  right: 10px;
+  /* El teléfono sobresale 0.09w del viewBox: así su base queda apenas cortada por la card */
+  bottom: calc(var(--pdv-w) * 0.06);
   width: var(--pdv-w);
   flex: none;
   z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  /* Más alto para que la animación entre entera y a mayor tamaño */
+  .tile--pdv {
+    min-height: 360px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .tile--pdv .qs-pdv {
+    --pdv-w: 320px;
+  }
+
+  .tile--pdv .txt {
+    max-width: 46%;
+  }
 }
 
 @media (max-width: 1023px) {
