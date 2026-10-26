@@ -31,7 +31,7 @@
       if (!visible || timer) return;
       svg.classList.add('is-in'); count(svg);
       timer = setInterval(replay, 14000);
-    }, { threshold: .35 });
+    }, { threshold: .6, rootMargin: '0px 0px -10% 0px' }); // arranca recién con la card bien a la vista
     io.observe(svg);
   });
 })();
