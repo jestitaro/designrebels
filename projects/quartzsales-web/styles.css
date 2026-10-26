@@ -2822,8 +2822,8 @@ header.scrolled .lang-switch__btn {
   --pdv-w: clamp(320px, 31vw, 430px);
   position: absolute;
   right: 10px;
-  /* El borde superior del teléfono (y=92 del viewBox) queda 22px debajo del borde de la card; abajo se corta */
-  top: calc(22px - var(--pdv-w) * 0.115);
+  /* El teléfono queda con aire arriba (no se corta) y se corta abajo, mostrando los íconos de Módulos */
+  top: calc(22px - var(--pdv-w) * 0.075);
   width: var(--pdv-w);
   flex: none;
   z-index: 1;
@@ -3073,4 +3073,10 @@ header.scrolled .lang-switch__btn {
     opacity: .08;
     mix-blend-mode: overlay;
   }
+}
+
+/* Fondo de las cards PDV 360 y Tableros de BI */
+.tile--pdv,
+.tile--bi {
+  background: #F7F4FC;
 }
