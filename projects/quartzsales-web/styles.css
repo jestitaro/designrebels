@@ -3101,3 +3101,31 @@ header.scrolled .lang-switch__btn {
     margin-top: 18px;
   }
 }
+
+/* =========================================================
+   Escala tipográfica unificada (todas las páginas y los 3 idiomas)
+   - Desktop (≥1024px): p 14px · h3 19px
+   - Mobile/tablet (≤1023px): p 15.8px · h3 21px
+   Quedan afuera a propósito: el bajado del hero, el h3 grande de las franjas CTA
+   y los títulos/textos del footer.
+   !important: el CSS de la landing de pedidos usa selectores con id que, si no, ganarían.
+   ========================================================= */
+p:not(.hero p):not(.hero-pedidos__text p):not(footer p),
+.faq-item .a {
+  font-size: 14px !important;
+}
+
+h3:not(.cta h3):not(footer h3) {
+  font-size: 19px !important;
+}
+
+@media (max-width: 1023px) {
+  p:not(.hero p):not(.hero-pedidos__text p):not(footer p),
+  .faq-item .a {
+    font-size: 15.8px !important;
+  }
+
+  h3:not(.cta h3):not(footer h3) {
+    font-size: 21px !important;
+  }
+}
