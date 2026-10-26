@@ -2819,7 +2819,7 @@ header.scrolled .lang-switch__btn {
 }
 /* Ubicación en la card: muestra del teléfono a los tiles; el resto se corta abajo */
 .tile--pdv .qs-pdv {
-  --pdv-w: clamp(320px, 31vw, 430px);
+  --pdv-w: clamp(300px, 27vw, 370px);
   position: absolute;
   right: 10px;
   /* El teléfono queda con aire arriba (no se corta) y se corta abajo, mostrando los íconos de Módulos */
@@ -2832,13 +2832,13 @@ header.scrolled .lang-switch__btn {
 @media (min-width: 1024px) {
   /* Más alto para que la animación entre entera y a mayor tamaño */
   .tile--pdv {
-    min-height: 380px;
+    min-height: 330px;
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) {
   .tile--pdv .qs-pdv {
-    --pdv-w: 320px;
+    --pdv-w: 300px;
   }
 
   .tile--pdv .txt {
@@ -3059,6 +3059,8 @@ header.scrolled .lang-switch__btn {
 /* ====== Hero: encuadre del video más abajo (que no se corte el overlay de IA) + grano sutil ====== */
 .hero video.hero-bg {
   object-position: center 4%;
+  /* Algo de contraste para que el video (oscurecido al 55%) se lea más definido */
+  filter: brightness(.55) contrast(1.12);
 }
 
 @media (min-width: 768px) {
@@ -3079,4 +3081,23 @@ header.scrolled .lang-switch__btn {
 .tile--pdv,
 .tile--bi {
   background: #F7F4FC;
+}
+
+/* Ejecución en PDV: chips en el flujo, justo debajo de la descripción */
+.tile--exec .exec-chips {
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  margin-top: 20px;
+  align-self: flex-start;
+}
+
+@media (max-width: 1023px) {
+  .tile--exec .exec-chips {
+    left: auto;
+    bottom: auto;
+    margin-top: 18px;
+  }
 }
