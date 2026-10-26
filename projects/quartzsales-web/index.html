@@ -632,10 +632,44 @@ Flexible, personalizable y diseñada para resultados reales." name="twitter:desc
             Exportá insights o integrá tu herramienta BI.
           </p>
         </div>
-        <picture>
-          <source srcset="https://www.quartzsales.com/images/pc.webp" type="image/webp" />
-          <img alt="Dispositivo con tableros BI" class="device" src="https://www.quartzsales.com/images/pc.png" loading="lazy" decoding="async" />
-        </picture>
+        <!-- Notebook BI animada (CSS en styles.css, JS en bi-notebook.js; imágenes en media/bi/) -->
+        <div class="qs-bi" role="img" aria-label="Notebook con tablero BI de inventario y disponibilidad, con indicadores de OSA e indicadores por cadena">
+  <div class="qs-bi__lap" aria-hidden="true">
+    <div class="qs-bi__screen">
+      <img class="qs-bi__dash" src="media/bi/bi-screen.webp" alt="" width="1258" height="795" loading="lazy" decoding="async">
+    </div>
+    <img class="qs-bi__frame" src="media/bi/bi-frame.webp" alt="" width="1527" height="1030" loading="lazy" decoding="async">
+  </div>
+
+  <div class="qs-bi__card qs-bi__kpi" aria-hidden="true">
+    <span class="qs-bi__ico"><svg viewBox="0 0 24 24" fill="none" stroke="#2f7fd6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 7H6"/></svg></span>
+    <span class="qs-bi__lbl">% OSA</span>
+    <span class="qs-bi__num"><b data-count="87.1">0,0</b><small>%</small></span>
+    <span class="qs-bi__delta">▲ +2,3 p.p.</span>
+    <svg class="qs-bi__spark" viewBox="0 0 200 50" preserveAspectRatio="none">
+      <defs><linearGradient id="qsBiArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a9be8" stop-opacity=".28"/><stop offset="1" stop-color="#4a9be8" stop-opacity="0"/></linearGradient></defs>
+      <path class="qs-bi__area" d="M0 40 L20 36 L40 38 L60 30 L80 33 L100 24 L120 27 L140 18 L160 20 L180 10 L200 6 V50 H0Z" fill="url(#qsBiArea)"/>
+      <path class="qs-bi__line" pathLength="1" d="M0 40 L20 36 L40 38 L60 30 L80 33 L100 24 L120 27 L140 18 L160 20 L180 10 L200 6" fill="none" stroke="#3b8ee0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+
+  <div class="qs-bi__card qs-bi__table" aria-hidden="true">
+    <div class="qs-bi__ttl"><svg viewBox="0 0 24 24" fill="none" stroke="#2f7fd6" stroke-width="2" stroke-linecap="round"><path d="M4 20h16M7 16v-5M11 16V6M15 16v-7M19 16V9"/></svg>Indicadores por cadena</div>
+    <div class="qs-bi__row is-head"><span>Cadena</span><span>Instock</span><span>OSA</span></div>
+    <div class="qs-bi__row"><span>Cadena A</span>
+      <span class="qs-bi__cell"><b data-v="96.1">0</b><span class="qs-bi__bar qs-bi__bar--in"><i></i></span></span>
+      <span class="qs-bi__cell"><b data-v="90.4">0</b><span class="qs-bi__bar qs-bi__bar--osa"><i></i></span></span></div>
+    <div class="qs-bi__row"><span>Cadena B</span>
+      <span class="qs-bi__cell"><b data-v="94.3">0</b><span class="qs-bi__bar qs-bi__bar--in"><i></i></span></span>
+      <span class="qs-bi__cell"><b data-v="88.1">0</b><span class="qs-bi__bar qs-bi__bar--osa"><i></i></span></span></div>
+    <div class="qs-bi__row"><span>Cadena C</span>
+      <span class="qs-bi__cell"><b data-v="92.8">0</b><span class="qs-bi__bar qs-bi__bar--in"><i></i></span></span>
+      <span class="qs-bi__cell"><b data-v="86.5">0</b><span class="qs-bi__bar qs-bi__bar--osa"><i></i></span></span></div>
+    <div class="qs-bi__row"><span>Cadena D</span>
+      <span class="qs-bi__cell"><b data-v="89.7">0</b><span class="qs-bi__bar qs-bi__bar--in"><i></i></span></span>
+      <span class="qs-bi__cell"><b data-v="81.2">0</b><span class="qs-bi__bar qs-bi__bar--osa"><i></i></span></span></div>
+  </div>
+</div>
         <span class="glow"></span>
       </article>
       </div>
@@ -1170,6 +1204,7 @@ Flexible, personalizable y diseñada para resultados reales." name="twitter:desc
   <!-- <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script> -->
   <script defer src="pdv-phone.js"></script>
   <script defer src="exec-map.js"></script>
+  <script defer src="bi-notebook.js"></script>
   <script defer src="teams-toggle.js"></script>
   <!-- <script>
     document.addEventListener('DOMContentLoaded', function () {

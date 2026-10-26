@@ -1525,9 +1525,8 @@ p {
 }
 
 .tile--orders .box {
-  animation: floatTilt 7s var(--easing) infinite;
+  animation: floatY 6s var(--easing) infinite;
   filter: drop-shadow(0 12px 22px rgba(0, 0, 0, .20));
-  will-change: transform;
 }
 
 .tile--exec {
@@ -2808,7 +2807,7 @@ header.scrolled .lang-switch__btn {
 @keyframes qsDraw{to{stroke-dashoffset:var(--off)}}
 @keyframes qsDot{0%{opacity:0;transform:rotate(0)}10%{opacity:1}100%{opacity:1;transform:rotate(var(--rot))}}
 @keyframes qsBar{to{transform:scaleX(1)}}
-@keyframes qsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes qsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
 @keyframes qsSpin{to{transform:rotate(360deg)}}
 
 @media (prefers-reduced-motion:reduce){
@@ -2823,7 +2822,7 @@ header.scrolled .lang-switch__btn {
   --pdv-w: clamp(300px, 28vw, 370px);
   position: absolute;
   right: 20px;
-  top: calc(var(--pdv-w) * -0.1);
+  top: calc(var(--pdv-w) * -0.27);
   width: var(--pdv-w);
   flex: none;
   z-index: 1;
@@ -2833,7 +2832,7 @@ header.scrolled .lang-switch__btn {
   .tile--pdv .qs-pdv {
     position: static;
     width: clamp(260px, 100%, 420px);
-    margin: -6% auto 0;
+    margin: -12% auto 6%;
   }
 }
 
@@ -2898,10 +2897,10 @@ header.scrolled .lang-switch__btn {
 
 .tile--exec .exec-person {
   position: absolute;
-  right: 0;
+  right: -6%;
   bottom: 0;
-  width: 50%;
-  height: 66%;
+  width: 72%;
+  height: 76%;
   object-fit: contain;
   object-position: right bottom;
   z-index: 2;
@@ -2924,8 +2923,8 @@ header.scrolled .lang-switch__btn {
   }
 
   .tile--exec .exec-person {
-    width: 50%;
-    height: 62%;
+    width: 70%;
+    height: 70%;
   }
 
   .tile--exec .exec-chips {
@@ -2946,4 +2945,95 @@ header.scrolled .lang-switch__btn {
   .exec-map * {
     animation: none !important;
   }
+}
+
+/* ====== Tableros de BI: notebook con pantalla animada (reemplaza pc.png) ====== */
+.qs-bi{position:relative;width:100%;aspect-ratio:1900/1300;container-type:inline-size;font-family:inherit;color:#13285c}
+
+/* Notebook: pantalla animada debajo + marco con hueco encima */
+.qs-bi__lap{position:absolute;left:10%;top:5%;width:80.37%;aspect-ratio:1527/1030}
+.qs-bi__screen{position:absolute;left:8.775%;top:3.592%;width:82.38%;height:77.18%;overflow:hidden;border-radius:.74cqw;background:#cfe6f6}
+.qs-bi__dash{position:absolute;top:0;left:0;width:200%;height:200%;max-width:none;transform-origin:0 0;transform:scale(.5)}
+.qs-bi__frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* Cards flotantes */
+.qs-bi__card{position:absolute;background:#fff;border-radius:1.36cqw;box-shadow:0 1.19cqw 2.72cqw rgba(19,40,92,.16),0 0.17cqw 0.51cqw rgba(19,40,92,.06);box-sizing:border-box}
+.qs-bi__kpi{left:0;top:24%;width:26.35cqw;padding:1.7cqw 1.87cqw;display:grid;grid-template-columns:auto 1fr;gap:0 1.36cqw;align-items:center}
+.qs-bi__ico{width:5.95cqw;height:5.95cqw;border-radius:50%;background:#dcebfb;display:grid;place-items:center;grid-row:span 3}
+.qs-bi__ico svg{width:3.06cqw;height:3.06cqw}
+.qs-bi__lbl{font-size:1.32cqw;font-weight:800;letter-spacing:.02em}
+.qs-bi__num{font-size:3.57cqw;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+.qs-bi__num small{font-size:1.7cqw;margin-left:0.26cqw}
+.qs-bi__delta{font-size:1.27cqw;color:#16a34a;font-weight:600}
+.qs-bi__spark{grid-column:1/-1;width:100%;height:5.1cqw;margin-top:1.02cqw;overflow:visible}
+
+.qs-bi__table{right:0;bottom:2%;width:36.55cqw;padding:1.7cqw 1.87cqw 1.36cqw}
+.qs-bi__ttl{display:flex;align-items:center;gap:0.85cqw;font-size:1.61cqw;font-weight:800;margin-bottom:1.1cqw}
+.qs-bi__ttl svg{width:2.04cqw;height:2.04cqw}
+.qs-bi__row{display:grid;grid-template-columns:6.6cqw 1fr 1fr;gap:1.36cqw;align-items:center;font-size:1.23cqw;padding:0.72cqw 0;border-top:0.09cqw solid #e8edf5}
+.qs-bi__row.is-head{border:0;padding-top:0;color:#5b6b8c;font-weight:700}
+.qs-bi__cell{display:grid;grid-template-columns:5.4cqw 1fr;gap:0.68cqw;align-items:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qs-bi__cell b::after{content:" %";font-weight:600;font-size:.85em}
+.qs-bi__bar{height:0.94cqw;border-radius:0.85cqw;background:#e9edf4;overflow:hidden}
+.qs-bi__bar i{display:block;height:100%;width:0;border-radius:inherit;transition:width 1.1s cubic-bezier(.22,1,.36,1)}
+.qs-bi__bar--in i{background:linear-gradient(90deg,#b9a2f7,#9b80f0)}
+.qs-bi__bar--osa i{background:linear-gradient(90deg,#7cc0f5,#4a9be8)}
+
+/* Estados iniciales + entrada */
+.qs-bi__lap,.qs-bi__card{opacity:0}
+.qs-bi__lap{transform:translateY(3cqw)}
+.qs-bi__kpi{transform:translateX(-4cqw)}
+.qs-bi__table{transform:translateX(4cqw)}
+.qs-bi.is-in .qs-bi__lap{animation:qsBiIn .8s cubic-bezier(.22,1,.36,1) forwards}
+.qs-bi.is-in .qs-bi__kpi{animation:qsBiIn .7s cubic-bezier(.22,1,.36,1) .45s forwards,qsBiFloat 6s ease-in-out 1.4s infinite}
+.qs-bi.is-in .qs-bi__table{animation:qsBiIn .7s cubic-bezier(.22,1,.36,1) .65s forwards,qsBiFloat 6.5s ease-in-out 1.6s infinite}
+.qs-bi.is-in .qs-bi__dash{animation:qsBiZoom 24s cubic-bezier(.65,0,.35,1) 1.2s infinite}
+.qs-bi.is-paused *{animation-play-state:paused!important}
+
+.qs-bi__line{stroke-dasharray:1;stroke-dashoffset:1}
+.qs-bi__area{opacity:0;transition:opacity .8s .6s}
+.qs-bi.is-drawn .qs-bi__line{transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1);stroke-dashoffset:0}
+.qs-bi.is-drawn .qs-bi__area{opacity:1}
+
+@keyframes qsBiIn{to{opacity:1;transform:none}}
+@keyframes qsBiFloat{0%,100%{translate:0 0}50%{translate:0 -.8cqw}}
+/* Recorrido: general → KPIs (paneo) → general → categoría → cadena → general */
+@keyframes qsBiZoom{
+  0%,8%   {transform:scale(.5)}
+  15%,22% {transform:scale(1) translate(-.8%,-21.6%)}
+  31%,38% {transform:scale(1) translate(-49.1%,-21.6%)}
+  46%,50% {transform:scale(.5)}
+  58%,65% {transform:scale(.983) translate(-.4%,-49.1%)}
+  74%,81% {transform:scale(1.015) translate(-50.2%,-50.7%)}
+  90%,100%{transform:scale(.5)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .qs-bi *{animation:none!important;transition:none!important}
+  .qs-bi__lap,.qs-bi__card{opacity:1;transform:none}
+  .qs-bi__line{stroke-dashoffset:0}.qs-bi__area{opacity:1}
+}
+/* Ubicación en la card */
+.tile--bi .qs-bi {
+  flex: 0 0 min(46%, 340px);
+  z-index: 3;
+}
+
+@media (min-width: 1024px) {
+  .tile--bi {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .tile--bi .qs-bi {
+    flex: none;
+    width: clamp(260px, 100%, 480px);
+    margin: 0 auto;
+  }
+}
+
+.tile--bi .txt {
+  min-width: 0;
 }

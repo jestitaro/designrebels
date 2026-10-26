@@ -18,9 +18,19 @@
   };
   document.querySelectorAll('.qs-pdv').forEach(svg => {
     if (reduce || !('IntersectionObserver' in window)) { svg.classList.add('is-in'); return; }
+    // Entra al verse y repite la entrada cada 14 s mientras siga en pantalla
+    let visible = false, timer = null;
+    const replay = () => {
+      if (!visible) return;
+      svg.classList.remove('is-in');
+      svg.getBoundingClientRect();
+      svg.classList.add('is-in'); count(svg);
+    };
     const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      svg.classList.add('is-in'); count(svg); io.disconnect();
+      visible = e.isIntersecting;
+      if (!visible || timer) return;
+      svg.classList.add('is-in'); count(svg);
+      timer = setInterval(replay, 14000);
     }, { threshold: .35 });
     io.observe(svg);
   });
