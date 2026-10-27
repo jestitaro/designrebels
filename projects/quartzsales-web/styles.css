@@ -1914,7 +1914,7 @@ header nav button::after {
   }
 
   .tile--orders li {
-    font-size: 1.15rem;
+    font-size: 14px;
   }
 }
 
