@@ -3341,3 +3341,53 @@ h3:not(.cta h3):not(footer h3) {
 .exec-map__pin path:first-child {
   filter: drop-shadow(0 24px 30px rgba(19, 13, 93, .3)); /* en unidades del viewBox del mapa */
 }
+
+/* ====== Ajustes tablet/mobile (equipos, mapa y chips de Ejecución en punto de venta) ====== */
+/* Mapa: bordes derecho y superior enmascarados en degradé para que no termine en un corte */
+.tile--exec .exec-map {
+  -webkit-mask-image: linear-gradient(to right, #000 68%, transparent 100%), linear-gradient(to top, #000 72%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, #000 68%, transparent 100%), linear-gradient(to top, #000 72%, transparent 100%);
+  mask-composite: intersect;
+}
+
+@media (max-width: 1080px) {
+  .tile--exec .exec-chips {
+    align-self: center;
+    justify-items: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 1023px) {
+  /* Gestión de equipos: ancho completo de la columna y la app del celular siempre en cuadro */
+  .tile--teams {
+    width: 100%;
+    aspect-ratio: auto;
+    max-height: none;
+    height: clamp(440px, 112vw, 620px);
+  }
+
+  .tile--teams .card-face.front img {
+    object-position: 32% 50%;
+  }
+
+  /* Mapa completo: la caja toma la proporción del dibujo, así no queda recortado */
+  .tile--exec .exec-map {
+    right: auto;
+    width: auto;
+    max-width: 100%;
+    height: 48%;
+    aspect-ratio: 1900 / 1110;
+  }
+}
+
+@media (max-width: 600px) {
+  /* En pantallas chicas May un poco más chica para que se vea el recorrido del mapa */
+  .tile--exec .exec-person {
+    width: 58%;
+    height: 58%;
+  }
+}

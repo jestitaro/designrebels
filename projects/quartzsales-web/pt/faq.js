@@ -2,8 +2,8 @@
    FAQs data
 ========================= */
 const FAQS = [
-  {"q": "O que é a QuartzSales?", "a": "A QuartzSales é uma solução de software móvel e web projetada para alcançar a loja perfeita e otimizar a execução no PDV. Nosso software oferece uma plataforma amigável e intuitiva que permite organizar seus processos de forma eficiente. Além disso, com a QuartzSales você potencializa a comunicação e a gestão do seu time de vendas, obtém informações detalhadas sobre o PDV (PDV 360) e centraliza dados relevantes para ter uma visão estratégica o tempo todo."},
-  {"q": "Quais são os benefícios de usar a QuartzSales?", "a": "Mais eficiência: a QuartzSales ajuda a otimizar processos, aumentando a produtividade e economizando tempo do time. Decisões informadas: com uma visão completa e detalhada do desempenho no PDV, você toma decisões estratégicas baseadas em dados reais e objetivos. Adaptabilidade e personalização: a plataforma se adapta às suas necessidades e é totalmente personalizável. Mais visibilidade no PDV e colaboração/comunicação efetiva entre equipes."},
+  {"q": "O que é a QuartzSales?", "a": "A QuartzSales é uma solução de software móvel e web projetada para alcançar a loja perfeita e otimizar a execução no ponto de venda. Nosso software oferece uma plataforma amigável e intuitiva que permite organizar seus processos de forma eficiente. Além disso, com a QuartzSales você potencializa a comunicação e a gestão do seu time de vendas, obtém informações detalhadas sobre o ponto de venda (PDV 360) e centraliza dados relevantes para ter uma visão estratégica o tempo todo."},
+  {"q": "Quais são os benefícios de usar a QuartzSales?", "a": "Mais eficiência: a QuartzSales ajuda a otimizar processos, aumentando a produtividade e economizando tempo do time. Decisões informadas: com uma visão completa e detalhada do desempenho no ponto de venda, você toma decisões estratégicas baseadas em dados reais e objetivos. Adaptabilidade e personalização: a plataforma se adapta às suas necessidades e é totalmente personalizável. Mais visibilidade no ponto de venda e colaboração/comunicação efetiva entre equipes."},
   {"q": "Quais são as funcionalidades-chave da QuartzSales?", "a": "Execução no Ponto de Venda / Retail Execution: roteiros e visitas; formulários e captura de informações; planogramas. Comunicação e gestão do time de vendas: novidades, metas e incentivos, treinamentos, licenças e substituições. PDV 360: indicadores (OSA, SoS, eficiência, lançamentos, preços, vendas), equipe, portfólio/sortimento e itens obrigatórios, notas, vencimentos, vendas e estoque. Informação centralizada: sellout e estoque de redes. Análise preditiva e geração de tarefas inteligentes. IA para reconhecimento de produtos e preços. Integração com plataformas de BI."},
   {"q": "A QuartzSales é compatível com outras ferramentas e sistemas?", "a": "Sim. Integra com CRM, ERP (por exemplo SAP / SAP B1) e outras soluções que você já utiliza. É uma plataforma versátil e compatível, que se adapta às necessidades e requisitos da sua empresa."},
   {"q": "Como posso solicitar uma demonstração da QuartzSales?", "a": "Envie um e-mail para <a href=\"mailto:info@quartzsales.com\">info@quartzsales.com</a> ou ligue para <a href=\"tel:+541152356660\">+54 11 5235-6660</a> e agendamos uma demo personalizada."},
@@ -11,19 +11,19 @@ const FAQS = [
   {"q": "A QuartzSales é uma solução personalizável?", "a": "Sim. É altamente personalizável de acordo com os processos e preferências de cada empresa."},
   {"q": "A QuartzSales funciona sem internet?", "a": "Sim. Funciona online e offline, permitindo continuar usando a plataforma mesmo sem conexão."},
   {"q": "A QuartzSales funciona em Android e iOS?", "a": "Sim. É compatível tanto com Android quanto com iOS."},
-  {"q": "O que a Inteligência Artificial (IA) faz na QuartzSales?", "a": "A IA automatiza tarefas-chave no PDV: reconhecimento visual de produtos e preços, verificação de planogramas, priorização de tarefas e um assistente que sugere ações em cada ponto de venda."},
+  {"q": "O que a Inteligência Artificial (IA) faz na QuartzSales?", "a": "A IA automatiza tarefas-chave no ponto de venda: reconhecimento visual de produtos e preços, verificação de planogramas, priorização de tarefas e um assistente que sugere ações em cada ponto de venda."},
   {"q": "Vocês detectam rupturas e presença com IA?", "a": "Sim. Com uma foto, a IA identifica rupturas, presença e métricas como OSA ou share de exposição em segundos, reduzindo tempo e erros."},
   {"q": "Vocês conseguem ler etiquetas de preço com IA?", "a": "Sim. A IA reconhece produto e preço a partir de etiquetas para acelerar auditorias e comparar seus preços com os da concorrência."},
   {"q": "Vocês verificam planogramas com IA?", "a": "Sim. A IA compara a gôndola real com o planograma esperado, detecta desvios de posição e propõe correções para garantir o cumprimento."},
-  {"q": "O que é o AiFred e como ele usa IA?", "a": "O AiFred é o assistente virtual que prioriza tarefas com IA, responde perguntas operacionais e recomenda próximos passos em tempo real para cada PDV."},
+  {"q": "O que é o AiFred e como ele usa IA?", "a": "O AiFred é o assistente virtual que prioriza tarefas com IA, responde perguntas operacionais e recomenda próximos passos em tempo real para cada ponto de venda."},
   {"q": "Qual o impacto da IA nos resultados?", "a": "Implementações relatam maior produtividade, redução do tempo de captura e melhor visibilidade da execução na gôndola graças à IA."},
-  {"q": "Como a IA se integra aos meus dados?", "a": "A IA se alimenta de cadastros (produtos, PDVs, listas de preços), inventário e vendas; e integra com ERP/CRM e BI para contextualizar recomendações."},
+  {"q": "Como a IA se integra aos meus dados?", "a": "A IA se alimenta de cadastros (produtos, pontos de venda, listas de preços), inventário e vendas; e integra com ERP/CRM e BI para contextualizar recomendações."},
   {"q": "A IA funciona offline?", "a": "Sim. Várias rotinas móveis de IA podem operar offline e sincronizar quando a conexão voltar, mantendo o trabalho em campo."},
   {"q": "Quais considerações de segurança existem para a IA?", "a": "Aplicamos controle de acesso, criptografia em trânsito e em repouso e governança de dados para proteger as informações usadas pela IA."},
-  {"q": "O que é Trade Marketing?", "a": "É a disciplina que conecta marketing e vendas no canal, garantindo disponibilidade, visibilidade e execução de marca no PDV para impulsionar giro e participação."},
+  {"q": "O que é Trade Marketing?", "a": "É a disciplina que conecta marketing e vendas no canal, garantindo disponibilidade, visibilidade e execução de marca no ponto de venda para impulsionar giro e participação."},
   {"q": "Como a QuartzSales ajuda o Trade Marketing?", "a": "Digitalizamos a execução: roteirização inteligente, checklists e formulários, controle de preços e promoções, verificação de planogramas, reconhecimento de produto/preço com IA e painéis PDV 360 para agir sobre desvios em tempo real."},
   {"q": "Quais KPIs de Trade Marketing posso medir com a QuartzSales?", "a": "OSA (On Shelf Availability), share de exposição/SoS, preços e rupturas, cumprimento de planograma, execução de promoções, facing por categoria, tempos de visita e efetividade do roteiro."},
-  {"q": "A QuartzSales melhora a coordenação com equipes de campo e clientes?", "a": "Sim. Centraliza informações, comunica metas e incentivos, gerencia licenças e substituições e compartilha relatórios com contas-chave para alinhar ações no PDV."}
+  {"q": "A QuartzSales melhora a coordenação com equipes de campo e clientes?", "a": "Sim. Centraliza informações, comunica metas e incentivos, gerencia licenças e substituições e compartilha relatórios com contas-chave para alinhar ações no ponto de venda."}
 ];
 
 /* =========================
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     if (any(tradeKeys)) {
-      pushMsg('<strong>Trade Marketing na QuartzSales</strong><br>Digitalizamos a execução no PDV: ruteos inteligentes, checklists, control de precios y promociones, verificación de planogramas y reconocimiento de producto/precio con IA. Medimos KPIs como OSA, quiebres, SoS y cumplimiento de exhibición para accionar en tiempo real. Quer uma demo? <a href="mailto:info@quartzsales.com">info@quartzsales.com</a> · <a href="tel:+541152356660">+54 11 5235-6660</a>.');
+      pushMsg('<strong>Trade Marketing na QuartzSales</strong><br>Digitalizamos a execução no ponto de venda: ruteos inteligentes, checklists, control de precios y promociones, verificación de planogramas y reconocimiento de producto/precio con IA. Medimos KPIs como OSA, quiebres, SoS y cumplimiento de exhibición para accionar en tiempo real. Quer uma demo? <a href="mailto:info@quartzsales.com">info@quartzsales.com</a> · <a href="tel:+541152356660">+54 11 5235-6660</a>.');
       return;
     }
 
