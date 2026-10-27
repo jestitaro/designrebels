@@ -3015,28 +3015,34 @@ header.scrolled .lang-switch__btn {
   .qs-pdv__bar i { transform: none; }
 }
 
-/* Ubicación en la card: muestra del teléfono a los tiles; el resto se corta abajo */
+/* Ubicación en la card: el celular con aire arriba y cortado en la primera fila de íconos de Módulos.
+   El contenedor termina justo en ese corte (81.5cqw de alto) y se apoya en el borde inferior de la card. */
+.tile--pdv {
+  --pdv-w: clamp(300px, 27vw, 380px);
+}
+
 .tile--pdv .qs-pdv {
-  --pdv-w: clamp(280px, 24vw, 330px);
   position: absolute;
   right: 10px;
-  /* El teléfono queda con aire arriba (no se corta) y se corta abajo, mostrando los íconos de Módulos */
-  top: calc(14px - var(--pdv-w) * 0.04);
+  bottom: 0;
   width: var(--pdv-w);
+  aspect-ratio: 100 / 81.5;
+  overflow: hidden;
   flex: none;
   z-index: 1;
 }
 
 @media (min-width: 1024px) {
-  /* Más alto para que la animación entre entera y a mayor tamaño */
+  /* Alto justo para el encuadre: 20px de aire sobre el celular (que arranca en 4cqw) + 77.5cqw visibles */
   .tile--pdv {
-    min-height: 310px;
+    min-height: calc(20px + var(--pdv-w) * .775);
   }
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) {
-  .tile--pdv .qs-pdv {
-    --pdv-w: 280px;
+  .tile--pdv {
+    /* la fila de la grilla mide al menos 260px: (260 - 20) / .775 */
+    --pdv-w: 310px;
   }
 
   .tile--pdv .txt {
@@ -3047,11 +3053,10 @@ header.scrolled .lang-switch__btn {
 @media (max-width: 1023px) {
   .tile--pdv .qs-pdv {
     position: relative;
-    top: auto;
     right: auto;
-    /* Más chico y con lugar abajo para que el teléfono se vea hasta los íconos de Módulos */
-    width: min(100%, 320px);
-    margin: -2% auto calc(min(100%, 320px) * 0.1);
+    bottom: auto;
+    width: min(100%, 340px);
+    margin: 8px auto 0;
   }
 }
 
