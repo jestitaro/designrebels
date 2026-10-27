@@ -3253,7 +3253,8 @@ header.scrolled .lang-switch__btn {
 @media (max-width: 1023px) {
   .tile--bi .qs-bi {
     flex: none;
-    width: clamp(260px, 100%, 480px);
+    /* sin mínimo fijo: en pantallas angostas no se sale de la card */
+    width: min(100%, 480px);
     margin: 0 auto;
   }
 }
@@ -3334,4 +3335,9 @@ h3:not(.cta h3):not(footer h3) {
   h3:not(.cta h3):not(footer h3) {
     font-size: 21px !important;
   }
+}
+
+/* Pin del mapa: blanco con el ícono violeta para que contraste sobre el fondo */
+.exec-map__pin path:first-child {
+  filter: drop-shadow(0 24px 30px rgba(19, 13, 93, .3)); /* en unidades del viewBox del mapa */
 }
