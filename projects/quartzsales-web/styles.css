@@ -3391,3 +3391,40 @@ h3:not(.cta h3):not(footer h3) {
     height: 58%;
   }
 }
+
+/* Mapa en tablet/mobile: a todo el ancho, proporción del dibujo y sin desvanecer arriba (el pin queda nítido) */
+.tile--exec .exec-map {
+  -webkit-mask-image: linear-gradient(to right, #000 80%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 80%, transparent 100%);
+}
+
+@media (max-width: 1023px) {
+  .tile--exec {
+    min-height: calc(230px + (100vw - 48px) * .58);
+  }
+
+  .tile--exec .exec-map {
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 1900 / 1110;
+  }
+
+  .tile--exec .exec-person {
+    width: 44%;
+    height: 62%;
+  }
+}
+
+@media (max-width: 600px) {
+  .tile--exec {
+    min-height: calc(300px + (100vw - 32px) * .58);
+  }
+
+  .tile--exec .exec-person {
+    width: 52%;
+    height: 50%;
+  }
+}
