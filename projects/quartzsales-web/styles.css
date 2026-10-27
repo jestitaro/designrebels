@@ -2774,56 +2774,254 @@ header.scrolled .lang-switch__btn {
   }
 }
 
-/* ====== PDV 360: animación del teléfono (reemplaza phone.webp) ====== */
-.qs-pdv{display:block;width:100%;height:auto;overflow:visible;font-family:inherit}
-.qs-pdv text{font-family:inherit}
-.qs-pdv .anim{transform-box:fill-box;transform-origin:center}
-
-/* Estado inicial (antes de entrar en viewport) */
-.qs-pdv .in-phone{opacity:0;transform:translateY(28px)}
-.qs-pdv .in-card{opacity:0;transform:translateX(-36px) scale(.97)}
-.qs-pdv .in-tile{opacity:0;transform:translateY(16px) scale(.86)}
-.qs-pdv .val{stroke-dasharray:100 100;stroke-dashoffset:100}
-.qs-pdv .dot{opacity:0;transform-box:view-box}
-.qs-pdv .bar{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
-
-/* Entrada */
-.qs-pdv.is-in .in-phone{animation:qsUp .7s cubic-bezier(.22,1,.36,1) .05s forwards}
-.qs-pdv.is-in .in-card{animation:qsCard .7s cubic-bezier(.22,1,.36,1) .35s forwards}
-.qs-pdv.is-in .in-tile{animation:qsTile .6s cubic-bezier(.34,1.45,.64,1) var(--d) forwards}
-.qs-pdv.is-in .val{animation:qsDraw 1.3s cubic-bezier(.22,1,.36,1) var(--d) forwards}
-.qs-pdv.is-in .dot{animation:qsDot 1.3s cubic-bezier(.22,1,.36,1) var(--d) forwards}
-.qs-pdv.is-in .bar{animation:qsBar 1.6s cubic-bezier(.22,1,.36,1) 1s forwards}
-
-/* Idle sutil después de la entrada */
-.qs-pdv.is-in .float-card{animation:qsFloat 6s ease-in-out 1.8s infinite}
-.qs-pdv.is-in .float-tile{animation:qsFloat 5.5s ease-in-out var(--f) infinite}
-.qs-pdv.is-in .clock-hand{animation:qsSpin 4s linear 1.2s infinite}
-.qs-pdv .clock-hand{transform-box:view-box;transform-origin:130px 267px}
-
-@keyframes qsUp{to{opacity:1;transform:none}}
-@keyframes qsCard{to{opacity:1;transform:none}}
-@keyframes qsTile{to{opacity:1;transform:none}}
-@keyframes qsDraw{to{stroke-dashoffset:var(--off)}}
-@keyframes qsDot{0%{opacity:0;transform:rotate(0)}10%{opacity:1}100%{opacity:1;transform:rotate(var(--rot))}}
-@keyframes qsBar{to{transform:scaleX(1)}}
-@keyframes qsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
-@keyframes qsSpin{to{transform:rotate(360deg)}}
-
-@media (prefers-reduced-motion:reduce){
-  .qs-pdv *{animation:none!important}
-  .qs-pdv .in-phone,.qs-pdv .in-card,.qs-pdv .in-tile{opacity:1;transform:none}
-  .qs-pdv .val{stroke-dashoffset:var(--off)}
-  .qs-pdv .dot{opacity:1;transform:rotate(var(--rot))}
-  .qs-pdv .bar{transform:none}
+/* ====== PDV 360: celular (imagen) + card, tiles y módulos en HTML ======
+   Todo se mide en cqw (1cqw = 1% del ancho de .qs-pdv), así escala igual en cualquier pantalla. */
+.qs-pdv {
+  position: relative;
+  aspect-ratio: 800 / 720;
+  container-type: inline-size;
+  font-family: inherit;
+  line-height: 1.2;
+  text-align: left;
 }
+
+.qs-pdv img { display: block; max-width: none; }
+
+/* Celular */
+.qs-pdv__phone {
+  position: absolute;
+  left: 30cqw;
+  top: 4cqw;
+  width: 44cqw;
+}
+
+.qs-pdv__device { width: 100%; height: auto; }
+
+/* Panel de Módulos dentro de la pantalla (pantalla: x 9,85%–90,04%, abajo en 89,6% del alto) */
+.qs-pdv__modules {
+  position: absolute;
+  left: 9.85%;
+  right: 9.96%;
+  top: 68%;
+  bottom: 10.4%;
+  overflow: hidden;
+  padding: 2.2cqw 2cqw 0;
+  background: #fff;
+  border-radius: 1.8cqw 1.8cqw 4.2cqw 4.2cqw;
+}
+
+.qs-pdv__modules strong {
+  display: block;
+  font-size: 2.4cqw;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.qs-pdv__modules ul {
+  list-style: none;
+  margin: 1.5cqw 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6cqw .6cqw;
+}
+
+.qs-pdv__modules li {
+  /* anula el estilo de pastilla de .tile--pdv li */
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6cqw;
+  text-align: center;
+}
+
+.qs-pdv__modules li img { width: 7.4cqw; height: auto; }
+
+.qs-pdv__modules li span {
+  font-size: 1.45cqw;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.qs-pdv__modules li.is-sub span { color: #1E293B; }
+
+/* Card de indicadores */
+.qs-pdv__card {
+  position: absolute;
+  left: 9cqw;
+  top: 25cqw;
+  width: 56cqw;
+  padding: 2.6cqw 3.2cqw 1.3cqw;
+  box-sizing: border-box;
+  background: #0C34A5;
+  border-radius: 2.4cqw;
+  color: #fff;
+  box-shadow: 0 1.6cqw 3.6cqw rgba(11, 30, 91, .28);
+}
+
+.qs-pdv__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qs-pdv__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5cqw;
+  padding: .45cqw 1.2cqw .45cqw .6cqw;
+  border-radius: 99px;
+  background: #615EFF;
+  font-size: 1.75cqw;
+  font-weight: 500;
+}
+
+.qs-pdv__badge svg { width: 2.1cqw; height: 2.1cqw; }
+
+.qs-pdv__more {
+  display: inline-flex;
+  align-items: center;
+  gap: .5cqw;
+  font-size: 1.8cqw;
+  font-weight: 500;
+}
+
+.qs-pdv__more svg { width: 1.8cqw; height: 1.8cqw; }
+
+.qs-pdv__gauges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 2.4cqw 2cqw 0;
+}
+
+.qs-pdv__gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qs-pdv__gauge svg { width: 12.6cqw; height: auto; overflow: visible; }
+
+.qs-pdv__track,
+.qs-pdv__val {
+  fill: none;
+  stroke-width: 9;
+  stroke-linecap: round;
+}
+
+.qs-pdv__track { stroke: #2158B9; }
+
+.qs-pdv__val {
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: var(--off);
+}
+
+.qs-pdv__gauge b {
+  margin-top: -5.2cqw;
+  font-size: 3.2cqw;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.qs-pdv__gauge span {
+  margin-top: .7cqw;
+  font-size: 2.3cqw;
+  font-weight: 500;
+}
+
+.qs-pdv__bar {
+  display: block;
+  height: .5cqw;
+  margin-top: 2cqw;
+  border-radius: 1cqw;
+  background: #2158B9;
+  overflow: hidden;
+}
+
+.qs-pdv__bar i {
+  display: block;
+  height: 100%;
+  background: #3D74DB;
+  transform-origin: left center;
+}
+
+.qs-pdv__chev { display: block; width: 2.4cqw; height: 2.4cqw; margin: .8cqw auto 0; }
+
+/* Tiles */
+.qs-pdv__tiles {
+  position: absolute;
+  left: 41cqw;
+  top: 55cqw;
+  display: flex;
+  gap: 2.6cqw;
+}
+
+.qs-pdv__tile {
+  width: 15.5cqw;
+  aspect-ratio: 1 / .92;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .6cqw;
+  background: #fff;
+  border-radius: 2.4cqw;
+  box-shadow: 0 1.2cqw 3cqw rgba(19, 40, 92, .13);
+}
+
+.qs-pdv__tile img { width: 6.4cqw; height: auto; }
+
+.qs-pdv__tile span {
+  font-size: 1.75cqw;
+  font-weight: 600;
+  color: #64748B;
+}
+
+/* Animación: entrada al verse (clase .is-in que pone pdv-phone.js) y flotado después */
+.qs-pdv__phone,
+.qs-pdv__card,
+.qs-pdv__tile { opacity: 0; }
+.qs-pdv__phone { transform: translateY(4cqw); }
+.qs-pdv__card { transform: translateX(-5cqw) scale(.97); }
+.qs-pdv__tile { transform: translateY(2cqw) scale(.86); }
+.qs-pdv__val { stroke-dashoffset: 100; }
+.qs-pdv__dot { opacity: 0; }
+.qs-pdv__bar i { transform: scaleX(0); }
+.qs-pdv__hand { transform-box: view-box; transform-origin: 12px 12px; }
+
+.qs-pdv.is-in .qs-pdv__phone { animation: qsPdvIn .7s cubic-bezier(.22, 1, .36, 1) .05s forwards; }
+.qs-pdv.is-in .qs-pdv__card { animation: qsPdvIn .7s cubic-bezier(.22, 1, .36, 1) .35s forwards, qsPdvFloat 6s ease-in-out 1.8s infinite; }
+.qs-pdv.is-in .qs-pdv__tile { animation: qsPdvIn .6s cubic-bezier(.34, 1.45, .64, 1) var(--d) forwards, qsPdvFloat 5.5s ease-in-out var(--f) infinite; }
+.qs-pdv.is-in .qs-pdv__val { animation: qsPdvDraw 1.3s cubic-bezier(.22, 1, .36, 1) var(--d) forwards; }
+.qs-pdv.is-in .qs-pdv__dot { animation: qsPdvShow .3s ease-out calc(var(--d) + 1s) forwards; }
+.qs-pdv.is-in .qs-pdv__bar i { animation: qsPdvIn 1.6s cubic-bezier(.22, 1, .36, 1) 1s forwards; }
+.qs-pdv.is-in .qs-pdv__hand { animation: qsPdvSpin 4s linear 1.2s infinite; }
+
+@keyframes qsPdvIn { to { opacity: 1; transform: none; } }
+@keyframes qsPdvDraw { to { stroke-dashoffset: var(--off); } }
+@keyframes qsPdvShow { to { opacity: 1; } }
+@keyframes qsPdvFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.6cqw; } }
+@keyframes qsPdvSpin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .qs-pdv * { animation: none !important; }
+  .qs-pdv__phone, .qs-pdv__card, .qs-pdv__tile { opacity: 1; transform: none; }
+  .qs-pdv__val { stroke-dashoffset: var(--off); }
+  .qs-pdv__dot { opacity: 1; }
+  .qs-pdv__bar i { transform: none; }
+}
+
 /* Ubicación en la card: muestra del teléfono a los tiles; el resto se corta abajo */
 .tile--pdv .qs-pdv {
   --pdv-w: clamp(280px, 24vw, 330px);
   position: absolute;
   right: 10px;
   /* El teléfono queda con aire arriba (no se corta) y se corta abajo, mostrando los íconos de Módulos */
-  top: calc(22px - var(--pdv-w) * 0.075);
+  top: calc(14px - var(--pdv-w) * 0.04);
   width: var(--pdv-w);
   flex: none;
   z-index: 1;
@@ -2848,10 +3046,12 @@ header.scrolled .lang-switch__btn {
 
 @media (max-width: 1023px) {
   .tile--pdv .qs-pdv {
-    position: static;
+    position: relative;
+    top: auto;
+    right: auto;
     /* Más chico y con lugar abajo para que el teléfono se vea hasta los íconos de Módulos */
     width: min(100%, 320px);
-    margin: -4% auto 9%;
+    margin: -2% auto calc(min(100%, 320px) * 0.1);
   }
 }
 
