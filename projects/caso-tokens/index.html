@@ -89,8 +89,8 @@ p{color:var(--muted)}
 .hero p{max-width:580px;font-size:17px;line-height:1.7;margin-bottom:12px}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
 .notice{margin-top:18px;font-size:12px;color:var(--muted)}
-.hero-art{position:relative;min-height:480px;display:grid;place-items:center}
-.moon{position:absolute;width:min(92%,360px);aspect-ratio:1;border-radius:50%;top:4%;right:2%;
+.hero-art{position:relative;width:100%;max-width:470px;aspect-ratio:470/520;margin-left:auto}
+.moon{position:absolute;width:76%;aspect-ratio:1;border-radius:50%;top:6%;left:12%;
   background:radial-gradient(circle at 38% 35%,#fff7d6 0%,#f6dd8a 45%,#d9a94a 100%);
   box-shadow:0 0 80px 20px rgba(246,221,138,.22),0 0 200px 60px rgba(246,221,138,.1);animation:moonGlow 6s ease-in-out infinite}
 .moon::before,.moon::after{content:"";position:absolute;border-radius:50%;background:rgba(184,130,40,.22)}
@@ -99,16 +99,25 @@ p{color:var(--muted)}
 @keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.3),0 0 240px 80px rgba(246,221,138,.13)}}
 .hero-ghost{position:relative;z-index:2;width:clamp(170px,22vw,250px);animation:levitateBig 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(214,204,255,.45))}
 .hero-ghost svg{display:block;width:100%;height:auto}
-.hero-shadow{position:absolute;z-index:1;bottom:12%;width:150px;height:22px;border-radius:50%;background:rgba(8,6,24,.55);filter:blur(8px);animation:shadowPulse 4s ease-in-out infinite}
+.ghost-pos{position:absolute;z-index:3;width:40%;left:33%;top:27%}
+.ghost-pos .hero-ghost{width:100%}
+.ground{position:absolute;z-index:2;left:0;bottom:0;width:100%;height:auto;-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
+.ground .gshadow{transform-box:fill-box;transform-origin:center;animation:shadowPulse 4s ease-in-out infinite}
+.zhand{transform-box:fill-box;transform-origin:50% 100%;animation:handRise 8s var(--ease-out) infinite}
+.zhand .wave{transform-box:fill-box;transform-origin:50% 100%;animation:handWave 1.3s ease-in-out infinite alternate}
+.zhand.h2{animation-delay:-4s}.zhand.h2 .wave{animation-duration:1.6s}
+@keyframes handRise{0%,8%{transform:translateY(46px)}22%,68%{transform:translateY(0)}78%{transform:translateY(-3px)}92%,100%{transform:translateY(46px)}}
+@keyframes handWave{from{transform:rotate(-9deg)}to{transform:rotate(7deg)}}
+.ground-fog{position:absolute;z-index:3;left:-8%;right:-8%;bottom:6%;height:16%;background:radial-gradient(closest-side,rgba(200,180,230,.22),transparent);filter:blur(6px);animation:fog 14s ease-in-out infinite alternate;pointer-events:none}
 @keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-24px) rotate(3deg)}}
 @keyframes shadowPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(.7);opacity:.45}}
 .token{position:absolute;z-index:3;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.04em;color:#3b2a05;
   background:radial-gradient(circle at 35% 30%,#fff1c4,#ffcf5a 55%,#d99a18);box-shadow:0 0 22px rgba(255,182,39,.5),inset 0 -3px 0 rgba(0,0,0,.15);animation:tokenFloat 5s ease-in-out infinite}
-.token.t1{top:12%;left:4%}
-.token.t2{top:58%;right:0;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
-.token.t3{bottom:10%;left:16%;animation-delay:-3s;width:30px;height:30px;font-size:8px;opacity:.7}
+.token.t1{top:9%;left:0}
+.token.t2{top:40%;right:-2%;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
+.token.t3{top:57%;left:6%;animation-delay:-3s;width:30px;height:30px;font-size:8px;opacity:.7}
 @keyframes tokenFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-16px) rotate(10deg)}}
-.hero-stamp{position:absolute;z-index:4;bottom:2%;right:6%;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
+.hero-stamp{position:absolute;z-index:4;top:1%;right:0;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
 @keyframes stampIn{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 
 /* ============ CARDS / COMMON ============ */
@@ -260,9 +269,8 @@ p{color:var(--muted)}
 @media(max-width:860px){
   .shell{padding:18px 20px 44px}
   .hero{grid-template-columns:1fr;gap:0;min-height:0}
-  .hero-art{min-height:300px;order:-1}
-  .moon{width:230px;right:calc(50% - 115px);top:0}
-  .hero-ghost{width:150px}
+  .hero-art{order:-1;max-width:340px;margin:0 auto 8px}
+  .result-art .hero-ghost{width:140px}
   .investigation{grid-template-columns:1fr}
   .case-sidebar{position:static;order:-1}
   .inventory{max-height:none}
@@ -320,8 +328,59 @@ p{color:var(--muted)}
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="moon"></div>
-        <div class="hero-shadow"></div>
-        <div class="hero-ghost" data-ghost="detective"></div>
+        <div class="ghost-pos"><div class="hero-ghost" data-ghost="detective"></div></div>
+        <svg class="ground" viewBox="0 -100 470 300">
+          <defs>
+            <clipPath id="soil1"><rect x="130" y="20" width="100" height="116"/></clipPath>
+            <clipPath id="soil2"><rect x="340" y="20" width="90" height="111"/></clipPath>
+            <g id="zh">
+              <path d="M-8 2L-7-12-4-9-1-13 2-9 5-12 8 2Z" fill="#3a3368"/>
+              <g class="wave">
+                <path d="M-5.5 0L-5-24H5L5.5 0Z" fill="#6fa64f"/>
+                <path d="M-8.5-20C-9.5-31-7-35-2-36H4C8.5-34 9.5-29 8.5-20Z" fill="#7fbf5c"/>
+                <g stroke="#7fbf5c" stroke-width="3.4" stroke-linecap="round" fill="none">
+                  <path d="M-6.5-33L-10-42-8-47"/><path d="M-2.5-35.5L-3.5-48-1.5-52"/><path d="M1.5-35.5L2.5-48 5-51"/><path d="M5.5-33L9-41 12-43"/><path d="M8-24L13.5-29"/>
+                </g>
+                <path d="M-3-28h4M-1-24h5" stroke="#5e9a45" stroke-width="1.4" stroke-linecap="round"/>
+              </g>
+            </g>
+          </defs>
+          <!-- árbol seco -->
+          <g stroke="#120b22" stroke-linecap="round" fill="none">
+            <path d="M440 120C436 80 446 40 434 0C430-20 436-40 428-62" stroke-width="10"/>
+            <path d="M437 34C420 18 402 12 384-6" stroke-width="5"/><path d="M402 12C396 0 398-12 392-22" stroke-width="3"/>
+            <path d="M436 6C452-14 462-18 476-36" stroke-width="5"/><path d="M431-30C420-48 412-54 398-70" stroke-width="4"/>
+            <path d="M412-54C414-66 410-74 414-86" stroke-width="2.5"/><path d="M455-16C462-8 470-8 480-4" stroke-width="2.5"/>
+          </g>
+          <!-- colina de fondo -->
+          <path d="M0 78C80 44 160 62 238 70C318 78 392 40 470 58V200H0Z" fill="#2a2350"/>
+          <g fill="#1f1942">
+            <path d="M62 66V44h-8v-6h8v-8h6v8h8v6h-8v22z"/>
+            <path d="M200 70V54c0-10 22-10 22 0v16z"/>
+            <path d="M268 74V60c0-7 16-7 16 0v14z"/>
+            <path d="M392 56V40h-6v-5h6v-6h5v6h6v5h-6v16z"/>
+          </g>
+          <ellipse class="gshadow" cx="236" cy="104" rx="46" ry="6" fill="rgba(8,6,24,.45)"/>
+          <!-- colina del frente -->
+          <path d="M0 122C90 98 162 104 236 112C322 120 384 98 470 108V200H0Z" fill="#161030"/>
+          <g fill="#241d48" stroke="rgba(167,139,250,.32)" stroke-width="1.5">
+            <path d="M104 126V76c0-27 58-27 58 0v50z"/>
+            <path d="M304 120V88c0-17 38-17 38 0v32z"/>
+            <path d="M20 136l-4-34c-2-14 26-17 28-3l4 34z"/>
+          </g>
+          <text x="133" y="98" text-anchor="middle" font-family="Poppins,sans-serif" font-weight="800" font-size="15" fill="#3d3570" letter-spacing="1">R.I.P.</text>
+          <path d="M118 106h30M123 113h20" stroke="#3d3570" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M323 94v16M316 100h14" stroke="#3d3570" stroke-width="3" stroke-linecap="round"/>
+          <!-- manos zombie -->
+          <g clip-path="url(#soil1)"><g transform="translate(180 136) scale(1.3)"><g class="zhand h1"><use href="#zh"/></g></g></g>
+          <g clip-path="url(#soil2)"><g transform="translate(386 131) scale(-1.1 1.1)"><g class="zhand h2"><use href="#zh"/></g></g></g>
+          <!-- tierra removida y pasto -->
+          <g fill="#0f0a22">
+            <ellipse cx="180" cy="137" rx="20" ry="5"/><ellipse cx="386" cy="132" rx="17" ry="4.5"/>
+            <path d="M60 128l3-9 2 9 3-12 2 12 3-8 1 8zM250 120l3-8 2 8 3-11 2 11 3-7 1 7zM430 116l2-8 2 8 3-10 2 10 2-7 1 7z"/>
+          </g>
+        </svg>
+        <div class="ground-fog"></div>
         <span class="token t1">TKN</span><span class="token t2">TKN</span><span class="token t3">TKN</span>
         <div class="hero-stamp">CLASIFICADO</div>
       </div>
