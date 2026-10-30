@@ -101,7 +101,7 @@ p{color:var(--muted)}
 @keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.3),0 0 240px 80px rgba(246,221,138,.13)}}
 .hero-ghost{position:relative;z-index:2;width:clamp(170px,22vw,250px);animation:levitateBig 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(214,204,255,.45))}
 .hero-ghost svg{display:block;width:100%;height:auto}
-.ghost-pos{position:absolute;z-index:3;width:40%;left:33%;top:37%}
+.ghost-pos{position:absolute;z-index:3;width:29%;left:35.5%;top:43%}
 .ghost-pos .hero-ghost{width:100%}
 .ground{position:absolute;z-index:2;left:0;bottom:0;width:100%;height:auto;-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
 .ground .gshadow{transform-box:fill-box;transform-origin:center;animation:shadowPulse 4s ease-in-out infinite}
@@ -113,14 +113,6 @@ p{color:var(--muted)}
 .ground-fog{position:absolute;z-index:3;left:-8%;right:-8%;bottom:6%;height:16%;background:radial-gradient(closest-side,rgba(200,180,230,.22),transparent);filter:blur(6px);animation:fog 14s ease-in-out infinite alternate;pointer-events:none}
 @keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-24px) rotate(3deg)}}
 @keyframes shadowPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.55}}
-.token{position:absolute;z-index:3;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.04em;color:#3b2a05;
-  background:radial-gradient(circle at 35% 30%,#fff1c4,#ffcf5a 55%,#d99a18);box-shadow:0 0 22px rgba(255,182,39,.5),inset 0 -3px 0 rgba(0,0,0,.15);animation:tokenFloat 5s ease-in-out infinite}
-.token.t1{top:16%;left:0}
-.token.t2{top:46%;right:-2%;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
-.token.t3{top:57%;left:6%;animation-delay:-3s;width:30px;height:30px;font-size:8px;opacity:.7}
-@keyframes tokenFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-16px) rotate(10deg)}}
-.hero-stamp{position:absolute;z-index:4;top:10%;right:0;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
-@keyframes stampIn{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 
 /* ============ CARDS / COMMON ============ */
 .card{background:linear-gradient(160deg,rgba(45,39,86,.92),rgba(36,31,71,.92));border:1px solid var(--line-2);border-radius:var(--r-lg);padding:20px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
@@ -197,7 +189,7 @@ p{color:var(--muted)}
 /* ============ RESULT ============ */
 .result-hero{display:grid;grid-template-columns:1fr 160px;gap:20px;align-items:center}
 .result-art{position:relative;display:grid;place-items:center}
-.result-art .hero-ghost{width:120px}
+.result-art .hero-ghost{width:96px}
 .score{display:inline-flex;gap:10px;align-items:baseline;font-size:30px;color:var(--accent-2);font-weight:700;margin:2px 0}
 .score small{font-size:14px;color:var(--muted);font-weight:500}
 .verdict{padding:14px 18px;border-radius:var(--r-md);background:var(--accent-2-soft);border:1px solid rgba(155,225,93,.25);margin:12px 0}
@@ -389,8 +381,6 @@ p{color:var(--muted)}
           </g>
         </svg>
         <div class="ground-fog"></div>
-        <span class="token t1">TKN</span><span class="token t2">TKN</span><span class="token t3">TKN</span>
-        <div class="hero-stamp">CLASIFICADO</div>
       </div>
     </div>
   </section>
@@ -543,13 +533,7 @@ const ghostBody = (id) => `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0"
 <g fill="#1b1736"><ellipse cx="30" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse><ellipse cx="50" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse><ellipse cx="40" cy="56" rx="3.2" ry="4"><animate attributeName="ry" dur="2.2s" repeatCount="indefinite" values="3;5;3"/></ellipse></g>`;
 let gid = 0;
 const ghostSVG = () => `<svg viewBox="0 0 80 100" aria-hidden="true">${ghostBody('g' + (gid++))}</svg>`;
-/* Fantasma detective: sombrero y lupa */
-const detectiveSVG = () => `<svg viewBox="-6 -22 110 126" aria-hidden="true">${ghostBody('g' + (gid++))}
-<g><path d="M14 16c4-8 16-14 26-14s22 6 26 14z" fill="#3a2a1a"/><rect x="18" y="10" width="44" height="6" rx="2" fill="#ffb627"/><path d="M4 18c10-4 62-4 72 0c-2 4-70 4-72 0z" fill="#2a1d12"/></g>
-<g><animateTransform attributeName="transform" type="rotate" values="-6 78 64;8 78 64;-6 78 64" dur="3s" repeatCount="indefinite"/>
-<line x1="74" y1="70" x2="96" y2="94" stroke="#6b4a2a" stroke-width="6" stroke-linecap="round"/>
-<circle cx="70" cy="62" r="13" fill="rgba(155,225,93,.18)" stroke="#ffb627" stroke-width="4"/><path d="M63 57a8 8 0 0 1 8-4" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/></g></svg>`;
-document.querySelectorAll('[data-ghost="detective"]').forEach(el => el.innerHTML = detectiveSVG());
+document.querySelectorAll('[data-ghost="detective"]').forEach(el => el.innerHTML = ghostSVG());
 $('peek').innerHTML = ghostSVG();
 
 function spawnGhost() {
