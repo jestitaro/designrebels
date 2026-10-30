@@ -90,7 +90,7 @@ p{color:var(--muted)}
 .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
 .notice{margin-top:18px;font-size:12px;color:var(--muted)}
 .hero-art{position:relative;width:100%;max-width:470px;aspect-ratio:470/520;margin-left:auto}
-.moon{position:absolute;width:76%;aspect-ratio:1;border-radius:50%;top:6%;left:12%;
+.moon{position:absolute;z-index:0;width:76%;aspect-ratio:1;border-radius:50%;top:17%;left:12%;
   background:radial-gradient(circle at 38% 35%,#fff7d6 0%,#f6dd8a 45%,#d9a94a 100%);
   box-shadow:0 0 80px 20px rgba(246,221,138,.22),0 0 200px 60px rgba(246,221,138,.1);animation:moonGlow 6s ease-in-out infinite}
 .moon::before,.moon::after{content:"";position:absolute;border-radius:50%;background:rgba(184,130,40,.22)}
@@ -110,14 +110,14 @@ p{color:var(--muted)}
 @keyframes handWave{from{transform:rotate(-9deg)}to{transform:rotate(7deg)}}
 .ground-fog{position:absolute;z-index:3;left:-8%;right:-8%;bottom:6%;height:16%;background:radial-gradient(closest-side,rgba(200,180,230,.22),transparent);filter:blur(6px);animation:fog 14s ease-in-out infinite alternate;pointer-events:none}
 @keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-24px) rotate(3deg)}}
-@keyframes shadowPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(.7);opacity:.45}}
+@keyframes shadowPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.55}}
 .token{position:absolute;z-index:3;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.04em;color:#3b2a05;
   background:radial-gradient(circle at 35% 30%,#fff1c4,#ffcf5a 55%,#d99a18);box-shadow:0 0 22px rgba(255,182,39,.5),inset 0 -3px 0 rgba(0,0,0,.15);animation:tokenFloat 5s ease-in-out infinite}
-.token.t1{top:9%;left:0}
-.token.t2{top:40%;right:-2%;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
+.token.t1{top:16%;left:0}
+.token.t2{top:46%;right:-2%;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
 .token.t3{top:57%;left:6%;animation-delay:-3s;width:30px;height:30px;font-size:8px;opacity:.7}
 @keyframes tokenFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-16px) rotate(10deg)}}
-.hero-stamp{position:absolute;z-index:4;top:1%;right:0;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
+.hero-stamp{position:absolute;z-index:4;top:10%;right:0;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
 @keyframes stampIn{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
 
 /* ============ CARDS / COMMON ============ */
@@ -331,6 +331,8 @@ p{color:var(--muted)}
         <div class="ghost-pos"><div class="hero-ghost" data-ghost="detective"></div></div>
         <svg class="ground" viewBox="0 -100 470 300">
           <defs>
+            <radialGradient id="moonlight"><stop offset="0" stop-color="#cdb8ff" stop-opacity=".42"/><stop offset=".55" stop-color="#a78bfa" stop-opacity=".16"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient>
+            <filter id="soft" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
             <clipPath id="soil1"><rect x="30" y="0" width="100" height="129"/></clipPath>
             <clipPath id="soil2"><rect x="340" y="20" width="90" height="111"/></clipPath>
             <g id="zh">
@@ -355,7 +357,8 @@ p{color:var(--muted)}
           </g>
           <!-- colina del frente -->
           <path d="M0 122C90 98 162 104 236 112C322 120 384 98 470 108V200H0Z" fill="#161030"/>
-          <ellipse class="gshadow" cx="236" cy="128" rx="44" ry="6" fill="rgba(8,6,24,.45)"/>
+          <ellipse cx="236" cy="128" rx="110" ry="17" fill="url(#moonlight)"/>
+          <ellipse class="gshadow" cx="236" cy="128" rx="54" ry="8.5" fill="#05030d" filter="url(#soft)"/>
           <g fill="#241d48" stroke="rgba(167,139,250,.32)" stroke-width="1.5">
             <path d="M104 126V76c0-27 58-27 58 0v50z"/>
             <path d="M304 120V88c0-17 38-17 38 0v32z"/>
