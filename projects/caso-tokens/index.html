@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1b1736">
+<meta name="description" content="Un misterioso agotamiento de tokens de Claude sacude QuartzSales. Interrogá a 19 compañeros y resolvé el caso.">
+<title>El caso de los tokens desaparecidos · QuartzSales</title>
+<link rel="icon" href="https://www.quartzsales.com/images/svg_qs/iso-qs.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1b1736;--bg-2:#231e45;--surface:#241f47;--surface-2:#2d2756;--surface-3:#3a3368;
+  --ink:#f4f2ff;--muted:#a9a3cf;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+  --accent:#ffb627;--accent-ink:#1b1736;--accent-soft:rgba(255,182,39,.13);
+  --accent-2:#9be15d;--accent-2-soft:rgba(155,225,93,.1);--lav:#a78bfa;--indigo:#6366f1;
+  --danger:#ff6b81;--glow:rgba(255,182,39,.45);
+  --r-sm:10px;--r-md:14px;--r-lg:22px;
+  --ease-out:cubic-bezier(.22,1,.36,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --shadow:0 18px 40px rgba(8,6,24,.45);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+button:disabled{cursor:not-allowed;opacity:.45}
+:focus-visible{outline:3px solid var(--accent-2);outline-offset:3px;border-radius:6px}
+strong{color:var(--ink);font-weight:600}
+
+/* ============ WORLD ============ */
+.world{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.world .sky{position:absolute;inset:0;background:radial-gradient(1200px 700px at 30% 0%,#3a1a5c 0%,transparent 60%),radial-gradient(900px 600px at 90% 100%,#2a0f3d 0%,transparent 60%)}
+.world .grid{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:24px 24px;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+.world .noise{position:absolute;inset:-50%;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.fog{position:absolute;left:-20%;right:-20%;height:240px;bottom:-60px;background:radial-gradient(closest-side,rgba(200,180,230,.16),transparent);filter:blur(10px);animation:fog 22s ease-in-out infinite alternate}
+.fog.f2{bottom:40px;opacity:.6;animation-duration:30s;animation-direction:alternate-reverse}
+@keyframes fog{to{transform:translateX(8%)}}
+.bat-fly{position:absolute;width:40px;color:#0b0512;animation:batPath linear infinite}
+.bat-fly svg{animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
+@keyframes flap{to{transform:scaleY(.45)}}
+@keyframes batPath{0%{transform:translate(-10vw,30vh)}50%{transform:translate(50vw,8vh)}100%{transform:translate(115vw,22vh)}}
+.ghost-float{position:absolute;left:0;pointer-events:none;opacity:0;animation:ghostDrift 15s cubic-bezier(.45,.05,.55,.95) forwards}
+.gf-wave{animation:ghostWave 3.4s ease-in-out infinite}
+.gf-sway{animation:ghostSway 2.2s ease-in-out infinite;transform-origin:50% 20%;filter:drop-shadow(0 0 16px rgba(214,204,255,.55))}
+.ghost-float.rtl .gf-sway svg{transform:scaleX(-1)}
+.ghost-float svg{display:block;width:100%;height:auto}
+@keyframes ghostDrift{0%{opacity:0;transform:translateX(var(--from))}12%{opacity:.32}50%{opacity:.4}88%{opacity:.32}100%{opacity:0;transform:translateX(var(--to))}}
+@keyframes ghostWave{0%,100%{transform:translateY(0) scale(1)}25%{transform:translateY(-22px) scale(1.04,.97)}50%{transform:translateY(-6px) scale(.98,1.03)}75%{transform:translateY(16px) scale(1.02,.98)}}
+@keyframes ghostSway{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg)}}
+
+/* ============ LAYOUT ============ */
+.shell{position:relative;z-index:1;max-width:1160px;margin:auto;padding:22px 32px 56px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:28px}
+.topbar img{height:30px;width:auto;display:block}
+.seal{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.seal i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 9px transparent}}
+.screen{display:none}
+.screen.active{display:block;animation:appear .5s var(--ease-out)}
+@keyframes appear{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h1,h2,h3{font-weight:700;letter-spacing:-.01em;line-height:1.08}
+h1{font-size:clamp(46px,7.4vw,88px);margin-bottom:22px;text-shadow:0 0 40px rgba(167,139,250,.35)}
+h2{font-size:clamp(28px,4vw,44px);margin-bottom:12px}
+h3{font-size:18px;margin-bottom:10px}
+p{color:var(--muted)}
+.accent{color:var(--accent);text-shadow:0 0 36px var(--glow)}
+.flicker{animation:flicker 5s infinite}
+@keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.5}94%{opacity:1}96%{opacity:.7}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.label{display:inline-block;padding:6px 12px;border:1px solid var(--line-2);border-radius:999px;color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+
+/* ============ BUTTONS ============ */
+.btn{border-radius:12px;padding:13px 22px;background:var(--accent);color:var(--accent-ink);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;transition:transform .25s var(--ease-spring),box-shadow .25s,background .2s;box-shadow:0 10px 26px -10px var(--glow)}
+.btn:not(:disabled):hover{transform:translateY(-3px);box-shadow:0 16px 30px -10px var(--glow)}
+.btn:not(:disabled):active{transform:translateY(0) scale(.98)}
+.btn.alt{background:var(--accent-2);color:#14200d;box-shadow:0 10px 26px -10px rgba(155,225,93,.5)}
+.btn.ghostbtn{background:var(--surface-2);color:var(--ink);box-shadow:none;border:1px solid var(--line-2)}
+.btn.ghostbtn:not(:disabled):hover{background:var(--surface-3)}
+.btn .arr{transition:transform .25s var(--ease-out)}
+.btn:not(:disabled):hover .arr{transform:translateX(4px)}
+
+/* ============ INTRO ============ */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:40px;align-items:center;min-height:600px}
+.hero p{max-width:580px;font-size:17px;line-height:1.7;margin-bottom:12px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.notice{margin-top:18px;font-size:12px;color:var(--muted)}
+.hero-art{position:relative;min-height:480px;display:grid;place-items:center}
+.moon{position:absolute;width:min(92%,360px);aspect-ratio:1;border-radius:50%;top:4%;right:2%;
+  background:radial-gradient(circle at 38% 35%,#fff7d6 0%,#f6dd8a 45%,#d9a94a 100%);
+  box-shadow:0 0 80px 20px rgba(246,221,138,.22),0 0 200px 60px rgba(246,221,138,.1);animation:moonGlow 6s ease-in-out infinite}
+.moon::before,.moon::after{content:"";position:absolute;border-radius:50%;background:rgba(184,130,40,.22)}
+.moon::before{width:15%;height:12%;top:68%;left:58%}
+.moon::after{width:9%;height:8%;top:56%;left:14%}
+@keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.3),0 0 240px 80px rgba(246,221,138,.13)}}
+.hero-ghost{position:relative;z-index:2;width:clamp(170px,22vw,250px);animation:levitateBig 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(214,204,255,.45))}
+.hero-ghost svg{display:block;width:100%;height:auto}
+.hero-shadow{position:absolute;z-index:1;bottom:12%;width:150px;height:22px;border-radius:50%;background:rgba(8,6,24,.55);filter:blur(8px);animation:shadowPulse 4s ease-in-out infinite}
+@keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-24px) rotate(3deg)}}
+@keyframes shadowPulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(.7);opacity:.45}}
+.token{position:absolute;z-index:3;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;letter-spacing:.04em;color:#3b2a05;
+  background:radial-gradient(circle at 35% 30%,#fff1c4,#ffcf5a 55%,#d99a18);box-shadow:0 0 22px rgba(255,182,39,.5),inset 0 -3px 0 rgba(0,0,0,.15);animation:tokenFloat 5s ease-in-out infinite}
+.token.t1{top:12%;left:4%}
+.token.t2{top:58%;right:0;animation-delay:-1.6s;width:36px;height:36px;font-size:9px}
+.token.t3{bottom:10%;left:16%;animation-delay:-3s;width:30px;height:30px;font-size:8px;opacity:.7}
+@keyframes tokenFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-16px) rotate(10deg)}}
+.hero-stamp{position:absolute;z-index:4;bottom:2%;right:6%;transform:rotate(-8deg);padding:10px 16px;border:3px solid var(--accent-2);color:var(--accent-2);font-size:13px;letter-spacing:.18em;font-weight:800;border-radius:6px;background:rgba(27,23,54,.85);animation:stampIn .7s .6s var(--ease-spring) both}
+@keyframes stampIn{from{opacity:0;transform:rotate(-8deg) scale(2.2)}to{opacity:1;transform:rotate(-8deg) scale(1)}}
+
+/* ============ CARDS / COMMON ============ */
+.card{background:linear-gradient(160deg,rgba(45,39,86,.92),rgba(36,31,71,.92));border:1px solid var(--line-2);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);backdrop-filter:blur(8px)}
+.section-top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.step{display:flex;gap:8px;align-items:center}
+.step span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line-2);font-weight:600;font-size:13px;color:var(--muted)}
+.step span.done{border-color:var(--accent-2);color:var(--accent-2)}
+.step span.current{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.stagehead{margin-bottom:24px}
+.stagehead p{font-size:16px;max-width:760px}
+.progressbar{height:8px;border-radius:999px;overflow:hidden;background:rgba(8,6,24,.5);margin:10px 0 16px}
+.progressbar>div{width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s var(--ease-out)}
+
+/* ============ INVESTIGATE ============ */
+.investigation{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(290px,.9fr);gap:22px;align-items:start}
+.case-sidebar{position:sticky;top:18px}
+.search{background:var(--surface);border:1px solid var(--line-2);border-radius:12px;padding:12px 15px;width:100%;margin-bottom:12px;transition:border-color .2s}
+.search::placeholder{color:var(--muted)}
+.search:focus{border-color:var(--lav);outline:none;box-shadow:0 0 0 4px rgba(167,139,250,.15)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.filter{border:1px solid var(--line-2);color:var(--muted);border-radius:999px;padding:7px 13px;font-size:12px;font-weight:500;transition:all .2s}
+.filter:hover{color:var(--ink);border-color:var(--lav)}
+.filter.active{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.roster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.person{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:rgba(36,31,71,.78);border:1px solid var(--line-2);border-radius:var(--r-md);padding:13px;min-height:84px;
+  transition:border-color .25s,transform .3s var(--ease-spring),box-shadow .3s}
+.roster.anim .person{animation:cardIn .45s var(--ease-out) both;animation-delay:calc(var(--i,0) * 35ms)}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px) scale(.97)}}
+@media(hover:hover){.person:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 14px 26px -12px var(--glow)}.person:hover .avatar{animation:bob 1.2s ease-in-out infinite}.option:hover:not(:disabled){border-color:var(--lav);transform:translateX(6px)}}
+@keyframes bob{50%{transform:translateY(-4px) rotate(6deg)}}
+.person.seen{border-color:rgba(155,225,93,.4);background:rgba(36,31,71,.55)}
+.avatar{width:48px;height:48px;flex:none;border-radius:13px;background:linear-gradient(135deg,var(--surface-3),var(--surface-2));display:grid;place-items:center;font-size:24px;border:1px solid var(--line-2)}
+.name{display:block;font-size:14px;font-weight:600;line-height:1.25}
+.role{display:block;font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3}
+.checkmark{color:var(--accent-2);margin-left:auto;align-self:start;font-weight:700;font-size:13px}
+.counter{font-weight:700;font-size:20px;color:var(--ink);display:inline-block}
+.counter.bump{animation:bump .5s var(--ease-spring)}
+@keyframes bump{50%{transform:scale(1.35);color:var(--accent-2)}}
+.small{font-size:13px;color:var(--muted)}
+.inventory{display:grid;gap:8px;margin-top:4px;max-height:290px;overflow:auto;padding-right:2px}
+.evidence{background:var(--accent-2-soft);border:1px solid rgba(155,225,93,.22);border-radius:var(--r-sm);padding:11px 12px;font-size:12.5px;color:#e9f6dc;animation:cardIn .4s var(--ease-out) both}
+.evidence strong{display:block;color:var(--accent-2);margin-bottom:3px;font-size:12.5px}
+.empty{color:var(--muted);font-size:13px}
+.hint{color:var(--muted);font-size:12px}
+
+/* ============ QUIZ ============ */
+.quiz-card{max-width:860px}
+.quizcount{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}
+.question{font-size:clamp(21px,3vw,28px);line-height:1.3;margin:12px 0 22px;font-weight:600}
+.options{display:grid;gap:10px}
+.option{width:100%;text-align:left;border:1px solid var(--line-2);background:var(--surface-2);padding:15px 17px;border-radius:12px;transition:border-color .2s,background .2s,transform .25s var(--ease-spring);animation:cardIn .4s var(--ease-out) both;animation-delay:calc(var(--i,0) * 60ms)}
+.option.chosen{border-color:var(--accent);background:var(--accent-soft)}
+.option.correct{border-color:var(--accent-2);background:rgba(155,225,93,.13)}
+.option.wrong{border-color:var(--danger);background:rgba(255,107,129,.1);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.feedback{padding:15px 17px;margin-top:16px;background:rgba(255,255,255,.04);border:1px solid var(--line-2);border-radius:12px;font-size:14px;display:none}
+.feedback.show{display:block;animation:cardIn .35s var(--ease-out)}
+.footbar{display:flex;justify-content:flex-end;gap:15px;align-items:center;margin-top:22px;flex-wrap:wrap}
+
+/* ============ ACCUSE ============ */
+.forensic{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.note{padding:15px;border-radius:var(--r-md);background:rgba(255,255,255,.035);border:1px dashed var(--line-2);color:var(--muted);font-size:13.5px}
+.note b{color:var(--ink);font-weight:600}
+.final-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.field label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:9px}
+.field select{width:100%;padding:14px 38px 14px 13px;border:1px solid var(--line-2);border-radius:var(--r-sm);background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a9a3cf' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;min-height:54px;appearance:none;transition:border-color .2s}
+.field select:hover{border-color:var(--lav)}
+.field option{background:var(--surface);color:var(--ink)}
+
+/* ============ RESULT ============ */
+.result-hero{display:grid;grid-template-columns:1fr 230px;gap:24px;align-items:center}
+.result-art{position:relative;display:grid;place-items:center}
+.result-art .hero-ghost{width:170px}
+.score{display:inline-flex;gap:10px;align-items:baseline;font-size:40px;color:var(--accent-2);font-weight:700;margin:6px 0}
+.score small{font-size:14px;color:var(--muted);font-weight:500}
+.verdict{padding:22px;border-radius:var(--r-md);background:var(--accent-2-soft);border:1px solid rgba(155,225,93,.25);margin:22px 0}
+.verdict h3{color:var(--accent-2)}
+.verdict p{line-height:1.7}
+.ranking{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.ranking>div{border:1px solid var(--line-2);padding:16px;border-radius:var(--r-md);background:var(--surface);text-align:center;animation:cardIn .5s var(--ease-out) both;animation-delay:calc(var(--i,0) * 90ms)}
+.ranking strong{display:block;font-size:28px;color:var(--accent)}
+.ranking span{display:block;color:var(--muted);font-size:12px}
+.salute{font-size:19px;color:var(--ink);font-weight:600;margin-bottom:4px}
+
+/* ============ MODAL ============ */
+.modalwrap{position:fixed;inset:0;z-index:30;background:rgba(10,8,24,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.modalwrap.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}}
+.dialog-wrap{position:relative;width:min(100%,560px)}
+.dialog{position:relative;width:100%;background:linear-gradient(150deg,#2d2756,#211c43);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:26px;box-shadow:0 30px 90px rgba(0,0,0,.55);max-height:calc(100vh - 40px);overflow:auto;animation:popIn .45s var(--ease-spring)}
+@keyframes popIn{from{opacity:0;transform:translateY(24px) scale(.94)}}
+.dialogtop{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.dialogtop .avatar{width:62px;height:62px;font-size:32px;animation:bob 2.4s ease-in-out infinite}
+.dialogtop h3{font-size:21px;margin:0}
+.dialogquote{background:rgba(255,255,255,.045);padding:18px 20px;border-radius:var(--r-md);border-left:4px solid var(--accent);font-size:17px;line-height:1.6;color:var(--ink);margin:16px 0;min-height:4.8em}
+.caret{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:-2px;margin-left:2px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.dialog .evidence{font-size:14px}
+.peek{position:absolute;z-index:2;right:28px;top:-50px;width:58px;filter:drop-shadow(0 0 14px rgba(214,204,255,.5));opacity:0;pointer-events:none}
+.peek.on{animation:peek 1.8s var(--ease-out) forwards}
+@keyframes peek{0%{opacity:0;transform:translateY(40px)}30%,70%{opacity:1;transform:translateY(0) rotate(-8deg)}100%{opacity:0;transform:translateY(-14px) rotate(6deg)}}
+
+/* ============ TOAST / BURST ============ */
+.toast{position:fixed;top:18px;left:50%;z-index:40;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:11px 18px 11px 12px;border-radius:999px;background:var(--surface-2);border:1px solid rgba(155,225,93,.4);box-shadow:var(--shadow);font-size:13.5px;font-weight:500;animation:toastIn .45s var(--ease-spring),toastOut .4s 2.4s forwards}
+.toast b{color:var(--accent-2);font-weight:600}
+.toast svg{width:26px;height:auto}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-20px) scale(.9)}}
+@keyframes toastOut{to{opacity:0;transform:translate(-50%,-14px)}}
+.burst{position:fixed;z-index:50;pointer-events:none;font-size:26px;animation:burst 1.6s var(--ease-out) forwards}
+@keyframes burst{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}}
+
+.footer{margin-top:56px;text-align:center;color:var(--muted);font-size:11px;opacity:.75}
+.hide{display:none!important}
+
+@media(max-width:860px){
+  .shell{padding:18px 20px 44px}
+  .hero{grid-template-columns:1fr;gap:0;min-height:0}
+  .hero-art{min-height:300px;order:-1}
+  .moon{width:230px;right:calc(50% - 115px);top:0}
+  .hero-ghost{width:150px}
+  .investigation{grid-template-columns:1fr}
+  .case-sidebar{position:static;order:-1}
+  .inventory{max-height:none}
+  .final-grid,.forensic{grid-template-columns:1fr}
+  .result-hero{grid-template-columns:1fr}
+  .result-art{order:-1}
+}
+@media(max-width:560px){
+  h1{font-size:clamp(40px,11vw,56px)}
+  .topbar img{height:24px}
+  .seal span{display:none}
+  .roster{grid-template-columns:1fr}
+  .person{min-height:74px}
+  .hero p{font-size:15.5px}
+  .card{padding:18px}
+  .actions .btn{width:100%}
+  .ranking{grid-template-columns:1fr}
+  .dialog{padding:20px}
+  .footbar .btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.ghost-float{display:none}}
+</style>
+</head>
+<body>
+<div class="world" id="world" aria-hidden="true">
+  <div class="sky"></div><div class="grid"></div><div class="noise"></div>
+  <div class="fog"></div><div class="fog f2"></div>
+  <div class="bat-fly" style="animation-duration:19s;animation-delay:2s"><svg viewBox="0 0 64 28" fill="currentColor"><path d="M32 8c2-4 5-6 5-6s1 4 0 7c6-2 14-1 27 6-8 0-12 3-14 9-3-5-8-6-12-3-2-3-4-4-6-4s-4 1-6 4c-4-3-9-2-12 3C12 18 8 15 0 15 13 8 21 7 27 9c-1-3 0-7 0-7s3 2 5 6z"/></svg></div>
+  <div class="bat-fly" style="animation-duration:27s;animation-delay:11s;width:28px"><svg viewBox="0 0 64 28" fill="currentColor"><path d="M32 8c2-4 5-6 5-6s1 4 0 7c6-2 14-1 27 6-8 0-12 3-14 9-3-5-8-6-12-3-2-3-4-4-6-4s-4 1-6 4c-4-3-9-2-12 3C12 18 8 15 0 15 13 8 21 7 27 9c-1-3 0-7 0-7s3 2 5 6z"/></svg></div>
+</div>
+
+<main class="shell" id="main">
+  <header class="topbar">
+    <img src="https://www.quartzsales.com/images/svg_qs/logo-qs-fullcolor-negativo.svg" alt="QuartzSales" width="150" height="30">
+    <div class="seal"><i></i><span>Halloween · Expediente interno #1031</span></div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="screen active" id="intro" aria-labelledby="introtitle">
+    <div class="hero">
+      <div>
+        <div class="eyebrow">🎃 Halloween · Emergencia interna</div>
+        <h1 id="introtitle">El caso de los<br><span class="accent flicker">tokens desaparecidos</span></h1>
+        <p>El viernes 30 de octubre, a las 17:59, llegó la notificación más aterradora del año: <strong>«Claude: cuota de tokens agotada».</strong> Alguien se gastó <em>todos</em> los tokens de la empresa.</p>
+        <p>Hay <strong>19 compañeros bajo investigación</strong>. Las pistas involucran a Diseño, Desarrollo, Jira y una obsesión bastante particular. ¿Quién fue y para qué necesitaba tantas respuestas?</p>
+        <div class="actions"><button class="btn" id="start">🔎 Abrir expediente <span class="arr" aria-hidden="true">→</span></button></div>
+        <p class="notice">Juego individual · 4 a 6 minutos · Todo es ficción y humor de oficina.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="moon"></div>
+        <div class="hero-shadow"></div>
+        <div class="hero-ghost" data-ghost="detective"></div>
+        <span class="token t1">TKN</span><span class="token t2">TKN</span><span class="token t3">TKN</span>
+        <div class="hero-stamp">CLASIFICADO</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVESTIGAR -->
+  <section class="screen" id="investigate" aria-labelledby="investtitle">
+    <div class="section-top"><span class="label">Capítulo 01 · Investigar</span><div class="step" aria-label="Paso 1 de 3"><span class="current">1</span><span>2</span><span>3</span></div></div>
+    <div class="stagehead"><h2 id="investtitle">19 personas bajo sospecha.<br><span class="accent">Una sola cuenta culpable.</span></h2><p>Interrogá a tus compañeros. Algunos aportan hechos útiles; otros solo suman misterio. Reuní <strong id="reqText"></strong> para pasar al interrogatorio. Buscá en distintos equipos: las pistas clave están repartidas.</p></div>
+    <div class="investigation">
+      <div>
+        <input class="search" id="search" type="search" placeholder="Buscar por nombre o función…" aria-label="Buscar testigo">
+        <div class="filters" id="filters" role="group" aria-label="Filtrar por equipo"></div>
+        <div class="roster" id="roster" aria-label="Lista de testigos"></div>
+      </div>
+      <aside class="case-sidebar">
+        <div class="card">
+          <div class="eyebrow" style="margin-bottom:4px">Tu expediente</div>
+          <h3>🔍 Evidencia recolectada</h3>
+          <div><span class="counter" id="interviews">0</span><span class="small" id="intLabel"></span></div>
+          <div class="progressbar" aria-hidden="true"><div id="bar1"></div></div>
+          <div><span class="counter" id="clues">0</span><span class="small" id="clueLabel"></span></div>
+          <div class="progressbar" aria-hidden="true"><div id="bar2"></div></div>
+          <div id="inventory" class="inventory" aria-live="polite"></div>
+          <button class="btn alt" id="goquiz" style="width:100%;margin-top:20px" disabled>Ir a las preguntas <span class="arr" aria-hidden="true">→</span></button>
+          <p class="hint" id="unlockhint" style="margin-top:10px"></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="quiz" aria-labelledby="quiztitle">
+    <div class="section-top"><span class="label">Capítulo 02 · Interrogatorio</span><div class="step" aria-label="Paso 2 de 3"><span class="done">✓</span><span class="current">2</span><span>3</span></div></div>
+    <div class="stagehead"><h2 id="quiztitle">Separá las pistas<br><span class="accent">de las mentiras.</span></h2><p>Tres preguntas para separar hechos, coartadas flojas y un sospechoso que claramente necesitaba otra respuesta.</p></div>
+    <div class="card quiz-card">
+      <div class="quizcount"><span id="qnum">Pregunta 1 de 3</span><span id="points">0 puntos</span></div>
+      <div class="progressbar"><div id="quizbar"></div></div>
+      <div class="question" id="question"></div>
+      <div class="options" id="options"></div>
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+      <div class="footbar"><button class="btn" id="nextq" disabled>Confirmar respuesta <span class="arr" aria-hidden="true">→</span></button></div>
+    </div>
+  </section>
+
+  <!-- ACUSACIÓN -->
+  <section class="screen" id="accuse" aria-labelledby="accusetitle">
+    <div class="section-top"><span class="label">Capítulo 03 · Acusación final</span><div class="step" aria-label="Paso 3 de 3"><span class="done">✓</span><span class="done">✓</span><span class="current">3</span></div></div>
+    <div class="stagehead"><h2 id="accusetitle">Una persona. Un método.<br><span class="accent">Un motivo.</span></h2><p>Reconstruí el consumo: <strong>¿quién agotó la cuota, cómo lo hizo y para qué?</strong> Hay pistas falsas. Prestá atención a los horarios.</p></div>
+    <div class="forensic">
+      <div class="note">🖥️ <b>Registro de accesos</b><br>Una sola sesión web consumió la cuota entre las 17:56 y las 17:59. No fue un error del sistema.</div>
+      <div class="note">⏱️ <b>El detalle extraño</b><br>En el historial se repite una frase inquietante: «Ahora sí, la versión definitiva».</div>
+    </div>
+    <div class="card">
+      <div class="final-grid">
+        <div class="field"><label for="who">¿Quién agotó los tokens?</label><select id="who"></select></div>
+        <div class="field"><label for="weapon">¿Cómo los agotó?</label><select id="weapon"><option value="">Elegí un método</option><option value="script">Con un script de desarrollo</option><option value="regenerate">Regenerando respuestas sin parar</option><option value="campaign">Generando una campaña de marketing</option><option value="figma">Con un plugin de diseño</option></select></div>
+        <div class="field"><label for="where">¿Para qué los gastó?</label><select id="where"><option value="">Elegí el motivo</option><option value="jira">Completar las horas de Jira</option><option value="mockups">Rediseñar la misma pantalla veinte veces</option><option value="campaign">Preparar una campaña de Halloween</option><option value="roadmap">Crear un roadmap que jamás cambie</option></select></div>
+      </div>
+      <div class="footbar"><span class="hint">Revisá tus pistas antes de cerrar el expediente.</span><button class="btn" id="solve" disabled>🔎 Resolver el caso</button></div>
+    </div>
+  </section>
+
+  <!-- RESULTADO -->
+  <section class="screen" id="result" aria-labelledby="resulttitle">
+    <div class="result-hero">
+      <div>
+        <div class="eyebrow">Expediente cerrado · Halloween</div>
+        <h2 id="resulttitle"><span id="resultHeading">Caso cerrado.</span><br><span class="accent" id="rank">Detective en entrenamiento</span></h2>
+        <p id="resultSummary"></p>
+        <div class="score"><span id="finalscore">0</span><small>puntos</small></div>
+      </div>
+      <div class="result-art" aria-hidden="true"><div class="hero-ghost" data-ghost="detective"></div></div>
+    </div>
+    <div class="verdict">
+      <h3>🕵️ La investigación señala a… ¡Sebi!</h3>
+      <p><strong>Sebastián Carnota</strong> se conectó desde Producto y apretó <strong>«Regenerar respuesta»</strong> una y otra vez. Su misión secreta: conseguir <strong>un roadmap perfecto, que no cambiara jamás aunque aparecieran pedidos de último momento</strong>. Claude propuso una versión, luego otra y otra más. Ante cada respuesta, Sebi escribía: «Ahora sí, la versión definitiva». La IA insistía en que ningún plan sobrevive intacto a la realidad. Sebi pidió regenerar una última vez… 847 veces. Y los tokens llegaron a cero. <em>Todo es ficción de Halloween, por supuesto.</em> 🎃</p>
+    </div>
+    <div class="ranking">
+      <div style="--i:0"><strong id="stat-people">0</strong><span>personas interrogadas</span></div>
+      <div style="--i:1"><strong id="stat-clues">0</strong><span>pistas encontradas</span></div>
+      <div style="--i:2"><strong id="stat-answers">0/3</strong><span>respuestas correctas</span></div>
+    </div>
+    <p class="salute">🎃 ¡Feliz Halloween, equipo QuartzSales!</p>
+    <p>Que nunca falten los buenos prompts, las carcajadas y un poquito de cuota para el lunes.</p>
+    <div class="actions"><button class="btn alt" id="copy">📋 Copiar resultado para Slack</button><button class="btn ghostbtn" id="replay">↻ Volver a jugar</button></div>
+    <p class="notice" id="copyhint" aria-live="polite"></p>
+  </section>
+
+  <footer class="footer">Parodia de Halloween · Declaraciones y acusación 100% ficticias · Design Rebels · QuartzSales © 2026</footer>
+</main>
+
+<div class="modalwrap" id="modal" role="presentation">
+  <div class="dialog-wrap"><div class="peek" id="peek" aria-hidden="true"></div>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogname">
+    <div class="dialogtop"><div class="avatar" id="dialogavatar" aria-hidden="true"></div><div><h3 id="dialogname"></h3><div id="dialogrole" class="role"></div></div></div>
+    <div class="label">Declaración #<span id="statementnumber"></span></div>
+    <div class="dialogquote" id="dialogquote"></div>
+    <div id="dialogevidence"></div>
+    <div class="footbar"><button class="btn" id="closemodal">Guardar declaración</button></div>
+  </div></div>
+</div>
+
+<script>
+'use strict';
+const MIN_INTERVIEWS = 5, MIN_CLUES = 4;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const people = [
+{name:"Pablo Hernán Giménez",role:"Visionary",group:"Dirección",icon:"🔮",line:"Le pedí a Claude un plan para dominar el mercado en 2030. Respondió rápido. Ni yo necesito tantas versiones del futuro.",evidence:null},
+{name:"Nicolás Rivero Segura",role:"Integrator · Administración",group:"Dirección",icon:"🧩",line:"Revisé el consumo. A las 17:56 todavía había cuota. A las 17:59, cero. Fue una sola sesión, no diecinueve personas.",evidence:{title:"Tres minutos de caos",detail:"El consumo pasó de normal a cero entre las 17:56 y las 17:59, concentrado en una sola cuenta."}},
+{name:"Agustín Goñi Piuma",role:"Sales, Marketing & Growth",group:"Dirección",icon:"📣",line:"Sí, armé una campaña de Halloween. Pero hasta yo sé que pedir 700 versiones de un slogan es demasiado. Y la terminé al mediodía.",evidence:null},
+{name:"Julieta Piccioni",role:"Account Manager · Líder Funcional",group:"Dirección",icon:"🗂️",line:"Vi una captura del historial: alguien escribió «Ahora sí, la versión definitiva»… una y otra vez. No sé si estaba planificando o invocando un espíritu.",evidence:{title:"La frase repetida",detail:"El historial repite «Ahora sí, la versión definitiva» cientos de veces, siempre después de pedir una nueva versión."}},
+{name:"Jesica Titaro",role:"Design Rebel",group:"Producto y diseño",icon:"🎨",line:"Bueno, sí: pedí veinte versiones de la misma pantalla y después volví a la primera. ¡Pero cerré Claude a las 16:41!",evidence:{title:"Coartada de Diseño",detail:"La última sesión de Jesica terminó a las 16:41, más de una hora antes del colapso."}},
+{name:"Sebastián Carnota",role:"Chief Product Officer",group:"Producto y diseño",icon:"🧠",line:"¿Claude sin tokens? Qué tragedia… Justo estaba revisando unas prioridades. Igual, si un roadmap es definitivo, ¿por qué siempre aparece otro cambio?",evidence:null},
+{name:"Matías Herrera",role:"Desarrollador Fullstack",group:"Desarrollo",icon:"💻",line:"Revisé el tráfico: no hubo loop de código. Alguien presionó «Regenerar respuesta» una cantidad obscena de veces.",evidence:{title:"No fue un bug",detail:"La cuota se agotó por regeneraciones manuales en la web, no por un script."}},
+{name:"Jonathan Torres",role:"Desarrollador Fullstack",group:"Desarrollo",icon:"⌨️",line:"El repositorio está limpio y nadie ejecutó un job. Es el primer incidente en el que el código es inocente.",evidence:null},
+{name:"Francisco Tapia",role:"Desarrollador Angular/Ionic",group:"Desarrollo",icon:"📱",line:"Encontré un archivo llamado «roadmap_FINAL_definitivo_ahora_si_v27». No me convence la palabra definitivo.",evidence:null},
+{name:"David Troila",role:"Desarrollador Android",group:"Desarrollo",icon:"🤖",line:"Por una vez no fue Android. Tampoco un error de caché. A este ritmo, el que necesita reiniciarse es el usuario.",evidence:null},
+{name:"Sergio Maturano",role:"Desarrollador iOS",group:"Desarrollo",icon:"🍎",line:"Tampoco fue iOS. Lo único que sincronizó perfecto fueron los pedidos desesperados de más tokens.",evidence:null},
+{name:"Javier De Vergilio",role:"Business Intelligence Tech Lead",group:"Datos y sistemas",icon:"📊",line:"Crucé los datos: el pico salió de una cuenta del área de Producto y diseño. Ni Administración, ni Dirección, ni Desarrollo.",evidence:{title:"Área identificada",detail:"El consumo de las 17:59 vino desde Producto y diseño. El resto de las áreas queda descartado."}},
+{name:"Loreana Lucero",role:"Analista BI · Líder de Proyectos",group:"Datos y sistemas",icon:"📈",line:"Los prompts no pedían números ni proyecciones. Todos insistían en lo mismo: un plan que no se modificara nunca. La realidad no funciona así.",evidence:{title:"Objetivo imposible",detail:"La sesión buscaba un roadmap inmune a cualquier cambio de alcance o pedido de último momento."}},
+{name:"Valeria Ventura",role:"Analista BI",group:"Datos y sistemas",icon:"🔢",line:"Conté 847 versiones. Ochocientas cuarenta y siete. En todas decía «definitivo». Eso no es una métrica: es una película de terror.",evidence:{title:"Versiones infinitas",detail:"El mismo pedido fue regenerado 847 veces, sin cambiar de tema ni de cuenta."}},
+{name:"Adolfo Wetzel",role:"IT & DevOps",group:"Datos y sistemas",icon:"🛡️",line:"Comprobado: no hubo intrusión, bot ni automatización. Fue una persona logueada, desde un navegador, insistiendo demasiado.",evidence:{title:"Sesión humana",detail:"No hubo acceso extraño: fue una sesión humana de Claude que regeneró respuestas repetidamente."}},
+{name:"Mayra Milanesio",role:"Client Support Lead · Líder de Proyectos",group:"Proyectos y soporte",icon:"🎧",line:"El primer ticket decía «Claude se quedó sin tokens». El segundo: «¿Podemos comprar más cuota? Es para una última versión».",evidence:null},
+{name:"Eugenio Balbastro",role:"Líder de Proyectos",group:"Proyectos y soporte",icon:"🗺️",line:"Abrí un tablero para investigar el incidente y ya tiene catorce tareas, seis bloqueos y nadie asignado. Lo normal.",evidence:null},
+{name:"Lucrecia Moralejo",role:"Líder de Proyectos",group:"Proyectos y soporte",icon:"📋",line:"Busqué la tarea en Jira. No existe «crear un roadmap perfecto e imposible de cambiar». ¿En qué épica metemos 847 intentos?",evidence:null},
+{name:"Mariana Azúa",role:"Administration & HR Coordinator",group:"Personas",icon:"🗃️",line:"¿Todos me miran a mí porque persigo las horas de Jira? ¡Mis recordatorios no consumen Claude! A las 17:58 estaba mandando uno por Slack.",evidence:{title:"La falsa sospechosa",detail:"A las 17:58 Mariana enviaba recordatorios de Jira por Slack; su cuenta no tuvo consumo."}}
+];
+const CULPRIT = people.findIndex(p => p.name === 'Sebastián Carnota');
+const SOLUTION = {who:String(CULPRIT), weapon:'regenerate', where:'roadmap'};
+
+const questions = [
+{question:'¿Qué dato achicó la lista de sospechosos a una sola área?',options:['Los recordatorios de Jira estaban desactivados','La sesión que agotó la cuota salió de Producto y diseño','Desarrollo usaba otra IA ese día','Nadie más tenía acceso a Claude'],correct:1,explain:'Javier cruzó los datos: el pico vino de Producto y diseño. Dentro de esa área, Jesica tiene coartada: cerró su sesión a las 16:41.'},
+{question:'¿Qué detalle extraño se repetía en el historial del culpable?',options:['Una reunión de 90 minutos','Un logo con cinco colores','La frase «Ahora sí, la versión definitiva»','Una factura sin pagar'],correct:2,explain:'Julieta vio la frase y Valeria contó 847 intentos de llegar a una versión supuestamente definitiva.'},
+{question:'¿Cómo se agotaron los tokens según los registros técnicos?',options:['Un script infinito de desarrollo','Un plugin de Figma','Alguien regeneró respuestas manualmente','Un ataque a los servidores'],correct:2,explain:'Matías y Adolfo confirmaron que una sesión humana regeneró respuestas sin parar. No hubo intrusión ni bug.'}
+];
+
+/* ---------- Fantasmas (mismo lenguaje que QuartzRun) ---------- */
+const ghostBody = (id) => `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#efeaff" stop-opacity=".92"/><stop offset="1" stop-color="#d9d0ff" stop-opacity=".25"/></linearGradient></defs>
+<path fill="url(#${id})" d="M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z"><animate attributeName="d" dur="1.1s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" values="M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z;M40 6C21 6 10 21 10 42V86c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0V42C70 21 59 6 40 6Z;M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z"/></path>
+<g fill="#1b1736"><ellipse cx="30" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse><ellipse cx="50" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse><ellipse cx="40" cy="56" rx="3.2" ry="4"><animate attributeName="ry" dur="2.2s" repeatCount="indefinite" values="3;5;3"/></ellipse></g>`;
+let gid = 0;
+const ghostSVG = () => `<svg viewBox="0 0 80 100" aria-hidden="true">${ghostBody('g' + (gid++))}</svg>`;
+/* Fantasma detective: sombrero y lupa */
+const detectiveSVG = () => `<svg viewBox="-6 -22 110 126" aria-hidden="true">${ghostBody('g' + (gid++))}
+<g><path d="M14 16c4-8 16-14 26-14s22 6 26 14z" fill="#3a2a1a"/><rect x="18" y="10" width="44" height="6" rx="2" fill="#ffb627"/><path d="M4 18c10-4 62-4 72 0c-2 4-70 4-72 0z" fill="#2a1d12"/></g>
+<g><animateTransform attributeName="transform" type="rotate" values="-6 78 64;8 78 64;-6 78 64" dur="3s" repeatCount="indefinite"/>
+<line x1="74" y1="70" x2="96" y2="94" stroke="#6b4a2a" stroke-width="6" stroke-linecap="round"/>
+<circle cx="70" cy="62" r="13" fill="rgba(155,225,93,.18)" stroke="#ffb627" stroke-width="4"/><path d="M63 57a8 8 0 0 1 8-4" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/></g></svg>`;
+document.querySelectorAll('[data-ghost="detective"]').forEach(el => el.innerHTML = detectiveSVG());
+$('peek').innerHTML = ghostSVG();
+
+function spawnGhost() {
+  if (reduce || document.visibilityState !== 'visible') return;
+  const w = innerWidth, ltr = Math.random() > .5, size = 60 + Math.random() * 40;
+  const g = document.createElement('div'); g.className = 'ghost-float' + (ltr ? '' : ' rtl');
+  g.style.width = size + 'px'; g.style.top = (12 + Math.random() * 60) + '%';
+  g.style.setProperty('--from', (ltr ? -size - 20 : w + 20) + 'px');
+  g.style.setProperty('--to', (ltr ? w + 20 : -size - 20) + 'px');
+  g.innerHTML = `<div class="gf-wave"><div class="gf-sway">${ghostSVG()}</div></div>`;
+  $('world').appendChild(g); setTimeout(() => g.remove(), 15500);
+}
+setTimeout(function loop() { spawnGhost(); setTimeout(loop, 9000 + Math.random() * 8000); }, 2500);
+
+/* ---------- Estado ---------- */
+const groups = ['Todos', ...new Set(people.map(p => p.group))];
+const state = {filter:'Todos', term:'', seen:new Set(), clues:new Set(), q:0, selected:null, answered:false, correct:0, points:0, solved:false};
+function $(id) { return document.getElementById(id); }
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(x => x.classList.toggle('active', x.id === id));
+  window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+}
+
+$('reqText').textContent = `${MIN_INTERVIEWS} declaraciones y ${MIN_CLUES} pistas`;
+$('intLabel').textContent = ` / ${MIN_INTERVIEWS} entrevistas mínimas`;
+$('clueLabel').textContent = ` / ${MIN_CLUES} pistas mínimas`;
+
+function renderFilters() {
+  $('filters').innerHTML = groups.map(g => `<button class="filter ${g === state.filter ? 'active' : ''}" data-group="${esc(g)}" aria-pressed="${g === state.filter}">${esc(g)}</button>`).join('');
+}
+$('filters').addEventListener('click', e => {
+  const b = e.target.closest('[data-group]'); if (!b) return;
+  state.filter = b.dataset.group; renderFilters(); renderRoster(true);
+});
+
+function renderRoster(animate) {
+  const r = $('roster'); r.classList.remove('anim'); if (animate) { void r.offsetWidth; r.classList.add('anim'); }
+  const t = norm(state.term);
+  const list = people.map((p, i) => ({...p, i})).filter(p => (state.filter === 'Todos' || p.group === state.filter) && norm(`${p.name} ${p.role}`).includes(t));
+  $('roster').innerHTML = list.length ? list.map((p, k) => `<button class="person ${state.seen.has(p.i) ? 'seen' : ''}" style="--i:${k}" data-person="${p.i}" aria-label="Interrogar a ${esc(p.name)}${state.seen.has(p.i) ? ' (ya interrogado)' : ''}"><span class="avatar" aria-hidden="true">${p.icon}</span><span style="flex:1"><span class="name">${esc(p.name)}</span><span class="role">${esc(p.role)}</span></span>${state.seen.has(p.i) ? '<span class="checkmark" aria-hidden="true">✓</span>' : ''}</button>`).join('') : '<p class="empty">No encontramos testigos con ese nombre.</p>';
+}
+$('roster').addEventListener('click', e => {
+  const b = e.target.closest('[data-person]'); if (b) openPerson(Number(b.dataset.person), b);
+});
+
+function bump(id) { const el = $(id); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+function renderInventory() {
+  const ev = people.map((p, i) => ({...p, i})).filter(p => state.clues.has(p.i));
+  $('interviews').textContent = state.seen.size;
+  $('clues').textContent = state.clues.size;
+  $('bar1').style.width = Math.min(100, state.seen.size / MIN_INTERVIEWS * 100) + '%';
+  $('bar2').style.width = Math.min(100, state.clues.size / MIN_CLUES * 100) + '%';
+  $('inventory').innerHTML = ev.length ? ev.map(e => `<div class="evidence"><strong>✓ ${esc(e.evidence.title)}</strong>${esc(e.evidence.detail)}</div>`).join('') : '<p class="empty">Todavía no hay pruebas en el expediente.</p>';
+  const ok = state.seen.size >= MIN_INTERVIEWS && state.clues.size >= MIN_CLUES;
+  $('goquiz').disabled = !ok;
+  const faltan = [];
+  if (state.seen.size < MIN_INTERVIEWS) faltan.push(`${MIN_INTERVIEWS - state.seen.size} entrevista${MIN_INTERVIEWS - state.seen.size > 1 ? 's' : ''}`);
+  if (state.clues.size < MIN_CLUES) faltan.push(`${MIN_CLUES - state.clues.size} pista${MIN_CLUES - state.clues.size > 1 ? 's' : ''}`);
+  $('unlockhint').textContent = ok ? 'Expediente suficiente. Podés avanzar o seguir sumando pistas (dan puntos extra).' : `Para avanzar: ${faltan.join(' y ')} más.`;
+}
+
+/* ---------- Modal ---------- */
+let lastFocus = null, typer = null;
+function typeQuote(text) {
+  clearInterval(typer);
+  const el = $('dialogquote');
+  if (reduce) { el.textContent = text; return; }
+  let n = 0; el.innerHTML = '<span></span><i class="caret"></i>';
+  const span = el.firstChild;
+  typer = setInterval(() => { n += 2; span.textContent = text.slice(0, n); if (n >= text.length) { clearInterval(typer); el.querySelector('.caret')?.remove(); } }, 16);
+}
+function openPerson(i, from) {
+  const p = people[i], isNewClue = p.evidence && !state.clues.has(i), isNewSeen = !state.seen.has(i);
+  state.seen.add(i); if (p.evidence) state.clues.add(i);
+  lastFocus = from || document.activeElement;
+  $('dialogname').textContent = p.name; $('dialogrole').textContent = p.role;
+  $('dialogavatar').textContent = p.icon;
+  $('statementnumber').textContent = String(i + 1).padStart(2, '0');
+  typeQuote('“' + p.line + '”');
+  $('dialogevidence').innerHTML = p.evidence ? `<div class="evidence"><strong>🔍 Pista encontrada · ${esc(p.evidence.title)}</strong>${esc(p.evidence.detail)}</div>` : '<p class="empty">Declaración registrada. Sin evidencia concluyente.</p>';
+  $('modal').classList.add('open'); $('main').inert = true;
+  $('closemodal').focus();
+  const pk = $('peek'); pk.classList.remove('on');
+  if (isNewClue) { void pk.offsetWidth; pk.classList.add('on'); toast(p.evidence.title); }
+  renderRoster(); renderInventory();
+  if (isNewSeen) bump('interviews'); if (isNewClue) bump('clues');
+}
+function closeModal() {
+  clearInterval(typer);
+  $('modal').classList.remove('open'); $('main').inert = false;
+  if (lastFocus) { const again = document.querySelector(`[data-person="${lastFocus.dataset?.person}"]`); (again || lastFocus).focus?.(); }
+}
+$('closemodal').addEventListener('click', closeModal);
+$('modal').addEventListener('click', e => { if (e.target === $('modal') || e.target.classList.contains('dialog-wrap')) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (!$('modal').classList.contains('open')) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Tab') { e.preventDefault(); $('closemodal').focus(); }
+});
+
+function toast(title) {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status');
+  t.innerHTML = `${ghostSVG()}<span><b>Nueva pista:</b> ${esc(title)}</span>`;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2900);
+}
+
+/* ---------- Quiz ---------- */
+function renderQuestion() {
+  state.selected = null; state.answered = false;
+  const q = questions[state.q];
+  $('qnum').textContent = `Pregunta ${state.q + 1} de ${questions.length}`;
+  $('points').textContent = `${state.points} puntos`;
+  $('quizbar').style.width = (state.q / questions.length * 100) + '%';
+  $('question').textContent = q.question;
+  $('options').innerHTML = q.options.map((o, i) => `<button class="option" style="--i:${i}" data-answer="${i}" aria-pressed="false">${String.fromCharCode(65 + i)}. ${esc(o)}</button>`).join('');
+  $('feedback').classList.remove('show');
+  $('nextq').innerHTML = 'Confirmar respuesta <span class="arr" aria-hidden="true">→</span>';
+  $('nextq').disabled = true;
+}
+$('options').addEventListener('click', e => {
+  const b = e.target.closest('[data-answer]'); if (!b || state.answered) return;
+  state.selected = Number(b.dataset.answer);
+  document.querySelectorAll('[data-answer]').forEach(x => { x.classList.toggle('chosen', x === b); x.setAttribute('aria-pressed', x === b); });
+  $('nextq').disabled = false;
+});
+function confirmQuestion() {
+  if (state.selected === null) return;
+  if (!state.answered) {
+    const q = questions[state.q], right = state.selected === q.correct;
+    state.answered = true;
+    if (right) { state.correct++; state.points += 120; }
+    $('feedback').innerHTML = `<strong style="color:${right ? 'var(--accent-2)' : 'var(--danger)'}">${right ? '✓ ¡Correcto!' : '✗ No exactamente.'}</strong> ${esc(q.explain)}`;
+    $('feedback').classList.add('show');
+    document.querySelectorAll('[data-answer]').forEach(b => {
+      b.disabled = true; const i = Number(b.dataset.answer);
+      b.classList.toggle('correct', i === q.correct);
+      b.classList.toggle('wrong', i === state.selected && i !== q.correct);
+    });
+    $('points').textContent = `${state.points} puntos`;
+    $('quizbar').style.width = ((state.q + 1) / questions.length * 100) + '%';
+    $('nextq').innerHTML = (state.q === questions.length - 1 ? 'Ir a la acusación final' : 'Siguiente pregunta') + ' <span class="arr" aria-hidden="true">→</span>';
+    $('nextq').focus();
+  } else {
+    state.q++;
+    if (state.q >= questions.length) show('accuse'); else renderQuestion();
+  }
+}
+$('nextq').addEventListener('click', confirmQuestion);
+
+/* ---------- Acusación ---------- */
+$('who').innerHTML = '<option value="">Elegí a una persona</option>' + people.map((p, i) => ({p, i})).sort((a, b) => a.p.name.localeCompare(b.p.name, 'es')).map(({p, i}) => `<option value="${i}">${esc(p.name)}</option>`).join('');
+function enableAccusation() { $('solve').disabled = !['who', 'weapon', 'where'].every(id => $(id).value !== ''); }
+['who', 'weapon', 'where'].forEach(id => $(id).addEventListener('change', enableAccusation));
+
+function verdict() {
+  if (state.solved) return;
+  const answer = {who:$('who').value, weapon:$('weapon').value, where:$('where').value};
+  if (Object.values(answer).some(v => !v)) return;
+  state.solved = true;
+  const hits = Object.keys(SOLUTION).filter(k => answer[k] === SOLUTION[k]).length;
+  state.points += hits * 160 + state.clues.size * 20;
+  const allright = hits === 3;
+  $('resultHeading').textContent = allright ? 'Caso resuelto.' : 'Caso cerrado.';
+  $('rank').textContent = allright ? 'Sherlock de los Tokens' : hits === 2 ? 'Detective del Prompt' : 'Aprendiz de Cazatokens';
+  $('resultSummary').textContent = allright ? '¡Acusación impecable! Encontraste al responsable, el método y la obsesión que agotó la cuota.' : `Acertaste ${hits} de las 3 partes de la acusación. Acá está la historia completa.`;
+  $('stat-people').textContent = state.seen.size;
+  $('stat-clues').textContent = state.clues.size;
+  $('stat-answers').textContent = `${state.correct}/3`;
+  show('result');
+  countUp($('finalscore'), state.points);
+  if (allright) setTimeout(celebrate, 350);
+}
+$('solve').addEventListener('click', verdict);
+
+function countUp(el, to) {
+  if (reduce) { el.textContent = to; return; }
+  const t0 = performance.now(), d = 1200;
+  (function f(now) { const k = Math.min(1, (now - t0) / d); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); })(t0);
+}
+function celebrate() {
+  if (reduce) return;
+  const items = ['👻', '🎃', '🍬', '🪙', '🦇', '✨'], cx = innerWidth / 2, cy = innerHeight * .35;
+  for (let i = 0; i < 34; i++) {
+    const s = document.createElement('span'); s.className = 'burst'; s.textContent = items[i % items.length];
+    const a = Math.random() * Math.PI * 2, r = 160 + Math.random() * 280;
+    s.style.left = cx + 'px'; s.style.top = cy + 'px';
+    s.style.setProperty('--dx', Math.cos(a) * r + 'px'); s.style.setProperty('--dy', Math.sin(a) * r + 120 + 'px');
+    s.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+    s.style.animationDelay = Math.random() * .2 + 's';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 2000);
+  }
+}
+
+/* ---------- Copiar / Reiniciar ---------- */
+async function copyResult() {
+  const msg = `🎃 Investigué el caso de los tokens desaparecidos en QuartzSales\n🔍 ${$('rank').textContent}\n🏆 ${state.points} puntos\n👻 ${state.clues.size} pistas encontradas\n¿Vos ya lo resolviste? ¡Sin spoilers!\n${location.href.split('#')[0]}`;
+  const ok = () => $('copyhint').textContent = '✓ Resultado copiado. ¡Pegalo en Slack!';
+  try { await navigator.clipboard.writeText(msg); ok(); }
+  catch (e) {
+    const el = document.createElement('textarea'); el.value = msg; el.style.position = 'fixed'; el.style.opacity = '0';
+    document.body.appendChild(el); el.select();
+    try { document.execCommand('copy'); ok(); } catch (err) { $('copyhint').textContent = 'No se pudo copiar automáticamente.'; }
+    el.remove();
+  }
+}
+$('copy').addEventListener('click', copyResult);
+
+function reset() {
+  Object.assign(state, {filter:'Todos', term:'', seen:new Set(), clues:new Set(), q:0, selected:null, answered:false, correct:0, points:0, solved:false});
+  $('search').value = ''; $('who').value = ''; $('weapon').value = ''; $('where').value = '';
+  $('copyhint').textContent = ''; $('finalscore').textContent = '0';
+  enableAccusation(); renderFilters(); renderRoster(); renderInventory(); show('intro');
+}
+$('replay').addEventListener('click', reset);
+
+$('start').addEventListener('click', () => { show('investigate'); renderRoster(true); });
+$('search').addEventListener('input', e => { state.term = e.target.value; renderRoster(); });
+$('goquiz').addEventListener('click', () => { renderQuestion(); show('quiz'); });
+
+renderFilters(); renderRoster(); renderInventory();
+</script>
+</body>
+</html>
