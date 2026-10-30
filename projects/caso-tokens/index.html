@@ -99,14 +99,14 @@ p{color:var(--muted)}
 @keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.3),0 0 240px 80px rgba(246,221,138,.13)}}
 .hero-ghost{position:relative;z-index:2;width:clamp(170px,22vw,250px);animation:levitateBig 4s ease-in-out infinite;filter:drop-shadow(0 0 30px rgba(214,204,255,.45))}
 .hero-ghost svg{display:block;width:100%;height:auto}
-.ghost-pos{position:absolute;z-index:3;width:40%;left:33%;top:27%}
+.ghost-pos{position:absolute;z-index:3;width:40%;left:33%;top:37%}
 .ghost-pos .hero-ghost{width:100%}
 .ground{position:absolute;z-index:2;left:0;bottom:0;width:100%;height:auto;-webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(to bottom,#000 72%,transparent),linear-gradient(to right,transparent,#000 9%,#000 91%,transparent);mask-composite:intersect}
 .ground .gshadow{transform-box:fill-box;transform-origin:center;animation:shadowPulse 4s ease-in-out infinite}
 .zhand{transform-box:fill-box;transform-origin:50% 100%;animation:handRise 8s var(--ease-out) infinite}
 .zhand .wave{transform-box:fill-box;transform-origin:50% 100%;animation:handWave 1.3s ease-in-out infinite alternate}
 .zhand.h2{animation-delay:-4s}.zhand.h2 .wave{animation-duration:1.6s}
-@keyframes handRise{0%,8%{transform:translateY(46px)}22%,68%{transform:translateY(0)}78%{transform:translateY(-3px)}92%,100%{transform:translateY(46px)}}
+@keyframes handRise{0%,8%{transform:translateY(70px)}22%,68%{transform:translateY(0)}78%{transform:translateY(-3px)}92%,100%{transform:translateY(70px)}}
 @keyframes handWave{from{transform:rotate(-9deg)}to{transform:rotate(7deg)}}
 .ground-fog{position:absolute;z-index:3;left:-8%;right:-8%;bottom:6%;height:16%;background:radial-gradient(closest-side,rgba(200,180,230,.22),transparent);filter:blur(6px);animation:fog 14s ease-in-out infinite alternate;pointer-events:none}
 @keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-24px) rotate(3deg)}}
@@ -331,7 +331,7 @@ p{color:var(--muted)}
         <div class="ghost-pos"><div class="hero-ghost" data-ghost="detective"></div></div>
         <svg class="ground" viewBox="0 -100 470 300">
           <defs>
-            <clipPath id="soil1"><rect x="130" y="20" width="100" height="116"/></clipPath>
+            <clipPath id="soil1"><rect x="30" y="0" width="100" height="129"/></clipPath>
             <clipPath id="soil2"><rect x="340" y="20" width="90" height="111"/></clipPath>
             <g id="zh">
               <path d="M-8 2L-7-12-4-9-1-13 2-9 5-12 8 2Z" fill="#3a3368"/>
@@ -345,13 +345,6 @@ p{color:var(--muted)}
               </g>
             </g>
           </defs>
-          <!-- árbol seco -->
-          <g stroke="#120b22" stroke-linecap="round" fill="none">
-            <path d="M440 120C436 80 446 40 434 0C430-20 436-40 428-62" stroke-width="10"/>
-            <path d="M437 34C420 18 402 12 384-6" stroke-width="5"/><path d="M402 12C396 0 398-12 392-22" stroke-width="3"/>
-            <path d="M436 6C452-14 462-18 476-36" stroke-width="5"/><path d="M431-30C420-48 412-54 398-70" stroke-width="4"/>
-            <path d="M412-54C414-66 410-74 414-86" stroke-width="2.5"/><path d="M455-16C462-8 470-8 480-4" stroke-width="2.5"/>
-          </g>
           <!-- colina de fondo -->
           <path d="M0 78C80 44 160 62 238 70C318 78 392 40 470 58V200H0Z" fill="#2a2350"/>
           <g fill="#1f1942">
@@ -360,9 +353,9 @@ p{color:var(--muted)}
             <path d="M268 74V60c0-7 16-7 16 0v14z"/>
             <path d="M392 56V40h-6v-5h6v-6h5v6h6v5h-6v16z"/>
           </g>
-          <ellipse class="gshadow" cx="236" cy="104" rx="46" ry="6" fill="rgba(8,6,24,.45)"/>
           <!-- colina del frente -->
           <path d="M0 122C90 98 162 104 236 112C322 120 384 98 470 108V200H0Z" fill="#161030"/>
+          <ellipse class="gshadow" cx="236" cy="128" rx="44" ry="6" fill="rgba(8,6,24,.45)"/>
           <g fill="#241d48" stroke="rgba(167,139,250,.32)" stroke-width="1.5">
             <path d="M104 126V76c0-27 58-27 58 0v50z"/>
             <path d="M304 120V88c0-17 38-17 38 0v32z"/>
@@ -372,11 +365,11 @@ p{color:var(--muted)}
           <path d="M118 106h30M123 113h20" stroke="#3d3570" stroke-width="2.5" stroke-linecap="round"/>
           <path d="M323 94v16M316 100h14" stroke="#3d3570" stroke-width="3" stroke-linecap="round"/>
           <!-- manos zombie -->
-          <g clip-path="url(#soil1)"><g transform="translate(180 136) scale(1.3)"><g class="zhand h1"><use href="#zh"/></g></g></g>
+          <g clip-path="url(#soil1)"><g transform="translate(80 129) scale(1.25)"><g class="zhand h1"><use href="#zh"/></g></g></g>
           <g clip-path="url(#soil2)"><g transform="translate(386 131) scale(-1.1 1.1)"><g class="zhand h2"><use href="#zh"/></g></g></g>
           <!-- tierra removida y pasto -->
           <g fill="#0f0a22">
-            <ellipse cx="180" cy="137" rx="20" ry="5"/><ellipse cx="386" cy="132" rx="17" ry="4.5"/>
+            <ellipse cx="80" cy="130" rx="19" ry="5"/><ellipse cx="386" cy="132" rx="17" ry="4.5"/>
             <path d="M60 128l3-9 2 9 3-12 2 12 3-8 1 8zM250 120l3-8 2 8 3-11 2 11 3-7 1 7zM430 116l2-8 2 8 3-10 2 10 2-7 1 7z"/>
           </g>
         </svg>
