@@ -1,4 +1,4 @@
-name: QuartzSales dashboard — Sync diario (LinkedIn + YouTube + competidores)
+name: QuartzSales dashboard — Sync diario (LinkedIn + YouTube + competidores + posts)
 
 on:
   schedule:
@@ -16,6 +16,14 @@ on:
           - B
           - C
           - ALL
+        default: auto
+      posts:
+        description: 'Posts recientes de competidores (auto = sólo lunes, true/false fuerza u omite)'
+        type: choice
+        options:
+          - auto
+          - 'true'
+          - 'false'
         default: auto
 
 permissions:
@@ -45,6 +53,7 @@ jobs:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           SYNC_GROUP: ${{ github.event.inputs.group == 'auto' && '' || github.event.inputs.group }}
+          SYNC_POSTS: ${{ github.event.inputs.posts == 'auto' && '' || github.event.inputs.posts }}
 
       - name: Commit data si cambió
         run: |

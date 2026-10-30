@@ -8,8 +8,12 @@
 //
 // Qué actualiza cada corrida:
 //  - LinkedIn propio (QuartzSales) y YouTube propio: siempre, en toda corrida.
-//  - Competidores: sólo el grupo del día (cadencia A/B/C, ver abajo), para no
-//    gastar de más la cuota de Apify con 11 empresas por corrida.
+//  - Competidores (seguidores/empleados): sólo el grupo del día (cadencia
+//    A/B/C, ver abajo), para no gastar de más la cuota de Apify con 11
+//    empresas por corrida.
+//  - Posts recientes de TODOS los competidores: sólo los lunes (es barato —
+//    11 empresas x 5 posts por semana — así que no hace falta repartirlo en
+//    grupos como las métricas).
 //
 // Cadencia A/B/C: config/sources.json asigna cada competidor a un grupo
 // (A, B o C). Cada corrida sólo sincroniza el grupo del día, rotando
@@ -17,7 +21,17 @@
 //
 // Override manual: SYNC_GROUP=A|B|C fuerza un grupo puntual, SYNC_GROUP=ALL
 // sincroniza todos los competidores en la misma corrida (útil para la primera
-// carga de datos).
+// carga de datos). SYNC_POSTS=true|false fuerza (o salta) la sincronización de
+// posts sin importar qué día es — útil para probar manualmente.
+//
+// IMPORTANTE — sin verificar en vivo: este entorno de desarrollo no tiene
+// salida de red hacia apify.com, así que el nombre exacto de los campos de
+// input/output del actor de posts (unseenuser/company-posts) se armó con la
+// mejor información disponible por búsqueda, no confirmando el schema real
+// en la consola de Apify. Si la primera corrida (manual, con SYNC_POSTS=true)
+// devuelve 0 posts para TODOS los competidores, lo más probable es que haya
+// que ajustar el body de fetchCompanyPosts() — revisar el tab "Input" del
+// actor en https://console.apify.com antes de asumir que el actor está roto.
 
 const fs = require('fs');
 const path = require('path');
@@ -29,6 +43,9 @@ const DATA_PATH = path.join(ROOT, 'data', 'dashboard-snapshot.json');
 const GROUPS = ['A', 'B', 'C'];
 const APIFY_ACTOR = 'harvestapi~linkedin-company';
 const APIFY_URL = `https://api.apify.com/v2/acts/${APIFY_ACTOR}/run-sync-get-dataset-items`;
+const APIFY_POSTS_ACTOR = 'unseenuser~company-posts';
+const APIFY_POSTS_URL = `https://api.apify.com/v2/acts/${APIFY_POSTS_ACTOR}/run-sync-get-dataset-items`;
+const MAX_POSTS_PER_COMPANY = 5;
 const DELAY_BETWEEN_REQUESTS_MS = 1500;
 
 function dayOfYear(date) {
@@ -42,6 +59,13 @@ function groupForToday() {
   if (forced === 'ALL') return 'ALL';
   if (GROUPS.includes(forced)) return forced;
   return GROUPS[dayOfYear(new Date()) % GROUPS.length];
+}
+
+function shouldSyncPosts() {
+  const forced = (process.env.SYNC_POSTS || '').trim().toLowerCase();
+  if (forced === 'true') return true;
+  if (forced === 'false') return false;
+  return new Date().getUTCDay() === 1; // lunes (UTC)
 }
 
 function formatFollowers(n) {
@@ -81,6 +105,56 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
   if (!company) throw new Error('Apify no devolvió datos para esta URL (¿el slug de LinkedIn es correcto?)');
 
   return { followers: extractFollowers(company), employees: extractEmployees(company) };
+}
+
+function extractPost(raw) {
+  const text = raw?.text ?? raw?.content ?? raw?.postText ?? raw?.commentary ?? null;
+  const url = raw?.url ?? raw?.postUrl ?? raw?.link ?? null;
+  const publishedAt = raw?.postedAt ?? raw?.publishedAt ?? raw?.date ?? raw?.timestamp ?? null;
+  const likes = typeof raw?.likesCount === 'number' ? raw.likesCount
+    : typeof raw?.numLikes === 'number' ? raw.numLikes
+    : typeof raw?.likes === 'number' ? raw.likes
+    : null;
+  const comments = typeof raw?.commentsCount === 'number' ? raw.commentsCount
+    : typeof raw?.numComments === 'number' ? raw.numComments
+    : typeof raw?.comments === 'number' ? raw.comments
+    : null;
+
+  return {
+    text: typeof text === 'string' ? text.slice(0, 500) : null,
+    url: typeof url === 'string' ? url : null,
+    publishedAt: typeof publishedAt === 'string' ? publishedAt : null,
+    likes,
+    comments,
+  };
+}
+
+async function fetchCompanyPosts(token, linkedinUrl) {
+  const url = `${APIFY_POSTS_URL}?token=${encodeURIComponent(token)}&timeout=90&memory=256`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // Nombres de campo sin verificar en vivo — ver nota al principio del
+    // archivo. Si esto deja de funcionar, el síntoma va a ser 0 posts para
+    // TODOS los competidores, no sólo uno.
+    body: JSON.stringify({ companies: [linkedinUrl], maxPosts: MAX_POSTS_PER_COMPANY }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`Apify (posts) respondió ${res.status}${body ? ': ' + body.slice(0, 200) : ''}`);
+  }
+
+  const data = await res.json();
+  const items = Array.isArray(data) ? data : [];
+  if (items.length === 0) {
+    console.warn(
+      `    (posts) 0 resultados para ${linkedinUrl} — puede ser que la empresa no haya posteado ` +
+      'recientemente, o que cambió el esquema del actor (sin verificar en vivo, ver nota al inicio del archivo).'
+    );
+  }
+
+  return items.slice(0, MAX_POSTS_PER_COMPANY).map(extractPost);
 }
 
 async function fetchYouTubeChannel(apiKey, handle) {
@@ -139,6 +213,10 @@ function blankCompetitor(src) {
     lastSynced: null,
     syncStatus: 'pending',
     syncError: null,
+    posts: [],
+    postsLastSynced: null,
+    postsSyncStatus: 'pending',
+    postsSyncError: null,
   };
 }
 
@@ -184,6 +262,48 @@ async function syncCompetitors(token, sources, currentCompetitors, group) {
     ok,
     failed,
   };
+}
+
+// A diferencia de syncCompetitors() (que reparte las 11 empresas en grupos
+// A/B/C), esto siempre trae TODOS los competidores — pero sólo corre 1 vez
+// por semana (ver shouldSyncPosts()), así que el costo total sigue siendo
+// bajo. `competitors` es el array que ya devolvió syncCompetitors (mismas
+// referencias que terminan en el snapshot) y no trae `linkedinUrl` — por
+// eso recibe `sources` aparte, que sí la tiene.
+async function syncCompetitorPosts(token, sources, competitors) {
+  const byId = new Map(competitors.map((c) => [c.id, c]));
+  console.log(`Posts de competidores: sincronizando ${sources.competitors.length} (corrida semanal).`);
+
+  let ok = 0;
+  let failed = 0;
+
+  for (let i = 0; i < sources.competitors.length; i++) {
+    const src = sources.competitors[i];
+    const c = byId.get(src.id);
+    try {
+      const posts = await fetchCompanyPosts(token, src.linkedinUrl);
+      if (c) {
+        c.posts = posts;
+        c.postsLastSynced = new Date().toISOString();
+        c.postsSyncStatus = 'ok';
+        c.postsSyncError = null;
+      }
+      ok++;
+      console.log(`  OK  ${src.name}: ${posts.length} posts`);
+    } catch (err) {
+      // Conserva los posts de la corrida anterior si esta falla — no los pisa.
+      if (c) {
+        c.postsSyncStatus = 'error';
+        c.postsSyncError = err.message;
+      }
+      failed++;
+      console.error(`  ERR ${src.name} (posts): ${err.message}`);
+    }
+
+    if (i < sources.competitors.length - 1) await sleep(DELAY_BETWEEN_REQUESTS_MS);
+  }
+
+  return { ok, failed };
 }
 
 async function syncOwnLinkedIn(token, sources, previousOwn) {
@@ -283,8 +403,15 @@ async function main() {
 
   const competitorsResult = await syncCompetitors(apifyToken, sources, currentData.competitors, group);
 
-  const ok = ownLinkedIn.ok + ownYouTube.ok + competitorsResult.ok;
-  const failed = ownLinkedIn.failed + ownYouTube.failed + competitorsResult.failed;
+  let postsResult = { ok: 0, failed: 0 };
+  if (shouldSyncPosts()) {
+    postsResult = await syncCompetitorPosts(apifyToken, sources, competitorsResult.competitors);
+  } else {
+    console.log('Posts de competidores: hoy no toca (corre los lunes UTC; forzar con SYNC_POSTS=true).');
+  }
+
+  const ok = ownLinkedIn.ok + ownYouTube.ok + competitorsResult.ok + postsResult.ok;
+  const failed = ownLinkedIn.failed + ownYouTube.failed + competitorsResult.failed + postsResult.failed;
 
   const output = {
     generatedAt: new Date().toISOString(),
