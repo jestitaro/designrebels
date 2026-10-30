@@ -39,10 +39,11 @@ strong{color:var(--ink);font-weight:600}
 .fog{position:absolute;left:-20%;right:-20%;height:240px;bottom:-60px;background:radial-gradient(closest-side,rgba(200,180,230,.16),transparent);filter:blur(10px);animation:fog 22s ease-in-out infinite alternate}
 .fog.f2{bottom:40px;opacity:.6;animation-duration:30s;animation-direction:alternate-reverse}
 @keyframes fog{to{transform:translateX(8%)}}
-.bat-fly{position:absolute;width:40px;color:#0b0512;animation:batPath linear infinite}
-.bat-fly svg{animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
-@keyframes flap{to{transform:scaleY(.45)}}
-@keyframes batPath{0%{transform:translate(-10vw,30vh)}50%{transform:translate(50vw,8vh)}100%{transform:translate(115vw,22vh)}}
+.bat{position:absolute;left:0;pointer-events:none;animation:batX var(--dur) linear forwards}
+@keyframes batX{0%{transform:translateX(var(--from));opacity:0}6%,94%{opacity:var(--op,1)}100%{transform:translateX(var(--to));opacity:0}}
+.bat-bob{animation:batBob var(--bob) ease-in-out infinite alternate}
+@keyframes batBob{from{transform:translateY(calc(var(--amp) * -1)) rotate(var(--tilt))}to{transform:translateY(var(--amp)) rotate(calc(var(--tilt) * -1))}}
+.bat svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 0 7px rgba(167,139,250,.4))}
 .ghost-float{position:absolute;left:0;pointer-events:none;opacity:0;animation:ghostDrift 15s cubic-bezier(.45,.05,.55,.95) forwards}
 .gf-wave{animation:ghostWave 3.4s ease-in-out infinite}
 .gf-sway{animation:ghostSway 2.2s ease-in-out infinite;transform-origin:50% 20%;filter:drop-shadow(0 0 16px rgba(214,204,255,.55))}
@@ -220,6 +221,39 @@ p{color:var(--muted)}
 .burst{position:fixed;z-index:50;pointer-events:none;font-size:26px;animation:burst 1.6s var(--ease-out) forwards}
 @keyframes burst{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}}
 
+.top-right{display:flex;align-items:center;gap:14px}
+.timer{display:none;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-2);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.timer.on{display:inline-flex;animation:cardIn .4s var(--ease-out)}
+.timer i{width:8px;height:8px;border-radius:50%;background:var(--danger);animation:blink 1s steps(1) infinite}
+.who-box{margin-top:24px;max-width:520px}
+.who-box label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:9px}
+.who-row{display:grid;gap:10px}
+.who-row select,.who-row input{width:100%;padding:14px 38px 14px 14px;border:1px solid var(--line-2);border-radius:12px;background:var(--surface);min-height:52px;transition:border-color .2s}
+.who-row select{appearance:none;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a9a3cf' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center}
+.who-row select:hover,.who-row input:hover{border-color:var(--lav)}
+.who-row input::placeholder{color:var(--muted)}
+.lb-card{margin:22px 0}
+.lb-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.lb-head h3{margin:0}
+.rankmsg{font-size:14px;color:var(--ink);background:var(--accent-soft);border:1px solid rgba(255,182,39,.3);border-radius:var(--r-md);padding:12px 15px;margin-top:14px}
+.rankmsg:empty{display:none}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end;margin:6px 0 18px}
+.pod{text-align:center;padding:16px 10px 14px;border-radius:var(--r-md) var(--r-md) 6px 6px;background:var(--surface-2);border:1px solid var(--line-2);animation:podIn .6s var(--ease-spring) both}
+.pod.p1{padding-top:26px;background:linear-gradient(180deg,rgba(255,182,39,.2),var(--surface-2));border-color:rgba(255,182,39,.45);animation-delay:.15s}
+.pod.p2{animation-delay:.05s}.pod.p3{animation-delay:.25s}
+@keyframes podIn{from{opacity:0;transform:translateY(24px) scale(.95)}}
+.pod .medal{font-size:30px;display:block;animation:bob 2.6s ease-in-out infinite}
+.pod b{display:block;font-size:14px;font-weight:600;margin-top:6px;line-height:1.25}
+.pod span{display:block;font-size:20px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:2px}
+.pod.empty{opacity:.4}
+.lb{list-style:none;display:grid;gap:6px}
+.lb li{display:grid;grid-template-columns:38px 1fr auto auto;gap:12px;align-items:center;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line);font-size:14px;animation:cardIn .4s var(--ease-out) both;animation-delay:calc(var(--i,0) * 40ms)}
+.lb li.me{border-color:var(--accent-2);background:var(--accent-2-soft)}
+.lb .pos{font-weight:700;color:var(--muted);text-align:center}
+.lb .t{font-weight:700;font-variant-numeric:tabular-nums}
+.lb .pts{color:var(--muted);font-size:12px;min-width:56px;text-align:right}
+.lb .gap{background:none;border:0;justify-content:center;display:flex;color:var(--muted);padding:2px}
+.lb-foot{margin-top:12px;font-size:12px;color:var(--muted)}
 .footer{margin-top:56px;text-align:center;color:var(--muted);font-size:11px;opacity:.75}
 .hide{display:none!important}
 
@@ -245,6 +279,11 @@ p{color:var(--muted)}
   .hero p{font-size:15.5px}
   .card{padding:18px}
   .actions .btn{width:100%}
+  .lb li{grid-template-columns:30px 1fr auto;gap:8px}
+  .lb .pts{display:none}
+  .podium{gap:8px}
+  .pod b{font-size:12px}
+  .pod span{font-size:16px}
   .ranking{grid-template-columns:1fr}
   .dialog{padding:20px}
   .footbar .btn{width:100%}
@@ -256,14 +295,12 @@ p{color:var(--muted)}
 <div class="world" id="world" aria-hidden="true">
   <div class="sky"></div><div class="grid"></div><div class="noise"></div>
   <div class="fog"></div><div class="fog f2"></div>
-  <div class="bat-fly" style="animation-duration:19s;animation-delay:2s"><svg viewBox="0 0 64 28" fill="currentColor"><path d="M32 8c2-4 5-6 5-6s1 4 0 7c6-2 14-1 27 6-8 0-12 3-14 9-3-5-8-6-12-3-2-3-4-4-6-4s-4 1-6 4c-4-3-9-2-12 3C12 18 8 15 0 15 13 8 21 7 27 9c-1-3 0-7 0-7s3 2 5 6z"/></svg></div>
-  <div class="bat-fly" style="animation-duration:27s;animation-delay:11s;width:28px"><svg viewBox="0 0 64 28" fill="currentColor"><path d="M32 8c2-4 5-6 5-6s1 4 0 7c6-2 14-1 27 6-8 0-12 3-14 9-3-5-8-6-12-3-2-3-4-4-6-4s-4 1-6 4c-4-3-9-2-12 3C12 18 8 15 0 15 13 8 21 7 27 9c-1-3 0-7 0-7s3 2 5 6z"/></svg></div>
 </div>
 
 <main class="shell" id="main">
   <header class="topbar">
     <img src="https://www.quartzsales.com/images/svg_qs/logo-qs-fullcolor-negativo.svg" alt="QuartzSales" width="150" height="30">
-    <div class="seal"><i></i><span>Halloween · Expediente interno #1031</span></div>
+    <div class="top-right"><div class="timer" id="timer" aria-label="Tiempo de investigación"><i></i><span id="timerText">00:00</span></div><div class="seal"><i></i><span>Halloween · Expediente interno #1031</span></div></div>
   </header>
 
   <!-- INTRO -->
@@ -274,8 +311,12 @@ p{color:var(--muted)}
         <h1 id="introtitle">El caso de los<br><span class="accent flicker">tokens desaparecidos</span></h1>
         <p>El viernes 30 de octubre, a las 17:59, llegó la notificación más aterradora del año: <strong>«Claude: cuota de tokens agotada».</strong> Alguien se gastó <em>todos</em> los tokens de la empresa.</p>
         <p>Hay <strong>19 compañeros bajo investigación</strong>. Las pistas involucran a Diseño, Desarrollo, Jira y una obsesión bastante particular. ¿Quién fue y para qué necesitaba tantas respuestas?</p>
-        <div class="actions"><button class="btn" id="start">🔎 Abrir expediente <span class="arr" aria-hidden="true">→</span></button></div>
-        <p class="notice">Juego individual · 4 a 6 minutos · Todo es ficción y humor de oficina.</p>
+        <div class="who-box">
+          <label for="player">¿Quién investiga?</label>
+          <div class="who-row"><select id="player"></select><input id="playerOther" type="text" maxlength="40" autocomplete="name" placeholder="Tu nombre y apellido" hidden aria-label="Tu nombre y apellido"></div>
+        </div>
+        <div class="actions"><button class="btn" id="start" disabled>🔎 Abrir expediente <span class="arr" aria-hidden="true">→</span></button><button class="btn ghostbtn" id="openBoard">🏆 Ver ranking</button></div>
+        <p class="notice">El reloj arranca cuando abrís el expediente. Para el ranking cuenta solo tu primera partida, y entra si acertás las tres partes de la acusación. Todo es ficción y humor de oficina.</p>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="moon"></div>
@@ -360,15 +401,28 @@ p{color:var(--muted)}
       <h3>🕵️ La investigación señala a… ¡Sebi!</h3>
       <p><strong>Sebastián Carnota</strong> se conectó desde Producto y apretó <strong>«Regenerar respuesta»</strong> una y otra vez. Su misión secreta: conseguir <strong>un roadmap perfecto, que no cambiara jamás aunque aparecieran pedidos de último momento</strong>. Claude propuso una versión, luego otra y otra más. Ante cada respuesta, Sebi escribía: «Ahora sí, la versión definitiva». La IA insistía en que ningún plan sobrevive intacto a la realidad. Sebi pidió regenerar una última vez… 847 veces. Y los tokens llegaron a cero. <em>Todo es ficción de Halloween, por supuesto.</em> 🎃</p>
     </div>
+    <div class="card lb-card">
+      <div class="lb-head"><h3>🏆 Ranking de detectives</h3><span class="hint">Los más rápidos en resolver el caso</span></div>
+      <div id="board2"></div>
+      <p class="rankmsg" id="rankmsg" aria-live="polite"></p>
+    </div>
     <div class="ranking">
       <div style="--i:0"><strong id="stat-people">0</strong><span>personas interrogadas</span></div>
       <div style="--i:1"><strong id="stat-clues">0</strong><span>pistas encontradas</span></div>
-      <div style="--i:2"><strong id="stat-answers">0/3</strong><span>respuestas correctas</span></div>
+      <div style="--i:2"><strong id="stat-time">00:00</strong><span>tiempo total</span></div>
     </div>
     <p class="salute">🎃 ¡Feliz Halloween, equipo QuartzSales!</p>
     <p>Que nunca falten los buenos prompts, las carcajadas y un poquito de cuota para el lunes.</p>
     <div class="actions"><button class="btn alt" id="copy">📋 Copiar resultado para Slack</button><button class="btn ghostbtn" id="replay">↻ Volver a jugar</button></div>
     <p class="notice" id="copyhint" aria-live="polite"></p>
+  </section>
+
+  <!-- RANKING -->
+  <section class="screen" id="leaderboard" aria-labelledby="lbtitle">
+    <div class="section-top"><span class="label">Ranking · En vivo</span></div>
+    <div class="stagehead"><h2 id="lbtitle">¿Quién resolvió el caso<br><span class="accent">más rápido?</span></h2><p>Solo entran quienes acertaron quién, cómo y para qué en su primera partida. A igual tiempo, desempata el puntaje.</p></div>
+    <div class="card lb-card"><div id="board1"></div></div>
+    <div class="actions"><button class="btn ghostbtn" id="backIntro">← Volver</button></div>
   </section>
 
   <footer class="footer">Parodia de Halloween · Declaraciones y acusación 100% ficticias · Design Rebels · QuartzSales © 2026</footer>
@@ -385,6 +439,8 @@ p{color:var(--muted)}
   </div></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script>
 'use strict';
 const MIN_INTERVIEWS = 5, MIN_CLUES = 4;
@@ -446,6 +502,43 @@ function spawnGhost() {
   $('world').appendChild(g); setTimeout(() => g.remove(), 15500);
 }
 setTimeout(function loop() { spawnGhost(); setTimeout(loop, 9000 + Math.random() * 8000); }, 2500);
+
+/* Murciélagos: alas articuladas (morph de path), cuerpo que sube y baja y vuelo en onda */
+const WING_UP = 'M46 27C39 14 25 5 5 2C10 8 11 13 9 18C15 16 19 19 21 24C26 20 31 22 34 27C38 24 43 27 46 32Z';
+const WING_MID = 'M46 27C36 21 22 19 3 21C9 25 10 29 8 33C14 30 19 31 21 35C26 31 31 31 34 34C38 31 43 31 46 32Z';
+const WING_DOWN = 'M46 27C39 32 28 41 13 50C16 45 17 41 16 37C20 39 23 39 26 40C28 36 31 34 35 35C38 32 43 31 46 32Z';
+function batSVG(flap) {
+  const vals = `${WING_UP};${WING_MID};${WING_DOWN};${WING_MID};${WING_UP}`;
+  const wing = `<path d="${WING_UP}"><animate attributeName="d" dur="${flap}s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.25;.5;.75;1" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1" values="${vals}"/></path>`;
+  return `<svg viewBox="0 0 100 56" aria-hidden="true"><g fill="#120b22">
+    <animateTransform attributeName="transform" type="translate" dur="${flap}s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".4 0 .6 1;.4 0 .6 1" values="0 2;0 -3;0 2"/>
+    <g>${wing}</g><g transform="translate(100 0) scale(-1 1)">${wing}</g>
+    <path d="M44 18l2-7 3 5h2l3-5 2 7z"/><ellipse cx="50" cy="22" rx="6" ry="5.5"/><ellipse cx="50" cy="31" rx="5.2" ry="8.5"/>
+    <circle cx="47.6" cy="21.4" r="1.15" fill="#ffb627"/><circle cx="52.4" cy="21.4" r="1.15" fill="#ffb627"/></g></svg>`;
+}
+function spawnBat(opts = {}) {
+  if (reduce || document.visibilityState !== 'visible') return;
+  const w = innerWidth, ltr = Math.random() > .5, size = opts.size || 34 + Math.random() * 26;
+  const b = document.createElement('div'); b.className = 'bat';
+  b.style.width = size + 'px';
+  b.style.top = (opts.top ?? (6 + Math.random() * 40)) + '%';
+  b.style.setProperty('--from', (ltr ? -size - 30 : w + 30) + 'px');
+  b.style.setProperty('--to', (ltr ? w + 30 : -size - 30) + 'px');
+  const dur = 9 + Math.random() * 7;
+  b.style.setProperty('--dur', dur + 's');
+  b.style.setProperty('--bob', (1.1 + Math.random() * .7) + 's');
+  b.style.setProperty('--amp', (14 + Math.random() * 22) + 'px');
+  b.style.setProperty('--tilt', (ltr ? 7 : -7) + 'deg');
+  b.style.setProperty('--op', size < 42 ? .75 : 1);
+  b.innerHTML = `<div class="bat-bob">${batSVG((.26 + Math.random() * .1).toFixed(2))}</div>`;
+  $('world').appendChild(b); setTimeout(() => b.remove(), dur * 1000 + 300);
+}
+setTimeout(() => spawnBat({top:14, size:52}), 900);
+setTimeout(function batLoop() {
+  spawnBat();
+  if (Math.random() > .55) setTimeout(() => spawnBat({size:28 + Math.random() * 10}), 500 + Math.random() * 700);
+  setTimeout(batLoop, 7000 + Math.random() * 7000);
+}, 6000);
 
 /* ---------- Estado ---------- */
 const groups = ['Todos', ...new Set(people.map(p => p.group))];
@@ -597,6 +690,7 @@ function verdict() {
   const answer = {who:$('who').value, weapon:$('weapon').value, where:$('where').value};
   if (Object.values(answer).some(v => !v)) return;
   state.solved = true;
+  stopTimer();
   const hits = Object.keys(SOLUTION).filter(k => answer[k] === SOLUTION[k]).length;
   state.points += hits * 160 + state.clues.size * 20;
   const allright = hits === 3;
@@ -605,8 +699,11 @@ function verdict() {
   $('resultSummary').textContent = allright ? '¡Acusación impecable! Encontraste al responsable, el método y la obsesión que agotó la cuota.' : `Acertaste ${hits} de las 3 partes de la acusación. Acá está la historia completa.`;
   $('stat-people').textContent = state.seen.size;
   $('stat-clues').textContent = state.clues.size;
-  $('stat-answers').textContent = `${state.correct}/3`;
+  $('stat-time').textContent = fmt(state.elapsed);
+  $('rankmsg').textContent = 'Guardando tu resultado…';
   show('result');
+  subscribeRanking();
+  submitResult(hits);
   countUp($('finalscore'), state.points);
   if (allright) setTimeout(celebrate, 350);
 }
@@ -633,7 +730,7 @@ function celebrate() {
 
 /* ---------- Copiar / Reiniciar ---------- */
 async function copyResult() {
-  const msg = `🎃 Investigué el caso de los tokens desaparecidos en QuartzSales\n🔍 ${$('rank').textContent}\n🏆 ${state.points} puntos\n👻 ${state.clues.size} pistas encontradas\n¿Vos ya lo resolviste? ¡Sin spoilers!\n${location.href.split('#')[0]}`;
+  const msg = `🎃 Investigué el caso de los tokens desaparecidos en QuartzSales\n🔍 ${$('rank').textContent}\n⏱ ${fmt(state.elapsed)} · 🏆 ${state.points} puntos\n👻 ${state.clues.size} pistas encontradas\n¿Vos ya lo resolviste? ¡Sin spoilers!\n${location.href.split('#')[0]}`;
   const ok = () => $('copyhint').textContent = '✓ Resultado copiado. ¡Pegalo en Slack!';
   try { await navigator.clipboard.writeText(msg); ok(); }
   catch (e) {
@@ -648,12 +745,133 @@ $('copy').addEventListener('click', copyResult);
 function reset() {
   Object.assign(state, {filter:'Todos', term:'', seen:new Set(), clues:new Set(), q:0, selected:null, answered:false, correct:0, points:0, solved:false});
   $('search').value = ''; $('who').value = ''; $('weapon').value = ''; $('where').value = '';
-  $('copyhint').textContent = ''; $('finalscore').textContent = '0';
+  $('copyhint').textContent = ''; $('finalscore').textContent = '0'; $('rankmsg').textContent = '';
+  stopTimer(); $('timer').classList.remove('on'); state.elapsed = 0; state.result = null;
   enableAccusation(); renderFilters(); renderRoster(); renderInventory(); show('intro');
 }
 $('replay').addEventListener('click', reset);
 
-$('start').addEventListener('click', () => { show('investigate'); renderRoster(true); });
+$('start').addEventListener('click', () => {
+  if (!currentPlayer()) return;
+  try { localStorage.setItem('casoTokens.player', JSON.stringify(currentPlayer())); } catch (e) {}
+  show('investigate'); renderRoster(true); startTimer();
+});
+
+/* ---------- Jugador ---------- */
+const OTHER = '__other';
+$('player').innerHTML = '<option value="">Elegí tu nombre</option>' + people.map(p => p.name).sort((a, b) => a.localeCompare(b, 'es')).map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('') + `<option value="${OTHER}">Otra persona…</option>`;
+const slug = s => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function currentPlayer() {
+  const v = $('player').value;
+  const name = (v === OTHER ? $('playerOther').value : v).trim().replace(/\s+/g, ' ');
+  return name.length >= 3 ? {name, id: slug(name)} : null;
+}
+function syncPlayer() {
+  $('playerOther').hidden = $('player').value !== OTHER;
+  $('start').disabled = !currentPlayer();
+}
+$('player').addEventListener('change', () => { syncPlayer(); if ($('player').value === OTHER) $('playerOther').focus(); });
+$('playerOther').addEventListener('input', syncPlayer);
+try {
+  const saved = JSON.parse(localStorage.getItem('casoTokens.player'));
+  if (saved?.name) {
+    if ([...$('player').options].some(o => o.value === saved.name)) $('player').value = saved.name;
+    else { $('player').value = OTHER; $('playerOther').value = saved.name; }
+  }
+} catch (e) {}
+syncPlayer();
+
+/* ---------- Cronómetro ---------- */
+let tick = null;
+const fmt = ms => { const t = Math.floor(ms / 1000); return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+function startTimer() {
+  state.startedAt = Date.now(); state.elapsed = 0;
+  $('timer').classList.add('on'); $('timerText').textContent = '00:00';
+  clearInterval(tick);
+  tick = setInterval(() => { $('timerText').textContent = fmt(Date.now() - state.startedAt); }, 250);
+}
+function stopTimer() {
+  clearInterval(tick);
+  if (state.startedAt) state.elapsed = Date.now() - state.startedAt;
+  $('timerText').textContent = fmt(state.elapsed || 0);
+}
+
+/* ---------- Ranking (Firestore, mismo proyecto que QuartzProde, colección propia) ---------- */
+const RANK_COL = 'caso_tokens_ranking';
+let rdb = null, ranking = null, rankError = false, unsub = null;
+try {
+  if (window.firebase) {
+    const app = firebase.apps.find(a => a.name === 'casoTokens') || firebase.initializeApp({
+      apiKey: 'AIzaSyBCt4aNLAiajTJIvM5CpVhQvnyiX15Vkqg', authDomain: 'quartzprode2026.firebaseapp.com',
+      projectId: 'quartzprode2026', storageBucket: 'quartzprode2026.firebasestorage.app',
+      messagingSenderId: '616224313629', appId: '1:616224313629:web:5cad77efab7eb2506b51f4'
+    }, 'casoTokens');
+    rdb = app.firestore();
+  }
+} catch (e) { console.warn('Ranking no disponible', e); }
+
+function subscribeRanking() {
+  if (unsub || !rdb) { if (!rdb) { rankError = true; renderBoards(); } return; }
+  unsub = rdb.collection(RANK_COL).onSnapshot(snap => {
+    ranking = snap.docs.map(d => d.data()); rankError = false; renderBoards();
+  }, err => { console.warn(err); rankError = true; renderBoards(); });
+}
+const solvedList = () => (ranking || []).filter(r => r.hits === 3 && typeof r.ms === 'number').sort((a, b) => a.ms - b.ms || b.points - a.points);
+
+function renderBoards() {
+  const me = currentPlayer()?.id;
+  let html;
+  if (rankError && !ranking) html = '<p class="empty">El ranking no está disponible en este momento. Probá de nuevo en un rato.</p>';
+  else if (!ranking) html = '<p class="empty">Cargando ranking…</p>';
+  else {
+    const list = solvedList(), medals = ['🥇', '🥈', '🥉'];
+    const pod = i => list[i] ? `<div class="pod p${i + 1}"><span class="medal" aria-hidden="true">${medals[i]}</span><b>${esc(list[i].name)}</b><span>${fmt(list[i].ms)}</span></div>` : `<div class="pod p${i + 1} empty"><span class="medal" aria-hidden="true">${medals[i]}</span><b>Libre</b><span>--:--</span></div>`;
+    const row = (r, i) => `<li class="${r.id === me ? 'me' : ''}" style="--i:${Math.min(i, 12)}"><span class="pos">${i + 1}</span><span>${esc(r.name)}${r.id === me ? ' · vos' : ''}</span><span class="t">${fmt(r.ms)}</span><span class="pts">${r.points} pts</span></li>`;
+    const top = list.slice(0, 10), myIdx = list.findIndex(r => r.id === me);
+    let rows = top.map(row).join('');
+    if (myIdx >= 10) rows += `<li class="gap" aria-hidden="true">···</li>` + row(list[myIdx], myIdx);
+    const others = ranking.length - list.length;
+    html = (list.length ? `<div class="podium">${pod(1)}${pod(0)}${pod(2)}</div><ol class="lb">${rows}</ol>` : '<p class="empty">Todavía nadie resolvió el caso. ¡El primer puesto está libre!</p>')
+      + `<p class="lb-foot">${ranking.length} ${ranking.length === 1 ? 'persona jugó' : 'personas jugaron'}${others ? ` · ${others} sin resolverlo del todo` : ''}.</p>`;
+  }
+  ['board1', 'board2'].forEach(id => { $(id).innerHTML = html; });
+  updateRankMsg();
+}
+
+function updateRankMsg() {
+  const r = state.result; if (!r) return;
+  const t = fmt(state.elapsed);
+  let msg = '';
+  if (r.status === 'saved' && r.hits === 3) {
+    const list = solvedList(), pos = list.findIndex(x => x.id === r.id);
+    msg = pos >= 0 ? `⏱ Resolviste el caso en ${t}. Quedaste en el puesto #${pos + 1} de ${list.length}.` : `⏱ Resolviste el caso en ${t}. Tu resultado ya quedó guardado.`;
+  } else if (r.status === 'saved') msg = `⏱ Tu tiempo fue ${t}. Para entrar al ranking había que acertar las tres partes de la acusación; cuenta solo la primera partida.`;
+  else if (r.status === 'exists') msg = `Ya habías jugado, así que esta partida (${t}) es de práctica y no cambia el ranking.`;
+  else msg = `⏱ Tu tiempo fue ${t}, pero no pudimos guardarlo. Revisá la conexión y avisale a Design Rebels.`;
+  $('rankmsg').textContent = msg;
+}
+
+async function submitResult(hits) {
+  const p = currentPlayer();
+  const rec = {id: p.id, name: p.name, ms: state.elapsed, hits, points: state.points, quiz: state.correct, clues: state.clues.size, interviews: state.seen.size};
+  let status = 'error';
+  if (rdb) {
+    const ref = rdb.collection(RANK_COL).doc(p.id);
+    try {
+      status = await rdb.runTransaction(async tx => {
+        const snap = await tx.get(ref);
+        if (snap.exists) return 'exists';
+        tx.set(ref, {...rec, createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+        return 'saved';
+      });
+    } catch (e) { console.warn('No se pudo guardar el resultado', e); }
+  }
+  state.result = {status, hits, id: p.id};
+  updateRankMsg();
+}
+
+$('openBoard').addEventListener('click', () => { show('leaderboard'); subscribeRanking(); renderBoards(); });
+$('backIntro').addEventListener('click', () => show('intro'));
 $('search').addEventListener('input', e => { state.term = e.target.value; renderRoster(); });
 $('goquiz').addEventListener('click', () => { renderQuestion(); show('quiz'); });
 
