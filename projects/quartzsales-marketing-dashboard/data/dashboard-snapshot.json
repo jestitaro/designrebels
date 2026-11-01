@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-31T15:13:49.134Z",
-  "group": "B",
+  "generatedAt": "2026-11-01T15:54:44.145Z",
+  "group": "C",
   "own": {
     "linkedin": {
       "followers": 2878,
       "employees": 8,
-      "lastSynced": "2026-10-31T15:13:21.709Z",
+      "lastSynced": "2026-11-01T15:54:25.196Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -387,7 +387,7 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": "2026-10-29T15:57:48.374Z",
+      "lastSynced": "2026-11-01T15:54:38.830Z",
       "syncStatus": "ok",
       "syncError": null
     },
