@@ -25,6 +25,10 @@ on:
           - 'true'
           - 'false'
         default: auto
+      debug_posts:
+        description: 'Logear el item crudo que devuelve el actor de posts (para depurar su schema)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -54,6 +58,7 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           SYNC_GROUP: ${{ github.event.inputs.group == 'auto' && '' || github.event.inputs.group }}
           SYNC_POSTS: ${{ github.event.inputs.posts == 'auto' && '' || github.event.inputs.posts }}
+          DEBUG_POSTS: ${{ github.event.inputs.debug_posts }}
 
       - name: Commit data si cambió
         run: |
