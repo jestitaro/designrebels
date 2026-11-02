@@ -121,17 +121,21 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
   return { followers: extractFollowers(company), employees: extractEmployees(company) };
 }
 
+// Nombres de campo confirmados en vivo (corrida del 2026-11-02 con
+// DEBUG_POSTS=true, ver job log): content, post_url, posted_at, likes,
+// comments. Se dejan los nombres adivinados antes como fallback por si el
+// actor cambia de esquema de nuevo (mismo criterio que fetchLinkedInCompany).
 function extractPost(raw) {
-  const text = raw?.text ?? raw?.content ?? raw?.postText ?? raw?.commentary ?? null;
-  const url = raw?.url ?? raw?.postUrl ?? raw?.link ?? null;
-  const date = raw?.postedAt ?? raw?.publishedAt ?? raw?.date ?? raw?.timestamp ?? null;
-  const likes = typeof raw?.likesCount === 'number' ? raw.likesCount
+  const text = raw?.content ?? raw?.text ?? raw?.postText ?? raw?.commentary ?? null;
+  const url = raw?.post_url ?? raw?.url ?? raw?.postUrl ?? raw?.link ?? null;
+  const date = raw?.posted_at ?? raw?.postedAt ?? raw?.publishedAt ?? raw?.date ?? raw?.timestamp ?? null;
+  const likes = typeof raw?.likes === 'number' ? raw.likes
+    : typeof raw?.likesCount === 'number' ? raw.likesCount
     : typeof raw?.numLikes === 'number' ? raw.numLikes
-    : typeof raw?.likes === 'number' ? raw.likes
     : null;
-  const comments = typeof raw?.commentsCount === 'number' ? raw.commentsCount
+  const comments = typeof raw?.comments === 'number' ? raw.comments
+    : typeof raw?.commentsCount === 'number' ? raw.commentsCount
     : typeof raw?.numComments === 'number' ? raw.numComments
-    : typeof raw?.comments === 'number' ? raw.comments
     : null;
 
   return {
@@ -158,13 +162,22 @@ async function fetchCompanyPosts(token, linkedinUrl) {
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    // `companies` (probado el 2026-11-02 con DEBUG_POSTS=true) NO es el
+    // campo correcto: el actor devolvió error "No LinkedIn company URLs
+    // were provided" / "...the 'LinkedIn company URLs' field", que es el
+    // label de Apify, no la key JSON real. En vez de seguir adivinando una
+    // por una, mandamos varios alias plausibles a la vez — el actor ya
+    // demostró que tolera claves de más sin rechazar el request entero.
     // Pedimos más candidatos de los que mostramos (POSTS_FETCH_CANDIDATES)
     // porque después filtramos por fecha (últimos POSTS_LOOKBACK_DAYS días)
-    // y el orden de Apify no está garantizado que sea cronológico. Nombres
-    // de campo sin verificar en vivo — ver nota al principio del archivo.
-    // Si esto deja de funcionar, el síntoma va a ser 0 posts para TODOS los
-    // competidores, no sólo uno.
-    body: JSON.stringify({ companies: [linkedinUrl], maxPosts: POSTS_FETCH_CANDIDATES }),
+    // y el orden de Apify no está garantizado que sea cronológico.
+    body: JSON.stringify({
+      linkedinUrls: [linkedinUrl],
+      companyUrls: [linkedinUrl],
+      urls: [linkedinUrl],
+      linkedinCompanyUrls: [linkedinUrl],
+      maxPosts: POSTS_FETCH_CANDIDATES,
+    }),
   });
 
   if (!res.ok) {
