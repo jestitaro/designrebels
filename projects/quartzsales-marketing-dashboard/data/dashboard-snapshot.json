@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T13:48:16.536Z",
+  "generatedAt": "2026-11-02T13:52:25.522Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T13:47:35.009Z",
+      "lastSynced": "2026-11-02T13:51:42.715Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T13:47:41.768Z",
+      "lastSynced": "2026-11-02T13:51:49.860Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -66,7 +66,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:01.035Z",
+      "postsLastSynced": "2026-11-02T13:52:11.391Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -103,7 +103,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T13:47:52.420Z",
+      "lastSynced": "2026-11-02T13:51:59.402Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -115,7 +115,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:03.614Z",
+      "postsLastSynced": "2026-11-02T13:52:14.272Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -164,7 +164,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:07.727Z",
+      "postsLastSynced": "2026-11-02T13:52:16.966Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -213,7 +213,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:10.411Z",
+      "postsLastSynced": "2026-11-02T13:52:19.908Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -262,7 +262,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:13.221Z",
+      "postsLastSynced": "2026-11-02T13:52:22.782Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -311,7 +311,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:48:16.536Z",
+      "postsLastSynced": "2026-11-02T13:52:25.522Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
