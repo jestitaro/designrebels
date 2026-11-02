@@ -11,9 +11,10 @@
 //  - Competidores (seguidores/empleados): sólo el grupo del día (cadencia
 //    A/B/C, ver abajo), para no gastar de más la cuota de Apify con 11
 //    empresas por corrida.
-//  - Posts recientes de TODOS los competidores: sólo los lunes (es barato —
-//    11 empresas x 5 posts por semana — así que no hace falta repartirlo en
-//    grupos como las métricas).
+//  - Posts recientes de TODOS los competidores: sólo los lunes, filtrando a
+//    sólo los posts de los últimos 7 días (la semana anterior a la corrida).
+//    Es barato — 11 empresas x hasta 5 posts por semana — así que no hace
+//    falta repartirlo en grupos como las métricas.
 //
 // Cadencia A/B/C: config/sources.json asigna cada competidor a un grupo
 // (A, B o C). Cada corrida sólo sincroniza el grupo del día, rotando
@@ -46,6 +47,8 @@ const APIFY_URL = `https://api.apify.com/v2/acts/${APIFY_ACTOR}/run-sync-get-dat
 const APIFY_POSTS_ACTOR = 'unseenuser~company-posts';
 const APIFY_POSTS_URL = `https://api.apify.com/v2/acts/${APIFY_POSTS_ACTOR}/run-sync-get-dataset-items`;
 const MAX_POSTS_PER_COMPANY = 5;
+const POSTS_LOOKBACK_DAYS = 7; // sólo posts de la última semana (corre los lunes)
+const POSTS_FETCH_CANDIDATES = 20; // candidatos pedidos a Apify antes de filtrar por fecha
 const DELAY_BETWEEN_REQUESTS_MS = 1500;
 
 function dayOfYear(date) {
@@ -138,15 +141,28 @@ function extractPost(raw) {
   };
 }
 
+// Un post sin fecha parseable NO se descarta — es más probable que sea un
+// nombre de campo de fecha distinto al esperado (schema sin verificar, ver
+// nota al inicio del archivo) que un post realmente viejo.
+function isWithinLookback(post) {
+  if (!post.date) return true;
+  const d = new Date(post.date);
+  if (Number.isNaN(d.getTime())) return true;
+  return d.getTime() >= Date.now() - POSTS_LOOKBACK_DAYS * 24 * 3600 * 1000;
+}
+
 async function fetchCompanyPosts(token, linkedinUrl) {
   const url = `${APIFY_POSTS_URL}?token=${encodeURIComponent(token)}&timeout=90&memory=256`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    // Nombres de campo sin verificar en vivo — ver nota al principio del
-    // archivo. Si esto deja de funcionar, el síntoma va a ser 0 posts para
-    // TODOS los competidores, no sólo uno.
-    body: JSON.stringify({ companies: [linkedinUrl], maxPosts: MAX_POSTS_PER_COMPANY }),
+    // Pedimos más candidatos de los que mostramos (POSTS_FETCH_CANDIDATES)
+    // porque después filtramos por fecha (últimos POSTS_LOOKBACK_DAYS días)
+    // y el orden de Apify no está garantizado que sea cronológico. Nombres
+    // de campo sin verificar en vivo — ver nota al principio del archivo.
+    // Si esto deja de funcionar, el síntoma va a ser 0 posts para TODOS los
+    // competidores, no sólo uno.
+    body: JSON.stringify({ companies: [linkedinUrl], maxPosts: POSTS_FETCH_CANDIDATES }),
   });
 
   if (!res.ok) {
@@ -156,14 +172,21 @@ async function fetchCompanyPosts(token, linkedinUrl) {
 
   const data = await res.json();
   const items = Array.isArray(data) ? data : [];
+  const recentPosts = items.map(extractPost).filter(isWithinLookback).slice(0, MAX_POSTS_PER_COMPANY);
+
   if (items.length === 0) {
     console.warn(
       `    (posts) 0 resultados para ${linkedinUrl} — puede ser que la empresa no haya posteado ` +
       'recientemente, o que cambió el esquema del actor (sin verificar en vivo, ver nota al inicio del archivo).'
     );
+  } else if (recentPosts.length === 0) {
+    console.warn(
+      `    (posts) ${linkedinUrl}: ${items.length} posts encontrados pero ninguno de los últimos ` +
+      `${POSTS_LOOKBACK_DAYS} días.`
+    );
   }
 
-  return items.slice(0, MAX_POSTS_PER_COMPANY).map(extractPost);
+  return recentPosts;
 }
 
 async function fetchYouTubeChannel(apiKey, handle) {

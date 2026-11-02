@@ -503,6 +503,22 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .pill:hover { background: var(--accent-glow); border-color: rgba(112,37,224,0.3); color: var(--text-1); }
 .pill.active { background: var(--accent-glow); border-color: rgba(112,37,224,0.4); color: var(--text-1); }
 
+.research-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+.research-info-banner i { color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+.research-info-banner strong { color: var(--text-2); }
+
 .research-results { padding: 24px 32px; }
 .results-header {
   display: flex;
@@ -515,6 +531,20 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   color: var(--text-3);
   font-family: var(--font-data);
 }
+.sort-toggle { display: flex; gap: 4px; }
+.sort-btn {
+  padding: 4px 10px;
+  background: var(--surface-3);
+  border: 1px solid var(--border-2);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sort-btn:hover { color: var(--text-1); }
+.sort-btn.active { background: var(--accent-glow); border-color: rgba(112,37,224,0.4); color: var(--text-1); }
 
 .results-grid {
   display: grid;
@@ -1386,11 +1416,21 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
           <div class="pill" onclick="setPill(this, 'retail analytics')">Sell-out Analytics</div>
           <div class="pill" onclick="setPill(this, 'merchandising')">Merchandising</div>
         </div>
+        <div class="research-info-banner">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Esto busca en vivo en <strong>GitHub</strong> y <strong>Hacker News</strong> — tendencias e ideas de la industria para inspirar posts, no es información de tus competidores. Para ver qué publican ellos, mirá la pestaña <strong>Competidores</strong>.</span>
+        </div>
       </div>
       <div class="research-results">
         <div class="results-header">
           <div class="section-title" style="margin:0">Resultados</div>
-          <div class="results-count" id="results-count"></div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div class="sort-toggle" id="sort-toggle" style="display:none;">
+              <button class="sort-btn active" data-sort="relevance" onclick="setResultsSort('relevance')">Relevancia</button>
+              <button class="sort-btn" data-sort="date" onclick="setResultsSort('date')">Más recientes</button>
+            </div>
+            <div class="results-count" id="results-count"></div>
+          </div>
         </div>
         <div id="results-container">
           <div class="empty-state">
@@ -2076,6 +2116,10 @@ function setPill(el, query) {
   doResearch();
 }
 
+let RESEARCH_RESULTS = [];
+let RESEARCH_USING_DEMO = false;
+let RESEARCH_SORT = 'relevance';
+
 async function doResearch() {
   const query = document.getElementById('research-input').value.trim();
   if (!query) return;
@@ -2083,6 +2127,7 @@ async function doResearch() {
   const container = document.getElementById('results-container');
   container.innerHTML = '<div class="card-loading"><div class="mini-spinner"></div> Buscando en GitHub y Hacker News...</div>';
   document.getElementById('results-count').textContent = '';
+  document.getElementById('sort-toggle').style.display = 'none';
 
   const since = new Date(Date.now() - 60 * 24 * 3600 * 1000).toISOString().slice(0,10);
 
@@ -2103,6 +2148,7 @@ async function doResearch() {
       author: r.owner?.login,
       stars: r.stargazers_count,
       url: r.html_url,
+      date: r.created_at || null,
       idea: `¿Qué es ${r.name}? El proyecto con ${r.stargazers_count >= 1000 ? (r.stargazers_count/1000).toFixed(1)+'k' : r.stargazers_count} estrellas que puede transformar cómo trabajamos en PDV`,
     }));
   }
@@ -2118,6 +2164,7 @@ async function doResearch() {
         author: h.author,
         points: h.points,
         url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
+        date: h.created_at || null,
         idea: `Mi opinión sobre: ${h.title}`,
       }));
   }
@@ -2136,10 +2183,42 @@ async function doResearch() {
       <div class="empty-state-text">Sin resultados para "${query}"</div>
       <div class="empty-state-sub">Probá con otro término</div>
     </div>`;
+    RESEARCH_RESULTS = [];
     return;
   }
 
-  document.getElementById('results-count').textContent = usingDemo
+  RESEARCH_RESULTS = results;
+  RESEARCH_USING_DEMO = usingDemo;
+  document.getElementById('sort-toggle').style.display = results.some(r => r.date) ? 'flex' : 'none';
+  renderResearchResults();
+}
+
+// Reordena y vuelve a pintar RESEARCH_RESULTS sin pegarle de nuevo a las
+// APIs — "Relevancia" usa estrellas/puntos (igual que antes), "Más
+// recientes" usa la fecha de creación del repo/post. Los resultados sin
+// fecha (ej. los de demostración) quedan siempre al final.
+function setResultsSort(mode) {
+  RESEARCH_SORT = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === mode));
+  renderResearchResults();
+}
+
+function renderResearchResults() {
+  const container = document.getElementById('results-container');
+  const results = RESEARCH_RESULTS.slice();
+
+  if (RESEARCH_SORT === 'date') {
+    results.sort((a, b) => {
+      if (!a.date && !b.date) return 0;
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      return new Date(b.date) - new Date(a.date);
+    });
+  } else {
+    results.sort((a, b) => (b.stars ?? b.points ?? 0) - (a.stars ?? a.points ?? 0));
+  }
+
+  document.getElementById('results-count').textContent = RESEARCH_USING_DEMO
     ? `${results.length} ejemplos de demostración (sin conexión a GitHub/Hacker News)`
     : `${results.length} resultados`;
 
@@ -2148,6 +2227,7 @@ async function doResearch() {
   results.forEach(r => {
     const card = document.createElement('div');
     card.className = 'result-card';
+    const dateLabel = r.date ? new Date(r.date).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
     card.innerHTML = `
       <div class="result-card-top">
         <div class="result-badges">
@@ -2158,7 +2238,7 @@ async function doResearch() {
         </div>
         <a href="${r.url}" target="_blank" class="result-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
       </div>
-      <div class="result-author">${r.author || ''}</div>
+      <div class="result-author">${r.author || ''}${dateLabel ? ` · ${dateLabel}` : ''}</div>
       <div class="result-title">${r.title}</div>
       <div class="result-desc">${r.desc}</div>
       <div class="result-idea"><i class="fa-solid fa-lightbulb"></i> <strong>Idea de post:</strong> ${r.idea}</div>
