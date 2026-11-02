@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T13:57:05.865Z",
+  "generatedAt": "2026-11-02T14:29:18.103Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T13:56:13.579Z",
+      "lastSynced": "2026-11-02T14:28:12.931Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,10 +54,17 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T13:56:20.537Z",
+      "lastSynced": "2026-11-02T14:28:22.084Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
+        {
+          "text": "IA, visibilidade e o novo padrão de execução.\n\nGaranta sua vaga no webinar Tendências de Trade Marketing 2027 e descubra como conectar estratégia, tecnologia e equipe de campo sob a mesma visão.\n\nA Camila Lopo, Key Account da Involves, será a mediadora desse bate-papo e, junto com líderes de mercado, vai compartilhar tudo o que você precisa saber para preparar sua operação para o próximo ano. Não perca!\n\n🗓️ 12 de novembro de 2026, às 14h (BRT)\n📍 Online e Gratuito\n🎟️ Inscreva-se aqui: https://",
+          "url": "https://www.linkedin.com/posts/involves_ia-visibilidade-e-o-novo-padr%C3%A3o-de-execu%C3%A7%C3%A3o-activity-7523022137519960064-pIAR",
+          "date": "2026-11-02T14:04:08.577Z",
+          "likes": 0,
+          "comments": 0
+        },
         {
           "text": "español 🌎 - ¡El Involves Trade Connect Ecuador sigue dejando huella! \n\nRevive los mejores momentos de nuestro encuentro en Quito, donde líderes del sector se reunieron para intercambiar ideas, compartir buenas prácticas y conversar sobre cómo transformar datos en estrategias clave para la ejecución en el punto de venta.\n\nAgradecemos a todos los expertos, líderes y marcas que nos acompañaron y sumaron su voz a esta conversación para impulsar el crecimiento del trade marketing en la región.\n\nDale",
           "url": "https://www.linkedin.com/posts/involves_espa%C3%B1ol-el-involves-trade-connect-ecuador-activity-7521995623143821312-z39p",
@@ -85,16 +92,9 @@
           "date": "2026-10-27T21:03:20.919Z",
           "likes": 9,
           "comments": 0
-        },
-        {
-          "text": "🚀 O futuro do Trade Marketing não é sobre criar mais demanda, é sobre garantir a execução perfeita.\n\nEm 2027, as marcas que vão liderar o mercado são as que conseguirem eliminar os \"pontos cegos\", ter visibilidade total no canal indireto e transformar dados em decisões rápidas antes que a ruptura aconteça.\nSe você quer preparar a sua operação para o que vem por aí, não pode perder o nosso próximo Webinar: Tendências de Trade Marketing 2027! 💡\n\n🗓️ 12 de novembro de 2026, às 14h (BRT)\n📍 Online",
-          "url": "https://www.linkedin.com/posts/involves_o-futuro-do-trade-marketing-n%C3%A3o-%C3%A9-sobre-activity-7520581946570272768-HE52",
-          "date": "2026-10-26T20:27:41.718Z",
-          "likes": 16,
-          "comments": 1
         }
       ],
-      "postsLastSynced": "2026-11-02T13:56:40.150Z",
+      "postsLastSynced": "2026-11-02T14:28:50.867Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -131,7 +131,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T13:56:28.748Z",
+      "lastSynced": "2026-11-02T14:28:32.181Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -143,7 +143,7 @@
           "comments": 0
         }
       ],
-      "postsLastSynced": "2026-11-02T13:56:46.803Z",
+      "postsLastSynced": "2026-11-02T14:28:55.385Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -192,7 +192,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T13:56:52.243Z",
+      "postsLastSynced": "2026-11-02T14:28:58.466Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -205,7 +205,7 @@
       "gradEnd": "#f59e0b",
       "size": "101-250",
       "stats": {
-        "followers": "5.6K",
+        "followers": "8.8K",
         "posts_mes": 10,
         "engagement": "2.5",
         "funding": "Sin datos"
@@ -229,19 +229,11 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": null,
-      "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
-      "posts": [
-        {
-          "text": "No posts found on this company page.",
-          "url": null,
-          "date": null,
-          "likes": null,
-          "comments": null
-        }
-      ],
-      "postsLastSynced": "2026-11-02T13:56:55.470Z",
+      "lastSynced": "2026-11-02T14:28:45.882Z",
+      "syncStatus": "ok",
+      "syncError": null,
+      "posts": [],
+      "postsLastSynced": "2026-11-02T14:29:05.497Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -290,7 +282,7 @@
           "comments": 0
         }
       ],
-      "postsLastSynced": "2026-11-02T13:57:00.999Z",
+      "postsLastSynced": "2026-11-02T14:29:13.357Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -330,16 +322,8 @@
       "lastSynced": null,
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
-      "posts": [
-        {
-          "text": "No posts found on this company page.",
-          "url": null,
-          "date": null,
-          "likes": null,
-          "comments": null
-        }
-      ],
-      "postsLastSynced": "2026-11-02T13:57:05.865Z",
+      "posts": [],
+      "postsLastSynced": "2026-11-02T14:29:18.103Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
