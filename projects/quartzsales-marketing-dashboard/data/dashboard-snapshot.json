@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T15:06:08.451Z",
+  "generatedAt": "2026-11-02T18:42:44.486Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T15:04:51.520Z",
+      "lastSynced": "2026-11-02T18:41:21.011Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T15:04:58.768Z",
+      "lastSynced": "2026-11-02T18:41:29.810Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -62,7 +62,7 @@
           "text": "IA, visibilidade e o novo padrão de execução.\n\nGaranta sua vaga no webinar Tendências de Trade Marketing 2027 e descubra como conectar estratégia, tecnologia e equipe de campo sob a mesma visão.\n\nA Camila Lopo, Key Account da Involves, será a mediadora desse bate-papo e, junto com líderes de mercado, vai compartilhar tudo o que você precisa saber para preparar sua operação para o próximo ano. Não perca!\n\n🗓️ 12 de novembro de 2026, às 14h (BRT)\n📍 Online e Gratuito\n🎟️ Inscreva-se aqui: https://",
           "url": "https://www.linkedin.com/posts/involves_ia-visibilidade-e-o-novo-padr%C3%A3o-de-execu%C3%A7%C3%A3o-activity-7523022137519960064-pIAR",
           "date": "2026-11-02T14:04:08.577Z",
-          "likes": 1,
+          "likes": 7,
           "comments": 0,
           "stale": false
         },
@@ -99,7 +99,7 @@
           "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T15:05:40.723Z",
+      "postsLastSynced": "2026-11-02T18:41:54.221Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -136,7 +136,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T15:05:12.702Z",
+      "lastSynced": "2026-11-02T18:41:38.846Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -149,7 +149,7 @@
           "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T15:05:47.448Z",
+      "postsLastSynced": "2026-11-02T18:42:01.642Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -190,7 +190,7 @@
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
       "posts": [],
-      "postsLastSynced": "2026-11-02T15:05:53.008Z",
+      "postsLastSynced": "2026-11-02T18:42:07.327Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -227,7 +227,7 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": "2026-11-02T15:05:33.199Z",
+      "lastSynced": "2026-11-02T18:41:50.290Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -240,7 +240,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T15:05:57.405Z",
+      "postsLastSynced": "2026-11-02T18:42:12.533Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -290,7 +290,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T15:06:02.063Z",
+      "postsLastSynced": "2026-11-02T18:42:34.959Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -340,7 +340,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T15:06:08.451Z",
+      "postsLastSynced": "2026-11-02T18:42:44.486Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
