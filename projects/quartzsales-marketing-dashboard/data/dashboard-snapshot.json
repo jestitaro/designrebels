@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-01T15:54:44.145Z",
-  "group": "C",
+  "generatedAt": "2026-11-02T13:48:16.536Z",
+  "group": "A",
   "own": {
     "linkedin": {
-      "followers": 2878,
+      "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-01T15:54:25.196Z",
+      "lastSynced": "2026-11-02T13:47:35.009Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,9 +54,21 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-10-30T15:44:59.124Z",
+      "lastSynced": "2026-11-02T13:47:41.768Z",
       "syncStatus": "ok",
-      "syncError": null
+      "syncError": null,
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:01.035Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "ailet",
@@ -91,9 +103,21 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-10-30T15:45:08.753Z",
+      "lastSynced": "2026-11-02T13:47:52.420Z",
       "syncStatus": "ok",
-      "syncError": null
+      "syncError": null,
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:03.614Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "checkpos",
@@ -130,7 +154,19 @@
       ],
       "lastSynced": null,
       "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:07.727Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "storecheck",
@@ -167,7 +203,19 @@
       ],
       "lastSynced": null,
       "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:10.411Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "repsly",
@@ -204,7 +252,19 @@
       ],
       "lastSynced": "2026-10-31T15:13:29.943Z",
       "syncStatus": "ok",
-      "syncError": null
+      "syncError": null,
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:13.221Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "trax-retail",
@@ -241,7 +301,19 @@
       ],
       "lastSynced": null,
       "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
+      "posts": [
+        {
+          "text": null,
+          "url": null,
+          "date": null,
+          "likes": null,
+          "comments": null
+        }
+      ],
+      "postsLastSynced": "2026-11-02T13:48:16.536Z",
+      "postsSyncStatus": "ok",
+      "postsSyncError": null
     },
     {
       "id": "frogmi",
