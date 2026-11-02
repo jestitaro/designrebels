@@ -18,7 +18,8 @@ projects/quartzsales-marketing-dashboard/
 ├── functions/
 │   ├── _utils.js                 # JSON helpers + cupo diario en Cloudflare KV
 │   └── api/
-│       └── generate-script.js    # GET (cupo restante) / POST (generar) — usa ANTHROPIC_API_KEY
+│       ├── generate-script.js    # GET (cupo restante) / POST (generar) — usa ANTHROPIC_API_KEY
+│       └── trigger-posts-sync.js # POST — dispara el sync de posts de competidores — usa GITHUB_SYNC_TOKEN
 ├── config/
 │   └── sources.json              # competidores a monitorear + URL de LinkedIn + grupo A/B/C
 ├── data/
@@ -82,6 +83,7 @@ funciona sin secretos: ofrece los 3 ejemplos pre-generados aunque no haya
 | Sync diario de LinkedIn/YouTube/competidores | `APIFY_TOKEN` (+ `YOUTUBE_API_KEY` opcional) en GitHub Actions | El dashboard sigue mostrando el último snapshot generado, o datos de demo si nunca corrió |
 | Generación de posts en vivo con Claude | `ANTHROPIC_API_KEY` en Cloudflare Pages | El botón "✨ Generar" devuelve un error amigable; los 3 ejemplos pre-generados siguen disponibles |
 | Cupo diario del generador | binding de KV `DEMO_USAGE_KV` en Cloudflare Pages | La Function sigue funcionando (útil en desarrollo local) pero sin aplicar el límite — ver advertencia más abajo |
+| Botón "Actualizar posts ahora" (pestaña Competidores) | `GITHUB_SYNC_TOKEN` en Cloudflare Pages | El botón devuelve un error amigable; la sync semanal automática de los lunes sigue funcionando igual |
 
 ---
 
@@ -247,12 +249,36 @@ hubieran sido generados en el momento.
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Sí, para generación en vivo | `functions/api/generate-script.js` |
 | `ANTHROPIC_MODEL` | No (default: `claude-haiku-4-5-20251001`) | Pisar el modelo sin tocar código |
-| Binding de KV `DEMO_USAGE_KV` | Sí, para que el límite diario se aplique | Cupo de generaciones por IP/global |
+| Binding de KV `DEMO_USAGE_KV` | Sí, para que el límite diario se aplique (también se usa para el cooldown del botón de sync de posts) | Cupo de generaciones por IP/global |
+| `GITHUB_SYNC_TOKEN` | No (recomendado, para el botón "Actualizar posts ahora") | `functions/api/trigger-posts-sync.js` |
 
 Cloudflare Pages **no** necesita `APIFY_TOKEN` ni `YOUTUBE_API_KEY`: esas
 integraciones se retiraron de las Functions (ya no hay `functions/api/
 linkedin.js` ni `youtube.js`) porque las métricas ahora se generan
 exclusivamente desde GitHub Actions, no on-demand desde el navegador.
+
+### Cómo crear `GITHUB_SYNC_TOKEN`
+
+Es el token que le permite al botón "Actualizar posts ahora" (pestaña
+Competidores) disparar el workflow de GitHub Actions sin que nadie del
+equipo necesite acceso al repo. Usar un **fine-grained personal access
+token**, con el permiso mínimo necesario — nunca un token con acceso
+amplio a la cuenta:
+
+1. GitHub → **Settings** (de tu usuario, no del repo) → **Developer
+   settings** → **Personal access tokens** → **Fine-grained tokens** →
+   **Generate new token**.
+2. **Repository access**: "Only select repositories" → `jestitaro/designrebels`.
+3. **Permissions** → **Repository permissions** → **Actions**: `Read and write`
+   (es el único permiso que necesita — no tocar nada más).
+4. Generar y copiar el token (empieza con `github_pat_...`).
+5. En el proyecto de Cloudflare Pages → **Settings** → **Environment
+   variables** → **Production** → agregar `GITHUB_SYNC_TOKEN` como
+   **secret**, pegando el token.
+6. Volver a desplegar (o esperar al próximo deploy) para que quede activo.
+
+Sin este secret, el botón sigue estando visible pero devuelve un error
+amigable — la sync automática de los lunes no depende de esto para nada.
 
 ### Cómo crear y vincular `DEMO_USAGE_KV`
 
@@ -261,7 +287,8 @@ exclusivamente desde GitHub Actions, no on-demand desde el navegador.
 2. En el proyecto de Cloudflare Pages → **Settings** → **Functions** → **KV
    namespace bindings** → **Add binding**.
 3. Variable name: `DEMO_USAGE_KV` (tiene que ser exactamente ese nombre,
-   es el que usa `functions/api/generate-script.js`). Namespace: el que
+   es el que usan `functions/api/generate-script.js` y
+   `functions/api/trigger-posts-sync.js`). Namespace: el que
    creaste en el paso 1.
 4. Guardar y volver a desplegar (o esperar al próximo deploy) para que el
    binding quede activo.

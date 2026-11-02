@@ -825,6 +825,26 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .comp-header h2 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
 .comp-header p { font-size: 13px; color: var(--text-2); }
 
+.btn-sync-posts {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  background: transparent;
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-sync-posts:hover:not(:disabled) { background: var(--surface-2); color: var(--text-1); }
+.btn-sync-posts:disabled { opacity: 0.6; cursor: default; }
+.btn-sync-posts.loading i { animation: spin 0.8s linear infinite; }
+
 .comp-content { padding: 24px 32px; }
 
 .comp-grid {
@@ -1458,8 +1478,15 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
     <!-- PAGE: COMPETITORS -->
     <section class="page" id="page-competitors">
       <div class="comp-header">
-        <h2>Competidores</h2>
-        <p>Monitoreo del ecosistema de trade marketing y retail execution en LATAM y global</p>
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div>
+            <h2>Competidores</h2>
+            <p>Monitoreo del ecosistema de trade marketing y retail execution en LATAM y global</p>
+          </div>
+          <button class="btn-sync-posts" id="btn-sync-posts" onclick="triggerPostsSync()">
+            <i class="fa-solid fa-arrows-rotate"></i> Actualizar posts ahora
+          </button>
+        </div>
         <div class="demo-banner" style="margin-top:12px;">
           <div class="status-dot" id="comp-dot"></div>
           <span id="comp-status-text">Modo demo</span>
@@ -2655,6 +2682,34 @@ function openCompetitorPosts(competitorId) {
     : '<div class="comp-location">Todavía no hay posts sincronizados para este competidor.</div>';
 
   openModal('modal-competitor-posts');
+}
+
+// Dispara el workflow de GitHub Actions que sincroniza posts de
+// competidores (ver functions/api/trigger-posts-sync.js) — así cualquiera
+// del equipo puede forzar una actualización sin necesitar acceso al repo.
+// No lee datos nuevos acá mismo: la corrida tarda 1-2 min, así que sólo
+// avisa que se disparó y sugiere volver a "Actualizar métricas" después.
+async function triggerPostsSync() {
+  const btn = document.getElementById('btn-sync-posts');
+  if (btn.disabled) return;
+
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    const res = await fetch('/api/trigger-posts-sync', { method: 'POST' });
+    const payload = await res.json().catch(() => null);
+    if (!res.ok) throw new Error(payload?.error || `Error ${res.status}`);
+
+    toast(payload.message || 'Actualización disparada.', 'success');
+  } catch (e) {
+    toast(e.message || 'No se pudo disparar la actualización.', 'error');
+  } finally {
+    btn.classList.remove('loading');
+    // Cooldown del lado del servidor es de 10 min — deshabilitamos el botón
+    // acá por un minuto para evitar el doble click accidental más común.
+    setTimeout(() => { btn.disabled = false; }, 60000);
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
