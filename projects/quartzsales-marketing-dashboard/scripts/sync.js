@@ -11,10 +11,11 @@
 //  - Competidores (seguidores/empleados): sólo el grupo del día (cadencia
 //    A/B/C, ver abajo), para no gastar de más la cuota de Apify con 11
 //    empresas por corrida.
-//  - Posts recientes de TODOS los competidores: sólo los lunes, filtrando a
-//    sólo los posts de los últimos 7 días (la semana anterior a la corrida).
-//    Es barato — 11 empresas x hasta 5 posts por semana — así que no hace
-//    falta repartirlo en grupos como las métricas.
+//  - Posts recientes de los competidores "Directo" (los más comparables —
+//    quedan afuera los "Adyacente"): sólo los lunes, filtrando a sólo los
+//    posts de los últimos 7 días (la semana anterior a la corrida). Es
+//    barato — 6 empresas x hasta 5 posts por semana — así que no hace falta
+//    repartirlo en grupos como las métricas.
 //
 // Cadencia A/B/C: config/sources.json asigna cada competidor a un grupo
 // (A, B o C). Cada corrida sólo sincroniza el grupo del día, rotando
@@ -297,20 +298,25 @@ async function syncCompetitors(token, sources, currentCompetitors, group) {
 }
 
 // A diferencia de syncCompetitors() (que reparte las 11 empresas en grupos
-// A/B/C), esto siempre trae TODOS los competidores — pero sólo corre 1 vez
-// por semana (ver shouldSyncPosts()), así que el costo total sigue siendo
-// bajo. `competitors` es el array que ya devolvió syncCompetitors (mismas
-// referencias que terminan en el snapshot) y no trae `linkedinUrl` — por
-// eso recibe `sources` aparte, que sí la tiene.
+// A/B/C), esto siempre trae a los competidores "Directo" (ver filtro de
+// `targets` abajo) — pero sólo corre 1 vez por semana (ver shouldSyncPosts()),
+// así que el costo total sigue siendo bajo. `competitors` es el array que ya
+// devolvió syncCompetitors (mismas referencias que terminan en el snapshot)
+// y no trae `linkedinUrl`/`category` — por eso recibe `sources` aparte, que
+// sí los tiene.
 async function syncCompetitorPosts(token, sources, competitors) {
   const byId = new Map(competitors.map((c) => [c.id, c]));
-  console.log(`Posts de competidores: sincronizando ${sources.competitors.length} (corrida semanal).`);
+  // Sólo los competidores "Directo" (mismo criterio que usa el dashboard
+  // para separarlos de los "Adyacente") — son los más comparables, y
+  // reduce el costo/ruido semanal de traer posts de los 11.
+  const targets = sources.competitors.filter((src) => (src.category || '').startsWith('Directo'));
+  console.log(`Posts de competidores: sincronizando ${targets.length} directos de ${sources.competitors.length} (corrida semanal).`);
 
   let ok = 0;
   let failed = 0;
 
-  for (let i = 0; i < sources.competitors.length; i++) {
-    const src = sources.competitors[i];
+  for (let i = 0; i < targets.length; i++) {
+    const src = targets[i];
     const c = byId.get(src.id);
     try {
       const posts = await fetchCompanyPosts(token, src.linkedinUrl);
@@ -332,7 +338,7 @@ async function syncCompetitorPosts(token, sources, competitors) {
       console.error(`  ERR ${src.name} (posts): ${err.message}`);
     }
 
-    if (i < sources.competitors.length - 1) await sleep(DELAY_BETWEEN_REQUESTS_MS);
+    if (i < targets.length - 1) await sleep(DELAY_BETWEEN_REQUESTS_MS);
   }
 
   return { ok, failed };
