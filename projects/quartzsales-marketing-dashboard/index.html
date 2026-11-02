@@ -1096,6 +1096,19 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .toast.success i { color: var(--green); }
 .toast.error i   { color: var(--red); }
 .toast.info i    { color: var(--accent); }
+.toast-undo { align-items: center; }
+.toast-undo span { flex: 1; }
+.toast-undo-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+.toast-undo-btn:hover { text-decoration: underline; }
 @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ── ADD IDEA MODAL ─────────────────────────────────── */
@@ -1367,11 +1380,11 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
         <div class="pills-row">
           <span class="pills-label">Temas:</span>
           <div class="pill active" onclick="setPill(this, 'trade marketing retail execution')">Trade Marketing</div>
-          <div class="pill" onclick="setPill(this, 'retail execution field force')">Retail Execution</div>
-          <div class="pill" onclick="setPill(this, 'AI retail store audit')">IA en Retail</div>
-          <div class="pill" onclick="setPill(this, 'planograma gondola optimizacion')">Planograma</div>
-          <div class="pill" onclick="setPill(this, 'sell-out analytics CPG')">Sell-out Analytics</div>
-          <div class="pill" onclick="setPill(this, 'field merchandising software')">Merchandising</div>
+          <div class="pill" onclick="setPill(this, 'retail execution')">Retail Execution</div>
+          <div class="pill" onclick="setPill(this, 'retail AI')">IA en Retail</div>
+          <div class="pill" onclick="setPill(this, 'planogram')">Planograma</div>
+          <div class="pill" onclick="setPill(this, 'retail analytics')">Sell-out Analytics</div>
+          <div class="pill" onclick="setPill(this, 'merchandising')">Merchandising</div>
         </div>
       </div>
       <div class="research-results">
@@ -2250,10 +2263,18 @@ function moveCard(cardId, fromCol, toCol) {
 }
 
 function deleteCard(id, col) {
-  PIPELINE[col] = PIPELINE[col].filter(c => c.id !== id);
+  const idx = PIPELINE[col].findIndex(c => c.id === id);
+  if (idx === -1) return;
+  const [card] = PIPELINE[col].splice(idx, 1);
   savePipeline();
   renderKanban();
-  toast('Idea eliminada', 'info');
+
+  toastUndo('Idea eliminada', () => {
+    PIPELINE[col].splice(Math.min(idx, PIPELINE[col].length), 0, card);
+    savePipeline();
+    renderKanban();
+    toast('Restaurada', 'success');
+  });
 }
 
 function viewScript(id) {
@@ -2610,6 +2631,24 @@ function toast(msg, type = 'info') {
   t.innerHTML = `<i class="fa-solid ${TOAST_ICONS[type] || TOAST_ICONS.info}"></i><span>${escapeHtml(msg)}</span>`;
   container.appendChild(t);
   setTimeout(() => t.remove(), 3500);
+}
+
+// Toast con botón "Deshacer": onUndo sólo se ejecuta si se hace click antes
+// de que expire. Usado para que borrar una idea del Pipeline no sea
+// irreversible (ver deleteCard) — antes se perdía al toque en localStorage.
+function toastUndo(msg, onUndo, duration = 7000) {
+  const container = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast info toast-undo';
+  t.innerHTML = `<i class="fa-solid ${TOAST_ICONS.info}"></i><span>${escapeHtml(msg)}</span><button class="toast-undo-btn">Deshacer</button>`;
+  container.appendChild(t);
+
+  const timer = setTimeout(() => t.remove(), duration);
+  t.querySelector('.toast-undo-btn').addEventListener('click', () => {
+    clearTimeout(timer);
+    t.remove();
+    onUndo();
+  });
 }
 
 // ─────────────────────────────────────────────────────────────
