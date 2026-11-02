@@ -27,21 +27,21 @@ body[data-theme="base"]{
   --stitch:transparent;
   color-scheme:light;
 }
-body[data-theme="halloween"]{
-  --bg:#1b1736;--bg-2:#231e45;--surface:#241f47;--surface-2:#2d2756;--surface-3:#3a3368;
-  --ink:#f4f2ff;--muted:#a9a3cf;--line:rgba(255,255,255,.07);
-  --accent:#ffb627;--accent-ink:#1b1736;--accent-soft:rgba(255,182,39,.13);
-  --accent-2:#9be15d;--lav:#a78bfa;--danger:#ff6b81;--glow:rgba(255,182,39,.45);
+body[data-theme="navidad"]{
+  --bg:#0e1730;--bg-2:#14203f;--surface:#16244a;--surface-2:#1d2d59;--surface-3:#283b6e;
+  --ink:#f3f6ff;--muted:#a7b3d6;--line:rgba(255,255,255,.08);
+  --accent:#ff5d62;--accent-ink:#1a0b10;--accent-soft:rgba(255,93,98,.14);
+  --accent-2:#5fd39a;--lav:#9cc3ff;--danger:#ff9aa8;--glow:rgba(255,93,98,.45);
   --display:'Poppins',system-ui,sans-serif;--body:'Poppins',system-ui,sans-serif;
   --display-w:700;--display-track:-.01em;
-  --glass:rgba(36,31,71,.5);--glass-line:rgba(255,255,255,.12);
+  --glass:rgba(22,36,74,.5);--glass-line:rgba(255,255,255,.12);
   --t0:#e2493b;--t1:#2fa874;--t2:#4a7fd6;--t3:#efbe3a;--t0-ink:#fff;--t1-ink:#fff;--t2-ink:#fff;--t3-ink:#1d1405;
-  --shadow:0 12px 32px rgba(8,6,24,.35);
+  --shadow:0 12px 32px rgba(4,8,24,.4);
   --stitch:transparent;
   color-scheme:dark;
 }
 body[data-theme="base"] .hw{display:none!important}
-body[data-theme="halloween"] .bs{display:none!important}
+body[data-theme="navidad"] .bs{display:none!important}
 
 /* ============ BASE ============ */
 *{box-sizing:border-box;margin:0;padding:0}
@@ -64,7 +64,7 @@ input{font:inherit;color:inherit}
 .world .b1{width:520px;height:520px;background:#c7c8ff;top:-160px;left:-120px}
 .world .b2{width:420px;height:420px;background:#bff0dd;bottom:-140px;right:20%}
 .world .grid{position:absolute;inset:0;background-image:radial-gradient(rgba(23,23,43,.08) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
-.world .sky{position:absolute;inset:0;background:radial-gradient(1200px 700px at 30% 0%,#3a1a5c 0%,transparent 60%),radial-gradient(900px 600px at 90% 100%,#2a0f3d 0%,transparent 60%)}
+.world .sky{position:absolute;inset:0;background:radial-gradient(1200px 700px at 30% 0%,#1d2f63 0%,transparent 60%),radial-gradient(900px 600px at 90% 100%,#0b1a3a 0%,transparent 60%)}
 .world .noise{position:absolute;inset:-50%;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .moon{position:absolute;top:-60px;left:-50px;width:220px;height:220px;opacity:.9;border-radius:50%;
   background:radial-gradient(circle at 38% 35%,#fff7d6 0%,#f6dd8a 45%,#d9a94a 100%);
@@ -74,13 +74,23 @@ input{font:inherit;color:inherit}
 .moon::before{width:34px;height:28px;top:52px;left:96px}
 .moon::after{width:18px;height:16px;top:112px;left:52px}
 @keyframes moonGlow{50%{box-shadow:0 0 110px 26px rgba(246,221,138,.32),0 0 240px 80px rgba(246,221,138,.14)}}
-.fog{position:absolute;left:-20%;right:-20%;height:220px;bottom:-40px;background:radial-gradient(closest-side,rgba(200,180,230,.18),transparent);filter:blur(10px);animation:fog 22s ease-in-out infinite alternate}
+.fog{position:absolute;left:-20%;right:-20%;height:220px;bottom:-40px;background:radial-gradient(closest-side,rgba(200,220,255,.16),transparent);filter:blur(10px);animation:fog 22s ease-in-out infinite alternate}
 .fog.f2{bottom:30px;opacity:.6;animation-duration:30s;animation-direction:alternate-reverse}
 @keyframes fog{to{transform:translateX(8%)}}
-.bat-fly{position:absolute;width:44px;color:#0b0512;animation:batPath linear infinite;offset-rotate:0deg}
-.bat-fly svg{animation:flap .22s ease-in-out infinite alternate;transform-origin:center}
-@keyframes flap{to{transform:scaleY(.45)}}
+.bat-fly{position:absolute;width:44px;color:#e8f0ff;animation:batPath linear infinite;offset-rotate:0deg}
+.bat-fly svg{animation:flap 1.6s linear infinite;transform-origin:center}
+@keyframes flap{to{transform:rotate(120deg)}}
 @keyframes batPath{0%{transform:translate(-10vw,30vh)}50%{transform:translate(50vw,8vh) }100%{transform:translate(115vw,22vh)}}
+
+.snow{position:absolute;inset:0;pointer-events:none;opacity:.75;
+  background-image:radial-gradient(2px 2px at 20px 30px,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 80px 120px,#fff 50%,transparent 51%),radial-gradient(2.5px 2.5px at 150px 60px,rgba(255,255,255,.85) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 200px 180px,#fff 50%,transparent 51%),radial-gradient(2px 2px at 110px 215px,rgba(255,255,255,.7) 50%,transparent 51%);
+  background-size:240px 240px;animation:snow 18s linear infinite}
+.snow.s2{background-size:340px 340px;opacity:.4;filter:blur(1px);animation:snow2 30s linear infinite}
+@keyframes snow{to{background-position:60px 240px}}
+@keyframes snow2{to{background-position:-85px 340px}}
+.app{isolation:isolate}
+.app > .snow{z-index:-1}
+@media (prefers-reduced-motion:reduce){.snow{animation:none}}
 
 /* ============ STAGE / LANDING ============ */
 .stage{position:relative;height:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:56px;max-width:1180px;margin:0 auto;padding:24px 40px}
@@ -89,8 +99,10 @@ input{font:inherit;color:inherit}
 .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:pulse 2.4s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 9px transparent}}
 .landing h1{font-size:clamp(56px,7vw,92px);margin:14px 0 18px}
-body[data-theme="halloween"] .landing h1{color:var(--ink);text-shadow:0 0 40px rgba(167,139,250,.35)}
-body[data-theme="halloween"] .landing h1 .w:last-child{color:var(--accent);text-shadow:0 0 36px var(--glow)}
+.claim{display:block;width:fit-content;margin:20px 0 -8px;font-family:var(--display);font-weight:800;font-size:clamp(30px,3.4vw,46px);font-style:italic;letter-spacing:-.01em;color:#f6dd8a;text-shadow:0 0 28px rgba(246,221,138,.45);transform:rotate(-3deg);transform-origin:left;animation:flicker 7s infinite}
+.claim:empty{display:none}
+body[data-theme="navidad"] .landing h1{color:var(--ink);text-shadow:0 0 40px rgba(156,195,255,.35)}
+body[data-theme="navidad"] .landing h1 .w:last-child{color:var(--accent);text-shadow:0 0 36px var(--glow)}
 @keyframes flicker{0%,92%,100%{opacity:1}93%{opacity:.55}94%{opacity:1}96%{opacity:.7}}
 .landing h1 .w{display:inline-block;transition:transform .5s var(--ease-spring)}
 .landing h1 .w:hover{transform:translateY(-6px) rotate(-3deg)}
@@ -122,7 +134,7 @@ body[data-theme="halloween"] .landing h1 .w:last-child{color:var(--accent);text-
 
 /* ============ APP ============ */
 .app{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
-body[data-theme="halloween"] .app{background:radial-gradient(90% 45% at 50% 0%,#2e2763 0%,transparent 70%),radial-gradient(70% 40% at 100% 100%,rgba(155,225,93,.08),transparent 70%),var(--bg)}
+body[data-theme="navidad"] .app{background:radial-gradient(90% 45% at 50% 0%,#1e3366 0%,transparent 70%),radial-gradient(70% 40% at 100% 100%,rgba(95,211,154,.08),transparent 70%),var(--bg)}
 .app-noise{position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 .app-head{position:relative;z-index:5;display:flex;align-items:center;gap:12px;padding:58px 22px 16px}
@@ -140,13 +152,13 @@ body[data-theme="halloween"] .app{background:radial-gradient(90% 45% at 50% 0%,#
 .icon-btn:hover{background:var(--surface-2)}
 .icon-btn:active{transform:scale(.88)}
 .icon-btn svg{width:20px;height:20px}
-.icon-btn .ico-pumpkin,.icon-btn .ico-sun{position:absolute;width:24px;height:24px;transition:transform .6s var(--ease-spring),opacity .3s}
+.icon-btn .ico-ornament,.icon-btn .ico-sun{position:absolute;width:24px;height:24px;transition:transform .6s var(--ease-spring),opacity .3s}
 .icon-btn .ico-sun{width:22px;height:22px;color:var(--accent)}
 .icon-btn{position:relative}
-.icon-btn:hover .ico-pumpkin{transform:rotate(-12deg) scale(1.08)}
+.icon-btn:hover .ico-ornament{transform:rotate(-12deg) scale(1.08)}
 .icon-btn:hover .ico-sun{transform:rotate(45deg) scale(1.08)}
-/* El ícono muestra el tema al que cambiás: calabaza en QuartzSales, sol en Halloween */
-body[data-theme="halloween"] .icon-btn .ico-pumpkin{transform:rotate(-90deg) scale(0);opacity:0}
+/* El ícono muestra el tema al que cambiás: adorno en QuartzSales, sol en Navidad */
+body[data-theme="navidad"] .icon-btn .ico-ornament{transform:rotate(-90deg) scale(0);opacity:0}
 body[data-theme="base"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opacity:0}
 
 .live-pill{display:none;align-items:center;gap:8px;padding:7px 12px 7px 9px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:900;font-size:13px;animation:pillIn .5s var(--ease-spring)}
@@ -176,7 +188,7 @@ body[data-theme="base"] .icon-btn .ico-sun{transform:rotate(90deg) scale(0);opac
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring .track{stroke:var(--surface-3)}
 .ring .bar{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s var(--ease-out)}
-body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 8px var(--glow))}
+body[data-theme="navidad"] .ring .bar{filter:drop-shadow(0 0 8px var(--glow))}
 .ring-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .ring-center b{font-size:30px;font-weight:900;line-height:1}
 .ring-center small{font-size:12px;color:var(--muted);margin-top:4px}
@@ -193,16 +205,16 @@ body[data-theme="halloween"] .ring .bar{filter:drop-shadow(0 0 8px var(--glow))}
 .btn svg{width:18px;height:18px}
 .btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 8px 24px -8px var(--glow);flex:1}
 .btn-primary:hover{box-shadow:0 12px 30px -8px var(--glow)}
-body[data-theme="halloween"] .btn-primary{border-radius:12px;transform:rotate(-1.2deg);font-weight:700}
-body[data-theme="halloween"] .btn-primary:active{transform:rotate(-1.2deg) scale(.95)}
-body[data-theme="halloween"] .btn-ghost{background:var(--surface-2);border-color:transparent}
+body[data-theme="navidad"] .btn-primary{border-radius:12px;transform:rotate(-1.2deg);font-weight:700}
+body[data-theme="navidad"] .btn-primary:active{transform:rotate(-1.2deg) scale(.95)}
+body[data-theme="navidad"] .btn-ghost{background:var(--surface-2);border-color:transparent}
 .btn-ghost{background:var(--surface);border:1px solid var(--line)}
 .btn-text-danger{color:var(--danger);background:none;height:44px}
 .btn-text-danger:hover{background:color-mix(in srgb,var(--danger) 10%,transparent)}
 
 .bar-wrap{position:relative;height:12px;border-radius:999px;background:var(--surface-3);overflow:visible;margin-top:12px}
 .bar-fill{position:absolute;inset:0 auto 0 0;border-radius:inherit;background:var(--fill,var(--accent));width:0;transition:width 1.3s var(--ease-out)}
-body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--fill,var(--accent)) 70%,#fff 0%),var(--fill,var(--accent)));box-shadow:0 0 14px -2px var(--fill,var(--accent))}
+body[data-theme="navidad"] .bar-fill{background:linear-gradient(90deg,color-mix(in srgb,var(--fill,var(--accent)) 70%,#fff 0%),var(--fill,var(--accent)));box-shadow:0 0 14px -2px var(--fill,var(--accent))}
 .bar-walker{position:absolute;top:50%;width:28px;height:28px;translate:-50% -60%;transition:left 1.3s var(--ease-out);left:0}
 .bar-walker .dot{width:16px;height:16px;margin:6px;border-radius:50%;background:var(--accent);border:3px solid var(--surface);box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .bar-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
@@ -221,7 +233,7 @@ body[data-theme="halloween"] .bar-fill{background:linear-gradient(90deg,color-mi
 .hero-race .race-top{align-items:flex-start}
 .hero-title{font-size:38px;line-height:1;margin-top:10px;letter-spacing:-.02em}
 .hero-title .yr{display:block}
-body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-origin:left}
+body[data-theme="navidad"] .hero-title{transform:rotate(-1.2deg);transform-origin:left}
 .hero-race .countdown b{font-size:52px}
 .hh-row{display:flex;align-items:center;gap:10px;margin-top:34px}
 .hh-row .rank-chip{margin-left:auto}
@@ -246,7 +258,7 @@ body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-ori
 @keyframes levitate{0%,100%{translate:0 0;box-shadow:0 14px 26px -12px var(--glow)}50%{translate:0 -6px;box-shadow:0 22px 30px -14px var(--glow)}}
 .ghost-float{position:absolute;left:0;z-index:0;pointer-events:none;opacity:0;animation:ghostDrift 14s cubic-bezier(.45,.05,.55,.95) forwards}
 .gf-wave{animation:ghostWave 3.4s ease-in-out infinite}
-.gf-sway{animation:ghostSway 2.2s ease-in-out infinite;transform-origin:50% 20%;filter:drop-shadow(0 0 16px rgba(214,204,255,.55))}
+.gf-sway{animation:ghostSway 2.2s ease-in-out infinite;transform-origin:50% 20%;filter:drop-shadow(0 0 16px rgba(200,225,255,.55))}
 .ghost-float.rtl .gf-sway svg{transform:scaleX(-1)}
 .ghost-float svg{display:block;width:100%;height:auto}
 @keyframes ghostDrift{0%{opacity:0;transform:translateX(var(--from))}12%{opacity:.3}50%{opacity:.36}88%{opacity:.3}100%{opacity:0;transform:translateX(var(--to))}}
@@ -342,13 +354,13 @@ body[data-theme="halloween"] .hero-title{transform:rotate(-1.2deg);transform-ori
 .run-state-running .orbiter{animation-play-state:running}
 .orbiter .rider{position:absolute;top:-4px;left:50%;translate:-50% 0;width:30px;color:var(--accent)}
 .orbiter .rider .dotr{width:14px;height:14px;margin:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--accent-soft)}
-.orbiter .rider svg{animation:flap .2s ease-in-out infinite alternate;animation-play-state:inherit}
+.orbiter .rider svg{animation:flap 1.4s linear infinite;animation-play-state:inherit}
 @keyframes spin{to{transform:rotate(360deg)}}
 .readout b{display:block;font-size:56px;font-weight:900;line-height:1;letter-spacing:-.02em}
 .readout small{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .readout .time{font-size:22px;font-weight:700;margin-top:10px}
 .run-status{min-height:22px;font-size:15px;margin-top:4px}
-body[data-theme="halloween"] .run-status{color:var(--accent-2);font-weight:600}
+body[data-theme="navidad"] .run-status{color:var(--accent-2);font-weight:600}
 .stats{display:flex;gap:10px;width:100%;margin:12px 0 18px}
 .stats div{flex:1;padding:10px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .stats b{display:block;font-size:18px;font-weight:900}
@@ -365,7 +377,7 @@ body[data-theme="halloween"] .run-status{color:var(--accent-2);font-weight:600}
 .play::after{content:"";position:absolute;inset:-8px;border-radius:inherit;border:2px solid var(--accent);opacity:0}
 .run-state-running .play::after{animation:ripple 2s var(--ease-out) infinite}
 @keyframes ripple{0%{opacity:.6;transform:scale(.9)}100%{opacity:0;transform:scale(1.35)}}
-body[data-theme="halloween"] .play{box-shadow:0 14px 40px -10px var(--glow),inset 0 -8px 0 rgba(0,0,0,.15)}
+body[data-theme="navidad"] .play{box-shadow:0 14px 40px -10px var(--glow),inset 0 -8px 0 rgba(0,0,0,.15)}
 .finish{position:relative;width:72px;height:72px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;transition:transform .35s var(--ease-spring),opacity .3s;touch-action:none;user-select:none;-webkit-user-select:none}
 .finish[hidden]{display:grid;opacity:0;transform:scale(.4);pointer-events:none}
 .finish svg.sq{width:22px;height:22px;color:var(--danger)}
@@ -405,7 +417,7 @@ body[data-theme="halloween"] .play{box-shadow:0 14px 40px -10px var(--glow),inse
 .ach-inner{position:relative;height:100%;transition:transform .7s var(--ease-spring);transform-style:preserve-3d}
 .ach.flipped .ach-inner{transform:rotateY(180deg)}
 .ach-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;background:var(--surface);border:1px solid var(--line);text-align:left}
-body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30% 20%,#342d6b,var(--surface))}
+body[data-theme="navidad"] .ach-face{background:radial-gradient(80% 60% at 30% 20%,#22386e,var(--surface))}
 .ach-back{transform:rotateY(180deg);background:var(--accent);color:var(--accent-ink);border:0}
 .ach .km-big{font-size:34px;font-weight:900;line-height:1}
 .ach .ach-ico{width:46px;height:46px}
@@ -481,7 +493,7 @@ body[data-theme="halloween"] .ach-face{background:radial-gradient(80% 60% at 30%
 .prize-item{display:flex;gap:16px;align-items:center;padding:18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);animation:rowIn .5s var(--ease-out) both}
 .prize-ico{width:52px;height:52px;flex:none;display:grid;place-items:center;border-radius:16px;background:var(--surface-2)}
 .prize-ico svg{width:38px;height:38px}
-body[data-theme="halloween"] .prize-item:first-child .prize-ico svg{filter:drop-shadow(0 0 14px rgba(255,182,39,.6))}
+body[data-theme="navidad"] .prize-item:first-child .prize-ico svg{filter:drop-shadow(0 0 14px rgba(246,221,138,.6))}
 .prize-item small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
 .prize-item b{display:block;font-size:16px;margin-top:2px}
 .prize-item span span{display:block;font-size:13px;line-height:1.45;color:var(--muted);margin-top:4px}
@@ -529,28 +541,28 @@ body[data-theme="halloween"] .prize-item:first-child .prize-ico svg{filter:drop-
 .unlock{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:28px;background:rgba(8,4,14,.7);opacity:0;pointer-events:none;transition:opacity .4s}
 .unlock.on{opacity:1;pointer-events:auto}
 .unlock-card{width:100%;max-width:300px;text-align:center;padding:26px 20px;border-radius:28px;background:var(--surface);border:1px solid var(--line);transform:rotateY(90deg) scale(.7);transition:transform .8s var(--ease-spring)}
-body[data-theme="halloween"] .unlock-card{background:radial-gradient(90% 60% at 50% 20%,#3a3274,var(--surface))}
+body[data-theme="navidad"] .unlock-card{background:radial-gradient(90% 60% at 50% 20%,#2a4380,var(--surface))}
 .unlock.on .unlock-card{transform:none}
 .unlock-card .big-ico{display:block;width:104px;height:104px;margin:0 auto 14px;animation:bob 2.6s ease-in-out infinite}
-body[data-theme="halloween"] .unlock-card .big-ico,body[data-theme="halloween"] .onb-mascot,body[data-theme="halloween"] .ach-ico,body[data-theme="halloween"] .prize-ico svg,body[data-theme="halloween"] .bar-walker svg{filter:url(#wobble)}
-body[data-theme="halloween"] .onb-mascot{transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
+body[data-theme="navidad"] .unlock-card .big-ico,body[data-theme="navidad"] .onb-mascot,body[data-theme="navidad"] .ach-ico,body[data-theme="navidad"] .prize-ico svg,body[data-theme="navidad"] .bar-walker svg{filter:url(#wobble)}
+body[data-theme="navidad"] .onb-mascot{transform-origin:50% 100%;animation:sway 4s ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-4px)}}
 /* Rayas tipo media a rayas, espirales y líneas torcidas: guiños originales, sin elementos de ninguna película */
-body[data-theme="halloween"] .race::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(90deg,#efeaf8 0 9px,#120d24 9px 18px);opacity:.85}
+body[data-theme="navidad"] .race::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:repeating-linear-gradient(-45deg,#f3f6ff 0 7px,#e2393f 7px 14px);opacity:.85}
 .race-spiral{position:absolute;right:-26px;top:20px;width:150px;height:150px;color:var(--lav);opacity:.16;pointer-events:none;animation:spinBurst 7s cubic-bezier(.65,0,.35,1) infinite;filter:url(#wobble)}
 @keyframes spinBurst{0%,72%{transform:rotate(0)}100%{transform:rotate(720deg)}}
-body[data-theme="halloween"] .race-top .h2{transform:rotate(-1deg);transform-origin:left}
-body[data-theme="halloween"] .tab-ind{background:var(--accent)}
-body[data-theme="halloween"] .bar-wrap{background:repeating-linear-gradient(90deg,var(--surface-3) 0 6px,color-mix(in srgb,var(--surface-3) 70%,#000) 6px 12px)}
-.tree{position:absolute;right:1vw;bottom:-10px;width:min(240px,18vw);transform:scaleX(-1);color:#0e0b20;opacity:.9;filter:url(#wobble)}
-body[data-theme="halloween"] .prize-ico{background:transparent;border:1.5px dashed rgba(239,234,248,.25)}
+body[data-theme="navidad"] .race-top .h2{transform:rotate(-1deg);transform-origin:left}
+body[data-theme="navidad"] .tab-ind{background:var(--accent)}
+body[data-theme="navidad"] .bar-wrap{background:repeating-linear-gradient(90deg,var(--surface-3) 0 6px,color-mix(in srgb,var(--surface-3) 70%,#000) 6px 12px)}
+.tree{position:absolute;right:1vw;bottom:-10px;width:min(240px,18vw);transform:scaleX(-1);color:#070d1c;opacity:.9;filter:url(#wobble)}
+body[data-theme="navidad"] .prize-ico{background:transparent;border:1.5px dashed rgba(239,234,248,.25)}
 .unlock-card .kicker{color:var(--accent)}
 .unlock-card h3{font-size:30px;margin:8px 0}
 .unlock-card p{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:18px}
 
 /* ============ ONBOARDING ============ */
 .onb{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;padding:64px 22px 24px;background:var(--bg);transition:opacity .5s,transform .6s var(--ease-out)}
-body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%,#2e2763,var(--bg) 70%)}
+body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#1e3366,var(--bg) 70%)}
 @media (max-width:900px){.onb{padding-top:max(28px,env(safe-area-inset-top))}}
 .onb.out{opacity:0;transform:scale(1.04);pointer-events:none}
 .onb-dots{display:flex;gap:6px}
@@ -604,7 +616,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 .p.dot{width:9px;height:9px;margin:-4px;border-radius:2px;background:var(--c)}
 @keyframes burst{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}80%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1) rotate(var(--rot));opacity:0}}
 .bat-fx{position:absolute;pointer-events:none;color:#0b0817;filter:drop-shadow(0 0 1.2px #efeaf8) drop-shadow(0 0 10px rgba(167,139,250,.7))}
-.bat-fx svg{display:block;width:100%;height:auto;animation:flap .18s ease-in-out infinite alternate}
+.bat-fx svg{display:block;width:100%;height:auto;color:#e8f0ff;animation:flap 1.2s linear infinite}
 .fly-num{position:absolute;z-index:70;font-weight:900;font-size:28px;color:var(--accent);pointer-events:none;transition:transform .9s var(--ease-out),opacity .9s}
 
 @media (prefers-reduced-motion:reduce){
@@ -612,19 +624,19 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 }
 </style>
 </head>
-<body data-theme="halloween">
+<body data-theme="navidad">
 
 <!-- SVG symbols (originales) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="bat" viewBox="0 0 48 22"><path fill="currentColor" d="M24 7c1.6-2.6 2.2-4.3 2.4-6 1 1.6 1.2 3 1 4.4C31 3 37 1.6 48 5c-5 1.2-7.6 3.6-8.4 7-2.4-1.6-5.2-1.8-7.6-.4-.8 2.6-3.4 5-8 9.4-4.6-4.4-7.2-6.8-8-9.4-2.4-1.4-5.2-1.2-7.6.4C7.6 8.6 5 6.2 0 5c11-3.4 17-2 20.6.4-.2-1.4 0-2.8 1-4.4.2 1.7.8 3.4 2.4 6z"/></symbol>
-    <symbol id="pumpkin" viewBox="0 0 64 60"><path fill="#7ea33a" stroke="#120d24" stroke-width="2" stroke-linejoin="round" d="M29 15c-6-5-13-3-15 1 5 3 11 3 15-1z"/><path fill="#5b7d2a" stroke="#120d24" stroke-width="2.2" stroke-linejoin="round" d="M30 19c0-6 1-10 4-13l3 2c-2 3-3 7-3 11z"/><path fill="none" stroke="#120d24" stroke-width="2" stroke-linecap="round" d="M36 8c5-3 10-1 10 3s-4 5-6 2"/><g stroke="#120d24" stroke-width="2.2" stroke-linejoin="round"><path fill="#d9681c" d="M20 16C9 17 4 27 5 37s8 18 19 18c4 0 6-1 8-2 2 1 4 2 8 2 11 0 18-8 19-18S55 17 44 16c-4 0-7 1-9 3-1-1-2-1-3-1s-2 0-3 1c-2-2-5-3-9-3z"/><path fill="#f08a24" d="M32 18c-7 0-11 8-11 18s4 18 11 18 11-8 11-18-4-18-11-18z"/></g><path fill="none" stroke="#120d24" stroke-width="1.6" stroke-linecap="round" opacity=".4" d="M13 23c-4 6-5 19 2 27M51 23c4 6 5 19-2 27"/><g fill="#ffd54a" stroke="#120d24" stroke-width="2" stroke-linejoin="round"><path d="M16 33l8-7 3 9zM48 33l-8-7-3 9z"/><path d="M30 39l2-4 2 4z"/><path d="M15 41c6 7 28 7 34 0-2 8-9 12-17 12s-15-4-17-12z"/></g><path fill="#d9681c" stroke="#120d24" stroke-width="1.6" stroke-linejoin="round" d="M25 44h4v4h-4zM35 44h4v4h-4z"/></symbol>
+    <symbol id="flake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7"/><path d="M9.6 3.6 12 6l2.4-2.4M9.6 20.4 12 18l2.4 2.4M3.7 10.3l3.2-1-.7-3.3M20.3 13.7l-3.2 1 .7 3.3M3.7 13.7l3.2 1-.7 3.3M20.3 10.3l-3.2-1 .7-3.3"/></g></symbol>
+    <symbol id="ornament" viewBox="0 0 64 60"><path fill="none" stroke="#e9b949" stroke-width="2" stroke-linecap="round" d="M32 9c-4-6 4-9 6-4"/><rect x="26" y="7" width="12" height="7" rx="2" fill="#e9b949" stroke="#120d24" stroke-width="2"/><circle cx="32" cy="35" r="22" fill="#e2393f" stroke="#120d24" stroke-width="2.2"/><path fill="none" stroke="#f3f6ff" stroke-width="3" stroke-linecap="round" d="M12 31c5 4 9-4 14 0s9-4 14 0 9-4 13 0"/><path fill="none" stroke="#120d24" stroke-width="1.6" stroke-dasharray="3 3" d="M14 42c6 5 12 6 18 6s12-1 18-6"/><ellipse cx="23" cy="25" rx="5" ry="3" fill="#fff" opacity=".55" transform="rotate(-30 23 25)"/></symbol>
     
-    <symbol id="skull" viewBox="0 0 64 64"><path fill="#efeaf8" stroke="#120d24" stroke-width="2.4" stroke-linejoin="round" d="M32 4C17 4 8 14 8 28c0 8 4 13 9 16v9c0 3 2 5 5 5h20c3 0 5-2 5-5v-9c5-3 9-8 9-16C56 14 47 4 32 4z"/><path fill="#120d24" d="M14 28c1-7 11-8 13-2 2 5-3 10-8 9-4-1-6-3-5-7zM50 27c-2-6-11-7-13-1-1 5 4 9 8 8s6-3 5-7zM29 41l3-6 3 6z"/><g stroke="#120d24" stroke-width="2" stroke-linecap="round" fill="none"><path d="M26 50v6M32 50v6M38 50v6"/><path d="M18 12l9 9M20 17l3-3M24 21l3-3"/></g></symbol>
-    <symbol id="ghost-soft" viewBox="0 0 80 100"><path fill="#fff" d="M40 4C20 4 8 20 8 42v50c5-4 9-4 13 0 4-4 9-4 13 0 4-4 8-4 12 0 4-4 9-4 13 0 4-4 8-4 13 0V42C72 20 60 4 40 4z"/><ellipse cx="30" cy="40" rx="5" ry="7" fill="#1b1736"/><ellipse cx="50" cy="40" rx="5" ry="7" fill="#1b1736"/></symbol>
+    <symbol id="gift" viewBox="0 0 64 64"><g stroke="#120d24" stroke-width="2.2" stroke-linejoin="round" transform="rotate(-4 32 38)"><rect x="10" y="28" width="44" height="30" rx="3" fill="#2f8f5b"/><rect x="6" y="18" width="52" height="12" rx="3" fill="#3aa86b"/><path fill="#e2393f" d="M28 18h8v40h-8z"/><path fill="#e2393f" d="M32 18c-6-12-20-10-15-2 3 4 10 3 15 2zM32 18c6-12 20-10 15-2-3 4-10 3-15 2z"/></g><path fill="none" stroke="#f3f6ff" stroke-width="1.4" stroke-dasharray="2.5 3" d="M14 48h12M40 48h10" transform="rotate(-4 32 38)"/></symbol>
+    
     <symbol id="spiral" viewBox="0 0 100 100"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M50 50c3-1 5 2 4 5-2 4-8 4-10 0-3-6 2-12 9-12 9 0 14 9 12 17-3 11-15 15-25 10-14-6-17-21-10-32 8-12 25-15 37-7 14 10 15 30 4 43"/></symbol>
     <filter id="wobble" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter>
-    <symbol id="tomb" viewBox="0 0 30 34"><path fill="#4a3468" d="M3 34V14C3 6 8 2 15 2s12 4 12 12v20z"/><path stroke="#b9a8d2" stroke-width="2" d="M15 10v12M10 15h10"/></symbol>
+    
     <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/><rect x="13.5" y="5" width="4.5" height="14" rx="1.5" fill="currentColor"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
@@ -649,6 +661,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
   <div class="bs"><div class="blob b1"></div><div class="blob b2"></div><div class="grid"></div></div>
   <div class="hw">
     <div class="sky"></div>
+    <div class="snow s2"></div><div class="snow"></div>
     <div class="moon"></div>
     <div class="fog"></div><div class="fog f2"></div>
     <svg class="tree" viewBox="0 0 200 300" aria-hidden="true"><path fill="currentColor" d="M92 300c4-40 2-70-6-98-6-22-22-34-40-38 16-2 30 4 40 14-4-22-18-38-36-46 20 2 34 14 42 32 2-24-6-46-22-62 22 10 32 32 32 56 6-20 22-34 42-38-16 12-26 28-30 46 14-10 32-12 46-6-18 2-34 10-44 24-6 30-2 66 4 116z"/><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M46 164c-12-2-22 6-20 16 2 8 12 8 14 2"/><path d="M50 72c-10-8-24-4-24 6 0 8 10 10 12 4"/><path d="M78 26c-4-12 6-22 16-18 8 4 4 14-2 12"/><path d="M152 94c10-8 24-2 22 8-2 8-12 6-12 0"/><path d="M174 148c12 0 18 12 10 18-6 4-12-2-8-6"/></g></svg>
@@ -659,6 +672,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
 <main class="stage">
   <section class="landing">
     <span class="eyebrow"><i></i><span data-copy="eyebrow"></span></span>
+    <p class="claim hw" data-copy="claim"></p>
     <h1 class="display"><span class="w">QuartzRun</span></h1>
     <p class="lead" data-copy="heroSub"></p>
     <ol class="steps">
@@ -668,7 +682,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
     </ol>
     <div class="theme-switch" role="group" aria-label="Tema">
       <span class="pill"></span>
-      <button data-theme-set="halloween">Halloween</button>
+      <button data-theme-set="navidad">Navidad</button>
       <button data-theme-set="base">QuartzSales</button>
     </div>
     <p class="fine">Prototipo · los kilómetros se guardan en este dispositivo · GPS real con fallback demo</p>
@@ -677,13 +691,14 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
   <div class="device">
     <div class="device-screen">
       <div class="app" id="app" data-view="home">
+        <div class="snow hw" aria-hidden="true"></div>
 
         <!-- ONBOARDING -->
         <div class="onb" id="onb" role="dialog" aria-modal="true" aria-label="Sumate a la carrera">
           <div class="onb-dots"><i class="on"></i><i></i></div>
           <div class="onb-steps">
             <div class="onb-step on" data-step="0">
-              <svg class="onb-mascot hw" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>
+              <svg class="onb-mascot hw" viewBox="0 0 64 60"><use href="#ornament"/></svg>
               <svg class="onb-mascot bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg>
               <span class="kicker" data-copy="eyebrow"></span>
               <h2 class="display" data-copy="onb1Title"></h2>
@@ -709,7 +724,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
           <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
           <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
           <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
-            <svg class="ico-pumpkin" viewBox="0 0 64 60" aria-hidden="true"><use href="#pumpkin"/></svg><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
+            <svg class="ico-ornament" viewBox="0 0 64 60" aria-hidden="true"><use href="#ornament"/></svg><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
           </button>
         </header>
 
@@ -728,7 +743,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
                 <div><b class="num" id="teamKmLeft">0</b><small>km faltan</small></div>
               </div>
               <div class="bar-wrap"><div class="bar-fill" id="teamFill"></div>
-                <div class="bar-walker" id="teamWalker"><svg class="hw" viewBox="0 0 64 60" width="30"><use href="#pumpkin"/></svg><div class="dot bs"></div></div>
+                <div class="bar-walker" id="teamWalker"><svg class="hw" viewBox="0 0 64 60" width="30"><use href="#ornament"/></svg><div class="dot bs"></div></div>
               </div>
               <div class="bar-meta num"><span>0 km</span><span>meta <span id="teamGoalTxt"></span> km</span></div>
               <p class="runners" id="runners"></p>
@@ -768,7 +783,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
               <div class="signal" id="signal" data-q="0"><span class="bars"><i></i><i></i><i></i></span><span id="signalTxt">GPS en espera</span></div>
               <div class="dial">
                 <svg class="orbit" viewBox="0 0 270 270"><circle class="o-track" cx="135" cy="135" r="126" fill="none" stroke-width="3"/><circle class="o-progress" id="oProg" cx="135" cy="135" r="126" fill="none" stroke-width="5" stroke-dasharray="791.7" stroke-dashoffset="791.7"/></svg>
-                <div class="orbiter"><div class="rider"><svg class="hw" viewBox="0 0 48 22"><use href="#bat"/></svg><div class="dotr bs"></div></div></div>
+                <div class="orbiter"><div class="rider"><svg class="hw" viewBox="0 0 48 22"><use href="#flake"/></svg><div class="dotr bs"></div></div></div>
                 <div class="readout">
                   <b class="num" id="runKm">0,00</b>
                   <small>kilómetros</small>
@@ -916,7 +931,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
         <!-- RITMO NECESARIO -->
         <div class="unlock lightbox" id="paceBox" role="dialog" aria-modal="true" aria-labelledby="paceTitle">
           <div class="unlock-card lb-card">
-            <svg class="big-ico hw" viewBox="0 0 64 60" aria-hidden="true"><use href="#pumpkin"/></svg>
+            <svg class="big-ico hw" viewBox="0 0 64 60" aria-hidden="true"><use href="#ornament"/></svg>
             <svg class="lb-ico bs" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-run"/></svg>
             <span class="kicker" id="paceKicker"></span>
             <h3 class="display" id="paceTitle"></h3>
@@ -928,7 +943,7 @@ body[data-theme="halloween"] .onb{background:radial-gradient(100% 55% at 50% 10%
         <!-- UNLOCK -->
         <div class="unlock" id="unlock" role="dialog" aria-modal="true" aria-labelledby="unlockName">
           <div class="unlock-card">
-            <svg class="big-ico hw" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>
+            <svg class="big-ico hw" viewBox="0 0 64 60"><use href="#ornament"/></svg>
             <svg class="big-ico bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg>
             <span class="kicker" data-copy="unlockKicker"></span>
             <h3 class="display" id="unlockName"></h3>
@@ -962,10 +977,10 @@ const counts = a => { const t = new Date(a.date).getTime(); return t >= RACE.sta
 const raceActs = () => S.acts.filter(counts);
 /* Premios (en producción, desde admin; sujetos a aprobación de RRHH) */
 const PRIZES = [
-  { who: '1.º puesto', title: 'Día de descanso', txt: 'Un día libre para cada integrante de la casa ganadora.', ico: 'skull' },
-  { who: '2.º puesto', title: 'Salida anticipada', txt: 'Un viernes a elección, cada integrante termina 2 horas antes.', ico: 'pumpkin' },
-  { who: '3.º puesto', title: 'Dormir un rato más', txt: 'Una mañana para arrancar 2 horas más tarde.', ico: 'pumpkin' },
-  { who: 'Meta personal', title: 'Desayuno de cumpleaños', txt: 'Quien complete su meta personal recibe un desayuno en su casa el día de su cumpleaños.', ico: 'pumpkin' },
+  { who: '1.º puesto', title: 'Día de descanso', txt: 'Un día libre para cada integrante de la casa ganadora.', ico: 'gift' },
+  { who: '2.º puesto', title: 'Salida anticipada', txt: 'Un viernes a elección, cada integrante termina 2 horas antes.', ico: 'ornament' },
+  { who: '3.º puesto', title: 'Dormir un rato más', txt: 'Una mañana para arrancar 2 horas más tarde.', ico: 'ornament' },
+  { who: 'Meta personal', title: 'Desayuno de cumpleaños', txt: 'Quien complete su meta personal recibe un desayuno en su casa el día de su cumpleaños.', ico: 'ornament' },
 ];
 const MANUAL_MAX_KM = 21, MAX_KMH = 20, BIKE_MAX_KMH = 40;
 const BIKE_FACTOR = 1 / 3; // en bici, cada 3 km recorridos cuentan 1
@@ -1023,7 +1038,7 @@ const GOALS = [5, 10, 21, 42];
 /* ---- Copy por tema: el producto no cambia, la voz sí ---- */
 const COPY = {
   base: {
-    eyebrow: 'QuartzSales · Carrera interna',
+    eyebrow: 'QuartzSales · Carrera interna', claim: '',
     heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 1 de diciembre.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
@@ -1044,15 +1059,15 @@ const COPY = {
     achKicker: 'Hitos personales', achTitle: 'Logros',
     unlockKicker: 'Logro desbloqueado', unlockCta: 'Continuar',
   },
-  halloween: {
-    eyebrow: 'QuartzSales · Edición Halloween 2026',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se presenta en Halloween y se corre del 1 de noviembre al 1 de diciembre.',
+  navidad: {
+    eyebrow: 'QuartzSales · Camino a Navidad 2026', claim: 'It’s time',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 1 de diciembre, camino a Navidad.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
-    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Edición Halloween de la carrera entre casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
+    onb1Title: 'Te damos la bienvenida a la QuartzRun', onb1Sub: 'Camino a Navidad con la carrera entre casas de QuartzSales. Ingresá tu nombre y te mostramos la casa que representás.',
     onb3Title: 'Tu objetivo personal', onb3Sub: 'Además de la meta de tu casa, definí una meta personal acorde a tu ritmo.',
-    homeKicker: 'Tu progreso', headline: ['Listo para arrancar', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
+    homeKicker: 'Tu progreso', headline: ['It’s time', 'Buen comienzo', 'Vas muy bien', 'Objetivo cumplido'],
     startCta: 'Iniciar actividad',
     nextM: 'Te faltan <b>{km} km</b> para «{m}»', allM: '<b>Completaste todos los hitos.</b>',
     standTitle: 'Posiciones', meKicker: 'Individual', meTitle: 'Mi carrera',
@@ -1069,7 +1084,7 @@ const COPY = {
 };
 
 /* ---- State ---- */
-let S = load() || { user: null, acts: [], unlocked: [], theme: 'halloween' };
+let S = load() || { user: null, acts: [], unlocked: [], theme: 'navidad' };
 if (S.user && !ROSTER.some(p => p.id === S.user.id)) S.user = null; // equipos renombrados: re-onboarding
 function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
 function save() {
@@ -1127,7 +1142,7 @@ function tween(el, to, d = 1, dur = 1000) {
 }
 function burst(x, y, n = 22) {
   if (reduce) return;
-  const fx = $('#fx'), hw = theme() === 'halloween';
+  const fx = $('#fx'), hw = theme() === 'navidad';
   const cols = ['var(--accent)', 'var(--accent-2)', 'var(--t2)', 'var(--t3)'];
   for (let i = 0; i < n; i++) {
     const p = document.createElement('span');
@@ -1135,21 +1150,21 @@ function burst(x, y, n = 22) {
     p.style.left = x + 'px'; p.style.top = y + 'px';
     p.style.setProperty('--dx', Math.cos(a) * r + 'px'); p.style.setProperty('--dy', Math.sin(a) * r - 40 + 'px');
     p.style.setProperty('--rot', (Math.random() * 540 - 270) + 'deg');
-    if (hw) { p.className = 'p'; p.style.color = i % 4 ? '#0b0512' : '#ff9a1f';
-      p.innerHTML = i % 5 === 0 ? '<svg viewBox="0 0 64 60" width="22"><use href="#pumpkin"/></svg>' : '<svg viewBox="0 0 48 22" width="26"><use href="#bat"/></svg>'; }
+    if (hw) { p.className = 'p'; p.style.color = i % 3 ? '#e8f0ff' : '#f6dd8a';
+      p.innerHTML = i % 5 === 0 ? '<svg viewBox="0 0 64 60" width="22"><use href="#ornament"/></svg>' : '<svg viewBox="0 0 24 24" width="20"><use href="#flake"/></svg>'; }
     else { p.className = 'p dot'; p.style.setProperty('--c', cols[i % 4]); }
     fx.appendChild(p); setTimeout(() => p.remove(), 1300);
   }
 }
-/* Bandada de murciélagos que salen volando desde un botón (Halloween) */
+/* Ráfaga de copos que salen volando desde un botón (Navidad) */
 function batFlock(x, y, n = 9) {
-  if (reduce || theme() !== 'halloween') return;
+  if (reduce || theme() !== 'navidad') return;
   const fx = $('#fx'), W = $('#app').clientWidth;
   for (let i = 0; i < n; i++) {
     const b = document.createElement('span'), size = 18 + Math.random() * 22, side = Math.random() > .5 ? 1 : -1;
     const dx = side * (60 + Math.random() * (W * .55)), dy = -(260 + Math.random() * 420), dur = 1300 + Math.random() * 900;
     b.className = 'bat-fx'; b.style.left = x + 'px'; b.style.top = y + 'px'; b.style.width = size + 'px';
-    b.innerHTML = `<svg viewBox="0 0 48 22" style="animation-duration:${.14 + Math.random() * .1}s"><use href="#bat"/></svg>`;
+    b.innerHTML = `<svg viewBox="0 0 48 22" style="animation-duration:${.9 + Math.random() * .8}s"><use href="#flake"/></svg>`;
     fx.appendChild(b);
     const mid = { x: dx * .35 + side * (20 + Math.random() * 40), y: dy * .45 + (Math.random() * 60 - 30) };
     b.animate([
@@ -1162,7 +1177,7 @@ function batFlock(x, y, n = 9) {
 function centerOf(el) { const a = $('#app').getBoundingClientRect(), b = el.getBoundingClientRect(); return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2]; }
 function toast(html) {
   const el = document.createElement('div'); el.className = 'toast';
-  el.innerHTML = (theme() === 'halloween' ? '<svg viewBox="0 0 64 60"><use href="#pumpkin"/></svg>' : '<svg viewBox="0 0 24 24" style="color:var(--accent-2)"><use href="#i-check"/></svg>') + `<span>${html}</span>`;
+  el.innerHTML = (theme() === 'navidad' ? '<svg viewBox="0 0 64 60"><use href="#ornament"/></svg>' : '<svg viewBox="0 0 24 24" style="color:var(--accent-2)"><use href="#i-check"/></svg>') + `<span>${html}</span>`;
   $('#toasts').appendChild(el);
   setTimeout(() => { el.classList.add('bye'); setTimeout(() => el.remove(), 400); }, 2800);
 }
@@ -1177,7 +1192,7 @@ function bindSeg(seg, cb) {
 
 /* ---- Copy & tema ---- */
 function applyCopy() {
-  $('#themeBtn').setAttribute('aria-label', theme() === 'halloween' ? 'Cambiar al tema QuartzSales' : 'Cambiar al tema Halloween');
+  $('#themeBtn').setAttribute('aria-label', theme() === 'navidad' ? 'Cambiar al tema QuartzSales' : 'Cambiar al tema Navidad');
   $$('[data-copy]').forEach(el => { el.innerHTML = t(el.dataset.copy); });
   const ts = $('.theme-switch');
   $$('button', ts).forEach(b => b.setAttribute('aria-pressed', b.dataset.themeSet === theme()));
@@ -1194,7 +1209,7 @@ function setTheme(th, origin) {
   vib(12);
 }
 $$('[data-theme-set]').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.themeSet, b)));
-$('#themeBtn').addEventListener('click', e => setTheme(theme() === 'halloween' ? 'base' : 'halloween', e.currentTarget));
+$('#themeBtn').addEventListener('click', e => setTheme(theme() === 'navidad' ? 'base' : 'navidad', e.currentTarget));
 
 /* ---- Render ---- */
 function renderHead() {
@@ -1244,7 +1259,7 @@ function renderHome() {
       <span class="mini"><i data-w="${Math.min(100, k / teamGoal(x.id) * 100)}"></i></span></li>`;
   }).join('');
   $('#prizeList').innerHTML = PRIZES.map((x, i) => `<li class="prize-item" style="animation-delay:${i * 60}ms">
-    <span class="prize-ico"><svg class="hw" viewBox="${x.ico === 'ghost' ? '0 0 64 72' : x.ico === 'skull' ? '0 0 64 64' : '0 0 64 60'}"><use href="#${x.ico}"/></svg><svg class="bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg></span>
+    <span class="prize-ico"><svg class="hw" viewBox="${x.ico === 'gift' ? '0 0 64 64' : '0 0 64 60'}"><use href="#${x.ico}"/></svg><svg class="bs" viewBox="0 0 48 48"><use href="#i-medal"/></svg></span>
     <span><small>${x.who}</small><b>${x.title}</b><span>${x.txt}</span></span></li>`).join('');
   requestAnimationFrame(() => $$('#raceList .mini i').forEach(i => i.style.width = i.dataset.w + '%'));
   $('#raceCounts').textContent = `Caminata y corrida suman el 100% de los km. En bici, cada 3 km cuentan 1. Las cargas manuales tienen un máximo de ${MANUAL_MAX_KM} km.`;
@@ -1282,8 +1297,8 @@ function renderRank(animate = true) {
   const marks = [.1, .2, .3, .4, .5, .6, .7, .8, .9].map(f => { const p = road.getPointAtLength(L * f);
     return `<circle cx="${p.x}" cy="${p.y}" r="${f === .5 ? 5 : 3}" fill="var(--muted)" opacity="${f === .5 ? .8 : .45}"/>` + (f === .5 ? `<text x="${p.x + 9}" y="${p.y + 4}" font-size="10" font-weight="700" fill="var(--muted)">50%</text>` : ''); }).join('');
   const end = road.getPointAtLength(L);
-  $('#mapMarks').innerHTML = marks + (theme() === 'halloween'
-    ? `<circle cx="${end.x}" cy="${end.y - 2}" r="15" fill="#f6dd8a" opacity=".95"/><circle cx="${end.x}" cy="${end.y - 2}" r="22" fill="#f6dd8a" opacity=".15"/>`
+  $('#mapMarks').innerHTML = marks + (theme() === 'navidad'
+    ? `<circle cx="${end.x}" cy="${end.y - 2}" r="22" fill="#f6dd8a" opacity=".15"/><path transform="translate(${end.x} ${end.y - 2})" d="M0-15l4.4 9 9.9 1.4-7.2 7 1.7 9.8L0 7.6l-8.8 4.6 1.7-9.8-7.2-7 9.9-1.4z" fill="#f6dd8a" stroke="#120d24" stroke-width="1.5" stroke-linejoin="round"/>`
     : `<path d="M${end.x - 2} ${end.y + 10}V${end.y - 16}l16 6-16 6" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>`);
   const tok = $('#mapTokens');
   if (!tok.children.length) tok.innerHTML = TEAMS.map(x => `<g class="token" data-id="${x.id}"><circle r="12" fill="${teamVar(x.id)}"/><text style="fill:${teamInk(x.id)}">${x.short}</text></g>`).join('');
@@ -1316,10 +1331,10 @@ function renderRank(animate = true) {
     li.animate([{ transform: `translateY(${dy}px)` }, { transform: 'none' }], { duration: 700, easing: 'cubic-bezier(.34,1.56,.64,1)' }); });
 }
 function renderAch() {
-  const hw = theme() === 'halloween';
+  const hw = theme() === 'navidad';
   $('#achGrid').innerHTML = ACH.map((a, i) => {
     const ok = achOk(a), left = a.need - achVal(a);
-    const ico = hw ? ['<svg class="ach-ico" viewBox="0 0 64 60"><use href="#pumpkin"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 64"><use href="#skull"/></svg>'][i % 2] : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
+    const ico = hw ? ['<svg class="ach-ico" viewBox="0 0 64 60"><use href="#ornament"/></svg>', '<svg class="ach-ico" viewBox="0 0 64 64"><use href="#gift"/></svg>'][i % 2] : '<svg class="ach-ico" viewBox="0 0 48 48"><use href="#i-medal"/></svg>';
     const miss = a.kind === 'km' ? `Faltan ${fmt(left, 1)} km` : a.kind === 'streak' ? `Te faltan ${left} ${left === 1 ? 'día' : 'días'} seguidos` : `Faltan ${left} ${left === 1 ? 'actividad' : 'actividades'}`;
     return `<button class="ach ${ok ? 'unlocked' : 'locked'}" aria-label="${a.name}, ${ok ? 'desbloqueado' : 'bloqueado'}">
       <div class="ach-inner"><div class="ach-face ach-front">${ok ? '' : '<svg class="lock"><use href="#i-lock"/></svg>'}${ico}
@@ -1535,7 +1550,7 @@ if (!FEATURES.gpsRun) {
   document.body.classList.add('no-gps');
   $('#captureBtn').className = 'btn btn-primary levitate alt-btn';
   $('#nudgeGo').textContent = 'Entendido';
-  COPY.base.step2 = COPY.halloween.step2 = 'Grabá tu salida con la app que uses y subí la captura.';
+  COPY.base.step2 = COPY.navidad.step2 = 'Grabá tu salida con la app que uses y subí la captura.';
 }
 $('#capChips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return;
   $$('#capChips .chip').forEach(x => x.setAttribute('aria-pressed', x === b)); $('#kmInput').value = fmt(+b.dataset.km, 2); vib(6); updateBike(); });
@@ -1650,7 +1665,7 @@ function showUnlock() {
   const a = unlockQueue.shift(); if (!a) return;
   $('#unlockName').textContent = a.name; $('#unlockTxt').textContent = a.txt;
   $('#unlock').classList.add('on'); vib([20, 50, 20, 50, 40]);
-  setTimeout(() => { const [x, y] = centerOf($(`.unlock-card .big-ico.${theme() === 'halloween' ? 'hw' : 'bs'}`)); burst(x, y, 30); }, 350);
+  setTimeout(() => { const [x, y] = centerOf($(`.unlock-card .big-ico.${theme() === 'navidad' ? 'hw' : 'bs'}`)); burst(x, y, 30); }, 350);
   $('#unlockOk').focus({ preventScroll: true });
 }
 $('#unlockOk').addEventListener('click', () => { $('#unlock').classList.remove('on'); if (unlockQueue.length) setTimeout(showUnlock, 450); else setTimeout(() => goto('me'), 300); });
@@ -1717,16 +1732,19 @@ $('#paceInfo').addEventListener('click', openPace);
 $('#paceOk').addEventListener('click', closePace);
 $('#paceBox').addEventListener('click', e => { if (e.target.id === 'paceBox') closePace(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('#paceBox').classList.contains('on')) closePace(); });
-/* Fantasma translúcido que cruza el fondo cada tanto (solo Halloween) */
-const GHOST_SVG = `<svg viewBox="0 0 80 100" aria-hidden="true"><defs><linearGradient id="gfG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".7" stop-color="#efeaff" stop-opacity=".9"/><stop offset="1" stop-color="#d9d0ff" stop-opacity=".25"/></linearGradient></defs>
-  <path fill="url(#gfG)" d="M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z">
-    <animate attributeName="d" dur="1.1s" repeatCount="indefinite" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" values="M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z;M40 6C21 6 10 21 10 42V86c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0V42C70 21 59 6 40 6Z;M40 6C21 6 10 21 10 42V86c5 6 10 6 15 0c5-6 10-6 15 0c5 6 10 6 15 0c5-6 10-6 15 0V42C70 21 59 6 40 6Z"/></path>
-  <g fill="#1b1736"><ellipse cx="30" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse>
-  <ellipse cx="50" cy="40" rx="5" ry="7"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="7;7;.8;7;7" keyTimes="0;.86;.9;.94;1"/></ellipse>
-  <ellipse cx="40" cy="56" rx="3.2" ry="4"><animate attributeName="ry" dur="2.2s" repeatCount="indefinite" values="3;5;3"/></ellipse></g></svg>`;
-/* Fantasma que cruza el fondo cada tanto (solo Halloween): flota en onda, se balancea, parpadea y el borde ondula */
+/* Muñeco de nieve translúcido que cruza el fondo cada tanto (solo Navidad) */
+const GHOST_SVG = `<svg viewBox="0 0 80 100" aria-hidden="true">
+  <g stroke="#6b5440" stroke-width="2.4" stroke-linecap="round" fill="none"><path d="M22 62 6 52M10 55l-4 6M58 62l16-12M70 53l5 5"/></g>
+  <circle cx="40" cy="72" r="24" fill="#fff"/><circle cx="40" cy="36" r="17" fill="#fff"/>
+  <path fill="#e2393f" d="M24 50c10 5 22 5 32 0l1 6c-10 4-24 4-34 0z"/><path fill="#e2393f" d="M48 54l6 16-7 1-4-15z"/>
+  <path fill="#1b2340" d="M27 20h26l-3-3V5H30v12z"/>
+  <g fill="#1b2340"><ellipse cx="34" cy="33" rx="2.6" ry="3.2"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="3.2;3.2;.6;3.2;3.2" keyTimes="0;.86;.9;.94;1"/></ellipse>
+  <ellipse cx="46" cy="33" rx="2.6" ry="3.2"><animate attributeName="ry" dur="4.3s" repeatCount="indefinite" values="3.2;3.2;.6;3.2;3.2" keyTimes="0;.86;.9;.94;1"/></ellipse>
+  <circle cx="40" cy="66" r="2.2"/><circle cx="40" cy="76" r="2.2"/><circle cx="40" cy="86" r="2.2"/></g>
+  <path fill="#f08a2e" d="M40 38l12 3-12 2z"/></svg>`;
+/* Muñeco de nieve que cruza el fondo cada tanto (solo Navidad): flota en onda, se balancea y parpadea */
 function spawnGhost() {
-  if (reduce || theme() !== 'halloween' || document.visibilityState !== 'visible') return;
+  if (reduce || theme() !== 'navidad' || document.visibilityState !== 'visible') return;
   const app = $('#app'), w = app.clientWidth, ltr = Math.random() > .5, size = 64 + Math.random() * 30;
   const g = document.createElement('div'); g.className = 'ghost-float' + (ltr ? '' : ' rtl');
   g.style.width = size + 'px'; g.style.top = (16 + Math.random() * 52) + '%';
@@ -1761,7 +1779,7 @@ setInterval(remTick, 30000); setTimeout(remTick, 1500);
       box.innerHTML = `<div class="team-opt" aria-checked="true" style="--team:${teamVar(x.id)};--team-ink:${teamInk(x.id)}">
         <span class="team-badge" style="--team:${teamVar(x.id)}">${x.short}</span>
         <div><small>Representás a</small><b>${x.name}</b></div></div>`;
-      vib(10); if (theme() === 'halloween') { const [cx, cy] = centerOf($('.team-badge', box)); burst(cx, cy, 6); }
+      vib(10); if (theme() === 'navidad') { const [cx, cy] = centerOf($('.team-badge', box)); burst(cx, cy, 6); }
     } else {
       box.innerHTML = norm(draft.name).length > 1 ? '<p class="hint">No encontramos ese nombre en las casas. Probá con tu nombre o tu apodo.</p>' : '';
     }
@@ -1796,7 +1814,7 @@ $('#resetBtn').addEventListener('click', () => {
 });
 
 /* ---- Init ---- */
-document.body.dataset.theme = S.theme || 'halloween';
+document.body.dataset.theme = COPY[S.theme] ? S.theme : 'navidad';
 applyCopy(); setRunState('idle'); renderAll(false);
 requestAnimationFrame(() => $$('.seg').forEach(segPill));
 window.addEventListener('resize', () => { $$('.seg').forEach(segPill); applyCopy(); });
