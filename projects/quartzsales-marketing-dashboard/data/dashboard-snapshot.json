@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T14:44:05.620Z",
+  "generatedAt": "2026-11-02T15:06:08.451Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T14:42:59.320Z",
+      "lastSynced": "2026-11-02T15:04:51.520Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T14:43:06.555Z",
+      "lastSynced": "2026-11-02T15:04:58.768Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -63,38 +63,43 @@
           "url": "https://www.linkedin.com/posts/involves_ia-visibilidade-e-o-novo-padr%C3%A3o-de-execu%C3%A7%C3%A3o-activity-7523022137519960064-pIAR",
           "date": "2026-11-02T14:04:08.577Z",
           "likes": 1,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         },
         {
           "text": "español 🌎 - ¡El Involves Trade Connect Ecuador sigue dejando huella! \n\nRevive los mejores momentos de nuestro encuentro en Quito, donde líderes del sector se reunieron para intercambiar ideas, compartir buenas prácticas y conversar sobre cómo transformar datos en estrategias clave para la ejecución en el punto de venta.\n\nAgradecemos a todos los expertos, líderes y marcas que nos acompañaron y sumaron su voz a esta conversación para impulsar el crecimiento del trade marketing en la región.\n\nDale",
           "url": "https://www.linkedin.com/posts/involves_espa%C3%B1ol-el-involves-trade-connect-ecuador-activity-7521995623143821312-z39p",
           "date": "2026-10-30T18:05:08.478Z",
           "likes": 23,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         },
         {
           "text": "DKT International enfrentaba el reto de sustituir procesos manuales por una operación con más visibilidad y métricas confiables. Con Involves Stage, logró estructurar la recolección de información en tiempo real y mejorar el seguimiento de su ejecución.\n\nEl resultado: +11% de productividad del equipo de campo, mayor visibilidad de indicadores de negocio y una base estructurada de 2,000 médicos y hospitales.\n\n🚀 Descubre cómo la tecnología está transformando la operación de DKT International. Lee",
           "url": "https://www.linkedin.com/posts/involves_dkt-international-activity-7521679122163453953-vMNY",
           "date": "2026-10-29T21:07:28.764Z",
           "likes": 6,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         },
         {
           "text": "A Alpargatas, responsável pela Havaianas, encontrou no Involves Stage um parceiro para ampliar a visibilidade da operação, aumentar a confiabilidade das informações e fortalecer a execução da estratégia comercial. \n\nCom mais de 450 promotores em campo e mais de 20 mil coletas mensais, a operação alcançou 40% de crescimento na conquista de pontos extras, além de ganhar mais agilidade para identificar oportunidades e agir no PDV.\n\nO resultado vai além da tecnologia: envolve dados de qualidade, pro",
           "url": "https://www.linkedin.com/posts/involves_case-alpargatas-activity-7521258100415307776-iTZm",
           "date": "2026-10-28T17:14:29.357Z",
           "likes": 9,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         },
         {
           "text": "¿Qué problemas de ejecución puedes identificar en esta imagen? ¿Espacios vacíos en el anaquel? ¿Oportunidades de mejora en la organización y el abastecimiento? ¿Qué más? 👀\n\nAunque parecen problemas operativos del día a día, estas situaciones pueden tener un impacto directo en la disponibilidad de los productos, la experiencia de compra y los resultados de ventas. Por eso, mantener una buena ejecución en la tienda requiere mucho más que identificar problemas: es necesario entender qué está pasan",
           "url": "https://www.linkedin.com/posts/involves_qu%C3%A9-problemas-de-ejecuci%C3%B3n-puedes-identificar-activity-7520953306895171584-1UpR",
           "date": "2026-10-27T21:03:20.919Z",
           "likes": 9,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T14:43:36.323Z",
+      "postsLastSynced": "2026-11-02T15:05:40.723Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -131,7 +136,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T14:43:15.590Z",
+      "lastSynced": "2026-11-02T15:05:12.702Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -140,10 +145,11 @@
           "url": "https://www.linkedin.com/posts/ailet_ailet-in-latam-event-series-in-mx-and-br-activity-7520833832128905216-dJsB",
           "date": "2026-10-27T13:08:35.915Z",
           "likes": 14,
-          "comments": 0
+          "comments": 0,
+          "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T14:43:40.978Z",
+      "postsLastSynced": "2026-11-02T15:05:47.448Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -183,16 +189,8 @@
       "lastSynced": null,
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
-      "posts": [
-        {
-          "text": "No posts found on this company page.",
-          "url": null,
-          "date": null,
-          "likes": null,
-          "comments": null
-        }
-      ],
-      "postsLastSynced": "2026-11-02T14:43:47.211Z",
+      "posts": [],
+      "postsLastSynced": "2026-11-02T15:05:53.008Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -229,11 +227,20 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": "2026-11-02T14:43:31.194Z",
+      "lastSynced": "2026-11-02T15:05:33.199Z",
       "syncStatus": "ok",
       "syncError": null,
-      "posts": [],
-      "postsLastSynced": "2026-11-02T14:43:53.709Z",
+      "posts": [
+        {
+          "text": "Un anaquel vacío nos dice que algo está pasando. Entender si el origen está en el inventario o en la ejecución te permite saber dónde actuar👍.  \n\nEn este artículo exploramos qué ocurre detrás de los problemas de disponibilidad en punto de venta 🛒. \n\n#RetailExecution #TradeMarketing #PuntoDeVenta",
+          "url": "https://www.linkedin.com/posts/storecheck-global_retailexecution-trademarketing-puntodeventa-activity-7519046769033543680-nVOG",
+          "date": "2026-10-22T14:47:26.871Z",
+          "likes": 10,
+          "comments": 0,
+          "stale": true
+        }
+      ],
+      "postsLastSynced": "2026-11-02T15:05:57.405Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -273,8 +280,17 @@
       "lastSynced": "2026-10-31T15:13:29.943Z",
       "syncStatus": "ok",
       "syncError": null,
-      "posts": [],
-      "postsLastSynced": "2026-11-02T14:43:59.659Z",
+      "posts": [
+        {
+          "text": "Trusted LinkedIn network, I’m hiring and know I can count on your recommendations.\n\nIf you know a smart, driven, accountable, hungry enterprise seller who’d rather go deep on a handful of big accounts than skim hundreds, I’d love an intro.\n\nWe’re adding a Strategic Account Executive at Repsly to own a short list of Fortune 500 CPG brands. \n\nI want a problem solver with high EQ who believes selling is serving. \n\nThey’ll find the problem, multi-thread to the exec level, and run the deal through cl",
+          "url": "https://www.linkedin.com/posts/anthonymadrigal_trusted-linkedin-network-im-hiring-and-activity-7520492118046576640-5gix",
+          "date": "2026-10-26T14:38:23.835Z",
+          "likes": 33,
+          "comments": 0,
+          "stale": true
+        }
+      ],
+      "postsLastSynced": "2026-11-02T15:06:02.063Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -314,8 +330,17 @@
       "lastSynced": null,
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
-      "posts": [],
-      "postsLastSynced": "2026-11-02T14:44:05.620Z",
+      "posts": [
+        {
+          "text": "Looking for new ways to drive grocery sales? The newest edition of FORM Forward breaks down 8 product placement strategies - and why execution is what makes or breaks them. \n\nRead the full edition 👇",
+          "url": "https://www.linkedin.com/posts/form-com_looking-for-new-ways-to-drive-grocery-sales-ugcPost-7500925443299172352--Nak",
+          "date": "2026-09-02T14:40:38.383Z",
+          "likes": 28,
+          "comments": 2,
+          "stale": true
+        }
+      ],
+      "postsLastSynced": "2026-11-02T15:06:08.451Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
