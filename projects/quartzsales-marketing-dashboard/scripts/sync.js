@@ -110,7 +110,7 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
 function extractPost(raw) {
   const text = raw?.text ?? raw?.content ?? raw?.postText ?? raw?.commentary ?? null;
   const url = raw?.url ?? raw?.postUrl ?? raw?.link ?? null;
-  const publishedAt = raw?.postedAt ?? raw?.publishedAt ?? raw?.date ?? raw?.timestamp ?? null;
+  const date = raw?.postedAt ?? raw?.publishedAt ?? raw?.date ?? raw?.timestamp ?? null;
   const likes = typeof raw?.likesCount === 'number' ? raw.likesCount
     : typeof raw?.numLikes === 'number' ? raw.numLikes
     : typeof raw?.likes === 'number' ? raw.likes
@@ -123,7 +123,7 @@ function extractPost(raw) {
   return {
     text: typeof text === 'string' ? text.slice(0, 500) : null,
     url: typeof url === 'string' ? url : null,
-    publishedAt: typeof publishedAt === 'string' ? publishedAt : null,
+    date: typeof date === 'string' ? date : null,
     likes,
     comments,
   };
