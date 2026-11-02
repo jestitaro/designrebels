@@ -989,6 +989,15 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 }
 .competitor-post-meta a { color: var(--cyan); text-decoration: none; }
 .competitor-post-meta a:hover { text-decoration: underline; }
+.competitor-post-stale-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
 
 /* ── MODALS ─────────────────────────────────── */
 .modal-overlay {
@@ -2670,6 +2679,11 @@ function openCompetitorPosts(competitorId) {
   document.getElementById('competitor-posts-list').innerHTML = posts.length
     ? posts.map(p => `
         <div class="competitor-post-item">
+          ${p.stale ? `
+            <div class="competitor-post-stale-badge">
+              <i class="fa-solid fa-clock"></i> No postearon en la última semana — esta es su publicación más reciente
+            </div>
+          ` : ''}
           <div class="competitor-post-text">${escapeHtml(p.text || '(sin texto)')}</div>
           <div class="competitor-post-meta">
             ${p.date ? `<span>${escapeHtml(p.date)}</span>` : ''}

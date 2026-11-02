@@ -12,10 +12,13 @@
 //    A/B/C, ver abajo), para no gastar de más la cuota de Apify con 11
 //    empresas por corrida.
 //  - Posts recientes de los competidores "Directo" (los más comparables —
-//    quedan afuera los "Adyacente"): sólo los lunes, filtrando a sólo los
-//    posts de los últimos 7 días (la semana anterior a la corrida). Es
-//    barato — 6 empresas x hasta 5 posts por semana — así que no hace falta
-//    repartirlo en grupos como las métricas.
+//    quedan afuera los "Adyacente"): sólo los lunes, priorizando los posts
+//    de los últimos 7 días (la semana anterior a la corrida). Si una
+//    empresa no publicó nada en esa ventana pero sí tiene posts más viejos,
+//    se muestra igual el más reciente marcado como `stale: true` — así el
+//    dashboard puede avisar "no postearon esta semana" en vez de no mostrar
+//    nada. Es barato — 6 empresas x hasta 5 posts por semana — así que no
+//    hace falta repartirlo en grupos como las métricas.
 //
 // Cadencia A/B/C: config/sources.json asigna cada competidor a un grupo
 // (A, B o C). Cada corrida sólo sincroniza el grupo del día, rotando
@@ -156,6 +159,26 @@ function isWithinLookback(post) {
   return d.getTime() >= Date.now() - POSTS_LOOKBACK_DAYS * 24 * 3600 * 1000;
 }
 
+// El actor devuelve este texto como único item cuando la empresa no tiene
+// ningún post (no es contenido real, no hay que mostrarlo ni usarlo como
+// fallback de "última publicación").
+function isPlaceholderPost(post) {
+  return post.text === 'No posts found on this company page.' && !post.url && !post.date;
+}
+
+// Más reciente primero. Fechas no parseables/ausentes quedan al final (no
+// sabemos cuándo fueron, pero preferimos mostrar antes algo con fecha cierta).
+function sortByDateDesc(posts) {
+  return posts.slice().sort((a, b) => {
+    const da = a.date ? new Date(a.date).getTime() : NaN;
+    const db = b.date ? new Date(b.date).getTime() : NaN;
+    if (Number.isNaN(da) && Number.isNaN(db)) return 0;
+    if (Number.isNaN(da)) return 1;
+    if (Number.isNaN(db)) return -1;
+    return db - da;
+  });
+}
+
 async function fetchCompanyPosts(token, linkedinUrl) {
   const url = `${APIFY_POSTS_URL}?token=${encodeURIComponent(token)}&timeout=90&memory=256`;
   const res = await fetch(url, {
@@ -200,21 +223,37 @@ async function fetchCompanyPosts(token, linkedinUrl) {
     }
   }
 
-  const recentPosts = items.map(extractPost).filter(isWithinLookback).slice(0, MAX_POSTS_PER_COMPANY);
+  const realPosts = sortByDateDesc(items.map(extractPost).filter((p) => !isPlaceholderPost(p)));
+  const recentPosts = realPosts.filter(isWithinLookback).slice(0, MAX_POSTS_PER_COMPANY);
+
+  let posts;
+  if (recentPosts.length > 0) {
+    posts = recentPosts.map((p) => ({ ...p, stale: false }));
+  } else if (realPosts.length > 0) {
+    // Nada en los últimos POSTS_LOOKBACK_DAYS días, pero la empresa sí tiene
+    // posts más viejos — mostramos el más reciente igual, marcado `stale`,
+    // para que el dashboard pueda avisar "no postearon esta semana, la
+    // última vez fue el <fecha>" en vez de no mostrar nada.
+    posts = [{ ...realPosts[0], stale: true }];
+  } else {
+    posts = [];
+  }
 
   if (items.length === 0) {
     console.warn(
       `    (posts) 0 resultados para ${linkedinUrl} — puede ser que la empresa no haya posteado ` +
       'recientemente, o que cambió el esquema del actor (sin verificar en vivo, ver nota al inicio del archivo).'
     );
+  } else if (realPosts.length === 0) {
+    console.warn(`    (posts) ${linkedinUrl}: sin posts reales (sólo placeholder "no posts found" del actor).`);
   } else if (recentPosts.length === 0) {
     console.warn(
-      `    (posts) ${linkedinUrl}: ${items.length} posts encontrados pero ninguno de los últimos ` +
-      `${POSTS_LOOKBACK_DAYS} días.`
+      `    (posts) ${linkedinUrl}: ${realPosts.length} posts encontrados pero ninguno de los últimos ` +
+      `${POSTS_LOOKBACK_DAYS} días — mostrando el más reciente (${realPosts[0].date || 'sin fecha'}) como referencia.`
     );
   }
 
-  return recentPosts;
+  return posts;
 }
 
 async function fetchYouTubeChannel(apiKey, handle) {
