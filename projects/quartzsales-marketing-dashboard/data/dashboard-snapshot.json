@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T14:29:18.103Z",
+  "generatedAt": "2026-11-02T14:44:05.620Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T14:28:12.931Z",
+      "lastSynced": "2026-11-02T14:42:59.320Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T14:28:22.084Z",
+      "lastSynced": "2026-11-02T14:43:06.555Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -62,7 +62,7 @@
           "text": "IA, visibilidade e o novo padrão de execução.\n\nGaranta sua vaga no webinar Tendências de Trade Marketing 2027 e descubra como conectar estratégia, tecnologia e equipe de campo sob a mesma visão.\n\nA Camila Lopo, Key Account da Involves, será a mediadora desse bate-papo e, junto com líderes de mercado, vai compartilhar tudo o que você precisa saber para preparar sua operação para o próximo ano. Não perca!\n\n🗓️ 12 de novembro de 2026, às 14h (BRT)\n📍 Online e Gratuito\n🎟️ Inscreva-se aqui: https://",
           "url": "https://www.linkedin.com/posts/involves_ia-visibilidade-e-o-novo-padr%C3%A3o-de-execu%C3%A7%C3%A3o-activity-7523022137519960064-pIAR",
           "date": "2026-11-02T14:04:08.577Z",
-          "likes": 0,
+          "likes": 1,
           "comments": 0
         },
         {
@@ -94,7 +94,7 @@
           "comments": 0
         }
       ],
-      "postsLastSynced": "2026-11-02T14:28:50.867Z",
+      "postsLastSynced": "2026-11-02T14:43:36.323Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -131,7 +131,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T14:28:32.181Z",
+      "lastSynced": "2026-11-02T14:43:15.590Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -143,7 +143,7 @@
           "comments": 0
         }
       ],
-      "postsLastSynced": "2026-11-02T14:28:55.385Z",
+      "postsLastSynced": "2026-11-02T14:43:40.978Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -192,7 +192,7 @@
           "comments": null
         }
       ],
-      "postsLastSynced": "2026-11-02T14:28:58.466Z",
+      "postsLastSynced": "2026-11-02T14:43:47.211Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -229,11 +229,11 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": "2026-11-02T14:28:45.882Z",
+      "lastSynced": "2026-11-02T14:43:31.194Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [],
-      "postsLastSynced": "2026-11-02T14:29:05.497Z",
+      "postsLastSynced": "2026-11-02T14:43:53.709Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -273,16 +273,8 @@
       "lastSynced": "2026-10-31T15:13:29.943Z",
       "syncStatus": "ok",
       "syncError": null,
-      "posts": [
-        {
-          "text": "Trusted LinkedIn network, I’m hiring and know I can count on your recommendations.\n\nIf you know a smart, driven, accountable, hungry enterprise seller who’d rather go deep on a handful of big accounts than skim hundreds, I’d love an intro.\n\nWe’re adding a Strategic Account Executive at Repsly to own a short list of Fortune 500 CPG brands. \n\nI want a problem solver with high EQ who believes selling is serving. \n\nThey’ll find the problem, multi-thread to the exec level, and run the deal through cl",
-          "url": "https://www.linkedin.com/posts/anthonymadrigal_trusted-linkedin-network-im-hiring-and-activity-7520492118046576640-5gix",
-          "date": "2026-10-26T14:38:23.835Z",
-          "likes": 33,
-          "comments": 0
-        }
-      ],
-      "postsLastSynced": "2026-11-02T14:29:13.357Z",
+      "posts": [],
+      "postsLastSynced": "2026-11-02T14:43:59.659Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -323,7 +315,7 @@
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
       "posts": [],
-      "postsLastSynced": "2026-11-02T14:29:18.103Z",
+      "postsLastSynced": "2026-11-02T14:44:05.620Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
