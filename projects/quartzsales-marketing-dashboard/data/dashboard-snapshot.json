@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T18:42:44.486Z",
+  "generatedAt": "2026-11-02T19:21:57.158Z",
   "group": "A",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T18:41:21.011Z",
+      "lastSynced": "2026-11-02T19:20:51.602Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T18:41:29.810Z",
+      "lastSynced": "2026-11-02T19:20:58.539Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -99,7 +99,7 @@
           "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T18:41:54.221Z",
+      "postsLastSynced": "2026-11-02T19:21:29.519Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -136,7 +136,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T18:41:38.846Z",
+      "lastSynced": "2026-11-02T19:21:08.533Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -149,7 +149,7 @@
           "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T18:42:01.642Z",
+      "postsLastSynced": "2026-11-02T19:21:36.929Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -190,7 +190,7 @@
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
       "posts": [],
-      "postsLastSynced": "2026-11-02T18:42:07.327Z",
+      "postsLastSynced": "2026-11-02T19:21:40.330Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -227,7 +227,7 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": "2026-11-02T18:41:50.290Z",
+      "lastSynced": "2026-11-02T19:21:22.452Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -240,7 +240,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T18:42:12.533Z",
+      "postsLastSynced": "2026-11-02T19:21:44.541Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -290,7 +290,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T18:42:34.959Z",
+      "postsLastSynced": "2026-11-02T19:21:52.565Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -340,7 +340,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T18:42:44.486Z",
+      "postsLastSynced": "2026-11-02T19:21:57.158Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
