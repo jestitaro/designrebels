@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="IA aplicada al Retail — QuartzSales automatiza reconocimiento de imágenes, reconocimiento de precios y planificación inteligente en el punto de venta." />
+  <title>IA aplicada al Retail · QuartzSales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#retail-ia">Saltar al contenido</a>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="../../index.html">
+      <span class="brand-mark" aria-hidden="true">DR</span>
+      <span>Design Rebels</span>
+    </a>
+    <a class="header-cta" href="https://www.quartzsales.com/" target="_blank" rel="noopener noreferrer">QuartzSales <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="main">
+    <section class="retail-hero" id="retail-ia">
+      <div class="retail-hero__blobs" aria-hidden="true">
+        <span class="blob blob-a"></span>
+        <span class="blob blob-b"></span>
+        <span class="blob blob-c"></span>
+      </div>
+
+      <div class="retail-hero__intro">
+        <h1 class="retail-title" data-split>IA aplicada al Retail</h1>
+        <p class="retail-lead reveal">Con la incorporación de IA en QuartzSales, automatizamos procesos clave en el punto de venta que antes requerían más tiempo y esfuerzo manual.</p>
+      </div>
+
+      <div class="retail-grid">
+
+        <!-- Card 1: Reconocimiento de imágenes -->
+        <article class="retail-card reveal" style="--d:0">
+          <div class="retail-card__copy">
+            <h3>Reconocimiento de<br>imágenes</h3>
+            <p>Reconocé productos y planogramas en tiempo real, agilizando la toma de datos en el Punto de Venta.</p>
+          </div>
+
+          <div class="phone phone--bottom" data-tilt>
+            <div class="phone__screen phone--shelf">
+              <div class="shelf">
+                <div class="shelf__bar"></div>
+                <div class="shelf__row">
+                  <span class="bottle"><i></i><em></em></span>
+                  <span class="bottle"><i></i><em></em></span>
+                  <span class="bottle"><i></i><em></em></span>
+                  <span class="bottle"><i></i><em></em></span>
+                </div>
+                <div class="shelf__bar shelf__bar--floor"></div>
+              </div>
+
+              <div class="scan-box" aria-hidden="true"></div>
+
+              <div class="recog-card" data-loop="recog">
+                <span class="recog-card__thumb"></span>
+                <span class="recog-card__meta">
+                  <b>779311225569</b>
+                  <em>Ultra Wash</em>
+                </span>
+                <span class="recog-check">✓</span>
+              </div>
+
+              <button class="phone-btn" type="button">Finalizar reconocimiento</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: Reconocimiento de precios -->
+        <article class="retail-card retail-card--form reveal" style="--d:1">
+          <div class="phone phone--top" data-tilt>
+            <div class="phone__screen phone--form">
+              <div class="form-head">
+                <span>Jabón para la ropa</span>
+                <i>⌃</i>
+              </div>
+
+              <div class="form-row" data-loop="price" style="--rd:0">
+                <span class="form-row__thumb form-row__thumb--blue"></span>
+                <span class="form-row__meta">
+                  <b>779311225569</b>
+                  <em>Ultra Wash</em>
+                </span>
+                <span class="ticket">
+                  <i></i>
+                  <b>$5.4750</b>
+                </span>
+              </div>
+
+              <div class="form-row" data-loop="price" style="--rd:1">
+                <span class="form-row__thumb form-row__thumb--cyan"></span>
+                <span class="form-row__meta">
+                  <b>779519888652</b>
+                  <em>Powder washing</em>
+                </span>
+                <span class="ticket">
+                  <i></i>
+                  <b>$1.299</b>
+                </span>
+              </div>
+
+              <button class="phone-btn phone-btn--solid">Enviar formulario</button>
+            </div>
+          </div>
+
+          <div class="retail-card__copy retail-card__copy--center">
+            <h3>Reconocimiento de precios</h3>
+            <p>Agilizá tareas en el punto de venta: reconocé precios con IA sin conexión y en tiempo real.</p>
+          </div>
+        </article>
+
+        <!-- Card 3: Planificación y ejecución inteligente -->
+        <article class="retail-card reveal" style="--d:2">
+          <div class="retail-card__copy">
+            <h3>Planificación y ejecución<br>inteligente</h3>
+            <p>Predicción automática de tareas con IA: decisiones inteligentes basadas en ventas, stock y ejecución.</p>
+          </div>
+
+          <div class="phone phone--bottom" data-tilt>
+            <div class="phone__screen phone--plan">
+              <div class="plan-head">Ejecución inteligente</div>
+
+              <div class="plan-item">
+                <span class="plan-item__icon">▤</span>
+                <span class="plan-item__meta">
+                  <b>Ajustar stock</b>
+                  <em>Formulario de quiebres · 18/07</em>
+                  <em>Mayorista · Pilar</em>
+                </span>
+              </div>
+
+              <div class="plan-card">
+                <span class="plan-card__thumb"></span>
+                <span class="plan-card__bars"><i></i><i></i></span>
+              </div>
+
+              <div class="dropdown-chip" data-loop="dropdown">
+                <span>Ajustar stock</span>
+                <i>⌄</i>
+              </div>
+
+              <div class="plan-label">Tarea derivada</div>
+
+              <div class="plan-card plan-card--tall">
+                <span class="plan-card__bars plan-card__bars--wide"><i></i><i></i></span>
+                <span class="presence">Presencia <b>✓</b></span>
+              </div>
+
+              <div class="plan-footer">
+                <span class="plan-footer__avatar"></span>
+                <span class="plan-footer__bar"></span>
+                <span class="plan-footer__date">18/07</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="retail-footer">
+    <p>Design Rebels · QuartzSales — sección de exploración visual, animaciones en curso.</p>
+  </footer>
+</body>
+</html>

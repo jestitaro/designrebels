@@ -1,0 +1,97 @@
+/* Verbo principal con efecto de tipeo estable y cambio de color. */
+.hero-copy h1,
+.hero-copy h1 em {
+  color: var(--ink, #11111b);
+}
+
+@keyframes hero-caret-blink {
+  0%, 46% { opacity: 1; }
+  47%, 100% { opacity: 0; }
+}
+
+.hero-verb-line {
+  display: block;
+  min-height: 1em;
+  height: 1em;
+  line-height: 1;
+  overflow: visible;
+}
+
+.hero-verb {
+  display: inline-block;
+  min-height: 1em;
+  font-family: "Manrope", sans-serif;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.055em;
+  white-space: nowrap;
+  transition: color .2s ease;
+}
+
+.hero-verb::after {
+  content: "";
+  display: inline-block;
+  width: .055em;
+  height: .78em;
+  margin-left: .07em;
+  background: currentColor;
+  vertical-align: -.03em;
+  animation: hero-caret-blink .8s steps(1, end) infinite;
+}
+
+.hero-title-rest {
+  display: block;
+  color: var(--ink, #11111b);
+  font: inherit;
+  font-style: normal;
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
+.hero-verb.verb-purple {
+  color: var(--purple, #7025e0);
+}
+
+.hero-verb.verb-green {
+  color: var(--green, #173d2a);
+}
+
+.hero-verb.verb-violet {
+  color: var(--violet, #a172ff);
+}
+
+.hero-verb.verb-ink {
+  color: var(--ink, #11111b);
+}
+
+@media (max-width: 700px) {
+  .hero-copy h1 {
+    line-height: .98;
+  }
+
+  .hero-verb-line,
+  .hero-verb {
+    height: .84em;
+    min-height: .84em;
+    font-size: .82em;
+    line-height: 1;
+  }
+
+  .hero-title-rest {
+    font-size: .82em;
+    line-height: 1.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-verb {
+    transition: none;
+  }
+
+  .hero-verb::after {
+    animation: none;
+    opacity: 1;
+  }
+}

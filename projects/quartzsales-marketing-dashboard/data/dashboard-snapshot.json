@@ -1,9 +1,23 @@
 {
-  "generatedAt": null,
-  "group": null,
+  "generatedAt": "2026-11-01T15:54:44.145Z",
+  "group": "C",
   "own": {
-    "linkedin": null,
-    "youtube": null
+    "linkedin": {
+      "followers": 2878,
+      "employees": 8,
+      "lastSynced": "2026-11-01T15:54:25.196Z",
+      "syncStatus": "ok",
+      "syncError": null
+    },
+    "youtube": {
+      "subs": null,
+      "videos": null,
+      "views": null,
+      "avgViews": null,
+      "lastSynced": null,
+      "syncStatus": "skipped",
+      "syncError": "YOUTUBE_API_KEY no configurado"
+    }
   },
   "competitors": [
     {
@@ -15,7 +29,7 @@
       "gradEnd": "#6366f1",
       "size": "251-500",
       "stats": {
-        "followers": "12.4K",
+        "followers": "75.2K",
         "posts_mes": 18,
         "engagement": "3.2",
         "funding": "~$13M"
@@ -40,8 +54,8 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-10-30T15:44:59.124Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -53,7 +67,7 @@
       "gradEnd": "#0ea5e9",
       "size": "50-100",
       "stats": {
-        "followers": "2.3K",
+        "followers": "4.9K",
         "posts_mes": 6,
         "engagement": "4.1",
         "funding": "Sin datos"
@@ -77,8 +91,8 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-10-30T15:45:08.753Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -115,8 +129,8 @@
         "PDV"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "storecheck",
@@ -152,8 +166,8 @@
         "Auditoría"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "repsly",
@@ -164,7 +178,7 @@
       "gradEnd": "#ef4444",
       "size": "150-250",
       "stats": {
-        "followers": "8.1K",
+        "followers": "8.9K",
         "posts_mes": 12,
         "engagement": "2.1",
         "funding": "~$18M"
@@ -188,8 +202,8 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-10-31T15:13:29.943Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -226,8 +240,8 @@
         "SoftBank"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "frogmi",
@@ -238,7 +252,7 @@
       "gradEnd": "#059669",
       "size": "11-50",
       "stats": {
-        "followers": "1.8K",
+        "followers": "7.1K",
         "posts_mes": 5,
         "engagement": "3.1",
         "funding": "Sin datos"
@@ -262,8 +276,8 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-10-31T15:13:43.115Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -300,8 +314,8 @@
         "LATAM"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "pitcher",
@@ -337,8 +351,8 @@
         "CPG"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     },
     {
       "id": "retail-velocity",
@@ -349,7 +363,7 @@
       "gradEnd": "#d97706",
       "size": "11-50",
       "stats": {
-        "followers": "1.2K",
+        "followers": "553",
         "posts_mes": 4,
         "engagement": "1.8",
         "funding": "Sin datos"
@@ -373,8 +387,8 @@
         "CPG",
         "Analytics"
       ],
-      "lastSynced": null,
-      "syncStatus": "pending",
+      "lastSynced": "2026-11-01T15:54:38.830Z",
+      "syncStatus": "ok",
       "syncError": null
     },
     {
@@ -411,8 +425,8 @@
         "Auditoría"
       ],
       "lastSynced": null,
-      "syncStatus": "pending",
-      "syncError": null
+      "syncStatus": "error",
+      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug)."
     }
   ]
 }

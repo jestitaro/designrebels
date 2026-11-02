@@ -1,0 +1,42 @@
+# Content Visual Editor
+
+Editor visual de contenidos para crear piezas de noticias y comunicación interna de QuartzSales sin depender de herramientas externas.
+
+## Ruta
+
+`projects/content-visual-editor/`
+
+## Ver online
+
+`https://jestitaro.github.io/designrebels/projects/content-visual-editor/`
+
+## Tecnología
+
+Proyecto estático, sin build:
+
+- HTML
+- CSS
+- JavaScript
+- `html2canvas` desde CDN para exportar PNG
+
+## Funcionalidades
+
+- Formatos 1:1 y 9:16.
+- Textos, placas, tags, fechas e imágenes movibles y redimensionables.
+- Guías de alineación y área segura.
+- Capas, duplicado, deshacer y rehacer.
+- Fondos, colores corporativos y galería de recursos, organizada por marca/cliente (hoy QuartzSales / Unilever, escalable a otros como Abbott): imágenes predefinidas (`assets/categorias/`) filtrables por tipo (íconos / imágenes), un buscador por nombre, y "Tus recursos" con lo que suba el usuario para esa misma marca — todo reutilizable entre noticias de esa marca.
+- Alertas de corte, contraste, tamaño y desborde.
+- "Guardar y utilizar noticia" descarga un `.json` editable con la noticia completa además de exportar la imagen; "Subir JSON" vuelve a cargar uno de esos archivos para seguir editando.
+- Exportación PNG en tamaño real (formato final, no editable) con "Exportar noticia".
+- Autoguardado local mediante `localStorage` e `IndexedDB`.
+
+No incluye: ayuda/atajos, reiniciar el diseño, ni subir un archivo de imagen directo (fuera de la Galería).
+
+## Privacidad
+
+El editor no utiliza API keys ni servicios de backend. Los diseños, colores e imágenes cargadas se guardan únicamente en el navegador del usuario.
+
+## Publicación
+
+GitHub Pages sirve esta carpeta como parte del repositorio `jestitaro/designrebels`. Los cambios en `main` quedan disponibles automáticamente en la URL indicada arriba.

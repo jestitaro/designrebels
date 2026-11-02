@@ -1,1 +1,40 @@
-# designrebels
+# Design Rebels
+
+Hub de productos, prototipos y herramientas internas creadas por Design Rebels para QuartzSales.
+
+## Proyectos online
+
+| Proyecto | Estado | Ver online | Código |
+|---|---|---|---|
+| **Design Rebels Hub** | Live | [Abrir hub](https://jestitaro.github.io/designrebels/) | [Ver archivos](./) |
+| **QuartzProde 2026** | Live | [Abrir Prode](https://jestitaro.github.io/designrebels/prode2026/) | [Ver proyecto](./prode2026/) |
+| **QuartzSales Marketing Dashboard** | Demo online | [Abrir dashboard](https://quartzsales-marketing-dashboard.pages.dev/) | [Ver proyecto](./projects/quartzsales-marketing-dashboard/) |
+| **El caso de los tokens desaparecidos** | Live · Halloween | [Abrir juego](https://jestitaro.github.io/designrebels/projects/caso-tokens/) | [Ver proyecto](./projects/caso-tokens/) |
+| **QuartzRun** | Prototipo interactivo | [Abrir QuartzRun](https://jestitaro.github.io/designrebels/projects/the-rebel-run/) | [Ver proyecto](./projects/the-rebel-run/) |
+| **QuartzSales Challenge** | Prototipo interactivo | [Abrir Challenge](https://jestitaro.github.io/designrebels/projects/quartzsales-challenge/) | [Ver proyecto](./projects/quartzsales-challenge/) |
+| **QS League** | MVP | [Abrir QS League](https://jestitaro.github.io/designrebels/projects/qs-league/) | [Ver proyecto](./projects/qs-league/) |
+| **Content Visual Editor** | Demo online | [Abrir editor](https://jestitaro.github.io/designrebels/projects/content-visual-editor/) | [Ver proyecto](./projects/content-visual-editor/) |
+| **IA en el PDV** | Landing / WIP | [Abrir landing](https://jestitaro.github.io/designrebels/projects/ia-pdv-demo/) | [Ver proyecto](./projects/ia-pdv-demo/) |
+| **Talent Lab** | MVP | [Abrir Talent Lab](https://jestitaro.github.io/designrebels/projects/talent-lab/) | [Ver proyecto](./projects/talent-lab/) |
+| **Corte, cámara, Claude** (Video Lab) | Landing | [Abrir Video Lab](https://jestitaro.github.io/designrebels/projects/video-lab/) | [Ver proyecto](./projects/video-lab/) |
+
+## Estructura
+
+```text
+designrebels/
+├── prode2026/
+├── projects/
+│   ├── caso-tokens/
+│   ├── content-visual-editor/
+│   ├── ia-pdv-demo/
+│   ├── quartzsales-marketing-dashboard/
+│   ├── qs-league/
+│   ├── quartzsales-challenge/
+│   ├── the-rebel-run/
+│   ├── talent-lab/
+│   └── video-lab/
+├── assets/
+└── index.html
+```
+
+> Los proyectos pueden estar publicados en GitHub Pages o Cloudflare Pages. Esta tabla centraliza sus enlaces para acceder rápidamente desde el repositorio.

@@ -1,0 +1,55 @@
+rules_version = '2';
+
+// Dino Cup — Firestore rules for the dino-cup project.
+// This is the complete, standalone ruleset for this project (dino-cup has
+// no other app/collections sharing it) — deploy as-is with
+// `firebase deploy --only firestore:rules`.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/dinocup_users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/dinocup_users/$(request.auth.uid)).data.role == 'ADMIN';
+    }
+
+    // Role lookup doc for the signed-in user. Never written from the client:
+    // an admin is provisioned manually (Firebase console / Admin SDK) so a
+    // user can never grant themselves the ADMIN role from the browser.
+    match /dinocup_users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Public roster — visible to everyone, editable only by an admin
+    // (admin.js seeds it once on first authenticated login).
+    match /dinocup_players/{playerId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // One doc per Kahoot report upload. Publicly readable so the landing
+    // can show session dates; every write requires an admin. Matches are
+    // never deleted, only moved to ANNULLED.
+    match /dinocup_matches/{matchId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // The real ledger. Publicly readable (only APPLIED rows are queried by
+    // the public landing) so the podium/ranking can be computed client-side;
+    // every write requires an admin. Movements are never deleted, only
+    // marked ANNULLED with a reversal movement created alongside.
+    match /dinocup_movements/{movementId} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+  }
+}

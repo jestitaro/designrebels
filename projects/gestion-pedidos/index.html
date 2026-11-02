@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta name="robots" content="index, follow" />
+
+  <meta name="description" content="Order Entry es el módulo de QuartzSales para cargar y gestionar pedidos en el punto de venta o desde el equipo comercial, conectado en tiempo real con tu ERP." />
+  <meta property="og:title" content="QuartzSales · Gestión de pedidos" />
+  <meta property="og:description" content="Convertí la toma de pedidos en un proceso simple, controlado y siempre conectado con tu ERP." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#130D5D" />
+
+  <title>QuartzSales · Gestión de pedidos online</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="preconnect" href="https://ka-p.fontawesome.com" crossorigin>
+  <script defer crossorigin="anonymous" src="https://kit.fontawesome.com/95d03784e2.js"></script>
+
+  <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+
+  <main id="main" tabindex="-1">
+
+    <!-- HERO -->
+    <section class="hero-pedidos">
+      <div class="hero-pedidos__text">
+        <span class="eyebrow">Módulo · Gestión de pedidos</span>
+        <h1>Convertí la toma de pedidos en un proceso simple, controlado y siempre conectado con tu ERP.</h1>
+        <p>Order Entry permite cargar y gestionar pedidos desde el punto de venta o desde tu equipo comercial. Funciona como una capa de autogestión conectada en tiempo real con tu ERP para precios, stock, cuentas corrientes y facturación.</p>
+        <div class="hero-pedidos__ctas">
+          <button class="btn btn-gradient js-scroll-como-funciona" type="button">
+            <i class="fa-regular fa-play" aria-hidden="true"></i> Ver cómo funciona
+          </button>
+          <a class="btn btn-outline" href="mailto:contacto@quartzsales.com">Solicitar demo</a>
+        </div>
+      </div>
+      <div class="hero-pedidos__visual hero-stage" aria-hidden="true" id="heroStage">
+        <div class="stage-wrap">
+          <div class="violet-back"></div>
+
+          <div class="desktop-card">
+            <img src="media/hero/hero-laptop.webp" alt="" width="1400" height="944" fetchpriority="high" />
+          </div>
+
+          <div class="slot slot-left">
+            <img class="slot-item active" src="media/hero/hero-editar-pedido.webp" alt="" width="640" height="567" />
+            <img class="slot-item" src="media/hero/hero-total.webp" alt="" width="640" height="719" />
+          </div>
+
+          <div class="slot slot-top">
+            <img class="slot-item active" src="media/hero/hero-notif-creado.webp" alt="" width="820" height="168" />
+            <img class="slot-item" src="media/hero/hero-notif-confirmado.webp" alt="" width="820" height="179" />
+          </div>
+
+          <div class="slot slot-right">
+            <img class="slot-item active" src="media/hero/hero-tipo-pedido.webp" alt="" width="760" height="450" />
+            <img class="slot-item" src="media/hero/hero-cliente.webp" alt="" width="900" height="493" />
+            <img class="slot-item" src="media/hero/hero-producto.webp" alt="" width="900" height="227" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section class="container reveal" id="beneficios">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="flow-header">
+        <h2 class="section-title">Beneficios clave</h2>
+      </div>
+      <div class="beneficios-bento beneficios-bento--light">
+        <article class="beneficio-card beneficio-card--hero">
+          <span class="beneficio-card__number">01</span>
+          <div class="beneficio-card__copy">
+            <h3>Carga guiada<br>y sin errores</h3>
+            <p>Las cantidades se corrigen automáticamente por múltiplo de bulto, y los precios y condiciones comerciales se aplican según cada cliente.</p>
+          </div>
+          <div class="beneficio-card__mock beneficio-card__mock--photo">
+            <div class="beneficio-card__mock-body">
+              <img src="media/carga_guiada.webp" alt="Persona usando QuartzSales en su laptop" loading="lazy" />
+            </div>
+          </div>
+        </article>
+        <article class="beneficio-card">
+          <span class="beneficio-card__number">02</span>
+          <span class="beneficio-card__icon-box"><img src="media/icons/controlv2.webp" alt="" loading="lazy" /></span>
+          <h3>Control de<br>excepciones</h3>
+          <p>Los pedidos con cambios de precio o descuento quedan sujetos a un flujo de aprobación configurable, con trazabilidad completa.</p>
+        </article>
+        <article class="beneficio-card">
+          <span class="beneficio-card__number">03</span>
+          <span class="beneficio-card__icon-box"><img src="media/icons/gestionv2.webp" alt="" loading="lazy" /></span>
+          <h3>Gestión de<br>stock limitado</h3>
+          <p>Asignación de cuotas por producto y sucursal, con cálculo automático de backorder cuando la demanda supera lo disponible.</p>
+        </article>
+        <article class="beneficio-card">
+          <span class="beneficio-card__number">04</span>
+          <span class="beneficio-card__icon-box"><img src="media/icons/integracionv2.webp" alt="" loading="lazy" /></span>
+          <h3>Integración<br>nativa con tu ERP</h3>
+          <p>Sincroniza clientes, artículos, listas de precios y condiciones comerciales; los pedidos confirmados se transmiten automáticamente.</p>
+        </article>
+        <article class="beneficio-card">
+          <span class="beneficio-card__number">05</span>
+          <span class="beneficio-card__icon-box"><img src="media/icons/visibilidadv2.webp" alt="" loading="lazy" /></span>
+          <h3>Visibilidad y<br>notificaciones</h3>
+          <p>Envía confirmaciones automáticas por email al cliente, al equipo comercial y a los aprobadores en cada paso del proceso.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA (pestañas sincronizadas con el video) -->
+    <section class="container reveal pensado-section flow-panel" id="como-funciona">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="flow-header">
+        <h2 class="section-title">Cómo funciona, de punta a punta</h2>
+      </div>
+      <div class="flow-tabs">
+        <div class="flow-tabs__list" role="tablist" aria-label="Pasos de Order Entry">
+          <button class="flow-tab" type="button" role="tab" aria-selected="true" aria-controls="flow-stage" id="flow-tab-1" data-time="0" data-caption="El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-cart-plus" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
+              <strong class="flow-tab__title">Carga</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+            </span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-2" data-time="13.2" data-caption="Al sumar productos, el sistema controla múltiplos de bulto, cuotas, topes, precios y monto mínimo antes de dejar enviar el pedido.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-list-check" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
+              <strong class="flow-tab__title">Validación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+            </span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-3" data-time="28.6" data-caption="Si hay cambios de precio, descuentos u otras excepciones, el pedido queda pendiente y pasa por un flujo de aprobación configurable y trazable.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-stamp" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
+              <strong class="flow-tab__title">Aprobación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+            </span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-4" data-time="34.8" data-caption="Una vez aprobado, el pedido se transmite automáticamente al ERP, sin recargar datos.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-arrows-rotate" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
+              <strong class="flow-tab__title">Transmisión al ERP</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+            </span>
+          </button>
+          <button class="flow-tab" type="button" role="tab" aria-selected="false" aria-controls="flow-stage" id="flow-tab-5" data-time="36.1" data-caption="El cliente, el equipo comercial y los aprobadores reciben las confirmaciones correspondientes en cada etapa.">
+            <span class="flow-tab__icon"><i class="fa-regular fa-circle-check" aria-hidden="true"></i></span>
+            <span class="flow-tab__body">
+              <strong class="flow-tab__title">Confirmación y notificación</strong>
+              <span class="flow-tab__progress" aria-hidden="true"><span class="flow-tab__progress-bar"></span></span>
+            </span>
+          </button>
+        </div>
+        <div class="flow-tabs__panel" id="flow-stage" role="tabpanel" aria-labelledby="flow-tab-1">
+          <div class="flow-tabs__frame">
+            <video class="flow-tabs__video" id="flow-video" aria-label="Recorrido completo de un pedido en QuartzSales"
+                   src="media/flow/pedidos-flow.mp4" poster="media/flow/pedidos-flow-poster.webp"
+                   autoplay muted loop playsinline preload="metadata"></video>
+            <button class="flow-tabs__expand" type="button" aria-haspopup="dialog" aria-label="Ampliar video">
+              <i class="fa-regular fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+              <span>Ampliar</span>
+            </button>
+          </div>
+          <p class="flow-tabs__caption" id="flow-caption">El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Video ampliado: recorrido de un pedido">
+      <div class="video-modal__backdrop" data-video-modal-close></div>
+      <div class="video-modal__box">
+        <button class="video-modal__close" type="button" aria-label="Cerrar video ampliado" data-video-modal-close>×</button>
+        <div class="video-modal__frame" id="videoModalFrame"></div>
+        <p class="video-modal__caption"><strong id="videoModalStep">Carga</strong><span id="videoModalCaption">El cliente o el equipo comercial elige el tipo de pedido y completa cliente, sucursal y orden de compra.</span></p>
+      </div>
+    </div>
+
+    <!-- PENSADO PARA -->
+    <section class="container reveal" id="pensado-para">
+      <span aria-hidden="true" class="sentinel"></span>
+      <div class="pensado-header">
+        <h2 class="section-title">Pensado para todo tu equipo</h2>
+        <p>Desde la fuerza de venta hasta administración: cada rol tiene la información que necesita, sin planillas ni doble carga.</p>
+      </div>
+      <div class="pensado-grid pensado-grid--flat">
+        <div class="pensado-card">
+          <h3>Equipo comercial</h3>
+          <p>Cargan pedidos desde el punto de venta o en la calle, con precios, condiciones y stock siempre actualizados.</p>
+        </div>
+        <div class="pensado-card">
+          <h3>Clientes</h3>
+          <p>Autogestionan sus propios pedidos desde un canal conectado en tiempo real con tu ERP.</p>
+        </div>
+        <div class="pensado-card">
+          <h3>Administración</h3>
+          <p>Supervisan excepciones, aprobaciones y transmisión al ERP con trazabilidad completa.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
