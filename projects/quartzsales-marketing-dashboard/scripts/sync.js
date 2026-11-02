@@ -50,7 +50,6 @@ const APIFY_POSTS_URL = `https://api.apify.com/v2/acts/${APIFY_POSTS_ACTOR}/run-
 const MAX_POSTS_PER_COMPANY = 5;
 const POSTS_LOOKBACK_DAYS = 7; // sólo posts de la última semana (corre los lunes)
 const POSTS_FETCH_CANDIDATES = 20; // candidatos pedidos a Apify antes de filtrar por fecha
-let DEBUG_POSTS_LOGGED = false; // ver uso en fetchCompanyPosts()
 const DELAY_BETWEEN_REQUESTS_MS = 1500;
 
 function dayOfYear(date) {
@@ -188,13 +187,17 @@ async function fetchCompanyPosts(token, linkedinUrl) {
   const data = await res.json();
   const items = Array.isArray(data) ? data : [];
 
-  // DEBUG_POSTS=true loguea el primer item crudo tal cual lo devuelve el
-  // actor, una sola vez por corrida — para confirmar/corregir los nombres
-  // de campo de extractPost() sin tener que adivinar (ver nota al inicio
-  // del archivo). No se activa solo: hay que pasarlo por env/workflow_dispatch.
-  if (!DEBUG_POSTS_LOGGED && items.length && (process.env.DEBUG_POSTS || '').trim().toLowerCase() === 'true') {
-    console.log(`    (debug schema) item crudo de ${linkedinUrl}:`, JSON.stringify(items[0]).slice(0, 3000));
-    DEBUG_POSTS_LOGGED = true;
+  // DEBUG_POSTS=true loguea, para CADA empresa, el primer item crudo que
+  // devuelve el actor — o si vino vacío, la respuesta cruda completa (puede
+  // no ser ni siquiera un array) — para poder diagnosticar por qué algunas
+  // empresas sí traen posts y otras no, sin tener que adivinar. No se
+  // activa solo: hay que pasarlo por env/workflow_dispatch.
+  if ((process.env.DEBUG_POSTS || '').trim().toLowerCase() === 'true') {
+    if (items.length) {
+      console.log(`    (debug schema) item crudo de ${linkedinUrl}:`, JSON.stringify(items[0]).slice(0, 3000));
+    } else {
+      console.log(`    (debug schema) respuesta cruda (0 items) de ${linkedinUrl}:`, JSON.stringify(data).slice(0, 3000));
+    }
   }
 
   const recentPosts = items.map(extractPost).filter(isWithinLookback).slice(0, MAX_POSTS_PER_COMPANY);
