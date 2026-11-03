@@ -243,16 +243,42 @@ body[data-theme="navidad"] .hero-title{transform:rotate(-1.2deg);transform-origi
 .km-pair small{display:block;margin-top:6px;font-size:12px;font-weight:600;color:var(--muted)}
 .hero-race .bar-wrap{margin-top:20px}
 .hero-race .bar-meta{margin-top:10px}
-.tree-map{max-width:330px;margin:10px auto 0}
-.tree-map > svg{display:block;width:100%;height:auto;overflow:visible}
-.tree-map .body{filter:url(#wobble)}
-.tree-map .tl{opacity:.28;transition:opacity .5s}
-.tree-map .tl.on{opacity:1;filter:drop-shadow(0 0 4px currentColor);animation:twinkle 2.4s ease-in-out infinite}
-.tree-map .tok{transition:transform 1.3s var(--ease-out)}
-.tree-map #treeLit{transition:stroke-dashoffset 1.3s var(--ease-out)}
-.tree-map .lbl{font-size:11px;font-weight:700;fill:var(--muted);font-variant-numeric:tabular-nums}
-@keyframes twinkle{50%{opacity:.5}}
-@media (prefers-reduced-motion:reduce){.tree-map .tl.on,.tree .tree-lights circle{animation:none}}
+.tm{position:relative;width:100%;max-width:360px;margin:8px auto 0;aspect-ratio:1296/1213;-webkit-tap-highlight-color:transparent}
+.tm img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.tm > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tm .fx-glow{mix-blend-mode:screen;pointer-events:none}
+.tm .tm-bulb{animation:tmTwinkle 2.6s ease-in-out infinite}
+@keyframes tmTwinkle{0%,100%{opacity:.1}50%{opacity:.95}}
+.tm .tm-lamp{transform-box:fill-box;transform-origin:center;animation:tmLamp 3.4s ease-in-out infinite}
+@keyframes tmLamp{50%{opacity:.5;transform:scale(.82)}}
+.tm .tm-star{transform-box:fill-box;transform-origin:center;animation:tmStar 3s ease-in-out infinite}
+@keyframes tmStar{50%{opacity:.6;transform:scale(1.18)}}
+.tm.done .tm-star{animation-duration:1.1s}
+.tm .tm-spark{animation:tmFlow 1.4s linear infinite}
+@keyframes tmFlow{to{stroke-dashoffset:-48}}
+.tm .tm-sign,.tm .tm-tok,.tm .tm-goal{cursor:pointer;outline:none}
+.tm .tm-sign .board{transition:transform .35s var(--ease-spring);transform-box:fill-box;transform-origin:50% 100%}
+.tm .tm-sign:hover .board,.tm .tm-sign.on .board{transform:rotate(-4deg) scale(1.06)}
+.tm .tm-tok .pin{transition:transform .35s var(--ease-spring);transform-box:fill-box;transform-origin:50% 100%}
+.tm .tm-tok:hover .pin,.tm .tm-tok.on .pin{transform:scale(1.12)}
+.tm .tm-tok .halo{transform-box:fill-box;transform-origin:center;animation:tmHalo 2s ease-out infinite}
+@keyframes tmHalo{from{transform:scale(.6);opacity:.7}to{transform:scale(1.5);opacity:0}}
+.tm :focus-visible .tm-ring{stroke:var(--accent)!important}
+.tm-pop{position:absolute;z-index:4;width:max-content;min-width:180px;max-width:250px;padding:12px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--glass-line);box-shadow:var(--shadow);font-size:13px;line-height:1.45;color:var(--ink);animation:popIn .28s var(--ease-spring)}
+.tm-pop::after{content:"";position:absolute;left:var(--ax,50%);bottom:-7px;width:12px;height:12px;background:inherit;border-right:1px solid var(--glass-line);border-bottom:1px solid var(--glass-line);transform:translateX(-50%) rotate(45deg)}
+.tm-pop.below::after{bottom:auto;top:-7px;transform:translateX(-50%) rotate(225deg)}
+@keyframes popIn{from{opacity:0;transform:translateY(6px) scale(.95)}}
+.tm-pop .tp-h{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.tm-pop .tp-h b{font-size:15px}
+.tm-pop .tp-b{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:900;background:var(--team);color:var(--team-ink,#fff);flex:none}
+.tm-pop em{font-style:normal;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:99px}
+.tm-pop .tp-pos{margin-left:auto;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.tm-pop p{margin:2px 0;color:var(--muted)}
+.tm-pop p b{color:var(--ink);font-variant-numeric:tabular-nums}
+.tm-pop .tp-row{display:flex;align-items:center;gap:8px;padding:3px 0}
+.tm-pop .tp-row span:last-child{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted)}
+.tm-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:2px}
+@media (prefers-reduced-motion:reduce){.tm .tm-bulb,.tm .tm-lamp,.tm .tm-star,.tm .tm-spark,.tm .tm-tok .halo{animation:none}.tm-pop{animation:none}}
 .hero-race .runners{margin-top:16px;font-size:12px;line-height:1.6}
 .me-card{padding:24px}
 .mc-top{display:flex;align-items:flex-start;gap:10px}
@@ -758,7 +784,8 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
                 <div><b class="num" id="teamKmDone">0</b><small>km recorridos</small></div>
                 <div><b class="num" id="teamKmLeft">0</b><small>km faltan</small></div>
               </div>
-              <div class="tree-map hw" id="treeMap"></div>
+              <div class="tm hw" id="treeMap"></div>
+              <p class="tm-hint hw">Tocá las fichas y los carteles para ver cómo viene cada casa.</p>
               <div class="bar-wrap bs"><div class="bar-fill" id="teamFill"></div>
                 <div class="bar-walker" id="teamWalker"><div class="dot"></div></div>
               </div>
@@ -829,7 +856,11 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
           <section class="screen" data-screen="rank" aria-label="Ranking">
             <span class="kicker" data-copy="rankKicker"></span>
             <div class="h2 display" data-copy="rankTitle"></div>
-            <div class="card" style="padding:12px 12px 6px">
+            <div class="card hw" style="padding:12px 10px 10px">
+              <div class="tm" id="tmRank"></div>
+              <p class="tm-hint">Tocá una ficha o un cartel.</p>
+            </div>
+            <div class="card bs" style="padding:12px 12px 6px">
               <div class="map">
                 <svg viewBox="0 0 340 230" id="mapSvg">
                   <path id="road" class="road" d="M26 206 C 80 210, 70 150, 128 148 S 210 170, 222 120 S 180 66, 240 52 S 318 54, 318 18"/>
@@ -1191,44 +1222,148 @@ function batFlock(x, y, n = 9) {
     ], { duration: dur, delay: i * 45, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'both' }).onfinish = () => b.remove();
   }
 }
-/* Mapa del camino a la meta como árbol de Navidad (solo Navidad): la guirnalda es el camino, la estrella la meta */
-const TREE_ROAD = 'M66 252Q150 272 238 244Q150 216 82 188Q150 200 216 170Q150 148 104 120Q150 128 194 104Q168 78 150 52';
-function renderTree(tm, pct, goal) {
-  const box = $('#treeMap'); if (!box) return;
-  if (!box.firstChild) box.innerHTML = `<svg viewBox="0 0 300 300">
-    <defs><linearGradient id="treeG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d6a4e"/><stop offset="1" stop-color="#0d3a2b"/></linearGradient>
-      <mask id="treeMask" maskUnits="userSpaceOnUse"><path id="treeLit" d="${TREE_ROAD}" pathLength="100" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-dasharray="100 100" stroke-dashoffset="100"/></mask></defs>
-    <rect x="139" y="258" width="22" height="30" rx="3" fill="#4a2f22" stroke="#07051a" stroke-width="2.5"/>
-    <g class="body" fill="url(#treeG)" stroke="#07051a" stroke-width="2.5" stroke-linejoin="round">
-      <path d="M28 262C72 238 104 200 150 148C198 200 228 238 272 262C226 272 74 272 28 262Z"/>
-      <path d="M56 196C94 174 122 140 150 98C180 140 206 174 244 196C200 205 100 205 56 196Z"/>
-      <path d="M84 128C110 110 132 84 151 46C172 84 192 110 216 128C180 137 120 137 84 128Z"/>
-      <path d="M151 46c4-11 16-13 18-5s-7 9-10 4" fill="none"/></g>
-    <g fill="none" stroke="rgba(255,255,255,.16)" stroke-width="1.4" stroke-dasharray="3 4"><path d="M44 258c70 8 142 8 212 0M72 192c52 6 104 6 156 0M100 126c34 5 66 5 100 0"/></g>
-    <path id="treeRoad" d="${TREE_ROAD}" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="7" stroke-linecap="round"/>
-    <g opacity=".3"><path d="${TREE_ROAD}" fill="none" stroke="#f3f6ff" stroke-width="5" stroke-linecap="round"/><path d="${TREE_ROAD}" fill="none" stroke="#e2393f" stroke-width="5" stroke-dasharray="5 5"/></g>
-    <g mask="url(#treeMask)" style="filter:drop-shadow(0 0 5px rgba(255,93,98,.6))"><path d="${TREE_ROAD}" fill="none" stroke="#f3f6ff" stroke-width="5" stroke-linecap="round"/><path d="${TREE_ROAD}" fill="none" stroke="#e2393f" stroke-width="5" stroke-dasharray="5 5"/></g>
-    <g id="treeLights"></g>
-    <svg x="190" y="252" width="34" height="34" viewBox="0 0 64 64"><use href="#gift"/></svg><svg x="70" y="260" width="26" height="26" viewBox="0 0 64 64"><use href="#gift"/></svg>
-    <svg x="226" y="246" width="30" height="30" viewBox="0 0 64 60"><use href="#candy"/></svg>
-    <g transform="translate(152 30) rotate(-12)"><circle r="24" fill="#f6dd8a" opacity=".15" id="treeGlow"/><path d="M0-17l5 10.2 11.2 1.6-8.1 7.9 1.9 11.1L0 8.6l-10 5.2 1.9-11.1-8.1-7.9L-5-6.8z" fill="#f6dd8a" stroke="#07051a" stroke-width="2" stroke-linejoin="round"/></g>
-    <text class="lbl" x="12" y="296">0 km</text><text class="lbl" x="184" y="36" id="treeGoal"></text>
-    <g id="treeRivals"></g><g id="treeMe"></g></svg>`;
-  const road = $('#treeRoad'), L = road.getTotalLength();
+/* ---- Árbol-mapa (solo Navidad): ilustración + capa interactiva. Coordenadas en px de la imagen (1296×1213) ---- */
+const TM = {
+  road: 'M222 962C253 963 347 968 410 970C473 972 536 973 600 971C664 969 744 965 795 958C846 951 878 940 905 928C932 916 958 898 958 885C958 872 946 861 905 852C864 843 775 836 710 830C645 825 563 827 515 822C467 816 444 812 420 800C396 788 368 762 368 748C368 734 383 725 420 714C457 703 533 691 590 684C647 678 715 686 760 677C805 668 850 646 862 632C874 618 857 603 830 592C803 581 744 575 700 568C656 562 603 560 565 555C527 550 489 550 470 541C451 532 442 513 450 500C458 487 488 473 520 464C552 454 604 449 640 444C676 438 713 438 735 430C757 421 774 403 772 392C770 381 744 372 720 364C696 357 656 357 630 350C604 342 569 327 566 318C563 309 591 302 610 296C629 290 664 288 680 282C696 276 706 268 704 262C702 256 679 248 670 244C661 240 652 241 648 240',
+  apex: [[958, 885, 1], [368, 748, -1], [862, 632, 1], [450, 500, -1], [772, 392, 1], [566, 318, -1]],
+  lamps: [[468, 483], [745, 322], [846, 605], [405, 748]],
+  bulbs: [[562,269],[543,289],[521,310],[501,331],[504,340],[512,347],[515,398],[824,403],[850,426],[878,460],[414,477],[849,476],[806,487],[760,491],[714,492],[384,503],[365,530],[380,545],[417,562],[900,575],[907,584],[930,601],[961,631],[377,633],[347,658],[993,664],[341,667],[310,689],[978,689],[301,701],[940,706],[278,721],[893,720],[845,729],[792,733],[245,751],[260,778],[272,789],[966,800],[298,806],[1004,836],[285,848],[1038,868],[258,873],[1078,906],[223,907],[194,930],[1109,938],[1038,975],[454,1018],[933,1017],[734,1027]],
+  star: [648, 100]
+};
+const tmMounts = {};
+function tmMount(box, mode) {
+  const sfx = mode;
+  box.innerHTML = `<img src="assets/tree-map-sm.webp" srcset="assets/tree-map-sm.webp 972w, assets/tree-map.webp 1296w" sizes="(max-width:900px) 92vw, 360px" width="1296" height="1213" alt="" decoding="async">
+  <svg viewBox="0 0 1296 1213" role="group" aria-label="Mapa de la carrera">
+    <defs>
+      <radialGradient id="tmG-${sfx}"><stop offset="0" stop-color="#fff6cf"/><stop offset=".35" stop-color="#ffd76a" stop-opacity=".8"/><stop offset="1" stop-color="#ffb627" stop-opacity="0"/></radialGradient>
+      <mask id="tmM-${sfx}" maskUnits="userSpaceOnUse"><path class="tm-lit" d="${TM.road}" pathLength="1000" fill="none" stroke="#fff" stroke-width="90" stroke-dasharray="0 1000"/></mask>
+    </defs>
+    <path class="tm-road" d="${TM.road}" fill="none" stroke="none"/>
+    <g class="fx-glow">
+      <circle class="tm-star" cx="${TM.star[0]}" cy="${TM.star[1]}" r="120" fill="url(#tmG-${sfx})" opacity=".55"/>
+      ${TM.lamps.map(([x, y], i) => `<circle class="tm-lamp" cx="${x}" cy="${y}" r="58" fill="url(#tmG-${sfx})" style="animation-delay:-${i * .8}s"/>`).join('')}
+      ${TM.bulbs.map(([x, y], i) => `<circle class="tm-bulb" cx="${x}" cy="${y}" r="17" fill="url(#tmG-${sfx})" style="animation-delay:-${((i * 1.37) % 2.6).toFixed(2)}s"/>`).join('')}
+    </g>
+    <g class="tm-trail" mask="url(#tmM-${sfx})">
+      <path d="${TM.road}" fill="none" stroke="#ffe9a6" stroke-width="30" stroke-linecap="round" opacity=".38"/>
+      <path class="tm-spark" d="${TM.road}" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 47"/>
+    </g>
+    <g class="tm-signs"></g>
+    <g class="tm-goal" tabindex="0" role="button" aria-label="Meta"><circle cx="${TM.star[0]}" cy="${TM.star[1] + 20}" r="95" fill="transparent"/></g>
+    <g class="tm-labels"></g>
+    <g class="tm-toks"></g>
+  </svg>
+  <div class="tm-pop" hidden role="dialog"></div>`;
+  const road = $('.tm-road', box), L = road.getTotalLength();
   const at = f => road.getPointAtLength(L * Math.max(0, Math.min(1, f)));
-  const cols = ['#ff5d62', '#f6dd8a', '#5fd39a', '#9cc3ff'];
-  $('#treeLit').style.strokeDashoffset = 100 - pct;
-  $('#treeGoal').textContent = `meta ${goal} km`;
-  $('#treeGlow').setAttribute('opacity', pct >= 100 ? .45 : .15);
-  $('#treeLights').innerHTML = Array.from({ length: 22 }, (_, i) => { const f = (i + .5) / 22, q = at(f);
-    return `<circle class="tl${f * 100 <= pct ? ' on' : ''}" cx="${q.x}" cy="${q.y}" r="3" fill="${cols[i % 4]}" style="color:${cols[i % 4]};animation-delay:-${(i * .31).toFixed(2)}s"/>`; }).join('');
-  const tok = (x, f, r, cls) => { const q = at(f); return `<g class="tok ${cls}" style="transform:translate(${q.x}px,${q.y}px)"><circle r="${r}" fill="${teamVar(x.id)}" stroke="#07051a" stroke-width="2"/><text text-anchor="middle" dy=".35em" font-size="${r}" font-weight="800" style="fill:${teamInk(x.id)}">${x.short}</text></g>`; };
-  $('#treeRivals').innerHTML = TEAMS.filter(x => x.id !== tm.id).map(x => tok(x, teamKm(x.id) / teamGoal(x.id), 8, 'rival')).join('');
-  const me = $('#treeMe .me'), q = at(pct / 100);
-  if (me && me.dataset.id === tm.id) me.style.transform = `translate(${q.x}px,${q.y}px)`;
-  else { $('#treeMe').innerHTML = tok(tm, 0, 13, 'me'); $('#treeMe .me').dataset.id = tm.id; requestAnimationFrame(() => requestAnimationFrame(() => { $('#treeMe .me').style.transform = `translate(${q.x}px,${q.y}px)`; })); }
-  box.querySelector('svg').setAttribute('aria-label', `${tm.name}: ${fmt(teamKm(tm.id), 1)} de ${goal} km en el camino a la estrella`);
-  box.querySelector('svg').setAttribute('role', 'img');
+  // fracción del camino en cada curva (donde van los carteles)
+  const fr = TM.apex.map(([x, y]) => { let best = 0, bd = Infinity;
+    for (let i = 0; i <= 400; i++) { const q = road.getPointAtLength(L * i / 400), d = (q.x - x) ** 2 + (q.y - y) ** 2; if (d < bd) { bd = d; best = i / 400; } }
+    return best; });
+  const m = tmMounts[mode] = { box, mode, at, fr, pos: {}, raf: 0 };
+  box.addEventListener('click', e => {
+    const t = e.target.closest('.tm-tok,.tm-sign,.tm-goal'); if (!t) return tmClose();
+    e.stopPropagation(); tmOpen(m, t);
+  });
+  box.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.closest('.tm-tok,.tm-sign,.tm-goal')) { e.preventDefault(); tmOpen(m, e.target.closest('.tm-tok,.tm-sign,.tm-goal')); } });
+  return m;
+}
+document.addEventListener('click', () => tmClose());
+document.addEventListener('keydown', e => { if (e.key === 'Escape') tmClose(); });
+function tmClose() { $$('.tm-pop').forEach(p => { p.hidden = true; }); $$('.tm .on').forEach(x => x.classList.remove('on')); }
+const tmPct = id => Math.min(100, teamKm(id) / teamGoal(id) * 100);
+const tmBadge = x => `<span class="tp-b" style="--team:${teamVar(x.id)};--team-ink:${teamInk(x.id)}">${x.short}</span>`;
+function tmTeamHtml(x) {
+  const sorted = teamsSorted(), pos = sorted.findIndex(t => t.id === x.id) + 1;
+  const km = teamKm(x.id), g = teamGoal(x.id), p = tmPct(x.id), left = Math.max(0, g - km), mine = S.user && S.user.team === x.id;
+  let rel;
+  if (TEAMS.every(t => teamKm(t.id) === 0)) rel = 'Todavía ninguna casa sumó km.';
+  else if (pos === 1) rel = `Le lleva ${fmt(p - tmPct(sorted[1].id), 0)}% del camino a ${sorted[1].name}.`;
+  else rel = `${sorted[pos - 2].name} va ${fmt(tmPct(sorted[pos - 2].id) - p, 0)}% del camino más adelante.`;
+  return `<div class="tp-h">${tmBadge(x)}<b>${x.name}</b>${mine ? '<em>Tu casa</em>' : ''}<span class="tp-pos">#${pos}</span></div>
+    <p><b>${fmt(km, 1)} de ${g} km</b> · ${fmt(p, 0)}%</p>
+    <p>${left > 0 ? `Le faltan <b>${fmt(left, 1)} km</b> para la estrella.` : '<b>Llegó a la estrella.</b>'}</p>
+    <p>${rel}</p><p>${x.members} integrantes</p>`;
+}
+function tmOpen(m, el) {
+  const pop = $('.tm-pop', m.box), was = el.classList.contains('on');
+  tmClose(); if (was) return;
+  let html, x, y;
+  if (el.classList.contains('tm-tok')) {
+    const ids = el.dataset.ids.split(',');
+    html = ids.length === 1 ? tmTeamHtml(team(ids[0]))
+      : `<div class="tp-h"><b>Acá están</b></div>` + ids.map(id => { const t = team(id); return `<div class="tp-row">${tmBadge(t)}<b>${t.name}</b><span>${fmt(teamKm(id), 1)} / ${teamGoal(id)} km</span></div>`; }).join('');
+    [x, y] = [+el.dataset.x, +el.dataset.y - 120];
+  } else if (el.classList.contains('tm-sign')) {
+    const f = +el.dataset.f, passed = TEAMS.filter(t => tmPct(t.id) >= f * 100);
+    const me = m.mode === 'home' && S.user ? team(S.user.team) : null;
+    const head = me ? `<b>${Math.round(teamGoal(me.id) * f)} km</b> · ${fmt(f * 100, 0)}% del camino` : `<b>${fmt(f * 100, 0)}% del camino</b>`;
+    const meLeft = me && tmPct(me.id) < f * 100 ? `<p>A ${me.name} le faltan <b>${fmt(teamGoal(me.id) * f - teamKm(me.id), 1)} km</b> para llegar acá.</p>` : '';
+    html = `<div class="tp-h">${head}</div>` + (passed.length ? `<p>Ya pasaron: <b>${passed.map(t => t.name).join(', ')}</b></p>` : '<p>Ninguna casa pasó por acá todavía.</p>') + meLeft
+      + (m.mode !== 'home' ? `<p>${TEAMS.map(t => `${t.short} ${Math.round(teamGoal(t.id) * f)} km`).join(' · ')}</p>` : '');
+    [x, y] = [+el.dataset.x, +el.dataset.y - 50];
+  } else {
+    const w = winner();
+    html = `<div class="tp-h"><b>La estrella es la meta</b></div><p>Gana la primera casa en completar sus km.</p>`
+      + `<p>${TEAMS.map(t => `${t.short} <b>${teamGoal(t.id)} km</b>`).join(' · ')}</p>` + (w ? `<p><b>${team(w.id).name}</b> ya llegó.</p>` : '');
+    [x, y] = [TM.star[0], TM.star[1] - 40];
+  }
+  el.classList.add('on'); vib(8);
+  pop.innerHTML = html; pop.hidden = false; pop.classList.remove('below');
+  const r = m.box.getBoundingClientRect(), px = x / 1296 * r.width, py = y / 1213 * r.height, w = pop.offsetWidth, h = pop.offsetHeight;
+  const left = Math.max(-8, Math.min(r.width - w + 8, px - w / 2));
+  let top = py - h - 12; if (top < -40) { top = py + 70; pop.classList.add('below'); }
+  pop.style.left = left + 'px'; pop.style.top = top + 'px'; pop.style.setProperty('--ax', Math.max(14, Math.min(w - 14, px - left)) + 'px');
+}
+function renderTreeMap(box, mode) {
+  if (!box) return;
+  const m = tmMounts[mode] && tmMounts[mode].box === box ? tmMounts[mode] : tmMount(box, mode);
+  const me = S.user ? team(S.user.team) : null, focus = mode === 'home' ? me : null;
+  // carteles
+  $('.tm-signs', box).innerHTML = TM.apex.map(([ax, ay, side], i) => {
+    const f = m.fr[i], x = ax + side * 118, y = ay - 18;
+    const label = focus ? `${Math.round(teamGoal(focus.id) * f)} km` : `${Math.round(f * 100)}%`;
+    return `<g class="tm-sign" tabindex="0" role="button" aria-label="Cartel ${label}" data-f="${f}" data-x="${x}" data-y="${y}" transform="translate(${x} ${y})">
+      <g class="board"><path d="M0 26V78" stroke="#4a2c16" stroke-width="10" stroke-linecap="round"/>
+      <path d="M-58 -34V-92l46 16-46 16" fill="#e2393f" stroke="#4a2c16" stroke-width="5" stroke-linejoin="round"/>
+      <rect class="tm-ring" x="-84" y="-36" width="168" height="66" rx="12" fill="#c98b4c" stroke="#4a2c16" stroke-width="6"/>
+      <path d="M-88-28c4-16 22-18 32-10 10-12 30-10 38-2 12-10 32-8 40 2 10-8 30-6 32 6 6 0 14 4 14 10z" fill="#f6f8ff"/>
+      <text y="16" text-anchor="middle" font-size="38" font-weight="800" fill="#2f1a0b" style="font-variant-numeric:tabular-nums">${label}</text></g></g>`; }).join('');
+  $('.tm-labels', box).innerHTML = focus
+    ? `<g transform="translate(742 58)"><rect width="250" height="68" rx="34" fill="rgba(16,15,44,.78)" stroke="rgba(255,255,255,.28)" stroke-width="3"/><text x="125" y="46" text-anchor="middle" font-size="36" font-weight="800" fill="#fff">meta ${teamGoal(focus.id)} km</text></g>
+       <text x="70" y="1030" font-size="36" font-weight="800" fill="#fff">Largada</text>` : `<text x="70" y="1030" font-size="36" font-weight="800" fill="#fff">Largada</text>`;
+  $('.tm-goal', box).setAttribute('aria-label', focus ? `Meta: ${teamGoal(focus.id)} km` : 'Meta');
+  box.classList.toggle('done', !!(focus && tmPct(focus.id) >= 100));
+  // fichas: agrupo las que caen en el mismo lugar
+  const target = Object.fromEntries(TEAMS.map(t => [t.id, tmPct(t.id) / 100]));
+  const order = [...TEAMS].sort((a, b) => (a.id === (me && me.id)) - (b.id === (me && me.id)));
+  const groups = [];
+  order.forEach(t => { const q = m.at(target[t.id]); const g = groups.find(g => Math.hypot(g.x - q.x, g.y - q.y) < 80); if (g) g.ids.push(t.id); else groups.push({ x: q.x, y: q.y, ids: [t.id] }); });
+  const off = {}; groups.forEach(g => g.ids.forEach((id, k) => { off[id] = (k - (g.ids.length - 1) / 2) * 62; }));
+  const tokWrap = $('.tm-toks', box);
+  tokWrap.innerHTML = order.map(t => { const big = me && t.id === me.id, r = big ? 46 : 38;
+    const g = groups.find(g => g.ids.includes(t.id)), ids = g.ids.length > 1 ? g.ids.join(',') : t.id;
+    return `<g class="tm-tok" tabindex="0" role="button" data-id="${t.id}" data-ids="${ids}" aria-label="${t.name}: ${fmt(teamKm(t.id), 1)} de ${teamGoal(t.id)} km">
+      ${big ? `<circle class="halo" cy="-${r + 38}" r="${r + 14}" fill="${teamVar(t.id)}"/>` : ''}
+      <g class="pin"><path d="M0 0V-38" stroke="#f3f6ff" stroke-width="8" stroke-linecap="round"/>
+      <circle class="tm-ring" cy="-${r + 38}" r="${r}" fill="${teamVar(t.id)}" stroke="#fff" stroke-width="7"/>
+      <text y="-${r + 38}" dy=".35em" text-anchor="middle" font-size="${big ? 46 : 38}" font-weight="900" style="fill:${teamInk(t.id)}">${t.short}</text></g>
+      <circle cy="-60" r="70" fill="transparent"/></g>`; }).join('');
+  // animo cada ficha por el camino desde donde estaba
+  const from = { ...m.pos }; cancelAnimationFrame(m.raf);
+  const lit = $('.tm-lit', box), t0 = performance.now(), dur = reduce ? 0 : 1400;
+  const step = now => {
+    const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 4);
+    order.forEach(t => { const f = (from[t.id] ?? 0) + (target[t.id] - (from[t.id] ?? 0)) * e, q = m.at(f), el = $(`.tm-tok[data-id="${t.id}"]`, tokWrap);
+      const x = q.x + off[t.id];
+      el.setAttribute('transform', `translate(${x} ${q.y})`); el.dataset.x = x; el.dataset.y = q.y; m.pos[t.id] = f; });
+    if (focus) lit.setAttribute('stroke-dasharray', `${m.pos[focus.id] * 1000} 1000`);
+    if (k < 1) m.raf = requestAnimationFrame(step);
+    else if (focus && target[focus.id] >= 1 && (from[focus.id] ?? 0) < 1 && mode === 'home' && $('#app').contains(box) && box.offsetParent) {
+      const [sx, sy] = centerOf($('.tm-star', box)); burst(sx, sy, 26); }
+  };
+  m.raf = requestAnimationFrame(step);
 }
 function centerOf(el) { const a = $('#app').getBoundingClientRect(), b = el.getBoundingClientRect(); return [b.left - a.left + b.width / 2, b.top - a.top + b.height / 2]; }
 function toast(html) {
@@ -1289,7 +1424,7 @@ function renderHome() {
   $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
   const pct = Math.min(100, tk / goal * 100);
   $('#teamFill').style.setProperty('--fill', teamVar(tm.id)); $('#teamFill').style.width = pct + '%'; $('#teamWalker').style.left = pct + '%';
-  renderTree(tm, pct, goal);
+  renderTreeMap($('#treeMap'), 'home');
   tween($('#teamKmDone'), tk, 1); tween($('#teamKmLeft'), left, 1); $('#teamGoalTxt').textContent = goal;
   // card personal
   const mk = myKm(), mg = S.user.goal;
@@ -1365,6 +1500,7 @@ function renderRank(animate = true) {
     g.classList.toggle('me', S.user && S.user.team === x.id);
     g.style.transform = `translate(${p.x + (i % 2 ? 5 : -5)}px, ${p.y + (i > 1 ? 5 : -5)}px)`;
   });
+  renderTreeMap($('#tmRank'), 'rank');
   // lista con FLIP
   const list = $('#rankList');
   const prev = new Map($$('li', list).map(li => [li.dataset.id, li.getBoundingClientRect().top]));
