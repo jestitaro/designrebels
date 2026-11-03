@@ -144,6 +144,10 @@ body[data-theme="navidad"] .app{background:radial-gradient(90% 45% at 50% 0%,#2b
 
 .head-txt{flex:1;min-width:0}
 .app[data-view="home"] .head-txt{visibility:hidden}
+.head-brand{position:absolute;left:22px;bottom:18px;font-size:24px;line-height:1;letter-spacing:-.02em;opacity:0;transform:translateY(12px);transition:opacity .3s var(--ease-out),transform .45s var(--ease-spring);pointer-events:none}
+.head-brand span{color:var(--accent)}
+.app[data-view="home"].scrolled .head-brand{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.head-brand{transition:none}}
 .head-txt small{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-weight:700}
 .head-txt small::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--team,var(--accent))}
 .avatar[hidden]{display:none}
@@ -764,6 +768,7 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
         <header class="app-head">
           <span class="avatar" id="avatar" hidden></span>
           <div class="head-txt"><small id="headKicker"></small><strong id="headTitle"></strong></div>
+          <div class="head-brand display" aria-hidden="true">QuartzRun <span>2026</span></div>
           <button class="live-pill" id="livePill" aria-label="Volver a la actividad en curso"><i></i><span class="num" id="liveTxt">00:00</span></button>
           <button class="icon-btn" id="themeBtn" aria-label="Cambiar tema">
             <svg class="ico-candy" viewBox="0 0 64 60" aria-hidden="true"><use href="#candy"/></svg><svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun"/></svg>
@@ -1415,7 +1420,7 @@ function renderHome() {
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
   const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
   const pre = !started();
-  $('#raceKicker').textContent = `Largada ${fmtDate(RACE.start)}`;
+  $('#raceKicker').textContent = `Largada ${RACE.start.toLocaleDateString('es-AR', { month: 'long' })}`;
   tween($('#daysLeft'), dl, 0, 700);
   $('#daysLbl').textContent = dl === 1 ? 'día para terminar' : 'días para terminar';
   $('#raceMine').style.setProperty('--team', teamVar(tm.id));
@@ -1998,6 +2003,10 @@ $('#resetBtn').addEventListener('click', () => {
   if (!confirm('¿Borrar tu progreso y volver a empezar?')) return;
   localStorage.removeItem(KEY); location.reload();
 });
+
+/* QuartzRun sube al header cuando el título del inicio sale de pantalla */
+new IntersectionObserver(([e]) => $('#app').classList.toggle('scrolled', !e.isIntersecting && !!e.rootBounds && e.boundingClientRect.top < e.rootBounds.top + 10),
+  { root: $('.screen[data-screen="home"]'), threshold: 0 }).observe($('#raceTitle'));
 
 /* ---- Init ---- */
 document.body.dataset.theme = COPY[S.theme] ? S.theme : 'navidad';
