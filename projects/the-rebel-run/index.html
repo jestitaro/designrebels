@@ -1158,7 +1158,7 @@ const teamIdx = id => TEAMS.findIndex(x => x.id === id);
 const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
 const DAY = 864e5;
 const daysLeft = () => Math.max(0, Math.ceil((RACE.end - Date.now()) / DAY));
-const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' });
+const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', timeZone: 'America/Argentina/Buenos_Aires' });
 /* Momento en que una casa cruzó la meta (prototipo: solo se conocen tus actividades) */
 function teamReachedAt(id) {
   let acc = team(id).seed; const g = teamGoal(id); if (acc >= g) return RACE.start.getTime();
@@ -1420,7 +1420,7 @@ function renderHome() {
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
   const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
   const pre = !started();
-  $('#raceKicker').textContent = `Largada ${RACE.start.toLocaleDateString('es-AR', { month: 'long' })}`;
+  $('#raceKicker').textContent = `Largada ${RACE.start.toLocaleDateString('es-AR', { month: 'long', timeZone: 'America/Argentina/Buenos_Aires' })}`;
   tween($('#daysLeft'), dl, 0, 700);
   $('#daysLbl').textContent = dl === 1 ? 'día para terminar' : 'días para terminar';
   $('#raceMine').style.setProperty('--team', teamVar(tm.id));
