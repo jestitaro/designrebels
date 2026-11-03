@@ -749,7 +749,7 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
       <button data-theme-set="navidad">Navidad</button>
       <button data-theme-set="base">QuartzSales</button>
     </div>
-    <p class="fine">Prototipo · los kilómetros se guardan en este dispositivo · GPS real con fallback demo</p>
+    <p class="fine">Ranking compartido en vivo entre todas las casas</p>
   </section>
 
   <div class="device">
@@ -1161,6 +1161,46 @@ const COPY = {
 
 /* ---- State ---- */
 let S = load() || { user: null, acts: [], unlocked: [], theme: 'navidad' };
+
+/* ---- Ranking compartido (Firestore del proyecto QuartzProde, colecciones quartzrun_*) ----
+   Si Firebase no carga o no hay conexión, la app sigue funcionando con los datos de este dispositivo. */
+const SYNC = { db: null, acts: [], ready: false, failed: false };
+const FB_CONFIG = { apiKey: 'AIzaSyBCt4aNLAiajTJIvM5CpVhQvnyiX15Vkqg', authDomain: 'quartzprode2026.firebaseapp.com', projectId: 'quartzprode2026',
+  storageBucket: 'quartzprode2026.firebasestorage.app', messagingSenderId: '616224313629', appId: '1:616224313629:web:5cad77efab7eb2506b51f4' };
+const loadScript = src => new Promise((ok, ko) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = ko; document.head.appendChild(el); });
+const actDoc = a => ({ user: S.user.id, name: S.user.name, team: S.user.team, km: a.km, type: a.type || 'walk', source: a.source || 'manual', date: a.date, createdAt: a.id });
+function syncFail(e) {
+  console.warn('QuartzRun sync:', e);
+  if (!SYNC.failed) { SYNC.failed = true; if (S.user) toast('No pudimos conectar con el ranking compartido. Tus km quedan guardados en este celular.'); }
+}
+function pushAct(a) { if (SYNC.db && S.user) SYNC.db.collection('quartzrun_acts').doc(`${S.user.id}_${a.id}`).set(actDoc(a)).catch(syncFail); }
+function dropAct(a) { if (SYNC.db && S.user) SYNC.db.collection('quartzrun_acts').doc(`${S.user.id}_${a.id}`).delete().catch(syncFail); }
+function pushUser() { if (SYNC.db && S.user) SYNC.db.collection('quartzrun_users').doc(S.user.id).set({ name: S.user.name, team: S.user.team, goal: S.user.goal, seenAt: Date.now() }, { merge: true }).catch(syncFail); }
+/* Al conectar: subo lo que falte de este dispositivo y traigo lo que hayas cargado desde otro */
+function reconcile() {
+  if (!S.user || !SYNC.db) return;
+  const mine = SYNC.acts.filter(a => a.user === S.user.id), local = new Set(S.acts.map(a => String(a.id)));
+  S.acts.filter(a => !mine.some(r => String(r.createdAt) === String(a.id))).forEach(pushAct);
+  const extra = mine.filter(r => !local.has(String(r.createdAt)));
+  if (extra.length) { extra.forEach(r => S.acts.push({ id: r.createdAt, km: r.km, kmRaw: r.km, secs: 0, type: r.type, source: r.source, date: r.date }));
+    S.acts.sort((x, y) => new Date(y.date) - new Date(x.date)); save(); }
+  pushUser();
+}
+async function startSync() {
+  try {
+    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js');
+    await loadScript('https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js');
+    const app = firebase.apps.find(x => x.name === 'quartzrun') || firebase.initializeApp(FB_CONFIG, 'quartzrun');
+    SYNC.db = app.firestore();
+    let first = true;
+    SYNC.db.collection('quartzrun_acts').onSnapshot(snap => {
+      SYNC.acts = snap.docs.map(d => d.data()).filter(a => a && a.user && ROSTER.some(p => p.id === a.user) && TEAMS.some(t => t.id === a.team) && a.km > 0 && a.km <= 100);
+      SYNC.ready = true; SYNC.failed = false;
+      if (first) { first = false; reconcile(); }
+      if (S.user) renderAll(true);
+    }, syncFail);
+  } catch (e) { syncFail(e); }
+}
 if (S.user && !ROSTER.some(p => p.id === S.user.id)) S.user = null; // equipos renombrados: re-onboarding
 function load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch (e) { return null; } }
 function save() {
@@ -1178,15 +1218,19 @@ const fmt = (n, d = 1) => n.toLocaleString('es-AR', { minimumFractionDigits: d, 
 const myKm = () => raceActs().reduce((a, b) => a + b.km, 0);
 const team = id => TEAMS.find(x => x.id === id);
 const teamIdx = id => TEAMS.findIndex(x => x.id === id);
-const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
+/* Actividades de todas las casas: las de otras personas vienen del ranking compartido (Firestore);
+   las tuyas siempre salen de este dispositivo, que es la fuente de verdad para vos */
+const sharedActs = () => SYNC.acts.filter(a => !S.user || a.user !== S.user.id);
+const teamActs = id => [...sharedActs().filter(a => a.team === id), ...(S.user && S.user.team === id ? S.acts : [])].filter(counts);
+const teamKm = id => team(id).seed + teamActs(id).reduce((x, a) => x + a.km, 0);
+const personKm = pid => S.user && pid === S.user.id ? myKm() : sharedActs().filter(a => a.user === pid && counts(a)).reduce((x, a) => x + a.km, 0);
 const DAY = 864e5;
 const daysLeft = () => Math.max(0, Math.ceil((RACE.end - Date.now()) / DAY));
 const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', timeZone: 'America/Argentina/Buenos_Aires' });
 /* Momento en que una casa cruzó la meta (prototipo: solo se conocen tus actividades) */
 function teamReachedAt(id) {
   let acc = team(id).seed; const g = teamGoal(id); if (acc >= g) return RACE.start.getTime();
-  if (!S.user || S.user.team !== id) return null;
-  for (const a of [...raceActs()].sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= g) return new Date(a.date).getTime(); }
+  for (const a of teamActs(id).sort((x, y) => new Date(x.date) - new Date(y.date))) { acc += a.km; if (acc >= g) return new Date(a.date).getTime(); }
   return null;
 }
 const winner = () => TEAMS.map(x => ({ id: x.id, at: teamReachedAt(x.id) })).filter(x => x.at != null).sort((a, b) => a.at - b.at)[0] || null;
@@ -1455,6 +1499,8 @@ function renderPulse(tm, tk, goal, left, dl, sorted, pos, pre, win) {
       if (need > 0) m.push(`Están a <b>${fmt(need, 1)} km</b> de pasar a ${ahead.name}.`); }
     if (left > 0 && dl > 0) m.push(`Quedan ${dl} ${dl === 1 ? 'día' : 'días'}: son <b>${fmt(left / dl, 1)} km por día</b> entre las ${tm.members} personas.`);
     if (today > 0) m.push(`Hoy sumaste <b>${fmt(today, 1)} km</b>. ¡Bien ahí!`);
+    const fresh = sharedActs().filter(a => new Date(a.date).toDateString() === new Date().toDateString()).sort((x, y) => y.createdAt - x.createdAt)[0];
+    if (fresh) { const who = ROSTER.find(p => p.id === fresh.user); if (who) m.push(`<b>${who.name.split(' ')[0]}</b> sumó ${fmt(fresh.km, 1)} km hoy para ${team(fresh.team).name}.`); }
     if (mk < mg) m.push(`Te faltan <b>${fmt(mg - mk, 1)} km</b> para tu meta personal.`); else m.push(`<b>Cumpliste tu meta personal.</b> Todo lo que sumes ahora es extra para ${tm.name}.`);
   }
   const same = PULSE.join('|') === m.join('|'); PULSE = m;
@@ -1579,7 +1625,7 @@ function renderRank(animate = true) {
   if (rankMode === 'teams') {
     rows = teamsSorted().map(x => ({ id: x.id, name: x.name, sub: `${x.members} personas`, km: teamKm(x.id), max: teamGoal(x.id), team: x.id, me: S.user && S.user.team === x.id }));
   } else {
-    const ppl = ROSTER.filter(p => !S.user || p.id !== S.user.id).map(p => ({ id: p.id, name: p.name, km: 0, team: p.team }));
+    const ppl = ROSTER.filter(p => !S.user || p.id !== S.user.id).map(p => ({ id: p.id, name: p.name, km: personKm(p.id), team: p.team }));
     if (S.user) ppl.push({ id: '__me', name: S.user.name + ' (vos)', km: myKm(), team: S.user.team, me: true });
     ppl.sort((a, b) => b.km - a.km || !!b.me - !!a.me || a.name.localeCompare(b.name, 'es'));
     rows = ppl.map(p => ({ ...p, sub: team(p.team).name, max: ppl[0].km || 1 }));
@@ -1888,7 +1934,7 @@ $('#saveBtn').addEventListener('click', e => {
   const counted = bike ? Math.round(km * BIKE_FACTOR * 100) / 100 : km;
   const act = { id: Date.now(), km: counted, kmRaw: km, secs, type, source: pending.source, date: date.toISOString() };
   if (pending.capHash) act.capHash = pending.capHash;
-  S.acts.unshift(act);
+  S.acts.unshift(act); pushAct(act);
   if (pending.capHash) S.capHashes = [...(S.capHashes || []), pending.capHash];
   save();
   if (pending.capUrl) { const u = pending.capUrl; makeThumb(u).then(th => { URL.revokeObjectURL(u); if (th) { act.thumb = th; save(); renderMe(); } }); }
@@ -1985,7 +2031,7 @@ $('#actDel').addEventListener('click', () => {
   // doble toque para confirmar, sin diálogos del sistema
   if (Date.now() - delArmed > 3000) { delArmed = Date.now(); $('#actDel').textContent = 'Tocá de nuevo para eliminar'; vib(20); setTimeout(() => { if (actOpen && Date.now() - delArmed >= 3000) $('#actDel').textContent = 'Eliminar actividad'; }, 3100); return; }
   const a = actOpen;
-  S.acts = S.acts.filter(x => x.id !== a.id);
+  S.acts = S.acts.filter(x => x.id !== a.id); dropAct(a);
   if (a.capHash) S.capHashes = (S.capHashes || []).filter(h => h !== a.capHash);
   save(); closeAct(); vib([20, 40, 20]); renderAll(true);
   toast(counts(a) ? `Actividad eliminada: ${fmt(a.km, 2)} km menos para ${team(S.user.team).name}.` : 'Actividad de práctica eliminada.');
@@ -2057,7 +2103,7 @@ setInterval(remTick, 30000); setTimeout(remTick, 1500);
   $('#onbNext').addEventListener('click', () => {
     if (!valid()) return;
     if (step < 1) { step++; sync(); return; }
-    S.user = { id: draft.match.id, name: draft.match.name.split(' ')[0], team: draft.team, goal: draft.goal }; save();
+    S.user = { id: draft.match.id, name: draft.match.name.split(' ')[0], team: draft.team, goal: draft.goal }; save(); if (SYNC.ready) reconcile();
     renderAll(false); onb.classList.add('out'); vib([15, 30, 15]);
     setTimeout(() => { onb.style.display = 'none'; const [x, y] = centerOf($('#headTitle')); burst(x, y, 14); }, 500);
   });
@@ -2075,6 +2121,7 @@ new IntersectionObserver(([e]) => $('#app').classList.toggle('scrolled', !e.isIn
   { root: $('.screen[data-screen="home"]'), threshold: 0 }).observe($('#raceTitle'));
 
 /* ---- Init ---- */
+startSync();
 document.body.dataset.theme = COPY[S.theme] ? S.theme : 'navidad';
 applyCopy(); setRunState('idle'); renderAll(false);
 requestAnimationFrame(() => $$('.seg').forEach(segPill));
