@@ -1023,7 +1023,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const KEY = 'rebelrun:v3';
 /* Carrera de casas: la define la organización (en producción, desde admin). Gana la primera casa en llegar a la meta. */
-const RACE = { perMember: 10, launch: new Date('2026-10-31T00:00:00-03:00'), start: new Date('2026-11-01T00:00:00-03:00'), end: new Date('2026-12-01T23:59:59-03:00') };
+const RACE = { perMember: 10, launch: new Date('2026-10-31T00:00:00-03:00'), start: new Date('2026-11-01T00:00:00-03:00'), end: new Date('2026-12-08T23:59:59-03:00') };
 const started = () => Date.now() >= RACE.start.getTime();
 /* Solo suman las actividades dentro de la ventana de la carrera; antes de la largada quedan como práctica */
 const counts = a => { const t = new Date(a.date).getTime(); return t >= RACE.start.getTime() && t <= RACE.end.getTime(); };
@@ -1092,7 +1092,7 @@ const GOALS = [5, 10, 21, 42];
 const COPY = {
   base: {
     eyebrow: 'QuartzSales · Carrera interna', claim: '',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 1 de diciembre.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 8 de diciembre.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
@@ -1114,7 +1114,7 @@ const COPY = {
   },
   navidad: {
     eyebrow: 'QuartzSales · Camino a Navidad 2026', claim: 'It’s time',
-    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 1 de diciembre, camino a Navidad.',
+    heroSub: 'Una carrera a distancia entre las cuatro casas de QuartzSales para movernos más y despegarnos de la silla, estés en el país que estés. Se corre del 1 de noviembre al 8 de diciembre, camino a Navidad.',
     step1: 'Ingresá tu nombre y representá a tu casa.',
     step2: 'Iniciá, pausá y finalizá tu recorrido desde la página.',
     step3: 'Cada casa tiene una meta según su cantidad de integrantes. Gana la primera en completarla.',
@@ -1158,7 +1158,7 @@ const teamIdx = id => TEAMS.findIndex(x => x.id === id);
 const teamKm = id => team(id).seed + (S.user && S.user.team === id ? myKm() : 0);
 const DAY = 864e5;
 const daysLeft = () => Math.max(0, Math.ceil((RACE.end - Date.now()) / DAY));
-const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long' });
+const fmtDate = d => d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', timeZone: 'America/Argentina/Buenos_Aires' });
 /* Momento en que una casa cruzó la meta (prototipo: solo se conocen tus actividades) */
 function teamReachedAt(id) {
   let acc = team(id).seed; const g = teamGoal(id); if (acc >= g) return RACE.start.getTime();
@@ -1420,7 +1420,7 @@ function renderHome() {
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
   const goal = teamGoal(tm.id), win = winner(), dl = daysLeft(), left = Math.max(0, goal - tk);
   const pre = !started();
-  $('#raceKicker').textContent = `Largada ${RACE.start.toLocaleDateString('es-AR', { month: 'long' })}`;
+  $('#raceKicker').textContent = `Largada ${RACE.start.toLocaleDateString('es-AR', { month: 'long', timeZone: 'America/Argentina/Buenos_Aires' })}`;
   tween($('#daysLeft'), dl, 0, 700);
   $('#daysLbl').textContent = dl === 1 ? 'día para terminar' : 'días para terminar';
   $('#raceMine').style.setProperty('--team', teamVar(tm.id));
