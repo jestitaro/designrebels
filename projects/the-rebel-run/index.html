@@ -268,7 +268,7 @@ body[data-theme="navidad"] .hero-title{transform:rotate(-1.2deg);transform-origi
 .tm .tm-tok .dino{transform-box:fill-box;transform-origin:50% 100%;transition:transform .35s var(--ease-spring)}
 .tm .tm-tok:hover .dino,.tm .tm-tok.on .dino{transform:scale(1.1)}
 .tm .tm-tok .run{animation:dinoRun .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
-@keyframes dinoRun{to{transform:translateY(-10px) rotate(-3deg)}}
+@keyframes dinoRun{to{transform:translateY(-8px) rotate(-2deg)}}
 .tm .tm-tok .pin{transition:transform .35s var(--ease-spring);transform-box:fill-box;transform-origin:50% 100%}
 .tm .tm-tok:hover .pin,.tm .tm-tok.on .pin{transform:scale(1.12)}
 .tm .tm-tok .halo{transform-box:fill-box;transform-origin:center;animation:tmHalo 2s ease-out infinite}
@@ -1442,12 +1442,13 @@ function renderTreeMap(box, mode) {
   order.forEach(t => { const q = m.at(target[t.id]); const g = groups.find(g => Math.hypot(g.x - q.x, g.y - q.y) < 80); if (g) g.ids.push(t.id); else groups.push({ x: q.x, y: q.y, ids: [t.id] }); });
   const off = {}; groups.forEach(g => g.ids.forEach((id, k) => { off[id] = (k - (g.ids.length - 1) / 2) * (tree ? 62 : 70); }));
   const tokWrap = $('.tm-toks', box);
-  tokWrap.innerHTML = !tree ? order.map(t => { const big = me && t.id === me.id, h = big ? 320 : 270, w = Math.round(h * .82);
+  tokWrap.innerHTML = !tree ? order.map(t => { const big = me && t.id === me.id, h = big ? 270 : 225, w = Math.round(h * .76);
     const g = groups.find(g => g.ids.includes(t.id)), ids = g.ids.length > 1 ? g.ids.join(',') : t.id;
     return `<g class="tm-tok" tabindex="0" role="button" data-id="${t.id}" data-ids="${ids}" aria-label="${t.name}: ${fmt(teamKm(t.id), 1)} de ${teamGoal(t.id)} km">
       <ellipse cx="0" cy="6" rx="${w * .34}" ry="16" fill="${big ? teamVar(t.id) : '#000'}" opacity="${big ? .55 : .35}"/>
       ${big ? `<ellipse class="halo" cx="0" cy="6" rx="${w * .4}" ry="20" fill="${teamVar(t.id)}"/>` : ''}
-      <g class="flip"><g class="dino"><g class="run" style="animation-delay:-${(teamIdx(t.id) * .13).toFixed(2)}s"><image href="assets/dino-${t.id}.webp" x="${-w / 2}" y="${-h + 10}" width="${w}" height="${h}"/></g></g></g>
+      <path d="M0 4V-26" stroke="#f2f3ff" stroke-width="8" stroke-linecap="round"/>
+      <g class="dino"><g class="run" style="animation-delay:-${(teamIdx(t.id) * .13).toFixed(2)}s"><g class="flip"><image href="assets/dino-${t.id}.webp" x="${-w / 2}" y="${-h - 22}" width="${w}" height="${h}"/></g></g></g>
       <circle cy="-${h / 2}" r="${h * .45}" fill="transparent"/></g>`; }).join('') : order.map(t => { const big = me && t.id === me.id, r = big ? 46 : 38;
     const g = groups.find(g => g.ids.includes(t.id)), ids = g.ids.length > 1 ? g.ids.join(',') : t.id;
     return `<g class="tm-tok" tabindex="0" role="button" data-id="${t.id}" data-ids="${ids}" aria-label="${t.name}: ${fmt(teamKm(t.id), 1)} de ${teamGoal(t.id)} km">
@@ -1463,7 +1464,8 @@ function renderTreeMap(box, mode) {
     const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 4);
     order.forEach(t => { const f = (from[t.id] ?? 0) + (target[t.id] - (from[t.id] ?? 0)) * e, q = m.at(f), el = $(`.tm-tok[data-id="${t.id}"]`, tokWrap);
       const x = q.x + off[t.id];
-      el.setAttribute('transform', `translate(${x} ${q.y})`); el.dataset.x = x; el.dataset.y = q.y; m.pos[t.id] = f; });
+      el.setAttribute('transform', `translate(${x} ${q.y})`); el.dataset.x = x; el.dataset.y = q.y; m.pos[t.id] = f;
+      const fl = $('.flip', el); if (fl) { const q2 = m.at(f + .004); fl.setAttribute('transform', q2.x < q.x - .5 ? 'scale(-1 1)' : ''); } });
     if (focus) lit.setAttribute('stroke-dasharray', `${m.pos[focus.id] * 1000} 1000`);
     if (k < 1) m.raf = requestAnimationFrame(step);
     else if (focus && target[focus.id] >= 1 && (from[focus.id] ?? 0) < 1 && mode === 'home' && $('#app').contains(box) && box.offsetParent) {
