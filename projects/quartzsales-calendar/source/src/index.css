@@ -1,0 +1,254 @@
+@import 'tailwindcss';
+@import '@fontsource/poppins/latin-400.css';
+@import '@fontsource/poppins/latin-500.css';
+@import '@fontsource/poppins/latin-600.css';
+@import '@fontsource/poppins/latin-700.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/*
+ * Tokens de QuartzSales Calendar.
+ * Marca: primario #7025E0 · secundario #A172FF · fondo de marca #130D5D · texto #111827.
+ * Los colores semánticos tienen par fg/bg con contraste AA (≥ 4.5:1) en ambos temas.
+ */
+:root {
+  color-scheme: light;
+  --qs-brand-primary: #7025e0;
+  --qs-brand-secondary: #a172ff;
+  --qs-brand-dark: #130d5d;
+
+  --qs-bg: #f6f5fb;
+  --qs-surface: #ffffff;
+  --qs-surface-2: #f1eff8;
+  --qs-surface-3: #e7e4f2;
+  --qs-border: #dedbea;
+  --qs-border-strong: #c3bed8;
+  --qs-text: #111827;
+  --qs-text-muted: #4b5563;
+  --qs-text-subtle: #6b7280;
+  --qs-overlay: rgb(19 13 93 / 0.45);
+
+  --qs-primary: #7025e0;
+  --qs-primary-hover: #5f1bc7;
+  --qs-primary-active: #5016aa;
+  --qs-primary-fg: #ffffff;
+  --qs-primary-soft: #efe7fd;
+  --qs-primary-soft-fg: #5016aa;
+  --qs-accent: #7025e0;
+  --qs-focus: #7025e0;
+
+  --qs-success-fg: #166534;
+  --qs-success-bg: #dcfce7;
+  --qs-warning-fg: #92400e;
+  --qs-warning-bg: #fef3c7;
+  --qs-danger: #b91c1c;
+  --qs-danger-hover: #991b1b;
+  --qs-danger-fg: #b91c1c;
+  --qs-danger-bg: #fee2e2;
+  --qs-info-fg: #1d4ed8;
+  --qs-info-bg: #dbeafe;
+  --qs-neutral-fg: #374151;
+  --qs-neutral-bg: #eceaf3;
+
+  --qs-cat-blue-fg: #1d4ed8;
+  --qs-cat-blue-bg: #dbeafe;
+  --qs-cat-blue-solid: #2563eb;
+  --qs-cat-teal-fg: #0f766e;
+  --qs-cat-teal-bg: #ccfbf1;
+  --qs-cat-teal-solid: #0d9488;
+  --qs-cat-amber-fg: #92400e;
+  --qs-cat-amber-bg: #fef3c7;
+  --qs-cat-amber-solid: #d97706;
+  --qs-cat-pink-fg: #be185d;
+  --qs-cat-pink-bg: #fce7f3;
+  --qs-cat-pink-solid: #db2777;
+  --qs-cat-fuchsia-fg: #a21caf;
+  --qs-cat-fuchsia-bg: #fae8ff;
+  --qs-cat-fuchsia-solid: #c026d3;
+  --qs-cat-green-fg: #166534;
+  --qs-cat-green-bg: #dcfce7;
+  --qs-cat-green-solid: #16a34a;
+  --qs-cat-brand-fg: #5016aa;
+  --qs-cat-brand-bg: #efe7fd;
+  --qs-cat-brand-solid: #7025e0;
+
+  --qs-shadow-sm: 0 1px 2px rgb(17 24 39 / 0.06);
+  --qs-shadow-md: 0 4px 16px rgb(19 13 93 / 0.1);
+  --qs-shadow-lg: 0 16px 48px rgb(19 13 93 / 0.18);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --qs-bg: #0c0930;
+  --qs-surface: #151142;
+  --qs-surface-2: #1c1752;
+  --qs-surface-3: #252063;
+  --qs-border: #2c2670;
+  --qs-border-strong: #3f388c;
+  --qs-text: #f4f2fc;
+  --qs-text-muted: #c2bde0;
+  --qs-text-subtle: #a19bc7;
+  --qs-overlay: rgb(5 3 30 / 0.7);
+
+  --qs-primary: #7025e0;
+  --qs-primary-hover: #8140e8;
+  --qs-primary-active: #9259ee;
+  --qs-primary-fg: #ffffff;
+  --qs-primary-soft: rgb(161 114 255 / 0.2);
+  --qs-primary-soft-fg: #d2bcff;
+  --qs-accent: #b48dff;
+  --qs-focus: #b48dff;
+
+  --qs-success-fg: #86efac;
+  --qs-success-bg: rgb(34 197 94 / 0.16);
+  --qs-warning-fg: #fcd34d;
+  --qs-warning-bg: rgb(245 158 11 / 0.16);
+  --qs-danger: #dc2626;
+  --qs-danger-hover: #ef4444;
+  --qs-danger-fg: #fca5a5;
+  --qs-danger-bg: rgb(239 68 68 / 0.16);
+  --qs-info-fg: #93c5fd;
+  --qs-info-bg: rgb(59 130 246 / 0.16);
+  --qs-neutral-fg: #d6d2ee;
+  --qs-neutral-bg: rgb(255 255 255 / 0.08);
+
+  --qs-cat-blue-fg: #93c5fd;
+  --qs-cat-blue-bg: rgb(59 130 246 / 0.18);
+  --qs-cat-blue-solid: #60a5fa;
+  --qs-cat-teal-fg: #5eead4;
+  --qs-cat-teal-bg: rgb(20 184 166 / 0.18);
+  --qs-cat-teal-solid: #2dd4bf;
+  --qs-cat-amber-fg: #fcd34d;
+  --qs-cat-amber-bg: rgb(245 158 11 / 0.18);
+  --qs-cat-amber-solid: #fbbf24;
+  --qs-cat-pink-fg: #f9a8d4;
+  --qs-cat-pink-bg: rgb(236 72 153 / 0.2);
+  --qs-cat-pink-solid: #f472b6;
+  --qs-cat-fuchsia-fg: #f0abfc;
+  --qs-cat-fuchsia-bg: rgb(217 70 239 / 0.2);
+  --qs-cat-fuchsia-solid: #e879f9;
+  --qs-cat-green-fg: #86efac;
+  --qs-cat-green-bg: rgb(34 197 94 / 0.18);
+  --qs-cat-green-solid: #4ade80;
+  --qs-cat-brand-fg: #d2bcff;
+  --qs-cat-brand-bg: rgb(161 114 255 / 0.22);
+  --qs-cat-brand-solid: #a172ff;
+
+  --qs-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --qs-shadow-md: 0 4px 16px rgb(0 0 0 / 0.35);
+  --qs-shadow-lg: 0 16px 48px rgb(0 0 0 / 0.5);
+}
+
+@theme inline {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --color-bg: var(--qs-bg);
+  --color-surface: var(--qs-surface);
+  --color-surface-2: var(--qs-surface-2);
+  --color-surface-3: var(--qs-surface-3);
+  --color-border: var(--qs-border);
+  --color-border-strong: var(--qs-border-strong);
+  --color-text: var(--qs-text);
+  --color-muted: var(--qs-text-muted);
+  --color-subtle: var(--qs-text-subtle);
+  --color-overlay: var(--qs-overlay);
+  --color-brand-dark: var(--qs-brand-dark);
+  --color-brand-secondary: var(--qs-brand-secondary);
+
+  --color-primary: var(--qs-primary);
+  --color-primary-hover: var(--qs-primary-hover);
+  --color-primary-active: var(--qs-primary-active);
+  --color-primary-fg: var(--qs-primary-fg);
+  --color-primary-soft: var(--qs-primary-soft);
+  --color-primary-soft-fg: var(--qs-primary-soft-fg);
+  --color-accent: var(--qs-accent);
+  --color-focus: var(--qs-focus);
+
+  --color-success: var(--qs-success-fg);
+  --color-success-bg: var(--qs-success-bg);
+  --color-warning: var(--qs-warning-fg);
+  --color-warning-bg: var(--qs-warning-bg);
+  --color-danger: var(--qs-danger);
+  --color-danger-hover: var(--qs-danger-hover);
+  --color-danger-fg: var(--qs-danger-fg);
+  --color-danger-bg: var(--qs-danger-bg);
+  --color-info: var(--qs-info-fg);
+  --color-info-bg: var(--qs-info-bg);
+  --color-neutral: var(--qs-neutral-fg);
+  --color-neutral-bg: var(--qs-neutral-bg);
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius: 4px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  --shadow-sm: var(--qs-shadow-sm);
+  --shadow-md: var(--qs-shadow-md);
+  --shadow-lg: var(--qs-shadow-lg);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-bg text-text font-sans antialiased;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid var(--qs-focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--qs-primary-soft);
+    color: var(--qs-text);
+  }
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* Colores de categoría: .cat-blue, .cat-teal, … exponen --cat-fg / --cat-bg / --cat-solid. */
+.cat-blue { --cat-fg: var(--qs-cat-blue-fg); --cat-bg: var(--qs-cat-blue-bg); --cat-solid: var(--qs-cat-blue-solid); }
+.cat-teal { --cat-fg: var(--qs-cat-teal-fg); --cat-bg: var(--qs-cat-teal-bg); --cat-solid: var(--qs-cat-teal-solid); }
+.cat-amber { --cat-fg: var(--qs-cat-amber-fg); --cat-bg: var(--qs-cat-amber-bg); --cat-solid: var(--qs-cat-amber-solid); }
+.cat-pink { --cat-fg: var(--qs-cat-pink-fg); --cat-bg: var(--qs-cat-pink-bg); --cat-solid: var(--qs-cat-pink-solid); }
+.cat-fuchsia { --cat-fg: var(--qs-cat-fuchsia-fg); --cat-bg: var(--qs-cat-fuchsia-bg); --cat-solid: var(--qs-cat-fuchsia-solid); }
+.cat-green { --cat-fg: var(--qs-cat-green-fg); --cat-bg: var(--qs-cat-green-bg); --cat-solid: var(--qs-cat-green-solid); }
+.cat-brand { --cat-fg: var(--qs-cat-brand-fg); --cat-bg: var(--qs-cat-brand-bg); --cat-solid: var(--qs-cat-brand-solid); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes qs-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes qs-pop-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes qs-sheet-in {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+@keyframes qs-toast-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-fade-in { animation: qs-fade-in 150ms ease-out both; }
+.animate-pop-in { animation: qs-pop-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.animate-sheet-in { animation: qs-sheet-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.animate-toast-in { animation: qs-toast-in 200ms ease-out both; }
