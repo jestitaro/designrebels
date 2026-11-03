@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-02T19:21:57.158Z",
-  "group": "A",
+  "generatedAt": "2026-11-03T14:25:15.346Z",
+  "group": "B",
   "own": {
     "linkedin": {
       "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-02T19:20:51.602Z",
+      "lastSynced": "2026-11-03T14:24:15.426Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -62,15 +62,15 @@
           "text": "IA, visibilidade e o novo padrão de execução.\n\nGaranta sua vaga no webinar Tendências de Trade Marketing 2027 e descubra como conectar estratégia, tecnologia e equipe de campo sob a mesma visão.\n\nA Camila Lopo, Key Account da Involves, será a mediadora desse bate-papo e, junto com líderes de mercado, vai compartilhar tudo o que você precisa saber para preparar sua operação para o próximo ano. Não perca!\n\n🗓️ 12 de novembro de 2026, às 14h (BRT)\n📍 Online e Gratuito\n🎟️ Inscreva-se aqui: https://",
           "url": "https://www.linkedin.com/posts/involves_ia-visibilidade-e-o-novo-padr%C3%A3o-de-execu%C3%A7%C3%A3o-activity-7523022137519960064-pIAR",
           "date": "2026-11-02T14:04:08.577Z",
-          "likes": 7,
-          "comments": 0,
+          "likes": 22,
+          "comments": 1,
           "stale": false
         },
         {
           "text": "español 🌎 - ¡El Involves Trade Connect Ecuador sigue dejando huella! \n\nRevive los mejores momentos de nuestro encuentro en Quito, donde líderes del sector se reunieron para intercambiar ideas, compartir buenas prácticas y conversar sobre cómo transformar datos en estrategias clave para la ejecución en el punto de venta.\n\nAgradecemos a todos los expertos, líderes y marcas que nos acompañaron y sumaron su voz a esta conversación para impulsar el crecimiento del trade marketing en la región.\n\nDale",
           "url": "https://www.linkedin.com/posts/involves_espa%C3%B1ol-el-involves-trade-connect-ecuador-activity-7521995623143821312-z39p",
           "date": "2026-10-30T18:05:08.478Z",
-          "likes": 23,
+          "likes": 24,
           "comments": 0,
           "stale": false
         },
@@ -99,7 +99,7 @@
           "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T19:21:29.519Z",
+      "postsLastSynced": "2026-11-03T14:24:49.735Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -146,10 +146,10 @@
           "date": "2026-10-27T13:08:35.915Z",
           "likes": 14,
           "comments": 0,
-          "stale": false
+          "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T19:21:36.929Z",
+      "postsLastSynced": "2026-11-03T14:24:54.235Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -190,7 +190,7 @@
       "syncStatus": "error",
       "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
       "posts": [],
-      "postsLastSynced": "2026-11-02T19:21:40.330Z",
+      "postsLastSynced": "2026-11-03T14:24:57.210Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -240,7 +240,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T19:21:44.541Z",
+      "postsLastSynced": "2026-11-03T14:25:03.482Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -277,20 +277,20 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-10-31T15:13:29.943Z",
+      "lastSynced": "2026-11-03T14:24:22.548Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
         {
-          "text": "Trusted LinkedIn network, I’m hiring and know I can count on your recommendations.\n\nIf you know a smart, driven, accountable, hungry enterprise seller who’d rather go deep on a handful of big accounts than skim hundreds, I’d love an intro.\n\nWe’re adding a Strategic Account Executive at Repsly to own a short list of Fortune 500 CPG brands. \n\nI want a problem solver with high EQ who believes selling is serving. \n\nThey’ll find the problem, multi-thread to the exec level, and run the deal through cl",
-          "url": "https://www.linkedin.com/posts/anthonymadrigal_trusted-linkedin-network-im-hiring-and-activity-7520492118046576640-5gix",
-          "date": "2026-10-26T14:38:23.835Z",
-          "likes": 33,
+          "text": "A store visit should deliver more than a check-in.\n\nWith Repsly, field teams can capture visits, photos, display checks, stock and pricing observations, forms and other store-level activity.\n\nThat information becomes a structured view of execution that managers can use to understand performance across stores, retailers and regions. \n\nField activity becomes business insight.\n\nConnect field execution with head-office visibility: https://za.repsly.com/\n#Repsly #RepslyZA",
+          "url": "https://www.linkedin.com/posts/repsly-emea-apac_repsly-repslyza-activity-7521451009089417216-FumG",
+          "date": "2026-11-03T14:00:25.912Z",
+          "likes": 3,
           "comments": 0,
-          "stale": true
+          "stale": false
         }
       ],
-      "postsLastSynced": "2026-11-02T19:21:52.565Z",
+      "postsLastSynced": "2026-11-03T14:25:08.305Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -303,7 +303,7 @@
       "gradEnd": "#ec4899",
       "size": "500-1000",
       "stats": {
-        "followers": "24.7K",
+        "followers": "43.2K",
         "posts_mes": 22,
         "engagement": "2.8",
         "funding": "~$800M"
@@ -327,9 +327,9 @@
         "Visión IA",
         "SoftBank"
       ],
-      "lastSynced": null,
-      "syncStatus": "error",
-      "syncError": "Apify devolvió un array vacío para esta URL — puede deberse a un slug de LinkedIn inválido, o a un cambio en el formato de input que espera el Actor (verificá el esquema actual de harvestapi~linkedin-company en Apify antes de asumir que es sólo el slug).",
+      "lastSynced": "2026-11-03T14:24:32.244Z",
+      "syncStatus": "ok",
+      "syncError": null,
       "posts": [
         {
           "text": "Looking for new ways to drive grocery sales? The newest edition of FORM Forward breaks down 8 product placement strategies - and why execution is what makes or breaks them. \n\nRead the full edition 👇",
@@ -340,7 +340,7 @@
           "stale": true
         }
       ],
-      "postsLastSynced": "2026-11-02T19:21:57.158Z",
+      "postsLastSynced": "2026-11-03T14:25:15.346Z",
       "postsSyncStatus": "ok",
       "postsSyncError": null
     },
@@ -377,7 +377,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-10-31T15:13:43.115Z",
+      "lastSynced": "2026-11-03T14:24:40.292Z",
       "syncStatus": "ok",
       "syncError": null
     },
