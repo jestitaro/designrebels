@@ -281,6 +281,13 @@ body[data-theme="navidad"] .hero-title{transform:rotate(-1.2deg);transform-origi
 .tm-pop p b{color:var(--ink);font-variant-numeric:tabular-nums}
 .tm-pop .tp-row{display:flex;align-items:center;gap:8px;padding:3px 0}
 .tm-pop .tp-row span:last-child{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pulse-msg{display:flex;align-items:center;gap:10px;margin:12px 0 8px;padding:10px 14px;min-height:46px;border-radius:14px;background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line);font-size:13px;line-height:1.35;font-weight:600}
+.pulse-msg svg{width:18px;height:18px;flex:none;color:var(--accent)}
+.pulse-msg span{transition:opacity .35s,transform .35s var(--ease-out)}
+.pulse-msg.out span{opacity:0;transform:translateY(6px)}
+.pulse-msg b{color:var(--accent)}
+.pulse-msg:empty,.pulse-msg[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.pulse-msg span{transition:none}}
 .tm-hint{text-align:center;font-size:11px;color:var(--muted);margin-top:2px}
 @media (prefers-reduced-motion:reduce){.tm .tm-bulb,.tm .tm-lamp,.tm .tm-star,.tm .tm-spark,.tm .tm-tok .halo{animation:none}.tm-pop{animation:none}}
 .hero-race .runners{margin-top:16px;font-size:12px;line-height:1.6}
@@ -801,6 +808,7 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
                 <div><b class="num" id="teamKmLeft">0</b><small>km faltan</small></div>
               </div>
               <div class="tm hw" id="treeMap"></div>
+              <p class="pulse-msg" id="pulseMsg"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#flake"/></svg><span></span></p>
               <p class="tm-hint hw">Tocá las fichas y los carteles para ver cómo viene cada casa.</p>
               <div class="bar-wrap bs"><div class="bar-fill" id="teamFill"></div>
                 <div class="bar-walker" id="teamWalker"><div class="dot"></div></div>
@@ -1430,6 +1438,33 @@ function renderHead() {
   $('#headKicker').textContent = tm.name; $('#headKicker').style.setProperty('--team', teamVar(tm.id));
   $('#headTitle').textContent = 'Hola, ' + S.user.name;
 }
+/* Mensajes que rotan bajo el árbol, armados con los datos de la carrera.
+   Los de otras casas aparecen cuando esas casas tienen km (requiere backend compartido). */
+let PULSE = [], pulseI = 0;
+function renderPulse(tm, tk, goal, left, dl, sorted, pos, pre, win) {
+  const pctOf = id => teamKm(id) / teamGoal(id) * 100, m = [];
+  const today = S.acts.filter(a => new Date(a.date).toDateString() === new Date().toDateString()).reduce((x, a) => x + a.km, 0);
+  const mk = myKm(), mg = S.user.goal, others = sorted.filter(t => t.id !== tm.id && teamKm(t.id) > 0);
+  if (win) m.push(win.id === tm.id ? `<b>${tm.name}</b> llegó a la estrella. ¡Felicitaciones!` : `<b>${team(win.id).name}</b> llegó primera a la estrella.`);
+  else if (pre) m.push(`Faltan ${Math.max(1, Math.ceil((RACE.start - Date.now()) / DAY))} días para la largada. ¡Preparate, ${tm.name}!`);
+  else {
+    m.push(tk > 0 ? `<b>${tm.name}</b> ya hizo ${fmt(tk, 1)} km. Faltan ${fmt(left, 1)} para la estrella.` : `Todavía nadie de ${tm.name} sumó km. <b>¡Arrancá vos!</b>`);
+    if (pos > 1 && teamKm(sorted[0].id) > 0) m.push(`<b>${sorted[0].name}</b> va primera con el ${fmt(pctOf(sorted[0].id), 0)}%. ¡Dale, ${tm.name}!`);
+    if (pos === 1 && others.length) m.push(`<b>${tm.name}</b> va primera. ¡No aflojen, que ${others[0].name} viene atrás!`);
+    if (pos > 1 && teamKm(sorted[pos - 2].id) > 0) { const ahead = sorted[pos - 2], need = pctOf(ahead.id) / 100 * goal - tk;
+      if (need > 0) m.push(`Están a <b>${fmt(need, 1)} km</b> de pasar a ${ahead.name}.`); }
+    if (left > 0 && dl > 0) m.push(`Quedan ${dl} ${dl === 1 ? 'día' : 'días'}: son <b>${fmt(left / dl, 1)} km por día</b> entre las ${tm.members} personas.`);
+    if (today > 0) m.push(`Hoy sumaste <b>${fmt(today, 1)} km</b>. ¡Bien ahí!`);
+    if (mk < mg) m.push(`Te faltan <b>${fmt(mg - mk, 1)} km</b> para tu meta personal.`); else m.push(`<b>Cumpliste tu meta personal.</b> Todo lo que sumes ahora es extra para ${tm.name}.`);
+  }
+  const same = PULSE.join('|') === m.join('|'); PULSE = m;
+  if (!same) { pulseI = 0; $('#pulseMsg span').innerHTML = m[0]; }
+}
+setInterval(() => {
+  const el = $('#pulseMsg'); if (!el || PULSE.length < 2 || document.hidden || !el.offsetParent) return;
+  el.classList.add('out');
+  setTimeout(() => { pulseI = (pulseI + 1) % PULSE.length; $('span', el).innerHTML = PULSE[pulseI]; el.classList.remove('out'); }, reduce ? 0 : 350);
+}, 6000);
 function renderHome() {
   if (!S.user) return;
   const tm = team(S.user.team), tk = teamKm(tm.id), sorted = teamsSorted(), pos = sorted.findIndex(x => x.id === tm.id) + 1;
@@ -1443,6 +1478,7 @@ function renderHome() {
   $('#runners').innerHTML = ROSTER.filter(r => r.team === tm.id).map(r => { const n = r.name.split(' ')[0]; return r.id === S.user.id ? `<b>${n}</b>` : n; }).join(' · ');
   $('#myTeamPos').textContent = win && win.id === tm.id ? 'Ganadora' : `#${pos} de ${TEAMS.length}`;
   const pct = Math.min(100, tk / goal * 100);
+  renderPulse(tm, tk, goal, left, dl, sorted, pos, pre, win);
   $('#teamFill').style.setProperty('--fill', teamVar(tm.id)); $('#teamFill').style.width = pct + '%'; $('#teamWalker').style.left = pct + '%';
   renderTreeMap($('#treeMap'), 'home');
   tween($('#teamKmDone'), tk, 1); tween($('#teamKmLeft'), left, 1); $('#teamGoalTxt').textContent = goal;
