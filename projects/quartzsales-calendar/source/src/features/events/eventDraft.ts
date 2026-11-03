@@ -1,10 +1,10 @@
 import { TIMEZONE_BY_COUNTRY } from '../../data/defaults';
-import { addDays, isValidISODate, nthWeekdayOfMonth, parseISO, todayISO } from '../../lib/dates';
+import { addDays, easterSunday, isValidISODate, nthWeekdayOfMonth, parseISO, todayISO } from '../../lib/dates';
 import { durationDays } from '../../lib/recurrence';
 import type { EventContent } from '../../schemas/event';
 import type { CalendarEvent, EditorialStatus, ISODate, Relevance, Verification, Weekday } from '../../types';
 
-export type DateMode = 'yearly-fixed' | 'yearly-nth-weekday' | 'none';
+export type DateMode = 'yearly-fixed' | 'yearly-nth-weekday' | 'yearly-easter' | 'none';
 
 /** Estado del formulario: todo como string/boolean para inputs controlados. */
 export interface EventDraft {
@@ -28,6 +28,8 @@ export interface EventDraft {
   ruleOffset: string;
   /** Días totales en modo regla (1 = un solo día). */
   ruleDuration: string;
+  /** Días respecto del Domingo de Pascua (Viernes Santo: -2). */
+  easterOffset: string;
   allDay: boolean;
   startTime: string;
   endTime: string;
@@ -51,7 +53,7 @@ export function emptyDraft(startDate: ISODate = todayISO(), defaults: Partial<Ev
     title: '', summary: '', description: '', history: '', traditions: '',
     category: '', subcategory: '', country: '', region: '', city: '',
     dateMode: 'yearly-fixed', startDate, multiDay: false, endDate: '',
-    ruleMonth: String(m), ruleNth: '1', ruleWeekday: '0', ruleOffset: '0', ruleDuration: '1',
+    ruleMonth: String(m), ruleNth: '1', ruleWeekday: '0', ruleOffset: '0', ruleDuration: '1', easterOffset: '-2',
     allDay: true, startTime: '', endTime: '', observances: [],
     relevance: 'media', verification: 'pendiente', verificationNote: '',
     source: '', sourceUrl: '', lastVerifiedAt: '', imageUrl: '', contentIdeas: '',
@@ -74,6 +76,7 @@ export function draftFromEvent(e: CalendarEvent): EventDraft {
     ruleWeekday: String(rec.type === 'yearly-nth-weekday' ? rec.weekday : 0),
     ruleOffset: String(rec.type === 'yearly-nth-weekday' ? rec.offsetDays : 0),
     ruleDuration: String(durationDays(e) + 1),
+    easterOffset: String(rec.type === 'yearly-easter' ? rec.offsetDays : -2),
     allDay: e.allDay, startTime: e.startTime ?? '', endTime: e.endTime ?? '',
     observances: e.holidayObservances.map((o) => ({ year: String(o.year), date: o.date, note: o.note ?? '' })),
     relevance: e.relevance, verification: e.verification, verificationNote: e.verificationNote ?? '',
@@ -85,6 +88,7 @@ export function draftFromEvent(e: CalendarEvent): EventDraft {
 
 /** Para una regla, la fecha de referencia es la ocurrencia del año indicado. */
 export function ruleStartDate(d: EventDraft, year: number): ISODate | null {
+  if (d.dateMode === 'yearly-easter') return addDays(easterSunday(year), Number(d.easterOffset) || 0);
   const base = nthWeekdayOfMonth(year, Number(d.ruleMonth), Number(d.ruleWeekday) as Weekday, Number(d.ruleNth));
   return base ? addDays(base, Number(d.ruleOffset) || 0) : null;
 }
@@ -93,7 +97,7 @@ const opt = (v: string) => (v.trim() === '' ? undefined : v.trim());
 
 /** Convierte el borrador al contenido del evento (sin validar). */
 export function draftToContent(d: EventDraft, referenceYear = parseISO(todayISO()).y): EventContent {
-  const isRule = d.dateMode === 'yearly-nth-weekday';
+  const isRule = d.dateMode === 'yearly-nth-weekday' || d.dateMode === 'yearly-easter';
   const startDate = isRule ? (ruleStartDate(d, referenceYear) ?? '') : d.startDate;
   let endDate: string | undefined;
   if (isRule) {
@@ -119,7 +123,9 @@ export function draftToContent(d: EventDraft, referenceYear = parseISO(todayISO(
     startTime: d.allDay ? undefined : opt(d.startTime),
     endTime: d.allDay ? undefined : opt(d.endTime),
     timezone: TIMEZONE_BY_COUNTRY[d.country] ?? 'UTC',
-    recurrence: isRule
+    recurrence: d.dateMode === 'yearly-easter'
+      ? { type: 'yearly-easter', offsetDays: Number(d.easterOffset) || 0 }
+      : isRule
       ? {
           type: 'yearly-nth-weekday',
           month: Number(d.ruleMonth),

@@ -1,8 +1,11 @@
 @import 'tailwindcss';
-@import '@fontsource/poppins/latin-400.css';
-@import '@fontsource/poppins/latin-500.css';
-@import '@fontsource/poppins/latin-600.css';
-@import '@fontsource/poppins/latin-700.css';
+@import '@fontsource/nunito/latin-400.css';
+@import '@fontsource/nunito/latin-600.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/nunito/latin-800.css';
+@import '@fontsource/roboto/latin-400.css';
+@import '@fontsource/roboto/latin-500.css';
+@import '@fontsource/roboto/latin-700.css';
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
@@ -13,16 +16,24 @@
  */
 :root {
   color-scheme: light;
+  /*
+   * Sistema visual del QuartzSales Content Dashboard (pestaña Competidores):
+   * Nunito + Roboto, degradado de marca #3C9FF1 → #7025E0, radios 8/12 px.
+   * El tema claro es la traducción del mismo sistema a fondo claro.
+   */
   --qs-brand-primary: #7025e0;
   --qs-brand-secondary: #a172ff;
   --qs-brand-dark: #130d5d;
+  --qs-grad-start: #3c9ff1;
+  --qs-grad-end: #7025e0;
+  --qs-grad: linear-gradient(135deg, var(--qs-grad-start), var(--qs-grad-end));
 
-  --qs-bg: #f6f5fb;
+  --qs-bg: #f5f5fb;
   --qs-surface: #ffffff;
-  --qs-surface-2: #f1eff8;
-  --qs-surface-3: #e7e4f2;
-  --qs-border: #dedbea;
-  --qs-border-strong: #c3bed8;
+  --qs-surface-2: #f2f0fa;
+  --qs-surface-3: #e9e6f6;
+  --qs-border: #e4e1f1;
+  --qs-border-strong: #d3cee9;
   --qs-text: #111827;
   --qs-text-muted: #4b5563;
   --qs-text-subtle: #6b7280;
@@ -32,8 +43,9 @@
   --qs-primary-hover: #5f1bc7;
   --qs-primary-active: #5016aa;
   --qs-primary-fg: #ffffff;
-  --qs-primary-soft: #efe7fd;
+  --qs-primary-soft: rgb(112 37 224 / 0.08);
   --qs-primary-soft-fg: #5016aa;
+  --qs-primary-ring: rgb(112 37 224 / 0.25);
   --qs-accent: #7025e0;
   --qs-focus: #7025e0;
 
@@ -79,23 +91,24 @@
 
 [data-theme='dark'] {
   color-scheme: dark;
-  --qs-bg: #0c0930;
-  --qs-surface: #151142;
-  --qs-surface-2: #1c1752;
-  --qs-surface-3: #252063;
-  --qs-border: #2c2670;
-  --qs-border-strong: #3f388c;
-  --qs-text: #f4f2fc;
-  --qs-text-muted: #c2bde0;
-  --qs-text-subtle: #a19bc7;
+  --qs-bg: #0a0820;
+  --qs-surface: #110e35;
+  --qs-surface-2: #17144a;
+  --qs-surface-3: #1e1a5e;
+  --qs-border: #1f1c52;
+  --qs-border-strong: #2a2770;
+  --qs-text: #e8ecf5;
+  --qs-text-muted: #8896b0;
+  --qs-text-subtle: #7884a2;
   --qs-overlay: rgb(5 3 30 / 0.7);
 
   --qs-primary: #7025e0;
   --qs-primary-hover: #8140e8;
   --qs-primary-active: #9259ee;
   --qs-primary-fg: #ffffff;
-  --qs-primary-soft: rgb(161 114 255 / 0.2);
-  --qs-primary-soft-fg: #d2bcff;
+  --qs-primary-soft: rgb(112 37 224 / 0.15);
+  --qs-primary-soft-fg: #c9b0ff;
+  --qs-primary-ring: rgb(112 37 224 / 0.25);
   --qs-accent: #b48dff;
   --qs-focus: #b48dff;
 
@@ -140,7 +153,8 @@
 }
 
 @theme inline {
-  --font-sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Nunito', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-data: 'Roboto', ui-sans-serif, system-ui, sans-serif;
 
   --color-bg: var(--qs-bg);
   --color-surface: var(--qs-surface);
@@ -163,6 +177,9 @@
   --color-primary-soft-fg: var(--qs-primary-soft-fg);
   --color-accent: var(--qs-accent);
   --color-focus: var(--qs-focus);
+  --color-primary-ring: var(--qs-primary-ring);
+  --color-grad-start: var(--qs-grad-start);
+  --color-grad-end: var(--qs-grad-end);
 
   --color-success: var(--qs-success-fg);
   --color-success-bg: var(--qs-success-bg);
@@ -177,12 +194,12 @@
   --color-neutral: var(--qs-neutral-fg);
   --color-neutral-bg: var(--qs-neutral-bg);
 
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius: 4px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
-  --radius-xl: 8px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 8px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 
   --shadow-sm: var(--qs-shadow-sm);
   --shadow-md: var(--qs-shadow-md);
@@ -198,6 +215,7 @@
     @apply bg-bg text-text font-sans antialiased;
     font-size: 0.875rem;
     line-height: 1.5;
+    font-weight: 400;
   }
   :focus-visible {
     outline: 2px solid var(--qs-focus);
@@ -252,3 +270,44 @@
 .animate-pop-in { animation: qs-pop-in 180ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 .animate-sheet-in { animation: qs-sheet-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 .animate-toast-in { animation: qs-toast-in 200ms ease-out both; }
+
+/* ── Componentes del sistema del dashboard ── */
+.bg-brand-grad { background-image: var(--qs-grad); }
+/* Línea superior de 3 px con el degradado de marca (tarjetas). */
+.qs-topline { position: relative; }
+.qs-topline::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background-image: var(--qs-grad);
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* Encabezado "briefing" del Inicio: siempre oscuro de marca, en ambos temas. */
+.qs-briefing {
+  background: linear-gradient(135deg, #130d5d 0%, #1a1260 50%, #0e1a4a 100%);
+  position: relative;
+  overflow: hidden;
+}
+.qs-briefing::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgb(60 159 241 / 0.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+.qs-sidebar-glow::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgb(60 159 241 / 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}

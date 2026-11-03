@@ -1,7 +1,7 @@
 import type { CalendarEvent, ISODate, Occurrence, Recurrence } from '../types';
 import {
   addDays, compareISO, daysInMonth, diffDays, formatDate, formatDayMonth, monthName,
-  nthWeekdayOfMonth, parseISO, toISO, WEEKDAYS,
+  easterSunday, nthWeekdayOfMonth, parseISO, toISO, WEEKDAYS,
 } from './dates';
 
 type DatedEvent = Pick<CalendarEvent, 'startDate' | 'endDate' | 'recurrence'>;
@@ -28,6 +28,8 @@ export function occurrenceStartForYear(event: DatedEvent, year: number): ISODate
       const base = nthWeekdayOfMonth(year, rec.month, rec.weekday, rec.nth);
       return base ? addDays(base, rec.offsetDays) : null;
     }
+    case 'yearly-easter':
+      return addDays(easterSunday(year), rec.offsetDays);
   }
 }
 
@@ -113,5 +115,19 @@ export function describeRecurrence(event: DatedEvent): string {
       else text = `${-rec.offsetDays} días antes del ${day}`;
       return `Todos los años, ${text}${span}.`;
     }
+    case 'yearly-easter':
+      return `Todos los años, ${easterLabel(rec.offsetDays)}${span}. Cambia de fecha según la Pascua.`;
   }
+}
+
+const EASTER_NAMES: Record<number, string> = {
+  [-3]: 'el Jueves Santo',
+  [-2]: 'el Viernes Santo',
+  0: 'el Domingo de Pascua',
+  1: 'el Lunes de Pascua',
+};
+
+export function easterLabel(offset: number): string {
+  if (EASTER_NAMES[offset]) return EASTER_NAMES[offset]!;
+  return offset > 0 ? `${offset} días después del Domingo de Pascua` : `${-offset} días antes del Domingo de Pascua`;
 }

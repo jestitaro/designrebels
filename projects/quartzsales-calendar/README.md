@@ -23,6 +23,20 @@ El sitio de Design Rebels sirve los archivos tal como están commiteados, sin ni
 
 ---
 
+## Logo de QuartzSales
+
+La app usa los logos oficiales servidos desde la propia carpeta (`source/public/brand/`), para no depender de terceros y que funcionen offline: `logo-qs-fullcolor.svg` en tema claro y `logo-qs-fullcolor-negativo.svg` en tema oscuro. Mientras esos archivos no estén, se muestra el wordmark en texto, igual que el fallback del dashboard.
+
+Para bajarlos (una sola vez), desde `projects/quartzsales-calendar/source`:
+
+```bash
+npm run fetch-brand
+```
+
+Después `npm run build` y commiteá `source/public/brand/` y la carpeta `brand/` generada.
+
+---
+
 ## Correrla en la compu (desarrollo)
 
 Necesitás [Node.js](https://nodejs.org) 20 o superior.
@@ -118,7 +132,7 @@ El catálogo inicial viaja en el código (`source/src/data/seed.ts`). Al publica
 
 Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respaldado por una fuente oficial (gobierno, boletín oficial, municipio u organizador). Desde el entorno de desarrollo no se pudieron abrir directamente algunos sitios oficiales, así que la verificación se hizo con búsquedas limitadas a esos dominios.
 
-### Confirmados (25)
+### Confirmados (35)
 
 | Evento | Fecha | Fuente |
 |---|---|---|
@@ -147,6 +161,10 @@ Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respa
 | Día Mundial de la Usabilidad | 2.º jueves de noviembre | [World Usability Day](https://worldusabilityday.org/) |
 | Día Internacional de la Gestión de Proyectos | 1.er jueves de noviembre | [IIL](https://www.iil.com/international-project-management-day/frequently-asked-questions/) |
 | Día Internacional del Diseño | 27/04 | [ICoD](https://www.theicod.org/activities/international-design-day) |
+| España: Año Nuevo, Epifanía (Reyes), Viernes Santo**, Fiesta del Trabajo, Asunción, Fiesta Nacional, Todos los Santos***, Constitución***, Inmaculada y Navidad | 01/01, 06/01, Pascua −2, 01/05, 15/08, 12/10, 01/11, 06/12, 08/12, 25/12 | [BOE-A-2025-21667](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667) |
+
+\*\* Viernes Santo usa la regla "según Pascua" (en 2026, 3/04; en 2027, 26/03).
+\*\*\* En 2026 caen domingo: varias comunidades descansan el lunes siguiente (2/11 y 7/12). Está cargado como feriado trasladado con la lista de comunidades del anexo del BOE, a verificar por comunidad. Las fiestas propias de cada comunidad autónoma no están cargadas.
 
 \* El traslado al 23/11 figura en el calendario oficial de días inhábiles del Tribunal Fiscal de la Nación. Está cargado como feriado trasladado con la nota de confirmar la norma.
 
@@ -168,10 +186,12 @@ Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respa
 
 ## Notas técnicas
 
+- **Diseño:** mismo sistema visual que el QuartzSales Content Dashboard (Nunito + Roboto self-hosteadas, degradado #3C9FF1 → #7025E0, botones, tarjetas y sidebar equivalentes), en tema claro y oscuro.
 - **Stack:** React 19 + TypeScript + Vite 8, Tailwind CSS 4, Lucide, React Router (hash), Dexie (IndexedDB), Zod, vite-plugin-pwa. Tests con Vitest + Testing Library + fake-indexeddb.
 - **Dexie en lugar de idb:** trae versionado de esquema y migraciones listos, y consultas reactivas (`useLiveQuery`) que mantienen la UI al día con el guardado automático.
 - **Rutas con hash** (`#/calendario`): recargar cualquier pantalla nunca da 404 y no depende de reglas de redirect.
 - **Paths relativos** (`base: './'`): la app funciona aunque se renombre la carpeta.
 - **Dominio compartido:** el service worker tiene scope `/projects/quartzsales-calendar/` y no controla ni cachea otros proyectos. Esto está verificado: la home y `/projects/the-rebel-run/` no quedan controladas. La base IndexedDB se llama `qs-calendar` y las claves de `localStorage`/`sessionStorage` usan el prefijo `qs-calendar:`.
+- **Recurrencias:** anual fija, n-ésimo día de la semana del mes, relativa a Pascua (cálculo gregoriano) y edición única.
 - **Fechas:** los eventos de día completo se guardan como `YYYY-MM-DD` y se calculan sin pasar por la zona horaria del navegador. La semana empieza el lunes.
 - **Migraciones:** `source/src/db/db.ts` (esquema de IndexedDB) y `source/src/lib/backup.ts` (respaldos JSON). Para cambiar el esquema, sumá una `version(n)` nueva con su `upgrade`, subí `SCHEMA_VERSION` y agregá la migración de respaldos correspondiente.

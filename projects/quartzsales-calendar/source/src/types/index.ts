@@ -21,7 +21,9 @@ export type Recurrence =
    * Todos los años, el n-ésimo `weekday` de `month`, desplazado `offsetDays`.
    * nth: 1..5, o -1 para "el último". Ej. Black Friday: 4.º jueves de noviembre +1.
    */
-  | { type: 'yearly-nth-weekday'; month: number; weekday: Weekday; nth: 1 | 2 | 3 | 4 | 5 | -1; offsetDays: number };
+  | { type: 'yearly-nth-weekday'; month: number; weekday: Weekday; nth: 1 | 2 | 3 | 4 | 5 | -1; offsetDays: number }
+  /** Todos los años, relativo al Domingo de Pascua (calendario gregoriano). Viernes Santo: −2. */
+  | { type: 'yearly-easter'; offsetDays: number };
 
 /** Feriado trasladado: la celebración es en la fecha del evento, el día no laborable es otro. */
 export interface HolidayObservance {

@@ -107,7 +107,7 @@ describe('CSV', () => {
     const r = parseEventsCsv(rows, catalog, []);
     expect(r.rows[0]?.errors).toContain('titulo: El nombre es obligatorio.');
     expect(r.rows[1]?.errors).toEqual(expect.arrayContaining([expect.stringContaining('Categoría desconocida'), expect.stringContaining('País desconocido'), expect.stringContaining('fecha inválida')]));
-    expect(r.rows[2]?.errors).toContain('tipo_fecha: usá fija, regla o unica.');
+    expect(r.rows[2]?.errors).toContain('tipo_fecha: usá fija, regla, pascua o unica.');
     expect(r.rows[3]?.errors).toContain('fuente: Para marcarlo como confirmado, indicá la fuente.');
     expect(r.rows.map((x) => x.line)).toEqual([2, 3, 4, 5]);
   });

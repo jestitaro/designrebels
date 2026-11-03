@@ -55,7 +55,7 @@ export function Modal({ open, onClose, title, description, children, footer, siz
       >
         <header className="flex items-start gap-3 border-b border-border px-5 pt-4 pb-3">
           <div className="min-w-0 flex-1">
-            <h2 id={titleId} className="text-base font-semibold text-text">
+            <h2 id={titleId} className="text-base font-extrabold text-text">
               {title}
             </h2>
             {description && (
@@ -102,7 +102,7 @@ export function BottomSheet({ open, onClose, title, description, children, foote
         </div>
         <header className="flex items-start gap-3 px-4 pt-2 pb-3">
           <div className="min-w-0 flex-1">
-            <h2 id={titleId} className="text-base font-semibold text-text">
+            <h2 id={titleId} className="text-base font-extrabold text-text">
               {title}
             </h2>
             {description && (

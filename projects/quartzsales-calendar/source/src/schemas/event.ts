@@ -22,6 +22,7 @@ export const recurrenceSchema = z.discriminatedUnion('type', [
     nth: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(-1)]),
     offsetDays: z.number().int().min(-31).max(31),
   }),
+  z.object({ type: z.literal('yearly-easter'), offsetDays: z.number().int().min(-70).max(70) }),
 ]);
 
 export const relevanceSchema = z.enum(['alta', 'media', 'baja']);

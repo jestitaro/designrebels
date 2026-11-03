@@ -21,7 +21,7 @@ import { PlacesEditor } from './PlacesEditor';
 function Section({ id, title, description, children }: { id: string; title: string; description?: ReactNode; children: ReactNode }) {
   return (
     <section aria-labelledby={id} className="rounded-lg border border-border bg-surface p-4 shadow-sm lg:p-5">
-      <h2 id={id} className="text-[15px] font-semibold">{title}</h2>
+      <h2 id={id} className="text-[15px] font-extrabold">{title}</h2>
       {description && <p className="mt-0.5 text-[13px] text-muted">{description}</p>}
       <div className="mt-4">{children}</div>
     </section>
@@ -65,7 +65,7 @@ export function SettingsPage() {
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-4 p-4 lg:p-6">
         <section aria-labelledby="local-data" className="rounded-lg border border-primary/30 bg-primary-soft p-4 lg:p-5">
-          <h2 id="local-data" className="flex items-center gap-2 text-[15px] font-semibold text-primary-soft-fg">
+          <h2 id="local-data" className="flex items-center gap-2 text-[15px] font-extrabold text-primary-soft-fg">
             <HardDrive aria-hidden className="size-4" />Tus datos viven en este navegador
           </h2>
           <ul className="mt-2 flex list-disc flex-col gap-1 pl-5 text-[13px] text-text">

@@ -5,7 +5,7 @@ import { cn } from '../../lib/cn';
 export type BadgeTone = 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'category';
 
 const tones: Record<BadgeTone, string> = {
-  neutral: 'bg-neutral-bg text-neutral',
+  neutral: 'bg-surface-3 text-muted',
   primary: 'bg-primary-soft text-primary-soft-fg',
   success: 'bg-success-bg text-success',
   warning: 'bg-warning-bg text-warning',
@@ -28,7 +28,7 @@ export function Badge({ tone = 'neutral', icon: Icon, children, className, title
     <span
       title={title}
       className={cn(
-        'inline-flex h-6 max-w-full items-center gap-1 rounded px-2 text-xs font-medium whitespace-nowrap',
+        'inline-flex h-[22px] max-w-full items-center gap-1 rounded-xs px-2 font-data text-[11px] font-bold whitespace-nowrap',
         tones[tone],
         className,
       )}

@@ -109,10 +109,11 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
       </Section>
 
       <Section title="Fecha">
-        <div role="radiogroup" aria-label="Cómo se repite" className="grid gap-2 sm:grid-cols-3">
+        <div role="radiogroup" aria-label="Cómo se repite" className="grid gap-2 sm:grid-cols-2">
           {([
             ['yearly-fixed', 'Todos los años', 'Misma fecha (ej. 10/11)'],
             ['yearly-nth-weekday', 'Por regla', 'Ej. 4.º jueves de noviembre'],
+            ['yearly-easter', 'Según Pascua', 'Ej. Viernes Santo, Lunes de Pascua'],
             ['none', 'Edición única', 'Fecha con año, no se repite'],
           ] as Array<[DateMode, string, string]>).map(([value, label, hint]) => (
             <label key={value}
@@ -127,7 +128,21 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
           ))}
         </div>
 
-        {draft.dateMode === 'yearly-nth-weekday' ? (
+        {draft.dateMode === 'yearly-easter' ? (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Día respecto de Pascua" hint="Jueves Santo: −3 · Viernes Santo: −2 · Domingo de Pascua: 0 · Lunes de Pascua: 1.">
+              {(p) => (
+                <Input id={p.id} aria-describedby={p.describedBy} type="number" min={-70} max={70} value={draft.easterOffset}
+                  onChange={(e) => set('easterOffset', e.target.value)} />
+              )}
+            </Field>
+            <Field label="Duración (días)">
+              {(p) => (
+                <Input id={p.id} type="number" min={1} max={60} value={draft.ruleDuration} onChange={(e) => set('ruleDuration', e.target.value)} />
+              )}
+            </Field>
+          </div>
+        ) : draft.dateMode === 'yearly-nth-weekday' ? (
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Semana" error={err('ruleNth')}>
               {(p) => (
@@ -187,7 +202,7 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
         {preview && (
           <p className="rounded bg-surface-2 px-3 py-2 text-[13px] text-muted" aria-live="polite">
             {preview}
-            {draft.dateMode === 'yearly-nth-weekday' && (() => {
+            {(draft.dateMode === 'yearly-nth-weekday' || draft.dateMode === 'yearly-easter') && (() => {
               const d = ruleStartDate(draft, year);
               return d ? ` En ${year} cae el ${formatDate(d)}.` : '';
             })()}

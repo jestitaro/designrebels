@@ -29,7 +29,7 @@ export function SearchBox({ value, onChange, className, label = 'Buscar eventos 
         placeholder="Buscar por nombre"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-9 w-full rounded border border-border-strong bg-surface pr-9 pl-9 text-sm placeholder:text-subtle hover:border-muted focus-visible:border-focus focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-focus pointer-coarse:h-11 [&::-webkit-search-cancel-button]:hidden"
+        className="h-[38px] w-full rounded border border-border-strong bg-surface-2 pr-9 pl-9 text-[13.5px] placeholder:text-subtle hover:border-muted focus-visible:border-focus focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-focus pointer-coarse:h-11 [&::-webkit-search-cancel-button]:hidden"
       />
       {value && (
         <button type="button" aria-label="Borrar búsqueda" onClick={() => onChange('')}
@@ -135,7 +135,7 @@ export function FiltersButton({ filters, onChange, catalog, resultCount, showGre
       <Button size="sm" icon={SlidersHorizontal} onClick={() => setOpen(true)} aria-haspopup="dialog">
         Filtros
         {active > 0 && (
-          <span className="ml-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-semibold text-white">
+          <span className="ml-0.5 inline-flex min-w-5 items-center justify-center rounded-full bg-brand-grad px-1.5 text-[11px] font-bold text-white">
             <span className="sr-only">(</span>{active}<span className="sr-only"> activos)</span>
           </span>
         )}

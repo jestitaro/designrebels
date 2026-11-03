@@ -62,7 +62,7 @@ export function GreetingsPage() {
   return (
     <div className="flex flex-col">
       <header className="flex flex-col gap-3 border-b border-border bg-surface px-4 py-3 lg:px-6">
-        <h1 className="text-lg font-semibold lg:text-xl">Saludos</h1>
+        <h1 className="text-lg font-extrabold lg:text-[22px]">Saludos</h1>
         <div role="group" aria-label="Filtrar por estado" className="flex flex-wrap gap-1.5">
           {GREETING_STATUSES.map((s) => {
             const Icon = GREETING_STATUS_META[s].icon;

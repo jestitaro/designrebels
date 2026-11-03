@@ -238,9 +238,9 @@ function Editor({ greeting }: { greeting: Greeting }) {
 
         <aside className="flex flex-col gap-4">
           <section aria-label="Vista previa" className="hidden flex-col gap-3 rounded-lg border border-border bg-surface p-4 shadow-sm lg:flex">
-            <h2 className="text-xs font-semibold tracking-wide text-muted uppercase">Vista previa</h2>
+            <h2 className="text-xs font-extrabold tracking-wide text-muted uppercase">Vista previa</h2>
             <div className="flex gap-3">
-              <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded bg-primary text-xs font-bold text-white">QS</span>
+              <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded bg-brand-grad text-xs font-bold text-white">QS</span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold">QuartzSales <span className="font-normal text-subtle">{fields.channel}</span></p>
                 {fields.body.trim() ? <SlackPreview text={fields.body} /> : <p className="text-sm text-muted">Todavía no hay texto.</p>}
@@ -267,7 +267,7 @@ function Editor({ greeting }: { greeting: Greeting }) {
 
           <section aria-labelledby="versions-title" className="flex flex-col gap-2 rounded-lg border border-border bg-surface p-4 shadow-sm">
             <div className="flex items-center gap-2">
-              <h2 id="versions-title" className="flex flex-1 items-center gap-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
+              <h2 id="versions-title" className="flex flex-1 items-center gap-1.5 text-xs font-extrabold tracking-wide text-muted uppercase">
                 <History aria-hidden className="size-3.5" />Versiones
               </h2>
               <Button size="sm" variant="ghost" icon={Save} onClick={async () => { await flush(); await saveGreetingVersion(greeting.id); toast.success('Versión guardada.'); }}>Guardar versión</Button>

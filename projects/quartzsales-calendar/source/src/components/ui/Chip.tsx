@@ -3,7 +3,7 @@ import { X, type LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/cn';
 
 const chipBase =
-  'inline-flex h-8 items-center gap-1.5 rounded border px-2.5 text-[13px] font-medium whitespace-nowrap transition-colors ' +
+  'inline-flex h-8 items-center gap-1.5 rounded border px-2.5 text-xs font-bold whitespace-nowrap transition-colors ' +
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus pointer-coarse:h-10 ' +
   'disabled:cursor-not-allowed disabled:opacity-50';
 
@@ -22,8 +22,8 @@ export function ToggleChip({ selected, icon: Icon, children, className, ...rest 
       className={cn(
         chipBase,
         selected
-          ? 'border-primary bg-primary-soft text-primary-soft-fg hover:bg-primary-soft'
-          : 'border-border-strong bg-surface text-text hover:bg-surface-2 active:bg-surface-3',
+          ? 'border-primary-ring bg-primary-soft text-text hover:bg-primary-soft'
+          : 'border-border-strong bg-transparent text-muted hover:bg-surface-2 hover:text-text active:bg-surface-3',
         className,
       )}
       {...rest}
@@ -44,7 +44,7 @@ interface RemovableChipProps {
 /** Chip de filtro activo con botón para quitarlo. */
 export function RemovableChip({ children, onRemove, removeLabel, className }: RemovableChipProps) {
   return (
-    <span className={cn(chipBase, 'gap-1 border-primary/40 bg-primary-soft pr-1 text-primary-soft-fg', className)}>
+    <span className={cn(chipBase, 'gap-1 border-primary-ring bg-primary-soft pr-1 text-text', className)}>
       <span className="max-w-48 truncate">{children}</span>
       <button
         type="button"

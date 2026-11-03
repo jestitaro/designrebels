@@ -112,7 +112,7 @@ export function CalendarPage() {
       <section className="flex min-w-0 flex-1 flex-col lg:h-dvh">
         <header className="flex flex-col gap-2 border-b border-border bg-surface px-4 py-3 lg:px-6">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 id={titleId} className="mr-auto text-lg font-semibold lg:text-xl" aria-live="polite">{title}</h1>
+            <h1 id={titleId} className="mr-auto text-lg font-extrabold lg:text-[22px]" aria-live="polite">{title}</h1>
             <Button size="sm" onClick={goToday}>Hoy</Button>
             <div className="flex items-center">
               <IconButton icon={ChevronLeft} label={`${unit} anterior`} size="sm" onClick={() => shift(-1)} />
@@ -193,7 +193,7 @@ export function CalendarPage() {
         type="button"
         onClick={() => create(selected)}
         aria-label="Nuevo evento"
-        className="fixed right-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 inline-flex size-14 items-center justify-center rounded-full bg-primary text-white shadow-lg hover:bg-primary-hover active:bg-primary-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden"
+        className="fixed right-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-30 inline-flex size-14 items-center justify-center rounded-full bg-brand-grad text-white shadow-lg hover:bg-primary-hover active:bg-primary-active focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus lg:hidden"
       >
         <Plus aria-hidden className="size-6" />
       </button>

@@ -2,7 +2,7 @@ import { TIMEZONE_BY_COUNTRY } from '../data/defaults';
 import type { Catalog } from '../hooks/useData';
 import { eventContentSchema, fieldErrors, type EventContent } from '../schemas/event';
 import type { CalendarEvent, Weekday } from '../types';
-import { formatDate, isValidISODate, nthWeekdayOfMonth, parseHumanDate, parseISO, todayISO, WEEKDAYS, addDays } from './dates';
+import { addDays, easterSunday, formatDate, isValidISODate, nthWeekdayOfMonth, parseHumanDate, parseISO, todayISO, WEEKDAYS } from './dates';
 import { duplicateKey } from './duplicates';
 import { normalizeText } from './text';
 
@@ -24,13 +24,13 @@ const COLUMN_HELP: Record<Column, string> = {
   pais: 'Nombre o ID (ej. Argentina)',
   region: 'Nombre (opcional)',
   ciudad: 'Nombre (opcional)',
-  tipo_fecha: 'fija | regla | unica',
+  tipo_fecha: 'fija | regla | pascua | unica',
   fecha_inicio: 'dd/mm/aaaa (no se usa en regla)',
   fecha_fin: 'dd/mm/aaaa si dura varios días',
   regla_semana: '1 a 5 o ultima',
   regla_dia: 'lunes … domingo',
   regla_mes: '1 a 12',
-  regla_desplazamiento: 'días +/− (Black Friday: 1)',
+  regla_desplazamiento: 'días +/− (Black Friday: 1; en pascua, Viernes Santo: -2)',
   todo_el_dia: 'si | no',
   hora_inicio: 'HH:mm',
   hora_fin: 'HH:mm',
@@ -63,13 +63,13 @@ export function eventsToCsv(events: CalendarEvent[], catalog: Catalog): string[]
     rows.push([
       e.title, e.summary, cat?.name ?? e.category, cat?.subcategories.find((s) => s.id === e.subcategory)?.name ?? '',
       catalog.placeName(e.country) ?? e.country, catalog.placeName(e.region) ?? '', catalog.placeName(e.city) ?? '',
-      rec.type === 'none' ? 'unica' : rec.type === 'yearly-fixed' ? 'fija' : 'regla',
-      rec.type === 'yearly-nth-weekday' ? '' : formatDate(e.startDate),
-      e.endDate && rec.type !== 'yearly-nth-weekday' ? formatDate(e.endDate) : '',
+      rec.type === 'none' ? 'unica' : rec.type === 'yearly-fixed' ? 'fija' : rec.type === 'yearly-easter' ? 'pascua' : 'regla',
+      rec.type === 'yearly-nth-weekday' || rec.type === 'yearly-easter' ? '' : formatDate(e.startDate),
+      e.endDate && rec.type !== 'yearly-nth-weekday' && rec.type !== 'yearly-easter' ? formatDate(e.endDate) : '',
       rec.type === 'yearly-nth-weekday' ? (rec.nth === -1 ? 'ultima' : String(rec.nth)) : '',
       rec.type === 'yearly-nth-weekday' ? WEEKDAYS[rec.weekday]! : '',
       rec.type === 'yearly-nth-weekday' ? String(rec.month) : '',
-      rec.type === 'yearly-nth-weekday' ? String(rec.offsetDays) : '',
+      rec.type === 'yearly-nth-weekday' || rec.type === 'yearly-easter' ? String(rec.offsetDays) : '',
       e.allDay ? 'si' : 'no', e.startTime ?? '', e.endTime ?? '', e.relevance, e.verification, e.verificationNote ?? '',
       e.source, e.sourceUrl ?? '', e.lastVerifiedAt ? formatDate(e.lastVerifiedAt) : '',
       e.description, e.history, e.traditions, e.contentIdeas.join('|'),
@@ -162,8 +162,16 @@ export function parseEventsCsv(rows: string[][], catalog: Catalog, existing: Cal
         startDate = base ? addDays(base, offset) : 'invalid';
         endDate = undefined;
       }
+    } else if (tipo === 'pascua') {
+      const offset = Number(get('regla_desplazamiento') || 0);
+      if (!Number.isInteger(offset)) errors.push('regla_desplazamiento: tiene que ser un número entero.');
+      else {
+        recurrence = { type: 'yearly-easter', offsetDays: offset };
+        startDate = addDays(easterSunday(year), offset);
+        endDate = undefined;
+      }
     } else if (tipo === 'unica') recurrence = { type: 'none' };
-    else if (tipo !== 'fija') errors.push('tipo_fecha: usá fija, regla o unica.');
+    else if (tipo !== 'fija') errors.push('tipo_fecha: usá fija, regla, pascua o unica.');
 
     const allDayRaw = normalizeText(get('todo_el_dia'));
     const allDay = allDayRaw === '' || allDayRaw === 'si' || allDayRaw === 'true' || allDayRaw === '1';

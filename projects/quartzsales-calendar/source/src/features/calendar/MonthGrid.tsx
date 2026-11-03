@@ -130,7 +130,7 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                   <span
                     className={cn(
                       'flex size-7 items-center justify-center rounded-full text-[13px] font-medium lg:size-6 lg:text-xs',
-                      isToday && 'bg-primary font-semibold text-white',
+                      isToday && 'bg-brand-grad font-semibold text-white',
                       !isToday && isSelected && 'text-primary-soft-fg font-semibold',
                     )}
                     aria-hidden

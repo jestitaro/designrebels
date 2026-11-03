@@ -32,9 +32,13 @@ export async function buildBackup(now = new Date()): Promise<Backup> {
 
 /**
  * Migraciones de respaldos: cada entrada transforma un respaldo de la versión
- * `from` a `from + 1`. Hoy el esquema está en v1, así que no hay ninguna.
+ * `from` a `from + 1`.
  */
-const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string, unknown>> = {};
+const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string, unknown>> = {
+  // v1 → v2: el esquema de datos no cambió; v2 solo sumó España a los países por defecto.
+  // Al importar en modo combinar se agrega si falta; en reemplazar se respeta el respaldo.
+  1: (raw) => raw,
+};
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };
 

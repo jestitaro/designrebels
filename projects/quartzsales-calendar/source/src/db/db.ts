@@ -3,7 +3,7 @@ import type { CalendarEvent, Category, Country, Greeting, Settings } from '../ty
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export interface KV<T = unknown> {
   key: string;
@@ -41,6 +41,17 @@ export class CalendarDB extends Dexie {
       meta: 'key',
       reviewedAlerts: 'key',
     });
+    // v2: suma España a los países (sin tocar los que el usuario ya editó).
+    this.version(2)
+      .stores({})
+      .upgrade(async (tx) => {
+        const countries = tx.table<Country, string>('countries');
+        if ((await countries.count()) > 0 && !(await countries.get('es'))) {
+          const intl = await countries.get('intl');
+          if (intl) await countries.put({ ...intl, order: intl.order + 1 });
+          await countries.add({ id: 'es', name: 'España', active: true, order: intl ? intl.order : 99, regions: [] });
+        }
+      });
   }
 }
 

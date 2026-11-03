@@ -20,7 +20,7 @@ describe('persistencia de eventos', () => {
     await initDatabase();
     await initDatabase();
     expect(await db.categories.count()).toBe(7);
-    expect(await db.countries.count()).toBe(4);
+    expect(await db.countries.count()).toBe(5);
     expect((await getSettings()).leadDays).toBe(3);
     expect(db.verno).toBe(SCHEMA_VERSION);
   });
@@ -67,6 +67,26 @@ describe('persistencia de eventos', () => {
     await updateSettings({ leadDays: 5 });
     expect((await getSettings()).leadDays).toBe(5);
     expect((await getSettings()).theme).toBe('system');
+  });
+});
+
+describe('migraciones', () => {
+  it('v1 → v2 suma España sin tocar los países editados', async () => {
+    const name = `qs-calendar-mig-${Math.random().toString(36).slice(2)}`;
+    const { default: Dexie } = await import('dexie');
+    const v1 = new Dexie(name);
+    v1.version(1).stores({ events: 'id', greetings: 'id', categories: 'id, order', countries: 'id, order', settings: 'key', meta: 'key', reviewedAlerts: 'key' });
+    await v1.open();
+    await v1.table('countries').bulkAdd([
+      { id: 'ar', name: 'Argentina editada', active: true, order: 0, regions: [] },
+      { id: 'intl', name: 'Internacional', active: true, order: 1, regions: [] },
+    ]);
+    v1.close();
+    const migrated = await resetDatabaseForTests(name);
+    expect(migrated.verno).toBe(2);
+    const countries = await migrated.countries.orderBy('order').toArray();
+    expect(countries.map((c) => c.id)).toEqual(['ar', 'es', 'intl']);
+    expect(countries[0]?.name).toBe('Argentina editada');
   });
 });
 

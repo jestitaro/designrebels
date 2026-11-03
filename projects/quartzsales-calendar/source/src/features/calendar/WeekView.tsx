@@ -35,7 +35,7 @@ export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay,
                 aria-current={isToday ? 'date' : undefined}
                 className="flex min-w-0 items-center gap-1.5 rounded text-left focus-visible:outline-2 focus-visible:outline-focus"
               >
-                <span className={cn('flex size-8 items-center justify-center rounded-full text-sm font-semibold', isToday ? 'bg-primary text-white' : 'text-text')}>
+                <span className={cn('flex size-8 items-center justify-center rounded-full text-sm font-semibold', isToday ? 'bg-brand-grad text-white' : 'text-text')}>
                   {parseISO(day).d}
                 </span>
                 <span className="text-xs font-medium text-muted uppercase">{WEEKDAYS[i]!.slice(0, 3)}</span>

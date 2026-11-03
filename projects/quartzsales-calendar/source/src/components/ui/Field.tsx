@@ -5,7 +5,7 @@ import { ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/cn';
 
 export const controlBase =
-  'w-full rounded border bg-surface text-text placeholder:text-subtle transition-colors ' +
+  'w-full rounded border bg-surface-2 text-text text-[13.5px] placeholder:text-subtle transition-colors ' +
   'border-border-strong hover:border-muted focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-focus ' +
   'focus-visible:border-focus disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-border-strong ' +
   'aria-[invalid=true]:border-danger-fg';
@@ -28,7 +28,7 @@ export function Field({ label, hint, error, required, hideLabel, className, chil
   const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
-      <label htmlFor={id} className={cn('text-[13px] font-medium text-text', hideLabel && 'sr-only')}>
+      <label htmlFor={id} className={cn('text-[13px] font-bold text-text', hideLabel && 'sr-only')}>
         {label}
         {required && (
           <span className="text-danger-fg" aria-hidden>
@@ -55,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputE
   { className, ...rest },
   ref,
 ) {
-  return <input ref={ref} className={cn(controlBase, 'h-10 px-3 pointer-coarse:h-11', className)} {...rest} />;
+  return <input ref={ref} className={cn(controlBase, 'h-[38px] px-3 pointer-coarse:h-11', className)} {...rest} />;
 });
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(function Textarea(
@@ -71,7 +71,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectHTMLAttributes<HTMLSel
 ) {
   return (
     <div className={cn('relative', className)}>
-      <select ref={ref} className={cn(controlBase, 'h-10 appearance-none pr-9 pl-3 pointer-coarse:h-11')} {...rest}>
+      <select ref={ref} className={cn(controlBase, 'h-[38px] appearance-none pr-9 pl-3 pointer-coarse:h-11')} {...rest}>
         {children}
       </select>
       <ChevronDown aria-hidden className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted" />

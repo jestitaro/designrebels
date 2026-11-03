@@ -4,13 +4,15 @@ export interface NavItem {
   to: string;
   label: string;
   icon: LucideIcon;
+  /** Sección del sidebar (como "Panel" / "Mercado" en el dashboard). */
+  section: 'Panel' | 'Contenido';
 }
 
 /** Solo se listan pantallas implementadas. */
 export const NAV_ITEMS: NavItem[] = [
-  { to: '/inicio', label: 'Inicio', icon: LayoutDashboard },
-  { to: '/calendario', label: 'Calendario', icon: CalendarDays },
-  { to: '/proximos', label: 'Próximos', icon: CalendarClock },
-  { to: '/saludos', label: 'Saludos', icon: MessageSquareText },
-  { to: '/biblioteca', label: 'Biblioteca', icon: Library },
+  { to: '/inicio', label: 'Inicio', icon: LayoutDashboard, section: 'Panel' },
+  { to: '/calendario', label: 'Calendario', icon: CalendarDays, section: 'Panel' },
+  { to: '/proximos', label: 'Próximos', icon: CalendarClock, section: 'Panel' },
+  { to: '/saludos', label: 'Saludos', icon: MessageSquareText, section: 'Contenido' },
+  { to: '/biblioteca', label: 'Biblioteca', icon: Library, section: 'Contenido' },
 ];

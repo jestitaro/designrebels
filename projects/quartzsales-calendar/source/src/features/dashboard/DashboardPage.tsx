@@ -26,10 +26,10 @@ import { useEventEditor } from '../events/EventEditor';
 
 function Card({ title, description, action, children, className }: { title: string; description?: ReactNode; action?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className={cn('flex flex-col rounded-lg border border-border bg-surface shadow-sm', className)} aria-label={title}>
-      <header className="flex items-start gap-2 border-b border-border px-4 py-3">
+    <section className={cn('qs-topline flex flex-col overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:border-border-strong', className)} aria-label={title}>
+      <header className="flex items-start gap-2 border-b border-border px-4 pt-4 pb-3">
         <div className="min-w-0 flex-1">
-          <h2 className="text-[15px] font-semibold">{title}</h2>
+          <h2 className="text-[15px] font-extrabold">{title}</h2>
           {description && <p className="text-xs text-muted">{description}</p>}
         </div>
         {action}
@@ -141,13 +141,27 @@ export function DashboardPage() {
 
   return (
     <div className="flex flex-col">
-      <header className="flex flex-wrap items-center gap-2 border-b border-border bg-surface px-4 py-3 lg:h-16 lg:px-6 lg:py-0">
-        <div className="mr-auto">
-          <h1 className="text-lg font-semibold lg:text-xl">Qué tengo que preparar</h1>
-          <p className="text-xs text-muted">{capitalize(formatLong(today))}</p>
+      <header className="qs-briefing border-b border-border px-4 pt-6 pb-5 text-white lg:px-8 lg:pt-7">
+        <div className="relative z-[1] flex flex-wrap items-start gap-3">
+          <div className="mr-auto">
+            <h1 className="text-[22px] leading-tight font-extrabold text-white">Qué tengo que preparar</h1>
+            <p className="mt-1 font-data text-[13px] text-white/60">{capitalize(formatLong(today))}</p>
+          </div>
+          <Button size="sm" variant="on-dark" icon={MessageSquarePlus} onClick={() => setPicker(true)} disabled={events.length === 0}>Crear saludo</Button>
+          <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>
         </div>
-        <Button size="sm" icon={MessageSquarePlus} onClick={() => setPicker(true)} disabled={events.length === 0}>Crear saludo</Button>
-        <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>
+        <dl className="relative z-[1] mt-5 grid grid-cols-3 gap-2 sm:max-w-xl sm:gap-3">
+          {[
+            ['Para preparar', alerts.length],
+            ['Próximos 7 días', upcoming(events, today, 7).length],
+            ['Saludos listos', greetingCounts.listo ?? 0],
+          ].map(([label, value]) => (
+            <div key={label} className="rounded border border-white/12 bg-white/6 px-3 py-2.5">
+              <dt className="font-data text-[10px] font-bold tracking-[0.06em] text-white/60 uppercase">{label}</dt>
+              <dd className="mt-1 font-data text-[19px] leading-none font-bold text-white tabular-nums">{value}</dd>
+            </div>
+          ))}
+        </dl>
       </header>
       <GreetingEventPicker open={picker} onClose={() => setPicker(false)} />
 

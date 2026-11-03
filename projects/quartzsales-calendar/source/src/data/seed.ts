@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 1;
+export const SEED_VERSION = 2;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -207,6 +207,38 @@ export const SEED_EVENTS: CalendarEvent[] = [
     summary: 'Conmemora el primer cabildo y la fundación española de San Francisco de Quito (1534).',
     source: 'Archivo Metropolitano de Historia de Quito', sourceUrl: 'http://archivoqhistorico.quito.gob.ec/index.php/quito-y-sus-historias/23-los-origenes-de-las-fiestas-de-quito',
   }),
+
+  /* ───────── España (fiestas laborales de ámbito nacional) ───────── */
+  ...((): CalendarEvent[] => {
+    const BOE = 'BOE: fiestas laborales 2026 (Resolución de 17/10/2025)';
+    const BOE_URL = 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667';
+    const base = { country: 'es', verification: 'confirmado' as const, source: BOE, sourceUrl: BOE_URL };
+    return [
+      seed({ ...base, id: 'seed-es-ano-nuevo', title: 'Año Nuevo (España)', category: 'efemerides', subcategory: 'efe-nacionales',
+        startDate: '2026-01-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-reyes', title: 'Epifanía del Señor (Reyes)', category: 'cultura', subcategory: 'cul-celebraciones-tradicionales',
+        startDate: '2026-01-06', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-viernes-santo', title: 'Viernes Santo (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+        startDate: '2026-04-03', recurrence: { type: 'yearly-easter', offsetDays: -2 }, relevance: 'media',
+        summary: 'Fiesta laboral de ámbito nacional. En 2026 fue el 3 de abril; varía cada año con la Pascua.' }),
+      seed({ ...base, id: 'seed-es-trabajo', title: 'Fiesta del Trabajo (España)', category: 'efemerides', subcategory: 'efe-internacionales',
+        startDate: '2026-05-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-asuncion', title: 'Asunción de la Virgen', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+        startDate: '2026-08-15', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-fiesta-nacional', title: 'Fiesta Nacional de España', category: 'efemerides', subcategory: 'efe-nacionales',
+        startDate: '2026-10-12', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-todos-los-santos', title: 'Todos los Santos (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+        startDate: '2026-11-01', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.',
+        holidayObservances: [{ year: 2026, date: '2026-11-02', note: 'Cae en domingo: descanso el lunes 2/11 en varias comunidades (Andalucía, Aragón, Asturias, Canarias, Castilla-La Mancha, Castilla y León, Extremadura, Madrid y Navarra, según el anexo del BOE; verificar la de cada comunidad).' }] }),
+      seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', category: 'efemerides', subcategory: 'efe-nacionales',
+        startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.',
+        holidayObservances: [{ year: 2026, date: '2026-12-07', note: 'Cae en domingo: descanso el lunes 7/12 en varias comunidades (Andalucía, Aragón, Asturias, Cantabria, Castilla y León, Extremadura, Madrid, Murcia, La Rioja y Melilla, según el anexo del BOE; verificar la de cada comunidad).' }] }),
+      seed({ ...base, id: 'seed-es-inmaculada', title: 'Inmaculada Concepción', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+        startDate: '2026-12-08', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-navidad', title: 'Natividad del Señor (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+        startDate: '2026-12-25', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
+    ];
+  })(),
 
   /* ───────── Internacional ───────── */
   seed({

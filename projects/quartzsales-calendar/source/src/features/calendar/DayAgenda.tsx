@@ -24,7 +24,7 @@ export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyActi
     <section aria-labelledby="day-agenda-title" className="flex flex-col">
       <header className="flex items-center gap-2 px-4 pt-4 pb-2 lg:px-5">
         <div className="min-w-0 flex-1">
-          <h2 id="day-agenda-title" className="text-[15px] font-semibold">
+          <h2 id="day-agenda-title" className="text-[15px] font-extrabold">
             {capitalize(formatLong(date))}
           </h2>
           <p className="text-xs text-muted">

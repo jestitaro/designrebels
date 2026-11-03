@@ -65,12 +65,14 @@ export const DEFAULT_COUNTRIES: Country[] = [
     regions: [{ id: 'mx-ags', name: 'Aguascalientes', active: true, cities: [] }],
   },
   { id: 'ec', name: 'Ecuador', active: true, order: 2, regions: [] },
-  { id: 'intl', name: 'Internacional', active: true, order: 3, regions: [] },
+  { id: 'es', name: 'España', active: true, order: 3, regions: [] },
+  { id: 'intl', name: 'Internacional', active: true, order: 4, regions: [] },
 ];
 
 export const TIMEZONE_BY_COUNTRY: Record<string, string> = {
   ar: 'America/Argentina/Buenos_Aires',
   mx: 'America/Mexico_City',
   ec: 'America/Guayaquil',
+  es: 'Europe/Madrid',
   intl: 'UTC',
 };

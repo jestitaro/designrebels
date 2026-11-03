@@ -15,7 +15,7 @@ const OPTIONS: Array<{ value: ThemePreference; label: string; icon: typeof Sun }
 export function ThemeSwitcher({ className }: { className?: string }) {
   const { theme } = useSettings();
   return (
-    <div role="radiogroup" aria-label="Tema" className={cn('grid grid-cols-3 gap-1 rounded bg-surface-2 p-1', className)}>
+    <div role="radiogroup" aria-label="Tema" className={cn('grid grid-cols-3 gap-1 rounded border border-border bg-surface-2 p-1', className)}>
       {OPTIONS.map(({ value, label, icon: Icon }) => {
         const active = theme === value;
         return (
@@ -26,9 +26,9 @@ export function ThemeSwitcher({ className }: { className?: string }) {
             aria-checked={active}
             onClick={() => void setThemePreference(value)}
             className={cn(
-              'flex h-8 items-center justify-center gap-1.5 rounded-xs text-xs font-medium transition-colors',
+              'flex h-8 items-center justify-center gap-1.5 rounded-sm text-xs font-bold transition-colors',
               'focus-visible:outline-2 focus-visible:outline-focus pointer-coarse:h-11',
-              active ? 'bg-surface text-text shadow-sm' : 'text-muted hover:bg-surface-3 hover:text-text',
+              active ? 'bg-primary-soft text-text ring-1 ring-primary-ring' : 'text-muted hover:bg-surface-3 hover:text-text',
             )}
           >
             <Icon aria-hidden className="size-3.5" />

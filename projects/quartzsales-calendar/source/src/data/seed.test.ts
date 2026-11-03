@@ -41,5 +41,7 @@ describe('seed', () => {
     expect(occurrenceStartForYear(byId.get('seed-intl-usabilidad')!, 2026)).toBe('2026-11-12');
     expect(occurrenceStartForYear(byId.get('seed-intl-project-management')!, 2026)).toBe('2026-11-05');
     expect(occurrenceStartForYear(byId.get('seed-intl-black-friday')!, 2026)).toBe('2026-11-27');
+    expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2026)).toBe('2026-04-03');
+    expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2027)).toBe('2027-03-26');
   });
 });

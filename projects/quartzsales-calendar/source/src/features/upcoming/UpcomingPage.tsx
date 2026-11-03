@@ -64,7 +64,7 @@ export function UpcomingPage() {
     <div className="flex flex-col">
       <header className="flex flex-col gap-2 border-b border-border bg-surface px-4 py-3 lg:px-6">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="mr-auto text-lg font-semibold lg:text-xl">Próximos eventos</h1>
+          <h1 className="mr-auto text-lg font-extrabold lg:text-[22px]">Próximos eventos</h1>
           <Button size="sm" icon={CalendarArrowDown} onClick={() => exportOccurrences(occurrences, `qs-calendar-proximos-${range}-dias.ics`)}>
             Exportar .ics
           </Button>
@@ -83,7 +83,7 @@ export function UpcomingPage() {
         <div className="flex flex-col gap-4 p-4 lg:p-6">
           {weeks.map(([monday, days]) => (
             <section key={monday} aria-labelledby={`w-${monday}`} className="overflow-hidden rounded-lg border border-border bg-surface shadow-sm">
-              <h2 id={`w-${monday}`} className="border-b border-border px-4 py-2.5 text-sm font-semibold lg:px-5">
+              <h2 id={`w-${monday}`} className="border-b border-border px-4 py-2.5 text-sm font-extrabold lg:px-5">
                 {weekLabel(monday, today)}
                 <span className="ml-2 text-xs font-normal text-muted">{[...days.values()].flat().length} eventos</span>
               </h2>

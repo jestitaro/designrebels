@@ -119,7 +119,7 @@ export function LibraryPage() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="flex flex-col gap-2 border-b border-border bg-surface px-4 py-3 lg:px-6">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="mr-auto text-lg font-semibold lg:text-xl">Biblioteca de eventos</h1>
+          <h1 className="mr-auto text-lg font-extrabold lg:text-[22px]">Biblioteca de eventos</h1>
           <Button size="sm" icon={Upload} onClick={() => void transfer.importCsv()}>Importar CSV</Button>
           <Button size="sm" icon={Download} onClick={() => transfer.exportCsv(rows.map((r) => r.event))}>Exportar CSV</Button>
           <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>

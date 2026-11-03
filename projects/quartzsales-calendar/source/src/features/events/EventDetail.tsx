@@ -105,7 +105,7 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
           {event.provenance === 'seed' && <Badge tone="neutral">{event.userModified ? 'Catálogo · editado' : 'Catálogo inicial'}</Badge>}
         </div>
         <div className="flex items-start gap-2">
-          <h2 id="event-detail-title" className="min-w-0 flex-1 text-xl leading-snug font-semibold">{event.title}</h2>
+          <h2 id="event-detail-title" className="min-w-0 flex-1 text-xl leading-snug font-extrabold">{event.title}</h2>
           <IconButton
             icon={Star}
             label={event.favorite ? 'Quitar de favoritos' : 'Marcar como favorito'}

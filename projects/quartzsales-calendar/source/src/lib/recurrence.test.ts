@@ -33,6 +33,16 @@ describe('recurrencia', () => {
     expect(occurrenceStartForYear(blackFriday, 2028)).toBe('2028-11-24');
   });
 
+  it('Pascua y Viernes Santo en varios años', () => {
+    const vs = makeEvent({ startDate: '2026-04-03', recurrence: { type: 'yearly-easter', offsetDays: -2 } });
+    expect(occurrenceStartForYear(vs, 2024)).toBe('2024-03-29');
+    expect(occurrenceStartForYear(vs, 2025)).toBe('2025-04-18');
+    expect(occurrenceStartForYear(vs, 2026)).toBe('2026-04-03');
+    expect(occurrenceStartForYear(vs, 2027)).toBe('2027-03-26');
+    expect(occurrenceStartForYear(vs, 2038)).toBe('2038-04-23');
+    expect(describeRecurrence(vs)).toBe('Todos los años, el Viernes Santo. Cambia de fecha según la Pascua.');
+  });
+
   it('las ediciones únicas no se repiten', () => {
     const festival = makeEvent({ startDate: '2026-11-20', endDate: '2026-11-22', recurrence: { type: 'none' } });
     expect(occurrenceStartForYear(festival, 2026)).toBe('2026-11-20');
