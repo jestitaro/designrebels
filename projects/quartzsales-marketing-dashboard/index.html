@@ -705,6 +705,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   flex: 0 0 240px;
 }
 .kanban-col.drag-over { border-color: var(--accent); background: var(--accent-glow); }
+.kanban-col.dragging-col { opacity: 0.4; }
 
 .kanban-col-add {
   flex: 0 0 170px;
@@ -735,14 +736,19 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: grab;
 }
+.kanban-col-header:active { cursor: grabbing; }
 .kanban-col-title {
   font-size: 13px;
   font-weight: 800;
   display: flex;
   align-items: center;
   gap: 7px;
+  min-width: 0;
 }
+.kanban-col-title span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kanban-col-grip { color: var(--text-3); font-size: 11px; }
 .col-count {
   background: var(--surface-3);
   border-radius: 10px;
@@ -751,6 +757,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   font-weight: 700;
   color: var(--text-3);
   font-family: var(--font-data);
+  flex-shrink: 0;
+}
+.kanban-col-header-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
 }
 .kanban-col-rename-btn {
   background: transparent;
@@ -2533,34 +2545,47 @@ function renderKanban() {
   const board = document.getElementById('kanban-board');
   board.innerHTML = '';
 
-  PIPELINE.columns.forEach(col => {
+  PIPELINE.columns.forEach((col, index) => {
     const cards = (PIPELINE.cards[col.id] || []).filter(isVisibleToMe);
     const colEl = document.createElement('div');
     colEl.className = 'kanban-col';
     colEl.dataset.col = col.id;
 
+    // Este mismo drop target sirve para dos cosas: soltar una card acá
+    // adentro (moverla a esta columna) o soltar el header de OTRA columna
+    // acá (reordenarla) — se distinguen por el tipo de dato en dataTransfer.
     colEl.addEventListener('dragover', e => { e.preventDefault(); colEl.classList.add('drag-over'); });
     colEl.addEventListener('dragleave', () => colEl.classList.remove('drag-over'));
     colEl.addEventListener('drop', e => {
       e.preventDefault();
       colEl.classList.remove('drag-over');
-      const { cardId, fromCol } = JSON.parse(e.dataTransfer.getData('text/plain'));
-      moveCard(cardId, fromCol, col.id);
+      const cardData = e.dataTransfer.getData('application/x-card');
+      const draggedColId = e.dataTransfer.getData('application/x-column');
+      if (cardData) {
+        const { cardId, fromCol } = JSON.parse(cardData);
+        moveCard(cardId, fromCol, col.id);
+      } else if (draggedColId) {
+        reorderColumn(draggedColId, col.id);
+      }
     });
 
     colEl.innerHTML = `
-      <div class="kanban-col-header">
+      <div class="kanban-col-header" draggable="true" title="Arrastrá para reordenar">
         <div class="kanban-col-title">
+          <i class="fa-solid fa-grip-vertical kanban-col-grip"></i>
           <i class="fa-solid ${col.icon || NEW_COLUMN_ICON}"></i>
           <span>${escapeHtml(col.label)}</span>
           <span class="col-count">${cards.length}</span>
         </div>
-        <button class="kanban-col-rename-btn" onclick="openRenameColumn('${col.id}')" title="Renombrar columna"><i class="fa-solid fa-pen"></i></button>
+        <div class="kanban-col-header-actions">
+          <button class="kanban-col-rename-btn" onclick="openRenameColumn('${col.id}')" title="Renombrar columna"><i class="fa-solid fa-pen"></i></button>
+          <button class="kanban-col-rename-btn" onclick="deleteColumn('${col.id}')" title="Eliminar columna"><i class="fa-solid fa-trash"></i></button>
+        </div>
       </div>
       <div class="kanban-cards" id="col-${col.id}">
         ${cards.map(c => renderCard(c, col.id)).join('')}
       </div>
-      ${col.id === 'ideas' ? `<div class="kanban-col-footer"><button class="btn-col-add" onclick="openAddIdea()">+ Agregar idea</button></div>` : ''}
+      ${index === 0 ? `<div class="kanban-col-footer"><button class="btn-col-add" onclick="openAddIdea()">+ Agregar idea</button></div>` : ''}
     `;
     board.appendChild(colEl);
   });
@@ -2573,10 +2598,25 @@ function renderKanban() {
   // drag events on cards
   board.querySelectorAll('.kanban-card').forEach(card => {
     card.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', JSON.stringify({ cardId: card.dataset.id, fromCol: card.dataset.col }));
+      e.stopPropagation();
+      e.dataTransfer.setData('application/x-card', JSON.stringify({ cardId: card.dataset.id, fromCol: card.dataset.col }));
       card.classList.add('dragging');
     });
     card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  });
+
+  // drag events para reordenar columnas (en el header, no en toda la
+  // columna, para no pisar el drag de las cards de adentro)
+  board.querySelectorAll('.kanban-col-header').forEach(header => {
+    header.addEventListener('dragstart', e => {
+      e.stopPropagation();
+      const colEl = header.closest('.kanban-col');
+      e.dataTransfer.setData('application/x-column', colEl.dataset.col);
+      colEl.classList.add('dragging-col');
+    });
+    header.addEventListener('dragend', () => {
+      header.closest('.kanban-col').classList.remove('dragging-col');
+    });
   });
 }
 
@@ -2647,12 +2687,13 @@ function viewScript(id) {
   }, 100);
 }
 
-function openAddIdea(col = 'ideas') {
+function openAddIdea(col = null) {
   document.getElementById('new-idea-title').value = '';
   document.getElementById('new-idea-draft').checked = false;
   const select = document.getElementById('new-idea-col');
   select.innerHTML = PIPELINE.columns.map(c => `<option value="${c.id}">${escapeHtml(c.label)}</option>`).join('');
-  select.value = col;
+  const target = (col && PIPELINE.columns.some(c => c.id === col)) ? col : PIPELINE.columns[0].id;
+  select.value = target;
   openModal('modal-add-idea');
 }
 
@@ -2715,6 +2756,41 @@ function submitColumnName() {
   renderKanban();
   closeModal('modal-column-name');
   toast(columnNameMode === 'rename' ? 'Columna renombrada' : 'Columna agregada', 'success');
+}
+
+function reorderColumn(draggedId, targetId) {
+  if (draggedId === targetId) return;
+  const fromIdx = PIPELINE.columns.findIndex(c => c.id === draggedId);
+  const toIdx = PIPELINE.columns.findIndex(c => c.id === targetId);
+  if (fromIdx === -1 || toIdx === -1) return;
+  const [col] = PIPELINE.columns.splice(fromIdx, 1);
+  PIPELINE.columns.splice(toIdx, 0, col);
+  savePipeline();
+  renderKanban();
+}
+
+// Bloquea el borrado si la columna tiene ideas — incluye borradores
+// privados de otras personas que quien borra ni siquiera puede ver, así
+// que nunca se pierde contenido ajeno sin que su dueño se entere.
+function deleteColumn(colId) {
+  if (PIPELINE.columns.length <= 1) {
+    toast('Tiene que quedar al menos una columna', 'error');
+    return;
+  }
+  const col = PIPELINE.columns.find(c => c.id === colId);
+  if (!col) return;
+  const cardCount = (PIPELINE.cards[colId] || []).length;
+  if (cardCount > 0) {
+    toast(`"${col.label}" tiene ideas (puede haber borradores de otros) — moveelas o eliminalas antes de borrar la columna.`, 'error');
+    return;
+  }
+
+  const idx = PIPELINE.columns.findIndex(c => c.id === colId);
+  PIPELINE.columns.splice(idx, 1);
+  delete PIPELINE.cards[colId];
+  savePipeline();
+  renderKanban();
+  toast('Columna eliminada', 'success');
 }
 
 // ─────────────────────────────────────────────────────────────
