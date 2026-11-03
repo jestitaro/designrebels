@@ -47,7 +47,7 @@ strong{color:var(--ink);font-weight:600}
 .ghost-float{position:absolute;left:0;pointer-events:none;opacity:0;animation:ghostDrift 15s cubic-bezier(.45,.05,.55,.95) forwards}
 .gf-wave{animation:ghostWave 3.4s ease-in-out infinite}
 .gf-sway{animation:ghostSway 2.2s ease-in-out infinite;transform-origin:50% 20%;filter:drop-shadow(0 0 16px rgba(214,204,255,.55))}
-.ghost-float.rtl .gf-sway img{transform:scaleX(-1)}
+.ghost-float:not(.rtl) .gf-sway img{transform:scaleX(-1)}
 .ghost-float img{display:block;width:100%;height:auto}
 @keyframes ghostDrift{0%{opacity:0;transform:translateX(var(--from))}12%{opacity:.32}50%{opacity:.4}88%{opacity:.32}100%{opacity:0;transform:translateX(var(--to))}}
 @keyframes ghostWave{0%,100%{transform:translateY(0) scale(1)}25%{transform:translateY(-22px) scale(1.04,.97)}50%{transform:translateY(-6px) scale(.98,1.03)}75%{transform:translateY(16px) scale(1.02,.98)}}
