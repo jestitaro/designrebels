@@ -294,7 +294,12 @@ body[data-theme="navidad"] .hero-title{transform:rotate(-1.2deg);transform-origi
 .mc-progress b{font-size:28px;font-weight:800;color:var(--ink)}
 .me-card .bar-wrap{margin-top:12px}
 .me-bar{margin-right:12px}
-.me-bar .bar-walker{width:34px;height:34px;translate:-50% -72%}
+.me-bar .bar-walker{width:34px;height:34px;translate:-50% -58%;z-index:2}
+.bar-marks{position:absolute;inset:0}
+.bar-marks i{position:absolute;top:50%;width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.55;translate:-50% -50%;transition:background .4s,opacity .4s,box-shadow .4s}
+.bar-marks i.on{background:#f6dd8a;opacity:1;box-shadow:0 0 8px 1px rgba(246,221,138,.7)}
+body[data-theme="base"] .bar-marks i{background:#fff;opacity:.9}
+body[data-theme="base"] .bar-marks i:not(.on){background:var(--muted);opacity:.4}
 .me-bar .bar-walker svg{width:100%;height:100%;transform-origin:50% 90%;animation:sway 3s ease-in-out infinite}
 .me-bar .bar-walker .dot{margin:9px}
 .bar-goal{position:absolute;right:-14px;top:50%;width:28px;height:28px;translate:0 -50%;filter:drop-shadow(0 0 6px rgba(246,221,138,.6))}
@@ -812,7 +817,8 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
               <div class="mc-progress"><b class="num" id="meKm">0</b><span>de <span id="meGoal">10</span> km de tu meta personal</span></div>
               <p class="practice" id="practice" hidden></p>
               <div class="bar-wrap me-bar"><div class="bar-fill" id="meFill" style="--fill:var(--accent)"></div>
-                <svg class="bar-goal hw" viewBox="-18 -18 36 36" aria-hidden="true"><path d="M0-15l4.4 9 9.9 1.4-7.2 7 1.7 9.8L0 7.6l-8.8 4.6 1.7-9.8-7.2-7 9.9-1.4z" fill="#f6dd8a" stroke="#07051a" stroke-width="2" stroke-linejoin="round"/></svg>
+                <svg class="bar-goal hw" viewBox="-18 -18 36 36" aria-hidden="true"><path d="M0-15l4.4 9 9.9 1.4-7.2 7 1.7 9.8L0 7.6l-8.8 4.6 1.7-9.8-7.2-7 9.9-1.4z" fill="#f6dd8a"/></svg>
+                <div class="bar-marks" id="meMarks"></div>
                 <div class="bar-walker" id="meWalker"><svg class="hw" viewBox="0 0 64 60" aria-hidden="true"><use href="#candy"/></svg><div class="dot bs"></div></div>
               </div>
               <div class="cta-stack">
@@ -1445,6 +1451,21 @@ function renderHome() {
   $('#meCard').style.setProperty('--team', teamVar(tm.id));
   $('#meHouse').textContent = tm.name; $('#meName').textContent = ROSTER.find(r => r.id === S.user.id)?.name || S.user.name;
   tween($('#meKm'), mk, 1); $('#meGoal').textContent = mg; $('#meFill').style.width = Math.min(100, mk / mg * 100) + '%'; $('#meWalker').style.left = Math.min(100, mk / mg * 100) + '%';
+  // hitos intermedios de la meta personal: un punto por tramo; al cruzar uno, confeti y felicitación
+  const step = mg <= 10 ? 1 : mg <= 21 ? 5 : 10, marks = [];
+  for (let k = step; k < mg; k += step) marks.push(k);
+  $('#meMarks').innerHTML = marks.map(k => `<i class="${mk >= k ? 'on' : ''}" data-km="${k}" style="left:${k / mg * 100}%"></i>`).join('');
+  const reached = mk >= mg ? mg : (marks.filter(k => mk >= k).pop() || 0);
+  if (S.meMarkGoal !== mg || S.meMark == null || reached < S.meMark) { S.meMark = reached; S.meMarkGoal = mg; save(); }
+  else if (reached > S.meMark) {
+    S.meMark = reached; save();
+    setTimeout(() => {
+      const goalEl = $('#meCard .bar-goal'), dot = reached >= mg ? (goalEl.offsetParent ? goalEl : $('#meWalker')) : $(`#meMarks i[data-km="${reached}"]`);
+      if (dot && dot.offsetParent) { const [x, y] = centerOf(dot); burst(x, y, reached >= mg ? 34 : 20); }
+      vib([20, 40, 20]);
+      toast(reached >= mg ? `<b>¡Felicitaciones!</b> Cumpliste tu meta de ${mg} km.` : `<b>¡Felicitaciones!</b> Llegaste a ${reached} km de tu meta.`);
+    }, 1300);
+  }
   const prac = S.acts.filter(a => !counts(a) && new Date(a.date) < RACE.start), pk = prac.reduce((a, b) => a + b.km, 0);
   $('#practice').hidden = !(pre && prac.length);
   $('#practice').textContent = `Práctica: ${fmt(pk, 1)} km en ${prac.length} ${prac.length === 1 ? 'actividad' : 'actividades'}. Desde el 1 de noviembre tus km empiezan a sumar para ${tm.name}.`;
