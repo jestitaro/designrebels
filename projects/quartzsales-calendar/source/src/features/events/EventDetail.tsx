@@ -1,8 +1,13 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Archive, ArchiveRestore, ArrowLeft, CalendarDays, CalendarX2, Copy, CopyPlus, ExternalLink, Lightbulb, MapPin, Pencil, Star, Trash2,
+  Archive, ArchiveRestore, ArrowLeft, CalendarArrowDown, CalendarDays, CalendarX2, ChevronRight, MessageSquarePlus, MessageSquareText, Copy, CopyPlus, ExternalLink, Lightbulb, MapPin, Pencil, Star, Trash2,
 } from 'lucide-react';
-import { placeLabel, useCatalog, useEvent } from '../../hooks/useData';
+import { placeLabel, useCatalog, useEvent, useGreetingsMap } from '../../hooks/useData';
+import { GreetingStatusBadge } from '../../components/domain/GreetingBadges';
+import { TONE_LABELS } from '../../components/domain/greetingMeta';
+import { useCreateGreeting } from '../greetings/useCreateGreeting';
+import { useIcsExport } from '../reminders/useIcsExport';
+import { Link } from 'react-router';
 import { capitalize, formatDate, formatLong, formatRange, relativeDays, todayISO } from '../../lib/dates';
 import { eventToPlainText } from '../../lib/eventText';
 import { describeRecurrence, nextOccurrence, occurrencesInRange } from '../../lib/recurrence';
@@ -58,6 +63,9 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [manualCopy, setManualCopy] = useState<string | null>(null);
   const today = todayISO();
+  const gMap = useGreetingsMap();
+  const createGreeting = useCreateGreeting();
+  const { exportEvents } = useIcsExport();
 
   if (event === undefined) return null;
   if (event === null) {
@@ -114,7 +122,11 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
         </div>
         <div className="flex flex-wrap gap-2 pt-1">
           <Button variant="primary" size="sm" icon={Pencil} onClick={() => editor.openEdit(event)}>Editar</Button>
+          <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(event, occ?.start)}>Crear saludo</Button>
           <Button size="sm" icon={Copy} onClick={() => void onCopy()}>Copiar info</Button>
+          <Button size="sm" icon={CalendarArrowDown} onClick={() => exportEvents([event], `${event.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.ics`, 365 * 3)}>
+            Exportar .ics
+          </Button>
           <Button size="sm" icon={CopyPlus} onClick={async () => { const c = await actions.duplicate(event); onDuplicated?.(c); }}>Duplicar</Button>
           <Button size="sm" icon={event.archived ? ArchiveRestore : Archive} onClick={() => void actions.toggleArchive(event)}>
             {event.archived ? 'Desarchivar' : 'Archivar'}
@@ -194,6 +206,36 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
             </a>
           </Block>
         )}
+
+        <section className="flex flex-col gap-2" aria-labelledby="event-greetings-title">
+          <h3 id="event-greetings-title" className="flex items-center gap-1.5 text-xs font-semibold tracking-wide text-muted uppercase">
+            <MessageSquareText aria-hidden className="size-3.5" />Saludos
+          </h3>
+          {(gMap.get(event.id) ?? []).length === 0 ? (
+            <div className="flex flex-wrap items-center gap-2 rounded border border-dashed border-border-strong px-3 py-3 text-[13px] text-muted">
+              <span className="flex-1">Todavía no hay saludos para este evento.</span>
+              <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(event, occ?.start)}>Crear saludo</Button>
+            </div>
+          ) : (
+            <ul className="flex flex-col divide-y divide-border rounded border border-border">
+              {(gMap.get(event.id) ?? []).map((g) => (
+                <li key={g.id}>
+                  <Link to={`/saludos/${g.id}`} className="flex items-center gap-3 px-3 py-2.5 hover:bg-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus">
+                    <span className="flex min-w-0 flex-1 flex-col gap-1">
+                      <span className="truncate text-sm font-medium">{g.internalTitle || 'Saludo sin título'}</span>
+                      <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
+                        <GreetingStatusBadge status={g.status} />
+                        {TONE_LABELS[g.tone]}
+                        {g.plannedDate && ` · ${formatDate(g.plannedDate)}`}
+                      </span>
+                    </span>
+                    <ChevronRight aria-hidden className="size-4 shrink-0 text-subtle" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
 
         {extra?.(event)}
       </div>

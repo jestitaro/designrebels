@@ -56,3 +56,21 @@ export function placeLabel(event: Pick<CalendarEvent, 'country' | 'region' | 'ci
   const parts = [catalog.placeName(event.city), catalog.placeName(event.region), catalog.placeName(event.country) ?? event.country];
   return parts.filter(Boolean).join(', ');
 }
+
+export function useReviewedAlerts(): Set<string> {
+  const rows = useLiveQuery(() => db.reviewedAlerts.toArray(), []);
+  return useMemo(() => new Set((rows ?? []).map((r) => r.key)), [rows]);
+}
+
+export function useGreetingsMap(): Map<string, Greeting[]> {
+  const greetings = useGreetings();
+  return useMemo(() => {
+    const map = new Map<string, Greeting[]>();
+    for (const g of greetings ?? []) {
+      const list = map.get(g.eventId);
+      if (list) list.push(g);
+      else map.set(g.eventId, [g]);
+    }
+    return map;
+  }, [greetings]);
+}

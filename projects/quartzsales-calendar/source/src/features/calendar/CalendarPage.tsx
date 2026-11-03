@@ -1,4 +1,6 @@
-import { useId, useMemo } from 'react';
+import { useCallback, useId, useMemo } from 'react';
+import { bestGreetingStatus } from '../../components/domain/greetingMeta';
+import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
 import { useNavigate } from 'react-router';
 import { CalendarDays, ChevronLeft, ChevronRight, List, Plus, Rows3 } from 'lucide-react';
 import { useCatalog, useEvents, useGreetings } from '../../hooks/useData';
@@ -60,6 +62,7 @@ export function CalendarPage() {
   }, [view, selected, cursor]);
 
   const gMap = useMemo(() => greetingsByEvent(greetings ?? []), [greetings]);
+  const greetingStatus = useCallback((id: string) => bestGreetingStatus((gMap.get(id) ?? []).map((g) => g.status)), [gMap]);
   const hidden = useMemo(() => new Set(catalog.categories.filter((c) => !c.visible).map((c) => c.id)), [catalog.categories]);
   const filtered = useMemo(() => applyFilters(events ?? [], filters, gMap, hidden), [events, filters, gMap, hidden]);
   const byDay = useMemo(() => occurrencesByDay(expandEvents(filtered, from, to), from, to), [filtered, from, to]);
@@ -143,14 +146,15 @@ export function CalendarPage() {
         <div className="flex min-h-0 flex-1 flex-col overflow-auto bg-surface lg:m-4 lg:rounded-lg lg:border lg:border-border lg:shadow-sm">
           {view === 'mes' && (
             <MonthGrid year={cursor.y} month={cursor.m} byDay={byDay} selected={selected} today={today} catalog={catalog}
-              labelledBy={titleId} onSelect={select} onOpenOccurrence={open} />
+              labelledBy={titleId} onSelect={select} onOpenOccurrence={open} greetingStatus={greetingStatus} />
           )}
           {view === 'semana' && (
             <WeekView anchor={selected} today={today} selected={selected} byDay={byDay} catalog={catalog}
-              onSelectDay={select} onOpen={open} onCreate={create} />
+              onSelectDay={select} onOpen={open} onCreate={create} greetingStatus={greetingStatus} />
           )}
           {view === 'lista' && (
             <ListView days={listDays} today={today} catalog={catalog} onOpen={open}
+              renderMeta={(o) => <EventGreetingBadge greetings={gMap.get(o.event.id)} />}
               emptyAction={<Button size="sm" icon={Plus} onClick={() => create()}>Nuevo evento</Button>} />
           )}
         </div>
@@ -178,6 +182,7 @@ export function CalendarPage() {
               occurrences={dayOccurrences}
               catalog={catalog}
               onOpen={(o) => open(o, selected)}
+              greetingsMap={gMap}
               headerAction={<Button size="sm" icon={Plus} onClick={() => create(selected)}>Agregar</Button>}
             />
           )}

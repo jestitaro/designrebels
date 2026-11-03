@@ -2,7 +2,8 @@ import { Plus } from 'lucide-react';
 import type { Catalog } from '../../hooks/useData';
 import { capitalize, formatDayMonth, parseISO, weekDays, WEEKDAYS } from '../../lib/dates';
 import { cn } from '../../lib/cn';
-import type { ISODate, Occurrence } from '../../types';
+import type { GreetingStatus, ISODate, Occurrence } from '../../types';
+import { GREETING_STATUS_META } from '../../components/domain/greetingMeta';
 import { RELEVANCE_META } from '../../components/domain/meta';
 
 interface WeekViewProps {
@@ -14,9 +15,10 @@ interface WeekViewProps {
   onSelectDay: (d: ISODate) => void;
   onOpen: (occ: Occurrence, day: ISODate) => void;
   onCreate: (d: ISODate) => void;
+  greetingStatus?: (eventId: string) => GreetingStatus | null;
 }
 
-export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay, onOpen, onCreate }: WeekViewProps) {
+export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay, onOpen, onCreate, greetingStatus }: WeekViewProps) {
   const days = weekDays(anchor);
   return (
     <ol className="grid flex-1 grid-cols-1 lg:grid-cols-7 lg:divide-x lg:divide-border">
@@ -70,6 +72,12 @@ export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay,
                         <Rel aria-hidden className="size-3" />
                         <span>{RELEVANCE_META[o.event.relevance].label}</span>
                         {o.start !== o.end && <span>· {formatDayMonth(o.start)}–{formatDayMonth(o.end)}</span>}
+                        {(() => {
+                          const st = greetingStatus?.(o.event.id);
+                          if (!st) return null;
+                          const Icon = GREETING_STATUS_META[st].icon;
+                          return <span className="inline-flex items-center gap-0.5">· <Icon aria-hidden className="size-3" />{GREETING_STATUS_META[st].label}</span>;
+                        })()}
                       </span>
                     </button>
                   </li>

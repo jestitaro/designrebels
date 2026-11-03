@@ -151,3 +151,13 @@ export async function updateSettings(changes: Partial<Settings>): Promise<Settin
   await db.settings.put({ key: 'app', value: next });
   return next;
 }
+
+/* ───────────── Recordatorios ───────────── */
+
+export async function markAlertReviewed(key: string): Promise<void> {
+  await db.reviewedAlerts.put({ key, reviewedAt: new Date().toISOString() });
+}
+
+export async function unmarkAlertReviewed(key: string): Promise<void> {
+  await db.reviewedAlerts.delete(key);
+}

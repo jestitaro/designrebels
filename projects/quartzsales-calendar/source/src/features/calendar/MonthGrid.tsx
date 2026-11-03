@@ -6,7 +6,8 @@ import {
   toISO, WEEKDAYS, WEEKDAYS_MIN, WEEKDAYS_SHORT,
 } from '../../lib/dates';
 import { cn } from '../../lib/cn';
-import type { ISODate, Occurrence } from '../../types';
+import type { GreetingStatus, ISODate, Occurrence } from '../../types';
+import { GREETING_STATUS_META } from '../../components/domain/greetingMeta';
 
 interface MonthGridProps {
   year: number;
@@ -19,6 +20,8 @@ interface MonthGridProps {
   onSelect: (date: ISODate) => void;
   /** Clic en un evento puntual (solo puntero; con teclado se usa la lista del día). */
   onOpenOccurrence?: (occ: Occurrence, date: ISODate) => void;
+  /** Estado del saludo más avanzado del evento (para el indicador). */
+  greetingStatus?: (eventId: string) => GreetingStatus | null;
 }
 
 const MAX_PILLS = 3;
@@ -41,7 +44,7 @@ function cellLabel(date: ISODate, occs: Occurrence[], today: ISODate) {
  * Grilla mensual navegable con flechas (patrón ARIA grid).
  * ←/→ día · ↑/↓ semana · Inicio/Fin semana · RePág/AvPág mes · Enter/Espacio selecciona.
  */
-export function MonthGrid({ year, month, byDay, selected, today, catalog, labelledBy, onSelect, onOpenOccurrence }: MonthGridProps) {
+export function MonthGrid({ year, month, byDay, selected, today, catalog, labelledBy, onSelect, onOpenOccurrence, greetingStatus }: MonthGridProps) {
   const weeks = monthGrid(year, month);
   const gridRef = useRef<HTMLDivElement>(null);
   const shouldFocus = useRef(false);
@@ -174,10 +177,16 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                             )}
                           >
                             {o.event.relevance === 'alta' && <ChevronsUp className="size-3 shrink-0" />}
-                            <span className="truncate">
+                            <span className="min-w-0 flex-1 truncate">
                               {continues && '↳ '}
                               {o.event.title}
                             </span>
+                            {(() => {
+                              const st = greetingStatus?.(o.event.id);
+                              if (!st) return null;
+                              const Icon = GREETING_STATUS_META[st].icon;
+                              return <Icon className="size-3 shrink-0" aria-label={`Saludo ${GREETING_STATUS_META[st].label.toLowerCase()}`} />;
+                            })()}
                           </button>
                         </li>
                       );

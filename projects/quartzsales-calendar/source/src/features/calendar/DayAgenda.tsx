@@ -2,7 +2,8 @@ import { CalendarX2, ChevronRight, MapPin } from 'lucide-react';
 import { placeLabel, type Catalog } from '../../hooks/useData';
 import { capitalize, formatDayMonth, formatLong } from '../../lib/dates';
 import { cn } from '../../lib/cn';
-import type { ISODate, Occurrence } from '../../types';
+import type { Greeting, ISODate, Occurrence } from '../../types';
+import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
 import { CategoryBadge, RelevanceBadge, VerificationBadge } from '../../components/domain/Badges';
 import { EmptyState } from '../../components/ui/EmptyState';
 import type { ReactNode } from 'react';
@@ -15,9 +16,10 @@ interface DayAgendaProps {
   onOpen?: (occ: Occurrence) => void;
   emptyAction?: ReactNode;
   headerAction?: ReactNode;
+  greetingsMap?: Map<string, Greeting[]>;
 }
 
-export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyAction, headerAction }: DayAgendaProps) {
+export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyAction, headerAction, greetingsMap }: DayAgendaProps) {
   return (
     <section aria-labelledby="day-agenda-title" className="flex flex-col">
       <header className="flex items-center gap-2 px-4 pt-4 pb-2 lg:px-5">
@@ -38,7 +40,7 @@ export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyActi
         <ul className="flex flex-col gap-2 px-4 pb-4 lg:px-5">
           {occurrences.map((occ) => (
             <li key={occ.key}>
-              <AgendaItem occ={occ} catalog={catalog} onOpen={onOpen} />
+              <AgendaItem occ={occ} catalog={catalog} onOpen={onOpen} greetings={greetingsMap?.get(occ.event.id)} showGreeting={!!greetingsMap} />
             </li>
           ))}
         </ul>
@@ -47,7 +49,7 @@ export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyActi
   );
 }
 
-function AgendaItem({ occ, catalog, onOpen }: { occ: Occurrence; catalog: Catalog; onOpen?: (occ: Occurrence) => void }) {
+function AgendaItem({ occ, catalog, onOpen, greetings, showGreeting }: { occ: Occurrence; catalog: Catalog; onOpen?: (occ: Occurrence) => void; greetings?: Greeting[]; showGreeting?: boolean }) {
   const { event } = occ;
   const category = catalog.categoryById.get(event.category);
   const multi = occ.start !== occ.end;
@@ -77,6 +79,7 @@ function AgendaItem({ occ, catalog, onOpen }: { occ: Occurrence; catalog: Catalo
           <CategoryBadge category={category} />
           <RelevanceBadge relevance={event.relevance} compact />
           <VerificationBadge verification={event.verification} />
+          {showGreeting && <EventGreetingBadge greetings={greetings} />}
         </span>
       </span>
     </>

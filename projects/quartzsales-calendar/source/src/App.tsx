@@ -7,6 +7,9 @@ import { DashboardPage } from './features/dashboard/DashboardPage';
 import { EventEditorProvider } from './features/events/EventEditor';
 import { LibraryPage } from './features/library/LibraryPage';
 import { EventPage } from './pages/EventPage';
+import { GreetingEditorPage } from './features/greetings/GreetingEditorPage';
+import { GreetingsPage } from './features/greetings/GreetingsPage';
+import { UpcomingPage } from './features/upcoming/UpcomingPage';
 
 function Root() {
   return (
@@ -25,6 +28,9 @@ const router = createHashRouter([
       { index: true, element: <Navigate to="/inicio" replace /> },
       { path: 'inicio', element: <DashboardPage /> },
       { path: 'calendario', element: <CalendarPage /> },
+      { path: 'proximos', element: <UpcomingPage /> },
+      { path: 'saludos', element: <GreetingsPage /> },
+      { path: 'saludos/:id', element: <GreetingEditorPage /> },
       { path: 'biblioteca', element: <LibraryPage /> },
       { path: 'eventos/:id', element: <EventPage /> },
       { path: '*', element: <Navigate to="/inicio" replace /> },
