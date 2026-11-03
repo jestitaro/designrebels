@@ -1,6 +1,6 @@
 import { DEFAULT_CATEGORIES, DEFAULT_COUNTRIES, DEFAULT_SETTINGS } from '../data/defaults';
 import { newId, nowStamp } from '../lib/id';
-import type { CalendarEvent, Settings } from '../types';
+import type { CalendarEvent, Category, Country, Settings } from '../types';
 import { db } from './db';
 
 export type NewEventInput = Omit<CalendarEvent, 'id' | 'createdAt' | 'updatedAt' | 'provenance' | 'userModified'>;
@@ -160,4 +160,35 @@ export async function markAlertReviewed(key: string): Promise<void> {
 
 export async function unmarkAlertReviewed(key: string): Promise<void> {
   await db.reviewedAlerts.delete(key);
+}
+
+/* ───────────── Catálogos editables ───────────── */
+
+export async function saveCountry(country: Country): Promise<void> {
+  await db.countries.put(country);
+}
+
+export async function saveCategory(category: Category): Promise<void> {
+  await db.categories.put(category);
+}
+
+/** Restaura tema, anticipación y visibilidad de categorías. No toca eventos, saludos ni lugares. */
+export async function restoreDefaultSettings(): Promise<void> {
+  await db.transaction('rw', [db.settings, db.categories], async () => {
+    const current = await getSettings();
+    await db.settings.put({ key: 'app', value: { ...DEFAULT_SETTINGS, lastExportAt: current.lastExportAt } });
+    const cats = await db.categories.toArray();
+    await db.categories.bulkPut(cats.map((c) => ({ ...c, visible: true })));
+  });
+}
+
+/** Borra la base local completa. La app vuelve a cargar catálogos y seed al reiniciar. */
+export async function wipeLocalData(): Promise<void> {
+  await db.delete();
+  try {
+    for (const key of Object.keys(localStorage)) if (key.startsWith('qs-calendar')) localStorage.removeItem(key);
+    for (const key of Object.keys(sessionStorage)) if (key.startsWith('qs-calendar')) sessionStorage.removeItem(key);
+  } catch {
+    // almacenamiento bloqueado: nada que limpiar
+  }
 }

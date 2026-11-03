@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { isValidISODate } from '../lib/dates';
 
+// Mensajes de validación en español.
+z.config(z.locales.es());
+
 const isoDate = z.string().refine(isValidISODate, 'Fecha inválida (usá dd/mm/aaaa).');
 const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Hora inválida (HH:mm).');
 const optionalUrl = z

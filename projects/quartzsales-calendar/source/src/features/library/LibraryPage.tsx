@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import {
-  Archive, ArchiveRestore, ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Library, Plus, Star, Trash2, X,
+  Archive, ArchiveRestore, ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Download, Library, Plus, Star, Trash2, Upload, X,
 } from 'lucide-react';
 import { CategoryBadge, RelevanceBadge, VerificationBadge } from '../../components/domain/Badges';
 import { RELEVANCE_META, VERIFICATION_META } from '../../components/domain/meta';
@@ -20,6 +20,8 @@ import { cn } from '../../lib/cn';
 import type { CalendarEvent, Relevance, Verification } from '../../types';
 import { useEventEditor } from '../events/EventEditor';
 import { ActiveFilterChips, FiltersButton, SearchBox } from '../filters/Filters';
+import { CsvImportDialog } from '../data/CsvImportDialog';
+import { useDataTransfer } from '../data/useDataTransfer';
 
 type SortKey = 'title' | 'next' | 'category' | 'country' | 'relevance' | 'verification' | 'updatedAt';
 const PAGE_SIZE = 50;
@@ -40,6 +42,7 @@ export function LibraryPage() {
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [confirmDelete, setConfirmDelete] = useState(false);
   const selectAllRef = useRef<HTMLInputElement>(null);
+  const transfer = useDataTransfer(catalog);
 
   const gMap = useMemo(() => greetingsByEvent(greetings ?? []), [greetings]);
   const rows = useMemo(() => {
@@ -117,6 +120,8 @@ export function LibraryPage() {
       <header className="flex flex-col gap-2 border-b border-border bg-surface px-4 py-3 lg:px-6">
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="mr-auto text-lg font-semibold lg:text-xl">Biblioteca de eventos</h1>
+          <Button size="sm" icon={Upload} onClick={() => void transfer.importCsv()}>Importar CSV</Button>
+          <Button size="sm" icon={Download} onClick={() => transfer.exportCsv(rows.map((r) => r.event))}>Exportar CSV</Button>
           <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -161,7 +166,7 @@ export function LibraryPage() {
 
       <div className="flex-1 bg-surface lg:m-4 lg:rounded-lg lg:border lg:border-border lg:shadow-sm">
         {events && events.length === 0 ? (
-          <EmptyState icon={Library} title="Todavía no hay eventos" description="Creá el primero o importá un respaldo."
+          <EmptyState icon={Library} title="Todavía no hay eventos" description="Creá el primero, importá un CSV o restaurá un respaldo desde Configuración."
             action={<Button variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>} />
         ) : rows.length === 0 ? (
           <EmptyState icon={Library} title="Ningún evento coincide" description="Probá con otra búsqueda o limpiá los filtros."
@@ -249,6 +254,7 @@ export function LibraryPage() {
         )}
       </div>
 
+      <CsvImportDialog result={transfer.csv?.result ?? null} fileName={transfer.csv?.name ?? ''} onClose={() => transfer.setCsv(null)} />
       <ConfirmDialog
         open={confirmDelete}
         title={`¿Eliminar ${selectedIds.length} ${selectedIds.length === 1 ? 'evento' : 'eventos'}?`}

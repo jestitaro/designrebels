@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router';
+import { Link, NavLink, Outlet, useLocation } from 'react-router';
+import { Settings } from 'lucide-react';
 import { cn } from '../../lib/cn';
 import { NAV_ITEMS } from './nav';
 import { ThemeCycleButton, ThemeSwitcher } from './ThemeSwitcher';
@@ -46,8 +47,21 @@ function Sidebar() {
           ))}
         </ul>
       </nav>
-      <div className="border-t border-border p-3">
+      <div className="flex flex-col gap-2 border-t border-border p-3">
+        <NavLink
+          to="/configuracion"
+          className={({ isActive }) =>
+            cn(
+              'flex h-10 items-center gap-3 rounded px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-focus',
+              isActive ? 'bg-primary-soft text-primary-soft-fg' : 'text-muted hover:bg-surface-2 hover:text-text',
+            )
+          }
+        >
+          <Settings aria-hidden className="size-[18px]" />
+          Configuración
+        </NavLink>
         <ThemeSwitcher />
+        <p className="px-1 text-[11px] leading-snug text-subtle">Datos guardados solo en este navegador.</p>
       </div>
     </aside>
   );
@@ -89,8 +103,12 @@ function MobileHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-2.5 border-b border-border bg-surface/95 px-4 pt-[env(safe-area-inset-top)] backdrop-blur lg:hidden">
       <BrandMark className="size-7 text-xs" />
-      <p className="flex-1 truncate text-[15px] font-semibold">{current?.label ?? 'QuartzSales Calendar'}</p>
+      <p className="flex-1 truncate text-[15px] font-semibold">{current?.label ?? (pathname.startsWith('/configuracion') ? 'Configuración' : 'QuartzSales Calendar')}</p>
       <ThemeCycleButton />
+      <Link to="/configuracion" aria-label="Configuración" title="Configuración"
+        className="inline-flex size-11 items-center justify-center rounded text-text hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-focus">
+        <Settings aria-hidden className="size-[18px]" />
+      </Link>
     </header>
   );
 }
