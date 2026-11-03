@@ -100,11 +100,11 @@ p{color:var(--muted)}
 .hero-ghost{position:relative;animation:levitateBig 4.4s ease-in-out infinite;filter:drop-shadow(0 0 26px rgba(196,170,255,.45))}
 .hero-ghost img{position:static!important;width:100%}
 .gshadow{position:absolute;z-index:3;width:26%;height:4%;left:64%;top:84%;border-radius:50%;background:radial-gradient(closest-side,rgba(4,2,12,.85),transparent);animation:shadowPulse 4.4s ease-in-out infinite}
-.scene .fog{z-index:4;pointer-events:none;filter:brightness(1.25) saturate(1.1);opacity:0;animation:fogMove var(--d,14s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+.scene .fog{z-index:4;pointer-events:none;filter:blur(1.5px);opacity:0;animation:fogMove var(--d,30s) ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
 @keyframes fogMove{
-  0%{transform:translate(0,0) scaleX(var(--sx,1));opacity:calc(var(--o,.7) * .55)}
-  50%{transform:translate(calc(var(--dx,-15%) / 2),var(--dy,-5px)) scaleX(var(--sx,1));opacity:var(--o,.7)}
-  100%{transform:translate(var(--dx,-15%),0) scaleX(var(--sx,1));opacity:calc(var(--o,.7) * .7)}}
+  0%{transform:translate(0,0) scaleX(var(--sx,1));opacity:calc(var(--o,.7) * .75)}
+  50%{transform:translate(calc(var(--dx,-15%) / 2),0) scaleX(var(--sx,1));opacity:var(--o,.7)}
+  100%{transform:translate(var(--dx,-15%),0) scaleX(var(--sx,1));opacity:calc(var(--o,.7) * .8)}}
 .scene .fog.back{z-index:1}
 @keyframes levitateBig{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-18px) rotate(2deg)}}
 @keyframes shadowPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.72);opacity:.5}}
@@ -331,13 +331,10 @@ p{color:var(--muted)}
         <div class="gshadow"></div>
         <img class="ground" src="assets/ground.webp" alt="" width="1000" height="566">
         <div class="ghost-pos"><div class="hero-ghost" data-ghost="hero"></div></div>
-        <img class="fog back" style="width:60%;left:8%;bottom:42%;--o:.85;--dx:18%;--d:13s" src="assets/fog.webp" alt="">
-        <img class="fog back" style="width:52%;right:-8%;bottom:36%;--o:.75;--sx:-1;--dx:-16%;--d:17s;--delay:-6s" src="assets/fog.webp" alt="">
-        <img class="fog" style="width:66%;left:-16%;bottom:10%;--o:.9;--sx:-1;--dx:22%;--d:15s;--delay:-3s" src="assets/fog.webp" alt="">
-        <img class="fog" style="width:60%;left:26%;bottom:16%;--o:.6;--dx:-18%;--d:11s;--delay:-8s;--dy:-9px" src="assets/fog.webp" alt="">
-        <img class="fog" style="width:58%;left:14%;bottom:28%;--o:.38;--dx:-14%;--d:9s;--delay:-4s;--dy:-12px" src="assets/fog.webp" alt="">
-        <img class="fog" style="width:78%;right:-20%;bottom:1%;--o:.9;--dx:-24%;--d:12s" src="assets/fog.webp" alt="">
-        <img class="fog" style="width:96%;left:-10%;bottom:-6%;--o:1;--dx:12%;--d:18s;--delay:-10s" src="assets/fog.webp" alt="">
+        <img class="fog" style="width:70%;left:-14%;bottom:8%;--o:.32;--sx:-1;--dx:26%;--d:34s" src="assets/fog.webp" alt="">
+        <img class="fog" style="width:64%;right:-16%;bottom:5%;--o:.38;--dx:-28%;--d:28s;--delay:-9s" src="assets/fog.webp" alt="">
+        <img class="fog" style="width:86%;left:2%;bottom:0;--o:.42;--dx:-18%;--d:40s;--delay:-20s" src="assets/fog.webp" alt="">
+        <img class="fog" style="width:96%;left:-10%;bottom:-7%;--o:.5;--sx:-1;--dx:20%;--d:31s;--delay:-14s" src="assets/fog.webp" alt="">
       </div>
     </div>
   </section>
