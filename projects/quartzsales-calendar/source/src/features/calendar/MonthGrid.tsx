@@ -18,7 +18,7 @@ interface MonthGridProps {
   labelledBy: string;
   onSelect: (date: ISODate) => void;
   /** Clic en un evento puntual (solo puntero; con teclado se usa la lista del día). */
-  onOpenOccurrence?: (occ: Occurrence) => void;
+  onOpenOccurrence?: (occ: Occurrence, date: ISODate) => void;
 }
 
 const MAX_PILLS = 3;
@@ -165,8 +165,7 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                             onClick={(e) => {
                               if (!onOpenOccurrence) return;
                               e.stopPropagation();
-                              onSelect(date);
-                              onOpenOccurrence(o);
+                              onOpenOccurrence(o, date);
                             }}
                             className={cn(
                               `cat-${cat?.color ?? 'brand'}`,

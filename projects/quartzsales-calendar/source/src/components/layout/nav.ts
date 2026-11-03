@@ -1,4 +1,4 @@
-import { CalendarDays, type LucideIcon } from 'lucide-react';
+import { CalendarDays, LayoutDashboard, Library, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   to: string;
@@ -7,4 +7,8 @@ export interface NavItem {
 }
 
 /** Solo se listan pantallas implementadas. */
-export const NAV_ITEMS: NavItem[] = [{ to: '/calendario', label: 'Calendario', icon: CalendarDays }];
+export const NAV_ITEMS: NavItem[] = [
+  { to: '/inicio', label: 'Inicio', icon: LayoutDashboard },
+  { to: '/calendario', label: 'Calendario', icon: CalendarDays },
+  { to: '/biblioteca', label: 'Biblioteca', icon: Library },
+];

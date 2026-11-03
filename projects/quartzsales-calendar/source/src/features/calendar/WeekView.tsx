@@ -1,0 +1,84 @@
+import { Plus } from 'lucide-react';
+import type { Catalog } from '../../hooks/useData';
+import { capitalize, formatDayMonth, parseISO, weekDays, WEEKDAYS } from '../../lib/dates';
+import { cn } from '../../lib/cn';
+import type { ISODate, Occurrence } from '../../types';
+import { RELEVANCE_META } from '../../components/domain/meta';
+
+interface WeekViewProps {
+  anchor: ISODate;
+  today: ISODate;
+  selected: ISODate;
+  byDay: Map<ISODate, Occurrence[]>;
+  catalog: Catalog;
+  onSelectDay: (d: ISODate) => void;
+  onOpen: (occ: Occurrence, day: ISODate) => void;
+  onCreate: (d: ISODate) => void;
+}
+
+export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay, onOpen, onCreate }: WeekViewProps) {
+  const days = weekDays(anchor);
+  return (
+    <ol className="grid flex-1 grid-cols-1 lg:grid-cols-7 lg:divide-x lg:divide-border">
+      {days.map((day, i) => {
+        const occs = byDay.get(day) ?? [];
+        const isToday = day === today;
+        return (
+          <li key={day} className={cn('flex min-w-0 flex-col border-b border-border lg:min-h-full lg:border-b-0', day === selected && 'bg-primary-soft/40')}>
+            <div className="flex items-center gap-1 pt-3 pr-1 pb-2 pl-3 lg:pl-2">
+              <button
+                type="button"
+                onClick={() => onSelectDay(day)}
+                aria-label={`${capitalize(WEEKDAYS[i]!)} ${formatDayMonth(day)}${isToday ? ', hoy' : ''}. Ver día`}
+                aria-current={isToday ? 'date' : undefined}
+                className="flex min-w-0 items-center gap-1.5 rounded text-left focus-visible:outline-2 focus-visible:outline-focus"
+              >
+                <span className={cn('flex size-8 items-center justify-center rounded-full text-sm font-semibold', isToday ? 'bg-primary text-white' : 'text-text')}>
+                  {parseISO(day).d}
+                </span>
+                <span className="text-xs font-medium text-muted uppercase">{WEEKDAYS[i]!.slice(0, 3)}</span>
+              </button>
+              <span className="min-w-0 flex-1" />
+              <button
+                type="button"
+                onClick={() => onCreate(day)}
+                aria-label={`Crear evento el ${formatDayMonth(day)}`}
+                title="Crear evento"
+                className="inline-flex size-7 shrink-0 items-center justify-center rounded text-subtle hover:bg-surface-2 hover:text-text focus-visible:outline-2 focus-visible:outline-focus pointer-coarse:size-11"
+              >
+                <Plus aria-hidden className="size-4" />
+              </button>
+            </div>
+            <ul className="flex flex-col gap-1.5 px-2 pb-3">
+              {occs.length === 0 && <li className="px-1 text-xs text-subtle">Sin eventos</li>}
+              {occs.map((o) => {
+                const cat = catalog.categoryById.get(o.event.category);
+                const Rel = RELEVANCE_META[o.event.relevance].icon;
+                return (
+                  <li key={o.key}>
+                    <button
+                      type="button"
+                      onClick={() => onOpen(o, day)}
+                      className={cn(
+                        `cat-${cat?.color ?? 'brand'}`,
+                        'flex w-full flex-col gap-0.5 rounded-xs border-l-[3px] border-[var(--cat-solid)] bg-[var(--cat-bg)] px-2 py-1.5 text-left text-[var(--cat-fg)]',
+                        'hover:brightness-95 focus-visible:outline-2 focus-visible:outline-focus',
+                      )}
+                    >
+                      <span className="text-[13px] leading-snug font-medium">{o.event.title}</span>
+                      <span className="flex items-center gap-1 text-[11px] opacity-90">
+                        <Rel aria-hidden className="size-3" />
+                        <span>{RELEVANCE_META[o.event.relevance].label}</span>
+                        {o.start !== o.end && <span>· {formatDayMonth(o.start)}–{formatDayMonth(o.end)}</span>}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
