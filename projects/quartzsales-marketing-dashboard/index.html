@@ -1475,7 +1475,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
     <section class="page" id="page-pipeline">
       <div class="pipeline-header">
         <h2>Pipeline de contenido</h2>
-        <button class="btn-add-idea" onclick="openAddIdea()">+ Nueva idea</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn-sync-posts" id="btn-refresh-pipeline" onclick="loadPipelineFromServer(true)">
+            <i class="fa-solid fa-arrows-rotate"></i> Actualizar
+          </button>
+          <button class="btn-add-idea" onclick="openAddIdea()">+ Nueva idea</button>
+        </div>
       </div>
       <div class="kanban-wrap">
         <div class="kanban" id="kanban-board">
@@ -1709,17 +1714,18 @@ function init() {
   loadFromStorage();
   updateGreeting();
   updatePipelineStats();
-  renderKanban();
+  renderKanban(); // pinta al instante con la copia local mientras se carga la compartida
   renderDashboard(); // pinta al instante con datos de demo mientras se carga el snapshot real
   loadDashboardData();
+  loadPipelineFromServer();
   updateConfigUI();
   refreshQuotaDisplay();
   maybeOfferOnboardingTour();
 }
 
 // Ideas de ejemplo para que el Pipeline nunca se vea vacío en la primera
-// visita. Sólo se usan si todavía no hay nada guardado en localStorage — a
-// partir de ahí el Pipeline es 100% de quien lo usa.
+// visita. Sólo se usan si todavía no hay nada guardado ni localmente ni en
+// el Pipeline compartido del equipo (ver loadPipelineFromServer()).
 function demoPipelineSeed() {
   return {
     ideas: [
@@ -1747,6 +1753,59 @@ function loadFromStorage() {
 function savePipeline() {
   localStorage.setItem('qs_pipeline', JSON.stringify(PIPELINE));
   updatePipelineStats();
+  savePipelineToServer();
+}
+
+// Pipeline compartido entre todo el equipo — ver functions/api/pipeline.js.
+// localStorage sigue existiendo como copia instantánea/offline, pero la
+// fuente de la verdad pasa a ser el servidor.
+async function savePipelineToServer(silent = false) {
+  try {
+    const res = await fetch('/api/pipeline', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(PIPELINE),
+    });
+    if (!res.ok) {
+      const payload = await res.json().catch(() => null);
+      console.warn('No se pudo sincronizar el Pipeline con el equipo:', payload?.error || res.status);
+      if (!silent) toast('No se pudo compartir este cambio con el equipo — sólo se guardó en este navegador.', 'error');
+    }
+  } catch (e) {
+    console.warn('No se pudo sincronizar el Pipeline con el equipo (¿sin conexión?)', e);
+    if (!silent) toast('No se pudo compartir este cambio con el equipo — sólo se guardó en este navegador.', 'error');
+  }
+}
+
+// Trae el Pipeline compartido más reciente. Si nadie guardó nada todavía
+// en el servidor, este dispositivo "siembra" el Pipeline compartido con lo
+// que ya tenía guardado localmente (típicamente el caso de la primera
+// persona que abre el dashboard después de activar esta funcionalidad).
+async function loadPipelineFromServer(manual = false) {
+  const btn = document.getElementById('btn-refresh-pipeline');
+  if (btn) { btn.classList.add('loading'); btn.disabled = true; }
+
+  try {
+    const res = await fetch('/api/pipeline', { cache: 'no-store' });
+    const payload = await res.json().catch(() => null);
+    if (!res.ok) throw new Error(payload?.error || `Error ${res.status}`);
+
+    if (payload.pipeline) {
+      PIPELINE = payload.pipeline;
+      localStorage.setItem('qs_pipeline', JSON.stringify(PIPELINE));
+      renderKanban();
+      updatePipelineStats();
+      if (manual) toast('Pipeline actualizado con los últimos cambios del equipo', 'success');
+    } else {
+      await savePipelineToServer(true);
+      if (manual) toast('No había Pipeline compartido todavía — se cargó el de este navegador', 'info');
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar el Pipeline compartido — mostrando la copia local.', e);
+    if (manual) toast('No se pudo actualizar desde el equipo — mostrando la copia local.', 'error');
+  } finally {
+    if (btn) { btn.classList.remove('loading'); btn.disabled = false; }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────

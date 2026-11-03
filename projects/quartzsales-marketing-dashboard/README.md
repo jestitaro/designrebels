@@ -19,7 +19,8 @@ projects/quartzsales-marketing-dashboard/
 │   ├── _utils.js                 # JSON helpers + cupo diario en Cloudflare KV
 │   └── api/
 │       ├── generate-script.js    # GET (cupo restante) / POST (generar) — usa ANTHROPIC_API_KEY
-│       └── trigger-posts-sync.js # POST — dispara el sync de posts de competidores — usa GITHUB_SYNC_TOKEN
+│       ├── trigger-posts-sync.js # POST — dispara el sync de posts de competidores — usa GITHUB_SYNC_TOKEN
+│       └── pipeline.js           # GET/POST — Pipeline compartido entre el equipo — usa KV DEMO_USAGE_KV
 ├── config/
 │   └── sources.json              # competidores a monitorear + URL de LinkedIn + grupo A/B/C
 ├── data/
@@ -61,6 +62,16 @@ functions/api/generate-script.js (Cloudflare Pages Function)
   → protegido con cupo diario en Cloudflare KV (por IP y global)
   → si no hay ANTHROPIC_API_KEY, se agotó el cupo, o Anthropic falla:
     el usuario puede usar 3 ejemplos pre-generados en vez de generar
+
+functions/api/pipeline.js (Cloudflare Pages Function)
+  → Pipeline de contenido (kanban) compartido entre todo el equipo,
+    guardado en Cloudflare KV — antes vivía sólo en localStorage de cada
+    persona, sin compartir nada entre navegadores
+  → no es tiempo real: cada quien ve los cambios de los demás al cargar
+    o apretar "Actualizar" en la pestaña Pipeline; last-write-wins si dos
+    personas guardan en el mismo momento
+  → si no hay KV configurado: el Pipeline sigue funcionando pero vuelve a
+    ser 100% local, como antes de esta funcionalidad
 ```
 
 Ninguna acción del usuario (abrir el dashboard, tocar "Actualizar
@@ -84,6 +95,7 @@ funciona sin secretos: ofrece los 3 ejemplos pre-generados aunque no haya
 | Generación de posts en vivo con Claude | `ANTHROPIC_API_KEY` en Cloudflare Pages | El botón "✨ Generar" devuelve un error amigable; los 3 ejemplos pre-generados siguen disponibles |
 | Cupo diario del generador | binding de KV `DEMO_USAGE_KV` en Cloudflare Pages | La Function sigue funcionando (útil en desarrollo local) pero sin aplicar el límite — ver advertencia más abajo |
 | Botón "Actualizar posts ahora" (pestaña Competidores) | `GITHUB_SYNC_TOKEN` en Cloudflare Pages | El botón devuelve un error amigable; la sync semanal automática de los lunes sigue funcionando igual |
+| Pipeline compartido entre el equipo | binding de KV `DEMO_USAGE_KV` en Cloudflare Pages (el mismo de arriba) | El Pipeline sigue funcionando pero vuelve a ser 100% local a cada navegador — cada persona ve sólo lo suyo |
 
 ---
 
@@ -249,7 +261,7 @@ hubieran sido generados en el momento.
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Sí, para generación en vivo | `functions/api/generate-script.js` |
 | `ANTHROPIC_MODEL` | No (default: `claude-haiku-4-5-20251001`) | Pisar el modelo sin tocar código |
-| Binding de KV `DEMO_USAGE_KV` | Sí, para que el límite diario se aplique (también se usa para el cooldown del botón de sync de posts) | Cupo de generaciones por IP/global |
+| Binding de KV `DEMO_USAGE_KV` | Sí, para que el límite diario se aplique (también se usa para el cooldown del botón de sync de posts y para el Pipeline compartido) | Cupo de generaciones por IP/global |
 | `GITHUB_SYNC_TOKEN` | No (recomendado, para el botón "Actualizar posts ahora") | `functions/api/trigger-posts-sync.js` |
 
 Cloudflare Pages **no** necesita `APIFY_TOKEN` ni `YOUTUBE_API_KEY`: esas
@@ -287,9 +299,9 @@ amigable — la sync automática de los lunes no depende de esto para nada.
 2. En el proyecto de Cloudflare Pages → **Settings** → **Functions** → **KV
    namespace bindings** → **Add binding**.
 3. Variable name: `DEMO_USAGE_KV` (tiene que ser exactamente ese nombre,
-   es el que usan `functions/api/generate-script.js` y
-   `functions/api/trigger-posts-sync.js`). Namespace: el que
-   creaste en el paso 1.
+   es el que usan `functions/api/generate-script.js`,
+   `functions/api/trigger-posts-sync.js` y `functions/api/pipeline.js`).
+   Namespace: el que creaste en el paso 1.
 4. Guardar y volver a desplegar (o esperar al próximo deploy) para que el
    binding quede activo.
 
