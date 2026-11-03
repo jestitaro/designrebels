@@ -1,23 +1,14 @@
-import { useState } from 'react';
 import { cn } from '../../lib/cn';
 
 /**
- * Logo oficial de QuartzSales servido desde la app (public/brand/, ver `npm run fetch-brand`).
- * Fondo claro → fullcolor; fondo oscuro → fullcolor-negativo. Si los archivos no están,
- * muestra el wordmark en texto, igual que el fallback del dashboard.
+ * Logo de QuartzSales: isotipo oficial (public/brand/iso-qs.svg, servido desde la app)
+ * + wordmark tipeado en Nunito, como en el dashboard.
  */
 export function Logo({ className, onDark }: { className?: string; onDark?: boolean }) {
-  const [failed, setFailed] = useState(false);
-  if (failed) {
-    return (
-      <span className={cn('text-[15px] leading-none font-extrabold', onDark ? 'text-white' : 'text-text', className)}>QuartzSales</span>
-    );
-  }
-  const light = (
-    <img src="brand/logo-qs-fullcolor.svg" alt="QuartzSales" onError={() => setFailed(true)} className={cn('h-7 w-auto', !onDark && 'dark:hidden', className)} />
+  return (
+    <span className={cn('inline-flex items-center gap-2', className)}>
+      <img src="brand/iso-qs.svg" alt="" aria-hidden className="size-7 shrink-0" />
+      <span className={cn('text-[15px] leading-none font-extrabold tracking-[-0.01em]', onDark ? 'text-white' : 'text-text')}>QuartzSales</span>
+    </span>
   );
-  const dark = (
-    <img src="brand/logo-qs-fullcolor-negativo.svg" alt="QuartzSales" onError={() => setFailed(true)} className={cn('h-7 w-auto', !onDark && 'hidden dark:block', className)} />
-  );
-  return onDark ? dark : <>{light}{dark}</>;
 }

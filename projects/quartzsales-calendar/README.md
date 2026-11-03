@@ -25,15 +25,7 @@ El sitio de Design Rebels sirve los archivos tal como están commiteados, sin ni
 
 ## Logo de QuartzSales
 
-La app usa los logos oficiales servidos desde la propia carpeta (`source/public/brand/`), para no depender de terceros y que funcionen offline: `logo-qs-fullcolor.svg` en tema claro y `logo-qs-fullcolor-negativo.svg` en tema oscuro. Mientras esos archivos no estén, se muestra el wordmark en texto, igual que el fallback del dashboard.
-
-Para bajarlos (una sola vez), desde `projects/quartzsales-calendar/source`:
-
-```bash
-npm run fetch-brand
-```
-
-Después `npm run build` y commiteá `source/public/brand/` y la carpeta `brand/` generada.
+El logo es el isotipo oficial (`source/public/brand/iso-qs.svg`, servido desde la propia app para que funcione offline) más el wordmark "QuartzSales" tipeado en Nunito, igual que en el dashboard.
 
 ---
 
