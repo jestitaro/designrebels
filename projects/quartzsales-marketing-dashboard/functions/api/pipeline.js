@@ -14,14 +14,20 @@
 import { json, jsonError } from '../_utils.js';
 
 const KV_KEY = 'shared:pipeline';
-const COLUMNS = ['ideas', 'ready', 'edit', 'done', 'published'];
 const MAX_BODY_BYTES = 200 * 1024; // 200KB de sobra para un pipeline de ideas de texto
 
 const NO_KV_MESSAGE = 'El Pipeline compartido no está configurado en este entorno (falta el binding de KV DEMO_USAGE_KV). Ver README.';
 
+// Forma esperada: { columns: [{id, label, ...}], cards: { [colId]: [...] } }.
+// Las columnas son dinámicas (se pueden renombrar/agregar desde la UI), así
+// que acá sólo se valida la forma general — index.html migra datos viejos
+// (de antes de columnas dinámicas) a esta forma antes de mandarlos acá.
 function isValidPipeline(obj) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
-  return COLUMNS.every((col) => Array.isArray(obj[col]));
+  if (!Array.isArray(obj.columns) || obj.columns.length === 0) return false;
+  if (!obj.columns.every((c) => c && typeof c.id === 'string' && c.id && typeof c.label === 'string')) return false;
+  if (!obj.cards || typeof obj.cards !== 'object' || Array.isArray(obj.cards)) return false;
+  return Object.values(obj.cards).every((list) => Array.isArray(list));
 }
 
 export async function onRequestGet(context) {
@@ -56,7 +62,7 @@ export async function onRequestPost(context) {
   }
 
   if (!isValidPipeline(pipeline)) {
-    return jsonError('El Pipeline no tiene la forma esperada (faltan columnas: ' + COLUMNS.join(', ') + ').', 400);
+    return jsonError('El Pipeline no tiene la forma esperada (se espera { columns: [...], cards: {...} }).', 400);
   }
 
   await env.DEMO_USAGE_KV.put(KV_KEY, JSON.stringify(pipeline));

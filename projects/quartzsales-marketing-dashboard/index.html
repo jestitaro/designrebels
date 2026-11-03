@@ -689,10 +689,9 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   padding: 24px 32px;
 }
 .kanban {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  display: flex;
+  align-items: flex-start;
   gap: 14px;
-  min-width: 1100px;
   height: 100%;
 }
 
@@ -703,8 +702,32 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 200px);
+  flex: 0 0 240px;
 }
 .kanban-col.drag-over { border-color: var(--accent); background: var(--accent-glow); }
+
+.kanban-col-add {
+  flex: 0 0 170px;
+}
+.btn-col-add-column {
+  width: 100%;
+  height: 44px;
+  padding: 10px;
+  background: transparent;
+  border: 1px dashed var(--border-2);
+  border-radius: 12px;
+  color: var(--text-3);
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-col-add-column:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
 
 .kanban-col-header {
   padding: 14px 14px 12px;
@@ -729,6 +752,18 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
   color: var(--text-3);
   font-family: var(--font-data);
 }
+.kanban-col-rename-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 3px 5px;
+  border-radius: 4px;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.kanban-col-rename-btn:hover { background: var(--surface-3); color: var(--text-1); }
 
 .kanban-cards {
   flex: 1;
@@ -777,6 +812,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 .kbadge-hn { background: rgba(245,158,11,0.12); color: var(--yellow); }
 .kbadge-manual { background: rgba(112,37,224,0.12); color: var(--accent); }
 .kbadge-script { background: rgba(34,197,94,0.12); color: var(--green); }
+.kbadge-draft { background: rgba(245,158,11,0.12); color: var(--yellow); }
 
 .kanban-card-actions {
   display: flex;
@@ -1531,6 +1567,11 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
         de entorno en Cloudflare Pages, nunca en este navegador.
       </p>
       <div class="form-group">
+        <label class="form-label">Tu nombre</label>
+        <input type="text" class="form-input" id="cfg-user-name" placeholder="Ej: Jesica">
+        <div style="font-size:11px; color:var(--text-3); margin-top:4px;">Separa tus borradores privados del resto del equipo en el Pipeline — no es una contraseña.</div>
+      </div>
+      <div class="form-group">
         <label class="form-label">LinkedIn Company Handle</label>
         <input type="text" class="form-input" id="cfg-li-handle" value="quartz-sales" placeholder="quartz-sales">
       </div>
@@ -1628,10 +1669,57 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
           <option value="edit">En edición</option>
         </select>
       </div>
+      <div class="form-group">
+        <label style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text-2); cursor:pointer;">
+          <input type="checkbox" id="new-idea-draft">
+          Guardar como borrador (sólo yo lo veo)
+        </label>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closeModal('modal-add-idea')">Cancelar</button>
       <button class="btn-primary" onclick="addNewIdea()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: NOMBRE DE COLUMNA (renombrar / nueva) -->
+<div class="modal-overlay" id="modal-column-name">
+  <div class="modal narrow">
+    <div class="modal-header">
+      <div class="modal-title" id="column-name-title">Renombrar columna</div>
+      <button class="modal-close" onclick="closeModal('modal-column-name')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-input" id="column-name-input" placeholder="Ej: Aprobación" maxlength="40">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-column-name')">Cancelar</button>
+      <button class="btn-primary" onclick="submitColumnName()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TU NOMBRE (primera visita) -->
+<div class="modal-overlay" id="modal-user-name">
+  <div class="modal narrow">
+    <div class="modal-header">
+      <div class="modal-title">¿Cómo te llamás?</div>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12.5px; color:var(--text-3); margin-bottom:14px; line-height:1.5;">
+        Para separar tus borradores privados de los del resto del equipo en el Pipeline. No es una contraseña — lo podés cambiar después desde Configuración.
+      </p>
+      <div class="form-group">
+        <input type="text" class="form-input" id="user-name-input" placeholder="Ej: Jesica" maxlength="40">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="skipUserName()">Ahora no</button>
+      <button class="btn-primary" onclick="saveUserName()">Listo</button>
     </div>
   </div>
 </div>
@@ -1685,27 +1773,32 @@ html, body { height: 100%; background: var(--bg); color: var(--text-1); font-fam
 let CFG = {
   ytHandle: 'esaurio1591',
   liHandle: 'quartz-sales',
+  userName: '',
 };
 
+// Columnas por defecto — ahora son datos (parte del Pipeline compartido),
+// no una constante fija: se pueden renombrar y agregar nuevas desde la UI
+// (ver openRenameColumn/openAddColumn). DEFAULT_COLUMNS sólo se usa para
+// sembrar un Pipeline nuevo o completar datos viejos sin columnas propias.
+const DEFAULT_COLUMNS = [
+  { id: 'ideas',     label: 'Ideas',            icon: 'fa-lightbulb' },
+  { id: 'ready',     label: 'Listo p/grabar',   icon: 'fa-clapperboard' },
+  { id: 'edit',      label: 'En edición',       icon: 'fa-scissors' },
+  { id: 'done',      label: 'Terminado',        icon: 'fa-circle-check' },
+  { id: 'published', label: 'Subido',           icon: 'fa-rocket' },
+];
+const NEW_COLUMN_ICON = 'fa-layer-group';
+
 let PIPELINE = {
-  ideas: [],
-  ready: [],
-  edit: [],
-  done: [],
-  published: []
+  columns: DEFAULT_COLUMNS.map(c => ({ ...c })),
+  cards: { ideas: [], ready: [], edit: [], done: [], published: [] },
 };
 
 let METRICS = {};
 let currentScriptTopic = '';
 let currentScriptCardId = null;
-
-const COLS = [
-  { id: 'ideas',     label: '<i class="fa-solid fa-lightbulb"></i> Ideas' },
-  { id: 'ready',     label: '<i class="fa-solid fa-clapperboard"></i> Listo p/grabar' },
-  { id: 'edit',      label: '<i class="fa-solid fa-scissors"></i> En edición' },
-  { id: 'done',      label: '<i class="fa-solid fa-circle-check"></i> Terminado' },
-  { id: 'published', label: '<i class="fa-solid fa-rocket"></i> Subido' },
-];
+let columnNameMode = null; // 'rename' | 'add' — ver openRenameColumn/openAddColumn/submitColumnName
+let columnNameTargetId = null;
 
 // ─────────────────────────────────────────────────────────────
 // INIT
@@ -1720,7 +1813,7 @@ function init() {
   loadPipelineFromServer();
   updateConfigUI();
   refreshQuotaDisplay();
-  maybeOfferOnboardingTour();
+  maybeAskUserName(); // dispara el onboarding tour después, si corresponde (ver esa función)
 }
 
 // Ideas de ejemplo para que el Pipeline nunca se vea vacío en la primera
@@ -1728,18 +1821,74 @@ function init() {
 // el Pipeline compartido del equipo (ver loadPipelineFromServer()).
 function demoPipelineSeed() {
   return {
-    ideas: [
-      { id: 1, title: 'Cómo QuartzSales reduce los quiebres de stock en PDV', channel: 'linkedin', source: 'manual', script: null },
-      { id: 2, title: '3 señales de que tu ejecución en góndola necesita IA', channel: 'linkedin', source: 'manual', script: null },
-    ],
-    ready: [
-      { id: 3, title: 'Caso de éxito: cliente CPG reduce roturas 18% en 2 meses', channel: 'linkedin', source: 'manual', script: null },
-    ],
-    edit: [],
-    done: [
-      { id: 4, title: 'Producto: cómo funciona el módulo de auditoría de PDV', channel: 'youtube', source: 'manual', script: null },
-    ],
-    published: [],
+    columns: DEFAULT_COLUMNS.map(c => ({ ...c })),
+    cards: {
+      ideas: [
+        { id: 1, title: 'Cómo QuartzSales reduce los quiebres de stock en PDV', channel: 'linkedin', source: 'manual', script: null, author: null, visibility: 'shared' },
+        { id: 2, title: '3 señales de que tu ejecución en góndola necesita IA', channel: 'linkedin', source: 'manual', script: null, author: null, visibility: 'shared' },
+      ],
+      ready: [
+        { id: 3, title: 'Caso de éxito: cliente CPG reduce roturas 18% en 2 meses', channel: 'linkedin', source: 'manual', script: null, author: null, visibility: 'shared' },
+      ],
+      edit: [],
+      done: [
+        { id: 4, title: 'Producto: cómo funciona el módulo de auditoría de PDV', channel: 'youtube', source: 'manual', script: null, author: null, visibility: 'shared' },
+      ],
+      published: [],
+    },
+  };
+}
+
+// Convierte cualquier forma vieja/parcial de Pipeline a la forma actual
+// ({ columns: [...], cards: { [colId]: [...] } }), completando columnas y
+// campos de cada card que falten. Así nunca rompe con datos guardados
+// antes de columnas dinámicas o de borradores personales — incluye lo que
+// ya haya en localStorage o en el Pipeline compartido del servidor.
+function normalizePipeline(raw) {
+  if (!raw || typeof raw !== 'object') return demoPipelineSeed();
+
+  let columns;
+  let cardsSource;
+
+  if (Array.isArray(raw.columns) && raw.cards && typeof raw.cards === 'object') {
+    columns = raw.columns;
+    cardsSource = raw.cards;
+  } else {
+    // Forma vieja (de antes de las columnas dinámicas): columnas fijas,
+    // las cards están directo en las claves del objeto raíz.
+    columns = DEFAULT_COLUMNS.map(c => ({ ...c }));
+    cardsSource = raw;
+  }
+
+  const normalizedColumns = columns
+    .filter(c => c && typeof c.id === 'string' && c.id)
+    .map(c => ({
+      id: c.id,
+      label: typeof c.label === 'string' && c.label ? c.label : c.id,
+      icon: c.icon || NEW_COLUMN_ICON,
+    }));
+
+  if (normalizedColumns.length === 0) return demoPipelineSeed();
+
+  const cards = {};
+  normalizedColumns.forEach(col => {
+    const list = Array.isArray(cardsSource[col.id]) ? cardsSource[col.id] : [];
+    cards[col.id] = list.map(normalizeCard);
+  });
+
+  return { columns: normalizedColumns, cards };
+}
+
+function normalizeCard(c) {
+  return {
+    id: c.id,
+    title: c.title || '',
+    channel: c.channel || 'linkedin',
+    source: c.source || 'manual',
+    script: c.script ?? null,
+    url: c.url,
+    author: c.author ?? null,
+    visibility: c.visibility === 'private' ? 'private' : 'shared',
   };
 }
 
@@ -1747,7 +1896,7 @@ function loadFromStorage() {
   const savedCfg = localStorage.getItem('qs_cfg');
   if (savedCfg) CFG = { ...CFG, ...JSON.parse(savedCfg) };
   const savedPipeline = localStorage.getItem('qs_pipeline');
-  PIPELINE = savedPipeline ? JSON.parse(savedPipeline) : demoPipelineSeed();
+  PIPELINE = normalizePipeline(savedPipeline ? JSON.parse(savedPipeline) : null);
 }
 
 function savePipeline() {
@@ -1791,7 +1940,7 @@ async function loadPipelineFromServer(manual = false) {
     if (!res.ok) throw new Error(payload?.error || `Error ${res.status}`);
 
     if (payload.pipeline) {
-      PIPELINE = payload.pipeline;
+      PIPELINE = normalizePipeline(payload.pipeline);
       localStorage.setItem('qs_pipeline', JSON.stringify(PIPELINE));
       renderKanban();
       updatePipelineStats();
@@ -1839,12 +1988,24 @@ document.querySelectorAll('.nav-item').forEach(item => {
 // ─────────────────────────────────────────────────────────────
 // PIPELINE STATS
 // ─────────────────────────────────────────────────────────────
+// Las columnas "ideas"/"ready"/"edit" son las que siempre existen (ver
+// DEFAULT_COLUMNS) — si alguien les cambió el label no importa, el id
+// sigue siendo el mismo. Cuenta sólo lo visible para quien mira (ver
+// isVisibleToMe), igual que el tablero.
 function updatePipelineStats() {
-  document.getElementById('stat-ideas').textContent = PIPELINE.ideas.length;
-  document.getElementById('stat-ready').textContent = PIPELINE.ready.length;
-  document.getElementById('stat-edit').textContent = PIPELINE.edit.length;
-  const total = Object.values(PIPELINE).reduce((a, c) => a + c.length, 0);
+  const visCount = (col) => (PIPELINE.cards[col] || []).filter(isVisibleToMe).length;
+  document.getElementById('stat-ideas').textContent = visCount('ideas');
+  document.getElementById('stat-ready').textContent = visCount('ready');
+  document.getElementById('stat-edit').textContent = visCount('edit');
+  const total = Object.values(PIPELINE.cards).reduce((a, list) => a + list.filter(isVisibleToMe).length, 0);
   document.getElementById('stat-total').textContent = total;
+}
+
+// Un borrador privado sólo lo ve quien lo creó (mismo CFG.userName). No es
+// seguridad real: el documento completo sigue viajando al cargar el
+// Pipeline, esto sólo oculta en la interfaz lo que no es tuyo.
+function isVisibleToMe(card) {
+  return card.visibility !== 'private' || (!!CFG.userName && card.author === CFG.userName);
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2356,8 +2517,10 @@ function addFromResearch(r) {
     source: r.type === 'github' ? 'github' : 'hn',
     script: null,
     url: r.url,
+    author: CFG.userName || null,
+    visibility: 'shared',
   };
-  PIPELINE.ideas.push(card);
+  PIPELINE.cards.ideas.push(card);
   savePipeline();
   renderKanban();
   toast('Agregado al Pipeline', 'success');
@@ -2370,8 +2533,8 @@ function renderKanban() {
   const board = document.getElementById('kanban-board');
   board.innerHTML = '';
 
-  COLS.forEach(col => {
-    const cards = PIPELINE[col.id] || [];
+  PIPELINE.columns.forEach(col => {
+    const cards = (PIPELINE.cards[col.id] || []).filter(isVisibleToMe);
     const colEl = document.createElement('div');
     colEl.className = 'kanban-col';
     colEl.dataset.col = col.id;
@@ -2387,7 +2550,12 @@ function renderKanban() {
 
     colEl.innerHTML = `
       <div class="kanban-col-header">
-        <div class="kanban-col-title">${col.label} <span class="col-count">${cards.length}</span></div>
+        <div class="kanban-col-title">
+          <i class="fa-solid ${col.icon || NEW_COLUMN_ICON}"></i>
+          <span>${escapeHtml(col.label)}</span>
+          <span class="col-count">${cards.length}</span>
+        </div>
+        <button class="kanban-col-rename-btn" onclick="openRenameColumn('${col.id}')" title="Renombrar columna"><i class="fa-solid fa-pen"></i></button>
       </div>
       <div class="kanban-cards" id="col-${col.id}">
         ${cards.map(c => renderCard(c, col.id)).join('')}
@@ -2396,6 +2564,11 @@ function renderKanban() {
     `;
     board.appendChild(colEl);
   });
+
+  const addColEl = document.createElement('div');
+  addColEl.className = 'kanban-col-add';
+  addColEl.innerHTML = `<button class="btn-col-add-column" onclick="openAddColumn()"><i class="fa-solid fa-plus"></i> Agregar columna</button>`;
+  board.appendChild(addColEl);
 
   // drag events on cards
   board.querySelectorAll('.kanban-card').forEach(card => {
@@ -2415,11 +2588,13 @@ function renderCard(c, colId) {
     : c.source === 'hn' ? '<span class="kbadge kbadge-hn">HN</span>'
     : '<span class="kbadge kbadge-manual">Manual</span>';
   const scriptBadge = c.script ? '<span class="kbadge kbadge-script"><i class="fa-solid fa-check"></i> Post</span>' : '';
+  const draftBadge = c.visibility === 'private' ? '<span class="kbadge kbadge-draft"><i class="fa-solid fa-lock"></i> Borrador</span>' : '';
 
   return `<div class="kanban-card" draggable="true" data-id="${c.id}" data-col="${colId}">
     <div class="kanban-card-title">${c.title}</div>
-    <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}</div>
+    <div class="kanban-card-badges">${channelBadge}${sourceBadge}${scriptBadge}${draftBadge}</div>
     <div class="kanban-card-actions">
+      ${c.visibility === 'private' ? `<button class="kaction" onclick="shareCard(${c.id}, '${colId}')" title="Compartir con el equipo"><i class="fa-solid fa-share-nodes"></i></button>` : ''}
       <button class="kaction" onclick="openScriptModal('${c.title.replace(/'/g,'\\\'').replace(/"/g,'&quot;')}', ${c.id})" title="Generar post"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
       ${c.script ? `<button class="kaction" onclick="viewScript(${c.id})" title="Ver post"><i class="fa-solid fa-eye"></i></button>` : ''}
       <button class="kaction delete" onclick="deleteCard(${c.id}, '${colId}')" title="Eliminar"><i class="fa-solid fa-trash"></i></button>
@@ -2427,25 +2602,34 @@ function renderCard(c, colId) {
   </div>`;
 }
 
+function shareCard(id, col) {
+  const card = (PIPELINE.cards[col] || []).find(c => c.id === id);
+  if (!card) return;
+  card.visibility = 'shared';
+  savePipeline();
+  renderKanban();
+  toast('Idea compartida con el equipo', 'success');
+}
+
 function moveCard(cardId, fromCol, toCol) {
   cardId = parseInt(cardId);
-  const idx = PIPELINE[fromCol].findIndex(c => c.id === cardId);
+  const idx = PIPELINE.cards[fromCol].findIndex(c => c.id === cardId);
   if (idx === -1) return;
-  const [card] = PIPELINE[fromCol].splice(idx, 1);
-  PIPELINE[toCol].push(card);
+  const [card] = PIPELINE.cards[fromCol].splice(idx, 1);
+  PIPELINE.cards[toCol].push(card);
   savePipeline();
   renderKanban();
 }
 
 function deleteCard(id, col) {
-  const idx = PIPELINE[col].findIndex(c => c.id === id);
+  const idx = PIPELINE.cards[col].findIndex(c => c.id === id);
   if (idx === -1) return;
-  const [card] = PIPELINE[col].splice(idx, 1);
+  const [card] = PIPELINE.cards[col].splice(idx, 1);
   savePipeline();
   renderKanban();
 
   toastUndo('Idea eliminada', () => {
-    PIPELINE[col].splice(Math.min(idx, PIPELINE[col].length), 0, card);
+    PIPELINE.cards[col].splice(Math.min(idx, PIPELINE.cards[col].length), 0, card);
     savePipeline();
     renderKanban();
     toast('Restaurada', 'success');
@@ -2453,7 +2637,7 @@ function deleteCard(id, col) {
 }
 
 function viewScript(id) {
-  const card = Object.values(PIPELINE).flat().find(c => c.id === id);
+  const card = Object.values(PIPELINE.cards).flat().find(c => c.id === id);
   if (!card?.script) return;
   openScriptModal(card.title, id);
   setTimeout(() => {
@@ -2465,7 +2649,10 @@ function viewScript(id) {
 
 function openAddIdea(col = 'ideas') {
   document.getElementById('new-idea-title').value = '';
-  document.getElementById('new-idea-col').value = col;
+  document.getElementById('new-idea-draft').checked = false;
+  const select = document.getElementById('new-idea-col');
+  select.innerHTML = PIPELINE.columns.map(c => `<option value="${c.id}">${escapeHtml(c.label)}</option>`).join('');
+  select.value = col;
   openModal('modal-add-idea');
 }
 
@@ -2474,11 +2661,95 @@ function addNewIdea() {
   if (!title) { toast('Escribí un título para la idea', 'error'); return; }
   const channel = document.getElementById('new-idea-channel').value;
   const col = document.getElementById('new-idea-col').value;
-  PIPELINE[col].push({ id: Date.now(), title, channel, source: 'manual', script: null });
+  const isDraft = document.getElementById('new-idea-draft').checked;
+  PIPELINE.cards[col].push({
+    id: Date.now(),
+    title,
+    channel,
+    source: 'manual',
+    script: null,
+    author: CFG.userName || null,
+    visibility: isDraft ? 'private' : 'shared',
+  });
   savePipeline();
   renderKanban();
   closeModal('modal-add-idea');
   toast('Idea agregada', 'success');
+}
+
+// Renombrar/agregar columnas comparten el mismo modal — columnNameMode
+// decide qué hace submitColumnName(). Las columnas son parte del Pipeline
+// compartido: cualquiera del equipo las ve apenas se guardan.
+function openRenameColumn(colId) {
+  const col = PIPELINE.columns.find(c => c.id === colId);
+  if (!col) return;
+  columnNameMode = 'rename';
+  columnNameTargetId = colId;
+  document.getElementById('column-name-title').textContent = 'Renombrar columna';
+  document.getElementById('column-name-input').value = col.label;
+  openModal('modal-column-name');
+}
+
+function openAddColumn() {
+  columnNameMode = 'add';
+  columnNameTargetId = null;
+  document.getElementById('column-name-title').textContent = 'Nueva columna';
+  document.getElementById('column-name-input').value = '';
+  openModal('modal-column-name');
+}
+
+function submitColumnName() {
+  const value = document.getElementById('column-name-input').value.trim();
+  if (!value) { toast('Escribí un nombre para la columna', 'error'); return; }
+
+  if (columnNameMode === 'rename') {
+    const col = PIPELINE.columns.find(c => c.id === columnNameTargetId);
+    if (col) col.label = value;
+  } else {
+    const id = 'col_' + Date.now();
+    PIPELINE.columns.push({ id, label: value, icon: NEW_COLUMN_ICON });
+    PIPELINE.cards[id] = [];
+  }
+
+  savePipeline();
+  renderKanban();
+  closeModal('modal-column-name');
+  toast(columnNameMode === 'rename' ? 'Columna renombrada' : 'Columna agregada', 'success');
+}
+
+// ─────────────────────────────────────────────────────────────
+// IDENTIDAD (para separar borradores privados entre personas)
+// ─────────────────────────────────────────────────────────────
+// No hay login real — esto es sólo un nombre guardado en el navegador de
+// cada uno, para que el Pipeline pueda distinguir "mis borradores" de los
+// del resto. No protege nada: el documento completo sigue viajando igual.
+function maybeAskUserName() {
+  if (CFG.userName || localStorage.getItem('qs_user_name_skipped')) {
+    maybeOfferOnboardingTour();
+    return;
+  }
+  document.getElementById('user-name-input').value = '';
+  openModal('modal-user-name');
+}
+
+function saveUserName() {
+  const name = document.getElementById('user-name-input').value.trim();
+  if (!name) { toast('Escribí un nombre', 'error'); return; }
+  CFG.userName = name;
+  localStorage.setItem('qs_cfg', JSON.stringify(CFG));
+  localStorage.removeItem('qs_user_name_skipped');
+  closeModal('modal-user-name');
+  updateConfigUI();
+  renderKanban();
+  updatePipelineStats();
+  toast(`¡Hola, ${name}!`, 'success');
+  maybeOfferOnboardingTour();
+}
+
+function skipUserName() {
+  localStorage.setItem('qs_user_name_skipped', '1');
+  closeModal('modal-user-name');
+  maybeOfferOnboardingTour();
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -2625,13 +2896,21 @@ function saveScriptToPipeline() {
 
   if (currentScriptCardId) {
     // Actualizar card existente
-    for (const col of Object.keys(PIPELINE)) {
-      const card = PIPELINE[col].find(c => c.id === currentScriptCardId);
+    for (const col of Object.keys(PIPELINE.cards)) {
+      const card = PIPELINE.cards[col].find(c => c.id === currentScriptCardId);
       if (card) { card.script = script; break; }
     }
   } else {
     // Crear nueva card en Ideas
-    PIPELINE.ideas.push({ id: Date.now(), title: topic, channel: document.getElementById('script-channel').value, source: 'manual', script });
+    PIPELINE.cards.ideas.push({
+      id: Date.now(),
+      title: topic,
+      channel: document.getElementById('script-channel').value,
+      source: 'manual',
+      script,
+      author: CFG.userName || null,
+      visibility: 'shared',
+    });
   }
 
   savePipeline();
@@ -2791,13 +3070,17 @@ async function triggerPostsSync() {
 function updateConfigUI() {
   document.getElementById('cfg-li-handle').value = CFG.liHandle;
   document.getElementById('cfg-yt-handle').value = CFG.ytHandle;
+  document.getElementById('cfg-user-name').value = CFG.userName || '';
 }
 
 function saveConfig() {
   CFG.liHandle = document.getElementById('cfg-li-handle').value.trim() || 'quartz-sales';
   CFG.ytHandle = document.getElementById('cfg-yt-handle').value.trim() || 'esaurio1591';
+  CFG.userName = document.getElementById('cfg-user-name').value.trim();
   localStorage.setItem('qs_cfg', JSON.stringify(CFG));
   updateConfigUI();
+  renderKanban(); // cambiar el nombre puede cambiar qué borradores ves
+  updatePipelineStats();
   closeModal('modal-config');
   toast('Configuración guardada', 'success');
 }

@@ -72,6 +72,16 @@ functions/api/pipeline.js (Cloudflare Pages Function)
     personas guardan en el mismo momento
   → si no hay KV configurado: el Pipeline sigue funcionando pero vuelve a
     ser 100% local, como antes de esta funcionalidad
+  → columnas dinámicas: se pueden renombrar (ícono de lápiz en el header
+    de cada columna) y agregar nuevas ("+ Agregar columna" al final del
+    tablero) — las columnas son parte del mismo documento compartido
+  → ideas compartidas vs. borradores privados: al crear una idea se puede
+    marcar "Guardar como borrador (sólo yo lo veo)". Para distinguir
+    "quién es quién" sin un login real, la primera vez que alguien entra
+    se le pregunta un nombre (se guarda en su navegador, editable después
+    desde Configuración) — NO es seguridad real, cualquiera puede poner
+    cualquier nombre; el documento completo sigue viajando igual, sólo se
+    oculta en la interfaz lo que no es tuyo ni está compartido
 ```
 
 Ninguna acción del usuario (abrir el dashboard, tocar "Actualizar
