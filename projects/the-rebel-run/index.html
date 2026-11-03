@@ -886,9 +886,8 @@ body[data-theme="navidad"] .onb{background:radial-gradient(100% 55% at 50% 10%,#
           <section class="screen" data-screen="rank" aria-label="Ranking">
             <span class="kicker" data-copy="rankKicker"></span>
             <div class="h2 display" data-copy="rankTitle"></div>
-            <div class="card" style="padding:12px 10px 10px">
+            <div class="card" style="padding:12px 10px 10px;margin-top:14px">
               <div class="tm" id="tmRank"></div>
-              <p class="tm-hint">Tocá una ficha o una posta.</p>
             </div>
             <div class="card" style="display:none">
               <div class="map">
@@ -1441,7 +1440,8 @@ function renderTreeMap(box, mode) {
   const order = [...TEAMS].sort((a, b) => (a.id === (me && me.id)) - (b.id === (me && me.id)));
   const groups = [];
   order.forEach(t => { const q = m.at(target[t.id]); const g = groups.find(g => Math.hypot(g.x - q.x, g.y - q.y) < 80); if (g) g.ids.push(t.id); else groups.push({ x: q.x, y: q.y, ids: [t.id] }); });
-  const off = {}; groups.forEach(g => g.ids.forEach((id, k) => { off[id] = (k - (g.ids.length - 1) / 2) * (tree ? 62 : 70); }));
+  // las que comparten lugar se escalonan hacia adelante sobre el mismo camino (así nadie queda fuera de la pista)
+  const off = {}; groups.forEach(g => g.ids.forEach((id, k) => { off[id] = k * (tree ? 58 : 95); }));
   const tokWrap = $('.tm-toks', box);
   tokWrap.innerHTML = !tree ? order.map(t => { const big = me && t.id === me.id, h = big ? 270 : 225, w = Math.round(h * .76);
     const g = groups.find(g => g.ids.includes(t.id)), ids = g.ids.length > 1 ? g.ids.join(',') : t.id;
@@ -1463,10 +1463,10 @@ function renderTreeMap(box, mode) {
   const lit = $('.tm-lit', box), t0 = performance.now(), dur = reduce ? 0 : 1400;
   const step = now => {
     const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 4);
-    order.forEach(t => { const f = (from[t.id] ?? 0) + (target[t.id] - (from[t.id] ?? 0)) * e, q = m.at(f), el = $(`.tm-tok[data-id="${t.id}"]`, tokWrap);
-      const x = q.x + off[t.id];
+    order.forEach(t => { const f = (from[t.id] ?? 0) + (target[t.id] - (from[t.id] ?? 0)) * e, fo = f + off[t.id] / m.L, q = m.at(fo), el = $(`.tm-tok[data-id="${t.id}"]`, tokWrap);
+      const x = q.x;
       el.setAttribute('transform', `translate(${x} ${q.y})`); el.dataset.x = x; el.dataset.y = q.y; m.pos[t.id] = f;
-      const fl = $('.flip', el); if (fl) { const q2 = m.at(f + .004); fl.setAttribute('transform', q2.x < q.x - .5 ? 'scale(-1 1)' : ''); } });
+      const fl = $('.flip', el); if (fl) { const q2 = m.at(fo + .004); fl.setAttribute('transform', q2.x < q.x - .5 ? 'scale(-1 1)' : ''); } });
     if (focus) lit.setAttribute('stroke-dasharray', `${m.pos[focus.id] * 1000} 1000`);
     if (k < 1) m.raf = requestAnimationFrame(step);
     else if (focus && target[focus.id] >= 1 && (from[focus.id] ?? 0) < 1 && mode === 'home' && $('#app').contains(box) && box.offsetParent) {
