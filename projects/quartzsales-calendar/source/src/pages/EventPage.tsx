@@ -15,7 +15,6 @@ export function EventPage() {
         occurrenceDate={params.get('fecha') ?? undefined}
         onBack={back}
         onDeleted={back}
-        onDuplicated={(c) => navigate(`/eventos/${c.id}`, { replace: true })}
       />
     </div>
   );

@@ -174,14 +174,14 @@ export function DashboardPage() {
           <Card
             className="lg:col-span-2"
             title="Para preparar"
-            description={`Eventos de relevancia alta en los próximos ${settings.leadDays} días sin saludo listo.`}
+            description={`Fechas de los próximos ${settings.leadDays} días que todavía no tienen un saludo listo.`}
           >
             <p className="flex items-start gap-2 border-b border-border bg-surface-2 px-4 py-2 text-xs text-muted">
               <Info aria-hidden className="mt-0.5 size-3.5 shrink-0" />
               Estos recordatorios solo se ven al abrir la app: no hay notificaciones con la app cerrada. Para tener alarmas en el celular, exportá un .ics desde Próximos.
             </p>
             {alerts.length === 0 ? (
-              <EmptyState compact icon={BellRing} title="Nada urgente" description="No hay eventos de relevancia alta pendientes en la ventana de anticipación." />
+              <EmptyState compact icon={BellRing} title="Nada urgente" description="No hay fechas pendientes en los próximos días." />
             ) : (
               <ul className="divide-y divide-border">
                 {alerts.map((a) => (

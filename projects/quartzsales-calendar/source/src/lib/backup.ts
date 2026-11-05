@@ -1,4 +1,4 @@
-import { db, SCHEMA_VERSION } from '../db/db';
+import { db, SCHEMA_VERSION, simplifyGreeting } from '../db/db';
 import { backupSchema, type Backup } from '../schemas/backup';
 import type { CalendarEvent, Greeting } from '../types';
 
@@ -38,6 +38,12 @@ const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string
   // v1 → v2: el esquema de datos no cambió; v2 solo sumó España a los países por defecto.
   // Al importar en modo combinar se agrega si falta; en reemplazar se respeta el respaldo.
   1: (raw) => raw,
+  // v2 → v3: saludos simplificados (sin tono, canal, notas ni versiones; estados pendiente/listo/compartido).
+  2: (raw) => {
+    const data = (raw.data ?? {}) as Record<string, unknown>;
+    const greetings = Array.isArray(data.greetings) ? data.greetings : [];
+    return { ...raw, data: { ...data, greetings: greetings.map((g) => simplifyGreeting(g as Record<string, unknown>)) } };
+  },
 };
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };

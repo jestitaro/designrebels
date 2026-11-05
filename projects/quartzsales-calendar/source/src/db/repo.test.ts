@@ -55,8 +55,7 @@ describe('persistencia de eventos', () => {
   it('elimina los saludos asociados', async () => {
     const a = await createEvent(input());
     await db.greetings.add({
-      id: 'g1', eventId: a.id, internalTitle: '', body: '', tone: 'cercano', channel: '', status: 'borrador',
-      privateNotes: '', versions: [], createdAt: '', updatedAt: '',
+      id: 'g1', eventId: a.id, internalTitle: '', body: '', status: 'pendiente', createdAt: '', updatedAt: '',
     });
     await deleteEvents([a.id]);
     expect(await db.greetings.count()).toBe(0);
@@ -83,7 +82,7 @@ describe('migraciones', () => {
     ]);
     v1.close();
     const migrated = await resetDatabaseForTests(name);
-    expect(migrated.verno).toBe(2);
+    expect(migrated.verno).toBe(3);
     const countries = await migrated.countries.orderBy('order').toArray();
     expect(countries.map((c) => c.id)).toEqual(['ar', 'es', 'intl']);
     expect(countries[0]?.name).toBe('Argentina editada');
@@ -124,6 +123,20 @@ describe('merge del seed', () => {
     const r = await mergeSeed([v1], 2);
     expect(r.skippedDeleted).toBe(1);
     expect(await getEvent('seed-mate')).toBeUndefined();
+  });
+
+  it('saca las fechas que salieron del catálogo, salvo editadas o con saludo', async () => {
+    const otro = makeEvent({ id: 'seed-otro', provenance: 'seed' });
+    const editado = makeEvent({ id: 'seed-editado', provenance: 'seed' });
+    const conSaludo = makeEvent({ id: 'seed-saludo', provenance: 'seed' });
+    await mergeSeed([v1, otro, editado, conSaludo], 1);
+    await updateEvent('seed-editado', { title: 'Mío' });
+    await db.greetings.add({ id: 'g', eventId: 'seed-saludo', internalTitle: '', body: '', status: 'pendiente', createdAt: '', updatedAt: '' });
+    const r = await mergeSeed([v1], 2);
+    expect(r.removed).toBe(1);
+    expect(await getEvent('seed-otro')).toBeUndefined();
+    expect(await getEvent('seed-editado')).toBeDefined();
+    expect(await getEvent('seed-saludo')).toBeDefined();
   });
 
   it('no re-procesa la misma versión del seed', async () => {

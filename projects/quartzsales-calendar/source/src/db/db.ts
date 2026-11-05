@@ -3,7 +3,7 @@ import type { CalendarEvent, Category, Country, Greeting, Settings } from '../ty
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export interface KV<T = unknown> {
   key: string;
@@ -52,7 +52,35 @@ export class CalendarDB extends Dexie {
           await countries.add({ id: 'es', name: 'España', active: true, order: intl ? intl.order : 99, regions: [] });
         }
       });
+    // v3: saludos simplificados (texto, imagen y estado pendiente / listo / compartido).
+    this.version(3)
+      .stores({})
+      .upgrade(async (tx) => {
+        await tx
+          .table('greetings')
+          .toCollection()
+          .modify((g: Record<string, unknown>) => {
+            Object.assign(g, simplifyGreeting(g));
+            for (const key of ['tone', 'channel', 'privateNotes', 'versions']) delete g[key];
+          });
+      });
   }
+}
+
+/** Convierte un saludo de versiones anteriores al formato actual. */
+export function simplifyGreeting(g: Record<string, unknown>): Greeting {
+  const status = g.status === 'listo' || g.status === 'compartido' ? g.status : 'pendiente';
+  return {
+    id: String(g.id),
+    eventId: String(g.eventId),
+    internalTitle: String(g.internalTitle ?? ''),
+    body: String(g.body ?? ''),
+    imageUrl: typeof g.imageUrl === 'string' && g.imageUrl ? g.imageUrl : undefined,
+    plannedDate: typeof g.plannedDate === 'string' ? g.plannedDate : undefined,
+    status,
+    createdAt: String(g.createdAt ?? ''),
+    updatedAt: String(g.updatedAt ?? ''),
+  };
 }
 
 export let db = new CalendarDB();

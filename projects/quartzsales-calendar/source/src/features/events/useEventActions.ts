@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { deleteEvents, duplicateEvent, updateEvent } from '../../db/repo';
+import { deleteEvents, updateEvent } from '../../db/repo';
 import { copyText } from '../../lib/clipboard';
 import type { CalendarEvent } from '../../types';
 import { useToast } from '../../components/ui/Toast';
@@ -27,15 +27,6 @@ export function useEventActions() {
     [toast],
   );
 
-  const duplicate = useCallback(
-    async (event: CalendarEvent) => {
-      const copy = await duplicateEvent(event.id);
-      toast.success('Evento duplicado.');
-      return copy;
-    },
-    [toast],
-  );
-
   const remove = useCallback(
     async (event: CalendarEvent) => {
       await deleteEvents([event.id]);
@@ -53,5 +44,5 @@ export function useEventActions() {
     [toast],
   );
 
-  return { toggleFavorite, toggleArchive, duplicate, remove, copy };
+  return { toggleFavorite, toggleArchive, remove, copy };
 }

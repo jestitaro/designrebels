@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 2;
+export const SEED_VERSION = 3;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -62,13 +62,6 @@ export const SEED_EVENTS: CalendarEvent[] = [
     source: 'Ley 27.399 (Infoleg / argentina.gob.ar)', sourceUrl: 'https://www.argentina.gob.ar/normativa/nacional/norma-281835/texto',
   }),
   seed({
-    id: 'seed-ar-papa-2026', title: 'Feriado por la visita del papa León XIV', category: 'efemerides', subcategory: 'efe-nacionales',
-    country: 'ar', startDate: '2026-11-09', recurrence: once, relevance: 'alta', verification: 'confirmado',
-    summary: 'Feriado nacional el lunes 9/11/2026 por la visita de León XIV.',
-    description: 'Según el Decreto DNU 1103/2026: feriado nacional el lunes 9 de noviembre; además, feriado el martes 10 en Córdoba y CABA y el miércoles 11 en la provincia de Buenos Aires.',
-    source: 'Decreto DNU 1103/2026', sourceUrl: 'https://www.argentina.gob.ar/normativa/nacional/norma-430580/texto',
-  }),
-  seed({
     id: 'seed-ar-mate', title: 'Día Nacional del Mate', category: 'cultura', subcategory: 'cul-gastronomicas',
     country: 'ar', startDate: '2026-11-30', relevance: 'alta', verification: 'confirmado',
     summary: 'Instituido por la Ley 27.117 en homenaje al natalicio de Andrés Guacurarí y Artigas.',
@@ -88,37 +81,6 @@ export const SEED_EVENTS: CalendarEvent[] = [
     country: 'ar', startDate: '2026-11-22', relevance: 'media', verification: 'confirmado',
     summary: 'Se celebra en homenaje a Santa Cecilia, patrona de los músicos.',
     source: 'Ministerio de Cultura de la Nación', sourceUrl: 'https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/',
-  }),
-  seed({
-    id: 'seed-ar-laplata', title: 'Aniversario de La Plata', category: 'efemerides', subcategory: 'efe-aniversarios',
-    country: 'ar', region: 'ar-ba', city: 'ar-ba-laplata', startDate: '2026-11-19', relevance: 'media', verification: 'confirmado',
-    summary: 'El 19 de noviembre de 1882 se colocó la piedra fundamental en la actual Plaza Moreno.',
-    source: 'Municipalidad de La Plata', sourceUrl: 'https://www.cultura.laplata.gob.ar/efemerides/piedra-fundamental',
-  }),
-  seed({
-    id: 'seed-ar-bahiablanca', title: 'Aniversario de Bahía Blanca', category: 'efemerides', subcategory: 'efe-aniversarios',
-    country: 'ar', region: 'ar-ba', city: 'ar-ba-bahiablanca', startDate: '2026-04-11', relevance: 'media', verification: 'confirmado',
-    summary: 'Fundada el 11 de abril de 1828 como Fortaleza Protectora Argentina.',
-    source: 'Gobierno de la Nación (Monumentos)', sourceUrl: 'https://www.argentina.gob.ar/cultura/monumentos/plaza-rivadavia-antigua-fortaleza-protectora-argentina',
-  }),
-  seed({
-    id: 'seed-ar-corrientes', title: 'Aniversario de la ciudad de Corrientes', category: 'efemerides', subcategory: 'efe-aniversarios',
-    country: 'ar', region: 'ar-ctes', startDate: '2026-04-03', relevance: 'media', verification: 'confirmado',
-    summary: 'Fundada el 3 de abril de 1588 por Juan Torres de Vera y Aragón.',
-    source: 'Municipalidad de Corrientes', sourceUrl: 'https://ciudaddecorrientes.gov.ar/la-ciudad/fundaci-n-de-la-ciudad-de-corrientes',
-  }),
-  seed({
-    id: 'seed-ar-mendoza', title: 'Aniversario de la ciudad de Mendoza', category: 'efemerides', subcategory: 'efe-aniversarios',
-    country: 'ar', region: 'ar-mza', startDate: '2026-03-02', relevance: 'media', verification: 'confirmado',
-    summary: 'Fundada el 2 de marzo de 1561 por Pedro del Castillo.',
-    source: 'Municipalidad de la Ciudad de Mendoza', sourceUrl: 'https://prensa.ciudaddemendoza.gob.ar/2026/03/02/ulpiano-suarez-encabezo-el-acto-por-los-465-anos-de-la-ciudad-de-mendoza/',
-  }),
-  seed({
-    id: 'seed-ar-sanguche-milanesa', title: 'Día del Sánguche de Milanesa (Tucumán)', category: 'cultura', subcategory: 'cul-gastronomicas',
-    country: 'ar', region: 'ar-tuc', startDate: '2026-03-18', relevance: 'media', verification: 'confirmado',
-    summary: 'Recuerda a José Norberto Leguizamón, dueño de la sanguchería "Chacho", fallecido en 2010.',
-    contentIdeas: ['Curiosidades gastronómicas de Tucumán.'],
-    source: 'Ente Tucumán Turismo', sourceUrl: 'https://www.tucumanturismo.gob.ar/articulos/articulo/153/sanguche-de-milanesa',
   }),
   seed({
     id: 'seed-ar-noche-museos-2026', title: 'La Noche de los Museos 2026', category: 'entretenimiento', subcategory: 'ent-noches-tematicas',
@@ -174,12 +136,6 @@ export const SEED_EVENTS: CalendarEvent[] = [
     summary: '16.ª edición, de viernes a martes, con cobertura nacional.',
     source: 'Reglas de Operación 2026 (elbuenfin.org)', sourceUrl: 'https://www.elbuenfin.org/assets/documents/REGLAS_DE_OPERACION_BUEN_FIN.pdf',
   }),
-  seed({
-    id: 'seed-mx-calaveras-2026', title: 'Festival Cultural de Calaveras 2026', category: 'cultura', subcategory: 'cul-festivales-folkloricos',
-    country: 'mx', region: 'mx-ags', startDate: '2026-10-30', endDate: '2026-11-08', recurrence: once, relevance: 'alta', verification: 'confirmado',
-    summary: 'Del 30/10 al 8/11 en Aguascalientes; abre con el Desfile de Calaveras.',
-    source: 'Gobierno de Aguascalientes', sourceUrl: 'https://informacion.aguascalientes.gob.mx/news/%C2%A1todo-listo-para-el-festival-cultural-de-calaveras-2026',
-  }),
 
   /* ───────── Ecuador ───────── */
   seed({
@@ -223,18 +179,11 @@ export const SEED_EVENTS: CalendarEvent[] = [
         summary: 'Fiesta laboral de ámbito nacional. En 2026 fue el 3 de abril; varía cada año con la Pascua.' }),
       seed({ ...base, id: 'seed-es-trabajo', title: 'Fiesta del Trabajo (España)', category: 'efemerides', subcategory: 'efe-internacionales',
         startDate: '2026-05-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-asuncion', title: 'Asunción de la Virgen', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
-        startDate: '2026-08-15', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.' }),
       seed({ ...base, id: 'seed-es-fiesta-nacional', title: 'Fiesta Nacional de España', category: 'efemerides', subcategory: 'efe-nacionales',
         startDate: '2026-10-12', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-todos-los-santos', title: 'Todos los Santos (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
-        startDate: '2026-11-01', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.',
-        holidayObservances: [{ year: 2026, date: '2026-11-02', note: 'Cae en domingo: descanso el lunes 2/11 en varias comunidades (Andalucía, Aragón, Asturias, Canarias, Castilla-La Mancha, Castilla y León, Extremadura, Madrid y Navarra, según el anexo del BOE; verificar la de cada comunidad).' }] }),
       seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', category: 'efemerides', subcategory: 'efe-nacionales',
         startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.',
         holidayObservances: [{ year: 2026, date: '2026-12-07', note: 'Cae en domingo: descanso el lunes 7/12 en varias comunidades (Andalucía, Aragón, Asturias, Cantabria, Castilla y León, Extremadura, Madrid, Murcia, La Rioja y Melilla, según el anexo del BOE; verificar la de cada comunidad).' }] }),
-      seed({ ...base, id: 'seed-es-inmaculada', title: 'Inmaculada Concepción', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
-        startDate: '2026-12-08', relevance: 'baja', summary: 'Fiesta laboral de ámbito nacional.' }),
       seed({ ...base, id: 'seed-es-navidad', title: 'Natividad del Señor (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
         startDate: '2026-12-25', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
     ];

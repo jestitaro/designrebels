@@ -1,6 +1,5 @@
 import { useId, useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
-import { RELEVANCE_META, VERIFICATION_META } from '../../components/domain/meta';
 import { Button } from '../../components/ui/Button';
 import { RemovableChip } from '../../components/ui/Chip';
 import { BottomSheet, Modal } from '../../components/ui/Dialog';
@@ -9,9 +8,8 @@ import type { Catalog } from '../../hooks/useData';
 import { useIsDesktop } from '../../hooks/useTheme';
 import { countActiveFilters, EMPTY_FILTERS, type EventFilters } from '../../lib/filters';
 import { cn } from '../../lib/cn';
-import type { Relevance, Verification } from '../../types';
 
-type ArrayKey = 'countries' | 'regions' | 'categories' | 'relevance' | 'verification';
+type ArrayKey = 'countries' | 'categories';
 
 function toggle<T>(list: T[], value: T): T[] {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
@@ -67,8 +65,6 @@ export function FiltersButton({ filters, onChange, catalog, resultCount, showGre
   const set = (key: ArrayKey, value: string) => onChange({ ...filters, [key]: toggle(filters[key] as string[], value) });
 
   const countries = catalog.countries.filter((c) => c.active || filters.countries.includes(c.id));
-  const regionSource = filters.countries.length ? countries.filter((c) => filters.countries.includes(c.id)) : countries;
-  const regions = regionSource.flatMap((c) => c.regions.filter((r) => r.active || filters.regions.includes(r.id)).map((r) => ({ ...r, country: c.name })));
 
   const body = (
     <div className="flex flex-col gap-5">
@@ -77,27 +73,10 @@ export function FiltersButton({ filters, onChange, catalog, resultCount, showGre
           <Checkbox key={c.id} label={c.name} checked={filters.countries.includes(c.id)} onChange={() => set('countries', c.id)} />
         ))}
       </Group>
-      {regions.length > 0 && (
-        <Group title="Región">
-          {regions.map((r) => (
-            <Checkbox key={r.id} label={r.name} description={r.country} checked={filters.regions.includes(r.id)} onChange={() => set('regions', r.id)} />
-          ))}
-        </Group>
-      )}
       <Group title="Categoría">
         {catalog.categories.map((c) => (
           <Checkbox key={c.id} label={c.name} description={c.visible ? undefined : 'Oculta en Configuración'}
             checked={filters.categories.includes(c.id)} onChange={() => set('categories', c.id)} />
-        ))}
-      </Group>
-      <Group title="Relevancia">
-        {(Object.keys(RELEVANCE_META) as Relevance[]).map((r) => (
-          <Checkbox key={r} label={RELEVANCE_META[r].label} description={RELEVANCE_META[r].help} checked={filters.relevance.includes(r)} onChange={() => set('relevance', r)} />
-        ))}
-      </Group>
-      <Group title="Verificación">
-        {(Object.keys(VERIFICATION_META) as Verification[]).map((v) => (
-          <Checkbox key={v} label={VERIFICATION_META[v].label} checked={filters.verification.includes(v)} onChange={() => set('verification', v)} />
         ))}
       </Group>
       {showGreetingFilter && (
@@ -154,12 +133,9 @@ export function ActiveFilterChips({ filters, onChange, catalog, className }: {
   filters: EventFilters; onChange: (f: EventFilters) => void; catalog: Catalog; className?: string;
 }) {
   const chips: Array<{ key: string; label: string; remove: () => void }> = [];
-  const without = (key: ArrayKey, value: string) => () => onChange({ ...filters, [key]: (filters[key] as string[]).filter((v) => v !== value) });
+  const without = (key: ArrayKey, value: string) => () => onChange({ ...filters, [key]: (filters[key] ?? []).filter((v) => v !== value) });
   filters.countries.forEach((id) => chips.push({ key: `c-${id}`, label: catalog.placeName(id) ?? id, remove: without('countries', id) }));
-  filters.regions.forEach((id) => chips.push({ key: `r-${id}`, label: catalog.placeName(id) ?? id, remove: without('regions', id) }));
   filters.categories.forEach((id) => chips.push({ key: `k-${id}`, label: catalog.categoryById.get(id)?.name ?? id, remove: without('categories', id) }));
-  filters.relevance.forEach((r) => chips.push({ key: `rel-${r}`, label: `Relevancia ${RELEVANCE_META[r].label.toLowerCase()}`, remove: without('relevance', r) }));
-  filters.verification.forEach((v) => chips.push({ key: `v-${v}`, label: VERIFICATION_META[v].label, remove: without('verification', v) }));
   if (filters.greeting !== 'todos') chips.push({ key: 'g', label: filters.greeting === 'con' ? 'Con saludo' : 'Sin saludo', remove: () => onChange({ ...filters, greeting: 'todos' }) });
   if (filters.favoritesOnly) chips.push({ key: 'fav', label: 'Favoritos', remove: () => onChange({ ...filters, favoritesOnly: false }) });
   if (filters.showArchived) chips.push({ key: 'arch', label: 'Incluye archivados', remove: () => onChange({ ...filters, showArchived: false }) });

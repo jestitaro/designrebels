@@ -4,7 +4,6 @@ import { capitalize, formatDayMonth, parseISO, weekDays, WEEKDAYS } from '../../
 import { cn } from '../../lib/cn';
 import type { GreetingStatus, ISODate, Occurrence } from '../../types';
 import { GREETING_STATUS_META } from '../../components/domain/greetingMeta';
-import { RELEVANCE_META } from '../../components/domain/meta';
 
 interface WeekViewProps {
   anchor: ISODate;
@@ -55,7 +54,6 @@ export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay,
               {occs.length === 0 && <li className="px-1 text-xs text-subtle">Sin eventos</li>}
               {occs.map((o) => {
                 const cat = catalog.categoryById.get(o.event.category);
-                const Rel = RELEVANCE_META[o.event.relevance].icon;
                 return (
                   <li key={o.key}>
                     <button
@@ -69,9 +67,7 @@ export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay,
                     >
                       <span className="text-[13px] leading-snug font-medium">{o.event.title}</span>
                       <span className="flex items-center gap-1 text-[11px] opacity-90">
-                        <Rel aria-hidden className="size-3" />
-                        <span>{RELEVANCE_META[o.event.relevance].label}</span>
-                        {o.start !== o.end && <span>· {formatDayMonth(o.start)}–{formatDayMonth(o.end)}</span>}
+                        {o.start !== o.end && <span>{formatDayMonth(o.start)}–{formatDayMonth(o.end)}</span>}
                         {(() => {
                           const st = greetingStatus?.(o.event.id);
                           if (!st) return null;

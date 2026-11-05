@@ -74,28 +74,19 @@ export interface CalendarEvent {
   updatedAt: string;
 }
 
-export type Tone = 'institucional' | 'cercano' | 'divertido' | 'humor-interno';
-export type GreetingStatus = 'sin redactar' | 'borrador' | 'listo' | 'compartido' | 'descartado';
-
-export interface GreetingVersion {
-  id: string;
-  body: string;
-  status: GreetingStatus;
-  savedAt: string;
-  reason: 'manual' | 'cambio de estado' | 'restauración';
-}
+export type GreetingStatus = 'pendiente' | 'listo' | 'compartido';
 
 export interface Greeting {
   id: string;
   eventId: string;
+  /** Se arma solo: "<evento> <año>". */
   internalTitle: string;
   body: string;
-  tone: Tone;
-  channel: string;
+  /** Link a la imagen del saludo, guardada afuera (Drive, Canva…). */
+  imageUrl?: string;
+  /** Fecha de la ocurrencia del evento a la que corresponde. */
   plannedDate?: ISODate;
   status: GreetingStatus;
-  privateNotes: string;
-  versions: GreetingVersion[];
   createdAt: string;
   updatedAt: string;
 }

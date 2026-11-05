@@ -25,18 +25,19 @@ export interface SeedMergeResult {
   updated: number;
   keptLocal: number;
   skippedDeleted: number;
+  removed: number;
 }
 
 /**
- * Mergea el catálogo inicial por ID sin pisar ediciones locales:
+ * Mergea el catálogo inicial por ID sin pisar ediciones locales (y saca las fechas que salieron del catálogo si no las tocaste):
  * - Si no existe localmente → se agrega (salvo que el usuario lo haya eliminado).
  * - Si existe y el usuario no lo editó → se actualiza con la versión nueva,
  *   conservando favorito/archivado/estado editorial.
  * - Si el usuario lo editó → se respeta la versión local.
  */
 export async function mergeSeed(seed: CalendarEvent[], seedVersion: number): Promise<SeedMergeResult> {
-  const result: SeedMergeResult = { added: 0, updated: 0, keptLocal: 0, skippedDeleted: 0 };
-  await db.transaction('rw', [db.events, db.meta], async () => {
+  const result: SeedMergeResult = { added: 0, updated: 0, keptLocal: 0, skippedDeleted: 0, removed: 0 };
+  await db.transaction('rw', [db.events, db.meta, db.greetings], async () => {
     const current = (await db.meta.get(SEED_VERSION_KEY))?.value as number | undefined;
     if (current !== undefined && current >= seedVersion) return;
     const deleted = new Set(((await db.meta.get(DELETED_SEEDS_KEY))?.value as string[] | undefined) ?? []);
@@ -63,6 +64,16 @@ export async function mergeSeed(seed: CalendarEvent[], seedVersion: number): Pro
         });
         result.updated++;
       }
+    }
+    // Fechas que salieron del catálogo: se borran solo si no las editaste ni tienen saludos.
+    if (current !== undefined) {
+      const ids = new Set(seed.map((e) => e.id));
+      const withGreetings = new Set((await db.greetings.toArray()).map((g) => g.eventId));
+      const obsolete = (await db.events.where('provenance').equals('seed').toArray()).filter(
+        (e) => !ids.has(e.id) && !e.userModified && !withGreetings.has(e.id),
+      );
+      await db.events.bulkDelete(obsolete.map((e) => e.id));
+      result.removed = obsolete.length;
     }
     await db.meta.put({ key: SEED_VERSION_KEY, value: seedVersion });
   });

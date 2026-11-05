@@ -173,7 +173,6 @@ export function CalendarPage() {
               onBack={() => setOpenEvent(null)}
               backLabel={`Volver a ${formatLong(selected, false)}`}
               onDeleted={() => setOpenEvent(null)}
-              onDuplicated={(c) => setOpenEvent({ id: c.id, date: c.startDate })}
             />
           ) : (
             <DayAgenda

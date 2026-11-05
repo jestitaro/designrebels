@@ -10,8 +10,7 @@ const viejo = makeEvent({ id: 'viejo', title: 'Archivado', country: 'ar', archiv
 const all = [mate, muertos, ux, viejo];
 
 const greeting = (eventId: string, status: Greeting['status']): Greeting => ({
-  id: `g-${eventId}`, eventId, internalTitle: '', body: '', tone: 'cercano', channel: '', status, privateNotes: '',
-  versions: [], createdAt: '', updatedAt: '',
+  id: `g-${eventId}`, eventId, internalTitle: '', body: '', status, createdAt: '', updatedAt: '',
 });
 
 const ids = (list: { id: string }[]) => list.map((e) => e.id);
@@ -28,15 +27,14 @@ describe('filtros combinados', () => {
   });
 
   it('combina grupos con AND y valores con OR', () => {
-    const f = { ...EMPTY_FILTERS, countries: ['ar', 'mx'], categories: ['cultura'], relevance: ['alta' as const] };
+    const f = { ...EMPTY_FILTERS, countries: ['ar', 'mx'], categories: ['cultura'] };
     expect(ids(applyFilters(all, f))).toEqual(['mate', 'muertos']);
-    expect(ids(applyFilters(all, { ...f, verification: ['confirmado'] }))).toEqual(['mate']);
-    expect(ids(applyFilters(all, { ...f, regions: ['ar-ctes'] }))).toEqual(['mate']);
+    expect(ids(applyFilters(all, { ...f, countries: ['mx'] }))).toEqual(['muertos']);
     expect(ids(applyFilters(all, { ...f, favoritesOnly: true }))).toEqual(['mate']);
   });
 
-  it('filtra por con/sin saludo (los descartados no cuentan)', () => {
-    const map = greetingsByEvent([greeting('mate', 'borrador'), greeting('ux', 'descartado')]);
+  it('filtra por con/sin saludo', () => {
+    const map = greetingsByEvent([greeting('mate', 'pendiente')]);
     expect(ids(applyFilters(all, { ...EMPTY_FILTERS, greeting: 'con' }, map))).toEqual(['mate']);
     expect(ids(applyFilters(all, { ...EMPTY_FILTERS, greeting: 'sin' }, map))).toEqual(['muertos', 'ux']);
   });
@@ -50,5 +48,7 @@ describe('filtros combinados', () => {
   it('cuenta filtros activos', () => {
     expect(countActiveFilters(EMPTY_FILTERS)).toBe(0);
     expect(countActiveFilters({ ...EMPTY_FILTERS, countries: ['ar', 'mx'], favoritesOnly: true })).toBe(3);
+    // Filtros guardados de la versión anterior no rompen nada.
+    expect(ids(applyFilters(all, { query: '', showArchived: false } as never))).toEqual(['mate', 'muertos', 'ux']);
   });
 });

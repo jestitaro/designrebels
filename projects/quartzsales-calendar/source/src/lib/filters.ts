@@ -1,13 +1,10 @@
-import type { CalendarEvent, Greeting, GreetingStatus, Relevance, Verification } from '../types';
+import type { CalendarEvent, Greeting } from '../types';
 import { normalizeText } from './text';
 
 export interface EventFilters {
   query: string;
   countries: string[];
-  regions: string[];
   categories: string[];
-  relevance: Relevance[];
-  verification: Verification[];
   greeting: 'todos' | 'con' | 'sin';
   favoritesOnly: boolean;
   showArchived: boolean;
@@ -16,17 +13,12 @@ export interface EventFilters {
 export const EMPTY_FILTERS: EventFilters = {
   query: '',
   countries: [],
-  regions: [],
   categories: [],
-  relevance: [],
-  verification: [],
   greeting: 'todos',
   favoritesOnly: false,
   showArchived: false,
 };
 
-/** Estados de saludo que cuentan como "tiene saludo". Descartado no cuenta. */
-const ACTIVE_GREETING: GreetingStatus[] = ['sin redactar', 'borrador', 'listo', 'compartido'];
 
 export function greetingsByEvent(greetings: Greeting[]): Map<string, Greeting[]> {
   const map = new Map<string, Greeting[]>();
@@ -39,7 +31,7 @@ export function greetingsByEvent(greetings: Greeting[]): Map<string, Greeting[]>
 }
 
 export function hasActiveGreeting(list: Greeting[] | undefined): boolean {
-  return !!list?.some((g) => ACTIVE_GREETING.includes(g.status));
+  return !!list?.length;
 }
 
 export function matchesQuery(event: CalendarEvent, query: string): boolean {
@@ -49,7 +41,7 @@ export function matchesQuery(event: CalendarEvent, query: string): boolean {
   return q.split(' ').every((word) => haystack.includes(word));
 }
 
-/** Aplica todos los filtros combinados (AND entre grupos, OR dentro de cada grupo). */
+/** Aplica todos los filtros combinados (AND entre grupos, OR dentro de cada grupo). Tolera filtros guardados de versiones anteriores. */
 export function applyFilters(
   events: CalendarEvent[],
   filters: EventFilters,
@@ -58,13 +50,10 @@ export function applyFilters(
 ): CalendarEvent[] {
   return events.filter((e) => {
     if (!filters.showArchived && e.archived) return false;
-    if (hiddenCategories.has(e.category) && !filters.categories.includes(e.category)) return false;
+    if (hiddenCategories.has(e.category) && !filters.categories?.includes(e.category)) return false;
     if (filters.favoritesOnly && !e.favorite) return false;
-    if (filters.countries.length && !filters.countries.includes(e.country)) return false;
-    if (filters.regions.length && !(e.region && filters.regions.includes(e.region))) return false;
-    if (filters.categories.length && !filters.categories.includes(e.category)) return false;
-    if (filters.relevance.length && !filters.relevance.includes(e.relevance)) return false;
-    if (filters.verification.length && !filters.verification.includes(e.verification)) return false;
+    if (filters.countries?.length && !filters.countries.includes(e.country)) return false;
+    if (filters.categories?.length && !filters.categories.includes(e.category)) return false;
     if (filters.greeting !== 'todos') {
       const has = hasActiveGreeting(greetingsMap.get(e.id));
       if (filters.greeting === 'con' ? !has : has) return false;
@@ -75,7 +64,7 @@ export function applyFilters(
 
 export function countActiveFilters(f: EventFilters): number {
   return (
-    f.countries.length + f.regions.length + f.categories.length + f.relevance.length + f.verification.length +
+    f.countries.length + f.categories.length +
     (f.greeting !== 'todos' ? 1 : 0) + (f.favoritesOnly ? 1 : 0) + (f.showArchived ? 1 : 0)
   );
 }

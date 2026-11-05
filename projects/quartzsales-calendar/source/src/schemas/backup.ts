@@ -6,20 +6,9 @@ const greetingSchema = z.object({
   eventId: z.string().min(1),
   internalTitle: z.string(),
   body: z.string(),
-  tone: z.enum(['institucional', 'cercano', 'divertido', 'humor-interno']),
-  channel: z.string(),
+  imageUrl: z.string().optional(),
   plannedDate: z.string().optional(),
-  status: z.enum(['sin redactar', 'borrador', 'listo', 'compartido', 'descartado']),
-  privateNotes: z.string(),
-  versions: z.array(
-    z.object({
-      id: z.string(),
-      body: z.string(),
-      status: z.enum(['sin redactar', 'borrador', 'listo', 'compartido', 'descartado']),
-      savedAt: z.string(),
-      reason: z.enum(['manual', 'cambio de estado', 'restauración']),
-    }),
-  ),
+  status: z.enum(['pendiente', 'listo', 'compartido']),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

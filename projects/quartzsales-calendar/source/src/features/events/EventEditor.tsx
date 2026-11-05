@@ -99,7 +99,7 @@ export function EventEditorProvider({ children }: { children: ReactNode }) {
     <EditorContext.Provider value={api}>
       {children}
       {isDesktop ? (
-        <Modal open={open} onClose={requestClose} title={title} description={description} size="lg" footer={footer}>
+        <Modal open={open} onClose={requestClose} title={title} description={description} size="md" footer={footer}>
           {body}
         </Modal>
       ) : (

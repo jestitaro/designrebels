@@ -4,7 +4,7 @@ import { capitalize, formatDayMonth, formatLong } from '../../lib/dates';
 import { cn } from '../../lib/cn';
 import type { Greeting, ISODate, Occurrence } from '../../types';
 import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
-import { CategoryBadge, RelevanceBadge, VerificationBadge } from '../../components/domain/Badges';
+import { CategoryBadge } from '../../components/domain/Badges';
 import { EmptyState } from '../../components/ui/EmptyState';
 import type { ReactNode } from 'react';
 
@@ -61,7 +61,6 @@ function AgendaItem({ occ, catalog, onOpen, greetings, showGreeting }: { occ: Oc
           <span className="min-w-0 flex-1 font-medium text-text">{event.title}</span>
           {onOpen && <ChevronRight aria-hidden className="mt-0.5 size-4 shrink-0 text-subtle" />}
         </span>
-        {event.summary && <span className="line-clamp-2 text-[13px] text-muted">{event.summary}</span>}
         <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
           <span className="inline-flex items-center gap-1">
             <MapPin aria-hidden className="size-3.5" />
@@ -77,8 +76,6 @@ function AgendaItem({ occ, catalog, onOpen, greetings, showGreeting }: { occ: Oc
         </span>
         <span className="flex flex-wrap gap-1.5">
           <CategoryBadge category={category} />
-          <RelevanceBadge relevance={event.relevance} compact />
-          <VerificationBadge verification={event.verification} />
           {showGreeting && <EventGreetingBadge greetings={greetings} />}
         </span>
       </span>

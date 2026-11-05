@@ -113,10 +113,10 @@ describe('CSV', () => {
   });
 
   it('exporta y vuelve a importar eventos', async () => {
-    const e = makeEvent({ title: 'Día, "raro"', category: 'cultura', country: 'ar', region: 'ar-ba', city: 'ar-ba-laplata', contentIdeas: ['a', 'b'], description: 'Línea 1\nLínea 2' });
+    const e = makeEvent({ title: 'Día, "raro"', category: 'cultura', country: 'ar', imageUrl: 'https://drive.example/a', endDate: '2026-11-12' });
     const r = parseEventsCsv(parseCsv(toCsv(eventsToCsv([e], catalog))), catalog, []);
     expect(r.rows[0]?.errors).toEqual([]);
-    expect(r.rows[0]?.content).toMatchObject({ title: e.title, region: 'ar-ba', city: 'ar-ba-laplata', contentIdeas: ['a', 'b'], description: 'Línea 1\nLínea 2', startDate: e.startDate });
+    expect(r.rows[0]?.content).toMatchObject({ title: e.title, category: 'cultura', country: 'ar', imageUrl: e.imageUrl, startDate: e.startDate, endDate: e.endDate });
   });
 });
 

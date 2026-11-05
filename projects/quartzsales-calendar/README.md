@@ -93,6 +93,14 @@ Si aun así ves una versión vieja: cerrá todas las pestañas de la app y abril
 
 ---
 
+## Qué guarda cada cosa
+
+- **Fecha:** nombre, categoría, país, cuándo (todos los años, solo una vez o una regla como "4.º jueves de noviembre" o "según Pascua") y un link de imagen opcional.
+- **Saludo:** el texto, un link de imagen y el estado (pendiente, listo o compartido). "Copiar mensaje" lo copia para pegarlo donde quieras.
+- **Imágenes:** la app no genera ni guarda imágenes, solo el link. Pedile la imagen a Claude en el chat, guardala en Drive, Canva o donde prefieras y pegá el link en la fecha o en el saludo.
+
+---
+
 ## Respaldos
 
 Tus datos viven **solo en el navegador y el dispositivo donde los cargaste**. No hay nube ni sincronización.
@@ -122,30 +130,23 @@ Tus datos viven **solo en el navegador y el dispositivo donde los cargaste**. No
 
 El catálogo inicial viaja en el código (`source/src/data/seed.ts`). Al publicar una versión con el seed actualizado, la app lo **mergea por ID sin pisar tus ediciones**: los eventos que editaste conservan tu versión, los que borraste no vuelven y los que no tocaste se actualizan.
 
-Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respaldado por una fuente oficial (gobierno, boletín oficial, municipio u organizador). Desde el entorno de desarrollo no se pudieron abrir directamente algunos sitios oficiales, así que la verificación se hizo con búsquedas limitadas a esos dominios.
+Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la app ya no las muestra. Solo se marcó como *confirmado* lo respaldado por una fuente oficial (gobierno, boletín oficial, municipio u organizador). Desde el entorno de desarrollo no se pudieron abrir directamente algunos sitios oficiales, así que la verificación se hizo con búsquedas limitadas a esos dominios.
 
-### Confirmados (35)
+### Confirmados (25)
 
 | Evento | Fecha | Fuente |
 |---|---|---|
 | Día de la Tradición | 10/11 | [Ministerio de Cultura](https://www.cultura.gob.ar/por-que-se-celebra-el-dia-de-la-tradicion-en-argentina-8528/) |
 | Día de la Soberanía Nacional | 20/11 (feriado trasladado 23/11/2026*) | [Ley 27.399](https://www.argentina.gob.ar/normativa/nacional/norma-281835/texto) |
-| Feriado por la visita del papa León XIV | 09/11/2026 | [Decreto DNU 1103/2026](https://www.argentina.gob.ar/normativa/nacional/norma-430580/texto) |
 | Día Nacional del Mate | 30/11 | [Ley 27.117](https://www.argentina.gob.ar/normativa/nacional/ley-27117-241355/texto) |
 | Día del Vino Argentino Bebida Nacional | 24/11 | [argentina.gob.ar](https://www.argentina.gob.ar/noticias/vino-argentino-bebida-nacional) |
 | Día de la Música | 22/11 | [Ministerio de Cultura](https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/) |
-| Aniversario de La Plata | 19/11 | [Municipalidad de La Plata](https://www.cultura.laplata.gob.ar/efemerides/piedra-fundamental) |
-| Aniversario de Bahía Blanca | 11/04 | [argentina.gob.ar](https://www.argentina.gob.ar/cultura/monumentos/plaza-rivadavia-antigua-fortaleza-protectora-argentina) |
-| Aniversario de Corrientes | 03/04 | [Municipalidad de Corrientes](https://ciudaddecorrientes.gov.ar/la-ciudad/fundaci-n-de-la-ciudad-de-corrientes) |
-| Aniversario de Mendoza | 02/03 | [Ciudad de Mendoza](https://prensa.ciudaddemendoza.gob.ar/2026/03/02/ulpiano-suarez-encabezo-el-acto-por-los-465-anos-de-la-ciudad-de-mendoza/) |
-| Día del Sánguche de Milanesa (Tucumán) | 18/03 | [Ente Tucumán Turismo](https://www.tucumanturismo.gob.ar/articulos/articulo/153/sanguche-de-milanesa) |
 | La Noche de los Museos 2026 | 14/11/2026 | [Turismo Buenos Aires](https://turismo.buenosaires.gob.ar/es/article/la-noche-de-los-museos) |
 | Día de Muertos | 01–02/11 | [Secretaría de Cultura (gob.mx)](https://www.gob.mx/cultura/prensa/mexico-se-prepara-para-celebrar-a-sus-muertos) |
 | Aniversario de la Revolución Mexicana | 20/11 (descanso 16/11/2026) | [PROFEDET](https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026) |
 | Día Nacional del Libro (México) | 12/11 | [DOF 1979](https://dof.gob.mx/nota_detalle.php?codigo=4842539&fecha=06/11/1979) |
 | Día Nacional de la Gastronomía Mexicana | 16/11 | [DOF 2016](https://www.dof.gob.mx/nota_detalle.php?codigo=5456816&fecha=14%2F10%2F2016) |
 | El Buen Fin 2026 | 13–17/11/2026 | [Reglas de Operación 2026](https://www.elbuenfin.org/assets/documents/REGLAS_DE_OPERACION_BUEN_FIN.pdf) |
-| Festival Cultural de Calaveras 2026 (Aguascalientes) | 30/10–08/11/2026 | [Gobierno de Aguascalientes](https://informacion.aguascalientes.gob.mx/news/%C2%A1todo-listo-para-el-festival-cultural-de-calaveras-2026) |
 | Día de los Difuntos (Ecuador) | 02/11 | [Registro Civil](https://www.registrocivil.gob.ec/gobierno-del-ecuador-garantiza-la-atencion-del-registro-civil-durante-el-feriado-por-el-dia-de-los-difuntos-y-la-independencia-de-cuenca) |
 | Independencia de Cuenca | 03/11 | [Alcaldía de Cuenca](https://www.cuenca.gob.ec/content/cuenca-tendra-mas-de-300-eventos-en-sus-fiestas-de-independencia-gracias-al-apoyo-de-la) |
 | Festival Internacional de Artes Vivas de Loja 2026 | 12–22/11/2026 | [Municipio de Loja](https://www.loja.gob.ec/noticia/2026-10/presentaron-programacion-del-festival-de-artes-vivas-2026) |
@@ -153,10 +154,10 @@ Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respa
 | Día Mundial de la Usabilidad | 2.º jueves de noviembre | [World Usability Day](https://worldusabilityday.org/) |
 | Día Internacional de la Gestión de Proyectos | 1.er jueves de noviembre | [IIL](https://www.iil.com/international-project-management-day/frequently-asked-questions/) |
 | Día Internacional del Diseño | 27/04 | [ICoD](https://www.theicod.org/activities/international-design-day) |
-| España: Año Nuevo, Epifanía (Reyes), Viernes Santo**, Fiesta del Trabajo, Asunción, Fiesta Nacional, Todos los Santos***, Constitución***, Inmaculada y Navidad | 01/01, 06/01, Pascua −2, 01/05, 15/08, 12/10, 01/11, 06/12, 08/12, 25/12 | [BOE-A-2025-21667](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667) |
+| España: Año Nuevo, Epifanía (Reyes), Viernes Santo**, Fiesta del Trabajo, Fiesta Nacional, Constitución*** y Navidad | 01/01, 06/01, Pascua −2, 01/05, 12/10, 06/12, 25/12 | [BOE-A-2025-21667](https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667) |
 
 \*\* Viernes Santo usa la regla "según Pascua" (en 2026, 3/04; en 2027, 26/03).
-\*\*\* En 2026 caen domingo: varias comunidades descansan el lunes siguiente (2/11 y 7/12). Está cargado como feriado trasladado con la lista de comunidades del anexo del BOE, a verificar por comunidad. Las fiestas propias de cada comunidad autónoma no están cargadas.
+\*\*\* En 2026 cae domingo: varias comunidades descansan el lunes 7/12. Está cargado como feriado trasladado con la lista de comunidades del anexo del BOE, a verificar por comunidad. Las fiestas propias de cada comunidad autónoma no están cargadas.
 
 \* El traslado al 23/11 figura en el calendario oficial de días inhábiles del Tribunal Fiscal de la Nación. Está cargado como feriado trasladado con la nota de confirmar la norma.
 
@@ -167,6 +168,10 @@ Verificación hecha el **03/11/2026**. Solo se marcó como *confirmado* lo respa
 | La Noche de las Heladerías 2026 (18/11) | La fecha solo apareció en medios. Confirmar en los canales de AFADHYA. |
 | CyberMonday 2026 Argentina (02–04/11) | Fechas de medios. Confirmar en cybermonday.com.ar (CACE). |
 | Black Friday (día siguiente al 4.º jueves de noviembre) | Es una fecha comercial por convención: no hay un organismo oficial que la publique. |
+
+### Sacados para simplificar
+
+Aniversarios de ciudades (La Plata, Bahía Blanca, Corrientes, Mendoza), Día del Sánguche de Milanesa, feriado por la visita de León XIV y Festival de Calaveras (ya pasaron), y en España Asunción, Todos los Santos e Inmaculada. Al actualizar, la app los saca de tu calendario salvo que los hayas editado o tengan un saludo.
 
 ### No incluidos
 
