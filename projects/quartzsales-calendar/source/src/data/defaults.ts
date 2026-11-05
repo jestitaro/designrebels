@@ -37,7 +37,11 @@ export const DEFAULT_CATEGORIES: Category[] = [
     subcategories: sub('com', ['CyberMonday', 'Black Friday', 'El Buen Fin', 'Retail', 'Trade marketing', 'E-commerce']),
   },
   {
-    id: 'quartzsales', name: 'QuartzSales', color: 'brand', visible: true, order: 6,
+    id: 'feriados', name: 'Feriados', color: 'slate', visible: true, order: 6,
+    subcategories: [],
+  },
+  {
+    id: 'quartzsales', name: 'QuartzSales', color: 'brand', visible: true, order: 7,
     subcategories: sub('qs', ['Eventos internos', 'Aniversarios de producto', 'Lanzamientos', 'Actividades del equipo']),
   },
 ];

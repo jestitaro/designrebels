@@ -138,7 +138,11 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
           )}
         </Block>
 
-        <Block title="Lugar" icon={MapPin}>{placeLabel(event, catalog)}</Block>
+        <Block title="Lugar" icon={MapPin}>
+          {placeLabel(event, catalog)}
+          {event.isHoliday && <span className="ml-2 rounded-xs bg-warning-bg px-1.5 py-0.5 font-data text-[11px] font-bold text-warning">Feriado</span>}
+          {event.areas?.length ? <p className="text-muted">Para: {event.areas.join(', ')}</p> : null}
+        </Block>
 
         {event.imageUrl && (
           <Block title="Imagen" icon={ImageIcon}>

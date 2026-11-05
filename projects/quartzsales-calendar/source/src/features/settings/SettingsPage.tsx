@@ -17,6 +17,7 @@ import { useDataTransfer } from '../data/useDataTransfer';
 import { useIcsExport } from '../reminders/useIcsExport';
 import { CategoriesEditor } from './CategoriesEditor';
 import { PlacesEditor } from './PlacesEditor';
+import { TeamEditor } from '../team/TeamEditor';
 
 function Section({ id, title, description, children }: { id: string; title: string; description?: ReactNode; children: ReactNode }) {
   return (
@@ -93,6 +94,12 @@ export function SettingsPage() {
           </div>
           <p className="mt-2 text-xs text-muted">Los recordatorios solo se ven al abrir la app: no hay notificaciones push ni con la app cerrada.</p>
         </Section>
+
+        <div id="equipo" className="scroll-mt-4">
+          <Section id="s-team" title="Equipo" description="Para saber a quién saludar en cada fecha (por país y área), quién está de feriado y quién de vacaciones.">
+            <TeamEditor />
+          </Section>
+        </div>
 
         <Section id="s-places" title="Países" description="Podés agregar, renombrar o desactivar países.">
           <PlacesEditor countries={catalog.countries} />

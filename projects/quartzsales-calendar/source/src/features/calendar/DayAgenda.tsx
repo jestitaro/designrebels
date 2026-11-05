@@ -4,6 +4,7 @@ import { capitalize, formatDayMonth, formatLong } from '../../lib/dates';
 import { cn } from '../../lib/cn';
 import type { Greeting, ISODate, Occurrence } from '../../types';
 import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
+import { TeamDay } from '../team/TeamDay';
 import { CategoryBadge } from '../../components/domain/Badges';
 import { EmptyState } from '../../components/ui/EmptyState';
 import type { ReactNode } from 'react';
@@ -45,6 +46,10 @@ export function DayAgenda({ date, today, occurrences, catalog, onOpen, emptyActi
           ))}
         </ul>
       )}
+      <div className="border-t border-border pt-3">
+        <h3 className="px-4 pb-2 text-[13px] font-extrabold lg:px-5">El equipo ese día</h3>
+        <TeamDay date={date} compact />
+      </div>
     </section>
   );
 }

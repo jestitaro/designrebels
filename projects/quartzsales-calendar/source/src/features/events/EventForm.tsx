@@ -1,5 +1,7 @@
 import { useMemo, useRef, useState, type FormEvent } from 'react';
-import { useCatalog } from '../../hooks/useData';
+import { useCatalog, usePeople } from '../../hooks/useData';
+import { DEFAULT_AREAS } from '../../lib/team';
+import { ToggleChip } from '../../components/ui/Chip';
 import { capitalize, formatDate, MONTHS, parseISO, todayISO, WEEKDAYS } from '../../lib/dates';
 import { describeRecurrence } from '../../lib/recurrence';
 import { cn } from '../../lib/cn';
@@ -19,7 +21,7 @@ type When = 'anual' | 'una-vez' | 'regla';
 
 const whenOf = (mode: DateMode): When => (mode === 'yearly-fixed' ? 'anual' : mode === 'none' ? 'una-vez' : 'regla');
 
-/** Formulario mínimo: nombre, categoría, país, fecha y link de imagen. */
+/** Formulario mínimo: nombre, categoría, país, fecha, feriado, para quiénes y link de imagen. */
 export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFormProps) {
   const catalog = useCatalog();
   const [draft, setDraft] = useState(initial);
@@ -42,6 +44,11 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
 
   const countries = catalog.countries.filter((c) => c.active || c.id === draft.country);
   const categories = catalog.categories.filter((c) => c.visible || c.id === draft.category);
+  const people = usePeople();
+  const areaOptions = useMemo(
+    () => [...new Set([...DEFAULT_AREAS, ...(people ?? []).flatMap((p) => p.roles.map((r) => r.area)), ...draft.areas])].filter(Boolean),
+    [people, draft.areas],
+  );
 
   const preview = useMemo(() => {
     const content = draftToContent(draft, year);
@@ -174,6 +181,24 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
 
         {preview && <p className="rounded bg-surface-2 px-3 py-2 text-[13px] text-muted" aria-live="polite">{preview}</p>}
       </fieldset>
+
+      <div className="flex flex-col gap-3">
+        <Checkbox label="Es feriado" description="Ese día no se trabaja en el país. Si se traslada, cuenta el día trasladado."
+          checked={draft.isHoliday} onChange={(e) => set('isHoliday', e.target.checked)} />
+        <div role="group" aria-labelledby={`${formId}-areas`} className="flex flex-col gap-1.5">
+          <p id={`${formId}-areas`} className="text-[13px] font-bold">
+            Para quiénes <span className="font-normal text-muted">· sin elegir, es para todos los del país</span>
+          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {areaOptions.map((a) => (
+              <ToggleChip key={a} selected={draft.areas.includes(a)}
+                onClick={() => set('areas', draft.areas.includes(a) ? draft.areas.filter((x) => x !== a) : [...draft.areas, a])}>
+                {a}
+              </ToggleChip>
+            ))}
+          </div>
+        </div>
+      </div>
 
       <Field label="Link de imagen" error={err('imageUrl')} hint="Opcional. Link a la imagen guardada en Drive, Canva, etc.">
         {(p) => (

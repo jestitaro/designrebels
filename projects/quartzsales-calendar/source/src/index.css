@@ -83,6 +83,9 @@
   --qs-cat-brand-fg: #5016aa;
   --qs-cat-brand-bg: #efe7fd;
   --qs-cat-brand-solid: #7025e0;
+  --qs-cat-slate-fg: #374151;
+  --qs-cat-slate-bg: #e8e8ef;
+  --qs-cat-slate-solid: #6b7280;
 
   --qs-shadow-sm: 0 1px 2px rgb(17 24 39 / 0.06);
   --qs-shadow-md: 0 4px 16px rgb(19 13 93 / 0.1);
@@ -146,6 +149,9 @@
   --qs-cat-brand-fg: #d2bcff;
   --qs-cat-brand-bg: rgb(161 114 255 / 0.22);
   --qs-cat-brand-solid: #a172ff;
+  --qs-cat-slate-fg: #cbd5e1;
+  --qs-cat-slate-bg: rgb(148 163 184 / 0.18);
+  --qs-cat-slate-solid: #94a3b8;
 
   --qs-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --qs-shadow-md: 0 4px 16px rgb(0 0 0 / 0.35);
@@ -238,6 +244,7 @@
 .cat-fuchsia { --cat-fg: var(--qs-cat-fuchsia-fg); --cat-bg: var(--qs-cat-fuchsia-bg); --cat-solid: var(--qs-cat-fuchsia-solid); }
 .cat-green { --cat-fg: var(--qs-cat-green-fg); --cat-bg: var(--qs-cat-green-bg); --cat-solid: var(--qs-cat-green-solid); }
 .cat-brand { --cat-fg: var(--qs-cat-brand-fg); --cat-bg: var(--qs-cat-brand-bg); --cat-solid: var(--qs-cat-brand-solid); }
+.cat-slate { --cat-fg: var(--qs-cat-slate-fg); --cat-bg: var(--qs-cat-slate-bg); --cat-solid: var(--qs-cat-slate-solid); }
 
 @media (prefers-reduced-motion: reduce) {
   *,

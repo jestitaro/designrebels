@@ -2,7 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo } from 'react';
 import { db } from '../db/db';
 import { DEFAULT_SETTINGS } from '../data/defaults';
-import type { CalendarEvent, Category, Country, Greeting, Settings } from '../types';
+import type { CalendarEvent, Category, Country, Greeting, Person, Settings, Vacation } from '../types';
 
 export function useEvents(): CalendarEvent[] | undefined {
   return useLiveQuery(() => db.events.toArray(), []);
@@ -73,4 +73,12 @@ export function useGreetingsMap(): Map<string, Greeting[]> {
     }
     return map;
   }, [greetings]);
+}
+
+export function usePeople(): Person[] | undefined {
+  return useLiveQuery(() => db.people.orderBy('name').toArray(), []);
+}
+
+export function useVacations(): Vacation[] | undefined {
+  return useLiveQuery(() => db.vacations.toArray(), []);
 }

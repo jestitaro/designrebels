@@ -95,9 +95,21 @@ Si aun así ves una versión vieja: cerrá todas las pestañas de la app y abril
 
 ## Qué guarda cada cosa
 
-- **Fecha:** nombre, categoría, país, cuándo (todos los años, solo una vez o una regla como "4.º jueves de noviembre" o "según Pascua") y un link de imagen opcional.
+- **Fecha:** nombre, categoría, país, cuándo (todos los años, solo una vez o una regla como "4.º jueves de noviembre" o "según Pascua"), si es feriado, para qué áreas es el saludo y un link de imagen opcional.
 - **Saludo:** el texto, un link de imagen y el estado (pendiente, listo o compartido). "Copiar mensaje" lo copia para pegarlo donde quieras.
 - **Imágenes:** la app no genera ni guarda imágenes, solo el link. Pedile la imagen a Claude en el chat, guardala en Drive, Canva o donde prefieras y pegá el link en la fecha o en el saludo.
+
+---
+
+## El equipo
+
+En **Inicio** (tarjeta "El equipo hoy") y en el panel de cada día del calendario ves:
+
+- **A quién saludar:** las personas del país de cada fecha (las internacionales son para todos). Si la fecha indica áreas, como el Día de la Usabilidad para Producto y Diseño, solo esas.
+- **De feriado:** quienes viven en un país donde ese día es feriado. Si el feriado se traslada, cuenta el día trasladado.
+- **De vacaciones:** según las vacaciones cargadas en cada persona.
+
+El equipo se carga en **Configuración → Equipo**: agregar personas, editar puestos y áreas (el organigrama puede cambiar), desactivar a quien se va, cargar vacaciones, o importar y exportar el archivo del equipo. **Los datos del equipo no están en el código ni en el sitio publicado:** viven solo en el navegador de quien los carga y se incluyen en el respaldo JSON.
 
 ---
 
@@ -168,6 +180,15 @@ Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la 
 | La Noche de las Heladerías 2026 (18/11) | La fecha solo apareció en medios. Confirmar en los canales de AFADHYA. |
 | CyberMonday 2026 Argentina (02–04/11) | Fechas de medios. Confirmar en cybermonday.com.ar (CACE). |
 | Black Friday (día siguiente al 4.º jueves de noviembre) | Es una fecha comercial por convención: no hay un organismo oficial que la publique. |
+
+### Feriados nacionales
+
+Cargados en la categoría **Feriados** (se puede ocultar del calendario en Configuración), marcados como feriado para saber quién no trabaja:
+
+- **Argentina:** Ley 27.399 ([Infoleg](https://servicios.infoleg.gob.ar/infolegInternet/anexos/280000-284999/281835/norma.htm)). Carnaval y Viernes Santo según Pascua; traslados 2026 calculados con el art. 6 (Güemes al 15/6, Soberanía al 23/11). Los días turísticos no están cargados.
+- **México:** art. 74 de la Ley Federal del Trabajo ([PROFEDET](https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026)). Constitución, Juárez y Revolución como "n-ésimo lunes".
+- **Ecuador:** LOSEP, Disposición General Cuarta ([Asamblea Nacional](https://www.asambleanacional.gob.ec/es/blogs/herman-moya/47579-ley-de-feriados)). Traslado 2026 de Pichincha al 25/5 calculado con la regla de la ley; los traslados de otros años hay que cargarlos.
+- **España:** fiestas nacionales del BOE (ver arriba). Las fiestas de cada comunidad no están cargadas.
 
 ### Sacados para simplificar
 

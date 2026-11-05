@@ -3,7 +3,7 @@ import { backupSchema, type Backup } from '../schemas/backup';
 import type { CalendarEvent, Greeting } from '../types';
 
 export async function buildBackup(now = new Date()): Promise<Backup> {
-  const [events, greetings, categories, countries, settingsRow, deleted, seedVersion, reviewedAlerts] = await Promise.all([
+  const [events, greetings, categories, countries, settingsRow, deleted, seedVersion, reviewedAlerts, people, vacations] = await Promise.all([
     db.events.toArray(),
     db.greetings.toArray(),
     db.categories.toArray(),
@@ -12,6 +12,8 @@ export async function buildBackup(now = new Date()): Promise<Backup> {
     db.meta.get('deletedSeedIds'),
     db.meta.get('seedVersion'),
     db.reviewedAlerts.toArray(),
+    db.people.toArray(),
+    db.vacations.toArray(),
   ]);
   return {
     app: 'qs-calendar',
@@ -26,6 +28,8 @@ export async function buildBackup(now = new Date()): Promise<Backup> {
       deletedSeedIds: (deleted?.value as string[] | undefined) ?? [],
       seedVersion: (seedVersion?.value as number | undefined) ?? 0,
       reviewedAlerts,
+      people,
+      vacations,
     },
   };
 }
@@ -44,6 +48,8 @@ const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string
     const greetings = Array.isArray(data.greetings) ? data.greetings : [];
     return { ...raw, data: { ...data, greetings: greetings.map((g) => simplifyGreeting(g as Record<string, unknown>)) } };
   },
+  // v3 → v4: se suma el equipo (vacío en respaldos anteriores).
+  3: (raw) => raw,
 };
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };
@@ -115,9 +121,9 @@ export async function summarizeImport(backup: Backup): Promise<ImportSummary> {
  */
 export async function applyImport(backup: Backup, mode: 'combinar' | 'reemplazar'): Promise<void> {
   const d = backup.data;
-  await db.transaction('rw', [db.events, db.greetings, db.categories, db.countries, db.settings, db.meta, db.reviewedAlerts], async () => {
+  await db.transaction('rw', [db.events, db.greetings, db.categories, db.countries, db.settings, db.meta, db.reviewedAlerts, db.people, db.vacations], async () => {
     if (mode === 'reemplazar') {
-      await Promise.all([db.events.clear(), db.greetings.clear(), db.categories.clear(), db.countries.clear(), db.meta.clear(), db.reviewedAlerts.clear()]);
+      await Promise.all([db.events.clear(), db.greetings.clear(), db.categories.clear(), db.countries.clear(), db.meta.clear(), db.reviewedAlerts.clear(), db.people.clear(), db.vacations.clear()]);
       await db.events.bulkAdd(d.events as CalendarEvent[]);
       await db.greetings.bulkAdd(d.greetings);
       await db.categories.bulkAdd(d.categories);
@@ -128,6 +134,8 @@ export async function applyImport(backup: Backup, mode: 'combinar' | 'reemplazar
         { key: 'seedVersion', value: d.seedVersion },
       ]);
       await db.reviewedAlerts.bulkAdd(d.reviewedAlerts);
+      await db.people.bulkAdd(d.people);
+      await db.vacations.bulkAdd(d.vacations);
       return;
     }
     const newer = async <T extends { id: string; updatedAt: string }>(table: typeof db.events | typeof db.greetings, items: T[]) => {
@@ -143,5 +151,7 @@ export async function applyImport(backup: Backup, mode: 'combinar' | 'reemplazar
     const deleted = new Set([...(((await db.meta.get('deletedSeedIds'))?.value as string[] | undefined) ?? []), ...d.deletedSeedIds]);
     await db.meta.put({ key: 'deletedSeedIds', value: [...deleted] });
     await db.reviewedAlerts.bulkPut(d.reviewedAlerts);
+    for (const p of d.people) if (!(await db.people.get(p.id))) await db.people.add(p);
+    for (const v of d.vacations) if (!(await db.vacations.get(v.id))) await db.vacations.add(v);
   });
 }

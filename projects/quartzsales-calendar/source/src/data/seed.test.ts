@@ -13,6 +13,10 @@ describe('seed', () => {
     expect(new Set(SEED_EVENTS.map((e) => e.id)).size).toBe(SEED_EVENTS.length);
   });
 
+  it('cada país tiene sus feriados marcados', () => {
+    for (const c of ['ar', 'mx', 'ec', 'es']) expect(SEED_EVENTS.filter((e) => e.country === c && e.isHoliday).length, c).toBeGreaterThanOrEqual(7);
+  });
+
   it('los confirmados tienen fuente, link y fecha de verificación; los pendientes, una nota', () => {
     for (const e of SEED_EVENTS) {
       if (e.verification === 'confirmado') {
@@ -43,5 +47,10 @@ describe('seed', () => {
     expect(occurrenceStartForYear(byId.get('seed-intl-black-friday')!, 2026)).toBe('2026-11-27');
     expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2026)).toBe('2026-04-03');
     expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2027)).toBe('2027-03-26');
+    expect(occurrenceStartForYear(byId.get('seed-ar-carnaval')!, 2026)).toBe('2026-02-16');
+    expect(occurrenceStartForYear(byId.get('seed-ar-carnaval')!, 2027)).toBe('2027-02-08');
+    expect(occurrenceStartForYear(byId.get('seed-mx-constitucion')!, 2026)).toBe('2026-02-02');
+    expect(occurrenceStartForYear(byId.get('seed-mx-juarez')!, 2026)).toBe('2026-03-16');
+    expect(occurrenceStartForYear(byId.get('seed-mx-revolucion-descanso')!, 2026)).toBe('2026-11-16');
   });
 });

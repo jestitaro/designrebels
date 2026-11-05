@@ -1,9 +1,9 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { CalendarEvent, Category, Country, Greeting, Settings } from '../types';
+import type { CalendarEvent, Category, Country, Greeting, Person, Settings, Vacation } from '../types';
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 3;
+export const SCHEMA_VERSION = 4;
 
 export interface KV<T = unknown> {
   key: string;
@@ -24,6 +24,8 @@ export class CalendarDB extends Dexie {
   settings!: EntityTable<KV<Settings>, 'key'>;
   meta!: EntityTable<KV, 'key'>;
   reviewedAlerts!: EntityTable<ReviewedAlert, 'key'>;
+  people!: EntityTable<Person, 'id'>;
+  vacations!: EntityTable<Vacation, 'id'>;
 
   constructor(name = DB_NAME) {
     super(name);
@@ -63,6 +65,16 @@ export class CalendarDB extends Dexie {
             Object.assign(g, simplifyGreeting(g));
             for (const key of ['tone', 'channel', 'privateNotes', 'versions']) delete g[key];
           });
+      });
+    // v4: equipo (personas y vacaciones). Solo vive en este navegador.
+    this.version(4)
+      .stores({ people: 'id, country, name', vacations: 'id, personId, start, end' })
+      .upgrade(async (tx) => {
+        // Suma la categoría "Feriados" (se puede ocultar en Configuración).
+        const categories = tx.table<Category, string>('categories');
+        if ((await categories.count()) > 0 && !(await categories.get('feriados'))) {
+          await categories.add({ id: 'feriados', name: 'Feriados', color: 'slate', subcategories: [], visible: true, order: 6.5 });
+        }
       });
   }
 }

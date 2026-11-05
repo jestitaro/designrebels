@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 3;
+export const SEED_VERSION = 4;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -55,7 +55,7 @@ export const SEED_EVENTS: CalendarEvent[] = [
     source: 'Ministerio de Cultura de la Nación', sourceUrl: 'https://www.cultura.gob.ar/por-que-se-celebra-el-dia-de-la-tradicion-en-argentina-8528/',
   }),
   seed({
-    id: 'seed-ar-soberania', title: 'Día de la Soberanía Nacional', category: 'efemerides', subcategory: 'efe-nacionales',
+    id: 'seed-ar-soberania', isHoliday: true,  title: 'Día de la Soberanía Nacional', category: 'efemerides', subcategory: 'efe-nacionales',
     country: 'ar', startDate: '2026-11-20', relevance: 'media', verification: 'confirmado',
     summary: 'Feriado nacional del 20 de noviembre establecido por la Ley 27.399.',
     holidayObservances: [{ year: 2026, date: '2026-11-23', note: 'Figura como día inhábil "Día de la Soberanía Nacional (20/11)" en el calendario del Tribunal Fiscal de la Nación. Confirmar la norma de traslado.' }],
@@ -115,7 +115,6 @@ export const SEED_EVENTS: CalendarEvent[] = [
     id: 'seed-mx-revolucion', title: 'Aniversario de la Revolución Mexicana', category: 'efemerides', subcategory: 'efe-nacionales',
     country: 'mx', startDate: '2026-11-20', relevance: 'media', verification: 'confirmado',
     summary: 'Se conmemora el 20 de noviembre; el descanso obligatorio es el tercer lunes de noviembre (LFT, art. 74).',
-    holidayObservances: [{ year: 2026, date: '2026-11-16', note: 'Descanso obligatorio: tercer lunes de noviembre.' }],
     source: 'PROFEDET (gob.mx)', sourceUrl: 'https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026',
   }),
   seed({
@@ -139,14 +138,14 @@ export const SEED_EVENTS: CalendarEvent[] = [
 
   /* ───────── Ecuador ───────── */
   seed({
-    id: 'seed-ec-difuntos', title: 'Día de los Difuntos (Ecuador)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
+    id: 'seed-ec-difuntos', isHoliday: true,  title: 'Día de los Difuntos (Ecuador)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
     country: 'ec', startDate: '2026-11-02', relevance: 'alta', verification: 'confirmado',
     summary: 'Feriado nacional del 2 de noviembre.',
     contentIdeas: ['Cómo se vive en México y en Ecuador, respetando sus diferencias.'],
     source: 'Registro Civil del Ecuador', sourceUrl: 'https://www.registrocivil.gob.ec/gobierno-del-ecuador-garantiza-la-atencion-del-registro-civil-durante-el-feriado-por-el-dia-de-los-difuntos-y-la-independencia-de-cuenca',
   }),
   seed({
-    id: 'seed-ec-independencia-cuenca', title: 'Independencia de Cuenca', category: 'efemerides', subcategory: 'efe-nacionales',
+    id: 'seed-ec-independencia-cuenca', isHoliday: true,  title: 'Independencia de Cuenca', category: 'efemerides', subcategory: 'efe-nacionales',
     country: 'ec', startDate: '2026-11-03', relevance: 'media', verification: 'confirmado',
     summary: 'Feriado nacional del 3 de noviembre; la ciudad organiza más de 300 actividades.',
     source: 'Alcaldía de Cuenca', sourceUrl: 'https://www.cuenca.gob.ec/content/cuenca-tendra-mas-de-300-eventos-en-sus-fiestas-de-independencia-gracias-al-apoyo-de-la',
@@ -168,30 +167,73 @@ export const SEED_EVENTS: CalendarEvent[] = [
   ...((): CalendarEvent[] => {
     const BOE = 'BOE: fiestas laborales 2026 (Resolución de 17/10/2025)';
     const BOE_URL = 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667';
-    const base = { country: 'es', verification: 'confirmado' as const, source: BOE, sourceUrl: BOE_URL };
+    const base = { country: 'es', verification: 'confirmado' as const, source: BOE, sourceUrl: BOE_URL, isHoliday: true, category: 'feriados' };
     return [
-      seed({ ...base, id: 'seed-es-ano-nuevo', title: 'Año Nuevo (España)', category: 'efemerides', subcategory: 'efe-nacionales',
-        startDate: '2026-01-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-reyes', title: 'Epifanía del Señor (Reyes)', category: 'cultura', subcategory: 'cul-celebraciones-tradicionales',
-        startDate: '2026-01-06', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-viernes-santo', title: 'Viernes Santo (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
-        startDate: '2026-04-03', recurrence: { type: 'yearly-easter', offsetDays: -2 }, relevance: 'media',
+      seed({ ...base, id: 'seed-es-ano-nuevo', title: 'Año Nuevo (España)', startDate: '2026-01-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-reyes', title: 'Epifanía del Señor (Reyes)', startDate: '2026-01-06', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-viernes-santo', title: 'Viernes Santo (España)', startDate: '2026-04-03', recurrence: { type: 'yearly-easter', offsetDays: -2 }, relevance: 'media',
         summary: 'Fiesta laboral de ámbito nacional. En 2026 fue el 3 de abril; varía cada año con la Pascua.' }),
-      seed({ ...base, id: 'seed-es-trabajo', title: 'Fiesta del Trabajo (España)', category: 'efemerides', subcategory: 'efe-internacionales',
-        startDate: '2026-05-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-fiesta-nacional', title: 'Fiesta Nacional de España', category: 'efemerides', subcategory: 'efe-nacionales',
-        startDate: '2026-10-12', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', category: 'efemerides', subcategory: 'efe-nacionales',
-        startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.',
+      seed({ ...base, id: 'seed-es-trabajo', title: 'Fiesta del Trabajo (España)', startDate: '2026-05-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-fiesta-nacional', title: 'Fiesta Nacional de España', startDate: '2026-10-12', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.',
         holidayObservances: [{ year: 2026, date: '2026-12-07', note: 'Cae en domingo: descanso el lunes 7/12 en varias comunidades (Andalucía, Aragón, Asturias, Cantabria, Castilla y León, Extremadura, Madrid, Murcia, La Rioja y Melilla, según el anexo del BOE; verificar la de cada comunidad).' }] }),
-      seed({ ...base, id: 'seed-es-navidad', title: 'Natividad del Señor (España)', category: 'cultura', subcategory: 'cul-celebraciones-religiosas',
-        startDate: '2026-12-25', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
+      seed({ ...base, id: 'seed-es-navidad', title: 'Natividad del Señor (España)', startDate: '2026-12-25', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
+    ];
+  })(),
+
+  /* ───────── Feriados nacionales (días no laborables) ───────── */
+  ...((): CalendarEvent[] => {
+    const AR = { country: 'ar', category: 'feriados', verification: 'confirmado' as const, isHoliday: true,
+      source: 'Ley 27.399 de feriados nacionales', sourceUrl: 'https://servicios.infoleg.gob.ar/infolegInternet/anexos/280000-284999/281835/norma.htm' };
+    const MX = { country: 'mx', category: 'feriados', verification: 'confirmado' as const, isHoliday: true,
+      source: 'Ley Federal del Trabajo, art. 74', sourceUrl: 'https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026' };
+    const EC = { country: 'ec', category: 'feriados', verification: 'confirmado' as const, isHoliday: true,
+      source: 'LOSEP, Disposición General Cuarta (reforma 2016)', sourceUrl: 'https://www.asambleanacional.gob.ec/es/blogs/herman-moya/47579-ley-de-feriados' };
+    const carnaval = { type: 'yearly-easter' as const, offsetDays: -48 };
+    const viernesSanto = { type: 'yearly-easter' as const, offsetDays: -2 };
+    return [
+      seed({ ...AR, id: 'seed-ar-feriado-ano-nuevo', title: 'Año Nuevo (Argentina)', startDate: '2026-01-01', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-carnaval', title: 'Carnaval (Argentina)', startDate: '2026-02-16', endDate: '2026-02-17', recurrence: carnaval, relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-memoria', title: 'Día Nacional de la Memoria por la Verdad y la Justicia', startDate: '2026-03-24', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-malvinas', title: 'Día del Veterano y de los Caídos en Malvinas', startDate: '2026-04-02', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-viernes-santo', title: 'Viernes Santo (Argentina)', startDate: '2026-04-03', recurrence: viernesSanto, relevance: 'baja' }),
+      seed({ ...AR, id: 'seed-ar-trabajo', title: 'Día del Trabajador (Argentina)', startDate: '2026-05-01', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-25-mayo', title: 'Revolución de Mayo', startDate: '2026-05-25', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-guemes', title: 'Paso a la Inmortalidad de Güemes', startDate: '2026-06-17', relevance: 'baja',
+        holidayObservances: [{ year: 2026, date: '2026-06-15', note: 'Trasladable: cae miércoles, pasa al lunes anterior (art. 6).' }] }),
+      seed({ ...AR, id: 'seed-ar-belgrano', title: 'Paso a la Inmortalidad de Belgrano (Día de la Bandera)', startDate: '2026-06-20', relevance: 'media' }),
+      seed({ ...AR, id: 'seed-ar-independencia', title: 'Día de la Independencia (Argentina)', startDate: '2026-07-09', relevance: 'alta' }),
+      seed({ ...AR, id: 'seed-ar-san-martin', title: 'Paso a la Inmortalidad de San Martín', startDate: '2026-08-17', relevance: 'baja' }),
+      seed({ ...AR, id: 'seed-ar-diversidad', title: 'Día del Respeto a la Diversidad Cultural', startDate: '2026-10-12', relevance: 'baja' }),
+      seed({ ...AR, id: 'seed-ar-inmaculada', title: 'Inmaculada Concepción (Argentina)', startDate: '2026-12-08', relevance: 'baja' }),
+      seed({ ...AR, id: 'seed-ar-navidad', title: 'Navidad (Argentina)', startDate: '2026-12-25', relevance: 'alta' }),
+
+      seed({ ...MX, id: 'seed-mx-ano-nuevo', title: 'Año Nuevo (México)', startDate: '2026-01-01', relevance: 'media' }),
+      seed({ ...MX, id: 'seed-mx-constitucion', title: 'Día de la Constitución (descanso)', startDate: '2026-02-02',
+        recurrence: { type: 'yearly-nth-weekday', month: 2, weekday: 0, nth: 1, offsetDays: 0 }, relevance: 'baja' }),
+      seed({ ...MX, id: 'seed-mx-juarez', title: 'Natalicio de Benito Juárez (descanso)', startDate: '2026-03-16',
+        recurrence: { type: 'yearly-nth-weekday', month: 3, weekday: 0, nth: 3, offsetDays: 0 }, relevance: 'baja' }),
+      seed({ ...MX, id: 'seed-mx-trabajo', title: 'Día del Trabajo (México)', startDate: '2026-05-01', relevance: 'media' }),
+      seed({ ...MX, id: 'seed-mx-independencia', title: 'Día de la Independencia (México)', startDate: '2026-09-16', relevance: 'alta' }),
+      seed({ ...MX, id: 'seed-mx-revolucion-descanso', title: 'Revolución Mexicana (descanso)', startDate: '2026-11-16',
+        recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 0, nth: 3, offsetDays: 0 }, relevance: 'baja' }),
+      seed({ ...MX, id: 'seed-mx-navidad', title: 'Navidad (México)', startDate: '2026-12-25', relevance: 'alta' }),
+
+      seed({ ...EC, id: 'seed-ec-ano-nuevo', title: 'Año Nuevo (Ecuador)', startDate: '2026-01-01', relevance: 'media' }),
+      seed({ ...EC, id: 'seed-ec-carnaval', title: 'Carnaval (Ecuador)', startDate: '2026-02-16', endDate: '2026-02-17', recurrence: carnaval, relevance: 'media' }),
+      seed({ ...EC, id: 'seed-ec-viernes-santo', title: 'Viernes Santo (Ecuador)', startDate: '2026-04-03', recurrence: viernesSanto, relevance: 'baja' }),
+      seed({ ...EC, id: 'seed-ec-trabajo', title: 'Día del Trabajo (Ecuador)', startDate: '2026-05-01', relevance: 'media' }),
+      seed({ ...EC, id: 'seed-ec-pichincha', title: 'Batalla de Pichincha', startDate: '2026-05-24', relevance: 'baja',
+        holidayObservances: [{ year: 2026, date: '2026-05-25', note: 'Cae domingo: pasa al lunes siguiente (regla de traslado de la LOSEP).' }] }),
+      seed({ ...EC, id: 'seed-ec-primer-grito', title: 'Primer Grito de Independencia', startDate: '2026-08-10', relevance: 'media' }),
+      seed({ ...EC, id: 'seed-ec-guayaquil', title: 'Independencia de Guayaquil', startDate: '2026-10-09', relevance: 'media' }),
+      seed({ ...EC, id: 'seed-ec-navidad', title: 'Navidad (Ecuador)', startDate: '2026-12-25', relevance: 'alta' }),
     ];
   })(),
 
   /* ───────── Internacional ───────── */
   seed({
-    id: 'seed-intl-usabilidad', title: 'Día Mundial de la Usabilidad', category: 'profesiones', subcategory: 'pro-ux-ui',
+    id: 'seed-intl-usabilidad', areas: ['Producto y Diseño'],  title: 'Día Mundial de la Usabilidad', category: 'profesiones', subcategory: 'pro-ux-ui',
     country: 'intl', startDate: '2026-11-12', recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 3, nth: 2, offsetDays: 0 },
     relevance: 'alta', verification: 'confirmado',
     summary: 'Segundo jueves de noviembre. Tema 2026: "Designing a Sustainable Future with Ethical AI".',
@@ -199,14 +241,14 @@ export const SEED_EVENTS: CalendarEvent[] = [
     source: 'World Usability Day', sourceUrl: 'https://worldusabilityday.org/',
   }),
   seed({
-    id: 'seed-intl-project-management', title: 'Día Internacional de la Gestión de Proyectos', category: 'profesiones', subcategory: 'pro-gestion-de-proyectos',
+    id: 'seed-intl-project-management', areas: ['Gestión de Proyectos'],  title: 'Día Internacional de la Gestión de Proyectos', category: 'profesiones', subcategory: 'pro-gestion-de-proyectos',
     country: 'intl', startDate: '2026-11-05', recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 3, nth: 1, offsetDays: 0 },
     relevance: 'media', verification: 'confirmado',
     summary: 'Primer jueves de noviembre, impulsado por el International Institute for Learning desde 2004.',
     source: 'International Institute for Learning (IIL)', sourceUrl: 'https://www.iil.com/international-project-management-day/frequently-asked-questions/',
   }),
   seed({
-    id: 'seed-intl-diseno', title: 'Día Internacional del Diseño', category: 'profesiones', subcategory: 'pro-diseno-grafico',
+    id: 'seed-intl-diseno', areas: ['Producto y Diseño'],  title: 'Día Internacional del Diseño', category: 'profesiones', subcategory: 'pro-diseno-grafico',
     country: 'intl', startDate: '2026-04-27', relevance: 'media', verification: 'confirmado',
     summary: 'Recuerda la fundación del International Council of Design (ICoD) el 27 de abril de 1963.',
     source: 'International Council of Design', sourceUrl: 'https://www.theicod.org/activities/international-design-day',

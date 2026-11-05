@@ -193,7 +193,7 @@ export async function restoreDefaultSettings(): Promise<void> {
   });
 }
 
-/** Borra la base local completa. La app vuelve a cargar catálogos y seed al reiniciar. */
+/** Borra la base local completa (incluido el equipo). La app vuelve a cargar catálogos y seed al reiniciar. */
 export async function wipeLocalData(): Promise<void> {
   await db.delete();
   try {

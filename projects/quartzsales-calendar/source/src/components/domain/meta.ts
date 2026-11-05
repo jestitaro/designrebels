@@ -1,5 +1,5 @@
 import {
-  BriefcaseBusiness, Clapperboard, Drum, Gem,
+  BriefcaseBusiness, CalendarOff, Clapperboard, Drum, Gem,
   Landmark, ShoppingBag, Tag, Ticket, type LucideIcon,
 } from 'lucide-react';
 import type { CategoryColor } from '../../types';
@@ -11,6 +11,7 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   entretenimiento: Ticket,
   pop: Clapperboard,
   comerciales: ShoppingBag,
+  feriados: CalendarOff,
   quartzsales: Gem,
 };
 
@@ -18,4 +19,4 @@ export function categoryIcon(id: string): LucideIcon {
   return CATEGORY_ICONS[id] ?? Tag;
 }
 
-export const CATEGORY_COLORS: CategoryColor[] = ['blue', 'teal', 'amber', 'pink', 'fuchsia', 'green', 'brand'];
+export const CATEGORY_COLORS: CategoryColor[] = ['blue', 'teal', 'amber', 'pink', 'fuchsia', 'green', 'brand', 'slate'];
