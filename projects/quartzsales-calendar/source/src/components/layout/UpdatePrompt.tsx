@@ -7,9 +7,10 @@ import { useToast } from '../ui/Toast';
 const CHECK_EVERY_MS = 60 * 60 * 1000;
 
 /**
- * Registra el service worker (scope: la carpeta de la app) y avisa cuando hay
- * una versión nueva publicada. Busca actualizaciones al abrir, cada hora y al
- * volver a la pestaña, para que nadie quede atrapado en una versión vieja.
+ * Registra el service worker (scope: la carpeta de la app). Las versiones nuevas
+ * se activan solas (autoUpdate) y la página se recarga; si por algún motivo queda
+ * una esperando, se muestra el aviso "Hay una versión nueva — Recargar".
+ * Busca actualizaciones al abrir, cada hora y al volver a la pestaña.
  */
 export function UpdatePrompt() {
   const toast = useToast();

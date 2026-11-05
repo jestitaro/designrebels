@@ -20,8 +20,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      // El aviso "Hay una versión nueva — Recargar" lo muestra la app (UpdatePrompt).
-      registerType: 'prompt',
+      // Se actualiza sola: al detectar una versión nueva la activa y recarga (los datos viven en IndexedDB).
+      registerType: 'autoUpdate',
       injectRegister: false,
       filename: 'sw.js',
       manifestFilename: 'manifest.webmanifest',
@@ -52,8 +52,8 @@ export default defineConfig({
         // El SW solo controla su carpeta (scope ./). Además, nunca responde por la carpeta del código fuente.
         navigateFallbackDenylist: [/\/source\//],
         cleanupOutdatedCaches: true,
-        clientsClaim: false,
-        skipWaiting: false,
+        clientsClaim: true,
+        skipWaiting: true,
       },
       devOptions: { enabled: false },
     }),
