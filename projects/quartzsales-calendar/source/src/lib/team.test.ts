@@ -3,7 +3,7 @@ import { db, resetDatabaseForTests } from '../db/db';
 import { deletePerson, exportTeam, importTeam, parseTeamFile } from '../db/team';
 import { makeEvent } from '../test/factories';
 import type { Person, Vacation } from '../types';
-import { initials, isForPerson, teamForDay } from './team';
+import { initials, isForPerson, teamForDay, weekSlackSummary } from './team';
 
 const person = (id: string, name: string, country: string, areas: string[], extra: Partial<Person> = {}): Person => ({
   id, name, country, roles: areas.map((area) => ({ area, title: 'x' })), active: true, createdAt: '', updatedAt: '', ...extra,
@@ -109,5 +109,34 @@ describe('importar y exportar el equipo', () => {
     const beto = (await db.people.toArray()).find((p) => p.name === 'Beto')!;
     await deletePerson(beto.id);
     expect(await db.vacations.count()).toBe(0);
+  });
+});
+
+describe('resumen semanal para Slack', () => {
+  const soberania = makeEvent({ id: 'sob', title: 'Día de la Soberanía Nacional', country: 'ar', startDate: '2026-11-20', isHoliday: true, holidayObservances: [{ year: 2026, date: '2026-11-23' }] });
+  const revolucion = makeEvent({ id: 'rev', title: 'Revolución Mexicana (descanso)', country: 'mx', startDate: '2026-11-16', recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 0, nth: 3, offsetDays: 0 }, isHoliday: true });
+  const names = (id: string) => ({ ar: 'Argentina', mx: 'México', es: 'España' })[id] ?? id;
+
+  it('arma feriados por día y vacaciones de la semana', () => {
+    const vac: Vacation[] = [
+      { id: 'v1', personId: 'dani', start: '2026-11-10', end: '2026-11-18' },
+      { id: 'v2', personId: 'ana', start: '2026-11-30', end: '2026-12-04' },
+    ];
+    expect(weekSlackSummary('2026-11-19', [soberania, revolucion], people, vac, names)).toBe(
+      [
+        '🗓️ *Semana del 16/11 al 22/11 en QuartzSales*',
+        '',
+        '🌴 *De feriado*',
+        '• lunes 16/11 · México (Revolución Mexicana): Carla',
+        '',
+        '✈️ *De vacaciones*',
+        '• Dani: del 10/11 al 18/11',
+      ].join('\n'),
+    );
+    expect(weekSlackSummary('2026-11-23', [soberania], people, [], names)).toContain('• lunes 23/11 · Argentina (Día de la Soberanía Nacional): Ana, Beto');
+  });
+
+  it('avisa cuando trabaja todo el equipo', () => {
+    expect(weekSlackSummary('2026-11-04', [soberania], people, [], names)).toContain('trabaja todo el equipo');
   });
 });

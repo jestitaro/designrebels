@@ -83,3 +83,45 @@ export function initials(name: string): string {
     .map((w) => w[0]!.toUpperCase())
     .join('');
 }
+
+const WEEKDAY_NAMES = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+
+const fmt = (iso: ISODate) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
+
+/**
+ * Resumen de la semana (lunes a domingo) para pegar en Slack:
+ * quiénes están de feriado cada día y quiénes de vacaciones.
+ */
+export function weekSlackSummary(
+  anyDay: ISODate,
+  events: CalendarEvent[],
+  people: Person[],
+  vacations: Vacation[],
+  countryName: (id: string) => string,
+): string {
+  const monday = addDays(anyDay, -((new Date(`${anyDay}T12:00:00Z`).getUTCDay() + 6) % 7));
+  const sunday = addDays(monday, 6);
+  const lines: string[] = [`🗓️ *Semana del ${fmt(monday)} al ${fmt(sunday)} en QuartzSales*`];
+
+  const holidays: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(monday, i);
+    for (const { event, people: list } of teamForDay(day, events, people, []).holiday) {
+      holidays.push(`• ${WEEKDAY_NAMES[i]} ${fmt(day)} · ${countryName(event.country)} (${event.title.replace(/ \((Argentina|México|Ecuador|España|descanso)\)$/i, '')}): ${list.map((p) => p.name).join(', ')}`);
+    }
+  }
+
+  const byId = new Map(people.filter((p) => p.active).map((p) => [p.id, p]));
+  const away = vacations
+    .filter((v) => byId.has(v.personId) && compareISO(v.start, sunday) <= 0 && compareISO(monday, v.end) <= 0)
+    .sort((a, b) => a.start.localeCompare(b.start))
+    .map((v) => `• ${byId.get(v.personId)!.name}: del ${fmt(v.start)} al ${fmt(v.end)}`);
+
+  if (holidays.length === 0 && away.length === 0) {
+    lines.push('', 'Esta semana no hay feriados ni vacaciones: trabaja todo el equipo 🙌');
+    return lines.join('\n');
+  }
+  if (holidays.length) lines.push('', '🌴 *De feriado*', ...holidays);
+  if (away.length) lines.push('', '✈️ *De vacaciones*', ...away);
+  return lines.join('\n');
+}
