@@ -141,7 +141,7 @@ export function DashboardPage() {
   }, [greetings]);
 
   async function copyWeek() {
-    const text = weekSlackSummary(teamDate, events ?? [], people ?? [], vacations ?? [], (id) => catalog.placeName(id) ?? id);
+    const text = weekSlackSummary(teamDate, events ?? [], people ?? [], vacations ?? [], (id) => catalog.placeName(id) ?? id, catalog.placeName);
     if (await copyText(text)) toast.success('Resumen de la semana copiado. Pegalo en #general y fijalo para que quede destacado.');
     else setManualCopy(text);
   }

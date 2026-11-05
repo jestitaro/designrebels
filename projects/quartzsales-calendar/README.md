@@ -190,11 +190,22 @@ Cargados en la categoría **Feriados** (se puede ocultar del calendario en Confi
 - **Argentina:** Ley 27.399 ([Infoleg](https://servicios.infoleg.gob.ar/infolegInternet/anexos/280000-284999/281835/norma.htm)). Carnaval y Viernes Santo según Pascua; traslados 2026 calculados con el art. 6 (Güemes al 15/6, Soberanía al 23/11). Los días turísticos no están cargados.
 - **México:** art. 74 de la Ley Federal del Trabajo ([PROFEDET](https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026)). Constitución, Juárez y Revolución como "n-ésimo lunes".
 - **Ecuador:** LOSEP, Disposición General Cuarta ([Asamblea Nacional](https://www.asambleanacional.gob.ec/es/blogs/herman-moya/47579-ley-de-feriados)). Traslado 2026 de Pichincha al 25/5 calculado con la regla de la ley; los traslados de otros años hay que cargarlos.
-- **España:** fiestas nacionales del BOE (ver arriba). Las fiestas de cada comunidad no están cargadas.
+- **España:** fiestas nacionales del BOE (ver arriba).
+
+**Regionales y locales** (donde vive el equipo; aplican solo a quien vive en esa región o ciudad):
+
+- **Comunidad de Madrid:** Jueves Santo, 2 de mayo y, en 2026, los descansos del 2/11 y 7/12 ([Comunidad de Madrid](https://www.comunidad.madrid/empleo/calendario-laboral-comunidad-madrid-municipios)). **Ciudad de Madrid:** San Isidro (15/5) y la Almudena (9/11) ([Ayuntamiento](https://www.madrid.es/portales/munimadrid/es/Inicio/Buscador/Calendario-oficial-laboral-y-de-dias-inhabiles-y-festivos-2026-para-Madrid/?vgnextfmt=default&vgnextoid=b59770d1c3589910VgnVCM100000891ecb1aRCRD&vgnextchannel=7db8fc12aa936610VgnVCM1000008a4a900aRCRD)).
+- **Cataluña:** Lunes de Pascua, Sant Joan, Diada y Sant Esteve. **Barcelona:** Lunes de Pascua Granada y La Mercè ([Ajuntament](https://ajuntament.barcelona.cat/calendarifestius/ca/)).
+- **Guayaquil:** Fundación (25/7; en 2026 el feriado pasó al 24/7) ([Municipalidad](https://guayaquil.gob.ec/mercados-parques-atractivos-turisticos-invitan-disfrutar-feriado-fundacion-guayaquil/)).
+- **Mendoza:** Santiago Apóstol (25/7, Ley 4.081).
+- **Visita del papa León XIV (2026):** 9/11 en todo el país, 10/11 en Córdoba y CABA, 11/11 en Provincia de Buenos Aires (Decreto DNU 1103/2026).
+- No cargados: asueto de La Plata del 19/11 (solo administración municipal), Tucumán 24/9 (sin fuente oficial que lo confirme), y los feriados municipales de los partidos del conurbano.
+
+Para que funcionen, cada persona tiene que tener cargada su provincia o región y su ciudad en Configuración → Equipo.
 
 ### Sacados para simplificar
 
-Aniversarios de ciudades (La Plata, Bahía Blanca, Corrientes, Mendoza), Día del Sánguche de Milanesa, feriado por la visita de León XIV y Festival de Calaveras (ya pasaron), y en España Asunción, Todos los Santos e Inmaculada. Al actualizar, la app los saca de tu calendario salvo que los hayas editado o tengan un saludo.
+Aniversarios de ciudades (La Plata, Bahía Blanca, Corrientes, Mendoza), Día del Sánguche de Milanesa y Festival de Calaveras (ya pasó). Al actualizar, la app los saca de tu calendario salvo que los hayas editado o tengan un saludo.
 
 ### No incluidos
 

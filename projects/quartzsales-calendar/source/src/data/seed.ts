@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 4;
+export const SEED_VERSION = 5;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -175,8 +175,7 @@ export const SEED_EVENTS: CalendarEvent[] = [
         summary: 'Fiesta laboral de ámbito nacional. En 2026 fue el 3 de abril; varía cada año con la Pascua.' }),
       seed({ ...base, id: 'seed-es-trabajo', title: 'Fiesta del Trabajo (España)', startDate: '2026-05-01', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
       seed({ ...base, id: 'seed-es-fiesta-nacional', title: 'Fiesta Nacional de España', startDate: '2026-10-12', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.' }),
-      seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.',
-        holidayObservances: [{ year: 2026, date: '2026-12-07', note: 'Cae en domingo: descanso el lunes 7/12 en varias comunidades (Andalucía, Aragón, Asturias, Cantabria, Castilla y León, Extremadura, Madrid, Murcia, La Rioja y Melilla, según el anexo del BOE; verificar la de cada comunidad).' }] }),
+      seed({ ...base, id: 'seed-es-constitucion', title: 'Día de la Constitución Española', startDate: '2026-12-06', relevance: 'media', summary: 'Fiesta laboral de ámbito nacional.', }),
       seed({ ...base, id: 'seed-es-navidad', title: 'Natividad del Señor (España)', startDate: '2026-12-25', relevance: 'alta', summary: 'Fiesta laboral de ámbito nacional.' }),
     ];
   })(),
@@ -228,6 +227,48 @@ export const SEED_EVENTS: CalendarEvent[] = [
       seed({ ...EC, id: 'seed-ec-primer-grito', title: 'Primer Grito de Independencia', startDate: '2026-08-10', relevance: 'media' }),
       seed({ ...EC, id: 'seed-ec-guayaquil', title: 'Independencia de Guayaquil', startDate: '2026-10-09', relevance: 'media' }),
       seed({ ...EC, id: 'seed-ec-navidad', title: 'Navidad (Ecuador)', startDate: '2026-12-25', relevance: 'alta' }),
+    ];
+  })(),
+
+  /* ───────── Feriados regionales y locales (donde vive el equipo) ───────── */
+  ...((): CalendarEvent[] => {
+    const F = { category: 'feriados', verification: 'confirmado' as const, isHoliday: true };
+    const PAPA = { ...F, country: 'ar', source: 'Decreto DNU 1103/2026', sourceUrl: 'https://www.argentina.gob.ar/normativa/nacional/norma-430580/texto', recurrence: once };
+    const BOE = { ...F, country: 'es', source: 'BOE: fiestas laborales 2026', sourceUrl: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667' };
+    const MAD = { ...F, country: 'es', region: 'es-md', source: 'Comunidad de Madrid: calendario laboral 2026', sourceUrl: 'https://www.comunidad.madrid/empleo/calendario-laboral-comunidad-madrid-municipios' };
+    const MADC = { ...F, country: 'es', region: 'es-md', city: 'es-md-madrid', source: 'Ayuntamiento de Madrid: calendario 2026', sourceUrl: 'https://www.madrid.es/portales/munimadrid/es/Inicio/Buscador/Calendario-oficial-laboral-y-de-dias-inhabiles-y-festivos-2026-para-Madrid/?vgnextfmt=default&vgnextoid=b59770d1c3589910VgnVCM100000891ecb1aRCRD&vgnextchannel=7db8fc12aa936610VgnVCM1000008a4a900aRCRD' };
+    const CAT = { ...F, country: 'es', region: 'es-ct', source: 'Ajuntament de Barcelona: calendari de festius 2026', sourceUrl: 'https://ajuntament.barcelona.cat/calendarifestius/ca/' };
+    const BCN = { ...CAT, city: 'es-ct-barcelona' };
+    return [
+      seed({ ...PAPA, id: 'seed-ar-papa-2026', title: 'Feriado por la visita del papa León XIV', startDate: '2026-11-09', relevance: 'alta',
+        summary: 'Feriado nacional por la visita de León XIV.' }),
+      seed({ ...PAPA, id: 'seed-ar-papa-2026-cba', region: 'ar-cba', title: 'Feriado en Córdoba por la visita del papa', startDate: '2026-11-10', relevance: 'media' }),
+      seed({ ...PAPA, id: 'seed-ar-papa-2026-caba', region: 'ar-caba', title: 'Feriado en CABA por la visita del papa', startDate: '2026-11-10', relevance: 'media' }),
+      seed({ ...PAPA, id: 'seed-ar-papa-2026-pba', region: 'ar-ba', title: 'Feriado en Provincia de Buenos Aires por la visita del papa', startDate: '2026-11-11', relevance: 'media' }),
+      seed({ ...F, id: 'seed-ar-mza-santiago', country: 'ar', region: 'ar-mza', title: 'Día de Santiago Apóstol, patrono de Mendoza', startDate: '2026-07-25', relevance: 'baja',
+        source: 'Ley provincial 4.081 (Mendoza)', sourceUrl: 'https://www.mendoza.gov.ar/prensa/mendoza-celebra-a-su-santo-patrono-santiago/' }),
+      seed({ ...F, id: 'seed-ec-gye-fundacion', country: 'ec', region: 'ec-gy', city: 'ec-gy-guayaquil', title: 'Fundación de Guayaquil', startDate: '2026-07-25', relevance: 'media',
+        holidayObservances: [{ year: 2026, date: '2026-07-24', note: 'Cae sábado: el feriado local pasó al viernes 24.' }],
+        source: 'Municipalidad de Guayaquil', sourceUrl: 'https://guayaquil.gob.ec/mercados-parques-atractivos-turisticos-invitan-disfrutar-feriado-fundacion-guayaquil/' }),
+
+      seed({ ...BOE, id: 'seed-es-asuncion', title: 'Asunción de la Virgen (España)', startDate: '2026-08-15', relevance: 'baja' }),
+      seed({ ...BOE, id: 'seed-es-todos-los-santos', title: 'Todos los Santos (España)', startDate: '2026-11-01', relevance: 'baja' }),
+      seed({ ...BOE, id: 'seed-es-inmaculada', title: 'Inmaculada Concepción (España)', startDate: '2026-12-08', relevance: 'baja' }),
+
+      seed({ ...MAD, id: 'seed-es-md-jueves-santo', title: 'Jueves Santo (Madrid)', startDate: '2026-04-02', recurrence: { type: 'yearly-easter', offsetDays: -3 }, relevance: 'baja' }),
+      seed({ ...MAD, id: 'seed-es-md-2-mayo', title: 'Fiesta de la Comunidad de Madrid', startDate: '2026-05-02', relevance: 'media' }),
+      seed({ ...MAD, id: 'seed-es-md-todos-santos-2026', title: 'Descanso por Todos los Santos (Madrid)', startDate: '2026-11-02', recurrence: once, relevance: 'baja' }),
+      seed({ ...MAD, id: 'seed-es-md-constitucion-2026', title: 'Descanso por la Constitución (Madrid)', startDate: '2026-12-07', recurrence: once, relevance: 'baja' }),
+      seed({ ...MADC, id: 'seed-es-madrid-san-isidro', title: 'San Isidro (Madrid)', startDate: '2026-05-15', relevance: 'media' }),
+      seed({ ...MADC, id: 'seed-es-madrid-almudena', title: 'Nuestra Señora de la Almudena (Madrid)', startDate: '2026-11-09', relevance: 'media' }),
+
+      seed({ ...CAT, id: 'seed-es-ct-pascua', title: 'Lunes de Pascua (Cataluña)', startDate: '2026-04-06', recurrence: { type: 'yearly-easter', offsetDays: 1 }, relevance: 'baja' }),
+      seed({ ...CAT, id: 'seed-es-ct-sant-joan', title: 'Sant Joan (Cataluña)', startDate: '2026-06-24', relevance: 'media' }),
+      seed({ ...CAT, id: 'seed-es-ct-diada', title: 'Diada Nacional de Cataluña', startDate: '2026-09-11', relevance: 'media' }),
+      seed({ ...CAT, id: 'seed-es-ct-sant-esteve', title: 'Sant Esteve (Cataluña)', startDate: '2026-12-26', relevance: 'baja',
+        source: 'BOE: fiestas laborales 2026 (Cataluña)', sourceUrl: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2025-21667' }),
+      seed({ ...BCN, id: 'seed-es-bcn-pascua-granada', title: 'Lunes de Pascua Granada (Barcelona)', startDate: '2026-05-25', recurrence: { type: 'yearly-easter', offsetDays: 50 }, relevance: 'baja' }),
+      seed({ ...BCN, id: 'seed-es-bcn-merce', title: 'La Mercè (Barcelona)', startDate: '2026-09-24', relevance: 'media' }),
     ];
   })(),
 

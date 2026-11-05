@@ -68,8 +68,17 @@ export const DEFAULT_COUNTRIES: Country[] = [
     id: 'mx', name: 'México', active: true, order: 1,
     regions: [{ id: 'mx-ags', name: 'Aguascalientes', active: true, cities: [] }],
   },
-  { id: 'ec', name: 'Ecuador', active: true, order: 2, regions: [] },
-  { id: 'es', name: 'España', active: true, order: 3, regions: [] },
+  {
+    id: 'ec', name: 'Ecuador', active: true, order: 2,
+    regions: [{ id: 'ec-gy', name: 'Guayas', active: true, cities: [city('ec-gy-guayaquil', 'Guayaquil')] }],
+  },
+  {
+    id: 'es', name: 'España', active: true, order: 3,
+    regions: [
+      { id: 'es-md', name: 'Comunidad de Madrid', active: true, cities: [city('es-md-madrid', 'Madrid')] },
+      { id: 'es-ct', name: 'Cataluña', active: true, cities: [city('es-ct-barcelona', 'Barcelona')] },
+    ],
+  },
   { id: 'intl', name: 'Internacional', active: true, order: 4, regions: [] },
 ];
 

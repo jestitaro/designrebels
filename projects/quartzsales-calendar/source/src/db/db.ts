@@ -1,9 +1,10 @@
 import Dexie, { type EntityTable } from 'dexie';
 import type { CalendarEvent, Category, Country, Greeting, Person, Settings, Vacation } from '../types';
+import { DEFAULT_COUNTRIES } from '../data/defaults';
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 export interface KV<T = unknown> {
   key: string;
@@ -74,6 +75,23 @@ export class CalendarDB extends Dexie {
         const categories = tx.table<Category, string>('categories');
         if ((await categories.count()) > 0 && !(await categories.get('feriados'))) {
           await categories.add({ id: 'feriados', name: 'Feriados', color: 'slate', subcategories: [], visible: true, order: 6.5 });
+        }
+      });
+    // v5: regiones y ciudades para feriados locales (Madrid, Barcelona, Guayaquil). Suma lo que falte.
+    this.version(5)
+      .stores({})
+      .upgrade(async (tx) => {
+        const countries = tx.table<Country, string>('countries');
+        for (const def of DEFAULT_COUNTRIES) {
+          const current = await countries.get(def.id);
+          if (!current) continue;
+          const regions = [...current.regions];
+          for (const r of def.regions) {
+            const existing = regions.find((x) => x.id === r.id);
+            if (!existing) regions.push(structuredClone(r));
+            else for (const c of r.cities) if (!existing.cities.some((x) => x.id === c.id)) existing.cities.push({ ...c });
+          }
+          await countries.put({ ...current, regions });
         }
       });
   }

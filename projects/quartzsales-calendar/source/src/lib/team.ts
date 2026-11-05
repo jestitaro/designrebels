@@ -1,5 +1,6 @@
 import type { CalendarEvent, ISODate, Occurrence, Person, Vacation } from '../types';
 import { compareISO, parseISO } from './dates';
+import { normalizeText } from './text';
 import { expandEvents, occurrenceStartForYear, durationDays } from './recurrence';
 import { addDays } from './dates';
 
@@ -20,13 +21,24 @@ export function personAreas(p: Person): string[] {
   return [...new Set(p.roles.map((r) => r.area))];
 }
 
-/** ¿Este saludo es para esta persona? Por país (internacional = todos) y, si el evento indica áreas, por área. */
-export function isForPerson(event: CalendarEvent, person: Person): boolean {
+/**
+ * ¿La persona está en el lugar del evento? País, y si el evento es de una región
+ * o ciudad, también esa región o ciudad (la ciudad se compara por nombre).
+ */
+export function isInPlace(event: Pick<CalendarEvent, 'country' | 'region' | 'city'>, person: Person, cityName?: (id: string) => string | undefined): boolean {
+  if (event.country !== 'intl' && event.country !== person.country) return false;
+  if (event.region && event.region !== person.region) return false;
+  if (event.city) {
+    const name = cityName?.(event.city) ?? event.city;
+    if (!person.city || normalizeText(person.city) !== normalizeText(name)) return false;
+  }
+  return true;
+}
+
+/** ¿Este saludo es para esta persona? Por lugar (internacional = todos) y, si el evento indica áreas, por área. */
+export function isForPerson(event: CalendarEvent, person: Person, cityName?: (id: string) => string | undefined): boolean {
   if (!person.active) return false;
-  const countryOk = event.country === 'intl' || event.country === person.country;
-  if (!countryOk) return false;
-  if (event.region && person.region && event.region !== person.region) return false;
-  if (event.region && !person.region) return false;
+  if (!isInPlace(event, person, cityName)) return false;
   if (event.areas?.length) return personAreas(person).some((a) => event.areas!.includes(a));
   return true;
 }
@@ -48,18 +60,24 @@ export interface DayTeam {
 }
 
 /** Quiénes saludar, quiénes están de feriado y quiénes de vacaciones en un día. */
-export function teamForDay(date: ISODate, events: CalendarEvent[], people: Person[], vacations: Vacation[]): DayTeam {
+export function teamForDay(
+  date: ISODate,
+  events: CalendarEvent[],
+  people: Person[],
+  vacations: Vacation[],
+  cityName?: (id: string) => string | undefined,
+): DayTeam {
   const active = people.filter((p) => p.active).sort((a, b) => a.name.localeCompare(b.name, 'es'));
   const visible = events.filter((e) => !e.archived);
   const year = parseISO(date).y;
 
   const greet = expandEvents(visible, date, date)
-    .map((occurrence) => ({ occurrence, people: active.filter((p) => isForPerson(occurrence.event, p)) }))
+    .map((occurrence) => ({ occurrence, people: active.filter((p) => isForPerson(occurrence.event, p, cityName)) }))
     .filter((g) => g.people.length > 0);
 
   const holiday = visible
     .filter((e) => e.isHoliday && e.country !== 'intl' && holidayDaysOff(e, year).includes(date))
-    .map((event) => ({ event, people: active.filter((p) => p.country === event.country && (!event.region || p.region === event.region)) }))
+    .map((event) => ({ event, people: active.filter((p) => isInPlace(event, p, cityName)) }))
     .filter((h) => h.people.length > 0);
 
   const byId = new Map(active.map((p) => [p.id, p]));
@@ -98,6 +116,7 @@ export function weekSlackSummary(
   people: Person[],
   vacations: Vacation[],
   countryName: (id: string) => string,
+  cityName?: (id: string) => string | undefined,
 ): string {
   const monday = addDays(anyDay, -((new Date(`${anyDay}T12:00:00Z`).getUTCDay() + 6) % 7));
   const sunday = addDays(monday, 6);
@@ -106,8 +125,8 @@ export function weekSlackSummary(
   const holidays: string[] = [];
   for (let i = 0; i < 7; i++) {
     const day = addDays(monday, i);
-    for (const { event, people: list } of teamForDay(day, events, people, []).holiday) {
-      holidays.push(`• ${WEEKDAY_NAMES[i]} ${fmt(day)} · ${countryName(event.country)} (${event.title.replace(/ \((Argentina|México|Ecuador|España|descanso)\)$/i, '')}): ${list.map((p) => p.name).join(', ')}`);
+    for (const { event, people: list } of teamForDay(day, events, people, [], cityName).holiday) {
+      holidays.push(`• ${WEEKDAY_NAMES[i]} ${fmt(day)} · ${(event.city && cityName?.(event.city)) || countryName(event.region ?? event.country)} (${event.title.replace(/ \((Argentina|México|Ecuador|España|descanso)\)$/i, '')}): ${list.map((p) => p.name).join(', ')}`);
     }
   }
 
