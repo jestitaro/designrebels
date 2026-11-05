@@ -163,3 +163,12 @@ describe('feriados regionales y locales', () => {
     expect(teamForDay('2026-11-10', [papaCba], team, [], cityName).holiday[0]?.people.map((p) => p.id)).toEqual(['cba']);
   });
 });
+
+describe('feriados puros', () => {
+  it('no aparecen en "a quién saludar", solo en "de feriado"', () => {
+    const papa = makeEvent({ id: 'p', country: 'ar', category: 'feriados', startDate: '2026-11-09', recurrence: { type: 'none' }, isHoliday: true });
+    const day = teamForDay('2026-11-09', [papa], people, []);
+    expect(day.greet).toEqual([]);
+    expect(day.holiday[0]?.people.map((p) => p.id)).toEqual(['ana', 'beto']);
+  });
+});

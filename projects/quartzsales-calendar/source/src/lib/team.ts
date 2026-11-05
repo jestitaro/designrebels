@@ -71,7 +71,8 @@ export function teamForDay(
   const visible = events.filter((e) => !e.archived);
   const year = parseISO(date).y;
 
-  const greet = expandEvents(visible, date, date)
+  // Los feriados puros (categoría Feriados) no son saludos: van en "De feriado".
+  const greet = expandEvents(visible.filter((e) => e.category !== 'feriados'), date, date)
     .map((occurrence) => ({ occurrence, people: active.filter((p) => isForPerson(occurrence.event, p, cityName)) }))
     .filter((g) => g.people.length > 0);
 

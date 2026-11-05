@@ -87,7 +87,7 @@ Otros comandos útiles:
 
 ### Forzar la actualización
 
-Cuando hay una versión nueva, la app muestra arriba **"Hay una versión nueva — Recargar"**. Tocá **Recargar** y listo. La app busca actualizaciones al abrirse, cada hora y cada vez que volvés a la pestaña.
+La app **se actualiza sola**: al abrirla (y cada hora, y al volver a la pestaña) busca una versión nueva, la activa y recarga. Tus datos no se tocan. Si alguna vez aparece **"Hay una versión nueva — Recargar"**, tocá **Recargar**.
 
 Si aun así ves una versión vieja: cerrá todas las pestañas de la app y abrila de nuevo. Como último recurso, borrá los datos del sitio desde la configuración del navegador, pero **antes exportá un respaldo**, porque eso también borra tus eventos y saludos.
 
