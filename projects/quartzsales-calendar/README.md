@@ -109,6 +109,8 @@ En **Inicio** (tarjeta "El equipo hoy") y en el panel de cada día del calendari
 - **De feriado:** quienes viven en un país donde ese día es feriado. Si el feriado se traslada, cuenta el día trasladado.
 - **De vacaciones:** según las vacaciones cargadas en cada persona.
 
+Con **"Copiar semana para Slack"** (en la misma tarjeta) se copia un resumen de la semana del día elegido —quién está de feriado cada día y quién de vacaciones— con formato de Slack, para pegarlo en #general y fijarlo. No hay conexión con Slack: se pega a mano.
+
 El equipo se carga en **Configuración → Equipo**: agregar personas, editar puestos y áreas (el organigrama puede cambiar), desactivar a quien se va, cargar vacaciones, o importar y exportar el archivo del equipo. **Los datos del equipo no están en el código ni en el sitio publicado:** viven solo en el navegador de quien los carga y se incluyen en el respaldo JSON.
 
 ---

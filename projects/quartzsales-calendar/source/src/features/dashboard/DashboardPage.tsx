@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { BellRing, CalendarCheck2, Check, ChevronLeft, ChevronRight, Info, MessageSquarePlus, Plus } from 'lucide-react';
+import { BellRing, CalendarCheck2, Check, ChevronLeft, ChevronRight, Copy, Info, MessageSquarePlus, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { GREETING_STATUS_META, GREETING_STATUSES } from '../../components/domain/greetingMeta';
 import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
@@ -14,7 +14,10 @@ import { Button, IconButton } from '../../components/ui/Button';
 import { TeamDay } from '../team/TeamDay';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Segmented } from '../../components/ui/Segmented';
-import { placeLabel, useCatalog, useEvents, useGreetings, useReviewedAlerts, useSettings, type Catalog } from '../../hooks/useData';
+import { placeLabel, useCatalog, useEvents, useGreetings, usePeople, useReviewedAlerts, useSettings, useVacations, type Catalog } from '../../hooks/useData';
+import { copyText } from '../../lib/clipboard';
+import { weekSlackSummary } from '../../lib/team';
+import { ManualCopyDialog } from '../../components/ui/ManualCopyDialog';
 import { useSessionState } from '../../hooks/useSessionState';
 import { addDays, capitalize, endOfMonth, formatDayMonth, formatLong, monthName, parseISO, relativeDays, startOfMonth, todayISO } from '../../lib/dates';
 import { greetingsByEvent } from '../../lib/filters';
@@ -98,6 +101,9 @@ export function DashboardPage() {
   const [range, setRange] = useSessionState<'7' | '30'>('dashboard:range', '7');
   const [picker, setPicker] = useState(false);
   const [teamDate, setTeamDate] = useState(today);
+  const [manualCopy, setManualCopy] = useState<string | null>(null);
+  const people = usePeople();
+  const vacations = useVacations();
   const reviewed = useReviewedAlerts();
   const toast = useToast();
 
@@ -134,6 +140,12 @@ export function DashboardPage() {
     return c;
   }, [greetings]);
 
+  async function copyWeek() {
+    const text = weekSlackSummary(teamDate, events ?? [], people ?? [], vacations ?? [], (id) => catalog.placeName(id) ?? id);
+    if (await copyText(text)) toast.success('Resumen de la semana copiado. Pegalo en #general y fijalo para que quede destacado.');
+    else setManualCopy(text);
+  }
+
   async function review(key: string) {
     await markAlertReviewed(key);
     toast.show('Alerta marcada como revisada.', { tone: 'success', action: { label: 'Deshacer', onClick: () => void unmarkAlertReviewed(key) } });
@@ -166,6 +178,7 @@ export function DashboardPage() {
         </dl>
       </header>
       <GreetingEventPicker open={picker} onClose={() => setPicker(false)} />
+      <ManualCopyDialog text={manualCopy} onClose={() => setManualCopy(null)} />
 
       {events.length === 0 ? (
         <EmptyState className="m-4 rounded-lg border border-border bg-surface" icon={CalendarCheck2} title="Todavía no hay eventos"
@@ -210,9 +223,10 @@ export function DashboardPage() {
           <Card
             className="lg:col-span-2"
             title={teamDate === today ? 'El equipo hoy' : `El equipo el ${capitalize(formatLong(teamDate, false))}`}
-            description="A quién saludar, quién está de feriado y quién de vacaciones."
+            description="A quién saludar, quién está de feriado y quién de vacaciones. Copiá el resumen de la semana para #general."
             action={
-              <div className="flex items-center">
+              <div className="flex flex-wrap items-center justify-end gap-1">
+                <Button size="sm" icon={Copy} onClick={() => void copyWeek()} disabled={!people?.length}>Copiar semana para Slack</Button>
                 <IconButton icon={ChevronLeft} label="Día anterior" size="sm" onClick={() => setTeamDate(addDays(teamDate, -1))} />
                 <Button size="sm" variant="ghost" onClick={() => setTeamDate(today)} disabled={teamDate === today}>Hoy</Button>
                 <IconButton icon={ChevronRight} label="Día siguiente" size="sm" onClick={() => setTeamDate(addDays(teamDate, 1))} />
