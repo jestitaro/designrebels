@@ -140,3 +140,26 @@ describe('resumen semanal para Slack', () => {
     expect(weekSlackSummary('2026-11-04', [soberania], people, [], names)).toContain('trabaja todo el equipo');
   });
 });
+
+describe('feriados regionales y locales', () => {
+  const pablo = person('pablo', 'Pablo', 'es', ['Dirección'], { region: 'es-md', city: 'Madrid' });
+  const agus = person('agus', 'Agus', 'es', ['Sales'], { region: 'es-ct', city: 'Barcelona' });
+  const cordoba = person('cba', 'Cordobesa', 'ar', ['BI'], { region: 'ar-cba', city: 'Córdoba' });
+  const porteno = person('caba', 'Porteño', 'ar', ['BI'], { region: 'ar-caba', city: 'CABA' });
+  const team = [pablo, agus, cordoba, porteno];
+  const cityName = (id: string) => ({ 'es-md-madrid': 'Madrid', 'es-ct-barcelona': 'Barcelona' })[id];
+  const almudena = makeEvent({ id: 'alm', country: 'es', region: 'es-md', city: 'es-md-madrid', startDate: '2026-11-09', isHoliday: true });
+  const diada = makeEvent({ id: 'dia', country: 'es', region: 'es-ct', startDate: '2026-09-11', isHoliday: true });
+  const papa = makeEvent({ id: 'papa', country: 'ar', startDate: '2026-11-09', recurrence: { type: 'none' }, isHoliday: true });
+  const papaCba = makeEvent({ id: 'papa-cba', country: 'ar', region: 'ar-cba', startDate: '2026-11-10', recurrence: { type: 'none' }, isHoliday: true });
+
+  it('un feriado de ciudad es solo para quien vive en esa ciudad', () => {
+    const day = teamForDay('2026-11-09', [almudena, papa], team, [], cityName);
+    expect(day.holiday.map((h) => [h.event.id, h.people.map((p) => p.id)])).toEqual([['alm', ['pablo']], ['papa', ['cba', 'caba']]]);
+  });
+
+  it('un feriado regional es para la región', () => {
+    expect(teamForDay('2026-09-11', [diada], team, [], cityName).holiday[0]?.people.map((p) => p.id)).toEqual(['agus']);
+    expect(teamForDay('2026-11-10', [papaCba], team, [], cityName).holiday[0]?.people.map((p) => p.id)).toEqual(['cba']);
+  });
+});

@@ -50,6 +50,8 @@ const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string
   },
   // v3 → v4: se suma el equipo (vacío en respaldos anteriores).
   3: (raw) => raw,
+  // v4 → v5: solo suma regiones y ciudades al catálogo; los datos no cambian.
+  4: (raw) => raw,
 };
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };

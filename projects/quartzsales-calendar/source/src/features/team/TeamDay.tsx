@@ -46,7 +46,7 @@ export function TeamDay({ date, compact, className }: { date: ISODate; compact?:
   const people = usePeople();
   const vacations = useVacations();
   const catalog = useCatalog();
-  const day = useMemo(() => teamForDay(date, events ?? [], people ?? [], vacations ?? []), [date, events, people, vacations]);
+  const day = useMemo(() => teamForDay(date, events ?? [], people ?? [], vacations ?? [], catalog.placeName), [date, events, people, vacations, catalog.placeName]);
 
   if (!people || !events || !vacations) return null;
   if (people.length === 0) {
@@ -90,7 +90,7 @@ export function TeamDay({ date, compact, className }: { date: ISODate; compact?:
         <Group icon={TreePalm} title="De feriado" count={day.holiday.reduce((n, h) => n + h.people.length, 0)}>
           {day.holiday.map(({ event, people: list }) => (
             <div key={event.id} className="mt-1">
-              <p className="text-xs text-muted">{event.title} · {catalog.placeName(event.country)}</p>
+              <p className="text-xs text-muted">{event.title} · {catalog.placeName(event.city ?? event.region ?? event.country)}</p>
               <ul className={cn(compact ? 'grid grid-cols-1' : 'grid gap-x-4 sm:grid-cols-2')}>
                 {list.map((p) => <PersonChip key={p.id} person={p} catalog={catalog} />)}
               </ul>

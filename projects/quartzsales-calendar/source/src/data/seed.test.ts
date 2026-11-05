@@ -52,5 +52,8 @@ describe('seed', () => {
     expect(occurrenceStartForYear(byId.get('seed-mx-constitucion')!, 2026)).toBe('2026-02-02');
     expect(occurrenceStartForYear(byId.get('seed-mx-juarez')!, 2026)).toBe('2026-03-16');
     expect(occurrenceStartForYear(byId.get('seed-mx-revolucion-descanso')!, 2026)).toBe('2026-11-16');
+    expect(occurrenceStartForYear(byId.get('seed-es-md-jueves-santo')!, 2026)).toBe('2026-04-02');
+    expect(occurrenceStartForYear(byId.get('seed-es-ct-pascua')!, 2026)).toBe('2026-04-06');
+    expect(occurrenceStartForYear(byId.get('seed-es-bcn-pascua-granada')!, 2026)).toBe('2026-05-25');
   });
 });
