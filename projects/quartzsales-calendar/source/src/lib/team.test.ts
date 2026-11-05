@@ -63,7 +63,7 @@ describe('el día del equipo', () => {
   });
 
   it('arma iniciales', () => {
-    expect(initials('Jésica Títaro')).toBe('JT');
+    expect(initials('Ana María López')).toBe('AM');
     expect(initials('Ciro')).toBe('C');
   });
 });
