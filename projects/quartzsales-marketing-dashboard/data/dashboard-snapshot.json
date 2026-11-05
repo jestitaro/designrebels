@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-11-04T16:58:33.645Z",
-  "group": "C",
+  "generatedAt": "2026-11-05T17:14:57.791Z",
+  "group": "A",
   "own": {
     "linkedin": {
-      "followers": 2880,
+      "followers": 2879,
       "employees": 8,
-      "lastSynced": "2026-11-04T16:58:15.690Z",
+      "lastSynced": "2026-11-05T17:14:29.028Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -29,7 +29,7 @@
       "gradEnd": "#6366f1",
       "size": "251-500",
       "stats": {
-        "followers": "75.2K",
+        "followers": "75.3K",
         "posts_mes": 18,
         "engagement": "3.2",
         "funding": "~$13M"
@@ -54,7 +54,7 @@
         "Brasil",
         "Series B"
       ],
-      "lastSynced": "2026-11-02T19:20:58.539Z",
+      "lastSynced": "2026-11-05T17:14:36.025Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -136,7 +136,7 @@
         "Argentina",
         "IA imagen"
       ],
-      "lastSynced": "2026-11-02T19:21:08.533Z",
+      "lastSynced": "2026-11-05T17:14:44.363Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -227,7 +227,7 @@
         "LATAM",
         "Auditoría"
       ],
-      "lastSynced": "2026-11-02T19:21:22.452Z",
+      "lastSynced": "2026-11-05T17:14:57.791Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
