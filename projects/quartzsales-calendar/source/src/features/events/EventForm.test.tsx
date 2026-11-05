@@ -51,17 +51,32 @@ describe('formulario de evento', () => {
     expect(saved).toMatchObject({ title: 'Día de la Tradición', startDate: '2026-11-10', recurrence: { type: 'yearly-fixed' }, dateType: 'fija', country: 'ar' });
   });
 
-  it('pide fuente para marcar como confirmado', async () => {
+  it('valida y guarda el link de imagen', async () => {
     const user = userEvent.setup();
     setup();
     await user.click(screen.getByText('abrir'));
     await user.type(await screen.findByLabelText(/^Nombre/), 'X');
     await user.selectOptions(screen.getByLabelText(/^Categoría/), 'cultura');
     await user.selectOptions(screen.getByLabelText(/^País/), 'ar');
-    await user.selectOptions(screen.getByLabelText('Verificación'), 'confirmado');
+    await user.type(screen.getByLabelText(/^Link de imagen/), 'no es un link');
     await user.click(screen.getByRole('button', { name: 'Crear evento' }));
-    expect(await screen.findByText('Para marcarlo como confirmado, indicá la fuente.')).toBeInTheDocument();
+    expect(await screen.findByText(/Tiene que ser un link/)).toBeInTheDocument();
+    await user.clear(screen.getByLabelText(/^Link de imagen/));
+    await user.type(screen.getByLabelText(/^Link de imagen/), 'https://drive.example/img');
+    await user.click(screen.getByRole('button', { name: 'Crear evento' }));
+    await waitFor(async () => expect((await listEvents())[0]?.imageUrl).toBe('https://drive.example/img'));
   });
+
+  it('solo pide nombre, categoría, país, fecha e imagen', async () => {
+    const user = userEvent.setup();
+    setup();
+    await user.click(screen.getByText('abrir'));
+    await screen.findByRole('dialog');
+    for (const gone of [/Resumen/, /Relevancia/, /Verificación/, /Fuente/, /Tradiciones/, /Ideas de contenido/]) {
+      expect(screen.queryByLabelText(gone)).not.toBeInTheDocument();
+    }
+  });
+
 
   it('Esc cierra el formulario sin cambios', async () => {
     const user = userEvent.setup();

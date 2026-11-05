@@ -17,6 +17,7 @@ import { useDataTransfer } from '../data/useDataTransfer';
 import { useIcsExport } from '../reminders/useIcsExport';
 import { CategoriesEditor } from './CategoriesEditor';
 import { PlacesEditor } from './PlacesEditor';
+import { TeamEditor } from '../team/TeamEditor';
 
 function Section({ id, title, description, children }: { id: string; title: string; description?: ReactNode; children: ReactNode }) {
   return (
@@ -81,7 +82,7 @@ export function SettingsPage() {
           <ThemeSwitcher className="max-w-sm" />
         </Section>
 
-        <Section id="s-lead" title="Anticipación de recordatorios" description="Cuántos días antes de un evento de relevancia alta aparece la alerta en Inicio. También se usa como alarma en los .ics.">
+        <Section id="s-lead" title="Anticipación de recordatorios" description="Cuántos días antes de cada fecha aparece el aviso en Inicio para preparar el saludo. También se usa como alarma en los .ics.">
           <div className="flex items-end gap-2">
             <Field label="Días de anticipación" error={leadError} className="w-48">
               {(p) => (
@@ -94,12 +95,18 @@ export function SettingsPage() {
           <p className="mt-2 text-xs text-muted">Los recordatorios solo se ven al abrir la app: no hay notificaciones push ni con la app cerrada.</p>
         </Section>
 
-        <Section id="s-places" title="Países y regiones" description="Referencias culturales para los eventos. Podés agregar, renombrar o desactivar.">
+        <div id="equipo" className="scroll-mt-4">
+          <Section id="s-team" title="Equipo" description="Para saber a quién saludar en cada fecha (por país y área), quién está de feriado y quién de vacaciones.">
+            <TeamEditor />
+          </Section>
+        </div>
+
+        <Section id="s-places" title="Países" description="Podés agregar, renombrar o desactivar países.">
           <PlacesEditor countries={catalog.countries} />
         </Section>
 
-        <Section id="s-cats" title="Categorías" description="Las categorías ocultas no se muestran en el calendario ni en Próximos, salvo que las filtres explícitamente.">
-          <CategoriesEditor categories={catalog.categories} events={events} />
+        <Section id="s-cats" title="Categorías" description="Las categorías ocultas no se muestran en el calendario ni en Próximos.">
+          <CategoriesEditor categories={catalog.categories} />
         </Section>
 
         <Section id="s-backup" title="Respaldo" description="Un archivo JSON con eventos, saludos, configuración, países y categorías.">

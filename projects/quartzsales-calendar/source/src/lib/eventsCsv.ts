@@ -7,10 +7,8 @@ import { duplicateKey } from './duplicates';
 import { normalizeText } from './text';
 
 export const CSV_COLUMNS = [
-  'titulo', 'resumen', 'categoria', 'subcategoria', 'pais', 'region', 'ciudad',
-  'tipo_fecha', 'fecha_inicio', 'fecha_fin', 'regla_semana', 'regla_dia', 'regla_mes', 'regla_desplazamiento',
-  'todo_el_dia', 'hora_inicio', 'hora_fin', 'relevancia', 'verificacion', 'falta_confirmar',
-  'fuente', 'url_fuente', 'ultima_verificacion', 'descripcion', 'historia', 'tradiciones', 'ideas',
+  'titulo', 'categoria', 'pais', 'tipo_fecha', 'fecha_inicio', 'fecha_fin',
+  'regla_semana', 'regla_dia', 'regla_mes', 'regla_desplazamiento', 'link_imagen',
 ] as const;
 
 type Column = (typeof CSV_COLUMNS)[number];
@@ -18,40 +16,24 @@ const REQUIRED: Column[] = ['titulo', 'categoria', 'pais', 'tipo_fecha'];
 
 const COLUMN_HELP: Record<Column, string> = {
   titulo: 'Obligatorio',
-  resumen: 'Hasta 280 caracteres',
   categoria: 'Nombre o ID (ej. Efemérides)',
-  subcategoria: 'Nombre (opcional)',
   pais: 'Nombre o ID (ej. Argentina)',
-  region: 'Nombre (opcional)',
-  ciudad: 'Nombre (opcional)',
-  tipo_fecha: 'fija | regla | pascua | unica',
-  fecha_inicio: 'dd/mm/aaaa (no se usa en regla)',
+  tipo_fecha: 'fija (todos los años) | unica | regla | pascua',
+  fecha_inicio: 'dd/mm/aaaa (no se usa en regla ni pascua)',
   fecha_fin: 'dd/mm/aaaa si dura varios días',
   regla_semana: '1 a 5 o ultima',
   regla_dia: 'lunes … domingo',
   regla_mes: '1 a 12',
   regla_desplazamiento: 'días +/− (Black Friday: 1; en pascua, Viernes Santo: -2)',
-  todo_el_dia: 'si | no',
-  hora_inicio: 'HH:mm',
-  hora_fin: 'HH:mm',
-  relevancia: 'alta | media | baja',
-  verificacion: 'confirmado | pendiente | tentativo',
-  falta_confirmar: 'Qué falta verificar',
-  fuente: 'Obligatoria si es confirmado',
-  url_fuente: 'https://…',
-  ultima_verificacion: 'dd/mm/aaaa',
-  descripcion: '',
-  historia: '',
-  tradiciones: '',
-  ideas: 'Separadas por |',
+  link_imagen: 'https://… (opcional)',
 };
 
 export function csvTemplate(): string[][] {
   return [
     [...CSV_COLUMNS],
     CSV_COLUMNS.map((c) => COLUMN_HELP[c]),
-    ['Día de ejemplo', 'Borrá estas filas de ejemplo', 'Cultura y tradiciones', '', 'Argentina', 'Córdoba', '', 'fija', '10/11/2026', '', '', '', '', '', 'si', '', '', 'media', 'pendiente', 'Confirmar con fuente oficial', '', '', '', '', '', '', 'Idea 1|Idea 2'],
-    ['Evento por regla de ejemplo', '', 'Comerciales', '', 'Internacional', '', '', 'regla', '', '', '4', 'jueves', '11', '1', 'si', '', '', 'alta', 'tentativo', '', '', '', '', '', '', '', ''],
+    ['Día de ejemplo', 'Cultura y tradiciones', 'Argentina', 'fija', '10/11/2026', '', '', '', '', '', ''],
+    ['Evento por regla de ejemplo', 'Comerciales', 'Internacional', 'regla', '', '', '4', 'jueves', '11', '1', ''],
   ];
 }
 
@@ -60,19 +42,19 @@ export function eventsToCsv(events: CalendarEvent[], catalog: Catalog): string[]
   for (const e of events) {
     const cat = catalog.categoryById.get(e.category);
     const rec = e.recurrence;
+    const isRule = rec.type === 'yearly-nth-weekday' || rec.type === 'yearly-easter';
     rows.push([
-      e.title, e.summary, cat?.name ?? e.category, cat?.subcategories.find((s) => s.id === e.subcategory)?.name ?? '',
-      catalog.placeName(e.country) ?? e.country, catalog.placeName(e.region) ?? '', catalog.placeName(e.city) ?? '',
+      e.title,
+      cat?.name ?? e.category,
+      catalog.placeName(e.country) ?? e.country,
       rec.type === 'none' ? 'unica' : rec.type === 'yearly-fixed' ? 'fija' : rec.type === 'yearly-easter' ? 'pascua' : 'regla',
-      rec.type === 'yearly-nth-weekday' || rec.type === 'yearly-easter' ? '' : formatDate(e.startDate),
-      e.endDate && rec.type !== 'yearly-nth-weekday' && rec.type !== 'yearly-easter' ? formatDate(e.endDate) : '',
+      isRule ? '' : formatDate(e.startDate),
+      e.endDate && !isRule ? formatDate(e.endDate) : '',
       rec.type === 'yearly-nth-weekday' ? (rec.nth === -1 ? 'ultima' : String(rec.nth)) : '',
       rec.type === 'yearly-nth-weekday' ? WEEKDAYS[rec.weekday]! : '',
       rec.type === 'yearly-nth-weekday' ? String(rec.month) : '',
-      rec.type === 'yearly-nth-weekday' || rec.type === 'yearly-easter' ? String(rec.offsetDays) : '',
-      e.allDay ? 'si' : 'no', e.startTime ?? '', e.endTime ?? '', e.relevance, e.verification, e.verificationNote ?? '',
-      e.source, e.sourceUrl ?? '', e.lastVerifiedAt ? formatDate(e.lastVerifiedAt) : '',
-      e.description, e.history, e.traditions, e.contentIdeas.join('|'),
+      isRule ? String(rec.offsetDays) : '',
+      e.imageUrl ?? '',
     ]);
   }
   return rows;
@@ -116,7 +98,8 @@ export function parseEventsCsv(rows: string[][], catalog: Catalog, existing: Cal
   const results: CsvRowResult[] = [];
 
   body.forEach((cells, index) => {
-    const get = (c: Column) => (cells[cols.indexOf(c)] ?? '').trim();
+    // Acepta también columnas de la plantilla anterior (región, fuente, etc.).
+    const get = (c: string) => (cells[cols.indexOf(c)] ?? '').trim();
     const line = index + 2;
     const errors: string[] = [];
     const title = get('titulo');
@@ -134,7 +117,7 @@ export function parseEventsCsv(rows: string[][], catalog: Catalog, existing: Cal
     const sub = get('subcategoria') && category ? match(category.subcategories, get('subcategoria')) : undefined;
     if (get('subcategoria') && category && !sub) errors.push(`Subcategoría desconocida: "${get('subcategoria')}".`);
 
-    const date = (c: Column) => {
+    const date = (c: string) => {
       const raw = get(c);
       if (!raw) return undefined;
       const iso = parseHumanDate(raw) ?? (isValidISODate(raw) ? raw : null);
@@ -188,6 +171,7 @@ export function parseEventsCsv(rows: string[][], catalog: Catalog, existing: Cal
       holidayObservances: [], relevance: rel, verification: ver, verificationNote: get('falta_confirmar') || undefined,
       source: get('fuente'), sourceUrl: get('url_fuente') || undefined, lastVerifiedAt: date('ultima_verificacion'),
       contentIdeas: get('ideas').split('|').map((s) => s.trim()).filter(Boolean),
+      imageUrl: get('link_imagen') || get('url_imagen') || undefined,
       favorite: false, archived: false, editorialStatus: 'sin evaluar',
     };
 

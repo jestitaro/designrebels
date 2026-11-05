@@ -44,7 +44,7 @@ describe('MonthGrid', () => {
 
   it('describe los eventos del día en la etiqueta de la celda', () => {
     render(<Harness />);
-    expect(screen.getByRole('gridcell', { name: /martes 10 de noviembre: 1 evento, 1 de relevancia alta/ })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('gridcell', { name: /martes 10 de noviembre: 1 evento$/ })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('gridcell', { name: /^Hoy, martes 3 de noviembre/ })).toHaveAttribute('aria-current', 'date');
   });
 

@@ -4,7 +4,7 @@ import { placeLabel } from '../../hooks/useData';
 import { capitalize, formatDayMonth, formatLong } from '../../lib/dates';
 import { cn } from '../../lib/cn';
 import type { ISODate, Occurrence } from '../../types';
-import { CategoryBadge, RelevanceBadge } from '../../components/domain/Badges';
+import { CategoryBadge } from '../../components/domain/Badges';
 import { EmptyState } from '../../components/ui/EmptyState';
 import type { ReactNode } from 'react';
 
@@ -48,7 +48,6 @@ export function ListView({ days, today, catalog, onOpen, emptyAction, renderMeta
                       </span>
                       <span className="flex flex-wrap gap-1.5">
                         <CategoryBadge category={cat} />
-                        <RelevanceBadge relevance={o.event.relevance} compact />
                         {renderMeta?.(o)}
                       </span>
                     </span>

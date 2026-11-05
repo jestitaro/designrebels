@@ -1,5 +1,4 @@
 import { useEffect, useRef, type KeyboardEvent } from 'react';
-import { ChevronsUp } from 'lucide-react';
 import type { Catalog } from '../../hooks/useData';
 import {
   addDays, addMonths, capitalize, daysInMonth, endOfWeek, formatLong, monthGrid, monthName, parseISO, startOfWeek,
@@ -36,8 +35,7 @@ function sameDayNextMonth(iso: ISODate, delta: number): ISODate {
 function cellLabel(date: ISODate, occs: Occurrence[], today: ISODate) {
   const count = occs.length;
   const events = count === 0 ? 'sin eventos' : count === 1 ? '1 evento' : `${count} eventos`;
-  const high = occs.filter((o) => o.event.relevance === 'alta').length;
-  return `${date === today ? 'Hoy, ' : ''}${formatLong(date, false)}: ${events}${high ? `, ${high} de relevancia alta` : ''}`;
+  return `${date === today ? 'Hoy, ' : ''}${formatLong(date, false)}: ${events}`;
 }
 
 /**
@@ -147,7 +145,6 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                           className={cn(
                             `cat-${catalog.categoryById.get(o.event.category)?.color ?? 'brand'}`,
                             'size-1.5 rounded-full bg-[var(--cat-solid)]',
-                            o.event.relevance === 'alta' && 'ring-1 ring-[var(--cat-solid)] ring-offset-1 ring-offset-surface',
                           )}
                         />
                       ))}
@@ -176,7 +173,6 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                               onOpenOccurrence ? 'cursor-pointer hover:brightness-95' : 'cursor-default',
                             )}
                           >
-                            {o.event.relevance === 'alta' && <ChevronsUp className="size-3 shrink-0" />}
                             <span className="min-w-0 flex-1 truncate">
                               {continues && '↳ '}
                               {o.event.title}

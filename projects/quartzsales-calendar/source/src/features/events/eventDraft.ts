@@ -41,6 +41,8 @@ export interface EventDraft {
   sourceUrl: string;
   lastVerifiedAt: string;
   imageUrl: string;
+  isHoliday: boolean;
+  areas: string[];
   contentIdeas: string;
   favorite: boolean;
   archived: boolean;
@@ -56,7 +58,7 @@ export function emptyDraft(startDate: ISODate = todayISO(), defaults: Partial<Ev
     ruleMonth: String(m), ruleNth: '1', ruleWeekday: '0', ruleOffset: '0', ruleDuration: '1', easterOffset: '-2',
     allDay: true, startTime: '', endTime: '', observances: [],
     relevance: 'media', verification: 'pendiente', verificationNote: '',
-    source: '', sourceUrl: '', lastVerifiedAt: '', imageUrl: '', contentIdeas: '',
+    source: '', sourceUrl: '', lastVerifiedAt: '', imageUrl: '', isHoliday: false, areas: [], contentIdeas: '',
     favorite: false, archived: false, editorialStatus: 'sin evaluar',
     ...defaults,
   };
@@ -80,7 +82,7 @@ export function draftFromEvent(e: CalendarEvent): EventDraft {
     allDay: e.allDay, startTime: e.startTime ?? '', endTime: e.endTime ?? '',
     observances: e.holidayObservances.map((o) => ({ year: String(o.year), date: o.date, note: o.note ?? '' })),
     relevance: e.relevance, verification: e.verification, verificationNote: e.verificationNote ?? '',
-    source: e.source, sourceUrl: e.sourceUrl ?? '', lastVerifiedAt: e.lastVerifiedAt ?? '', imageUrl: e.imageUrl ?? '',
+    source: e.source, sourceUrl: e.sourceUrl ?? '', lastVerifiedAt: e.lastVerifiedAt ?? '', imageUrl: e.imageUrl ?? '', isHoliday: !!e.isHoliday, areas: e.areas ?? [],
     contentIdeas: e.contentIdeas.join('\n'),
     favorite: e.favorite, archived: e.archived, editorialStatus: e.editorialStatus,
   };
@@ -145,6 +147,8 @@ export function draftToContent(d: EventDraft, referenceYear = parseISO(todayISO(
     sourceUrl: opt(d.sourceUrl),
     lastVerifiedAt: opt(d.lastVerifiedAt),
     imageUrl: opt(d.imageUrl),
+    isHoliday: d.isHoliday || undefined,
+    areas: d.areas.length ? d.areas : undefined,
     contentIdeas: d.contentIdeas.split('\n').map((s) => s.trim()).filter(Boolean),
     favorite: d.favorite,
     archived: d.archived,

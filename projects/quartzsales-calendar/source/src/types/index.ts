@@ -62,6 +62,10 @@ export interface CalendarEvent {
   sourceUrl?: string;
   lastVerifiedAt?: ISODate;
   imageUrl?: string;
+  /** Es feriado: ese día no se trabaja en el país (o en la fecha trasladada). */
+  isHoliday?: boolean;
+  /** Áreas a las que va dirigido el saludo (vacío = todo el país). */
+  areas?: string[];
   contentIdeas: string[];
   favorite: boolean;
   archived: boolean;
@@ -74,30 +78,51 @@ export interface CalendarEvent {
   updatedAt: string;
 }
 
-export type Tone = 'institucional' | 'cercano' | 'divertido' | 'humor-interno';
-export type GreetingStatus = 'sin redactar' | 'borrador' | 'listo' | 'compartido' | 'descartado';
-
-export interface GreetingVersion {
-  id: string;
-  body: string;
-  status: GreetingStatus;
-  savedAt: string;
-  reason: 'manual' | 'cambio de estado' | 'restauración';
-}
+export type GreetingStatus = 'pendiente' | 'listo' | 'compartido';
 
 export interface Greeting {
   id: string;
   eventId: string;
+  /** Se arma solo: "<evento> <año>". */
   internalTitle: string;
   body: string;
-  tone: Tone;
-  channel: string;
+  /** Link a la imagen del saludo, guardada afuera (Drive, Canva…). */
+  imageUrl?: string;
+  /** Fecha de la ocurrencia del evento a la que corresponde. */
   plannedDate?: ISODate;
   status: GreetingStatus;
-  privateNotes: string;
-  versions: GreetingVersion[];
   createdAt: string;
   updatedAt: string;
+}
+
+/** Puesto de una persona en un área del organigrama (una persona puede tener varios). */
+export interface PersonRole {
+  area: string;
+  title: string;
+}
+
+export interface Person {
+  id: string;
+  name: string;
+  /** Iniciales a mostrar (si no, se calculan del nombre). */
+  initials?: string;
+  roles: PersonRole[];
+  /** País donde trabaja (id del catálogo de países). */
+  country: string;
+  /** Región o provincia (id del catálogo), si se conoce. */
+  region?: string;
+  city?: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Vacation {
+  id: string;
+  personId: string;
+  start: ISODate;
+  end: ISODate;
+  note?: string;
 }
 
 export interface Subcategory {
@@ -115,7 +140,7 @@ export interface Category {
   order: number;
 }
 
-export type CategoryColor = 'blue' | 'teal' | 'amber' | 'pink' | 'fuchsia' | 'green' | 'brand';
+export type CategoryColor = 'blue' | 'teal' | 'amber' | 'pink' | 'fuchsia' | 'green' | 'brand' | 'slate';
 
 export interface City {
   id: string;

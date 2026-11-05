@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router';
 import {
   Archive, ArchiveRestore, ArrowDown, ArrowUp, ArrowUpDown, ChevronLeft, ChevronRight, Download, Library, Plus, Star, Trash2, Upload, X,
 } from 'lucide-react';
-import { CategoryBadge, RelevanceBadge, VerificationBadge } from '../../components/domain/Badges';
-import { RELEVANCE_META, VERIFICATION_META } from '../../components/domain/meta';
+import { CategoryBadge } from '../../components/domain/Badges';
 import { Badge } from '../../components/ui/Badge';
 import { Button, IconButton } from '../../components/ui/Button';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
@@ -17,16 +16,14 @@ import { formatDate, todayISO } from '../../lib/dates';
 import { applyFilters, EMPTY_FILTERS, greetingsByEvent, type EventFilters } from '../../lib/filters';
 import { nextOccurrence } from '../../lib/recurrence';
 import { cn } from '../../lib/cn';
-import type { CalendarEvent, Relevance, Verification } from '../../types';
+import type { CalendarEvent } from '../../types';
 import { useEventEditor } from '../events/EventEditor';
 import { ActiveFilterChips, FiltersButton, SearchBox } from '../filters/Filters';
 import { CsvImportDialog } from '../data/CsvImportDialog';
 import { useDataTransfer } from '../data/useDataTransfer';
 
-type SortKey = 'title' | 'next' | 'category' | 'country' | 'relevance' | 'verification' | 'updatedAt';
+type SortKey = 'title' | 'next' | 'category' | 'country' | 'updatedAt';
 const PAGE_SIZE = 50;
-const REL_RANK: Record<Relevance, number> = { alta: 0, media: 1, baja: 2 };
-const VER_RANK: Record<Verification, number> = { confirmado: 0, pendiente: 1, tentativo: 2 };
 
 export function LibraryPage() {
   const events = useEvents();
@@ -56,8 +53,6 @@ export function LibraryPage() {
         case 'next': return a.next.localeCompare(b.next);
         case 'category': return (catalog.categoryById.get(ea.category)?.name ?? '').localeCompare(catalog.categoryById.get(eb.category)?.name ?? '', 'es');
         case 'country': return placeLabel(ea, catalog).localeCompare(placeLabel(eb, catalog), 'es');
-        case 'relevance': return REL_RANK[ea.relevance] - REL_RANK[eb.relevance];
-        case 'verification': return VER_RANK[ea.verification] - VER_RANK[eb.verification];
         case 'updatedAt': return ea.updatedAt.localeCompare(eb.updatedAt);
       }
     };
@@ -133,7 +128,6 @@ export function LibraryPage() {
               className="h-9 rounded border border-border-strong bg-surface px-2 text-[13px] text-text pointer-coarse:h-11">
               <option value="next:1">Próxima fecha</option>
               <option value="title:1">Nombre A–Z</option>
-              <option value="relevance:1">Relevancia</option>
               <option value="updatedAt:-1">Editados recientemente</option>
             </select>
           </label>
@@ -150,16 +144,6 @@ export function LibraryPage() {
           <Button size="sm" icon={Star} onClick={() => void bulk({ favorite: true }, 'Marcados como favoritos')}>Favorito</Button>
           <Button size="sm" icon={Archive} onClick={() => void bulk({ archived: true }, 'Archivados')}>Archivar</Button>
           <Button size="sm" icon={ArchiveRestore} onClick={() => void bulk({ archived: false }, 'Desarchivados')}>Desarchivar</Button>
-          <select aria-label="Cambiar relevancia" value="" onChange={(e) => e.target.value && void bulk({ relevance: e.target.value as Relevance }, 'Relevancia actualizada')}
-            className="h-8 rounded border border-border-strong bg-surface px-2 text-[13px] pointer-coarse:h-11">
-            <option value="">Relevancia…</option>
-            {(Object.keys(RELEVANCE_META) as Relevance[]).map((r) => <option key={r} value={r}>{RELEVANCE_META[r].label}</option>)}
-          </select>
-          <select aria-label="Cambiar verificación" value="" onChange={(e) => e.target.value && void bulk({ verification: e.target.value as Verification }, 'Verificación actualizada')}
-            className="h-8 rounded border border-border-strong bg-surface px-2 text-[13px] pointer-coarse:h-11">
-            <option value="">Verificación…</option>
-            {(Object.keys(VERIFICATION_META) as Verification[]).map((v) => <option key={v} value={v}>{VERIFICATION_META[v].label}</option>)}
-          </select>
           <Button size="sm" variant="danger-ghost" icon={Trash2} onClick={() => setConfirmDelete(true)}>Eliminar</Button>
         </div>
       )}
@@ -185,8 +169,6 @@ export function LibraryPage() {
                   {sortHeader('next', 'Próxima fecha')}
                   {sortHeader('category', 'Categoría')}
                   {sortHeader('country', 'Lugar')}
-                  {sortHeader('relevance', 'Relevancia')}
-                  {sortHeader('verification', 'Verificación')}
                 </tr>
               </thead>
               <tbody>
@@ -207,8 +189,6 @@ export function LibraryPage() {
                     <td className="px-3 py-2.5 whitespace-nowrap text-muted">{next === '9999-12-31' ? '—' : formatDate(next)}</td>
                     <td className="px-3 py-2.5"><CategoryBadge category={catalog.categoryById.get(e.category)} /></td>
                     <td className="px-3 py-2.5 text-muted">{placeLabel(e, catalog)}</td>
-                    <td className="px-3 py-2.5"><RelevanceBadge relevance={e.relevance} compact /></td>
-                    <td className="px-3 py-2.5"><VerificationBadge verification={e.verification} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -233,8 +213,6 @@ export function LibraryPage() {
                       <span className="text-xs text-muted">{next === '9999-12-31' ? 'Sin próxima fecha' : formatDate(next)} · {placeLabel(e, catalog)}</span>
                       <span className="flex flex-wrap gap-1.5">
                         <CategoryBadge category={cat} />
-                        <RelevanceBadge relevance={e.relevance} compact />
-                        <VerificationBadge verification={e.verification} />
                         {e.archived && <Badge icon={Archive}>Archivado</Badge>}
                       </span>
                     </button>

@@ -15,7 +15,7 @@ export interface Alert {
 }
 
 /**
- * Eventos de relevancia alta que empiezan dentro de la ventana de anticipación
+ * Fechas que empiezan dentro de la ventana de anticipación
  * (hoy … hoy + leadDays) y no tienen un saludo listo o compartido.
  * Las alertas revisadas se excluyen por clave de ocurrencia.
  */
@@ -27,7 +27,7 @@ export function computeAlerts(
   reviewed: Set<string> = new Set(),
 ): Alert[] {
   const until = addDays(today, Math.max(0, leadDays));
-  return expandEvents(events.filter((e) => !e.archived && e.relevance === 'alta'), today, until)
+  return expandEvents(events.filter((e) => !e.archived), today, until)
     .filter((o) => o.start >= today && o.start <= until)
     .filter((o) => !reviewed.has(o.key))
     .filter((o) => !isGreetingReady(greetingsMap.get(o.event.id)))

@@ -58,6 +58,8 @@ export const eventContentSchema = z
     sourceUrl: optionalUrl,
     lastVerifiedAt: isoDate.optional(),
     imageUrl: optionalUrl,
+    isHoliday: z.boolean().optional(),
+    areas: z.array(z.string()).optional(),
     contentIdeas: z.array(z.string()),
     favorite: z.boolean(),
     archived: z.boolean(),

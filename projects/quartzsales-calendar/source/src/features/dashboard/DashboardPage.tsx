@@ -1,8 +1,8 @@
 import { useMemo, type ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { BellRing, CalendarCheck2, Check, ChevronRight, Info, MessageSquarePlus, Plus } from 'lucide-react';
+import { BellRing, CalendarCheck2, Check, ChevronLeft, ChevronRight, Info, MessageSquarePlus, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { GREETING_STATUS_META } from '../../components/domain/greetingMeta';
+import { GREETING_STATUS_META, GREETING_STATUSES } from '../../components/domain/greetingMeta';
 import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
 import { useToast } from '../../components/ui/Toast';
 import { markAlertReviewed, unmarkAlertReviewed } from '../../db/repo';
@@ -10,12 +10,13 @@ import { GreetingEventPicker } from '../greetings/GreetingEventPicker';
 import type { GreetingStatus } from '../../types';
 import { CategoryBadge } from '../../components/domain/Badges';
 import { categoryIcon } from '../../components/domain/meta';
-import { Button } from '../../components/ui/Button';
+import { Button, IconButton } from '../../components/ui/Button';
+import { TeamDay } from '../team/TeamDay';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Segmented } from '../../components/ui/Segmented';
 import { placeLabel, useCatalog, useEvents, useGreetings, useReviewedAlerts, useSettings, type Catalog } from '../../hooks/useData';
 import { useSessionState } from '../../hooks/useSessionState';
-import { capitalize, endOfMonth, formatDayMonth, formatLong, monthName, parseISO, relativeDays, startOfMonth, todayISO } from '../../lib/dates';
+import { addDays, capitalize, endOfMonth, formatDayMonth, formatLong, monthName, parseISO, relativeDays, startOfMonth, todayISO } from '../../lib/dates';
 import { greetingsByEvent } from '../../lib/filters';
 import { expandEvents } from '../../lib/recurrence';
 import { computeAlerts, upcoming } from '../../lib/reminders';
@@ -96,6 +97,7 @@ export function DashboardPage() {
   const navigate = useNavigate();
   const [range, setRange] = useSessionState<'7' | '30'>('dashboard:range', '7');
   const [picker, setPicker] = useState(false);
+  const [teamDate, setTeamDate] = useState(today);
   const reviewed = useReviewedAlerts();
   const toast = useToast();
 
@@ -174,14 +176,14 @@ export function DashboardPage() {
           <Card
             className="lg:col-span-2"
             title="Para preparar"
-            description={`Eventos de relevancia alta en los próximos ${settings.leadDays} días sin saludo listo.`}
+            description={`Fechas de los próximos ${settings.leadDays} días que todavía no tienen un saludo listo.`}
           >
             <p className="flex items-start gap-2 border-b border-border bg-surface-2 px-4 py-2 text-xs text-muted">
               <Info aria-hidden className="mt-0.5 size-3.5 shrink-0" />
               Estos recordatorios solo se ven al abrir la app: no hay notificaciones con la app cerrada. Para tener alarmas en el celular, exportá un .ics desde Próximos.
             </p>
             {alerts.length === 0 ? (
-              <EmptyState compact icon={BellRing} title="Nada urgente" description="No hay eventos de relevancia alta pendientes en la ventana de anticipación." />
+              <EmptyState compact icon={BellRing} title="Nada urgente" description="No hay fechas pendientes en los próximos días." />
             ) : (
               <ul className="divide-y divide-border">
                 {alerts.map((a) => (
@@ -203,6 +205,21 @@ export function DashboardPage() {
                 ))}
               </ul>
             )}
+          </Card>
+
+          <Card
+            className="lg:col-span-2"
+            title={teamDate === today ? 'El equipo hoy' : `El equipo el ${capitalize(formatLong(teamDate, false))}`}
+            description="A quién saludar, quién está de feriado y quién de vacaciones."
+            action={
+              <div className="flex items-center">
+                <IconButton icon={ChevronLeft} label="Día anterior" size="sm" onClick={() => setTeamDate(addDays(teamDate, -1))} />
+                <Button size="sm" variant="ghost" onClick={() => setTeamDate(today)} disabled={teamDate === today}>Hoy</Button>
+                <IconButton icon={ChevronRight} label="Día siguiente" size="sm" onClick={() => setTeamDate(addDays(teamDate, 1))} />
+              </div>
+            }
+          >
+            <TeamDay date={teamDate} />
           </Card>
 
           <Card
@@ -228,7 +245,7 @@ export function DashboardPage() {
 
           <Card title="Saludos" action={<Link to="/saludos" className="text-[13px] font-medium text-accent hover:underline">Ver todos</Link>}>
             <ul className="grid grid-cols-3 divide-x divide-border">
-              {(['sin redactar', 'borrador', 'listo'] as GreetingStatus[]).map((s) => {
+              {GREETING_STATUSES.map((s) => {
                 const Icon = GREETING_STATUS_META[s].icon;
                 return (
                   <li key={s}>
@@ -237,7 +254,7 @@ export function DashboardPage() {
                       <span className="text-2xl font-semibold tabular-nums">{greetingCounts[s] ?? 0}</span>
                       <span className="inline-flex items-center gap-1 text-xs text-muted">
                         <Icon aria-hidden className="size-3.5" />
-                        {s === 'listo' ? 'Listos para compartir' : GREETING_STATUS_META[s].label}
+                        {s === 'listo' ? 'Listos para compartir' : s === 'pendiente' ? 'Pendientes' : 'Compartidos'}
                       </span>
                     </Link>
                   </li>

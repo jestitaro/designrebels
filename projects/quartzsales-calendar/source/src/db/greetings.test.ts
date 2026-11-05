@@ -1,60 +1,32 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { copyText } from '../lib/clipboard';
-import { resetDatabaseForTests } from './db';
-import {
-  createGreeting, deleteGreeting, duplicateGreeting, getGreeting, restoreGreetingVersion, saveGreeting,
-  saveGreetingVersion, setGreetingStatus,
-} from './greetings';
+import { resetDatabaseForTests, simplifyGreeting } from './db';
+import { createGreeting, deleteGreeting, getGreeting, saveGreeting, setGreetingStatus } from './greetings';
 
 beforeEach(async () => {
   await resetDatabaseForTests();
 });
 
 describe('saludos', () => {
-  it('se crean sin redactar y pasan a borrador al escribir', async () => {
+  it('se crean pendientes y guardan texto e imagen', async () => {
     const g = await createGreeting({ eventId: 'e1', internalTitle: 'Tradición 2026' });
-    expect(g.status).toBe('sin redactar');
-    const saved = await saveGreeting(g.id, { body: '¡Feliz Día de la Tradición! 🧉' });
-    expect(saved.status).toBe('borrador');
-    expect((await getGreeting(g.id))?.body).toBe('¡Feliz Día de la Tradición! 🧉');
+    expect(g.status).toBe('pendiente');
+    await saveGreeting(g.id, { body: '¡Feliz Día de la Tradición! 🧉', imageUrl: 'https://drive.example/img' });
+    expect(await getGreeting(g.id)).toMatchObject({ body: '¡Feliz Día de la Tradición! 🧉', imageUrl: 'https://drive.example/img', status: 'pendiente' });
   });
 
-  it('el guardado automático no crea versiones', async () => {
-    const g = await createGreeting({ eventId: 'e1', internalTitle: 'x' });
-    await saveGreeting(g.id, { body: 'a' });
-    await saveGreeting(g.id, { body: 'ab' });
-    expect((await getGreeting(g.id))?.versions).toHaveLength(0);
-  });
-
-  it('cambiar de estado guarda un snapshot', async () => {
-    const g = await createGreeting({ eventId: 'e1', internalTitle: 'x', body: 'Hola equipo' });
-    const listo = await setGreetingStatus(g.id, 'listo');
-    expect(listo.status).toBe('listo');
-    expect(listo.versions[0]).toMatchObject({ body: 'Hola equipo', status: 'listo', reason: 'cambio de estado' });
-  });
-
-  it('guarda versiones manuales sin duplicar y restaura', async () => {
-    const g = await createGreeting({ eventId: 'e1', internalTitle: 'x', body: 'v1' });
-    await saveGreetingVersion(g.id);
-    await saveGreetingVersion(g.id);
-    let current = await getGreeting(g.id);
-    expect(current?.versions).toHaveLength(1);
-    const v1 = current!.versions[0]!;
-    await saveGreeting(g.id, { body: 'v2' });
-    const restored = await restoreGreetingVersion(g.id, v1.id);
-    expect(restored.body).toBe('v1');
-    expect(restored.versions[0]).toMatchObject({ body: 'v2', reason: 'restauración' });
-    current = await getGreeting(g.id);
-    expect(current?.versions).toHaveLength(2);
-  });
-
-  it('duplica sin historial y elimina', async () => {
-    const g = await createGreeting({ eventId: 'e1', internalTitle: 'Original', body: 'texto' });
-    await setGreetingStatus(g.id, 'compartido');
-    const copy = await duplicateGreeting(g.id);
-    expect(copy).toMatchObject({ internalTitle: 'Original (copia)', status: 'borrador', versions: [], body: 'texto' });
+  it('cambia de estado y se elimina', async () => {
+    const g = await createGreeting({ eventId: 'e1', internalTitle: 'x', body: 'Hola' });
+    expect((await setGreetingStatus(g.id, 'listo')).status).toBe('listo');
     await deleteGreeting(g.id);
     expect(await getGreeting(g.id)).toBeUndefined();
+  });
+
+  it('convierte saludos de la versión anterior', () => {
+    const old = { id: 'g', eventId: 'e', internalTitle: 't', body: 'b', tone: 'cercano', channel: 'Slack', privateNotes: 'x', versions: [], status: 'sin redactar', createdAt: 'c', updatedAt: 'u' };
+    expect(simplifyGreeting(old)).toEqual({ id: 'g', eventId: 'e', internalTitle: 't', body: 'b', imageUrl: undefined, plannedDate: undefined, status: 'pendiente', createdAt: 'c', updatedAt: 'u' });
+    expect(simplifyGreeting({ ...old, status: 'compartido' }).status).toBe('compartido');
+    expect(simplifyGreeting({ ...old, status: 'descartado' }).status).toBe('pendiente');
   });
 
   it('copiar el mensaje no lo marca como compartido', async () => {

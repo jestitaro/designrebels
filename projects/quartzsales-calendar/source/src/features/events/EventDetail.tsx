@@ -1,19 +1,17 @@
 import { useState, type ReactNode } from 'react';
 import {
-  Archive, ArchiveRestore, ArrowLeft, CalendarArrowDown, CalendarDays, CalendarX2, ChevronRight, MessageSquarePlus, MessageSquareText, Copy, CopyPlus, ExternalLink, Lightbulb, MapPin, Pencil, Star, Trash2,
+  Archive, ArchiveRestore, ArrowLeft, CalendarArrowDown, CalendarDays, CalendarX2, ChevronRight, MessageSquarePlus, MessageSquareText,  ExternalLink, ImageIcon, MapPin, Pencil, Star, Trash2,
 } from 'lucide-react';
 import { placeLabel, useCatalog, useEvent, useGreetingsMap } from '../../hooks/useData';
 import { GreetingStatusBadge } from '../../components/domain/GreetingBadges';
-import { TONE_LABELS } from '../../components/domain/greetingMeta';
 import { useCreateGreeting } from '../greetings/useCreateGreeting';
 import { useIcsExport } from '../reminders/useIcsExport';
 import { Link } from 'react-router';
 import { capitalize, formatDate, formatLong, formatRange, relativeDays, todayISO } from '../../lib/dates';
-import { eventToPlainText } from '../../lib/eventText';
 import { describeRecurrence, nextOccurrence, occurrencesInRange } from '../../lib/recurrence';
 import { cn } from '../../lib/cn';
 import type { CalendarEvent, ISODate, Occurrence } from '../../types';
-import { CategoryBadge, RelevanceBadge, VerificationBadge } from '../../components/domain/Badges';
+import { CategoryBadge } from '../../components/domain/Badges';
 import { Badge } from '../../components/ui/Badge';
 import { Button, IconButton } from '../../components/ui/Button';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
@@ -29,7 +27,6 @@ interface EventDetailProps {
   onBack?: () => void;
   backLabel?: string;
   onDeleted?: () => void;
-  onDuplicated?: (copy: CalendarEvent) => void;
   /** Contenido extra (saludos asociados) debajo de la ficha. */
   extra?: (event: CalendarEvent) => ReactNode;
   className?: string;
@@ -55,7 +52,7 @@ function Block({ title, icon: Icon, children }: { title: string; icon?: typeof M
   );
 }
 
-export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volver', onDeleted, onDuplicated, extra, className }: EventDetailProps) {
+export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volver', onDeleted, extra, className }: EventDetailProps) {
   const event = useEvent(eventId);
   const catalog = useCatalog();
   const editor = useEventEditor();
@@ -82,13 +79,9 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
   }
 
   const category = catalog.categoryById.get(event.category);
-  const sub = category?.subcategories.find((s) => s.id === event.subcategory);
   const occ = resolveOccurrence(event, occurrenceDate, today);
 
-  async function onCopy() {
-    const text = eventToPlainText(event!, catalog, occ);
-    if (!(await actions.copy(text))) setManualCopy(text);
-  }
+
 
   return (
     <article className={cn(`cat-${category?.color ?? 'brand'}`, 'flex flex-col', className)} aria-labelledby="event-detail-title">
@@ -100,9 +93,7 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
         )}
         <div className="flex flex-wrap items-center gap-1.5">
           <CategoryBadge category={category} />
-          {sub && <Badge>{sub.name}</Badge>}
           {event.archived && <Badge icon={Archive}>Archivado</Badge>}
-          {event.provenance === 'seed' && <Badge tone="neutral">{event.userModified ? 'Catálogo · editado' : 'Catálogo inicial'}</Badge>}
         </div>
         <div className="flex items-start gap-2">
           <h2 id="event-detail-title" className="min-w-0 flex-1 text-xl leading-snug font-extrabold">{event.title}</h2>
@@ -114,20 +105,12 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
             className={cn(event.favorite && 'text-warning [&_svg]:fill-current')}
           />
         </div>
-        {event.summary && <p className="text-sm text-muted">{event.summary}</p>}
-        <div className="flex flex-wrap gap-1.5">
-          <RelevanceBadge relevance={event.relevance} />
-          <VerificationBadge verification={event.verification} />
-          <Badge>{capitalize(event.editorialStatus)}</Badge>
-        </div>
         <div className="flex flex-wrap gap-2 pt-1">
           <Button variant="primary" size="sm" icon={Pencil} onClick={() => editor.openEdit(event)}>Editar</Button>
           <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(event, occ?.start)}>Crear saludo</Button>
-          <Button size="sm" icon={Copy} onClick={() => void onCopy()}>Copiar info</Button>
-          <Button size="sm" icon={CalendarArrowDown} onClick={() => exportEvents([event], `${event.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.ics`, 365 * 3)}>
+          <Button size="sm" variant="ghost" icon={CalendarArrowDown} onClick={() => exportEvents([event], `${event.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.ics`, 365 * 3)}>
             Exportar .ics
           </Button>
-          <Button size="sm" icon={CopyPlus} onClick={async () => { const c = await actions.duplicate(event); onDuplicated?.(c); }}>Duplicar</Button>
           <Button size="sm" icon={event.archived ? ArchiveRestore : Archive} onClick={() => void actions.toggleArchive(event)}>
             {event.archived ? 'Desarchivar' : 'Archivar'}
           </Button>
@@ -144,65 +127,29 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
             </p>
           )}
           <p className="text-muted">{describeRecurrence(event)}</p>
-          {!event.allDay && event.startTime && (
-            <p className="text-muted">Horario: {event.startTime}{event.endTime ? `–${event.endTime}` : ''} h ({event.timezone})</p>
-          )}
           {event.holidayObservances.length > 0 && (
             <ul className="mt-1 flex flex-col gap-0.5">
               {event.holidayObservances.map((o) => (
                 <li key={`${o.year}-${o.date}`} className="text-muted">
                   <span className="font-medium text-text">Feriado trasladado {o.year}:</span> {formatDate(o.date)}
-                  {o.note ? ` — ${o.note}` : ''}
                 </li>
               ))}
             </ul>
           )}
         </Block>
 
-        <Block title="Lugar" icon={MapPin}>{placeLabel(event, catalog)}</Block>
-
-        {event.description && <Block title="Descripción">{event.description}</Block>}
-        {event.history && <Block title="Origen e historia">{event.history}</Block>}
-        {event.traditions && <Block title="Tradiciones">{event.traditions}</Block>}
-
-        {event.contentIdeas.length > 0 && (
-          <Block title="Ideas de contenido" icon={Lightbulb}>
-            <ul className="flex list-disc flex-col gap-1 pl-5">
-              {event.contentIdeas.map((idea, i) => <li key={i}>{idea}</li>)}
-            </ul>
-          </Block>
-        )}
-
-        <Block title="Fuente y verificación">
-          {event.source || event.sourceUrl ? (
-            <p>
-              {event.source}
-              {event.sourceUrl && (
-                <>
-                  {event.source ? ' · ' : ''}
-                  <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 font-medium text-accent underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-focus">
-                    Abrir fuente <ExternalLink aria-hidden className="size-3.5" />
-                    <span className="sr-only">(se abre en otra pestaña)</span>
-                  </a>
-                </>
-              )}
-            </p>
-          ) : (
-            <p className="text-muted">Sin fuente cargada.</p>
-          )}
-          <p className="text-muted">
-            {event.lastVerifiedAt ? `Última verificación: ${formatDate(event.lastVerifiedAt)}` : 'Sin fecha de verificación.'}
-          </p>
-          {event.verification !== 'confirmado' && event.verificationNote && (
-            <p className="mt-1 rounded bg-warning-bg px-3 py-2 text-warning">Falta confirmar: {event.verificationNote}</p>
-          )}
+        <Block title="Lugar" icon={MapPin}>
+          {placeLabel(event, catalog)}
+          {event.isHoliday && <span className="ml-2 rounded-xs bg-warning-bg px-1.5 py-0.5 font-data text-[11px] font-bold text-warning">Feriado</span>}
+          {event.areas?.length ? <p className="text-muted">Para: {event.areas.join(', ')}</p> : null}
         </Block>
 
         {event.imageUrl && (
-          <Block title="Imagen de referencia">
-            <a href={event.imageUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium break-all text-accent hover:underline">
-              {event.imageUrl} <ExternalLink aria-hidden className="size-3.5 shrink-0" />
+          <Block title="Imagen" icon={ImageIcon}>
+            <a href={event.imageUrl} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-bold break-all text-accent hover:underline focus-visible:outline-2 focus-visible:outline-focus">
+              Abrir imagen <ExternalLink aria-hidden className="size-3.5 shrink-0" />
+              <span className="sr-only">(se abre en otra pestaña)</span>
             </a>
           </Block>
         )}
@@ -225,7 +172,6 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
                       <span className="truncate text-sm font-medium">{g.internalTitle || 'Saludo sin título'}</span>
                       <span className="flex flex-wrap items-center gap-1.5 text-xs text-muted">
                         <GreetingStatusBadge status={g.status} />
-                        {TONE_LABELS[g.tone]}
                         {g.plannedDate && ` · ${formatDate(g.plannedDate)}`}
                       </span>
                     </span>

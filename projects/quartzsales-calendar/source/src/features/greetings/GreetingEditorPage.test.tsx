@@ -27,7 +27,7 @@ describe('editor de saludos', () => {
   it('guarda automáticamente y muestra "Guardado"', async () => {
     const user = userEvent.setup();
     setup();
-    const body = await screen.findByLabelText('Mensaje');
+    const body = await screen.findByLabelText('Texto del saludo');
     await user.type(body, ' *equipo*');
     await waitFor(async () => expect((await getGreeting(id))?.body).toBe('Hola *equipo*'), { timeout: 2000 });
     expect(await screen.findByText('Guardado')).toBeInTheDocument();
@@ -47,11 +47,11 @@ describe('editor de saludos', () => {
     expect((await getGreeting(id))?.status).toBe('listo');
   });
 
-  it('marcar como compartido es una acción explícita que guarda versión', async () => {
+  it('marcar como compartido es una acción explícita', async () => {
     const user = userEvent.setup();
     setup();
-    await user.click(await screen.findByRole('button', { name: 'Marcar como compartido' }));
+    await user.click(await screen.findByRole('button', { name: 'Compartido' }));
     await waitFor(async () => expect((await getGreeting(id))?.status).toBe('compartido'));
-    expect((await getGreeting(id))?.versions).toHaveLength(1);
   });
+
 });
