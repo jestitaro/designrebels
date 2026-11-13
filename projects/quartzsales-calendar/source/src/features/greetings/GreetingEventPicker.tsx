@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Modal } from '../../components/ui/Dialog';
 import { EventGreetingBadge } from '../../components/domain/GreetingBadges';
-import { useEvents, useGreetingsMap } from '../../hooks/useData';
+import { eventTitle, useCatalog, useEvents, useGreetingsMap } from '../../hooks/useData';
 import { addDays, formatDate, todayISO } from '../../lib/dates';
 import { matchesQuery } from '../../lib/filters';
 import { expandEvents } from '../../lib/recurrence';
@@ -12,6 +12,7 @@ import { useCreateGreeting } from './useCreateGreeting';
 export function GreetingEventPicker({ open, onClose }: { open: boolean; onClose: () => void }) {
   const events = useEvents();
   const gMap = useGreetingsMap();
+  const catalog = useCatalog();
   const create = useCreateGreeting();
   const [query, setQuery] = useState('');
   const today = todayISO();
@@ -32,7 +33,7 @@ export function GreetingEventPicker({ open, onClose }: { open: boolean; onClose:
                 <button type="button" onClick={() => { onClose(); void create(o.event, o.start); }}
                   className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-focus">
                   <span className="w-20 shrink-0 text-xs text-muted tabular-nums">{formatDate(o.start)}</span>
-                  <span className="min-w-0 flex-1 truncate text-sm font-medium">{o.event.title}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium">{eventTitle(o.event, catalog)}</span>
                   <EventGreetingBadge greetings={gMap.get(o.event.id)} />
                 </button>
               </li>

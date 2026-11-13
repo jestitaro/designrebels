@@ -52,6 +52,9 @@ const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string
   3: (raw) => raw,
   // v4 → v5: solo suma regiones y ciudades al catálogo; los datos no cambian.
   4: (raw) => raw,
+  // v5 → v6: los eventos pueden tener ediciones (opcionales) y se quitó la categoría Comerciales del
+  // catálogo por defecto. Los datos del respaldo se respetan tal cual.
+  5: (raw) => raw,
 };
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };

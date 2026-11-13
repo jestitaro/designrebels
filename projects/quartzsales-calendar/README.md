@@ -1,6 +1,6 @@
 # QuartzSales Calendar
 
-App personal para planificar las comunicaciones internas de QuartzSales: fechas especiales por país y región (efemérides, fiestas, días profesionales, cultura pop, fechas comerciales), saludos para el equipo y recordatorios. Se usa en la compu o en el celular y se instala como app (PWA).
+App personal para planificar las comunicaciones internas de QuartzSales: fechas especiales por país y región (efemérides, fiestas, días profesionales, cultura pop), saludos para el equipo y recordatorios. Se usa en la compu o en el celular y se instala como app (PWA).
 
 Se publica en `designrebels.pages.dev/projects/quartzsales-calendar/`.
 
@@ -95,7 +95,8 @@ Si aun así ves una versión vieja: cerrá todas las pestañas de la app y abril
 
 ## Qué guarda cada cosa
 
-- **Fecha:** nombre, categoría, país, cuándo (todos los años, solo una vez o una regla como "4.º jueves de noviembre" o "según Pascua"), si es feriado, para qué áreas es el saludo y un link de imagen opcional.
+- **Fecha:** nombre, categoría, país, cuándo (todos los años, solo una vez o una regla como "3.er domingo de octubre" o "según Pascua"), si es feriado, para qué áreas es el saludo y un link de imagen opcional.
+- **Ediciones:** cuando una fecha se hace en otro día según la provincia o la ciudad (como la Noche de los Museos), cada lugar es una edición con su fecha, horario (puede pasar la medianoche, ej. 19 a 2 h), nombre local opcional, link y estado (confirmada o pendiente). Se cargan en el detalle de la fecha con **Agregar edición**; **Duplicar** copia una edición para cambiar solo el lugar y la fecha. En el calendario se ve "Noche de los Museos · Córdoba", y "A quién saludar" usa el lugar de cada edición. Las que ya pasaron se ven atenuadas ("Ya se hizo"). No se repiten solas: el año siguiente se cargan de nuevo cuando haya fecha confirmada.
 - **Saludo:** el texto, un link de imagen y el estado (pendiente, listo o compartido). "Copiar mensaje" lo copia para pegarlo donde quieras.
 - **Imágenes:** la app no genera ni guarda imágenes, solo el link. Pedile la imagen a Claude en el chat, guardala en Drive, Canva o donde prefieras y pegá el link en la fecha o en el saludo.
 
@@ -146,7 +147,7 @@ El catálogo inicial viaja en el código (`source/src/data/seed.ts`). Al publica
 
 Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la app ya no las muestra. Solo se marcó como *confirmado* lo respaldado por una fuente oficial (gobierno, boletín oficial, municipio u organizador). Desde el entorno de desarrollo no se pudieron abrir directamente algunos sitios oficiales, así que la verificación se hizo con búsquedas limitadas a esos dominios.
 
-### Confirmados (25)
+### Confirmados (23)
 
 | Evento | Fecha | Fuente |
 |---|---|---|
@@ -155,12 +156,10 @@ Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la 
 | Día Nacional del Mate | 30/11 | [Ley 27.117](https://www.argentina.gob.ar/normativa/nacional/ley-27117-241355/texto) |
 | Día del Vino Argentino Bebida Nacional | 24/11 | [argentina.gob.ar](https://www.argentina.gob.ar/noticias/vino-argentino-bebida-nacional) |
 | Día de la Música | 22/11 | [Ministerio de Cultura](https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/) |
-| La Noche de los Museos 2026 | 14/11/2026 | [Turismo Buenos Aires](https://turismo.buenosaires.gob.ar/es/article/la-noche-de-los-museos) |
 | Día de Muertos | 01–02/11 | [Secretaría de Cultura (gob.mx)](https://www.gob.mx/cultura/prensa/mexico-se-prepara-para-celebrar-a-sus-muertos) |
 | Aniversario de la Revolución Mexicana | 20/11 (descanso 16/11/2026) | [PROFEDET](https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026) |
 | Día Nacional del Libro (México) | 12/11 | [DOF 1979](https://dof.gob.mx/nota_detalle.php?codigo=4842539&fecha=06/11/1979) |
 | Día Nacional de la Gastronomía Mexicana | 16/11 | [DOF 2016](https://www.dof.gob.mx/nota_detalle.php?codigo=5456816&fecha=14%2F10%2F2016) |
-| El Buen Fin 2026 | 13–17/11/2026 | [Reglas de Operación 2026](https://www.elbuenfin.org/assets/documents/REGLAS_DE_OPERACION_BUEN_FIN.pdf) |
 | Día de los Difuntos (Ecuador) | 02/11 | [Registro Civil](https://www.registrocivil.gob.ec/gobierno-del-ecuador-garantiza-la-atencion-del-registro-civil-durante-el-feriado-por-el-dia-de-los-difuntos-y-la-independencia-de-cuenca) |
 | Independencia de Cuenca | 03/11 | [Alcaldía de Cuenca](https://www.cuenca.gob.ec/content/cuenca-tendra-mas-de-300-eventos-en-sus-fiestas-de-independencia-gracias-al-apoyo-de-la) |
 | Festival Internacional de Artes Vivas de Loja 2026 | 12–22/11/2026 | [Municipio de Loja](https://www.loja.gob.ec/noticia/2026-10/presentaron-programacion-del-festival-de-artes-vivas-2026) |
@@ -175,13 +174,28 @@ Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la 
 
 \* El traslado al 23/11 figura en el calendario oficial de días inhábiles del Tribunal Fiscal de la Nación. Está cargado como feriado trasladado con la nota de confirmar la norma.
 
-### Pendientes, cargados con nota (3)
+### Pendientes, cargados con nota (1)
 
 | Evento | Qué falta |
 |---|---|
 | La Noche de las Heladerías 2026 (18/11) | La fecha solo apareció en medios. Confirmar en los canales de AFADHYA. |
-| CyberMonday 2026 Argentina (02–04/11) | Fechas de medios. Confirmar en cybermonday.com.ar (CACE). |
-| Black Friday (día siguiente al 4.º jueves de noviembre) | Es una fecha comercial por convención: no hay un organismo oficial que la publique. |
+
+### La Noche de los Museos 2026: ediciones por región
+
+Verificado el **13/11/2026**. Todas gratuitas.
+
+| Región | Fecha | Horario | Estado | Fuente |
+|---|---|---|---|---|
+| Tucumán | sáb 31/10 | — | Pendiente | No apareció en fuentes oficiales (en 2025 fue el 4/10). Confirmar con la Red de Museos de Tucumán. |
+| Entre Ríos | vie 06/11 | 19 a 24 h | Confirmada | [Gobierno de Entre Ríos](https://www.entrerios.gov.ar/cultura/se-prepara-una-nueva-edicion-de-la-noche-de-los-museos-entrerrianos/) |
+| Corrientes | sáb 07/11 | 18 a 1 h | Pendiente | Sin fuente oficial 2026 (en 2025 fue el 8/11). |
+| Córdoba (capital e interior) | vie 13/11 | 20 a 1 h | Confirmada | [Municipalidad de Córdoba](https://cordoba.gob.ar/noche-museos-cordoba-2026/) |
+| CABA | sáb 14/11 | 19 a 2 h | Confirmada | [Turismo Buenos Aires](https://turismo.buenosaires.gob.ar/es/article/la-noche-de-los-museos) |
+| La Plata y Ensenada ("Museos a la luz de la luna") | sáb 14/11 | 19 a 24 h | Confirmada | [Facultad de Ingeniería UNLP](https://ing.unlp.edu.ar/noche-de-los-museos-a-la-luz-de-la-luna-2026/) |
+
+Los sitios de Entre Ríos, Córdoba y la UNLP no se pudieron abrir desde el entorno de desarrollo: se verificaron con búsquedas sobre esos dominios oficiales.
+
+**Podrían tener ediciones regionales pero no se cargaron:** la Noche de las Heladerías (es nacional según AFADHYA, pero algunas ciudades suman actividades propias) y otras noches de museos municipales (Mar del Plata, Rosario) que no están entre los lugares del equipo.
 
 ### Feriados nacionales
 
@@ -205,7 +219,7 @@ Para que funcionen, cada persona tiene que tener cargada su provincia o región 
 
 ### Sacados para simplificar
 
-Aniversarios de ciudades (La Plata, Bahía Blanca, Corrientes, Mendoza), Día del Sánguche de Milanesa y Festival de Calaveras (ya pasó). Al actualizar, la app los saca de tu calendario salvo que los hayas editado o tengan un saludo.
+**Fechas comerciales** (CyberMonday, Black Friday, El Buen Fin) y su categoría. Aniversarios de ciudades (La Plata, Bahía Blanca, Corrientes, Mendoza), Día del Sánguche de Milanesa y Festival de Calaveras (ya pasó). Al actualizar, la app los saca de tu calendario salvo que los hayas editado o tengan un saludo.
 
 ### No incluidos
 

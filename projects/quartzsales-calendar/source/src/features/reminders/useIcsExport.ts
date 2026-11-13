@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useToast } from '../../components/ui/Toast';
 import { bestGreetingStatus, GREETING_STATUS_META } from '../../components/domain/greetingMeta';
-import { useGreetingsMap, useSettings } from '../../hooks/useData';
+import { eventTitle, useCatalog, useGreetingsMap, useSettings } from '../../hooks/useData';
 import { addDays, todayISO } from '../../lib/dates';
 import { downloadFile } from '../../lib/download';
 import { buildIcs } from '../../lib/ics';
@@ -12,6 +12,7 @@ import type { CalendarEvent, Occurrence } from '../../types';
 export function useIcsExport() {
   const { leadDays } = useSettings();
   const gMap = useGreetingsMap();
+  const catalog = useCatalog();
   const toast = useToast();
 
   const exportOccurrences = useCallback(
@@ -22,6 +23,7 @@ export function useIcsExport() {
       }
       const ics = buildIcs(occurrences, {
         leadDays,
+        titleOf: (o) => eventTitle(o.event, catalog),
         extraDescription: (o) => {
           const s = bestGreetingStatus((gMap.get(o.event.id) ?? []).map((g) => g.status));
           return s ? `Saludo: ${GREETING_STATUS_META[s].label.toLowerCase()}` : 'Saludo: sin crear';
@@ -30,7 +32,7 @@ export function useIcsExport() {
       downloadFile(filename, ics, 'text/calendar;charset=utf-8');
       toast.success(`Se descargó ${filename} con ${occurrences.length} ${occurrences.length === 1 ? 'fecha' : 'fechas'}. Abrilo para sumarlo a tu calendario.`);
     },
-    [leadDays, gMap, toast],
+    [leadDays, gMap, toast, catalog],
   );
 
   /** Próximos `days` días (por defecto, un año) de los eventos indicados. */

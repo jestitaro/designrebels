@@ -1,5 +1,5 @@
 import { Plus } from 'lucide-react';
-import type { Catalog } from '../../hooks/useData';
+import { eventTitle, type Catalog } from '../../hooks/useData';
 import { capitalize, formatDayMonth, parseISO, weekDays, WEEKDAYS } from '../../lib/dates';
 import { cn } from '../../lib/cn';
 import type { GreetingStatus, ISODate, Occurrence } from '../../types';
@@ -65,7 +65,7 @@ export function WeekView({ anchor, today, selected, byDay, catalog, onSelectDay,
                         'hover:brightness-95 focus-visible:outline-2 focus-visible:outline-focus',
                       )}
                     >
-                      <span className="text-[13px] leading-snug font-medium">{o.event.title}</span>
+                      <span className="text-[13px] leading-snug font-medium">{eventTitle(o.event, catalog)}</span>
                       <span className="flex items-center gap-1 text-[11px] opacity-90">
                         {o.start !== o.end && <span>{formatDayMonth(o.start)}–{formatDayMonth(o.end)}</span>}
                         {(() => {

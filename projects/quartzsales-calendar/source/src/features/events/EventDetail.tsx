@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import {
   Archive, ArchiveRestore, ArrowLeft, CalendarArrowDown, CalendarDays, CalendarX2, ChevronRight, MessageSquarePlus, MessageSquareText,  ExternalLink, ImageIcon, MapPin, Pencil, Star, Trash2,
 } from 'lucide-react';
-import { placeLabel, useCatalog, useEvent, useGreetingsMap } from '../../hooks/useData';
+import { eventTitle, placeLabel, useCatalog, useEvent, useGreetingsMap } from '../../hooks/useData';
 import { GreetingStatusBadge } from '../../components/domain/GreetingBadges';
 import { useCreateGreeting } from '../greetings/useCreateGreeting';
 import { useIcsExport } from '../reminders/useIcsExport';
@@ -19,6 +19,7 @@ import { EmptyState } from '../../components/ui/EmptyState';
 import { ManualCopyDialog } from '../../components/ui/ManualCopyDialog';
 import { useEventEditor } from './EventEditor';
 import { useEventActions } from './useEventActions';
+import { EditionsSection, editionHours } from './Editions';
 
 interface EventDetailProps {
   eventId: string;
@@ -107,7 +108,7 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
         </div>
         <div className="flex flex-wrap gap-2 pt-1">
           <Button variant="primary" size="sm" icon={Pencil} onClick={() => editor.openEdit(event)}>Editar</Button>
-          <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(event, occ?.start)}>Crear saludo</Button>
+          <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(occ?.event ?? event, occ?.start)}>Crear saludo</Button>
           <Button size="sm" variant="ghost" icon={CalendarArrowDown} onClick={() => exportEvents([event], `${event.title.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}.ics`, 365 * 3)}>
             Exportar .ics
           </Button>
@@ -126,6 +127,9 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
               <span className="font-normal text-muted"> · {relativeDays(today, occ.start)}</span>
             </p>
           )}
+          {occ?.event.edition && (
+            <p className="text-muted">{eventTitle(occ.event, catalog)} · {editionHours(occ.event.edition)}</p>
+          )}
           <p className="text-muted">{describeRecurrence(event)}</p>
           {event.holidayObservances.length > 0 && (
             <ul className="mt-1 flex flex-col gap-0.5">
@@ -139,10 +143,12 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
         </Block>
 
         <Block title="Lugar" icon={MapPin}>
-          {placeLabel(event, catalog)}
+          {placeLabel(occ?.event ?? event, catalog)}
           {event.isHoliday && <span className="ml-2 rounded-xs bg-warning-bg px-1.5 py-0.5 font-data text-[11px] font-bold text-warning">Feriado</span>}
           {event.areas?.length ? <p className="text-muted">Para: {event.areas.join(', ')}</p> : null}
         </Block>
+
+        <EditionsSection event={event} />
 
         {event.imageUrl && (
           <Block title="Imagen" icon={ImageIcon}>
@@ -161,7 +167,7 @@ export function EventDetail({ eventId, occurrenceDate, onBack, backLabel = 'Volv
           {(gMap.get(event.id) ?? []).length === 0 ? (
             <div className="flex flex-wrap items-center gap-2 rounded border border-dashed border-border-strong px-3 py-3 text-[13px] text-muted">
               <span className="flex-1">Todavía no hay saludos para este evento.</span>
-              <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(event, occ?.start)}>Crear saludo</Button>
+              <Button size="sm" icon={MessageSquarePlus} onClick={() => void createGreeting(occ?.event ?? event, occ?.start)}>Crear saludo</Button>
             </div>
           ) : (
             <ul className="flex flex-col divide-y divide-border rounded border border-border">

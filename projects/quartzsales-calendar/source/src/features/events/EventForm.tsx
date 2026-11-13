@@ -106,6 +106,12 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
         </Field>
       </div>
 
+      {draft.editionsCount > 0 ? (
+        <p className="rounded bg-surface-2 px-3 py-2 text-[13px] text-muted">
+          Este evento tiene {draft.editionsCount === 1 ? 'una edición' : `${draft.editionsCount} ediciones`} con fecha y lugar propios.
+          Las fechas se cambian desde <strong className="text-text">Ediciones</strong>, en el detalle del evento.
+        </p>
+      ) : (
       <fieldset className="flex flex-col gap-3">
         <legend className="mb-1.5 text-[13px] font-bold">¿Cuándo?</legend>
         <div role="radiogroup" aria-label="Cuándo" className="grid grid-cols-3 gap-2">
@@ -159,7 +165,7 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
                     </Select>
                   )}
                 </Field>
-                <Field label="Días +/−" hint="Black Friday: +1">
+                <Field label="Días +/−" hint="+1 = el día siguiente">
                   {(p) => <Input id={p.id} aria-describedby={p.describedBy} type="number" min={-31} max={31} value={draft.ruleOffset} onChange={(e) => set('ruleOffset', e.target.value)} />}
                 </Field>
               </div>
@@ -181,6 +187,7 @@ export function EventForm({ formId, initial, onSubmit, onDirtyChange }: EventFor
 
         {preview && <p className="rounded bg-surface-2 px-3 py-2 text-[13px] text-muted" aria-live="polite">{preview}</p>}
       </fieldset>
+      )}
 
       <div className="flex flex-col gap-3">
         <Checkbox label="Es feriado" description="Ese día no se trabaja en el país. Si se traslada, cuenta el día trasladado."

@@ -1,7 +1,7 @@
 import { useMemo, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { PartyPopper, Plane, TreePalm, Users } from 'lucide-react';
-import { placeLabel, useCatalog, useEvents, usePeople, useVacations, type Catalog } from '../../hooks/useData';
+import { eventTitle, placeLabel, useCatalog, useEvents, usePeople, useVacations, type Catalog } from '../../hooks/useData';
 import { formatDayMonth } from '../../lib/dates';
 import { personInitials, teamForDay } from '../../lib/team';
 import { cn } from '../../lib/cn';
@@ -74,7 +74,7 @@ export function TeamDay({ date, compact, className }: { date: ISODate; compact?:
                 <Link to={`/eventos/${occurrence.event.id}?fecha=${occurrence.start}`}
                   className="flex items-center gap-1.5 text-[13px] font-bold text-[var(--cat-fg)] hover:underline focus-visible:outline-2 focus-visible:outline-focus">
                   <Icon aria-hidden className="size-3.5" />
-                  {occurrence.event.title}
+                  {eventTitle(occurrence.event, catalog)}
                   <span className="font-normal text-muted">· {list.length === (people?.filter((p) => p.active).length ?? 0) ? 'todo el equipo' : `${list.length} ${list.length === 1 ? 'persona' : 'personas'}`}</span>
                 </Link>
                 <ul className={cn('mt-1', compact ? 'grid grid-cols-1' : 'grid gap-x-4 sm:grid-cols-2')}>

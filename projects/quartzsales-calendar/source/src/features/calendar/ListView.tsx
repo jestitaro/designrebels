@@ -1,6 +1,6 @@
 import { CalendarSearch } from 'lucide-react';
 import type { Catalog } from '../../hooks/useData';
-import { placeLabel } from '../../hooks/useData';
+import { eventTitle, placeLabel } from '../../hooks/useData';
 import { capitalize, formatDayMonth, formatLong } from '../../lib/dates';
 import { cn } from '../../lib/cn';
 import type { ISODate, Occurrence } from '../../types';
@@ -41,7 +41,7 @@ export function ListView({ days, today, catalog, onOpen, emptyAction, renderMeta
                   >
                     <span aria-hidden className="mt-1 size-2.5 shrink-0 rounded-full bg-[var(--cat-solid)]" />
                     <span className="flex min-w-0 flex-1 flex-col gap-1">
-                      <span className="font-medium">{o.event.title}</span>
+                      <span className="font-medium">{eventTitle(o.event, catalog)}</span>
                       <span className="text-xs text-muted">
                         {placeLabel(o.event, catalog)}
                         {o.start !== o.end && ` · del ${formatDayMonth(o.start)} al ${formatDayMonth(o.end)}`}

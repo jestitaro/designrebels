@@ -22,7 +22,7 @@ describe('seed', () => {
       if (e.verification === 'confirmado') {
         expect(e.source, e.id).not.toBe('');
         expect(e.sourceUrl, e.id).toMatch(/^https?:\/\//);
-        expect(e.lastVerifiedAt, e.id).toBe('2026-11-03');
+        expect(e.lastVerifiedAt, e.id).toMatch(/^2026-11-(03|13)$/);
       } else {
         expect(e.verificationNote, e.id).toBeTruthy();
       }
@@ -37,6 +37,23 @@ describe('seed', () => {
       expect(e.category).not.toBe('quartzsales');
       if (e.subcategory) expect(cats.get(e.category)!.subcategories.some((s) => s.id === e.subcategory), `${e.id} → ${e.subcategory}`).toBe(true);
       for (const p of [e.country, e.region, e.city]) if (p) expect(places.has(p), `${e.id} → ${p}`).toBe(true);
+      for (const ed of e.editions ?? []) for (const p of [ed.region, ed.city]) if (p) expect(places.has(p), `${e.id}/${ed.id} → ${p}`).toBe(true);
+    }
+  });
+
+  it('sin fechas comerciales', () => {
+    expect(DEFAULT_CATEGORIES.some((c) => c.id === 'comerciales')).toBe(false);
+    expect(SEED_EVENTS.some((e) => e.category === 'comerciales')).toBe(false);
+  });
+
+  it('Noche de los Museos: una edición por región; las confirmadas con link y las pendientes con nota', () => {
+    const nm = SEED_EVENTS.find((e) => e.id === 'seed-ar-noche-museos-2026')!;
+    expect(nm.editions?.map((e) => `${e.region}:${e.startDate}`)).toEqual([
+      'ar-tuc:2026-10-31', 'ar-er:2026-11-06', 'ar-ctes:2026-11-07', 'ar-cba:2026-11-13', 'ar-caba:2026-11-14', 'ar-ba:2026-11-14',
+    ]);
+    for (const ed of nm.editions!) {
+      if (ed.verification === 'confirmado') expect(ed.url, ed.id).toMatch(/^https:\/\//);
+      else expect(ed.note, ed.id).toBeTruthy();
     }
   });
 
@@ -44,7 +61,6 @@ describe('seed', () => {
     const byId = new Map(SEED_EVENTS.map((e) => [e.id, e]));
     expect(occurrenceStartForYear(byId.get('seed-intl-usabilidad')!, 2026)).toBe('2026-11-12');
     expect(occurrenceStartForYear(byId.get('seed-intl-project-management')!, 2026)).toBe('2026-11-05');
-    expect(occurrenceStartForYear(byId.get('seed-intl-black-friday')!, 2026)).toBe('2026-11-27');
     expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2026)).toBe('2026-04-03');
     expect(occurrenceStartForYear(byId.get('seed-es-viernes-santo')!, 2027)).toBe('2027-03-26');
     expect(occurrenceStartForYear(byId.get('seed-ar-carnaval')!, 2026)).toBe('2026-02-16');

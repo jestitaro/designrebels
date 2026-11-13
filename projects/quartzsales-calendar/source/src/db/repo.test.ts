@@ -19,7 +19,7 @@ describe('persistencia de eventos', () => {
   it('inicializa catálogos y configuración por defecto una sola vez', async () => {
     await initDatabase();
     await initDatabase();
-    expect(await db.categories.count()).toBe(8);
+    expect(await db.categories.count()).toBe(7);
     expect(await db.countries.count()).toBe(5);
     expect((await getSettings()).leadDays).toBe(3);
     expect(db.verno).toBe(SCHEMA_VERSION);
@@ -82,7 +82,7 @@ describe('migraciones', () => {
     ]);
     v1.close();
     const migrated = await resetDatabaseForTests(name);
-    expect(migrated.verno).toBe(5);
+    expect(migrated.verno).toBe(6);
     const countries = await migrated.countries.orderBy('order').toArray();
     expect(countries.map((c) => c.id)).toEqual(['ar', 'es', 'intl']);
     expect(countries[0]?.name).toBe('Argentina editada');

@@ -19,7 +19,7 @@ export type Recurrence =
   | { type: 'yearly-fixed' }
   /**
    * Todos los años, el n-ésimo `weekday` de `month`, desplazado `offsetDays`.
-   * nth: 1..5, o -1 para "el último". Ej. Black Friday: 4.º jueves de noviembre +1.
+   * nth: 1..5, o -1 para "el último". Ej. Día de la Madre (AR): 3.er domingo de octubre.
    */
   | { type: 'yearly-nth-weekday'; month: number; weekday: Weekday; nth: 1 | 2 | 3 | 4 | 5 | -1; offsetDays: number }
   /** Todos los años, relativo al Domingo de Pascua (calendario gregoriano). Viernes Santo: −2. */
@@ -29,6 +29,28 @@ export type Recurrence =
 export interface HolidayObservance {
   year: number;
   date: ISODate;
+  note?: string;
+}
+
+/**
+ * Edición de un evento: una fecha concreta (con año) en un lugar. Sirve para fechas que
+ * cada región hace en otro día (ej. Noche de los Museos). El país es siempre el del evento.
+ */
+export interface EventEdition {
+  id: string;
+  region?: string;
+  city?: string;
+  startDate: ISODate;
+  endDate?: ISODate;
+  /** Horario local; el fin puede ser menor que el inicio si cruza la medianoche. */
+  startTime?: ISOTime;
+  endTime?: ISOTime;
+  /** Nombre propio de esa edición (ej. "Museos a la luz de la luna"). */
+  localName?: string;
+  /** Link al programa o a la fuente. */
+  url?: string;
+  source?: string;
+  verification: Verification;
   note?: string;
 }
 
@@ -66,6 +88,13 @@ export interface CalendarEvent {
   isHoliday?: boolean;
   /** Áreas a las que va dirigido el saludo (vacío = todo el país). */
   areas?: string[];
+  /**
+   * Si tiene ediciones, las fechas salen de acá (startDate/recurrence del evento se ignoran
+   * en el calendario).
+   */
+  editions?: EventEdition[];
+  /** Solo en ocurrencias: la edición que se está mostrando (no se guarda). */
+  edition?: EventEdition;
   contentIdeas: string[];
   favorite: boolean;
   archived: boolean;

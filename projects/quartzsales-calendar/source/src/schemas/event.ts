@@ -25,6 +25,30 @@ export const recurrenceSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('yearly-easter'), offsetDays: z.number().int().min(-70).max(70) }),
 ]);
 
+export const editionSchema = z
+  .object({
+    id: z.string().min(1),
+    region: z.string().optional(),
+    city: z.string().optional(),
+    startDate: isoDate,
+    endDate: isoDate.optional(),
+    startTime: time.optional(),
+    endTime: time.optional(),
+    localName: z.string().optional(),
+    url: optionalUrl,
+    source: z.string().optional(),
+    verification: z.enum(['confirmado', 'pendiente', 'tentativo']),
+    note: z.string().optional(),
+  })
+  .superRefine((v, ctx) => {
+    if (v.endDate && v.endDate < v.startDate) {
+      ctx.addIssue({ code: 'custom', path: ['endDate'], message: 'La fecha de fin no puede ser anterior al inicio.' });
+    }
+    if (v.endTime && !v.startTime) {
+      ctx.addIssue({ code: 'custom', path: ['startTime'], message: 'Indicá también la hora de inicio.' });
+    }
+  });
+
 export const relevanceSchema = z.enum(['alta', 'media', 'baja']);
 export const verificationSchema = z.enum(['confirmado', 'pendiente', 'tentativo']);
 export const editorialStatusSchema = z.enum(['sin evaluar', 'para comunicar', 'en preparación', 'comunicado', 'descartado']);
@@ -60,6 +84,7 @@ export const eventContentSchema = z
     imageUrl: optionalUrl,
     isHoliday: z.boolean().optional(),
     areas: z.array(z.string()).optional(),
+    editions: z.array(editionSchema).optional(),
     contentIdeas: z.array(z.string()),
     favorite: z.boolean(),
     archived: z.boolean(),
