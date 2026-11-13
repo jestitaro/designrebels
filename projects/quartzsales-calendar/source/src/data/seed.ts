@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 6;
+export const SEED_VERSION = 7;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -77,9 +77,9 @@ export const SEED_EVENTS: CalendarEvent[] = [
     source: 'Gobierno de la Nación', sourceUrl: 'https://www.argentina.gob.ar/noticias/vino-argentino-bebida-nacional',
   }),
   seed({
-    id: 'seed-ar-musica', title: 'Día de la Música', category: 'efemerides', subcategory: 'efe-dias-conmemorativos',
-    country: 'ar', startDate: '2026-11-22', relevance: 'media', verification: 'confirmado',
-    summary: 'Se celebra en homenaje a Santa Cecilia, patrona de los músicos.',
+    id: 'seed-ar-musica', title: 'Día de la Música y del Músico', category: 'efemerides', subcategory: 'efe-dias-conmemorativos',
+    country: 'intl', startDate: '2026-11-22', relevance: 'media', verification: 'confirmado',
+    summary: 'Se celebra en muchos países (Argentina, México, España y otros) en homenaje a Santa Cecilia, patrona de los músicos.',
     source: 'Ministerio de Cultura de la Nación', sourceUrl: 'https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/',
   }),
   seed({
@@ -154,13 +154,13 @@ export const SEED_EVENTS: CalendarEvent[] = [
   }),
   seed({
     id: 'seed-ec-artes-vivas-loja-2026', title: 'Festival Internacional de Artes Vivas de Loja 2026', category: 'entretenimiento', subcategory: 'ent-festivales',
-    country: 'ec', startDate: '2026-11-12', endDate: '2026-11-22', recurrence: once, relevance: 'media', verification: 'confirmado',
+    country: 'ec', region: 'ec-lo', city: 'ec-lo-loja', startDate: '2026-11-12', endDate: '2026-11-22', recurrence: once, relevance: 'media', verification: 'confirmado',
     summary: '11.ª edición, del 12 al 22/11, con delegaciones de 12 países y Alemania como invitado de honor.',
     source: 'Municipio de Loja', sourceUrl: 'https://www.loja.gob.ec/noticia/2026-10/presentaron-programacion-del-festival-de-artes-vivas-2026',
   }),
   seed({
     id: 'seed-ec-fundacion-quito', title: 'Fundación de Quito', category: 'efemerides', subcategory: 'efe-aniversarios',
-    country: 'ec', startDate: '2026-12-06', relevance: 'media', verification: 'confirmado',
+    country: 'ec', region: 'ec-pi', city: 'ec-pi-quito', startDate: '2026-12-06', relevance: 'media', verification: 'confirmado',
     summary: 'Conmemora el primer cabildo y la fundación española de San Francisco de Quito (1534).',
     source: 'Archivo Metropolitano de Historia de Quito', sourceUrl: 'http://archivoqhistorico.quito.gob.ec/index.php/quito-y-sus-historias/23-los-origenes-de-las-fiestas-de-quito',
   }),

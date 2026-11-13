@@ -41,6 +41,13 @@ describe('seed', () => {
     }
   });
 
+  it('cada fecha está asignada a su alcance real (internacional, país o ciudad)', () => {
+    const byId = new Map(SEED_EVENTS.map((e) => [e.id, e]));
+    expect(byId.get('seed-ar-musica')!.country).toBe('intl');
+    expect(byId.get('seed-ec-fundacion-quito')).toMatchObject({ country: 'ec', region: 'ec-pi', city: 'ec-pi-quito' });
+    expect(byId.get('seed-ec-artes-vivas-loja-2026')).toMatchObject({ country: 'ec', region: 'ec-lo', city: 'ec-lo-loja' });
+  });
+
   it('sin fechas comerciales', () => {
     expect(DEFAULT_CATEGORIES.some((c) => c.id === 'comerciales')).toBe(false);
     expect(SEED_EVENTS.some((e) => e.category === 'comerciales')).toBe(false);

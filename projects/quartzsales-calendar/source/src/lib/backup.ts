@@ -55,6 +55,8 @@ const MIGRATIONS: Record<number, (raw: Record<string, unknown>) => Record<string
   // v5 → v6: los eventos pueden tener ediciones (opcionales) y se quitó la categoría Comerciales del
   // catálogo por defecto. Los datos del respaldo se respetan tal cual.
   5: (raw) => raw,
+  // v6 → v7: solo suma regiones de Ecuador (Pichincha, Loja) al catálogo; los datos no cambian.
+  6: (raw) => raw,
 };
 
 export type ParseResult = { ok: true; backup: Backup; migratedFrom?: number } | { ok: false; error: string };
