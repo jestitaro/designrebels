@@ -155,15 +155,15 @@ Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la 
 | Día de la Soberanía Nacional | 20/11 (feriado trasladado 23/11/2026*) | [Ley 27.399](https://www.argentina.gob.ar/normativa/nacional/norma-281835/texto) |
 | Día Nacional del Mate | 30/11 | [Ley 27.117](https://www.argentina.gob.ar/normativa/nacional/ley-27117-241355/texto) |
 | Día del Vino Argentino Bebida Nacional | 24/11 | [argentina.gob.ar](https://www.argentina.gob.ar/noticias/vino-argentino-bebida-nacional) |
-| Día de la Música | 22/11 | [Ministerio de Cultura](https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/) |
+| Día de la Música y del Músico (internacional, Santa Cecilia) | 22/11 | [Ministerio de Cultura](https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/) |
 | Día de Muertos | 01–02/11 | [Secretaría de Cultura (gob.mx)](https://www.gob.mx/cultura/prensa/mexico-se-prepara-para-celebrar-a-sus-muertos) |
 | Aniversario de la Revolución Mexicana | 20/11 (descanso 16/11/2026) | [PROFEDET](https://www.gob.mx/profedet/articulos/sabes-cuales-son-los-dias-de-descanso-obligatorio-para-este-2026) |
 | Día Nacional del Libro (México) | 12/11 | [DOF 1979](https://dof.gob.mx/nota_detalle.php?codigo=4842539&fecha=06/11/1979) |
 | Día Nacional de la Gastronomía Mexicana | 16/11 | [DOF 2016](https://www.dof.gob.mx/nota_detalle.php?codigo=5456816&fecha=14%2F10%2F2016) |
 | Día de los Difuntos (Ecuador) | 02/11 | [Registro Civil](https://www.registrocivil.gob.ec/gobierno-del-ecuador-garantiza-la-atencion-del-registro-civil-durante-el-feriado-por-el-dia-de-los-difuntos-y-la-independencia-de-cuenca) |
 | Independencia de Cuenca | 03/11 | [Alcaldía de Cuenca](https://www.cuenca.gob.ec/content/cuenca-tendra-mas-de-300-eventos-en-sus-fiestas-de-independencia-gracias-al-apoyo-de-la) |
-| Festival Internacional de Artes Vivas de Loja 2026 | 12–22/11/2026 | [Municipio de Loja](https://www.loja.gob.ec/noticia/2026-10/presentaron-programacion-del-festival-de-artes-vivas-2026) |
-| Fundación de Quito | 06/12 | [Archivo Metropolitano de Quito](http://archivoqhistorico.quito.gob.ec/index.php/quito-y-sus-historias/23-los-origenes-de-las-fiestas-de-quito) |
+| Festival Internacional de Artes Vivas de Loja 2026 (solo Loja) | 12–22/11/2026 | [Municipio de Loja](https://www.loja.gob.ec/noticia/2026-10/presentaron-programacion-del-festival-de-artes-vivas-2026) |
+| Fundación de Quito (solo Quito) | 06/12 | [Archivo Metropolitano de Quito](http://archivoqhistorico.quito.gob.ec/index.php/quito-y-sus-historias/23-los-origenes-de-las-fiestas-de-quito) |
 | Día Mundial de la Usabilidad | 2.º jueves de noviembre | [World Usability Day](https://worldusabilityday.org/) |
 | Día Internacional de la Gestión de Proyectos | 1.er jueves de noviembre | [IIL](https://www.iil.com/international-project-management-day/frequently-asked-questions/) |
 | Día Internacional del Diseño | 27/04 | [ICoD](https://www.theicod.org/activities/international-design-day) |
@@ -179,6 +179,15 @@ Verificación hecha el **03/11/2026**. Las fuentes quedan documentadas acá; la 
 | Evento | Qué falta |
 |---|---|
 | La Noche de las Heladerías 2026 (18/11) | La fecha solo apareció en medios. Confirmar en los canales de AFADHYA. |
+
+### Alcance de cada fecha (revisado el 13/11/2026)
+
+Cada fecha está asignada al lugar donde de verdad se celebra, porque de eso depende a quién te sugiere saludar:
+
+- **Día de la Música y del Músico (22/11):** pasó de Argentina a **internacional**. Es el día de Santa Cecilia y se celebra en muchos países (Argentina, México, España y otros).
+- **Fundación de Quito (6/12):** pasó de todo Ecuador a **Quito** (Pichincha).
+- **Festival de Artes Vivas (12 al 22/11):** pasó de todo Ecuador a **Loja**.
+- Las demás se revisaron y están bien: son nacionales de su país (Tradición, Mate, Vino, Soberanía, Heladerías en Argentina; Muertos, Revolución, Libro y Gastronomía en México; Difuntos e Independencia de Cuenca, feriado nacional en Ecuador) o internacionales (Usabilidad, Gestión de Proyectos, Diseño).
 
 ### La Noche de los Museos 2026: ediciones por región
 

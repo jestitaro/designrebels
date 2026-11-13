@@ -82,7 +82,7 @@ describe('migraciones', () => {
     ]);
     v1.close();
     const migrated = await resetDatabaseForTests(name);
-    expect(migrated.verno).toBe(6);
+    expect(migrated.verno).toBe(7);
     const countries = await migrated.countries.orderBy('order').toArray();
     expect(countries.map((c) => c.id)).toEqual(['ar', 'es', 'intl']);
     expect(countries[0]?.name).toBe('Argentina editada');

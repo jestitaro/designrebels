@@ -66,7 +66,11 @@ export const DEFAULT_COUNTRIES: Country[] = [
   },
   {
     id: 'ec', name: 'Ecuador', active: true, order: 2,
-    regions: [{ id: 'ec-gy', name: 'Guayas', active: true, cities: [city('ec-gy-guayaquil', 'Guayaquil')] }],
+    regions: [
+      { id: 'ec-gy', name: 'Guayas', active: true, cities: [city('ec-gy-guayaquil', 'Guayaquil')] },
+      { id: 'ec-pi', name: 'Pichincha', active: true, cities: [city('ec-pi-quito', 'Quito')] },
+      { id: 'ec-lo', name: 'Loja', active: true, cities: [city('ec-lo-loja', 'Loja')] },
+    ],
   },
   {
     id: 'es', name: 'España', active: true, order: 3,

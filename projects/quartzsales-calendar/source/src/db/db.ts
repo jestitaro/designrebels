@@ -4,7 +4,7 @@ import { DEFAULT_COUNTRIES } from '../data/defaults';
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 
 export interface KV<T = unknown> {
   key: string;
@@ -78,22 +78,7 @@ export class CalendarDB extends Dexie {
         }
       });
     // v5: regiones y ciudades para feriados locales (Madrid, Barcelona, Guayaquil). Suma lo que falte.
-    this.version(5)
-      .stores({})
-      .upgrade(async (tx) => {
-        const countries = tx.table<Country, string>('countries');
-        for (const def of DEFAULT_COUNTRIES) {
-          const current = await countries.get(def.id);
-          if (!current) continue;
-          const regions = [...current.regions];
-          for (const r of def.regions) {
-            const existing = regions.find((x) => x.id === r.id);
-            if (!existing) regions.push(structuredClone(r));
-            else for (const c of r.cities) if (!existing.cities.some((x) => x.id === c.id)) existing.cities.push({ ...c });
-          }
-          await countries.put({ ...current, regions });
-        }
-      });
+    this.version(5).stores({}).upgrade((tx) => addMissingRegions(tx.table<Country, string>('countries')));
     // v6: se sacan las fechas comerciales. Se borran las del catálogo que no tocaste ni tienen saludos,
     // y la categoría si ya no la usa ningún evento.
     this.version(6)
@@ -107,6 +92,23 @@ export class CalendarDB extends Dexie {
         await events.bulkDelete(removable.map((e) => e.id));
         if (commercial.length === removable.length) await tx.table<Category, string>('categories').delete('comerciales');
       });
+    // v7: Pichincha (Quito) y Loja, para que las fechas de esas ciudades no se le asignen a todo Ecuador.
+    this.version(7).stores({}).upgrade((tx) => addMissingRegions(tx.table<Country, string>('countries')));
+  }
+}
+
+/** Suma a los países guardados las regiones y ciudades por defecto que les falten (sin tocar las editadas). */
+async function addMissingRegions(countries: Dexie.Table<Country, string>): Promise<void> {
+  for (const def of DEFAULT_COUNTRIES) {
+    const current = await countries.get(def.id);
+    if (!current) continue;
+    const regions = [...current.regions];
+    for (const r of def.regions) {
+      const existing = regions.find((x) => x.id === r.id);
+      if (!existing) regions.push(structuredClone(r));
+      else for (const c of r.cities) if (!existing.cities.some((x) => x.id === c.id)) existing.cities.push({ ...c });
+    }
+    await countries.put({ ...current, regions });
   }
 }
 
