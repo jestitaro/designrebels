@@ -9,7 +9,7 @@ import { TIMEZONE_BY_COUNTRY } from './defaults';
  * el 03/11/2026. Lo que solo apareció en medios queda "pendiente" con nota.
  * El reporte completo está en el README del proyecto.
  */
-export const SEED_VERSION = 5;
+export const SEED_VERSION = 6;
 
 const VERIFIED = '2026-11-03';
 const STAMP = '2026-11-03T00:00:00.000Z';
@@ -83,23 +83,31 @@ export const SEED_EVENTS: CalendarEvent[] = [
     source: 'Ministerio de Cultura de la Nación', sourceUrl: 'https://www.cultura.gob.ar/por-que-se-festeja-el-dia-de-la-musica_5127/',
   }),
   seed({
-    id: 'seed-ar-noche-museos-2026', title: 'La Noche de los Museos 2026', category: 'entretenimiento', subcategory: 'ent-noches-tematicas',
-    country: 'ar', region: 'ar-caba', startDate: '2026-11-14', recurrence: once, allDay: false, startTime: '19:00',
-    relevance: 'media', verification: 'confirmado',
-    summary: '22.ª edición, sábado 14/11 de 19 a 2 h, con entrada libre.',
+    id: 'seed-ar-noche-museos-2026', title: 'La Noche de los Museos', category: 'entretenimiento', subcategory: 'ent-noches-tematicas',
+    country: 'ar', startDate: '2026-11-14', recurrence: once, relevance: 'media', verification: 'confirmado',
+    summary: 'Museos y espacios culturales abren de noche, gratis. Cada provincia o ciudad la hace en su propia fecha.',
     source: 'Turismo Buenos Aires (GCBA)', sourceUrl: 'https://turismo.buenosaires.gob.ar/es/article/la-noche-de-los-museos',
+    lastVerifiedAt: '2026-11-13',
+    editions: [
+      { id: 'nm26-tuc', region: 'ar-tuc', startDate: '2026-10-31', verification: 'pendiente',
+        note: 'La fecha (31/10) no apareció en ninguna fuente oficial. Confirmar con la Red de Museos de Tucumán o el Ente Cultural.' },
+      { id: 'nm26-er', region: 'ar-er', startDate: '2026-11-06', startTime: '19:00', endTime: '00:00', verification: 'confirmado',
+        source: 'Gobierno de Entre Ríos', url: 'https://www.entrerios.gov.ar/cultura/se-prepara-una-nueva-edicion-de-la-noche-de-los-museos-entrerrianos/' },
+      { id: 'nm26-ctes', region: 'ar-ctes', startDate: '2026-11-07', startTime: '18:00', endTime: '01:00', verification: 'pendiente',
+        note: 'Sin fuente oficial para 2026 (en 2025 fue el 8/11). Confirmar con la Provincia o la Municipalidad de Corrientes.' },
+      { id: 'nm26-cba', region: 'ar-cba', startDate: '2026-11-13', startTime: '20:00', endTime: '01:00', verification: 'confirmado',
+        source: 'Municipalidad de Córdoba', url: 'https://cordoba.gob.ar/noche-museos-cordoba-2026/' },
+      { id: 'nm26-caba', region: 'ar-caba', startDate: '2026-11-14', startTime: '19:00', endTime: '02:00', verification: 'confirmado',
+        source: 'Turismo Buenos Aires (GCBA)', url: 'https://turismo.buenosaires.gob.ar/es/article/la-noche-de-los-museos' },
+      { id: 'nm26-lp', region: 'ar-ba', city: 'ar-ba-laplata', startDate: '2026-11-14', startTime: '19:00', endTime: '00:00', localName: 'Museos a la luz de la luna',
+        verification: 'confirmado', source: 'Facultad de Ingeniería (UNLP)', url: 'https://ing.unlp.edu.ar/noche-de-los-museos-a-la-luz-de-la-luna-2026/' },
+    ],
   }),
   seed({
     id: 'seed-ar-noche-heladerias-2026', title: 'La Noche de las Heladerías 2026', category: 'entretenimiento', subcategory: 'ent-noches-tematicas',
     country: 'ar', startDate: '2026-11-18', recurrence: once, relevance: 'media', verification: 'pendiente',
     verificationNote: 'La fecha (miércoles 18/11) solo apareció en medios. Falta confirmarla en los canales oficiales de AFADHYA.',
     source: 'iProfesional (medio)', sourceUrl: 'https://www.iprofesional.com/actualidad/467888-cuando-es-la-noche-de-las-heladerias-2026-y-como-aprovechar-la-promocion-2x1',
-  }),
-  seed({
-    id: 'seed-ar-cybermonday-2026', title: 'CyberMonday 2026 (Argentina)', category: 'comerciales', subcategory: 'com-cybermonday',
-    country: 'ar', startDate: '2026-11-02', endDate: '2026-11-04', recurrence: once, relevance: 'media', verification: 'pendiente',
-    verificationNote: 'Fechas (2 al 4/11) publicadas por medios. Falta confirmarlas en el sitio oficial de la CACE (cybermonday.com.ar).',
-    source: 'Noticias NQN (medio)', sourceUrl: 'https://www.noticiasnqn.com.ar/noticias/2026/10/28/358518-cybermonday-2026-en-argentina-tres-dias-de-ofertas-cuotas-y-descuentos-desde-el-2-de-noviembre',
   }),
 
   /* ───────── México ───────── */
@@ -128,12 +136,6 @@ export const SEED_EVENTS: CalendarEvent[] = [
     country: 'mx', startDate: '2026-11-16', relevance: 'media', verification: 'confirmado',
     summary: 'Recuerda la inscripción de la cocina tradicional mexicana en la lista de Patrimonio Cultural Inmaterial de la UNESCO (16/11/2010).',
     source: 'Diario Oficial de la Federación', sourceUrl: 'https://www.dof.gob.mx/nota_detalle.php?codigo=5456816&fecha=14%2F10%2F2016',
-  }),
-  seed({
-    id: 'seed-mx-buen-fin-2026', title: 'El Buen Fin 2026', category: 'comerciales', subcategory: 'com-el-buen-fin',
-    country: 'mx', startDate: '2026-11-13', endDate: '2026-11-17', recurrence: once, relevance: 'alta', verification: 'confirmado',
-    summary: '16.ª edición, de viernes a martes, con cobertura nacional.',
-    source: 'Reglas de Operación 2026 (elbuenfin.org)', sourceUrl: 'https://www.elbuenfin.org/assets/documents/REGLAS_DE_OPERACION_BUEN_FIN.pdf',
   }),
 
   /* ───────── Ecuador ───────── */
@@ -293,12 +295,5 @@ export const SEED_EVENTS: CalendarEvent[] = [
     country: 'intl', startDate: '2026-04-27', relevance: 'media', verification: 'confirmado',
     summary: 'Recuerda la fundación del International Council of Design (ICoD) el 27 de abril de 1963.',
     source: 'International Council of Design', sourceUrl: 'https://www.theicod.org/activities/international-design-day',
-  }),
-  seed({
-    id: 'seed-intl-black-friday', title: 'Black Friday', category: 'comerciales', subcategory: 'com-black-friday',
-    country: 'intl', startDate: '2026-11-27', recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 3, nth: 4, offsetDays: 1 },
-    relevance: 'media', verification: 'pendiente',
-    verificationNote: 'Fecha comercial por convención (día siguiente al Día de Acción de Gracias de EE. UU.). No hay un organismo oficial que la publique.',
-    source: '',
   }),
 ];

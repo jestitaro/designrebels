@@ -82,3 +82,13 @@ export function usePeople(): Person[] | undefined {
 export function useVacations(): Vacation[] | undefined {
   return useLiveQuery(() => db.vacations.toArray(), []);
 }
+
+/** Título a mostrar: si es una edición de un evento con varias, suma el lugar ("Noche de los Museos · Córdoba"). */
+export function eventTitle(event: CalendarEvent, catalog: Pick<Catalog, 'placeName'>): string {
+  const ed = event.edition;
+  if (!ed) return event.title;
+  const base = ed.localName || event.title;
+  if ((event.editions?.length ?? 0) < 2) return base;
+  const place = catalog.placeName(ed.city) ?? catalog.placeName(ed.region);
+  return place ? `${base} · ${place}` : base;
+}

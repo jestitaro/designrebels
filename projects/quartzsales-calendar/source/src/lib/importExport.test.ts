@@ -89,7 +89,7 @@ describe('CSV', () => {
     expect(result.missingColumns).toEqual([]);
     expect(result.rows).toHaveLength(2);
     expect(result.rows.every((r) => r.errors.length === 0)).toBe(true);
-    expect(result.rows[1]?.content?.recurrence).toEqual({ type: 'yearly-nth-weekday', month: 11, weekday: 3, nth: 4, offsetDays: 1 });
+    expect(result.rows[1]?.content?.recurrence).toEqual({ type: 'yearly-nth-weekday', month: 10, weekday: 6, nth: 3, offsetDays: 0 });
   });
 
   it('informa columnas faltantes', () => {

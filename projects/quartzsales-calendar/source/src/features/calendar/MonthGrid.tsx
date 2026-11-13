@@ -1,5 +1,5 @@
 import { useEffect, useRef, type KeyboardEvent } from 'react';
-import type { Catalog } from '../../hooks/useData';
+import { eventTitle, type Catalog } from '../../hooks/useData';
 import {
   addDays, addMonths, capitalize, daysInMonth, endOfWeek, formatLong, monthGrid, monthName, parseISO, startOfWeek,
   toISO, WEEKDAYS, WEEKDAYS_MIN, WEEKDAYS_SHORT,
@@ -175,7 +175,7 @@ export function MonthGrid({ year, month, byDay, selected, today, catalog, labell
                           >
                             <span className="min-w-0 flex-1 truncate">
                               {continues && '↳ '}
-                              {o.event.title}
+                              {eventTitle(o.event, catalog)}
                             </span>
                             {(() => {
                               const st = greetingStatus?.(o.event.id);

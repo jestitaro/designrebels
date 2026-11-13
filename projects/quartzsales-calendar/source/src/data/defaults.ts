@@ -33,10 +33,6 @@ export const DEFAULT_CATEGORIES: Category[] = [
     subcategories: sub('pop', ['Cumpleaños de artistas', 'Películas', 'Series', 'Videojuegos', 'Dibujos animados', 'Personajes ficticios', 'Fechas curiosas']),
   },
   {
-    id: 'comerciales', name: 'Comerciales', color: 'green', visible: true, order: 5,
-    subcategories: sub('com', ['CyberMonday', 'Black Friday', 'El Buen Fin', 'Retail', 'Trade marketing', 'E-commerce']),
-  },
-  {
     id: 'feriados', name: 'Feriados', color: 'slate', visible: true, order: 6,
     subcategories: [],
   },

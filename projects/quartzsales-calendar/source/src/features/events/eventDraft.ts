@@ -47,6 +47,8 @@ export interface EventDraft {
   favorite: boolean;
   archived: boolean;
   editorialStatus: EditorialStatus;
+  /** Cantidad de ediciones: si hay, las fechas se editan desde Ediciones. */
+  editionsCount: number;
 }
 
 export function emptyDraft(startDate: ISODate = todayISO(), defaults: Partial<EventDraft> = {}): EventDraft {
@@ -59,7 +61,7 @@ export function emptyDraft(startDate: ISODate = todayISO(), defaults: Partial<Ev
     allDay: true, startTime: '', endTime: '', observances: [],
     relevance: 'media', verification: 'pendiente', verificationNote: '',
     source: '', sourceUrl: '', lastVerifiedAt: '', imageUrl: '', isHoliday: false, areas: [], contentIdeas: '',
-    favorite: false, archived: false, editorialStatus: 'sin evaluar',
+    favorite: false, archived: false, editorialStatus: 'sin evaluar', editionsCount: 0,
     ...defaults,
   };
 }
@@ -85,6 +87,7 @@ export function draftFromEvent(e: CalendarEvent): EventDraft {
     source: e.source, sourceUrl: e.sourceUrl ?? '', lastVerifiedAt: e.lastVerifiedAt ?? '', imageUrl: e.imageUrl ?? '', isHoliday: !!e.isHoliday, areas: e.areas ?? [],
     contentIdeas: e.contentIdeas.join('\n'),
     favorite: e.favorite, archived: e.archived, editorialStatus: e.editorialStatus,
+    editionsCount: e.editions?.length ?? 0,
   };
 }
 

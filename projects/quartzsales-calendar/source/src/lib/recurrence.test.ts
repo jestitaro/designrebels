@@ -4,10 +4,10 @@ import {
   describeRecurrence, expandEvents, nextOccurrence, occurrenceStartForYear, occurrencesByDay, occurrencesInRange,
 } from './recurrence';
 
-const blackFriday = makeEvent({
-  title: 'Black Friday',
-  startDate: '2026-11-27',
-  recurrence: { type: 'yearly-nth-weekday', month: 11, weekday: 3, nth: 4, offsetDays: 1 },
+const diaDeLaMadre = makeEvent({
+  title: 'Día de la Madre (Argentina)',
+  startDate: '2026-10-18',
+  recurrence: { type: 'yearly-nth-weekday', month: 10, weekday: 6, nth: 3, offsetDays: 0 },
   dateType: 'variable',
 });
 
@@ -24,13 +24,12 @@ describe('recurrencia', () => {
     expect(occurrenceStartForYear(leap, 2032)).toBe('2032-02-29');
   });
 
-  it('Black Friday: día siguiente al 4.º jueves de noviembre en varios años', () => {
-    expect(occurrenceStartForYear(blackFriday, 2023)).toBe('2023-11-24');
-    expect(occurrenceStartForYear(blackFriday, 2024)).toBe('2024-11-29');
-    expect(occurrenceStartForYear(blackFriday, 2025)).toBe('2025-11-28');
-    expect(occurrenceStartForYear(blackFriday, 2026)).toBe('2026-11-27');
-    expect(occurrenceStartForYear(blackFriday, 2027)).toBe('2027-11-26');
-    expect(occurrenceStartForYear(blackFriday, 2028)).toBe('2028-11-24');
+  it('Día de la Madre (AR): 3.er domingo de octubre en varios años', () => {
+    expect(occurrenceStartForYear(diaDeLaMadre, 2024)).toBe('2024-10-20');
+    expect(occurrenceStartForYear(diaDeLaMadre, 2025)).toBe('2025-10-19');
+    expect(occurrenceStartForYear(diaDeLaMadre, 2026)).toBe('2026-10-18');
+    expect(occurrenceStartForYear(diaDeLaMadre, 2027)).toBe('2027-10-17');
+    expect(occurrenceStartForYear(diaDeLaMadre, 2028)).toBe('2028-10-15');
   });
 
   it('Pascua y Viernes Santo en varios años', () => {
@@ -80,7 +79,7 @@ describe('recurrencia', () => {
   });
 
   it('describe la regla en lenguaje claro', () => {
-    expect(describeRecurrence(blackFriday)).toBe('Todos los años, el día siguiente al 4.º jueves de noviembre.');
+    expect(describeRecurrence(diaDeLaMadre)).toBe('Todos los años, el 3.º domingo de octubre.');
     expect(describeRecurrence(makeEvent({ startDate: '2026-11-10' }))).toBe('Todos los años el 10/11.');
     expect(describeRecurrence(makeEvent({ startDate: '2026-11-20', endDate: '2026-11-22', recurrence: { type: 'none' } })))
       .toBe('Edición única: del 20/11/2026 al 22/11/2026. No se repite.');

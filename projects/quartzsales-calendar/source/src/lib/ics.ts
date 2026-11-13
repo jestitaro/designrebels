@@ -46,6 +46,8 @@ export interface IcsOptions {
   calendarName?: string;
   /** Texto adicional por ocurrencia (p. ej., estado del saludo). */
   extraDescription?: (occ: Occurrence) => string | undefined;
+  /** Título por ocurrencia (p. ej., con el lugar de la edición). */
+  titleOf?: (occ: Occurrence) => string;
 }
 
 export function buildIcs(occurrences: Occurrence[], options: IcsOptions): string {
@@ -63,16 +65,19 @@ export function buildIcs(occurrences: Occurrence[], options: IcsOptions): string
     const desc = [e.summary, describeRecurrence(e), options.extraDescription?.(occ), e.sourceUrl ? `Fuente: ${e.sourceUrl}` : '']
       .filter(Boolean)
       .join('\n');
-    lines.push('BEGIN:VEVENT', `UID:${e.id}-${compact(occ.start)}@qs-calendar`, `DTSTAMP:${stamp(now)}`);
+    lines.push('BEGIN:VEVENT', `UID:${e.id}-${compact(occ.start)}${e.edition ? `-${e.edition.id}` : ''}@qs-calendar`, `DTSTAMP:${stamp(now)}`);
     if (e.allDay || !e.startTime) {
       lines.push(`DTSTART;VALUE=DATE:${compact(occ.start)}`, `DTEND;VALUE=DATE:${compact(addDays(occ.end, 1))}`);
     } else {
       const tz = e.timezone && e.timezone !== 'UTC' ? `;TZID=${e.timezone}` : '';
       const t = (time: string) => `${time.replace(':', '')}00`;
       lines.push(`DTSTART${tz}:${compact(occ.start)}T${t(e.startTime)}`);
-      lines.push(`DTEND${tz}:${compact(occ.end)}T${t(e.endTime ?? e.startTime)}`);
+      // Si termina antes de empezar (ej. 19 a 2 h), cruza la medianoche: termina al día siguiente.
+      const endTime = e.endTime ?? e.startTime;
+      const endDay = endTime < e.startTime ? addDays(occ.end, 1) : occ.end;
+      lines.push(`DTEND${tz}:${compact(endDay)}T${t(endTime)}`);
     }
-    lines.push(`SUMMARY:${escapeText(e.title)}`);
+    lines.push(`SUMMARY:${escapeText(options.titleOf?.(occ) ?? e.edition?.localName ?? e.title)}`);
     if (desc) lines.push(`DESCRIPTION:${escapeText(desc)}`);
     if (e.sourceUrl) lines.push(`URL:${e.sourceUrl}`);
     lines.push('TRANSP:TRANSPARENT');

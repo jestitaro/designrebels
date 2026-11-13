@@ -24,7 +24,7 @@ const COLUMN_HELP: Record<Column, string> = {
   regla_semana: '1 a 5 o ultima',
   regla_dia: 'lunes … domingo',
   regla_mes: '1 a 12',
-  regla_desplazamiento: 'días +/− (Black Friday: 1; en pascua, Viernes Santo: -2)',
+  regla_desplazamiento: 'días +/− (1 = el día siguiente; en pascua, Viernes Santo: -2)',
   link_imagen: 'https://… (opcional)',
 };
 
@@ -33,7 +33,7 @@ export function csvTemplate(): string[][] {
     [...CSV_COLUMNS],
     CSV_COLUMNS.map((c) => COLUMN_HELP[c]),
     ['Día de ejemplo', 'Cultura y tradiciones', 'Argentina', 'fija', '10/11/2026', '', '', '', '', '', ''],
-    ['Evento por regla de ejemplo', 'Comerciales', 'Internacional', 'regla', '', '', '4', 'jueves', '11', '1', ''],
+    ['Día de la Madre (ejemplo de regla)', 'Efemérides', 'Argentina', 'regla', '', '', '3', 'domingo', '10', '0', ''],
   ];
 }
 

@@ -4,7 +4,7 @@ import { DEFAULT_COUNTRIES } from '../data/defaults';
 
 export const DB_NAME = 'qs-calendar';
 /** Versión del esquema de datos (IndexedDB y respaldos JSON). */
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 export interface KV<T = unknown> {
   key: string;
@@ -93,6 +93,19 @@ export class CalendarDB extends Dexie {
           }
           await countries.put({ ...current, regions });
         }
+      });
+    // v6: se sacan las fechas comerciales. Se borran las del catálogo que no tocaste ni tienen saludos,
+    // y la categoría si ya no la usa ningún evento.
+    this.version(6)
+      .stores({})
+      .upgrade(async (tx) => {
+        const events = tx.table<CalendarEvent, string>('events');
+        const greetings = tx.table<Greeting, string>('greetings');
+        const withGreetings = new Set((await greetings.toArray()).map((g) => g.eventId));
+        const commercial = await events.where('category').equals('comerciales').toArray();
+        const removable = commercial.filter((e) => e.provenance === 'seed' && !e.userModified && !withGreetings.has(e.id));
+        await events.bulkDelete(removable.map((e) => e.id));
+        if (commercial.length === removable.length) await tx.table<Category, string>('categories').delete('comerciales');
       });
   }
 }

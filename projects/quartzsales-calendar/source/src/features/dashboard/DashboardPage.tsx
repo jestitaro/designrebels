@@ -14,7 +14,7 @@ import { Button, IconButton } from '../../components/ui/Button';
 import { TeamDay } from '../team/TeamDay';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { Segmented } from '../../components/ui/Segmented';
-import { placeLabel, useCatalog, useEvents, useGreetings, usePeople, useReviewedAlerts, useSettings, useVacations, type Catalog } from '../../hooks/useData';
+import { eventTitle, placeLabel, useCatalog, useEvents, useGreetings, usePeople, useReviewedAlerts, useSettings, useVacations, type Catalog } from '../../hooks/useData';
 import { copyText } from '../../lib/clipboard';
 import { weekSlackSummary } from '../../lib/team';
 import { ManualCopyDialog } from '../../components/ui/ManualCopyDialog';
@@ -54,7 +54,7 @@ function OccurrenceRow({ occ, catalog, today, meta }: { occ: Occurrence; catalog
           <span className="text-[10px] leading-tight font-medium uppercase">{monthName(parseISO(occ.start).m).slice(0, 3)}</span>
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate font-medium">{occ.event.title}</span>
+          <span className="truncate font-medium">{eventTitle(occ.event, catalog)}</span>
           <span className="truncate text-xs text-muted">
             {capitalize(relativeDays(today, occ.start))} · {placeLabel(occ.event, catalog)}
           </span>

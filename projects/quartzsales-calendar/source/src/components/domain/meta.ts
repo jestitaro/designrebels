@@ -1,6 +1,6 @@
 import {
   BriefcaseBusiness, CalendarOff, Clapperboard, Drum, Gem,
-  Landmark, ShoppingBag, Tag, Ticket, type LucideIcon,
+  Landmark, Tag, Ticket, type LucideIcon,
 } from 'lucide-react';
 import type { CategoryColor } from '../../types';
 
@@ -10,7 +10,6 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   cultura: Drum,
   entretenimiento: Ticket,
   pop: Clapperboard,
-  comerciales: ShoppingBag,
   feriados: CalendarOff,
   quartzsales: Gem,
 };

@@ -1,4 +1,4 @@
-import type { CalendarEvent, ISODate, Occurrence, Recurrence } from '../types';
+import type { CalendarEvent, EventEdition, ISODate, Occurrence, Recurrence } from '../types';
 import {
   addDays, compareISO, daysInMonth, diffDays, formatDate, formatDayMonth, monthName,
   easterSunday, nthWeekdayOfMonth, parseISO, toISO, WEEKDAYS,
@@ -33,8 +33,44 @@ export function occurrenceStartForYear(event: DatedEvent, year: number): ISODate
   }
 }
 
+/** El evento visto desde una de sus ediciones: lugar, fecha, horario y verificación propios. */
+export function editionEvent(event: CalendarEvent, ed: EventEdition): CalendarEvent {
+  return {
+    ...event,
+    region: ed.region ?? event.region,
+    city: ed.city ?? (ed.region ? undefined : event.city),
+    startDate: ed.startDate,
+    endDate: ed.endDate,
+    allDay: !ed.startTime,
+    startTime: ed.startTime,
+    endTime: ed.endTime,
+    recurrence: { type: 'none' },
+    verification: ed.verification,
+    verificationNote: ed.note,
+    source: ed.source ?? event.source,
+    sourceUrl: ed.url ?? event.sourceUrl,
+    holidayObservances: [],
+    edition: ed,
+  };
+}
+
+/** Versiones fechables del evento: una por edición, o el evento mismo si no tiene. */
+export function datedVariants(event: CalendarEvent): CalendarEvent[] {
+  return event.editions?.length ? event.editions.map((ed) => editionEvent(event, ed)) : [event];
+}
+
+/** Clave estable de la ocurrencia (con la edición si hay varias el mismo día). */
+export function occurrenceKey(event: CalendarEvent, start: ISODate): string {
+  return event.edition ? `${event.id}@${start}~${event.edition.id}` : `${event.id}@${start}`;
+}
+
 /** Ocurrencias de un evento que se superponen con [from, to] (inclusive). */
 export function occurrencesInRange(event: CalendarEvent, from: ISODate, to: ISODate): Occurrence[] {
+  if (event.editions?.length && !event.edition) {
+    return datedVariants(event)
+      .flatMap((v) => occurrencesInRange(v, from, to))
+      .sort((a, b) => compareISO(a.start, b.start));
+  }
   const length = durationDays(event);
   const result: Occurrence[] = [];
   const fromYear = parseISO(addDays(from, -length)).y - 1;
@@ -44,7 +80,7 @@ export function occurrencesInRange(event: CalendarEvent, from: ISODate, to: ISOD
     if (!start) continue;
     const end = addDays(start, length);
     if (compareISO(end, from) >= 0 && compareISO(start, to) <= 0) {
-      result.push({ event, key: `${event.id}@${start}`, start, end });
+      result.push({ event, key: occurrenceKey(event, start), start, end });
     }
   }
   return result.sort((a, b) => compareISO(a.start, b.start));
@@ -80,12 +116,19 @@ export function occurrencesByDay(occurrences: Occurrence[], from: ISODate, to: I
 
 /** Próxima ocurrencia que termina en o después de `from`. */
 export function nextOccurrence(event: CalendarEvent, from: ISODate): Occurrence | null {
+  if (event.editions?.length && !event.edition) {
+    const all = datedVariants(event)
+      .map((v) => nextOccurrence(v, from))
+      .filter((o): o is Occurrence => !!o)
+      .sort((a, b) => compareISO(a.start, b.start));
+    return all[0] ?? null;
+  }
   const length = durationDays(event);
   const year = parseISO(from).y;
   for (let y = year - 1; y <= year + 1; y++) {
     const start = occurrenceStartForYear(event, y);
     if (start && compareISO(addDays(start, length), from) >= 0) {
-      return { event, key: `${event.id}@${start}`, start, end: addDays(start, length) };
+      return { event, key: occurrenceKey(event, start), start, end: addDays(start, length) };
     }
   }
   return null;
@@ -94,7 +137,11 @@ export function nextOccurrence(event: CalendarEvent, from: ISODate): Occurrence 
 const ORDINALS: Record<number, string> = { 1: '1.º', 2: '2.º', 3: '3.º', 4: '4.º', 5: '5.º', [-1]: 'último' };
 
 /** Descripción en lenguaje claro de la regla de fecha. */
-export function describeRecurrence(event: DatedEvent): string {
+export function describeRecurrence(event: DatedEvent & { editions?: EventEdition[] }): string {
+  if (event.editions?.length) {
+    const n = event.editions.length;
+    return n === 1 ? 'Tiene una edición con fecha propia (ver Ediciones).' : `Tiene ${n} ediciones, cada una con su lugar y su fecha (ver Ediciones).`;
+  }
   const rec: Recurrence = event.recurrence;
   const length = durationDays(event);
   const span = length > 0 ? ` (dura ${length + 1} días)` : '';

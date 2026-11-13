@@ -90,7 +90,7 @@ describe('formulario de evento', () => {
 
 describe('conversión borrador ↔ evento', () => {
   it('una regla calcula la fecha del año de referencia y conserva la duración', () => {
-    const d = { ...emptyDraft('2026-11-01'), title: 'BF', category: 'comerciales', country: 'intl', dateMode: 'yearly-nth-weekday' as const, ruleMonth: '11', ruleNth: '4', ruleWeekday: '3', ruleOffset: '1', ruleDuration: '4' };
+    const d = { ...emptyDraft('2026-11-01'), title: 'BF', category: 'efemerides', country: 'intl', dateMode: 'yearly-nth-weekday' as const, ruleMonth: '11', ruleNth: '4', ruleWeekday: '3', ruleOffset: '1', ruleDuration: '4' };
     const c = draftToContent(d, 2026);
     expect(c.startDate).toBe('2026-11-27');
     expect(c.endDate).toBe('2026-11-30');
