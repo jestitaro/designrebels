@@ -54,7 +54,8 @@ export function useCatalog(): Catalog {
 /** "Córdoba, Argentina" / "Internacional" */
 export function placeLabel(event: Pick<CalendarEvent, 'country' | 'region' | 'city'>, catalog: Catalog): string {
   const parts = [catalog.placeName(event.city), catalog.placeName(event.region), catalog.placeName(event.country) ?? event.country];
-  return parts.filter(Boolean).join(', ');
+  // "Loja, Loja, Ecuador" → "Loja, Ecuador" (ciudad y provincia con el mismo nombre).
+  return parts.filter((p, i) => p && p !== parts[i - 1]).join(', ');
 }
 
 export function useReviewedAlerts(): Set<string> {

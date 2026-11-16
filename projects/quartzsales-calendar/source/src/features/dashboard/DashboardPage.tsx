@@ -31,8 +31,8 @@ import { useEventEditor } from '../events/EventEditor';
 function Card({ title, description, action, children, className }: { title: string; description?: ReactNode; action?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <section className={cn('qs-topline flex flex-col overflow-hidden rounded-lg border border-border bg-surface transition-colors hover:border-border-strong', className)} aria-label={title}>
-      <header className="flex items-start gap-2 border-b border-border px-4 pt-4 pb-3">
-        <div className="min-w-0 flex-1">
+      <header className="flex flex-wrap items-start gap-x-2 gap-y-2.5 border-b border-border px-4 pt-4 pb-3">
+        <div className="min-w-[min(100%,14rem)] flex-1">
           <h2 className="text-[15px] font-extrabold">{title}</h2>
           {description && <p className="text-xs text-muted">{description}</p>}
         </div>
@@ -60,7 +60,7 @@ function OccurrenceRow({ occ, catalog, today, meta }: { occ: Occurrence; catalog
           </span>
         </span>
         {meta}
-        <ChevronRight aria-hidden className="size-4 shrink-0 text-subtle" />
+        <ChevronRight aria-hidden className="hidden size-4 shrink-0 text-subtle sm:block" />
       </Link>
     </li>
   );
@@ -76,7 +76,7 @@ function Breakdown({ title, rows }: { title: string; rows: Array<{ key: string; 
       ) : (
         <ul className="flex flex-col gap-2">
           {rows.map((r) => (
-            <li key={r.key} className={cn(r.color && `cat-${r.color}`, 'grid grid-cols-[minmax(0,10rem)_1fr_auto] items-center gap-3 text-[13px]')}>
+            <li key={r.key} className={cn(r.color && `cat-${r.color}`, 'grid grid-cols-[minmax(0,12rem)_1fr_auto] items-center gap-3 text-[13px]')}>
               <span className="truncate">{r.label}</span>
               <span className="h-2 overflow-hidden rounded-full bg-surface-2" aria-hidden>
                 <span className={cn('block h-full rounded-full', r.color ? 'bg-[var(--cat-solid)]' : 'bg-primary')} style={{ width: `${(r.count / max) * 100}%` }} />
@@ -225,11 +225,13 @@ export function DashboardPage() {
             title={teamDate === today ? 'El equipo hoy' : `El equipo el ${capitalize(formatLong(teamDate, false))}`}
             description="A quién saludar, quién está de feriado y quién de vacaciones. Copiá el resumen de la semana para #general."
             action={
-              <div className="flex flex-wrap items-center justify-end gap-1">
+              <div className="flex flex-wrap items-center gap-1">
                 <Button size="sm" icon={Copy} onClick={() => void copyWeek()} disabled={!people?.length}>Copiar semana para Slack</Button>
-                <IconButton icon={ChevronLeft} label="Día anterior" size="sm" onClick={() => setTeamDate(addDays(teamDate, -1))} />
-                <Button size="sm" variant="ghost" onClick={() => setTeamDate(today)} disabled={teamDate === today}>Hoy</Button>
-                <IconButton icon={ChevronRight} label="Día siguiente" size="sm" onClick={() => setTeamDate(addDays(teamDate, 1))} />
+                <div className="flex items-center gap-1">
+                  <IconButton icon={ChevronLeft} label="Día anterior" size="sm" onClick={() => setTeamDate(addDays(teamDate, -1))} />
+                  <Button size="sm" variant="ghost" onClick={() => setTeamDate(today)} disabled={teamDate === today}>Hoy</Button>
+                  <IconButton icon={ChevronRight} label="Día siguiente" size="sm" onClick={() => setTeamDate(addDays(teamDate, 1))} />
+                </div>
               </div>
             }
           >
@@ -268,7 +270,7 @@ export function DashboardPage() {
                       <span className="text-2xl font-semibold tabular-nums">{greetingCounts[s] ?? 0}</span>
                       <span className="inline-flex items-center gap-1 text-xs text-muted">
                         <Icon aria-hidden className="size-3.5" />
-                        {s === 'listo' ? 'Listos para compartir' : s === 'pendiente' ? 'Pendientes' : 'Compartidos'}
+                        {s === 'listo' ? 'Listos' : s === 'pendiente' ? 'Pendientes' : 'Compartidos'}
                       </span>
                     </Link>
                   </li>

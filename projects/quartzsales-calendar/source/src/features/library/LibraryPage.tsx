@@ -114,10 +114,10 @@ export function LibraryPage() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="flex flex-col gap-2 border-b border-border bg-surface px-4 py-3 lg:px-6">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="mr-auto text-lg font-extrabold lg:text-[22px]">Biblioteca de eventos</h1>
-          <Button size="sm" icon={Upload} onClick={() => void transfer.importCsv()}>Importar CSV</Button>
-          <Button size="sm" icon={Download} onClick={() => transfer.exportCsv(rows.map((r) => r.event))}>Exportar CSV</Button>
-          <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()}>Nuevo evento</Button>
+          <h1 className="w-full text-lg font-extrabold sm:mr-auto sm:w-auto lg:text-[22px]">Biblioteca de eventos</h1>
+          <Button size="sm" variant="primary" icon={Plus} onClick={() => editor.openCreate()} className="sm:order-last">Nuevo evento</Button>
+          <Button size="sm" icon={Upload} onClick={() => void transfer.importCsv()} aria-label="Importar CSV">Importar<span className="hidden sm:inline">&nbsp;CSV</span></Button>
+          <Button size="sm" icon={Download} onClick={() => transfer.exportCsv(rows.map((r) => r.event))} aria-label="Exportar CSV">Exportar<span className="hidden sm:inline">&nbsp;CSV</span></Button>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <SearchBox value={filters.query} onChange={(query) => setFilters({ ...filters, query })} className="min-w-40 flex-1 lg:max-w-80" />
