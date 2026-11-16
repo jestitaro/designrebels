@@ -96,7 +96,8 @@ function MobileHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-2.5 border-b border-border bg-surface/95 px-4 pt-[env(safe-area-inset-top)] backdrop-blur lg:hidden">
       <Logo className="h-6" />
-      <p className="flex-1 truncate border-l border-border pl-2.5 text-[15px] font-extrabold">{current?.label ?? (pathname.startsWith('/configuracion') ? 'Configuración' : 'QuartzSales Calendar')}</p>
+      <span aria-hidden className="flex-1 min-[420px]:hidden" />
+      <p className="hidden flex-1 truncate border-l border-border pl-2.5 text-[15px] font-extrabold min-[420px]:block">{current?.label ?? (pathname.startsWith('/configuracion') ? 'Configuración' : pathname.startsWith('/eventos') ? 'Fecha' : 'QuartzSales Calendar')}</p>
       <ThemeCycleButton />
       <Link to="/configuracion" aria-label="Configuración" title="Configuración"
         className="inline-flex size-11 items-center justify-center rounded text-text hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-focus">
