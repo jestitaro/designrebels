@@ -1,26 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Header scroll + drawer ---------- */
-  const header = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  const burger = document.querySelector('.burger');
-  const drawer = document.querySelector('.drawer');
-  const drawerOverlay = document.querySelector('.drawer-overlay');
-  const drawerClose = document.querySelector('.drawer-close');
-  const openDrawer = () => { drawer.classList.add('is-open'); drawerOverlay.classList.add('is-open'); burger.setAttribute('aria-expanded', 'true'); };
-  const closeDrawer = () => { drawer.classList.remove('is-open'); drawerOverlay.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); };
-  burger?.addEventListener('click', openDrawer);
-  drawerClose?.addEventListener('click', closeDrawer);
-  drawerOverlay?.addEventListener('click', closeDrawer);
-  drawer?.querySelectorAll('a, button').forEach(el => el.addEventListener('click', closeDrawer));
-
   /* ---------- Scroll helpers ---------- */
-  document.querySelectorAll('.js-scroll-demo').forEach(btn => {
-    btn.addEventListener('click', () => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' }));
-  });
   document.querySelectorAll('.js-scroll-simulador').forEach(btn => {
     btn.addEventListener('click', () => document.getElementById('ai-demo').scrollIntoView({ behavior: 'smooth' }));
   });
@@ -99,13 +79,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.4 });
     countEls.forEach(el => countObserver.observe(el));
   }
-
-  /* ---------- Formulario "Solicitar demo" ---------- */
-  const demoForm = document.getElementById('demo-form');
-  demoForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    document.getElementById('demo-form-note').hidden = false;
-    demoForm.reset();
-  });
 
 });
