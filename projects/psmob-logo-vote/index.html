@@ -24,26 +24,26 @@
   .wrap{width:min(1180px,100% - 40px);margin-inline:auto}
 
   /* Hero */
-  .hero{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:56px 0 112px;text-align:center}
+  .hero{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:56px 0 190px;text-align:center}
   .hero::before{content:"";position:absolute;inset:auto 10% -70% 10%;height:120%;background:var(--grad);opacity:.55;filter:blur(90px);border-radius:50%}
   .hero .wrap{position:relative}
-  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9fc7ff;margin:0 0 18px}
-  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;font-weight:900;margin:0 auto 18px;max-width:24ch}
+    .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;font-weight:900;margin:0 auto 18px;max-width:24ch}
   .hero p.lead{font-size:clamp(16px,2vw,19px);line-height:1.55;max-width:62ch;color:#d9def7;margin:0 auto 26px}
   .hero p.lead strong{color:#fff}
     .rules{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:0;margin:0;list-style:none}
+  .howto{margin-top:18px;background:none;border:0;color:#9fc7ff;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:4px}
   .rules li{font-size:14px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:999px}
 
   /* Opciones */
-  main{margin-top:-62px;position:relative}
+  main{margin-top:-140px;position:relative}
   /* Solapas tipo carpeta */
-  .tabs{display:flex;gap:6px;padding:0 22px;position:relative;z-index:1;overflow-x:auto;scrollbar-width:none}
+  .tabs{display:flex;gap:6px;padding:0;position:relative;z-index:1;overflow-x:auto;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
   .tab{flex:0 0 auto;display:flex;align-items:center;gap:10px;border:0;border-radius:18px 18px 0 0;padding:12px 22px 14px;background:rgba(255,255,255,.12);color:#fff;font-weight:900;font-size:16px;transition:background .2s ease}
   .tab:hover{background:rgba(255,255,255,.22)}
   .tab img{height:28px;width:auto}
   .tab[aria-selected="true"]{background:#fff;color:var(--dark)}
-  .tab .check{display:none;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);color:#fff;padding:3px 8px;border-radius:999px}
+  .tab .check{display:none;font-size:11px;font-weight:800;background:var(--grad);color:#fff;padding:3px 8px;border-radius:999px}
   .tab.is-mine .check{display:inline-block}
   .tabs + #panel .option{border-top-left-radius:0}
   .option{background:#fff;border:0;border-radius:28px;padding:32px;margin-bottom:28px;box-shadow:0 10px 40px -24px rgba(19,13,93,.35)}
@@ -52,7 +52,7 @@
   .opt-title{display:flex;align-items:baseline;gap:12px}
   .opt-title h2{font-size:28px;font-weight:900;color:var(--dark);margin:0}
   .opt-title span{color:var(--muted);font-size:15px;font-weight:600}
-  .mine-badge{display:none;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--grad);padding:6px 12px;border-radius:999px}
+  .mine-badge{display:none;font-size:12px;font-weight:800;font-style:normal;color:#fff;background:var(--grad);padding:6px 12px;border-radius:999px}
   .option.is-mine .mine-badge{display:inline-block}
 
   .pal{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -65,7 +65,7 @@
 
   .brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .tile{border-radius:var(--radius);display:flex;align-items:center;justify-content:center;min-height:220px;padding:28px;position:relative}
-  .tile .tag{position:absolute;top:14px;left:16px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+  .tile .tag{position:absolute;top:14px;left:16px;font-size:13px;font-weight:700;opacity:.6}
   .tile.light{background:var(--surface)}
   .tile.dark{background:var(--dark);color:#fff}
 
@@ -84,7 +84,7 @@
   .appicon{background:#fff;border-radius:28%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(19,13,93,.18)}
   .appicon img{width:74%;height:auto}
 
-  h3.sub{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:30px 0 14px}
+  h3.sub{font-size:18px;font-weight:800;color:var(--dark);margin:34px 0 16px}
   .phones{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:820px;margin-inline:auto}
   .phone{margin:0}
   .screen{position:relative;aspect-ratio:360/800;border-radius:26px;overflow:hidden;background:#0b0f1a;border:6px solid #0f1225;box-shadow:0 18px 40px -22px rgba(19,13,93,.6)}
@@ -130,6 +130,32 @@
   .dlg .preview .lockup{font-size:40px}
   .dlg .actions{display:flex;gap:10px;justify-content:flex-end}
 
+
+  /* Onboarding */
+  #onb{width:min(460px,92vw)}
+  .onb{padding:30px 30px 24px;text-align:center}
+  .onb-art{height:150px;border-radius:18px;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:22px;overflow:hidden}
+  .onb h2{margin:0 0 8px;font-size:24px;font-weight:900;color:var(--dark)}
+  .onb p{margin:0 auto;color:var(--muted);line-height:1.5;max-width:34ch;min-height:4.5em}
+  .onb-foot{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+  .onb-dots{display:flex;gap:6px}
+  .onb-dots i{width:8px;height:8px;border-radius:99px;background:#cbd5e1;transition:width .25s ease,background .25s ease}
+  .onb-dots i.on{width:22px;background:var(--violet)}
+  .onb-skip{background:none;border:0;color:var(--muted);font-weight:700;padding:8px}
+  .onb .btn{padding:12px 20px;font-size:15px}
+  .art-isos{display:flex;gap:16px}
+  .art-isos span{width:64px;height:64px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -6px rgba(19,13,93,.35)}
+  .art-isos img{width:70%}
+  .art-tabs{background:var(--dark);width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px}
+  .art-tabs .row{display:flex;gap:5px}
+  .art-tabs b{display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.14);color:#fff;font-size:13px;font-weight:900}
+  .art-tabs b.on{background:#fff;color:var(--dark)}
+  .art-tabs b img{height:18px}
+  .art-tabs .sheet{height:46px;background:#fff;border-radius:0 14px 0 0}
+  .art-pal{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .art-pal .seg{pointer-events:none}
+  .art-pal .lockup{font-size:30px}
+  .art-vote{width:76px;height:76px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px -10px rgba(70,61,225,.8)}
   footer{padding:10px 0 50px;color:var(--muted);font-size:13px;text-align:center}
 
   @media (max-width:860px){
@@ -147,10 +173,8 @@
     .vote-row .btn{width:100%}
     .pal{width:100%}
     .seg{width:100%}
-    .tabs{padding:0 12px}
     .tab{flex:1 1 0;justify-content:center;padding:10px 6px 12px;font-size:13px;gap:6px}
     .tab img{height:22px}
-    .tabs + #panel .option{border-top-left-radius:22px}
     .seg button{flex:1;justify-content:center;font-size:13px;padding:9px 8px;white-space:nowrap}
     .opt-title h2{font-size:24px}
   }
@@ -162,12 +186,13 @@
 <header class="hero">
   <div class="wrap">
     <h1>Elegí el nuevo logo de PSMob</h1>
-    <p class="lead">PSMob estrena identidad y queremos que la decidamos entre todos. Te mostramos las tres propuestas finalistas en color, en negativo, en tamaño chico y montadas en la app. Cada una se muestra con la <strong>paleta de PSMob, que es la principal</strong>; si querés, la podés comparar con la de QuartzSales. Mirá con calma y votá la que más te guste.</p>
+    <p class="lead">PSMob estrena logo y la última palabra la tenés vos. Mirá las 3 opciones, jugá con los colores y votá tu favorita. Sin presión… bueno, un poquito.</p>
     <ul class="rules">
       <li>Un voto por persona</li>
-      <li>Es anónimo</li>
-      <li>Elegís logo y paleta de color</li>
+      <li>Anónimo (de verdad)</li>
+      <li>Logo + paleta</li>
     </ul>
+    <button class="howto" type="button" data-onb>¿Cómo funciona?</button>
   </div>
 </header>
 
@@ -181,12 +206,25 @@
 
 <dialog id="confirm" aria-labelledby="dlg-title">
   <div class="dlg">
-    <h2 id="dlg-title">¿Confirmás tu voto?</h2>
+    <h2 id="dlg-title">¿Es tu elegida?</h2>
     <p id="dlg-text"></p>
     <div class="preview" id="dlg-preview"></div>
     <div class="actions">
-      <button class="btn ghost" type="button" data-close>Seguir mirando</button>
-      <button class="btn" type="button" id="dlg-ok">Sí, votar</button>
+      <button class="btn ghost" type="button" data-close>Mejor sigo mirando</button>
+      <button class="btn" type="button" id="dlg-ok">Sí, es esta</button>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="onb" aria-labelledby="onb-title">
+  <div class="onb">
+    <div class="onb-art" id="onb-art"></div>
+    <h2 id="onb-title"></h2>
+    <p id="onb-text"></p>
+    <div class="onb-foot">
+      <button class="onb-skip" type="button" data-onb-skip>Saltar</button>
+      <div class="onb-dots" id="onb-dots" aria-hidden="true"></div>
+      <button class="btn" type="button" id="onb-next" autofocus>Siguiente</button>
     </div>
   </div>
 </dialog>
@@ -248,11 +286,11 @@
         <div class="tile dark"><span class="tag">Negativo</span>${lockup(o.id, pal, 'dark')}</div>
       </div>
       <div class="sizes">
-        <div class="tile light"><span class="tag">Reducciones</span>${sizes('light')}${icons}</div>
-        <div class="tile dark"><span class="tag">Reducciones en negativo</span>${sizes('dark')}</div>
+        <div class="tile light"><span class="tag">Chiquito</span>${sizes('light')}${icons}</div>
+        <div class="tile dark"><span class="tag">Chiquito y en negativo</span>${sizes('dark')}</div>
       </div>
 
-      <h3 class="sub">Así queda en la app</h3>
+      <h3 class="sub">Así se vería en la app</h3>
       <div class="phones">
         <figure class="phone">
           <div class="screen"><img loading="lazy" src="${a('launcher.webp')}" alt="Pantalla de aplicaciones del celular con el ícono de PSMob">
@@ -328,7 +366,7 @@
       </div>`;
     }).join('');
     const mine = state.mine ? OPTIONS.find(o => o.id === state.mine.option) : null;
-    box.innerHTML = `<h2 id="res-title">Cómo va la votación</h2>
+    box.innerHTML = `<h2 id="res-title">Cómo viene la votación</h2>
       <p>${r.total} ${r.total === 1 ? 'persona votó' : 'personas votaron'} hasta ahora.${mine ? ` Tu voto: <strong>${mine.name} · ${PAL[state.mine.palette]}</strong>.` : ''}</p>
       ${rows}
       <div class="legend"><span><i style="background:var(--blue)"></i>Paleta PSMob</span><span><i style="background:var(--grad)"></i>Paleta QuartzSales</span></div>`;
@@ -357,7 +395,7 @@
   function openConfirm(id) {
     const o = OPTIONS.find(x => x.id === id); const pal = state.palette[id];
     pending = { option: id, palette: pal };
-    $('#dlg-text').innerHTML = `Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>. Después no se puede cambiar.`;
+    $('#dlg-text').innerHTML = `Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>. Una vez que votás, no hay vuelta atrás.`;
     $('#dlg-preview').innerHTML = lockup(id, pal);
     dlg.showModal();
   }
@@ -371,23 +409,63 @@
       dlg.close();
       if (r.ok) {
         state.mine = data.mine; state.results = data.results;
-        notice('¡Gracias! Tu voto quedó registrado.');
+        notice('¡Listo! Tu voto ya está en la urna. Gracias por participar.');
       } else if (r.status === 409) {
         state.mine = data.mine; state.results = data.results;
-        notice('Desde esta conexión ya se votó. Te mostramos cómo va la votación.');
+        notice('Desde esta conexión ya se votó. Igual te mostramos cómo viene la cosa.');
       } else throw new Error(data.error || r.status);
       syncVoted(); renderResults();
       $('#results').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
       dlg.close();
-      notice('No pudimos registrar el voto. Probá de nuevo en un rato.', true);
-    } finally { btn.disabled = false; btn.textContent = 'Sí, votar'; }
+      notice('Algo falló y tu voto no llegó. Probá de nuevo en un ratito.', true);
+    } finally { btn.disabled = false; btn.textContent = 'Sí, es esta'; }
   });
+
+
+  // Onboarding: 4 pasos cortos. Se muestra la primera vez y se puede volver a abrir.
+  const onb = $('#onb');
+  const STEPS = [
+    { t: 'PSMob se renueva', p: 'Hay 3 logos en carrera y vos decidís cuál se queda. Spoiler: no hay respuesta incorrecta.',
+      art: () => `<div class="art-isos">${['1','2','3'].map(i => `<span><img src="${a(`iso-${i}-ps.svg`)}" alt=""></span>`).join('')}</div>` },
+    { t: 'Una solapa por opción', p: 'Pasá por las tres antes de enamorarte de la primera. Arriba de cada una está su solapa.',
+      art: () => `<div class="art-tabs"><div class="row"><b class="on"><img src="${a('iso-1-ps.svg')}" alt="">Opción 1</b><b><img src="${a('iso-2-white.svg')}" alt="">Opción 2</b><b><img src="${a('iso-3-white.svg')}" alt="">Opción 3</b></div><div class="sheet"></div></div>` },
+    { t: 'Probá los colores', p: 'Arranca en la paleta de PSMob, que es la principal. Si te tienta la de QuartzSales, cambiala: votás con la que tengas elegida.',
+      art: () => `<div class="art-pal" id="art-pal"></div>` },
+    { t: 'Un voto y listo', p: 'Tenés uno solo y no hay vuelta atrás (como el tatuaje de un ex). Después espiás cómo viene la votación.',
+      art: () => `<div class="art-vote"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>` },
+  ];
+  let step = 0, palTimer = null;
+  function paintPal(pal) {
+    const el = $('#art-pal'); if (!el) return;
+    el.innerHTML = `<div class="seg" aria-hidden="true"><button type="button" tabindex="-1" aria-pressed="${pal === 'ps'}"><i class="dot" style="background:var(--blue)"></i>PSMob <small>principal</small></button><button type="button" tabindex="-1" aria-pressed="${pal === 'qs'}"><i class="dot" style="background:var(--grad)"></i>QuartzSales</button></div>${lockup('1', pal)}`;
+  }
+  function showStep(i) {
+    step = i; clearInterval(palTimer);
+    const st = STEPS[i];
+    $('#onb-art').innerHTML = st.art();
+    $('#onb-title').textContent = st.t;
+    $('#onb-text').textContent = st.p;
+    $('#onb-dots').innerHTML = STEPS.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
+    $('#onb-next').textContent = i === STEPS.length - 1 ? '¡A votar!' : 'Siguiente';
+    if ($('#art-pal')) {
+      let pal = 'ps'; paintPal(pal);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) palTimer = setInterval(() => { pal = pal === 'ps' ? 'qs' : 'ps'; paintPal(pal); }, 1600);
+    }
+  }
+  function openOnb() { showStep(0); onb.showModal(); }
+  function closeOnb() { clearInterval(palTimer); onb.close(); try { localStorage.setItem('psmob-onb', '1'); } catch {} }
+  $('#onb-next').addEventListener('click', () => step < STEPS.length - 1 ? showStep(step + 1) : closeOnb());
+  onb.addEventListener('click', e => { if (e.target.closest('[data-onb-skip]') || e.target === onb) closeOnb(); });
+  onb.addEventListener('cancel', () => closeOnb());
+  document.addEventListener('click', e => { if (e.target.closest('[data-onb]')) openOnb(); });
+  let seenOnb = false; try { seenOnb = localStorage.getItem('psmob-onb') === '1'; } catch {}
 
   render();
   fetch(API + '/status').then(r => r.json()).then(d => {
-    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('Ya votaste desde esta conexión. ¡Gracias!'); }
-  }).catch(() => {});
+    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('Ya votaste desde esta conexión. La democracia te lo agradece.'); }
+    else if (!seenOnb) openOnb();
+  }).catch(() => { if (!seenOnb) openOnb(); });
 })();
 </script>
 </body>
