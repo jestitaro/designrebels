@@ -458,7 +458,7 @@
 
   render();
   fetch(API + '/status').then(r => r.json()).then(d => {
-    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('¡Ya votaste! Tu buen gusto ya está registrado. Gracias.'); }
+    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('¡Ya votaste! Tu buen gusto quedó registrado. ¡Gracias!'); }
     else if (!seenOnb) openOnb();
   }).catch(() => { if (!seenOnb) openOnb(); });
 })();
