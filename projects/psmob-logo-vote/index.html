@@ -24,20 +24,29 @@
   .wrap{width:min(1180px,100% - 40px);margin-inline:auto}
 
   /* Hero */
-  .hero{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:72px 0 120px}
-  .hero::before{content:"";position:absolute;inset:auto -10% -55% 35%;height:120%;background:var(--grad);opacity:.55;filter:blur(90px);border-radius:50%}
+  .hero{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:56px 0 112px;text-align:center}
+  .hero::before{content:"";position:absolute;inset:auto 10% -70% 10%;height:120%;background:var(--grad);opacity:.55;filter:blur(90px);border-radius:50%}
   .hero .wrap{position:relative}
   .eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9fc7ff;margin:0 0 18px}
-  .hero h1{font-size:clamp(36px,6vw,64px);line-height:1.02;font-weight:900;margin:0 0 20px;max-width:12ch}
-  .hero p.lead{font-size:clamp(16px,2vw,19px);line-height:1.55;max-width:58ch;color:#d9def7;margin:0 0 32px}
-  .hero-isos{display:flex;gap:18px;align-items:center;margin-bottom:36px}
-  .hero-isos img{height:56px;width:auto}
-  .rules{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0;list-style:none}
+  .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;font-weight:900;margin:0 auto 18px;max-width:24ch}
+  .hero p.lead{font-size:clamp(16px,2vw,19px);line-height:1.55;max-width:62ch;color:#d9def7;margin:0 auto 26px}
+  .hero p.lead strong{color:#fff}
+    .rules{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:0;margin:0;list-style:none}
   .rules li{font-size:14px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:999px}
 
   /* Opciones */
-  main{margin-top:-64px;position:relative}
-  .option{background:#fff;border:1px solid var(--line);border-radius:28px;padding:32px;margin-bottom:28px;box-shadow:0 10px 40px -24px rgba(19,13,93,.35)}
+  main{margin-top:-62px;position:relative}
+  /* Solapas tipo carpeta */
+  .tabs{display:flex;gap:6px;padding:0 22px;position:relative;z-index:1;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;display:flex;align-items:center;gap:10px;border:0;border-radius:18px 18px 0 0;padding:12px 22px 14px;background:rgba(255,255,255,.12);color:#fff;font-weight:900;font-size:16px;transition:background .2s ease}
+  .tab:hover{background:rgba(255,255,255,.22)}
+  .tab img{height:28px;width:auto}
+  .tab[aria-selected="true"]{background:#fff;color:var(--dark)}
+  .tab .check{display:none;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);color:#fff;padding:3px 8px;border-radius:999px}
+  .tab.is-mine .check{display:inline-block}
+  .tabs + #panel .option{border-top-left-radius:0}
+  .option{background:#fff;border:0;border-radius:28px;padding:32px;margin-bottom:28px;box-shadow:0 10px 40px -24px rgba(19,13,93,.35)}
   .option.is-mine{border-color:#7a5cf0;box-shadow:0 0 0 3px rgba(112,37,224,.18),0 10px 40px -24px rgba(19,13,93,.35)}
   .opt-head{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:24px}
   .opt-title{display:flex;align-items:baseline;gap:12px}
@@ -46,7 +55,10 @@
   .mine-badge{display:none;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--grad);padding:6px 12px;border-radius:999px}
   .option.is-mine .mine-badge{display:inline-block}
 
+  .pal{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .pal>span{font-size:13px;font-weight:800;color:var(--muted)}
   .seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:4px;gap:4px}
+  .seg button small{font-size:11px;font-weight:800;color:var(--violet);background:#efe8fd;padding:2px 7px;border-radius:999px}
   .seg button{border:0;background:transparent;padding:9px 16px;border-radius:999px;font-weight:800;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
   .seg button .dot{width:12px;height:12px;border-radius:50%}
   .seg button[aria-pressed="true"]{background:#fff;color:var(--dark);box-shadow:0 1px 4px rgba(19,13,93,.15)}
@@ -83,6 +95,7 @@
 
   .vote-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
   .vote-row p{margin:0;color:var(--muted);font-size:15px}
+  .vote-row .btn.ghost{text-decoration:none;margin-left:-6px}
   .btn{border:0;border-radius:14px;padding:16px 26px;font-weight:900;font-size:17px;color:#fff;background:var(--grad);box-shadow:0 10px 24px -12px rgba(70,61,225,.8);transition:transform .15s ease, box-shadow .15s ease}
   .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px -12px rgba(70,61,225,.9)}
   .btn[disabled]{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none}
@@ -117,7 +130,7 @@
   .dlg .preview .lockup{font-size:40px}
   .dlg .actions{display:flex;gap:10px;justify-content:flex-end}
 
-  footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
+  footer{padding:10px 0 50px;color:var(--muted);font-size:13px;text-align:center}
 
   @media (max-width:860px){
     .brand-grid,.sizes{grid-template-columns:1fr}
@@ -132,7 +145,12 @@
     .phones{grid-auto-flow:column;grid-auto-columns:62%;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
     .phone{scroll-snap-align:start}
     .vote-row .btn{width:100%}
+    .pal{width:100%}
     .seg{width:100%}
+    .tabs{padding:0 12px}
+    .tab{flex:1 1 0;justify-content:center;padding:10px 6px 12px;font-size:13px;gap:6px}
+    .tab img{height:22px}
+    .tabs + #panel .option{border-top-left-radius:22px}
     .seg button{flex:1;justify-content:center;font-size:13px;padding:9px 8px;white-space:nowrap}
     .opt-title h2{font-size:24px}
   }
@@ -143,14 +161,8 @@
 
 <header class="hero">
   <div class="wrap">
-    <p class="eyebrow">Design Rebels · QuartzSales</p>
-    <div class="hero-isos" aria-hidden="true">
-      <img data-src="iso-1-white.svg" alt="">
-      <img data-src="iso-2-white.svg" alt="">
-      <img data-src="iso-3-white.svg" alt="">
-    </div>
     <h1>Elegí el nuevo logo de PSMob</h1>
-    <p class="lead">PSMob estrena identidad y queremos que la decidamos entre todos. Te mostramos las tres propuestas finalistas en color, en negativo, en tamaño chico y montadas en la app. Mirá cada una con calma y votá la que más te guste.</p>
+    <p class="lead">PSMob estrena identidad y queremos que la decidamos entre todos. Te mostramos las tres propuestas finalistas en color, en negativo, en tamaño chico y montadas en la app. Cada una se muestra con la <strong>paleta de PSMob, que es la principal</strong>; si querés, la podés comparar con la de QuartzSales. Mirá con calma y votá la que más te guste.</p>
     <ul class="rules">
       <li>Un voto por persona</li>
       <li>Es anónimo</li>
@@ -160,12 +172,12 @@
 </header>
 
 <main class="wrap">
+  <div id="options"></div>
   <div id="notice" role="status" aria-live="polite"></div>
   <section id="results" class="results" hidden aria-labelledby="res-title"></section>
-  <div id="options"></div>
 </main>
 
-<footer>Hecho por Design Rebels para QuartzSales · El orden de las opciones cambia para cada persona.</footer>
+<footer>QuartzSales · El orden de las opciones cambia para cada persona.</footer>
 
 <dialog id="confirm" aria-labelledby="dlg-title">
   <div class="dlg">
@@ -192,13 +204,12 @@
     { id: '2', name: 'Opción 2', desc: 'Pin lleno' },
     { id: '3', name: 'Opción 3', desc: 'Equipo en movimiento' },
   ];
-  const PAL = { qs: 'Colores QuartzSales', ps: 'Colores PSMob' };
-  const state = { palette: {}, mine: null, results: null };
-  OPTIONS.forEach(o => state.palette[o.id] = 'qs');
+  const PAL = { ps: 'paleta PSMob', qs: 'paleta QuartzSales' };
+  const state = { palette: {}, mine: null, results: null, active: null };
+  OPTIONS.forEach(o => state.palette[o.id] = 'ps');
 
   const $ = (s, el = document) => el.querySelector(s);
   const a = f => ASSETS + f;
-  document.querySelectorAll('img[data-src]').forEach(i => i.src = a(i.dataset.src));
 
   // Orden aleatorio estable por visitante, para que la posición no influya.
   let order;
@@ -207,6 +218,7 @@
     order = OPTIONS.map(o => o.id).sort(() => Math.random() - .5);
     try { localStorage.setItem('psmob-order', JSON.stringify(order)); } catch {}
   }
+  state.active = order[0];
 
   const lockup = (id, pal, variant) => {
     const iso = variant === 'dark' ? `iso-${id}-white.svg` : `iso-${id}-${pal}.svg`;
@@ -220,12 +232,14 @@
     const icons = [64, 48].map(px =>
       `<div class="sz"><div class="appicon" style="width:${px}px;height:${px}px"><img src="${a(`iso-${o.id}-${pal}.svg`)}" alt=""></div><small>ícono ${px}</small></div>`).join('');
     return `
-    <article class="option" id="opt-${o.id}" aria-labelledby="t-${o.id}">
+    <article class="option" id="opt-${o.id}" role="tabpanel" aria-labelledby="tab-${o.id}">
       <div class="opt-head">
         <div class="opt-title"><h2 id="t-${o.id}">${o.name}</h2><span>${o.desc}</span><em class="mine-badge">Tu voto</em></div>
-        <div class="seg" role="group" aria-label="Paleta de ${o.name}">
-          <button type="button" data-pal="qs" data-opt="${o.id}" aria-pressed="${pal === 'qs'}"><i class="dot" style="background:var(--grad)"></i>${PAL.qs}</button>
-          <button type="button" data-pal="ps" data-opt="${o.id}" aria-pressed="${pal === 'ps'}"><i class="dot" style="background:var(--blue)"></i>${PAL.ps}</button>
+        <div class="pal"><span>Paleta</span>
+          <div class="seg" role="group" aria-label="Paleta de ${o.name}">
+            <button type="button" data-pal="ps" data-opt="${o.id}" aria-pressed="${pal === 'ps'}"><i class="dot" style="background:var(--blue)"></i>PSMob <small>principal</small></button>
+            <button type="button" data-pal="qs" data-opt="${o.id}" aria-pressed="${pal === 'qs'}"><i class="dot" style="background:var(--grad)"></i>QuartzSales</button>
+          </div>
         </div>
       </div>
 
@@ -256,29 +270,44 @@
       </div>
 
       <div class="vote-row">
-        <p>Vas a votar la <strong>${o.name}</strong> con <strong>${PAL[pal]}</strong>.</p>
+        <p>Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>.</p>
         <button class="btn" type="button" data-vote="${o.id}">Votar ${o.name}</button>
       </div>
     </article>`;
   }
 
+  function tabsHTML() {
+    return order.map(id => {
+      const o = OPTIONS.find(x => x.id === id); const on = id === state.active;
+      return `<button class="tab" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="opt-${id}" aria-selected="${on}" tabindex="${on ? 0 : -1}">
+        <img src="${a(on ? `iso-${id}-ps.svg` : `iso-${id}-white.svg`)}" alt=""><span>${o.name}</span><em class="check">Tu voto</em></button>`;
+    }).join('');
+  }
+
   function render() {
-    $('#options').innerHTML = order.map(id => optionHTML(OPTIONS.find(o => o.id === id))).join('');
+    $('#options').innerHTML = `<div class="tabs" role="tablist" aria-label="Opciones de logo">${tabsHTML()}</div><div id="panel"></div>`;
+    renderPanel();
+  }
+
+  function renderPanel() {
+    $('#panel').innerHTML = optionHTML(OPTIONS.find(o => o.id === state.active));
     syncVoted();
   }
 
-  function rerenderOption(id) {
-    const el = $('#opt-' + id);
-    const tmp = document.createElement('div');
-    tmp.innerHTML = optionHTML(OPTIONS.find(o => o.id === id));
-    el.replaceWith(tmp.firstElementChild);
-    syncVoted();
+  function selectTab(id, focus) {
+    state.active = id;
+    $('.tabs').innerHTML = tabsHTML();
+    renderPanel();
+    if (focus) $('#tab-' + id).focus();
   }
+  const rerenderOption = () => renderPanel();
 
   function syncVoted() {
     document.querySelectorAll('[data-vote]').forEach(b => {
       if (state.mine) { b.disabled = true; b.textContent = 'Ya votaste'; }
+      if (state.mine && !b.nextElementSibling) b.insertAdjacentHTML('afterend', '<a class="btn ghost" href="#results">Ver resultados</a>');
     });
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('is-mine', !!state.mine && t.dataset.tab === state.mine.option));
     document.querySelectorAll('.option').forEach(el => el.classList.toggle('is-mine', !!state.mine && el.id === 'opt-' + state.mine.option));
   }
 
@@ -292,9 +321,9 @@
     const rows = OPTIONS.map(o => {
       const d = r.options[o.id]; const pct = n => r.total ? (n / r.total * 100) : 0;
       return `<div class="bar-row">
-        <div class="lbl"><img src="${a(`iso-${o.id}-qs.svg`)}" alt=""><span>${o.name}</span></div>
+        <div class="lbl"><img src="${a(`iso-${o.id}-ps.svg`)}" alt=""><span>${o.name}</span></div>
         <div class="bar" role="img" aria-label="${o.name}: ${d.total} votos, ${d.qs} con ${PAL.qs} y ${d.ps} con ${PAL.ps}">
-          <i class="qs" style="width:${pct(d.qs)}%"></i><i class="ps" style="width:${pct(d.ps)}%"></i></div>
+          <i class="ps" style="width:${pct(d.ps)}%"></i><i class="qs" style="width:${pct(d.qs)}%"></i></div>
         <div class="num">${Math.round(pct(d.total))}%<small>${d.total} ${d.total === 1 ? 'voto' : 'votos'}</small></div>
       </div>`;
     }).join('');
@@ -302,16 +331,25 @@
     box.innerHTML = `<h2 id="res-title">Cómo va la votación</h2>
       <p>${r.total} ${r.total === 1 ? 'persona votó' : 'personas votaron'} hasta ahora.${mine ? ` Tu voto: <strong>${mine.name} · ${PAL[state.mine.palette]}</strong>.` : ''}</p>
       ${rows}
-      <div class="legend"><span><i style="background:var(--grad)"></i>${PAL.qs}</span><span><i style="background:var(--blue)"></i>${PAL.ps}</span></div>`;
+      <div class="legend"><span><i style="background:var(--blue)"></i>Paleta PSMob</span><span><i style="background:var(--grad)"></i>Paleta QuartzSales</span></div>`;
     box.hidden = false;
   }
 
   // Interacciones
   document.addEventListener('click', e => {
+    const t = e.target.closest('[data-tab]');
+    if (t) { selectTab(t.dataset.tab); return; }
     const p = e.target.closest('[data-pal]');
     if (p) { state.palette[p.dataset.opt] = p.dataset.pal; rerenderOption(p.dataset.opt); $(`#opt-${p.dataset.opt} [data-pal="${p.dataset.pal}"]`).focus(); return; }
     const v = e.target.closest('[data-vote]');
     if (v && !v.disabled) openConfirm(v.dataset.vote);
+  });
+
+  document.addEventListener('keydown', e => {
+    const t = e.target.closest('[data-tab]'); if (!t) return;
+    const i = order.indexOf(t.dataset.tab);
+    if (e.key === 'ArrowRight') selectTab(order[(i + 1) % order.length], true);
+    if (e.key === 'ArrowLeft') selectTab(order[(i + order.length - 1) % order.length], true);
   });
 
   const dlg = $('#confirm');
@@ -319,7 +357,7 @@
   function openConfirm(id) {
     const o = OPTIONS.find(x => x.id === id); const pal = state.palette[id];
     pending = { option: id, palette: pal };
-    $('#dlg-text').innerHTML = `Vas a votar la <strong>${o.name}</strong> con <strong>${PAL[pal]}</strong>. Después no se puede cambiar.`;
+    $('#dlg-text').innerHTML = `Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>. Después no se puede cambiar.`;
     $('#dlg-preview').innerHTML = lockup(id, pal);
     dlg.showModal();
   }
@@ -348,7 +386,7 @@
 
   render();
   fetch(API + '/status').then(r => r.json()).then(d => {
-    if (d.voted) { state.mine = d.mine; state.results = d.results; syncVoted(); renderResults(); notice('Ya votaste desde esta conexión. ¡Gracias!'); }
+    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('Ya votaste desde esta conexión. ¡Gracias!'); }
   }).catch(() => {});
 })();
 </script>
