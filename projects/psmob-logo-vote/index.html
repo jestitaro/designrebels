@@ -10,66 +10,88 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --dark:#130D5D; --navy:#140E52; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0;
-    --surface:#f1f5f9; --bg:#f8fafc; --blue:#0260FD; --violet:#7025E0;
+    --ink:#1b1840; --dark:#130D5D; --navy:#140E52; --muted:#5f6380; --line:rgba(27,24,64,.12);
+    --accent:#4338CA; --accent-soft:#e3e1fb; --blue:#0260FD;
     --grad:linear-gradient(135deg,#3C9FF1 0%,#1D4ED8 32%,#7025E0 80%);
-    --radius:20px;
+    --card:#fff; --bar:64px;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+  html,body{min-height:100%}
+  body{margin:0;font-family:Nunito,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;
+    background:linear-gradient(135deg,#eef0f7 0%,#e9e8f8 45%,#e2dffb 100%) fixed}
   img{display:block;max-width:100%}
-  button{font:inherit;cursor:pointer}
-  :focus-visible{outline:3px solid #3C9FF1;outline-offset:3px;border-radius:8px}
-  .wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+  button{font:inherit;cursor:pointer;color:inherit}
+  :focus-visible{outline:3px solid #8b85f0;outline-offset:3px;border-radius:10px}
 
-  /* Hero */
-  .hero{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:56px 0 190px;text-align:center}
-  .hero::before{content:"";position:absolute;inset:auto 10% -70% 10%;height:120%;background:var(--grad);opacity:.55;filter:blur(90px);border-radius:50%}
-  .hero .wrap{position:relative}
-    .hero h1{font-size:clamp(34px,5.4vw,60px);line-height:1.05;font-weight:900;margin:0 auto 18px;max-width:24ch}
-  .hero p.lead{font-size:clamp(16px,2vw,19px);line-height:1.55;max-width:62ch;color:#d9def7;margin:0 auto 26px}
-  .hero p.lead strong{color:#fff}
-    .rules{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:0;margin:0;list-style:none}
-  .howto{margin-top:4px;background:none;border:0;color:#9fc7ff;font-weight:800;font-size:14px;text-decoration:underline;text-underline-offset:4px}
-  .rules li{font-size:14px;font-weight:700;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:999px}
+  /* Barra de progreso + encabezado */
+  .progress{position:fixed;inset:0 0 auto 0;height:4px;background:rgba(67,56,202,.12);z-index:20}
+  .progress i{display:block;height:100%;background:var(--accent);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  header.top{display:flex;align-items:center;justify-content:space-between;padding:22px 24px 0}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px;color:var(--dark);letter-spacing:-.01em}
+  .brand img{height:26px;width:auto}
 
-  /* Opciones */
-  main{margin-top:-140px;position:relative}
-  /* Solapas tipo carpeta */
-  .tabs{display:flex;gap:6px;padding:0;position:relative;z-index:1;overflow-x:auto;scrollbar-width:none}
-  .tabs::-webkit-scrollbar{display:none}
-  .tab{flex:0 0 auto;display:flex;align-items:center;gap:10px;border:0;border-radius:18px 18px 0 0;padding:12px 22px 14px;background:rgba(255,255,255,.12);color:#fff;font-weight:900;font-size:16px;transition:background .2s ease}
-  .tab:hover{background:rgba(255,255,255,.22)}
-  .tab img{height:28px;width:auto}
-  .tab[aria-selected="true"]{background:#fff;color:var(--dark)}
-  .tab .check{display:none;font-size:11px;font-weight:800;background:var(--grad);color:#fff;padding:3px 8px;border-radius:999px}
-  .tab.is-mine .check{display:inline-block}
-  .tabs + #panel .option{border-top-left-radius:0}
-  .option{background:#fff;border:0;border-radius:28px;padding:32px;margin-bottom:28px;box-shadow:0 10px 40px -24px rgba(19,13,93,.35)}
-  .option.is-mine{border-color:#7a5cf0;box-shadow:0 0 0 3px rgba(112,37,224,.18),0 10px 40px -24px rgba(19,13,93,.35)}
-  .opt-head{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:24px}
-  .opt-title{display:flex;align-items:baseline;gap:12px}
-  .opt-title h2{font-size:28px;font-weight:900;color:var(--dark);margin:0}
-  .opt-title span{color:var(--muted);font-size:15px;font-weight:600}
-  .mine-badge{display:none;font-size:12px;font-weight:800;font-style:normal;color:#fff;background:var(--grad);padding:6px 12px;border-radius:999px}
-  .option.is-mine .mine-badge{display:inline-block}
+  .stage{width:min(880px,100% - 40px);margin:0 auto;padding:36px 0 calc(var(--bar) + 60px)}
+  .stage.narrow{width:min(760px,100% - 40px)}
+  .fade{animation:fade .35s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  .pal{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .pal>span{font-size:13px;font-weight:800;color:var(--muted)}
-  .seg{display:inline-flex;background:var(--surface);border-radius:999px;padding:4px;gap:4px}
-  .seg button small{font-size:11px;font-weight:800;color:var(--violet);background:#efe8fd;padding:2px 7px;border-radius:999px}
-  .seg button{border:0;background:transparent;padding:9px 16px;border-radius:999px;font-weight:800;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
-  .seg button .dot{width:12px;height:12px;border-radius:50%}
-  .seg button[aria-pressed="true"]{background:#fff;color:var(--dark);box-shadow:0 1px 4px rgba(19,13,93,.15)}
+  /* Portada */
+  .intro{position:relative;padding-top:20px}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:800;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(67,56,202,.25);padding:8px 16px;border-radius:999px}
+  .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  .intro h1{font-size:clamp(44px,7.4vw,84px);line-height:1.02;letter-spacing:-.03em;font-weight:800;color:var(--ink);margin:26px 0 22px;max-width:13ch}
+  .intro .lead{font-size:clamp(17px,2vw,20px);line-height:1.55;color:var(--muted);max-width:46ch;margin:0 0 30px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);max-width:760px;margin-bottom:32px}
+  .stats div{padding:22px 24px}
+  .stats div+div{border-left:1px solid var(--line)}
+  .stats b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .stats span{font-size:15px;color:var(--muted)}
+  .actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+  .fine{font-size:14px;color:var(--muted);margin-top:22px;max-width:60ch;line-height:1.5}
+  .ghost-word{position:fixed;right:-2vw;bottom:-6vw;font-size:clamp(160px,26vw,380px);font-weight:900;letter-spacing:-.04em;line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(67,56,202,.10);pointer-events:none;z-index:-1;user-select:none}
 
-  .brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .tile{border-radius:var(--radius);display:flex;align-items:center;justify-content:center;min-height:220px;padding:28px;position:relative}
-  .tile .tag{position:absolute;top:14px;left:16px;font-size:13px;font-weight:700;opacity:.6}
-  .tile.light{background:var(--surface)}
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:14px;padding:16px 26px;font-weight:800;font-size:17px;color:#fff;background:var(--accent);box-shadow:0 10px 24px -14px rgba(67,56,202,.9);transition:transform .15s ease,background .15s ease}
+  .btn:hover{background:#3a30b4;transform:translateY(-1px)}
+  .btn[disabled]{background:#b9b6dd;box-shadow:none;cursor:not-allowed;transform:none}
+  .btn.line{background:transparent;color:var(--ink);border:1px solid rgba(27,24,64,.25);box-shadow:none}
+  .btn.line:hover{background:rgba(255,255,255,.6)}
+  .link{background:none;border:0;color:var(--muted);font-weight:700;font-size:16px;display:inline-flex;align-items:center;gap:8px;padding:10px 6px}
+  .link:hover{color:var(--ink)}
+
+  /* Paso de opción */
+  .kicker{display:flex;align-items:center;gap:8px;color:var(--accent);font-weight:800;font-size:15px;margin-bottom:18px}
+  .step-title{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+  .step-title img{height:40px;width:auto}
+  .step-title h2{font-size:clamp(32px,4.4vw,44px);font-weight:800;letter-spacing:-.02em;margin:0;color:var(--ink)}
+  .step-sub{color:var(--muted);font-size:17px;margin:0 0 22px}
+  .chips-label{font-size:13px;font-weight:800;color:var(--accent);margin:0 0 10px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+  .chip{border:0;background:#fff;color:var(--ink);font-weight:800;font-size:15px;padding:11px 18px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 1px 2px rgba(27,24,64,.06);transition:background .15s ease,color .15s ease}
+  .chip small{font-size:12px;font-weight:800;opacity:.75}
+  .chip[aria-pressed="true"]{background:var(--accent);color:#fff}
+
+  .media{background:#fff;border-radius:22px;padding:22px;box-shadow:0 18px 50px -34px rgba(27,24,64,.5)}
+  .phones{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .phone{margin:0}
+  .screen{position:relative;aspect-ratio:360/800;border-radius:22px;overflow:hidden;background:#0b0f1a;border:5px solid #11132a}
+  .screen>img{width:100%;height:100%;object-fit:cover}
+  .launcher-icon{position:absolute;left:7.22%;top:57%;width:13.4%;aspect-ratio:1;border-radius:30%;background:#fff;display:flex;align-items:center;justify-content:center}
+  .launcher-icon img{width:74%}
+  .phone figcaption{text-align:center;font-size:14px;font-weight:700;color:var(--muted);margin-top:10px}
+
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+  .tile{border-radius:18px;min-height:170px;display:flex;align-items:center;justify-content:center;padding:34px 22px 22px;position:relative}
+  .tile .tag{position:absolute;top:12px;left:16px;font-size:13px;font-weight:700;opacity:.6}
+  .tile.light{background:#f3f2fb}
   .tile.dark{background:var(--dark);color:#fff}
+  .tile.sizes{justify-content:flex-start;align-items:flex-end;gap:clamp(12px,2vw,22px);flex-wrap:wrap;min-height:0}
+  .sz{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .sz small{font:500 11px Roboto,sans-serif;opacity:.55}
+  .appicon{background:#fff;border-radius:28%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(19,13,93,.18)}
+  .appicon img{width:74%}
 
-  .lockup{display:flex;align-items:center;gap:.22em;font-size:clamp(34px,5vw,56px)}
+  .lockup{display:flex;align-items:center;gap:.22em;font-size:clamp(30px,4.2vw,46px)}
   .lockup img{height:1.42em;width:auto}
   .wm{font-weight:900;letter-spacing:-.01em;line-height:1;color:var(--navy)}
   .wm b{font-weight:900}
@@ -77,160 +99,103 @@
   .pal-ps .wm b{color:var(--blue)}
   .dark .wm,.dark .wm b{color:#fff!important;background:none!important;-webkit-text-fill-color:#fff}
 
-  .sizes{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
-  .sizes .tile{min-height:0;justify-content:flex-start;gap:clamp(12px,2vw,22px);align-items:flex-end;padding:44px 24px 22px;flex-wrap:wrap}
-  .sz{display:flex;flex-direction:column;align-items:center;gap:8px}
-  .sz small{font:500 11px Roboto,sans-serif;opacity:.55}
-  .appicon{background:#fff;border-radius:28%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(19,13,93,.18)}
-  .appicon img{width:74%;height:auto}
-
-  h3.sub{font-size:18px;font-weight:800;color:var(--dark);margin:34px 0 16px}
-  .phones{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:820px;margin-inline:auto}
-  .phone{margin:0}
-  .screen{position:relative;aspect-ratio:360/800;border-radius:26px;overflow:hidden;background:#0b0f1a;border:6px solid #0f1225;box-shadow:0 18px 40px -22px rgba(19,13,93,.6)}
-  .screen>img{width:100%;height:100%;object-fit:cover}
-  .launcher-icon{position:absolute;left:7.22%;top:57%;width:13.4%;aspect-ratio:1;border-radius:30%;background:#fff;display:flex;align-items:center;justify-content:center}
-  .launcher-icon img{width:74%}
-  .phone figcaption{text-align:center;font-size:14px;font-weight:700;color:var(--muted);margin-top:10px}
-
-  .vote-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
-  .vote-row p{margin:0;color:var(--muted);font-size:15px}
-  .vote-row[hidden]{display:none}
-  .btn{border:0;border-radius:14px;padding:16px 26px;font-weight:900;font-size:17px;color:#fff;background:var(--grad);box-shadow:0 10px 24px -12px rgba(70,61,225,.8);transition:transform .15s ease, box-shadow .15s ease}
-  .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px -12px rgba(70,61,225,.9)}
-  .btn[disabled]{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none}
-  .btn.ghost{background:var(--surface);color:var(--dark);box-shadow:none}
+  /* Elegir */
+  .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+  .choice{border:2px solid transparent;background:#fff;border-radius:20px;padding:26px 16px 20px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 10px 30px -24px rgba(27,24,64,.6);transition:border-color .15s ease,transform .15s ease}
+  .choice:hover{transform:translateY(-2px)}
+  .choice img{height:76px;width:auto}
+  .choice b{font-size:18px;font-weight:800}
+  .choice span{font-size:14px;color:var(--muted);margin-top:-10px}
+  .choice[aria-checked="true"]{border-color:var(--accent);box-shadow:0 0 0 4px rgba(67,56,202,.15)}
+  .preview{background:#fff;border-radius:20px;padding:28px;display:flex;justify-content:center}
 
   /* Resultados */
-  .results{background:#fff;border:1px solid var(--line);border-radius:28px;padding:32px;margin-bottom:28px}
-  .results h2{font-size:28px;font-weight:900;color:var(--dark);margin:0 0 6px}
-  .results>p{color:var(--muted);margin:0 0 24px}
   .bar-row{display:grid;grid-template-columns:150px 1fr 70px;gap:16px;align-items:center;margin-bottom:16px}
-  .bar-row .lbl{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--dark)}
+  .bar-row .lbl{display:flex;align-items:center;gap:10px;font-weight:800}
   .bar-row .lbl img{height:28px;width:auto}
-  .bar{height:34px;background:var(--surface);border-radius:10px;overflow:hidden;display:flex}
+  .bar{height:34px;background:#efeefa;border-radius:10px;overflow:hidden;display:flex}
   .bar i{display:block;height:100%;transition:width .8s cubic-bezier(.2,.8,.2,1)}
-  .bar i.qs{background:var(--grad)}
-  .bar i.ps{background:var(--blue)}
-  .bar-row .num{text-align:right;font-weight:900;font-size:20px;color:var(--dark)}
+  .bar i.qs{background:var(--grad)} .bar i.ps{background:var(--blue)}
+  .bar-row .num{text-align:right;font-weight:900;font-size:20px}
   .bar-row .num small{display:block;font:500 12px Roboto,sans-serif;color:var(--muted)}
   .legend{display:flex;gap:18px;font-size:13px;color:var(--muted);margin-top:8px}
   .legend span{display:flex;align-items:center;gap:6px}
   .legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .results-card{background:#fff;border-radius:22px;padding:28px}
+  .done-mark{width:64px;height:64px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .err{background:#fff1f2;color:#be123c;border-radius:14px;padding:12px 16px;font-weight:700;margin-bottom:18px}
 
-  .notice{background:#eef4ff;border:1px solid #cfe0ff;color:#1d4ed8;border-radius:14px;padding:14px 18px;font-weight:700;margin-bottom:28px}
-  .notice.err{background:#fff1f2;border-color:#fecdd3;color:#be123c}
+  /* Barra inferior */
+  .bottom{position:fixed;inset:auto 0 0 0;height:var(--bar);padding:0 20px;background:rgba(244,243,252,.85);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;z-index:10}
+  .bottom .in{width:min(500px,100%);display:flex;justify-content:space-between;align-items:center}
+  .bottom .btn{padding:12px 22px;font-size:16px}
+  .bottom[hidden]{display:none}
 
   dialog{border:0;border-radius:24px;padding:0;width:min(440px,92vw);box-shadow:0 30px 80px -20px rgba(19,13,93,.5)}
-  dialog::backdrop{background:rgba(19,13,93,.55);backdrop-filter:blur(3px)}
+  dialog::backdrop{background:rgba(27,24,64,.45);backdrop-filter:blur(3px)}
   .dlg{padding:30px}
-  .dlg h2{margin:0 0 8px;font-size:24px;font-weight:900;color:var(--dark)}
+  .dlg h2{margin:0 0 8px;font-size:24px;font-weight:800;color:var(--ink)}
   .dlg p{margin:0 0 22px;color:var(--muted);line-height:1.5}
-  .dlg .preview{background:var(--surface);border-radius:16px;padding:24px;display:flex;justify-content:center;margin-bottom:22px}
-  .dlg .preview .lockup{font-size:40px}
-  .dlg .actions{display:flex;gap:10px;justify-content:flex-end}
+  .dlg .preview{background:#f3f2fb;margin-bottom:22px}
+  .dlg .preview .lockup{font-size:38px}
+  .dlg .row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
 
-
-  /* Onboarding */
-  #onb{width:min(460px,92vw)}
-  .onb{padding:30px 30px 24px;text-align:center}
-  .onb-art{height:150px;border-radius:18px;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:22px;overflow:hidden}
-  .onb h2{margin:0 0 8px;font-size:24px;font-weight:900;color:var(--dark)}
-  .onb p{margin:0 auto;color:var(--muted);line-height:1.5;max-width:34ch;min-height:4.5em}
-  .onb-foot{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
-  .onb-dots{display:flex;gap:6px}
-  .onb-dots i{width:8px;height:8px;border-radius:99px;background:#cbd5e1;transition:width .25s ease,background .25s ease}
-  .onb-dots i.on{width:22px;background:var(--violet)}
-  .onb-skip{background:none;border:0;color:var(--muted);font-weight:700;padding:8px}
-  .onb .btn{padding:12px 20px;font-size:15px}
-  .art-isos{display:flex;gap:16px}
-  .art-isos span{width:64px;height:64px;background:#fff;border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -6px rgba(19,13,93,.35)}
-  .art-isos img{width:70%}
-  .art-tabs{background:var(--dark);width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 26px}
-  .art-tabs .row{display:flex;gap:5px}
-  .art-tabs b{display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:12px 12px 0 0;background:rgba(255,255,255,.14);color:#fff;font-size:13px;font-weight:900}
-  .art-tabs b.on{background:#fff;color:var(--dark)}
-  .art-tabs b img{height:18px}
-  .art-tabs .sheet{height:46px;background:#fff;border-radius:0 14px 0 0}
-  .art-pal{display:flex;flex-direction:column;align-items:center;gap:16px}
-  .art-pal .seg{pointer-events:none}
-  .art-pal .lockup{font-size:30px}
-  .art-vote{width:76px;height:76px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 24px -10px rgba(70,61,225,.8)}
-  footer{padding:10px 0 50px;color:var(--muted);font-size:13px;text-align:center}
-
-  @media (max-width:860px){
-    .brand-grid,.sizes{grid-template-columns:1fr}
-    .option,.results{padding:22px;border-radius:22px}
-    .phones{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-    .screen{border-width:4px;border-radius:18px}
-    .phone figcaption{font-size:12px}
-    .bar-row{grid-template-columns:96px 1fr 54px;gap:10px}
-    .bar-row .lbl span{display:none}
-  }
-  @media (max-width:520px){
-    .phones{grid-auto-flow:column;grid-auto-columns:62%;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+  @media (max-width:760px){
+    .stats div{padding:16px 14px}
+    .stats b{font-size:24px}
+    .stats span{font-size:13px}
+    .tiles{grid-template-columns:1fr}
+    .phones{grid-auto-flow:column;grid-auto-columns:64%;grid-template-columns:none;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
     .phone{scroll-snap-align:start}
-    .vote-row .btn{width:100%}
-    .pal{width:100%}
-    .seg{width:100%}
-    .tab{flex:1 1 0;justify-content:center;padding:10px 6px 12px;font-size:13px;gap:6px}
-    .tab img{height:22px}
-    .seg button{flex:1;justify-content:center;font-size:13px;padding:9px 8px;white-space:nowrap}
-    .opt-title h2{font-size:24px}
+    .media{padding:14px;border-radius:18px}
+    .choices{grid-template-columns:1fr;gap:10px}
+    .choice{flex-direction:row;padding:16px 18px;gap:16px}
+    .choice img{height:44px}
+    .choice span{margin:0 0 0 auto}
+    .bar-row{grid-template-columns:44px 1fr 54px;gap:10px}
+    .bar-row .lbl span{display:none}
+    .intro .actions .btn{width:100%;justify-content:center}
   }
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<header class="hero">
-  <div class="wrap">
-    <h1>Elegí el nuevo logo de PSMob</h1>
-    <p class="lead">¡PSMob cambia de logo y vos decidís! Mirá las 3 opciones, jugá con los colores y votá tu favorita.</p>
-    <button class="howto" type="button" data-onb>¿Cómo funciona?</button>
-  </div>
+<div class="progress" aria-hidden="true"><i id="prog" style="width:0"></i></div>
+<header class="top">
+  <div class="brand">QuartzSales</div>
 </header>
+<div class="ghost-word" aria-hidden="true">PSMob</div>
 
-<main class="wrap">
-  <div id="options"></div>
-  <div id="notice" role="status" aria-live="polite"></div>
-  <section id="results" class="results" hidden aria-labelledby="res-title"></section>
-</main>
+<main id="app" class="stage" tabindex="-1"></main>
 
-
+<nav class="bottom" id="bottom" hidden>
+  <div class="in">
+    <button class="link" type="button" id="back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Volver</button>
+    <button class="btn" type="button" id="next">Continuar</button>
+  </div>
+</nav>
 
 <dialog id="confirm" aria-labelledby="dlg-title">
   <div class="dlg">
     <h2 id="dlg-title">¿Es tu elegida?</h2>
     <p id="dlg-text"></p>
     <div class="preview" id="dlg-preview"></div>
-    <div class="actions">
-      <button class="btn ghost" type="button" data-close>Mejor sigo mirando</button>
+    <div class="row">
+      <button class="btn line" type="button" data-close>Mejor sigo mirando</button>
       <button class="btn" type="button" id="dlg-ok">Sí, es esta</button>
-    </div>
-  </div>
-</dialog>
-
-<dialog id="onb" aria-labelledby="onb-title">
-  <div class="onb">
-    <div class="onb-art" id="onb-art"></div>
-    <h2 id="onb-title"></h2>
-    <p id="onb-text"></p>
-    <div class="onb-foot">
-      <button class="onb-skip" type="button" data-onb-skip>Saltar</button>
-      <div class="onb-dots" id="onb-dots" aria-hidden="true"></div>
-      <button class="btn" type="button" id="onb-next" autofocus>Siguiente</button>
     </div>
   </div>
 </dialog>
 
 <script>
 (() => {
-  // Dónde viven los archivos y la API. En Vercel todo es relativo; desde GitHub Pages se usa la API de Vercel.
+  // En Vercel todo es relativo; desde GitHub Pages se usa la API de Vercel.
   const VERCEL_ORIGIN = 'https://psmob-logo-vote.vercel.app';
   const onVercel = /vercel\.app$/.test(location.hostname);
   const API = onVercel ? '/api' : VERCEL_ORIGIN + '/api';
   const ASSETS = onVercel ? 'https://jestitaro.github.io/designrebels/projects/psmob-logo-vote/assets/' : 'assets/';
+  const a = f => ASSETS + f;
+  const $ = s => document.querySelector(s);
 
   const OPTIONS = [
     { id: '1', name: 'Opción 1', desc: 'Pin abierto' },
@@ -238,11 +203,7 @@
     { id: '3', name: 'Opción 3', desc: 'Equipo en movimiento' },
   ];
   const PAL = { ps: 'paleta PSMob', qs: 'paleta QuartzSales' };
-  const state = { palette: {}, mine: null, results: null, active: null };
-  OPTIONS.forEach(o => state.palette[o.id] = 'ps');
-
-  const $ = (s, el = document) => el.querySelector(s);
-  const a = f => ASSETS + f;
+  const opt = id => OPTIONS.find(o => o.id === id);
 
   // Orden aleatorio estable por visitante, para que la posición no influya.
   let order;
@@ -251,215 +212,168 @@
     order = OPTIONS.map(o => o.id).sort(() => Math.random() - .5);
     try { localStorage.setItem('psmob-order', JSON.stringify(order)); } catch {}
   }
-  state.active = order[0];
 
-  const lockup = (id, pal, variant) => {
-    const iso = variant === 'dark' ? `iso-${id}-white.svg` : `iso-${id}-${pal}.svg`;
-    return `<div class="lockup pal-${pal}"><img src="${a(iso)}" alt=""><span class="wm"><b>PS</b>Mob</span></div>`;
-  };
+  const STEPS = ['intro', ...order, 'choose', 'results'];
+  const state = { step: 0, palette: 'ps', pick: null, mine: null, results: null, error: '' };
 
-  function optionHTML(o) {
-    const pal = state.palette[o.id];
-    const sizes = (bg) => [96, 48, 32, 24, 16].map(px =>
-      `<div class="sz"><img src="${a(bg === 'dark' ? `iso-${o.id}-white.svg` : `iso-${o.id}-${pal}.svg`)}" alt="" style="height:${px}px;width:auto"><small>${px}px</small></div>`).join('');
+  const lockup = (id, pal, dark) =>
+    `<div class="lockup pal-${pal}"><img src="${a(dark ? `iso-${id}-white.svg` : `iso-${id}-${pal}.svg`)}" alt=""><span class="wm"><b>PS</b>Mob</span></div>`;
+
+  const chips = () => `
+    <p class="chips-label">Paleta de color</p>
+    <div class="chips" role="group" aria-label="Paleta de color">
+      <button class="chip" type="button" data-pal="ps" aria-pressed="${state.palette === 'ps'}">PSMob <small>principal</small></button>
+      <button class="chip" type="button" data-pal="qs" aria-pressed="${state.palette === 'qs'}">QuartzSales</button>
+    </div>`;
+
+  const arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  function viewIntro() {
+    return `<section class="intro fade">
+      <span class="pill">Votación PSMob</span>
+      <h1>Elegí el nuevo logo de PSMob.</h1>
+      <p class="lead">¡PSMob cambia de logo y vos decidís! Mirá las 3 opciones, jugá con los colores y votá tu favorita.</p>
+      <div class="stats">
+        <div><b>3</b><span>opciones finalistas</span></div>
+        <div><b>1</b><span>voto por persona</span></div>
+        <div><b>100%</b><span>anónimo (de verdad)</span></div>
+      </div>
+      <div class="actions"><button class="btn" type="button" data-go="1">Empezar ${arrow}</button></div>
+      <p class="fine">No guardamos quién vota: solo contamos un voto por conexión. Si estás con la VPN de la empresa, desconectala antes de votar.</p>
+    </section>`;
+  }
+
+  function viewOption(id) {
+    const o = opt(id), pal = state.palette;
+    const sizes = dark => [96, 48, 32, 24, 16].map(px =>
+      `<div class="sz"><img src="${a(dark ? `iso-${id}-white.svg` : `iso-${id}-${pal}.svg`)}" alt="" style="height:${px}px;width:auto"><small>${px}px</small></div>`).join('');
     const icons = [64, 48].map(px =>
-      `<div class="sz"><div class="appicon" style="width:${px}px;height:${px}px"><img src="${a(`iso-${o.id}-${pal}.svg`)}" alt=""></div><small>ícono ${px}</small></div>`).join('');
-    return `
-    <article class="option" id="opt-${o.id}" role="tabpanel" aria-labelledby="tab-${o.id}">
-      <div class="opt-head">
-        <div class="opt-title"><h2 id="t-${o.id}">${o.name}</h2><span>${o.desc}</span><em class="mine-badge">Tu voto</em></div>
-        <div class="pal"><span>Paleta</span>
-          <div class="seg" role="group" aria-label="Paleta de ${o.name}">
-            <button type="button" data-pal="ps" data-opt="${o.id}" aria-pressed="${pal === 'ps'}"><i class="dot" style="background:var(--blue)"></i>PSMob <small>principal</small></button>
-            <button type="button" data-pal="qs" data-opt="${o.id}" aria-pressed="${pal === 'qs'}"><i class="dot" style="background:var(--grad)"></i>QuartzSales</button>
-          </div>
+      `<div class="sz"><div class="appicon" style="width:${px}px;height:${px}px"><img src="${a(`iso-${id}-${pal}.svg`)}" alt=""></div><small>ícono ${px}</small></div>`).join('');
+    return `<section class="fade">
+      <div class="kicker">${pct()}</div>
+      <div class="step-title"><img src="${a(`iso-${id}-${pal}.svg`)}" alt=""><h2>${o.name}</h2></div>
+      <p class="step-sub">${o.desc}. Así se vería en tu celu.</p>
+      ${chips()}
+      <div class="media">
+        <div class="phones">
+          <figure class="phone"><div class="screen"><img src="${a('launcher.webp')}" alt="Pantalla de aplicaciones con el ícono de PSMob">
+            <div class="launcher-icon"><img src="${a(`iso-${id}-${pal}.svg`)}" alt=""></div></div><figcaption>Ícono</figcaption></figure>
+          <figure class="phone"><div class="screen"><img src="${a(`opt${id}-splash-${pal}.webp`)}" alt="Pantalla de inicio con la ${o.name}"></div><figcaption>Inicio</figcaption></figure>
+          <figure class="phone"><div class="screen"><img src="${a(`opt${id}-login-${pal}.webp`)}" alt="Pantalla de ingreso con la ${o.name}"></div><figcaption>Ingreso</figcaption></figure>
         </div>
       </div>
-
-      <div class="brand-grid">
-        <div class="tile light"><span class="tag">Color</span>${lockup(o.id, pal)}</div>
-        <div class="tile dark"><span class="tag">Negativo</span>${lockup(o.id, pal, 'dark')}</div>
+      <div class="tiles">
+        <div class="tile light"><span class="tag">Color</span>${lockup(id, pal)}</div>
+        <div class="tile dark"><span class="tag">Negativo</span>${lockup(id, pal, true)}</div>
+        <div class="tile light sizes"><span class="tag">Chiquito</span>${sizes(false)}${icons}</div>
+        <div class="tile dark sizes"><span class="tag">Chiquito y en negativo</span>${sizes(true)}</div>
       </div>
-      <div class="sizes">
-        <div class="tile light"><span class="tag">Chiquito</span>${sizes('light')}${icons}</div>
-        <div class="tile dark"><span class="tag">Chiquito y en negativo</span>${sizes('dark')}</div>
+    </section>`;
+  }
+
+  function viewChoose() {
+    const pal = state.palette;
+    return `<section class="fade">
+      <div class="kicker">${pct()}</div>
+      <div class="step-title"><h2>¿Cuál es tu favorita?</h2></div>
+      <p class="step-sub">Elegí un logo y la paleta. Votás con la paleta que tengas marcada.</p>
+      <div class="choices" role="radiogroup" aria-label="Logo">
+        ${order.map(id => `<button class="choice" type="button" role="radio" data-pick="${id}" aria-checked="${state.pick === id}">
+          <img src="${a(`iso-${id}-${pal}.svg`)}" alt=""><b>${opt(id).name}</b><span>${opt(id).desc}</span></button>`).join('')}
       </div>
-
-      <h3 class="sub">Así se vería en la app</h3>
-      <div class="phones">
-        <figure class="phone">
-          <div class="screen"><img loading="lazy" src="${a('launcher.webp')}" alt="Pantalla de aplicaciones del celular con el ícono de PSMob">
-            <div class="launcher-icon"><img src="${a(`iso-${o.id}-${pal}.svg`)}" alt=""></div></div>
-          <figcaption>Ícono en el celular</figcaption>
-        </figure>
-        <figure class="phone">
-          <div class="screen"><img loading="lazy" src="${a(`opt${o.id}-splash-${pal}.webp`)}" alt="Pantalla de inicio de PSMob con la ${o.name}"></div>
-          <figcaption>Pantalla de inicio</figcaption>
-        </figure>
-        <figure class="phone">
-          <div class="screen"><img loading="lazy" src="${a(`opt${o.id}-login-${pal}.webp`)}" alt="Pantalla de ingreso de PSMob con la ${o.name}"></div>
-          <figcaption>Ingreso</figcaption>
-        </figure>
-      </div>
-
-      <div class="vote-row">
-        <p>Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>.</p>
-        <button class="btn" type="button" data-vote="${o.id}">Votar ${o.name}</button>
-      </div>
-    </article>`;
+      ${chips()}
+      ${state.pick ? `<div class="preview">${lockup(state.pick, pal)}</div>` : ''}
+    </section>`;
   }
 
-  function tabsHTML() {
-    return order.map(id => {
-      const o = OPTIONS.find(x => x.id === id); const on = id === state.active;
-      return `<button class="tab" role="tab" id="tab-${id}" data-tab="${id}" aria-controls="opt-${id}" aria-selected="${on}" tabindex="${on ? 0 : -1}">
-        <img src="${a(on ? `iso-${id}-ps.svg` : `iso-${id}-white.svg`)}" alt=""><span>${o.name}</span><em class="check">Tu voto</em></button>`;
-    }).join('');
-  }
-
-  function render() {
-    $('#options').innerHTML = `<div class="tabs" role="tablist" aria-label="Opciones de logo">${tabsHTML()}</div><div id="panel"></div>`;
-    renderPanel();
-  }
-
-  function renderPanel() {
-    $('#panel').innerHTML = optionHTML(OPTIONS.find(o => o.id === state.active));
-    syncVoted();
-  }
-
-  function selectTab(id, focus) {
-    state.active = id;
-    $('.tabs').innerHTML = tabsHTML();
-    renderPanel();
-    if (focus) $('#tab-' + id).focus();
-  }
-  const rerenderOption = () => renderPanel();
-
-  function syncVoted() {
-    document.querySelectorAll('[data-vote]').forEach(b => {
-      if (state.mine) b.closest('.vote-row').hidden = true;
-    });
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('is-mine', !!state.mine && t.dataset.tab === state.mine.option));
-    document.querySelectorAll('.option').forEach(el => el.classList.toggle('is-mine', !!state.mine && el.id === 'opt-' + state.mine.option));
-  }
-
-  function notice(msg, err) {
-    $('#notice').innerHTML = msg ? `<div class="notice${err ? ' err' : ''}">${msg}</div>` : '';
-  }
-
-  function renderResults() {
-    const r = state.results; if (!r) return;
-    const box = $('#results');
+  function viewResults() {
+    const r = state.results;
+    if (!r) return `<section class="fade"><p class="step-sub">Cargando resultados…</p></section>`;
+    const mine = state.mine ? opt(state.mine.option) : null;
     const rows = OPTIONS.map(o => {
-      const d = r.options[o.id]; const pct = n => r.total ? (n / r.total * 100) : 0;
+      const d = r.options[o.id]; const p = n => r.total ? n / r.total * 100 : 0;
       return `<div class="bar-row">
         <div class="lbl"><img src="${a(`iso-${o.id}-ps.svg`)}" alt=""><span>${o.name}</span></div>
-        <div class="bar" role="img" aria-label="${o.name}: ${d.total} votos, ${d.qs} con ${PAL.qs} y ${d.ps} con ${PAL.ps}">
-          <i class="ps" style="width:${pct(d.ps)}%"></i><i class="qs" style="width:${pct(d.qs)}%"></i></div>
-        <div class="num">${Math.round(pct(d.total))}%<small>${d.total} ${d.total === 1 ? 'voto' : 'votos'}</small></div>
-      </div>`;
+        <div class="bar" role="img" aria-label="${o.name}: ${d.total} votos"><i class="ps" style="width:${p(d.ps)}%"></i><i class="qs" style="width:${p(d.qs)}%"></i></div>
+        <div class="num">${Math.round(p(d.total))}%<small>${d.total} ${d.total === 1 ? 'voto' : 'votos'}</small></div></div>`;
     }).join('');
-    const mine = state.mine ? OPTIONS.find(o => o.id === state.mine.option) : null;
-    box.innerHTML = `<h2 id="res-title">Cómo viene la votación</h2>
-      <p>${r.total} ${r.total === 1 ? 'persona votó' : 'personas votaron'} hasta ahora.${mine ? ` Tu voto: <strong>${mine.name} · ${PAL[state.mine.palette]}</strong>.` : ''}</p>
-      ${rows}
-      <div class="legend"><span><i style="background:var(--blue)"></i>Paleta PSMob</span><span><i style="background:var(--grad)"></i>Paleta QuartzSales</span></div>`;
-    box.hidden = false;
+    return `<section class="fade">
+      <div class="done-mark"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <div class="step-title"><h2>¡Ya votaste!</h2></div>
+      <p class="step-sub">Tu buen gusto quedó registrado. ¡Gracias!${mine ? ` Elegiste la <strong>${mine.name}</strong> con la <strong>${PAL[state.mine.palette]}</strong>.` : ''}</p>
+      <div class="results-card">
+        <p class="chips-label">Cómo viene la votación · ${r.total} ${r.total === 1 ? 'voto' : 'votos'}</p>
+        ${rows}
+        <div class="legend"><span><i style="background:var(--blue)"></i>Paleta PSMob</span><span><i style="background:var(--grad)"></i>Paleta QuartzSales</span></div>
+      </div>
+      <div class="actions" style="margin-top:22px"><button class="btn line" type="button" data-go="1">Volver a mirar las opciones</button></div>
+    </section>`;
   }
 
-  // Interacciones
+  function pct() {
+    const p = Math.round(state.step / (STEPS.length - 1) * 100);
+    return `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l5-14 9 9-14 5z"/><path d="M14 4l1-2M19 9l2-1M17 3l-1 3M21 7l-3 1"/></svg>Vas por el ${p}%`;
+  }
+
+  function render(focus) {
+    const key = STEPS[state.step];
+    const app = $('#app');
+    app.className = 'stage' + (key === 'intro' ? '' : ' narrow');
+    app.innerHTML = (state.error ? `<div class="err">${state.error}</div>` : '') +
+      (key === 'intro' ? viewIntro() : key === 'choose' ? viewChoose() : key === 'results' ? viewResults() : viewOption(key));
+    $('#prog').style.width = (state.step / (STEPS.length - 1) * 100) + '%';
+
+    const bottom = $('#bottom'), next = $('#next');
+    bottom.hidden = key === 'intro' || key === 'results';
+    if (key === 'choose') {
+      next.innerHTML = `Votar ${arrow}`; next.disabled = !state.pick || !!state.mine;
+    } else {
+      next.innerHTML = `Continuar ${arrow}`; next.disabled = false;
+    }
+    if (focus) { window.scrollTo({ top: 0 }); app.focus({ preventScroll: true }); }
+  }
+
+  function go(i) {
+    state.error = '';
+    if (STEPS[i] === 'choose' && state.mine) i = STEPS.indexOf('results');
+    state.step = Math.max(0, Math.min(STEPS.length - 1, i));
+    render(true);
+  }
+
   document.addEventListener('click', e => {
-    const t = e.target.closest('[data-tab]');
-    if (t) { selectTab(t.dataset.tab); return; }
-    const p = e.target.closest('[data-pal]');
-    if (p) { state.palette[p.dataset.opt] = p.dataset.pal; rerenderOption(p.dataset.opt); $(`#opt-${p.dataset.opt} [data-pal="${p.dataset.pal}"]`).focus(); return; }
-    const v = e.target.closest('[data-vote]');
-    if (v && !v.disabled) openConfirm(v.dataset.vote);
+    const g = e.target.closest('[data-go]'); if (g) return go(+g.dataset.go);
+    const p = e.target.closest('[data-pal]'); if (p) { state.palette = p.dataset.pal; return render(); }
+    const k = e.target.closest('[data-pick]'); if (k) { state.pick = k.dataset.pick; return render(); }
   });
+  $('#back').addEventListener('click', () => go(state.step - 1));
+  $('#next').addEventListener('click', () => STEPS[state.step] === 'choose' ? openConfirm() : go(state.step + 1));
 
-  document.addEventListener('keydown', e => {
-    const t = e.target.closest('[data-tab]'); if (!t) return;
-    const i = order.indexOf(t.dataset.tab);
-    if (e.key === 'ArrowRight') selectTab(order[(i + 1) % order.length], true);
-    if (e.key === 'ArrowLeft') selectTab(order[(i + order.length - 1) % order.length], true);
-  });
-
+  // Confirmación y voto
   const dlg = $('#confirm');
-  let pending = null;
-  function openConfirm(id) {
-    const o = OPTIONS.find(x => x.id === id); const pal = state.palette[id];
-    pending = { option: id, palette: pal };
-    $('#dlg-text').innerHTML = `Vas a votar la <strong>${o.name}</strong> con la <strong>${PAL[pal]}</strong>. Una vez que votás, no hay vuelta atrás.`;
-    $('#dlg-preview').innerHTML = lockup(id, pal);
+  function openConfirm() {
+    if (!state.pick) return;
+    $('#dlg-text').innerHTML = `<strong>${opt(state.pick).name}</strong> con la <strong>${PAL[state.palette]}</strong>. Una vez que votás, no hay vuelta atrás.`;
+    $('#dlg-preview').innerHTML = lockup(state.pick, state.palette);
     dlg.showModal();
   }
   dlg.addEventListener('click', e => { if (e.target.matches('[data-close]') || e.target === dlg) dlg.close(); });
-
   $('#dlg-ok').addEventListener('click', async () => {
     const btn = $('#dlg-ok'); btn.disabled = true; btn.textContent = 'Votando…';
     try {
-      const r = await fetch(API + '/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(pending) });
+      const r = await fetch(API + '/vote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ option: state.pick, palette: state.palette }) });
       const data = await r.json();
       dlg.close();
-      if (r.ok) {
-        state.mine = data.mine; state.results = data.results;
-        notice('¡Listo! Tu voto ya está en la urna. Gracias por participar.');
-      } else if (r.status === 409) {
-        state.mine = data.mine; state.results = data.results;
-        notice('Desde esta conexión ya se votó. Igual te mostramos cómo viene la cosa.');
-      } else throw new Error(data.error || r.status);
-      syncVoted(); renderResults();
-      $('#results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch (err) {
-      dlg.close();
-      notice('Algo falló y tu voto no llegó. Probá de nuevo en un ratito.', true);
+      if (r.ok || r.status === 409) { state.mine = data.mine; state.results = data.results; go(STEPS.indexOf('results')); }
+      else throw new Error(data.error || r.status);
+    } catch {
+      dlg.close(); state.error = 'Algo falló y tu voto no llegó. Probá de nuevo en un ratito.'; render();
     } finally { btn.disabled = false; btn.textContent = 'Sí, es esta'; }
   });
 
-
-  // Onboarding: 4 pasos cortos. Se muestra la primera vez y se puede volver a abrir.
-  const onb = $('#onb');
-  const STEPS = [
-    { t: 'PSMob se renueva', p: 'Hay 3 logos en carrera y vos decidís cuál se queda. Spoiler: no hay respuesta incorrecta.',
-      art: () => `<div class="art-isos">${['1','2','3'].map(i => `<span><img src="${a(`iso-${i}-ps.svg`)}" alt=""></span>`).join('')}</div>` },
-    { t: 'Una solapa por opción', p: 'Pasá por las tres antes de enamorarte de la primera. Arriba de cada una está su solapa.',
-      art: () => `<div class="art-tabs"><div class="row"><b class="on"><img src="${a('iso-1-ps.svg')}" alt="">Opción 1</b><b><img src="${a('iso-2-white.svg')}" alt="">Opción 2</b><b><img src="${a('iso-3-white.svg')}" alt="">Opción 3</b></div><div class="sheet"></div></div>` },
-    { t: 'Probá los colores', p: 'Arranca en la paleta de PSMob, que es la principal. Si te tienta la de QuartzSales, cambiala: votás con la que tengas elegida.',
-      art: () => `<div class="art-pal" id="art-pal"></div>` },
-    { t: 'Un voto y listo', p: 'Tenés uno solo y no hay vuelta atrás (como el tatuaje de un ex). Después espiás cómo viene la votación.',
-      art: () => `<div class="art-vote"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>` },
-  ];
-  let step = 0, palTimer = null;
-  function paintPal(pal) {
-    const el = $('#art-pal'); if (!el) return;
-    el.innerHTML = `<div class="seg" aria-hidden="true"><button type="button" tabindex="-1" aria-pressed="${pal === 'ps'}"><i class="dot" style="background:var(--blue)"></i>PSMob <small>principal</small></button><button type="button" tabindex="-1" aria-pressed="${pal === 'qs'}"><i class="dot" style="background:var(--grad)"></i>QuartzSales</button></div>${lockup('1', pal)}`;
-  }
-  function showStep(i) {
-    step = i; clearInterval(palTimer);
-    const st = STEPS[i];
-    $('#onb-art').innerHTML = st.art();
-    $('#onb-title').textContent = st.t;
-    $('#onb-text').textContent = st.p;
-    $('#onb-dots').innerHTML = STEPS.map((_, k) => `<i class="${k === i ? 'on' : ''}"></i>`).join('');
-    $('#onb-next').textContent = i === STEPS.length - 1 ? '¡A votar!' : 'Siguiente';
-    if ($('#art-pal')) {
-      let pal = 'ps'; paintPal(pal);
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) palTimer = setInterval(() => { pal = pal === 'ps' ? 'qs' : 'ps'; paintPal(pal); }, 1600);
-    }
-  }
-  function openOnb() { showStep(0); onb.showModal(); }
-  function closeOnb() { clearInterval(palTimer); onb.close(); try { localStorage.setItem('psmob-onb', '1'); } catch {} }
-  $('#onb-next').addEventListener('click', () => step < STEPS.length - 1 ? showStep(step + 1) : closeOnb());
-  onb.addEventListener('click', e => { if (e.target.closest('[data-onb-skip]') || e.target === onb) closeOnb(); });
-  onb.addEventListener('cancel', () => closeOnb());
-  document.addEventListener('click', e => { if (e.target.closest('[data-onb]')) openOnb(); });
-  let seenOnb = false; try { seenOnb = localStorage.getItem('psmob-onb') === '1'; } catch {}
-
   render();
   fetch(API + '/status').then(r => r.json()).then(d => {
-    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('¡Ya votaste! Tu buen gusto quedó registrado. ¡Gracias!'); }
-    else if (!seenOnb) openOnb();
-  }).catch(() => { if (!seenOnb) openOnb(); });
+    if (d.voted) { state.mine = d.mine; state.results = d.results; state.pick = d.mine.option; state.palette = d.mine.palette; go(STEPS.indexOf('results')); }
+  }).catch(() => {});
 })();
 </script>
 </body>
