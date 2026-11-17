@@ -95,7 +95,7 @@
 
   .vote-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
   .vote-row p{margin:0;color:var(--muted);font-size:15px}
-  .vote-row .btn.ghost{text-decoration:none;margin-left:-6px}
+  .vote-row[hidden]{display:none}
   .btn{border:0;border-radius:14px;padding:16px 26px;font-weight:900;font-size:17px;color:#fff;background:var(--grad);box-shadow:0 10px 24px -12px rgba(70,61,225,.8);transition:transform .15s ease, box-shadow .15s ease}
   .btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px -12px rgba(70,61,225,.9)}
   .btn[disabled]{background:#cbd5e1;box-shadow:none;cursor:not-allowed;transform:none}
@@ -337,8 +337,7 @@
 
   function syncVoted() {
     document.querySelectorAll('[data-vote]').forEach(b => {
-      if (state.mine) { b.disabled = true; b.textContent = 'Ya votaste'; }
-      if (state.mine && !b.nextElementSibling) b.insertAdjacentHTML('afterend', '<a class="btn ghost" href="#results">Ver resultados</a>');
+      if (state.mine) b.closest('.vote-row').hidden = true;
     });
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('is-mine', !!state.mine && t.dataset.tab === state.mine.option));
     document.querySelectorAll('.option').forEach(el => el.classList.toggle('is-mine', !!state.mine && el.id === 'opt-' + state.mine.option));
