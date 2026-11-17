@@ -186,7 +186,7 @@
 <header class="hero">
   <div class="wrap">
     <h1>Elegí el nuevo logo de PSMob</h1>
-    <p class="lead">PSMob estrena logo y la última palabra la tenés vos. Mirá las 3 opciones, jugá con los colores y votá tu favorita. Sin presión… bueno, un poquito.</p>
+    <p class="lead">¡PSMob cambia de logo y vos decidís! Mirá las 3 opciones, jugá con los colores y votá tu favorita.</p>
     <ul class="rules">
       <li>Un voto por persona</li>
       <li>Anónimo (de verdad)</li>
@@ -463,7 +463,7 @@
 
   render();
   fetch(API + '/status').then(r => r.json()).then(d => {
-    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('Ya votaste desde esta conexión. La democracia te lo agradece.'); }
+    if (d.voted) { state.mine = d.mine; state.results = d.results; selectTab(d.mine.option); renderResults(); notice('¡Ya votaste! Tu buen gusto ya está registrado. Gracias.'); }
     else if (!seenOnb) openOnb();
   }).catch(() => { if (!seenOnb) openOnb(); });
 })();
