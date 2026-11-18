@@ -60,7 +60,7 @@
   fan.addEventListener('click', e => { const c = e.target.closest('.gcard'); if (c) openGame(c.dataset.id); });
   $('dayNo').textContent = dayNumber();
   $('brandKey').innerHTML = R.escSvg({ id: 'brandkey' });
-  $('mascotQ').innerHTML = R.qSvg({ id: 'mascotq' });
+  $('mascotQ').innerHTML = R.qSvg({ id: 'mascotq', faceFill: '#f3f0fd' });
 
   /* ---------- Jugador ---------- */
   const dlg = $('playerDlg'), sel = $('playerSel'), other = $('playerOther');

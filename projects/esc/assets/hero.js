@@ -159,7 +159,32 @@
   if (!reduced) (function blink() {
     setTimeout(() => { if (!mascot.classList.contains('sleep')) { mascot.classList.add('blink'); setTimeout(() => mascot.classList.remove('blink'), 140); } blink(); }, 2500 + Math.random() * 3000);
   })();
-  mascot.addEventListener('click', () => {
+  // Mobile: arrastrable; si fue un toque (sin arrastre) habla unos segundos y se calla
+  const mobileQ = matchMedia('(max-width: 760px)');
+  let drag = null, dragged = false, talkT;
+  mascot.addEventListener('pointerdown', e => {
+    if (!mobileQ.matches) return;
+    const r = mascot.getBoundingClientRect();
+    drag = { id: e.pointerId, dx: e.clientX - r.left, dy: e.clientY - r.top, x0: e.clientX, y0: e.clientY };
+    dragged = false;
+    mascot.setPointerCapture(e.pointerId);
+  });
+  mascot.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (!dragged && Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) < 8) return;
+    dragged = true; mascot.classList.add('dragging'); mascot.classList.remove('talk');
+    const w = mascot.offsetWidth, h = mascot.offsetHeight;
+    const x = Math.min(innerWidth - w - 6, Math.max(6, e.clientX - drag.dx));
+    const y = Math.min(innerHeight - h - 6, Math.max(6, e.clientY - drag.dy));
+    Object.assign(mascot.style, { left: `${x}px`, top: `${y}px`, right: 'auto', bottom: 'auto' });
+    mascot.classList.toggle('flip', x < innerWidth / 2); // el globito sale hacia el lado con lugar
+  });
+  const endDrag = () => { drag = null; mascot.classList.remove('dragging'); };
+  mascot.addEventListener('pointerup', endDrag); mascot.addEventListener('pointercancel', endDrag);
+
+  mascot.addEventListener('click', e => {
+    if (dragged) { dragged = false; e.preventDefault(); return; }
+    if (mobileQ.matches) { mascot.classList.add('talk'); clearTimeout(talkT); talkT = setTimeout(() => mascot.classList.remove('talk'), 4500); }
     mascotWake();
     tip = (tip + 1) % R.TIPS.length;
     bubble.textContent = R.TIPS[tip];

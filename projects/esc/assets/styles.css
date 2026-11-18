@@ -329,9 +329,14 @@ legend{font:600 14px var(--display);margin-bottom:10px}
 @media (max-width:760px){
   .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
   .brand small{display:none}
-  .mascot{grid-column:1;grid-row:1;justify-self:end;width:96px;margin:0 0 10px}
-  .mascot .gem{width:78px}
-  .bubble{max-width:170px;font-size:13px}
+  /* Mobile: Cuarzo flota abajo a la derecha, se puede arrastrar y solo habla si lo tocás */
+  .mascot{position:fixed;right:14px;bottom:16px;left:auto;top:auto;z-index:40;width:68px;margin:0;touch-action:none;-webkit-tap-highlight-color:transparent}
+  .mascot .gem{width:68px;filter:drop-shadow(0 10px 14px rgba(19,13,93,.3))}
+  .mascot.dragging .gem{animation:none;transform:scale(1.08)}
+  .bubble{display:none;top:auto;bottom:70%;max-width:200px;font-size:13px}
+  .mascot.flip .bubble{right:auto;left:calc(100% - 10px);border-radius:16px 16px 16px 4px;transform-origin:0 100%}
+  .mascot.talk .bubble{display:block}
+  .zzz{display:none}
   .gem-shadow{display:none}
   /* Mobile: grilla de 2 columnas, todas las cards enteras y sin girar */
   .stage{height:auto;margin:28px 0 0}
