@@ -19,6 +19,7 @@ Hub de productos, prototipos y herramientas internas creadas por Design Rebels p
 | **QuartzSales Calendar** | App / PWA | [Abrir app](https://designrebels.pages.dev/projects/quartzsales-calendar/) | [Ver proyecto](./projects/quartzsales-calendar/) |
 | **ESC** (juegos de pausa) | MVP | [Abrir ESC](https://jestitaro.github.io/designrebels/projects/esc/) | [Ver proyecto](./projects/esc/) |
 | **Corte, cámara, Claude** (Video Lab) | Landing | [Abrir Video Lab](https://jestitaro.github.io/designrebels/projects/video-lab/) | [Ver proyecto](./projects/video-lab/) |
+| **Este año, sin prompt** (fin de año 2026) | Prototipo · demo | [Abrir](https://jestitaro.github.io/designrebels/projects/sin-prompt/) | [Ver proyecto](./projects/sin-prompt/) |
 
 ## Estructura
 
@@ -34,6 +35,7 @@ designrebels/
 │   ├── esc/
 │   ├── quartzsales-calendar/
 │   ├── quartzsales-challenge/
+│   ├── sin-prompt/
 │   ├── the-rebel-run/
 │   ├── talent-lab/
 │   └── video-lab/
