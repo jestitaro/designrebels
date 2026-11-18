@@ -110,16 +110,16 @@ button{font:inherit;color:inherit;cursor:pointer}
 .gcard.lift .gcard-btn{transform:translateY(-34px) rotate(calc(var(--o) * -4deg)) scale(1.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 40px 70px -24px rgba(19,13,93,.6)}
 .gcard-btn{position:absolute;inset:0;width:100%;border:0;border-radius:inherit;padding:20px;text-align:left;color:#fff;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 82%,#fff) 0%,var(--c) 55%,color-mix(in srgb,var(--c) 80%,#130D5D) 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 26px 50px -26px rgba(19,13,93,.6);overflow:hidden;display:flex;flex-direction:column}
 .gcard-btn::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 60% at 20% 0%,rgba(255,255,255,.28),transparent 60%);pointer-events:none}
-.gcard h3,.gcard h3.long{font-size:19px;line-height:1.1;padding-right:48px}
+.gcard h3,.gcard h3.long{font-size:20px;line-height:1.1}
 .gcard .tag{text-shadow:0 1px 10px rgba(19,13,93,.25)}
 .gcard.ink .gcard-btn{color:var(--ink)}
 .gcard.ink h3,.gcard.ink .tag{text-shadow:none;color:var(--ink)}
-.gcard h3{font-size:26px;font-weight:700;position:relative;padding-right:56px}
+.gcard h3{font-size:26px;font-weight:700;position:relative}
 .gcard .tag{font:500 13.5px var(--body);color:rgba(255,255,255,.92);margin-top:4px;position:relative}
-.gcard .state{position:absolute;top:18px;right:16px;font:600 11.5px var(--body);background:rgba(19,13,93,.35);color:#fff;padding:5px 9px;border-radius:999px;backdrop-filter:blur(6px)}
+.gcard .state{position:relative;order:-1;align-self:flex-start;margin-bottom:12px;white-space:nowrap;font:600 11.5px var(--body);background:rgba(19,13,93,.35);color:#fff;padding:5px 9px;border-radius:999px;backdrop-filter:blur(6px)}
 .gcard .state.done{background:#fff;color:var(--ink)}
-.gcard .art{flex:1;display:grid;place-items:center;position:relative;margin-top:6px}
-.gcard .art svg{width:150px;height:150px;filter:drop-shadow(0 16px 18px rgba(19,13,93,.28));transition:transform .5s var(--ease-spring)}
+.gcard .art{flex:1;min-height:0;display:grid;place-items:center;position:relative;margin:8px 0 34px}
+.gcard .art svg{height:100%;max-height:140px;width:auto;aspect-ratio:1;filter:drop-shadow(0 16px 18px rgba(19,13,93,.28));transition:transform .5s var(--ease-spring)}
 .gcard.lift .art svg{transform:translateY(-6px) rotate(-4deg) scale(1.06)}
 .gcard .play{position:absolute;left:50%;bottom:22px;translate:-50% 0;display:inline-flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-radius:999px;background:#fff;color:var(--ink);font:600 14px var(--display);white-space:nowrap;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .35s var(--ease-spring)}
 .gcard .play b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--grad);color:#fff;font-size:14px}
@@ -339,6 +339,8 @@ legend{font:600 14px var(--display);margin-bottom:10px}
   .gcard{position:relative;flex:none;left:auto;bottom:auto;margin:0;width:200px;height:270px;scroll-snap-align:center;transform:rotate(calc(var(--alt) * 2deg))!important}
   .fan:not(.dealt) .gcard{transform:none}
   .gcard .play{opacity:1;transform:none}
+  .gcard .art{margin-bottom:52px}
+  .gem-shadow{display:none}
   .game{padding:0;place-items:end center}
   .game-panel{border-radius:26px 26px 0 0;max-height:100svh;padding:16px 14px 22px}
   .g-titles h2{font-size:20px}

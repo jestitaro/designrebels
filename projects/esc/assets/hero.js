@@ -37,9 +37,9 @@
   fan.addEventListener('focusin', e => spread(e.target.closest('.gcard')));
   fan.addEventListener('focusout', () => spread(null));
 
-  // En mobile el abanico es carrusel: arranca centrado en Teclazo (la card del medio)
+  // En mobile el abanico es carrusel: arranca centrado en Teclazo
   if (innerWidth <= 760) requestAnimationFrame(() => {
-    const mid = fan.children[Math.floor(fan.children.length / 2)];
+    const mid = fan.querySelector('[data-id="teclazo"]') || fan.children[0];
     if (mid) fan.scrollLeft = mid.offsetLeft - (fan.clientWidth - mid.offsetWidth) / 2;
   });
 

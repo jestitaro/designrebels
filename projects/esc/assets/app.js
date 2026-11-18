@@ -34,6 +34,10 @@
     sudoku: `<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#fff"/>${[[3, 1, 6], [5, 2, 4], [1, 6, 2]].flatMap((row, r) => row.map((n, c) => `<rect x="${10 + c * 35}" y="${10 + r * 35}" width="30" height="30" rx="8" fill="${r === 1 && c === 1 ? '#7025E0' : '#efeafd'}"/><text x="${25 + c * 35}" y="${32 + r * 35}" text-anchor="middle" font-family="Poppins, system-ui, sans-serif" font-weight="700" font-size="17" fill="${r === 1 && c === 1 ? '#fff' : (r + c) % 2 ? '#5932E0' : '#130D5D'}">${n}</text>`)).join('')}</svg>`,
     teclazo: `<svg viewBox="0 0 120 120"><rect width="120" height="120" rx="24" fill="#130D5D"/>${[[18, 16], [96, 24], [70, 10], [30, 50], [104, 62], [12, 88], [92, 96]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.3" fill="#fff" opacity=".6"/>`).join('')}<rect x="14" y="20" width="64" height="20" rx="7" fill="#fff"/><text x="22" y="34" font-family="Poppins, system-ui, sans-serif" font-weight="700" font-size="12" fill="#3C9FF1">gón<tspan fill="#130D5D">dola</tspan></text><rect x="62" y="48" width="44" height="18" rx="6" fill="rgba(255,255,255,.16)"/><text x="69" y="61" font-family="Poppins, system-ui, sans-serif" font-weight="700" font-size="11" fill="#fff">stock</text><line x1="60" y1="84" x2="46" y2="40" stroke="#9fd0fa" stroke-width="2.5"/><svg x="44" y="80" width="32" height="34" viewBox="0 0 ${R.qSize.W.toFixed(1)} ${R.qSize.H.toFixed(1)}">${R.qSvg({ id: 'artq', face: false }).replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg></svg>`
   };
+  // Margen interno en cada ilustración: nada toca las esquinas redondeadas del fondo
+  Object.keys(ART).forEach(k => {
+    ART[k] = ART[k].replace(/^(<svg viewBox="0 0 120 120"><rect [^>]*\/>)([\s\S]*)(<\/svg>)$/, '$1<g transform="translate(9 9) scale(.85)">$2</g>$3');
+  });
   R.ART = ART;
 
   /* ---------- Launcher ---------- */
