@@ -2198,7 +2198,7 @@ let COMPETITORS = DEMO_COMPETITORS;
 const SNAPSHOT_URL = 'data/dashboard-snapshot.json';
 const LIVE_FRESHNESS_HOURS = 36; // más viejo que esto se muestra como "almacenado", no "live".
 
-const DEMO_OWN_LINKEDIN = { followers: 3100, employees: 22, posts30d: 6 };
+const DEMO_OWN_LINKEDIN = { followers: 3100, employees: '11-50', posts30d: 6 };
 const DEMO_OWN_YOUTUBE = { subs: 1200, videos: 28, views: 85000, avgViews: 3036 };
 
 let DASHBOARD = { generatedAt: null, own: { linkedin: null, youtube: null }, competitors: DEMO_COMPETITORS };
@@ -2293,9 +2293,19 @@ function formatNum(n) {
   return n.toLocaleString('es-AR');
 }
 
+// scripts/sync.js puede mandar employees como rango ("11-50", el badge de
+// tamaño oficial que LinkedIn declara en la página de la empresa) en vez
+// de un número — más confiable que un conteo preciso que puede no ver a
+// todo el mundo. Un string ya viene formateado, se muestra tal cual.
+function formatEmployees(v) {
+  if (v === null || v === undefined || v === '—') return '—';
+  if (typeof v === 'string') return v;
+  return formatNum(v);
+}
+
 function renderLinkedInMetrics(d, source) {
   document.getElementById('li-followers').textContent = formatNum(d.followers);
-  document.getElementById('li-employees').textContent = formatNum(d.employees);
+  document.getElementById('li-employees').textContent = formatEmployees(d.employees);
   document.getElementById('li-posts30').textContent = d.posts30d ?? 0;
   document.getElementById('li-er').textContent = (d.er ?? 0) + '%';
   document.getElementById('li-er-bar').style.width = Math.min((d.er ?? 0) * 20, 100) + '%';
