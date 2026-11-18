@@ -29,6 +29,10 @@ on:
         description: 'Logear el item crudo que devuelve el actor de posts (para depurar su schema)'
         type: boolean
         default: false
+      debug_company:
+        description: 'Logear el item crudo que devuelve el actor de LinkedIn company (seguidores/empleados)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -59,6 +63,7 @@ jobs:
           SYNC_GROUP: ${{ github.event.inputs.group == 'auto' && '' || github.event.inputs.group }}
           SYNC_POSTS: ${{ github.event.inputs.posts == 'auto' && '' || github.event.inputs.posts }}
           DEBUG_POSTS: ${{ github.event.inputs.debug_posts }}
+          DEBUG_COMPANY: ${{ github.event.inputs.debug_company }}
 
       - name: Commit data si cambió
         run: |

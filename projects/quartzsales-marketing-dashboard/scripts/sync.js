@@ -7,7 +7,9 @@
 // dashboard consume por fetch(): data/dashboard-snapshot.json.
 //
 // Qué actualiza cada corrida:
-//  - LinkedIn propio (QuartzSales) y YouTube propio: siempre, en toda corrida.
+//  - LinkedIn propio (QuartzSales) y YouTube propio: siempre, en toda
+//    corrida — incluye posts30d (posts propios de los últimos 30 días,
+//    ver syncOwnLinkedIn), que antes nunca se calculaba y quedaba fijo en 0.
 //  - Competidores (seguidores/empleados): sólo el grupo del día (cadencia
 //    A/B/C, ver abajo), para no gastar de más la cuota de Apify con 11
 //    empresas por corrida.
@@ -120,6 +122,14 @@ async function fetchLinkedInCompany(token, linkedinUrl) {
     );
   }
 
+  // DEBUG_COMPANY=true loguea el objeto crudo que devuelve el actor para
+  // cada empresa — para diagnosticar discrepancias como "employees: 8"
+  // cuando LinkedIn muestra bastante más gente con ese empleador. No se
+  // activa solo: hay que pasarlo por env/workflow_dispatch.
+  if ((process.env.DEBUG_COMPANY || '').trim().toLowerCase() === 'true') {
+    console.log(`    (debug company) item crudo de ${linkedinUrl}:`, JSON.stringify(company).slice(0, 3000));
+  }
+
   return { followers: extractFollowers(company), employees: extractEmployees(company) };
 }
 
@@ -152,11 +162,11 @@ function extractPost(raw) {
 // Un post sin fecha parseable NO se descarta — es más probable que sea un
 // nombre de campo de fecha distinto al esperado (schema sin verificar, ver
 // nota al inicio del archivo) que un post realmente viejo.
-function isWithinLookback(post) {
+function isWithinLookback(post, days = POSTS_LOOKBACK_DAYS) {
   if (!post.date) return true;
   const d = new Date(post.date);
   if (Number.isNaN(d.getTime())) return true;
-  return d.getTime() >= Date.now() - POSTS_LOOKBACK_DAYS * 24 * 3600 * 1000;
+  return d.getTime() >= Date.now() - days * 24 * 3600 * 1000;
 }
 
 // El actor devuelve este texto como único item cuando la empresa no tiene
@@ -179,7 +189,19 @@ function sortByDateDesc(posts) {
   });
 }
 
-async function fetchCompanyPosts(token, linkedinUrl) {
+// options permite reusar esta misma función para el conteo de "posts
+// propios en 30 días" (ver syncOwnLinkedIn), no sólo para el panel de
+// posts de competidores: lookbackDays/maxResults/candidates ajustan la
+// ventana y cantidad, includeStaleFallback=false evita el fallback de
+// "mostrar el más viejo igual" cuando sólo queremos un conteo exacto.
+async function fetchCompanyPosts(token, linkedinUrl, options = {}) {
+  const {
+    lookbackDays = POSTS_LOOKBACK_DAYS,
+    maxResults = MAX_POSTS_PER_COMPANY,
+    candidates = POSTS_FETCH_CANDIDATES,
+    includeStaleFallback = true,
+  } = options;
+
   const url = `${APIFY_POSTS_URL}?token=${encodeURIComponent(token)}&timeout=90&memory=256`;
   const res = await fetch(url, {
     method: 'POST',
@@ -190,15 +212,15 @@ async function fetchCompanyPosts(token, linkedinUrl) {
     // label de Apify, no la key JSON real. En vez de seguir adivinando una
     // por una, mandamos varios alias plausibles a la vez — el actor ya
     // demostró que tolera claves de más sin rechazar el request entero.
-    // Pedimos más candidatos de los que mostramos (POSTS_FETCH_CANDIDATES)
-    // porque después filtramos por fecha (últimos POSTS_LOOKBACK_DAYS días)
-    // y el orden de Apify no está garantizado que sea cronológico.
+    // Pedimos más candidatos de los que mostramos (candidates) porque
+    // después filtramos por fecha (lookbackDays) y el orden de Apify no
+    // está garantizado que sea cronológico.
     body: JSON.stringify({
       linkedinUrls: [linkedinUrl],
       companyUrls: [linkedinUrl],
       urls: [linkedinUrl],
       linkedinCompanyUrls: [linkedinUrl],
-      maxPosts: POSTS_FETCH_CANDIDATES,
+      maxPosts: candidates,
     }),
   });
 
@@ -224,13 +246,13 @@ async function fetchCompanyPosts(token, linkedinUrl) {
   }
 
   const realPosts = sortByDateDesc(items.map(extractPost).filter((p) => !isPlaceholderPost(p)));
-  const recentPosts = realPosts.filter(isWithinLookback).slice(0, MAX_POSTS_PER_COMPANY);
+  const recentPosts = realPosts.filter((p) => isWithinLookback(p, lookbackDays)).slice(0, maxResults);
 
   let posts;
   if (recentPosts.length > 0) {
     posts = recentPosts.map((p) => ({ ...p, stale: false }));
-  } else if (realPosts.length > 0) {
-    // Nada en los últimos POSTS_LOOKBACK_DAYS días, pero la empresa sí tiene
+  } else if (includeStaleFallback && realPosts.length > 0) {
+    // Nada en los últimos lookbackDays días, pero la empresa sí tiene
     // posts más viejos — mostramos el más reciente igual, marcado `stale`,
     // para que el dashboard pueda avisar "no postearon esta semana, la
     // última vez fue el <fecha>" en vez de no mostrar nada.
@@ -246,10 +268,10 @@ async function fetchCompanyPosts(token, linkedinUrl) {
     );
   } else if (realPosts.length === 0) {
     console.warn(`    (posts) ${linkedinUrl}: sin posts reales (sólo placeholder "no posts found" del actor).`);
-  } else if (recentPosts.length === 0) {
+  } else if (recentPosts.length === 0 && includeStaleFallback) {
     console.warn(
       `    (posts) ${linkedinUrl}: ${realPosts.length} posts encontrados pero ninguno de los últimos ` +
-      `${POSTS_LOOKBACK_DAYS} días — mostrando el más reciente (${realPosts[0].date || 'sin fecha'}) como referencia.`
+      `${lookbackDays} días — mostrando el más reciente (${realPosts[0].date || 'sin fecha'}) como referencia.`
     );
   }
 
@@ -415,11 +437,32 @@ async function syncOwnLinkedIn(token, sources, previousOwn) {
 
   try {
     const result = await fetchLinkedInCompany(token, sources.own.linkedinUrl);
-    console.log(`  OK  ${sources.own.name} (LinkedIn propio): ${result.followers ?? 'sin cambio'} seguidores`);
+
+    // posts30d: antes nunca se calculaba (siempre quedaba en 0 pase lo que
+    // pase, ver index.html `d.posts30d ?? 0`). Reusa fetchCompanyPosts()
+    // del panel de competidores, pero contando sin el fallback de "mostrar
+    // el más viejo igual" — acá queremos un conteo exacto, no una lista.
+    // Un fallo acá no tira abajo el resto de la sync de LinkedIn propio:
+    // se conserva el valor anterior y se loguea como advertencia.
+    let posts30d = previousOwn?.linkedin?.posts30d ?? null;
+    try {
+      const posts = await fetchCompanyPosts(token, sources.own.linkedinUrl, {
+        lookbackDays: 30,
+        maxResults: 50,
+        candidates: 30,
+        includeStaleFallback: false,
+      });
+      posts30d = posts.length;
+    } catch (postsErr) {
+      console.warn(`  WARN ${sources.own.name} (posts propios 30d): ${postsErr.message} — se conserva el valor anterior.`);
+    }
+
+    console.log(`  OK  ${sources.own.name} (LinkedIn propio): ${result.followers ?? 'sin cambio'} seguidores, ${posts30d ?? '—'} posts en 30d`);
     return {
       entry: {
         followers: result.followers,
         employees: result.employees,
+        posts30d,
         lastSynced: new Date().toISOString(),
         syncStatus: 'ok',
         syncError: null,
@@ -433,6 +476,7 @@ async function syncOwnLinkedIn(token, sources, previousOwn) {
       entry: {
         followers: previousOwn?.linkedin?.followers ?? null,
         employees: previousOwn?.linkedin?.employees ?? null,
+        posts30d: previousOwn?.linkedin?.posts30d ?? null,
         lastSynced: previousOwn?.linkedin?.lastSynced ?? null,
         syncStatus: 'error',
         syncError: err.message,
