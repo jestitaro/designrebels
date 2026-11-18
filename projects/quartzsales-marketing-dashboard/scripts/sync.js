@@ -90,10 +90,25 @@ function extractFollowers(company) {
   return typeof followers === 'number' ? followers : null;
 }
 
+// employeeCount a veces cuenta menos gente de la que LinkedIn declara en su
+// propio rango oficial de tamaño (employeeCountRange, el badge "X-Y
+// empleados" de la página de la empresa) — probablemente porque el actor
+// no ve todos los perfiles. Confirmado en vivo (2026-11-18, DEBUG_COMPANY):
+// para QuartzSales employeeCount=8 pero employeeCountRange={11,50} — para
+// Repsly/Trax Retail/Frogmi, employeeCount SÍ caía dentro del rango
+// declarado, así que sólo corregimos cuando el conteo preciso contradice
+// el piso del rango oficial (sería más raro que el rango esté mal).
 function extractEmployees(company) {
-  const employees = company?.employeeCount ?? company?.employees ?? company?.staffCount
+  const rawCount = company?.employeeCount ?? company?.employees ?? company?.staffCount
     ?? company?.companySize ?? company?.numberOfEmployees ?? null;
-  return typeof employees === 'number' ? employees : null;
+  const rangeStart = typeof company?.employeeCountRange?.start === 'number'
+    ? company.employeeCountRange.start
+    : null;
+
+  if (typeof rawCount === 'number' && rangeStart !== null && rawCount < rangeStart) {
+    return rangeStart;
+  }
+  return typeof rawCount === 'number' ? rawCount : rangeStart;
 }
 
 async function fetchLinkedInCompany(token, linkedinUrl) {
