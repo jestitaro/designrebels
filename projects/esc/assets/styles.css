@@ -329,18 +329,28 @@ legend{font:600 14px var(--display);margin-bottom:10px}
 @media (max-width:760px){
   .hero{grid-template-columns:minmax(0,1fr);padding-top:28px}
   .brand small{display:none}
-  .mascot{grid-column:1;grid-row:1;justify-self:end;width:96px;margin:0 0 -30px}
-  .mascot .gem{width:80px}
+  .mascot{grid-column:1;grid-row:1;justify-self:end;width:96px;margin:0 0 10px}
+  .mascot .gem{width:78px}
   .bubble{max-width:170px;font-size:13px}
-  .stage{height:auto;margin:30px -16px 0}
-  .shelf{display:none}
-  .fan{position:static;width:auto;height:auto;display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 24px 40px;scrollbar-width:none}
-  .fan::-webkit-scrollbar{display:none}
-  .gcard{position:relative;flex:none;left:auto;bottom:auto;margin:0;width:200px;height:270px;scroll-snap-align:center;transform:rotate(calc(var(--alt) * 2deg))!important}
-  .fan:not(.dealt) .gcard{transform:none}
-  .gcard .play{opacity:1;transform:none}
-  .gcard .art{margin-bottom:52px}
   .gem-shadow{display:none}
+  /* Mobile: grilla de 2 columnas, todas las cards enteras y sin girar */
+  .stage{height:auto;margin:28px 0 0}
+  .shelf{display:none}
+  .fan{position:static;width:auto;height:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0}
+  .gcard{position:relative;left:auto;bottom:auto;margin:0;width:auto;height:236px;transform:none!important;transition:opacity .5s var(--ease-out),translate .5s var(--ease-out);transition-delay:calc(var(--k) * 60ms)}
+  .fan:not(.dealt) .gcard{opacity:0;translate:0 24px}
+  .gcard.lift .gcard-btn{transform:none}
+  .gcard-btn{padding:14px;border-radius:22px}
+  .gcard-btn:active{transform:scale(.97)}
+  .gcard h3{font-size:19px}
+  .gcard h3.long{font-size:15px}
+  .gcard .tag{font-size:12px;margin-top:2px}
+  .gcard .state{margin-bottom:8px;font-size:10.5px;padding:4px 8px}
+  .gcard .art{margin:6px 0 30px}
+  .gcard .art svg{max-height:92px}
+  .gcard .play{left:auto;right:10px;bottom:10px;translate:none;opacity:1;transform:none;padding:0;background:none}
+  .gcard .play{font-size:0;gap:0}
+  .gcard .play b{width:30px;height:30px}
   .game{padding:0;place-items:end center}
   .game-panel{border-radius:26px 26px 0 0;max-height:100svh;padding:16px 14px 22px}
   .g-titles h2{font-size:20px}

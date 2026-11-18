@@ -37,12 +37,6 @@
   fan.addEventListener('focusin', e => spread(e.target.closest('.gcard')));
   fan.addEventListener('focusout', () => spread(null));
 
-  // En mobile el abanico es carrusel: arranca centrado en Teclazo
-  if (innerWidth <= 760) requestAnimationFrame(() => {
-    const mid = fan.querySelector('[data-id="teclazo"]') || fan.children[0];
-    if (mid) fan.scrollLeft = mid.offsetLeft - (fan.clientWidth - mid.offsetWidth) / 2;
-  });
-
   /* ---------- 2. Física ---------- */
   const shelf = document.getElementById('shelf');
   const MATE = '<svg viewBox="0 0 32 32"><path d="M8.6 12.4c0-2.1 2.6-3.3 7.4-3.3s7.4 1.2 7.4 3.3c2.2 3.2 2 9.4-1.2 12.7-2.2 2.3-10.2 2.3-12.4 0-3.2-3.3-3.4-9.5-1.2-12.7z" fill="#7025E0"/><ellipse cx="16" cy="11.2" rx="6.4" ry="1.9" fill="#4a1599"/><path d="M17.6 12 22.4 3" stroke="#b9c3d6" stroke-width="2.2" stroke-linecap="round"/></svg>';
