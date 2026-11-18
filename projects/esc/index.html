@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESC · Juegos de pausa de QuartzSales</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta name="description" content="Cinco juegos cortos que cambian todos los días, con ranking compartido y un recordatorio en tu calendario para hacer una pausa. Hecho por Design Rebels para QuartzSales.">
+<meta name="theme-color" content="#ecebf8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#juegos">Saltar a los juegos</a>
+
+<header class="nav">
+  <a class="brand" href="#top" aria-label="ESC, inicio">
+    <span class="brand-key" id="brandKey"></span>
+    <small>by Design Rebels</small>
+  </a>
+  <nav class="nav-links" aria-label="Secciones">
+    <a href="#juegos">Juegos</a>
+    <a href="#hoy">Hoy</a>
+    <a href="#ranking">Ranking</a>
+    <a href="#recordatorio">Recordatorio</a>
+  </nav>
+  <button class="who" id="whoBtn" type="button"><span class="who-dot" aria-hidden="true"></span><span id="whoLabel">Elegí tu nombre</span></button>
+</header>
+
+<main id="top">
+  <!-- ============ HERO + LAUNCHER ============ -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="cursor-tags" id="cursorTags" aria-hidden="true"></div>
+
+    <div class="hero-copy">
+      <p class="chip"><span class="dot" aria-hidden="true"></span> Juegos de pausa de QuartzSales · Edición n.° <span id="dayNo">1</span></p>
+      <h1 id="heroTitle">Una pausa corta,<br><span class="accent">la cabeza fresca.</span></h1>
+      <p class="lead">Seis juegos de un par de minutos que cambian todos los días. Mismo tablero para todo QuartzSales, ranking del día y un recordatorio en tu calendario para acordarte de parar.</p>
+    </div>
+
+    <button class="mascot" id="mascot" type="button" aria-label="Cuarzo, la mascota de ESC. Tocala para un tip de pausa.">
+      <span class="bubble" id="bubble" role="status">¿Te tomás tres minutos?</span>
+      <span class="gem" id="mascotQ"></span>
+      <span class="gem-shadow" aria-hidden="true"></span>
+      <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
+    </button>
+
+    <div class="stage" id="juegos" tabindex="-1">
+      <div class="shelf" id="shelf" aria-hidden="true"></div>
+      <ul class="fan" id="fan" aria-label="Juegos de hoy"></ul>
+    </div>
+  </section>
+
+  <!-- ============ HOY ============ -->
+  <section class="section" id="hoy" aria-labelledby="hoyTitle">
+    <div class="section-head reveal">
+      <p class="chip"><span class="dot live" aria-hidden="true"></span> En vivo · ESC de hoy</p>
+      <h2 id="hoyTitle">Así viene el día</h2>
+    </div>
+    <div class="bento">
+      <article class="card card-main reveal">
+        <div class="big-stat"><strong id="peopleToday">0</strong><span>personas ya hicieron<br>su pausa hoy</span></div>
+        <div class="meter" aria-hidden="true"><div class="meter-fill" id="meterFill"></div><div class="meter-knob" id="meterKnob"></div></div>
+        <div class="meter-legend"><span>0</span><span><b id="myDone">0</b> de <span id="myTotal">6</span> juegos tuyos</span><span id="myTotal2">6</span></div>
+        <p class="card-foot" id="mainFoot">Los tableros se renuevan a la medianoche (hora de Buenos Aires). Todos juegan el mismo.</p>
+      </article>
+      <aside class="card card-coral reveal" aria-label="Datos del día">
+        <p class="card-label">Así viene</p>
+        <div class="mini"><strong id="playsToday">0</strong><span>partidas hoy</span></div>
+        <div class="mini"><strong id="streak">0</strong><span>días de racha tuya</span></div>
+        <div class="mini"><strong id="fastest">—</strong><span id="fastestLabel">la Ruta más rápida</span></div>
+      </aside>
+      <article class="card card-dark reveal">
+        <p class="card-label">Tus resultados</p>
+        <ul class="my-results" id="myResults"></ul>
+      </article>
+      <article class="card card-lav reveal">
+        <p class="card-label">Pausa activa</p>
+        <p class="tip" id="tipText">Mirá algo que esté a seis metros durante veinte segundos. Tus ojos lo agradecen.</p>
+        <button class="btn btn-ghost" id="tipNext" type="button">Otro tip <span aria-hidden="true">↻</span></button>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ RANKING ============ -->
+  <section class="section" id="ranking" aria-labelledby="rankTitle">
+    <div class="section-head reveal">
+      <p class="chip">🏆 Ranking compartido</p>
+      <h2 id="rankTitle">Quién viene más rápido hoy</h2>
+      <p class="sub">En los puzzles cuenta solo tu primera partida del día. En Teclazo queda tu mejor puntaje.</p>
+    </div>
+    <div class="rank-wrap card reveal">
+      <div class="tabs" role="tablist" aria-label="Elegí un juego" id="rankTabs"></div>
+      <div class="rank-board" id="rankBoard" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ============ RECORDATORIO ============ -->
+  <section class="section" id="recordatorio" aria-labelledby="remTitle">
+    <div class="reminder card reveal">
+      <div class="rem-copy">
+        <p class="chip">📅 Recordatorio</p>
+        <h2 id="remTitle">Agendá tu ESC</h2>
+        <p class="sub">La página no puede avisarte si está cerrada; tu calendario sí. Elegí un horario y sumá una pausa que se repite los días que quieras.</p>
+        <div class="rem-preview" id="remPreview" aria-live="polite"></div>
+      </div>
+      <form class="rem-form" id="remForm" onsubmit="return false">
+        <fieldset>
+          <legend>Horario</legend>
+          <div class="pills" id="remTimes">
+            <label><input type="radio" name="t" value="11:00"><span>11:00</span></label>
+            <label><input type="radio" name="t" value="15:30" checked><span>15:30</span></label>
+            <label><input type="radio" name="t" value="17:00"><span>17:00</span></label>
+            <label class="pill-time"><input type="radio" name="t" value="custom"><span>Otro</span><input type="time" id="remCustom" value="16:00" aria-label="Otro horario"></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Días</legend>
+          <div class="pills days" id="remDays">
+            <label><input type="checkbox" value="MO" checked><span>Lun</span></label>
+            <label><input type="checkbox" value="TU" checked><span>Mar</span></label>
+            <label><input type="checkbox" value="WE" checked><span>Mié</span></label>
+            <label><input type="checkbox" value="TH" checked><span>Jue</span></label>
+            <label><input type="checkbox" value="FR" checked><span>Vie</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Duración</legend>
+          <div class="pills" id="remDur">
+            <label><input type="radio" name="d" value="5"><span>5 min</span></label>
+            <label><input type="radio" name="d" value="10" checked><span>10 min</span></label>
+            <label><input type="radio" name="d" value="15"><span>15 min</span></label>
+          </div>
+        </fieldset>
+        <div class="rem-actions">
+          <a class="btn btn-primary" id="remGoogle" href="#" target="_blank" rel="noopener">Agregar a Google Calendar <span aria-hidden="true">→</span></a>
+          <button class="btn btn-ghost" id="remIcs" type="button">Descargar .ics <small>Outlook · Apple</small></button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>ESC · hecho por <a href="https://jestitaro.github.io/designrebels/">Design Rebels</a> para QuartzSales.</p>
+  <a href="#top">Volver arriba ↑</a>
+</footer>
+
+<!-- ============ JUEGO (overlay) ============ -->
+<div class="game" id="game" hidden>
+  <div class="game-backdrop" data-close></div>
+  <section class="game-panel" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+    <header class="game-head">
+      <span class="g-badge" id="gBadge" aria-hidden="true"></span>
+      <div class="g-titles">
+        <h2 id="gTitle">Juego</h2>
+        <p id="gMeta">n.° 1</p>
+      </div>
+      <div class="g-hud" id="gHud" aria-live="off">0:00</div>
+      <button class="icon-btn" id="gHelpBtn" type="button" aria-expanded="false" aria-controls="gHelp" aria-label="Cómo se juega">?</button>
+      <button class="icon-btn" type="button" data-close aria-label="Cerrar juego">✕</button>
+    </header>
+    <div class="g-progress" aria-hidden="true"><span id="gProg"></span></div>
+    <ol class="g-help" id="gHelp" hidden></ol>
+    <div class="g-stage" id="gStage"></div>
+    <div class="g-actions" id="gActions"></div>
+    <div class="g-toast" id="gToast" role="status" aria-live="polite"></div>
+    <div class="g-result" id="gResult" hidden></div>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+  </section>
+</div>
+
+<!-- ============ JUGADOR ============ -->
+<dialog class="dlg" id="playerDlg" aria-labelledby="pTitle">
+  <form method="dialog" id="playerForm">
+    <h2 id="pTitle">¿Quién juega?</h2>
+    <p class="sub">Tu nombre aparece en el ranking del día. Lo guardamos en este navegador.</p>
+    <label class="field"><span>Nombre</span>
+      <select id="playerSel" required></select>
+    </label>
+    <label class="field" id="otherWrap" hidden><span>Tu nombre y apellido</span>
+      <input id="playerOther" type="text" autocomplete="name" minlength="3">
+    </label>
+    <div class="dlg-actions">
+      <button class="btn btn-ghost" value="anon" type="submit" id="pAnon">Jugar sin ranking</button>
+      <button class="btn btn-primary" value="ok" type="submit" id="pOk">Listo <span aria-hidden="true">→</span></button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="assets/vendor/matter.min.js"></script>
+<script src="assets/core.js"></script>
+<script src="assets/games/ruta.js"></script>
+<script src="assets/games/gondola.js"></script>
+<script src="assets/games/equilibrio.js"></script>
+<script src="assets/games/sudoku.js"></script>
+<script src="assets/games/teclazo.js"></script>
+<script src="assets/games/pasala.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/hero.js"></script>
+</body>
+</html>

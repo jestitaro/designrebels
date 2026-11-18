@@ -17,6 +17,7 @@ Hub de productos, prototipos y herramientas internas creadas por Design Rebels p
 | **IA en el PDV** | Landing / WIP | [Abrir landing](https://jestitaro.github.io/designrebels/projects/ia-pdv-demo/) | [Ver proyecto](./projects/ia-pdv-demo/) |
 | **Talent Lab** | MVP | [Abrir Talent Lab](https://jestitaro.github.io/designrebels/projects/talent-lab/) | [Ver proyecto](./projects/talent-lab/) |
 | **QuartzSales Calendar** | App / PWA | [Abrir app](https://designrebels.pages.dev/projects/quartzsales-calendar/) | [Ver proyecto](./projects/quartzsales-calendar/) |
+| **ESC** (juegos de pausa) | MVP | [Abrir ESC](https://jestitaro.github.io/designrebels/projects/esc/) | [Ver proyecto](./projects/esc/) |
 | **Corte, cámara, Claude** (Video Lab) | Landing | [Abrir Video Lab](https://jestitaro.github.io/designrebels/projects/video-lab/) | [Ver proyecto](./projects/video-lab/) |
 
 ## Estructura
@@ -30,6 +31,7 @@ designrebels/
 │   ├── ia-pdv-demo/
 │   ├── quartzsales-marketing-dashboard/
 │   ├── qs-league/
+│   ├── esc/
 │   ├── quartzsales-calendar/
 │   ├── quartzsales-challenge/
 │   ├── the-rebel-run/
