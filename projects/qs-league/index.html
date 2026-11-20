@@ -6,6 +6,8 @@
   <meta name="description" content="Dino Cup - Competencia, clasificación y campeones" />
   <title>Dino Cup</title>
 
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%96%3C/text%3E%3C/svg%3E" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -13,7 +15,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="assets/styles.css?v=1" />
+  <link rel="stylesheet" href="assets/styles.css?v=2" />
 </head>
 
 <body>
@@ -43,7 +45,7 @@
       <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
         <a class="nav-link active" href="#inicio">Inicio</a>
         <a class="nav-link" href="#features">Explorar</a>
-        <a class="nav-link" href="#proximamente">Próximamente</a>
+        <a class="nav-link" href="#proximamente">Jugá ESC</a>
         <a class="nav-link" href="#" id="adminAccessLinkHeader">Admin</a>
       </nav>
     </div>
@@ -266,32 +268,29 @@
       </div>
     </section>
 
-    <section class="section coming-soon-section" id="proximamente">
+    <section class="section esc-banner-section" id="proximamente">
       <div class="container">
-        <article class="coming-soon-banner reveal">
-          <div class="coming-soon-banner__glow" aria-hidden="true"></div>
-
-          <i class="coming-soon-banner__icon" data-lucide="gamepad-2" aria-hidden="true"></i>
-
-          <div class="coming-soon-banner__content">
-            <span class="coming-soon-banner__badge">The Game Is Coming</span>
-
-            <h2>Próximamente.</h2>
-
-            <p>
-              El ranking se mira. Y también se juega.
-            </p>
-
-            <div class="coming-soon-banner__support">
-              <span>Proyecto apoyado por</span>
-              <strong>Talent Lab de eSaurio</strong>
+        <a
+          class="esc-banner reveal"
+          href="https://jestitaro.github.io/designrebels/projects/esc/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Jugar ESC: seis juegos cortos para despejar la cabeza. Abre en otra pestaña."
+        >
+          <div class="esc-scene" aria-hidden="true">
+            <img src="assets/esc-arte.png" alt="" width="1536" height="1024" loading="lazy">
+          </div>
+          <div class="esc-content">
+            <span class="esc-kicker">BY DESIGN REBELS · ESC</span>
+            <h2 class="esc-title"><span>SE BUSCA:</span><span class="pink">TU CONCENTRACIÓN.</span></h2>
+            <span class="esc-subtitle">Última vez vista entre 27 pestañas abiertas.</span>
+            <p class="esc-description">Seis juegos cortos para despejar la cabeza, competir un rato y volver al trabajo con otra energía.</p>
+            <div class="esc-actions">
+              <span class="esc-cta">Jugar ahora ↗</span>
+              <span class="esc-signature">UNA PAUSA NO ES UN CRIMEN, <em>o sí?</em></span>
             </div>
           </div>
-
-          <div class="coming-soon-banner__pixels" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-        </article>
+        </a>
       </div>
     </section>
 
@@ -310,7 +309,7 @@
       <nav class="footer-nav" aria-label="Navegación del pie">
         <a href="#inicio">Inicio</a>
         <a href="#features">Explorar</a>
-        <a href="#proximamente">Próximamente</a>
+        <a href="#proximamente">Jugá ESC</a>
         <a href="#" id="adminAccessLink">Admin</a>
       </nav>
     </div>
