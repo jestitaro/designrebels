@@ -1603,210 +1603,265 @@ button {
 }
 
 
-.coming-soon-section {
+.esc-banner-section {
   padding-top: 86px;
   padding-bottom: 104px;
 }
 
-.coming-soon-banner {
+/* ESC game banner — single <a>, no nested buttons. Provided as a
+   self-contained component (see projects/qs-league/assets/esc-arte.png);
+   namespaced under esc- so nothing here collides with the rest of the site. */
+.esc-banner {
+  --esc-ink: #170820;
+  --esc-cream: #fff3d9;
+  --esc-yellow: #ffcf44;
   position: relative;
-  min-height: 330px;
+  isolation: isolate;
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 45%) minmax(0, 55%);
   align-items: center;
-  gap: 42px;
+  width: 100%;
+  min-height: 410px;
   overflow: hidden;
-  padding: 54px 64px;
-  border: 1px solid rgba(131, 71, 255, 0.6);
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at 8% 50%, rgba(21, 217, 255, 0.11), transparent 28%),
-    radial-gradient(circle at 92% 44%, rgba(255, 53, 199, 0.11), transparent 30%),
-    linear-gradient(135deg, rgba(13, 14, 38, 0.96), rgba(5, 6, 19, 0.98));
-  box-shadow:
-    0 0 0 1px rgba(21, 217, 255, 0.08),
-    0 0 38px rgba(131, 71, 255, 0.22);
+  border: 3px solid #12051b;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(108deg, #301047 0%, #5b1776 42%, #762184 78%, #66207c 100%);
+  box-shadow: 7px 9px 0 #07040f, 0 22px 45px #0006;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.coming-soon-banner::before,
-.coming-soon-banner::after {
+.esc-banner:hover {
+  transform: translateY(-3px);
+  box-shadow: 7px 12px 0 #07040f, 0 26px 50px #0008;
+}
+
+.esc-banner:focus-visible {
+  outline: 4px solid var(--esc-yellow);
+  outline-offset: 6px;
+}
+
+.esc-scene {
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: -2;
+  width: 71%;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 54%, #000c 67%, transparent 98%);
+  mask-image: linear-gradient(to right, #000 0%, #000 54%, #000c 67%, transparent 98%);
+}
+
+.esc-scene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 56%;
+}
+
+.esc-banner::after {
   content: "";
   position: absolute;
-  pointer-events: none;
-}
-
-.coming-soon-banner::before {
   inset: 0;
-  opacity: 0.08;
-  background:
-    linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
-  background-size: 30px 30px;
-}
-
-.coming-soon-banner::after {
-  right: -70px;
-  bottom: -95px;
-  width: 360px;
-  height: 210px;
-  border: 1px solid rgba(21, 217, 255, 0.2);
-  border-radius: 50%;
-  box-shadow:
-    0 0 28px rgba(21, 217, 255, 0.12),
-    inset 0 0 28px rgba(255, 53, 199, 0.08);
-  transform: rotate(-12deg);
-}
-
-.coming-soon-banner__glow {
-  position: absolute;
-  top: -80px;
-  left: 38%;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  background: rgba(131, 71, 255, 0.16);
-  filter: blur(70px);
+  z-index: -1;
   pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 5px, #12041c0d 5px 6px),
+    linear-gradient(to right, transparent 30%, #4c176033 59%, #3810462a 100%);
 }
 
-.coming-soon-banner__icon {
+.esc-content {
+  grid-column: 2;
   position: relative;
-  z-index: 1;
-  width: 104px;
-  height: 104px;
-  justify-self: center;
-  color: var(--cyan);
-  stroke-width: 1.2;
-  filter:
-    drop-shadow(0 0 14px rgba(21, 217, 255, 0.6))
-    drop-shadow(0 0 30px rgba(131, 71, 255, 0.26));
-  animation: coming-icon-float 3.2s ease-in-out infinite;
+  min-width: 0;
+  padding: 38px clamp(23px, 3.8vw, 52px) 39px 8px;
 }
 
-@keyframes coming-icon-float {
-  50% {
-    transform: translateY(-8px) rotate(2deg);
-  }
-}
-
-.coming-soon-banner__content {
-  position: relative;
-  z-index: 1;
-  max-width: 790px;
-}
-
-.coming-soon-banner__badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 13px;
-  border: 1px solid rgba(184, 255, 61, 0.42);
-  border-radius: 10px;
-  color: var(--green);
-  font-family: var(--font-display);
-  font-size: 0.52rem;
-  text-transform: uppercase;
-  background: rgba(184, 255, 61, 0.04);
-}
-
-.coming-soon-banner h2 {
-  margin: 24px 0 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.65rem, 3vw, 3.2rem);
-  line-height: 1.35;
-  letter-spacing: -0.045em;
-}
-
-.coming-soon-banner h2 span {
+.esc-kicker {
   display: inline-block;
+  margin-bottom: 17px;
+  padding: 7px 12px;
+  color: var(--esc-ink);
+  background: var(--esc-cream);
+  border: 2px solid var(--esc-ink);
+  box-shadow: 4px 4px 0 var(--esc-ink);
+  font: italic 900 13px/1 Arial, Helvetica, sans-serif;
+  letter-spacing: .035em;
+  transform: rotate(-2.2deg);
 }
 
-.coming-soon-banner p {
-  max-width: 720px;
-  margin: 22px 0 0;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.72;
+.esc-title {
+  margin: 0;
+  font: 900 clamp(32px, 3.6vw, 54px)/.95 Impact, "Arial Black", Arial, sans-serif;
+  letter-spacing: -.012em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  -webkit-text-stroke: 1px #19091e;
+  text-shadow: 3px 4px 0 #17081e, -1px -1px 0 #17081e, 2px -1px 0 #17081e;
 }
 
-.coming-soon-banner__support {
+.esc-title span { display: block; }
+.esc-title .pink { color: #ffb3f5; }
+
+.esc-subtitle {
+  display: inline-block;
+  max-width: 100%;
+  margin: 19px 0 0;
+  padding: 9px 12px;
+  color: var(--esc-ink);
+  background: var(--esc-cream);
+  border: 2px solid var(--esc-ink);
+  box-shadow: 4px 4px 0 var(--esc-ink);
+  font: 800 clamp(13px, 1.25vw, 17px)/1.3 "Courier New", monospace;
+  transform: rotate(-1deg);
+}
+
+.esc-description {
+  max-width: 490px;
+  margin: 20px 0 18px;
+  color: #fff5fb;
+  font: 700 clamp(14px, 1.25vw, 16px)/1.45 Arial, Helvetica, sans-serif;
+  text-shadow: 1px 2px 2px #200728;
+}
+
+.esc-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 9px;
-  margin-top: 30px;
-  color: var(--muted);
-  font-size: 0.9rem;
+  gap: 13px 19px;
 }
 
-.coming-soon-banner__support strong {
-  color: var(--cyan);
-  font-family: var(--font-display);
-  font-size: 0.62rem;
-  text-shadow: 0 0 12px rgba(21, 217, 255, 0.4);
-}
-
-.coming-soon-banner__pixels {
-  position: absolute;
-  right: 34px;
-  top: 28px;
-  display: flex;
+.esc-cta {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
+  padding: 11px 18px 10px;
+  border: 3px solid #16081c;
+  border-radius: 8px;
+  color: var(--esc-ink);
+  background: var(--esc-yellow);
+  box-shadow: 4px 5px 0 #110717;
+  font: italic 900 19px/1.1 Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  transform: skew(-6deg);
+  transition: background .18s ease, translate .18s ease;
 }
 
-.coming-soon-banner__pixels span {
-  width: 6px;
-  height: 6px;
-  background: var(--magenta);
-  box-shadow: 0 0 10px rgba(255, 53, 199, 0.55);
-  animation: pixel-blink 1.8s ease-in-out infinite;
+.esc-banner:hover .esc-cta {
+  background: #ffe480;
+  translate: 2px -2px;
 }
 
-.coming-soon-banner__pixels span:nth-child(2) { animation-delay: 0.15s; }
-.coming-soon-banner__pixels span:nth-child(3) { animation-delay: 0.3s; }
-.coming-soon-banner__pixels span:nth-child(4) { animation-delay: 0.45s; }
-.coming-soon-banner__pixels span:nth-child(5) { animation-delay: 0.6s; }
+.esc-signature {
+  max-width: 220px;
+  color: #fff2f9;
+  font: italic 850 11px/1.35 Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .055em;
+}
 
-@keyframes pixel-blink {
-  50% {
-    opacity: 0.25;
-    transform: translateY(5px);
+.esc-signature em { font-weight: 600; text-transform: none; }
+
+/* Between the mobile stack (≤800px) and ~1100px, the two-column split left
+   too little horizontal room: body copy ran up against the illustration's
+   sticky-note prop. Give content more width/padding and shrink the image
+   a bit in just this band — this is also the exact width range the real
+   .container (max 1200px) renders at on common 1024–1150px viewports, so
+   it's not just a narrow edge case. */
+@media (min-width: 801px) and (max-width: 1100px) {
+  .esc-banner {
+    grid-template-columns: minmax(0, 40%) minmax(0, 60%);
+  }
+
+  .esc-scene {
+    width: 60%;
+  }
+
+  .esc-content {
+    padding-left: 26px;
   }
 }
 
-@media (max-width: 860px) {
-  .coming-soon-banner {
+@media (max-width: 800px) {
+  .esc-banner {
     grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 42px 34px;
-    text-align: center;
+    grid-template-rows: 230px auto;
   }
 
-  .coming-soon-banner__icon {
-    width: 82px;
-    height: 82px;
-    margin-inline: auto;
+  .esc-scene {
+    width: 100%;
+    height: 290px;
+    inset: 0 0 auto;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 67%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 67%, transparent 100%);
   }
 
-  .coming-soon-banner__content,
-  .coming-soon-banner p {
-    margin-inline: auto;
+  .esc-scene img {
+    object-position: center 43%;
   }
 
-  .coming-soon-banner__support {
-    justify-content: center;
+  .esc-banner::after {
+    background: repeating-linear-gradient(0deg, transparent 0 5px, #12041c0d 5px 6px);
+  }
+
+  .esc-content {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 0 24px 30px;
+  }
+
+  .esc-kicker {
+    margin-bottom: 15px;
+  }
+
+  .esc-title {
+    font-size: clamp(37px, 9vw, 64px);
+  }
+
+  .esc-description {
+    margin: 19px 0;
   }
 }
 
-@media (max-width: 520px) {
-  .coming-soon-banner {
-    padding: 34px 22px;
+@media (max-width: 410px) {
+  .esc-banner {
+    grid-template-rows: 195px auto;
   }
 
-  .coming-soon-banner h2 {
-    font-size: 1.45rem;
+  .esc-scene {
+    height: 250px;
+  }
+
+  .esc-content {
+    padding: 0 17px 25px;
+  }
+
+  .esc-kicker {
+    font-size: 11px;
+  }
+
+  .esc-title {
+    font-size: clamp(34px, 9vw, 43px);
+  }
+
+  .esc-cta {
+    font-size: 17px;
+  }
+
+  .esc-signature {
+    max-width: 150px;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .esc-banner,
+  .esc-cta {
+    transition: none;
+  }
+}
+
 
 
 svg[data-lucide] {
