@@ -6,7 +6,8 @@ export default function Brick({ x = 0, y = 0, z = 0, w, h, d, color = '#7025E0',
     '--h': `${h}px`,
     '--d': `${d}px`,
     '--c': color,
-    transform: `translate3d(${x}px, ${y}px, ${z}px)`,
+    // la rotación va después de la traslación: gira sobre su propio centro
+    transform: `translate3d(${x}px, ${y}px, ${z}px) rotate3d(var(--rx, 0), var(--ry, 1), var(--rz, 0), var(--ra, 0deg))`,
     ...style,
   };
   return (

@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Brick from './Brick.jsx';
+import { mulberry32 } from '../lib/assign.js';
 
 // ── Geometría (en "studs": 1 unidad = 1 perilla de Lego) ────────────────────
 // Cada capa es un cuadrado macizo de S×S studs armado con 4 ladrillos en
@@ -12,9 +13,10 @@ const TRUNK_H = 1.4;
 
 export function treeLayout(total, u) {
   const layers = Math.max(1, Math.ceil(total / 4));
-  const Smax = layers > 8 ? 9 : 8;
+  // Cada capa es 1 stud más chica que la de abajo: nunca dos pisos iguales seguidos.
   const Smin = 2;
-  const sizes = Array.from({ length: layers }, (_, k) => Math.round(Smax - ((Smax - Smin) * k) / Math.max(1, layers - 1)));
+  const Smax = Smin + layers - 1;
+  const sizes = Array.from({ length: layers }, (_, k) => Smax - k);
 
   const rects = []; // en studs
   for (let i = 0; i < total; i++) {
@@ -35,9 +37,9 @@ export function treeLayout(total, u) {
   const toPx = (r) => ({
     x: ((r.x0 + r.x1) / 2) * u,
     z: ((r.z0 + r.z1) / 2) * u,
-    w: (r.x1 - r.x0) * u - 2,
-    d: (r.z1 - r.z0) * u - 2,
-    h: BRICK_H * u - 2,
+    w: (r.x1 - r.x0) * u,
+    d: (r.z1 - r.z0) * u,
+    h: BRICK_H * u,
     y: yOf(r.layer),
   });
 
@@ -84,7 +86,7 @@ function Studs({ r, covers, u, h }) {
 const PALETTE = {
   public: ['#7025E0', '#A172FF', '#8B4BF0'],
   private: ['#2A1F9E', '#3B2FB8'],
-  mine: '#FFFFFF',
+  mine: '#3C9FF1',
 };
 
 function colorFor(piece, i) {
@@ -112,6 +114,8 @@ export default function Tree3D({
   tiltX = -14,
   className = '',
   label = 'Árbol de piezas',
+  explodable = false,
+  onExplodedChange,
 }) {
   const reduce = useReducedMotion();
   const layout = useMemo(() => treeLayout(total, unit), [total, unit]);
@@ -165,6 +169,50 @@ export default function Tree3D({
     }
   };
 
+  // Desarmar con hover, armar con click (y tocar para alternar en touch).
+  const [exploded, setExploded] = useState(false);
+  const armed = useRef(true);
+  const setEx = (v) => {
+    setExploded(v);
+    onExplodedChange?.(v);
+  };
+  const explodeHandlers = explodable
+    ? {
+        onPointerEnter: (e) => {
+          if (e.pointerType === 'mouse' && armed.current && starOn) setEx(true);
+        },
+        onPointerLeave: () => {
+          armed.current = true;
+        },
+        onClick: () => {
+          if (exploded) armed.current = false;
+          setEx(!exploded);
+        },
+      }
+    : {};
+  // Hacia dónde sale volando cada pieza (determinístico).
+  const exStyle = (i, r) => {
+    if (!explodable) return undefined;
+    const rnd = mulberry32(i * 7919 + 13);
+    const cx = (r.x0 + r.x1) / 2;
+    const cz = (r.z0 + r.z1) / 2;
+    const len = Math.hypot(cx, cz) || 1;
+    const a = (i * 2.4) % (Math.PI * 2);
+    const dx = len > 0.01 ? cx / len : Math.cos(a);
+    const dz = len > 0.01 ? cz / len : Math.sin(a);
+    const dist = unit * (1.2 + rnd() * 1.6);
+    return {
+      '--ex': `${dx * dist}px`,
+      '--ey': `${-unit * (0.3 + rnd() * 1.2) - r.layer * unit * 0.25}px`,
+      '--ez': `${dz * dist * 0.6}px`,
+      '--rx': (rnd() - 0.5).toFixed(2),
+      '--ry': (rnd() - 0.5).toFixed(2),
+      '--rz': (rnd() - 0.5).toFixed(2),
+      '--rangle': `${Math.round(20 + rnd() * 45) * (rnd() > 0.5 ? 1 : -1)}deg`,
+      '--sd': `${Math.round(rnd() * 160)}ms`,
+    };
+  };
+
   const placed = pieces.length;
   const layerHasPiece = (k) => layout.rects.some((r, i) => r.layer === k && pieces[i]);
   // Qué tapa los studs de cada capa: piezas colocadas y relleno de la capa de arriba.
@@ -176,7 +224,8 @@ export default function Tree3D({
 
   return (
     <div
-      className={`tree3d ${interactive ? 'is-interactive' : ''} ${className}`}
+      className={`tree3d ${interactive ? 'is-interactive' : ''} ${explodable ? 'is-explodable' : ''} ${exploded ? 'is-exploded' : ''} ${className}`}
+      {...explodeHandlers}
       style={{ '--u': `${unit}px`, height: sceneH + unit }}
       onPointerDown={onDown}
       onPointerMove={onMove}
@@ -190,11 +239,11 @@ export default function Tree3D({
     >
       <div className="tree3d-floor" style={{ width: layout.maxW * 1.5 }} />
       <div className="tree3d-scene" style={{ transform: `rotateX(${tiltX}deg) rotateY(${angle}deg)` }}>
-        <Brick x={0} y={-layout.trunkH / 2} w={unit * 2 - 2} h={layout.trunkH} d={unit * 2 - 2} color="#130D5D" studs={false} className="trunk" />
+        <Brick x={0} y={-layout.trunkH / 2} w={unit * 2} h={layout.trunkH} d={unit * 2} color="#130D5D" studs={false} className="trunk" />
 
         {layout.fillers.map((f) =>
           layerHasPiece(f.layer) ? (
-            <Brick key={`f${f.layer}`} {...layout.toPx(f)} color="#5B2BD1" studs={false}>
+            <Brick key={`f${f.layer}`} {...layout.toPx(f)} color="#5B2BD1" studs={false} className="can-explode" style={exStyle(100 + f.layer, f)}>
               <Studs r={f} covers={coversFor(f.layer)} u={unit} h={layout.toPx(f).h} />
             </Brick>
           ) : null,
@@ -214,8 +263,8 @@ export default function Tree3D({
               {...p}
               color={colorFor(piece, i)}
               studs={false}
-              className={`${isNew ? 'is-new' : ''} ${animateDrop ? 'drop-in' : ''}`}
-              style={animateDrop ? { '--delay': dropIn && !isNew ? `${i * 70}ms` : '0ms', '--fall': `${-unit * 8}px` } : undefined}
+              className={`can-explode ${isNew ? 'is-new' : ''} ${animateDrop ? 'drop-in' : ''}`}
+              style={{ ...exStyle(i, r), ...(animateDrop ? { '--delay': dropIn && !isNew ? `${i * 70}ms` : '0ms', '--fall': `${-unit * 8}px` } : null) }}
               onPointerEnter={() => onHover?.(piece, i)}
               onPointerLeave={() => onHover?.(null)}
             >
@@ -225,7 +274,10 @@ export default function Tree3D({
         })}
 
         {complete && starOn && (
-          <div className="tree-star" style={{ transform: `translate3d(0, ${layout.top - unit * 1.1}px, 0)` }}>
+          <div
+            className="tree-star can-explode"
+            style={{ transform: `translate3d(0, ${layout.top - unit * 1.1}px, 0) rotate3d(0, 0, 1, var(--ra, 0deg))`, '--ex': '0px', '--ey': `${-unit * 1.6}px`, '--ez': '0px', '--rangle': '25deg', '--sd': '0ms' }}
+          >
             <motion.div
               className="tree-star-pop"
               initial={reduce ? false : { scale: 0, opacity: 0 }}

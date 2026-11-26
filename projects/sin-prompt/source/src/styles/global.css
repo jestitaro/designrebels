@@ -1079,6 +1079,34 @@ code {
 .brick .f {
   position: absolute;
   backface-visibility: hidden;
+  box-shadow: inset 0 0 0 0.5px rgba(19, 13, 93, 0.14);
+}
+/* Desarmar / armar */
+.tree3d.is-explodable {
+  cursor: pointer;
+}
+@property --ra {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.can-explode {
+  transition: translate 0.9s cubic-bezier(0.34, 1.3, 0.5, 1) var(--sd, 0ms), --ra 0.9s cubic-bezier(0.34, 1.3, 0.5, 1) var(--sd, 0ms);
+}
+.is-exploded .can-explode {
+  translate: var(--ex) var(--ey) var(--ez);
+  --ra: var(--rangle);
+  transition-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.tree-hint {
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  color: var(--violet);
+  transition: opacity 0.3s;
 }
 .brick .f-front,
 .brick .f-back {
@@ -2450,7 +2478,7 @@ a.jrow:hover {
   background: var(--lilac);
 }
 .seg-progress span.is-mine {
-  background: var(--white);
+  background: var(--blue);
 }
 .tree-hover {
   min-height: 92px;
@@ -2500,7 +2528,7 @@ a.jrow:hover {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 .lg-mine {
-  background: var(--white);
+  background: var(--blue);
 }
 .lg-ghost {
   border: 1px dashed var(--lilac);

@@ -9,6 +9,7 @@ import Icon from '../components/Icon.jsx';
 
 const PROMPT = 'Escribí un saludo de fin de año para mi equipo. Emotivo pero no cursi. Que suene a mí.';
 const SEEN = 'sinprompt.introSeen';
+const HERO_PIECES = Array.from({ length: 32 }, (_, i) => ({ id: 'h' + i, visibility: i % 5 === 3 ? 'private' : 'public' }));
 
 /** Título que se ensambla: cada letra llega primero como bloque. */
 function AssembledTitle({ lines, play }) {
@@ -191,6 +192,8 @@ export default function Intro({ gateMessage }) {
   }, []);
   const [stage, setStage] = useState(reduce || seen || gateMessage ? 'ready' : 'prompt');
   const [identify, setIdentify] = useState(!!gateMessage);
+  const [exploded, setExploded] = useState(false);
+  const canHover = typeof window !== 'undefined' && window.matchMedia?.('(hover: hover)').matches;
   const panelRef = useRef(null);
 
   const finishIntro = () => {
@@ -248,14 +251,21 @@ export default function Intro({ gateMessage }) {
             </motion.div>
           </div>
 
-          <motion.div className="hero-visual" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: seen ? 0 : 0.6, duration: 1 }} aria-hidden="true">
-            <Tree3D total={32} pieces={Array.from({ length: 32 }, (_, i) => ({ id: 'h' + i, visibility: i % 5 === 3 ? 'private' : 'public', mine: i === 13 }))} unit={typeof window !== 'undefined' && window.innerWidth < 560 ? 26 : 34} interactive={false} dropIn={!seen} showGhosts={false} complete />
-            <div className="hero-card">
-              <span className="mono-label">Para: alguien del equipo</span>
-              <span className="hero-card-line" />
-              <span className="hero-card-line short" />
-              <span className="hero-card-sign">— vos</span>
-            </div>
+          <motion.div className="hero-visual" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: seen ? 0 : 0.6, duration: 1 }}>
+            <Tree3D
+              total={32}
+              pieces={HERO_PIECES}
+              unit={typeof window !== 'undefined' && window.innerWidth < 560 ? 26 : 34}
+              interactive={false}
+              dropIn={!seen}
+              showGhosts={false}
+              complete
+              explodable
+              onExplodedChange={setExploded}
+            />
+            <p className="tree-hint mono-label" aria-hidden="true">
+              {exploded ? 'Click para volver a armarlo' : canHover ? 'Pasá el mouse por el árbol' : 'Tocá el árbol'}
+            </p>
           </motion.div>
 
           <motion.dl className="hero-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: seen ? 0.2 : 1.6 }}>
