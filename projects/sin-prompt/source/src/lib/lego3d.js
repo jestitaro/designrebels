@@ -365,6 +365,14 @@ export class LegoScene {
     c.addEventListener('pointerup', this.handlers.up);
   }
 
+  /** ¿El puntero está sobre alguno de estos objetos? */
+  pickObjects(e, objects) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    return this.raycaster.intersectObjects(objects.filter((o) => o.visible), true).length > 0;
+  }
+
   rotateBy(rad) {
     this.paused = true;
     this.angle += rad;
@@ -379,7 +387,11 @@ export class LegoScene {
     this.last = t;
     if (!this.visible || document.hidden) return;
 
-    if (this.targetAngle != null) this.angle += (this.targetAngle - this.angle) * Math.min(1, dt * 0.006);
+    if (this.targetAngle != null) {
+      // de frente, con un vaivén leve para que se note el volumen
+      const sway = this.reduce ? 0 : Math.sin(t * 0.0007) * 0.22;
+      this.angle += (this.targetAngle + sway - this.angle) * Math.min(1, dt * 0.006);
+    }
     else if (this.autoRotate && !this.paused) this.angle += dt * 0.00018;
     this.root.rotation.y = this.angle;
 

@@ -5,9 +5,9 @@ import { LegoScene, BRICK_H } from '../lib/lego3d.js';
 import { mulberry32 } from '../lib/assign.js';
 import isoRaw from '../assets/iso-qs.svg?raw';
 
-// Árbol de ladrillos 1×1 que se desarma con hover. Al tocar una pieza, los
-// ladrillos vuelan y se funden en el isotipo de QuartzSales, armado con piezas
-// triangulares tipo "wedge plate". Sin avisos: se descubre jugando.
+// Isotipo de QuartzSales hecho con piezas triangulares tipo "wedge plate".
+// El hover lo desarma en ladrillos 1×1; al tocar una pieza, los ladrillos arman
+// un arbolito. Otro click vuelve al logo. Sin avisos: se descubre jugando.
 
 const TIERS = [9, 7, 5, 7, 5, 3, 5, 3, 1]; // tres "pisos" de ramas, como un pino
 const TRUNK = 3;
@@ -144,7 +144,7 @@ export default function LegoHero({ dropIn = false }) {
   useEffect(() => {
     let scene;
     const wedges = [];
-    const state = { mode: 'tree', armed: true, busyUntil: 0 };
+    const state = { mode: 'logo', armed: true, busyUntil: 0 };
     const { cells, top } = buildTree();
     const rnd = mulberry32(7);
     const midY = top / 2 + 0.8;
@@ -185,31 +185,28 @@ export default function LegoHero({ dropIn = false }) {
       };
     });
 
+    // Secuencia: logo → (hover) se desarma → (click en una pieza) árbol → (click) logo.
     const go = (mode) => {
       const now = performance.now();
-      if (now < state.busyUntil && mode !== 'tree') return;
+      if (now < state.busyUntil) return;
       const prev = state.mode;
       state.mode = mode;
       if (mode === 'explode') {
-        scene.goTo('explode', { duration: 900, ease: 'cubic', delayFn: () => rnd() * 140 });
-        scene.moveStar([0, top + 3.2, 0], 1);
-        state.busyUntil = now + 350;
-      } else if (mode === 'logo') {
+        scene.faceFront(false);
+        if (prev === 'logo') wedges.forEach((w, k) => scene.tweenScale(w, 0, { delay: k * 10, duration: 260, back: false }));
+        scene.goTo('explode', { duration: 900, ease: 'cubic', delayFn: () => (prev === 'logo' ? 80 : 0) + rnd() * 180 });
+        state.busyUntil = now + 450;
+      } else if (mode === 'tree') {
+        scene.faceFront(false);
+        scene.goTo('tree', { duration: 850, ease: 'back', delayFn: (b) => b.layer * 30 + rnd() * 60 });
+        scene.moveStar([0, top + 0.9, 0], 1, 700);
+        state.busyUntil = now + 900;
+      } else {
         scene.faceFront(true);
         scene.goTo('logo', { duration: 800, ease: 'cubic', delayFn: () => rnd() * 260 });
         scene.moveStar([0, midY, -2], 0.001);
         wedges.forEach((w, k) => scene.tweenScale(w, 1, { delay: 520 + k * 45, duration: 700 }));
-        state.busyUntil = now + 1500;
-      } else {
-        scene.faceFront(false);
-        wedges.forEach((w, k) => scene.tweenScale(w, 0, { delay: k * 12, duration: 280, back: false }));
-        scene.goTo('tree', {
-          duration: prev === 'logo' ? 1000 : 800,
-          ease: 'back',
-          delayFn: (b) => (prev === 'logo' ? 180 + b.layer * 60 : b.layer * 25) + rnd() * 60,
-        });
-        scene.moveStar([0, top + 0.9, 0], 1, prev === 'logo' ? 1000 : 200);
-        state.busyUntil = now + 500;
+        state.busyUntil = now + 1400;
       }
     };
 
@@ -221,17 +218,17 @@ export default function LegoHero({ dropIn = false }) {
         onHover: (b, e) => {
           if (e.type === 'pointerleave') {
             state.armed = true;
-            if (state.mode === 'explode') go('tree');
+            if (state.mode === 'explode') go('logo');
             return;
           }
-          if (b && e.pointerType === 'mouse' && state.mode === 'tree' && state.armed) go('explode');
+          if (e.pointerType === 'mouse' && state.mode === 'logo' && state.armed && scene.pickObjects(e, wedges)) go('explode');
         },
-        onPick: (b) => {
-          if (state.mode === 'tree') go('explode');
-          else if (state.mode === 'explode' && b) go('logo');
-          else if (state.mode === 'logo') {
-            state.armed = false; // que no se desarme apenas se arma
-            go('tree');
+        onPick: (b, e) => {
+          if (state.mode === 'logo') go('explode');
+          else if (state.mode === 'explode' && b) go('tree');
+          else if (state.mode === 'tree') {
+            state.armed = false; // que no se desarme apenas vuelve el logo
+            go('logo');
           }
         },
       });
@@ -239,8 +236,10 @@ export default function LegoHero({ dropIn = false }) {
       return undefined; // sin WebGL: el hero queda solo con la tipografía
     }
 
-    scene.setBricks(bricks, 'tree');
-    // piezas del logo: ocultas hasta que se arma
+    // Arranca como logo: los ladrillos están "dentro" de cada triángulo.
+    scene.setBricks(bricks, 'logo');
+    scene.angle = 0;
+    scene.faceFront(true);
     const studGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.22, 20);
     tris.forEach((t, k) => {
       const w = buildWedge(t, triColor[k], studGeo, scene.mat);
@@ -251,15 +250,13 @@ export default function LegoHero({ dropIn = false }) {
       scene.root.add(w);
       wedges.push(w);
     });
-
+    scene.setStar([0, top + 0.9, 0], false);
     if (dropIn && !reduce) {
-      const bottomUp = [...bricks].sort((a, b) => a.states.tree.p[1] - b.states.tree.p[1]).map((b) => b.id);
-      scene.setStar([0, top + 0.9, 0], false);
-      scene.dropIn(bottomUp, 9, 5);
-      scene.moveStar([0, top + 0.9, 0], 1, bottomUp.length * 5 + 700);
-      state.busyUntil = performance.now() + bottomUp.length * 5 + 900;
+      // entrada: los triángulos encastran uno por uno
+      wedges.forEach((w, k) => scene.tweenScale(w, 1, { delay: 200 + k * 70, duration: 700 }));
+      state.busyUntil = performance.now() + 200 + wedges.length * 70 + 500;
     } else {
-      scene.setStar([0, top + 0.9, 0], true);
+      wedges.forEach((w) => scene.tweenScale(w, 1, { duration: 1 }));
     }
     scene.fit();
 
