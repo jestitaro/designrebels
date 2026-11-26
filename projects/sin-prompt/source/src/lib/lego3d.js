@@ -58,6 +58,7 @@ export class LegoScene {
     this.targetAngle = null;
     this.paused = false;
     this.anims = new Map();
+    this.objTweens = [];
     this.state = null;
 
     const r = (this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' }));
@@ -260,6 +261,18 @@ export class LegoScene {
     this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true;
   }
 
+  /** Anima la escala de un Object3D (p. ej. las piezas del logo). */
+  tweenScale(obj, to, { delay = 0, duration = 600, back = true } = {}) {
+    this.objTweens = this.objTweens.filter((t) => t.obj !== obj);
+    if (this.reduce) {
+      obj.scale.setScalar(Math.max(0.001, to));
+      obj.visible = to > 0.01;
+      return;
+    }
+    obj.visible = true;
+    this.objTweens.push({ obj, from: obj.scale.x, to: Math.max(0.001, to), t0: performance.now() + delay, dur: duration, ease: back ? easeOutBack : easeOutCubic });
+  }
+
   faceFront(on) {
     this.targetAngle = on ? Math.round(this.angle / (Math.PI * 2)) * Math.PI * 2 : null;
   }
@@ -389,6 +402,19 @@ export class LegoScene {
       }
       if (colorDirty) this.flagColors();
       this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true;
+    }
+    if (this.objTweens.length) {
+      this.objTweens = this.objTweens.filter((tw) => {
+        const k = (t - tw.t0) / tw.dur;
+        if (k < 0) return true;
+        const e = k >= 1 ? 1 : tw.ease(k);
+        tw.obj.scale.setScalar(Math.max(0.001, tw.from + (tw.to - tw.from) * e));
+        if (k >= 1) {
+          tw.obj.visible = tw.to > 0.01;
+          return false;
+        }
+        return true;
+      });
     }
     if (this.starAnim && this.star) {
       const a = this.starAnim;
