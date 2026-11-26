@@ -6,7 +6,7 @@ import Tree3D from '../components/Tree3D.jsx';
 import Icon from '../components/Icon.jsx';
 
 function useUnit() {
-  const calc = () => (window.innerWidth < 560 ? 26 : window.innerWidth < 1000 ? 32 : 36);
+  const calc = () => (window.innerWidth < 560 ? 420 : window.innerWidth < 1000 ? 520 : Math.max(480, Math.min(680, window.innerHeight - 140)));
   const [u, setU] = useState(calc);
   useEffect(() => {
     const on = () => setU(calc());
@@ -125,7 +125,7 @@ export default function TreeScreen() {
               <Tree3D
                 total={total}
                 pieces={pieces}
-                unit={unit}
+                height={unit}
                 highlightId={highlight}
                 complete={complete}
                 onHover={(p, i) => setHover(p ? { p, i } : null)}
