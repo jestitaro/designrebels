@@ -1163,7 +1163,7 @@ code {
   display: none;
 }
 .brick.drop-in {
-  animation: drop 0.9s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+  animation: drop 0.9s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
   animation-delay: var(--delay, 0ms);
 }
 .brick.is-new .f {
@@ -3059,17 +3059,19 @@ a.jrow:hover {
     transform: rotate(10deg);
   }
 }
+/* Sin opacity: en 3D la opacidad aplana el ladrillo y despega las caras.
+   visibility oculta la pieza durante el delay sin romper el preserve-3d. */
 @keyframes drop {
   0% {
     translate: 0 var(--fall, -240px) 0;
-    opacity: 0;
+    visibility: hidden;
   }
-  30% {
-    opacity: 1;
+  1% {
+    visibility: visible;
   }
   100% {
     translate: 0 0 0;
-    opacity: 1;
+    visibility: visible;
   }
 }
 @keyframes flash {

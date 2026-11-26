@@ -119,6 +119,13 @@ export default function Tree3D({
   const drag = useRef(null);
   const raf = useRef(0);
   const paused = useRef(false);
+  // Con animación de entrada, la estrella aparece cuando cae el último ladrillo.
+  const [starOn, setStarOn] = useState(!dropIn || reduce);
+  useEffect(() => {
+    if (starOn) return;
+    const t = setTimeout(() => setStarOn(true), total * 70 + 800);
+    return () => clearTimeout(t);
+  }, [starOn, total]);
 
   // Giro automático lento (se pausa al interactuar y con movimiento reducido).
   useEffect(() => {
@@ -217,13 +224,13 @@ export default function Tree3D({
           );
         })}
 
-        {complete && (
+        {complete && starOn && (
           <div className="tree-star" style={{ transform: `translate3d(0, ${layout.top - unit * 1.1}px, 0)` }}>
             <motion.div
               className="tree-star-pop"
               initial={reduce ? false : { scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 140, damping: 10, delay: dropIn ? 2.4 : 0.3 }}
+              transition={{ type: 'spring', stiffness: 160, damping: 9, delay: 0.1 }}
             >
               <div className="tree-star-spin">
                 <span />
