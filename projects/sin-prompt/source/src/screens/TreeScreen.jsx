@@ -6,7 +6,7 @@ import Tree3D from '../components/Tree3D.jsx';
 import Icon from '../components/Icon.jsx';
 
 function useUnit() {
-  const calc = () => (window.innerWidth < 560 ? 26 : window.innerWidth < 1000 ? 34 : 46);
+  const calc = () => (window.innerWidth < 560 ? 26 : window.innerWidth < 1000 ? 32 : 36);
   const [u, setU] = useState(calc);
   useEffect(() => {
     const on = () => setU(calc());

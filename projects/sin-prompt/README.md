@@ -10,7 +10,7 @@ Sin variables de Supabase la app corre en **modo demo** y lo dice en pantalla (b
 
 | | Demo (hoy) | Con Supabase |
 |---|---|---|
-| Participantes | Lista ficticia en `source/src/config/participants.js` | Tabla `participants` |
+| Participantes | Equipo real (19 personas, del organigrama de ESC) en `source/src/config/participants.js` | Tabla `participants` |
 | Identificación | Elegir el nombre (sin verificación) | Link mágico al mail habilitado |
 | Sorteo | Ciclo determinístico con semilla fija sobre el listado completo | `generate_assignments()`, una vez, en el servidor |
 | Postales, dibujos, árbol, galería, ranking | Solo en este navegador (`localStorage`) | Compartidos, validados por RPC + RLS |
@@ -22,7 +22,7 @@ En demo nada se comparte entre personas. No es una simulación de datos comparti
 
 1. Bienvenida: un prompt se escribe y se borra (“Mejor no.”), el título se arma con bloques. Identificación.
 2. El destino decide: revelación del destinatario asignado (fijo).
-3. Creador: elegir postal (13 diseños por rol + neutrales, carrusel con vista ampliada) o dibujar (lápiz, goma, texto, colores QS, grosores, deshacer/rehacer, limpiar con confirmación, PNG; mouse, touch y lápiz con presión). Mensaje propio, vista previa con dorso, privada/pública, envío con sobre.
+3. Creador: elegir postal (14 diseños por rol + neutrales, carrusel con vista ampliada) o dibujar (lápiz, goma, texto, colores QS, grosores, deshacer/rehacer, limpiar con confirmación, PNG; mouse, touch y lápiz con presión). Mensaje propio, vista previa con dorso, privada/pública, envío con sobre.
 4. Vos elegís: buscador de personas, cualquier destinatario salvo vos.
 5. Árbol colectivo en CSS 3D: girable (arrastre o flechas), cada pieza es una postal; las privadas no muestran nombres. Vista de lista accesible.
 6. Minijuego “Armá el árbol”: 14 piezas, encastre por snap, error con rebote, cronómetro, mejor tiempo por persona.

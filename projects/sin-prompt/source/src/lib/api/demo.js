@@ -9,7 +9,7 @@ import { PARTICIPANTS, DEMO_ASSIGNMENT_SEED } from '../../config/participants.js
 import { buildAssignments, seededShuffle } from '../assign.js';
 import { POSTCARDS } from '../../config/postcards.js';
 
-const KEY = 'sinprompt.demo.v1';
+const KEY = 'sinprompt.demo.v2';
 const MIN_BODY = 12;
 const MAX_BODY = 600;
 

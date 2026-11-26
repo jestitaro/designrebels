@@ -49,7 +49,7 @@ function ModePick({ onPick, recipient }) {
         <span className="mode-txt">
           <span className="mono-label">A</span>
           <strong>Elegir una postal</strong>
-          <span>Trece diseños pensados para cada rol. Algunos, con chiste interno.</span>
+          <span>Catorce diseños pensados para cada rol. Algunos, con chiste interno.</span>
         </span>
         <Icon name="arrow" className="mode-arrow" />
       </button>

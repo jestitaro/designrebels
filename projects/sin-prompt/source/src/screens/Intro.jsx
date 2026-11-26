@@ -249,7 +249,7 @@ export default function Intro({ gateMessage }) {
           </div>
 
           <motion.div className="hero-visual" initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: seen ? 0 : 0.6, duration: 1 }} aria-hidden="true">
-            <Tree3D total={20} pieces={Array.from({ length: 20 }, (_, i) => ({ id: 'h' + i, visibility: i % 5 === 3 ? 'private' : 'public', mine: i === 9 }))} unit={typeof window !== 'undefined' && window.innerWidth < 560 ? 30 : 40} interactive={false} dropIn={!seen} showGhosts={false} complete />
+            <Tree3D total={32} pieces={Array.from({ length: 32 }, (_, i) => ({ id: 'h' + i, visibility: i % 5 === 3 ? 'private' : 'public', mine: i === 13 }))} unit={typeof window !== 'undefined' && window.innerWidth < 560 ? 26 : 34} interactive={false} dropIn={!seen} showGhosts={false} complete />
             <div className="hero-card">
               <span className="mono-label">Para: alguien del equipo</span>
               <span className="hero-card-line" />

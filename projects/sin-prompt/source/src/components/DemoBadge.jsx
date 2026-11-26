@@ -29,10 +29,9 @@ export default function DemoBadge() {
           <div>
             <h3>Es simulado</h3>
             <ul className="ticks is-muted">
-              <li>Las personas son ficticias (ver <code>config/participants.js</code>).</li>
+              <li>Los nombres son del equipo real (ver <code>config/participants.js</code>), pero las postales y tiempos marcados “Ejemplo” son inventados: nadie los escribió.</li>
               <li>Todo queda guardado <strong>solo en este navegador</strong>. Nadie más ve tus postales, el árbol ni tu tiempo.</li>
-              <li>Hay postales y tiempos de ejemplo, marcados como “Ejemplo”.</li>
-              <li>Cualquiera puede elegir cualquier nombre. En producción se entra con link al mail.</li>
+                            <li>Cualquiera puede elegir cualquier nombre. En producción se entra con link al mail.</li>
             </ul>
           </div>
         </div>

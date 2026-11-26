@@ -365,6 +365,38 @@ function Cierre() {
   );
 }
 
+function Bosque() {
+  const trees = [];
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 6; c++) {
+      const x = 352 + c * 38 + (r % 2) * 19;
+      const y = 92 + r * 50;
+      if (x > 570) continue;
+      trees.push([x, y, r, c]);
+    }
+  }
+  return (
+    <>
+      <rect width="600" height="400" fill={C.navy} />
+      <Mono x={40} y={62} fill={C.lilac} size={12}>vista: 10.000 m · zoom: out</Mono>
+      <Lines x={40} y={170} size={30} fill={C.white} lines={['Gracias por ver', 'el bosque mientras', 'mirábamos el árbol.']} />
+      {trees.map(([x, y, r, c], i) => {
+        const hero = r === 2 && c === 2;
+        const s = hero ? 1.7 : 1;
+        return (
+          <g key={i} transform={`translate(${x} ${y}) scale(${s})`} opacity={hero ? 1 : 0.35 + ((r + c) % 3) * 0.15}>
+            <path d="M0 -18 l13 22 h-26z" fill={hero ? C.violet : C.lilac} />
+            <path d="M0 -6 l15 24 h-30z" fill={hero ? C.violet : C.lilac} />
+            <rect x="-3" y="18" width="6" height="7" fill={hero ? C.white : C.lilac} />
+          </g>
+        );
+      })}
+      <circle cx={428} cy={196} r="46" fill="none" stroke={C.white} strokeWidth="2" strokeDasharray="4 6" />
+      <Footer fill={C.lilac} />
+    </>
+  );
+}
+
 const ART = {
   commit: Commit,
   encaje: Encaje,
@@ -376,6 +408,7 @@ const ART = {
   otrolado: OtroLado,
   cuidarnos: Cuidarnos,
   kilometros: Kilometros,
+  bosque: Bosque,
   cursor: Cursor,
   bloques: Bloques,
   cierre: Cierre,
