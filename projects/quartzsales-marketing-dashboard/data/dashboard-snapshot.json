@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-26T18:54:50.567Z",
-  "group": "A",
+  "generatedAt": "2026-11-27T18:46:54.093Z",
+  "group": "B",
   "own": {
     "linkedin": {
-      "followers": 2881,
+      "followers": 2882,
       "employees": "11-50",
       "posts30d": 1,
-      "lastSynced": "2026-11-26T18:54:18.194Z",
+      "lastSynced": "2026-11-27T18:46:24.627Z",
       "syncStatus": "ok",
       "syncError": null
     },
@@ -278,7 +278,7 @@
         "CPG",
         "Field Sales"
       ],
-      "lastSynced": "2026-11-24T20:03:25.849Z",
+      "lastSynced": "2026-11-27T18:46:34.523Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -328,7 +328,7 @@
         "Visión IA",
         "SoftBank"
       ],
-      "lastSynced": "2026-11-24T20:03:36.964Z",
+      "lastSynced": "2026-11-27T18:46:42.714Z",
       "syncStatus": "ok",
       "syncError": null,
       "posts": [
@@ -378,7 +378,7 @@
         "LATAM",
         "Operación tienda"
       ],
-      "lastSynced": "2026-11-24T20:03:45.628Z",
+      "lastSynced": "2026-11-27T18:46:50.789Z",
       "syncStatus": "ok",
       "syncError": null
     },
