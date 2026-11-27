@@ -6,6 +6,7 @@
 // ellos con escalonado. Así un mismo set de piezas se transforma en otra cosa.
 // ─────────────────────────────────────────────────────────────────────────────
 import * as THREE from 'three';
+import { partGeometry, PART_LEN, PART_HEIGHT } from './legoParts.js';
 
 const UP = new THREE.Vector3(0, 1, 0);
 const tmpM = new THREE.Matrix4();
@@ -121,8 +122,27 @@ export class LegoScene {
   setBricks(bricks, initialState, ghosts = []) {
     this.clearMeshes();
     this.bricks = bricks;
-    const n = bricks.length;
-    const studCount = bricks.reduce((a, b) => a + (b.studs?.length || 0), 0);
+    // Piezas tipadas (referencia LEGO real): una malla instanciada por tipo, sin escalar.
+    const typedList = bricks.filter((b) => b.type);
+    const legacy = bricks.filter((b) => !b.type);
+    this.legacyList = legacy;
+    this.typed = new Map();
+    typedList.forEach((b) => {
+      if (!this.typed.has(b.type)) this.typed.set(b.type, { list: [] });
+      const t = this.typed.get(b.type);
+      b._i = t.list.length;
+      t.list.push(b);
+      b.w = b.w || PART_LEN[b.type];
+      b.d = b.d || 1;
+      b.h = b.h || PART_HEIGHT[b.type];
+    });
+    for (const [type, t] of this.typed) {
+      t.mesh = new THREE.InstancedMesh(partGeometry(type), this.mat, t.list.length);
+      t.mesh.castShadow = t.mesh.receiveShadow = true;
+      t.mesh.userData.type = type;
+    }
+    const n = legacy.length;
+    const studCount = legacy.reduce((a, b) => a + (b.studs?.length || 0), 0);
     this.mesh = new THREE.InstancedMesh(this.boxGeo, this.mat, Math.max(1, n));
     this.studs = new THREE.InstancedMesh(this.studGeo, this.mat, Math.max(1, studCount));
     this.mesh.castShadow = this.studs.castShadow = true;
@@ -131,21 +151,25 @@ export class LegoScene {
     this.studs.count = studCount;
     const color = new THREE.Color();
     let si = 0;
-    bricks.forEach((b, i) => {
-      b._i = i;
-      b._studStart = si;
+    bricks.forEach((b) => {
       color.set(b.color);
       b.curC = color.clone();
-      this.mesh.setColorAt(i, color);
-      (b.studs || []).forEach(() => this.studs.setColorAt(si++, color));
+      if (b.type) {
+        this.typed.get(b.type).mesh.setColorAt(b._i, color);
+      } else {
+        b._i = legacy.indexOf(b);
+        b._studStart = si;
+        this.mesh.setColorAt(b._i, color);
+        (b.studs || []).forEach(() => this.studs.setColorAt(si++, color));
+      }
       const st = b.states[initialState] || b.states[Object.keys(b.states)[0]];
       b.cur = { p: new THREE.Vector3(...st.p), q: new THREE.Quaternion(...(st.q || [0, 0, 0, 1])), s: new THREE.Vector3(...(st.s || [1, 1, 1])) };
       this.writeBrick(b);
     });
     this.root.add(this.mesh, this.studs);
-    this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true;
-    if (this.mesh.instanceColor) this.mesh.instanceColor.needsUpdate = true;
-    if (this.studs.instanceColor) this.studs.instanceColor.needsUpdate = true;
+    for (const t of this.typed.values()) this.root.add(t.mesh);
+    this.markDirty();
+    this.flagColors();
 
     this.ghostData = ghosts;
     this.ghostGroup = new THREE.Group();
@@ -180,12 +204,21 @@ export class LegoScene {
     this.starAnim = { fromP: this.star.position.clone(), toP: new THREE.Vector3(...pos), fromS: this.star.scale.x, toS: scale, t0: performance.now() + delay, dur: this.reduce ? 1 : 900 };
   }
 
+  allMeshes() {
+    return [this.mesh, this.studs, ...[...(this.typed?.values() || [])].map((t) => t.mesh)].filter(Boolean);
+  }
+
+  markDirty() {
+    this.allMeshes().forEach((m) => (m.instanceMatrix.needsUpdate = true));
+  }
+
   clearMeshes() {
-    if (this.mesh) this.root.remove(this.mesh, this.studs);
-    if (this.mesh) {
-      this.mesh.dispose();
-      this.studs.dispose();
-    }
+    this.allMeshes().forEach((m) => {
+      this.root.remove(m);
+      m.dispose();
+    });
+    this.mesh = this.studs = null;
+    this.typed = new Map();
     if (this.ghostGroup) {
       this.ghostGroup.children.forEach((c) => c.geometry.dispose());
       this.root.remove(this.ghostGroup);
@@ -194,6 +227,11 @@ export class LegoScene {
   }
 
   writeBrick(b) {
+    if (b.type) {
+      tmpM.compose(b.cur.p, b.cur.q, b.cur.s);
+      this.typed.get(b.type).mesh.setMatrixAt(b._i, tmpM);
+      return;
+    }
     const { p, q, s } = b.cur;
     const h = b.h || BRICK_H;
     tmpS.set(s.x * (b.w - GAP), s.y * (h - GAP), s.z * (b.d - GAP));
@@ -230,17 +268,20 @@ export class LegoScene {
       }
       this.anims.set(b, { from: { p: b.cur.p.clone(), q: b.cur.q.clone(), s: b.cur.s.clone() }, to, fromC: (b.curC || new THREE.Color(b.color)).clone(), toC, t0: now + delayFn(b, i), dur: duration, ease: ease === 'back' ? easeOutBack : easeOutCubic });
     });
-    if (this.reduce) this.flagColors(), (this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true);
+    if (this.reduce) this.flagColors(), (this.markDirty());
   }
 
   writeColor(b, c) {
+    if (b.type) {
+      this.typed.get(b.type).mesh.setColorAt(b._i, c);
+      return;
+    }
     this.mesh.setColorAt(b._i, c);
     for (let k = 0; k < (b.studs?.length || 0); k++) this.studs.setColorAt(b._studStart + k, c);
   }
 
   flagColors() {
-    if (this.mesh.instanceColor) this.mesh.instanceColor.needsUpdate = true;
-    if (this.studs.instanceColor) this.studs.instanceColor.needsUpdate = true;
+    this.allMeshes().forEach((m) => m.instanceColor && (m.instanceColor.needsUpdate = true));
   }
 
   /** Anima una sola pieza desde `fromState` (p. ej. la que acaba de encastrar). */
@@ -258,7 +299,7 @@ export class LegoScene {
       this.writeBrick(b);
       this.anims.set(b, { from, to, t0: now + k++ * stagger, dur: 800, ease: easeOutBack });
     });
-    this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true;
+    this.markDirty();
   }
 
   /** Anima la escala de un Object3D (p. ej. las piezas del logo). */
@@ -273,11 +314,38 @@ export class LegoScene {
     this.objTweens.push({ obj, from: obj.scale.x, to: Math.max(0.001, to), t0: performance.now() + delay, dur: duration, ease: back ? easeOutBack : easeOutCubic });
   }
 
+  /** Vista fija: ángulo de giro (rad) e inclinación de cámara (rad). */
+  lookFrom(angle, tilt) {
+    this.sway = false;
+    this.tilt = tilt;
+    this.targetAngle = angle + Math.round(this.angle / (Math.PI * 2)) * Math.PI * 2;
+    this.fitTo(this.fitMode);
+  }
+
+  /** Agrega o reemplaza un estado en todas las piezas. fn(b) → estado. */
+  defineState(name, fn) {
+    this.bricks.forEach((b) => (b.states[name] = fn(b)));
+  }
+
   faceFront(on) {
     this.targetAngle = on ? Math.round(this.angle / (Math.PI * 2)) * Math.PI * 2 : null;
   }
 
   // ── Cámara ───────────────────────────────────────────────────────────────
+  /** Reencuadra la cámara para un estado; con animate la mueve suave. */
+  fitTo(stateName, animate = true) {
+    const prev = this.fitMode;
+    this.fitMode = stateName;
+    const from = { pos: this.camera.position.clone(), look: (this.lookAt || new THREE.Vector3()).clone() };
+    this.fit();
+    if (!animate || this.reduce) return;
+    const to = { pos: this.camera.position.clone(), look: this.lookAt.clone() };
+    this.camera.position.copy(from.pos);
+    this.camera.lookAt(from.look);
+    this.camAnim = { from, to, t0: performance.now(), dur: 1100 };
+    void prev;
+  }
+
   fit() {
     if (!this.bricks?.length) return;
     const box = new THREE.Box3();
@@ -285,24 +353,27 @@ export class LegoScene {
       const st = b.states[this.fitMode] || b.states[this.state];
       const sc = st.s || [1, 1, 1];
       if (sc[0] < 0.01) return;
-      box.expandByPoint(new THREE.Vector3(st.p[0] - b.w / 2, st.p[1] - BRICK_H / 2, st.p[2] - b.d / 2));
-      box.expandByPoint(new THREE.Vector3(st.p[0] + b.w / 2, st.p[1] + BRICK_H / 2, st.p[2] + b.d / 2));
+      const y0 = b.type ? st.p[1] : st.p[1] - BRICK_H / 2;
+      const y1 = b.type ? st.p[1] + (b.h || BRICK_H) : st.p[1] + BRICK_H / 2;
+      box.expandByPoint(new THREE.Vector3(st.p[0] - b.w / 2, y0, st.p[2] - b.d / 2));
+      box.expandByPoint(new THREE.Vector3(st.p[0] + b.w / 2, y1, st.p[2] + b.d / 2));
     });
     (this.ghostData || []).forEach((g) => {
       box.expandByPoint(new THREE.Vector3(g.p[0] - g.w / 2, g.p[1] - BRICK_H / 2, g.p[2] - g.d / 2));
       box.expandByPoint(new THREE.Vector3(g.p[0] + g.w / 2, g.p[1] + BRICK_H / 2, g.p[2] + g.d / 2));
     });
-    if (this.star) box.expandByPoint(this.starHome.clone().add(new THREE.Vector3(0, 1.1, 0)));
+    if (this.star && this.fitMode === 'tree') box.expandByPoint(this.starHome.clone().add(new THREE.Vector3(0, 1.1, 0)));
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const aspect = this.camera.aspect;
     const vFov = THREE.MathUtils.degToRad(this.camera.fov);
-    const radius = Math.max(size.x, size.z) * 0.75;
-    const needH = size.y * 1.12;
-    const needW = radius * 2 * 1.15;
+    // ancho que barre al girar (un árbol cuadrado) o ancho de frente (la Q, plana)
+    const sweep = Math.hypot(size.x, size.z);
+    const needH = size.y * 1.28;
+    const needW = sweep * 1.22;
     const distH = needH / 2 / Math.tan(vFov / 2);
     const distW = needW / 2 / Math.tan(vFov / 2) / aspect;
-    const dist = Math.max(distH, distW) + radius;
+    const dist = Math.max(distH, distW) + Math.min(size.x, size.z) * 0.75;
     this.lookAt = center;
     this.camera.position.set(0, center.y + Math.sin(this.tilt) * dist, Math.cos(this.tilt) * dist);
     this.camera.lookAt(center);
@@ -316,6 +387,7 @@ export class LegoScene {
     this.renderer.domElement.style.height = '100%';
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
+    this.camAnim = null;
     this.fit();
   }
 
@@ -326,10 +398,12 @@ export class LegoScene {
     this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     // las piezas se mueven: el volumen de detección se recalcula
-    this.mesh.computeBoundingSphere();
-    this.mesh.computeBoundingBox?.();
-    const hit = this.raycaster.intersectObject(this.mesh, false)[0];
-    return hit ? this.bricks[hit.instanceId] : null;
+    const meshes = [this.mesh, ...[...this.typed.values()].map((t) => t.mesh)];
+    meshes.forEach((m) => m.computeBoundingSphere());
+    const hit = this.raycaster.intersectObjects(meshes, false)[0];
+    if (!hit) return null;
+    if (hit.object === this.mesh) return this.legacyList[hit.instanceId] || null;
+    return this.typed.get(hit.object.userData.type)?.list[hit.instanceId] || null;
   }
 
   bindEvents() {
@@ -387,9 +461,18 @@ export class LegoScene {
     this.last = t;
     if (!this.visible || document.hidden) return;
 
+    if (this.camAnim) {
+      const a = this.camAnim;
+      const k = Math.min(1, (t - a.t0) / a.dur);
+      const e = easeOutCubic(k);
+      this.camera.position.lerpVectors(a.from.pos, a.to.pos, e);
+      this.lookAt = a.from.look.clone().lerp(a.to.look, e);
+      this.camera.lookAt(this.lookAt);
+      if (k >= 1) this.camAnim = null;
+    }
     if (this.targetAngle != null) {
       // de frente, con un vaivén leve para que se note el volumen
-      const sway = this.reduce ? 0 : Math.sin(t * 0.0007) * 0.22;
+      const sway = this.reduce || this.sway === false ? 0 : Math.sin(t * 0.0007) * 0.22;
       this.angle += (this.targetAngle + sway - this.angle) * Math.min(1, dt * 0.006);
     }
     else if (this.autoRotate && !this.paused) this.angle += dt * 0.00018;
@@ -413,7 +496,7 @@ export class LegoScene {
         if (k >= 1) this.anims.delete(b);
       }
       if (colorDirty) this.flagColors();
-      this.mesh.instanceMatrix.needsUpdate = this.studs.instanceMatrix.needsUpdate = true;
+      this.markDirty();
     }
     if (this.objTweens.length) {
       this.objTweens = this.objTweens.filter((tw) => {

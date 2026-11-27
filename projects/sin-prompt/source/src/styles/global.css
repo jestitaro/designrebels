@@ -1062,6 +1062,192 @@ code {
   outline-offset: -3px;
 }
 
+/* ═══ Manual LEGO Q ═════════════════════════════════════════════════════ */
+.legoq-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.seg {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+}
+.seg button,
+.legoq-views button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 8px 16px;
+  min-height: 44px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.seg button[aria-checked='true'],
+.legoq-views button[aria-checked='true'] {
+  background: var(--navy);
+  color: var(--white);
+}
+.seg button[aria-checked='true'] .mono-label {
+  color: var(--lilac);
+}
+.legoq-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.8fr);
+  gap: 24px;
+  align-items: start;
+}
+.legoq-stage {
+  position: relative;
+  background: var(--white);
+  border-radius: 32px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.q-viewer {
+  width: 100%;
+  height: min(640px, 70svh);
+  min-height: 380px;
+}
+.legoq-views {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--line);
+}
+.legoq-side {
+  display: grid;
+  gap: 16px;
+}
+.legoq-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  border-top: 1px solid var(--line);
+}
+.legoq-stats div {
+  padding-top: 12px;
+}
+.legoq-stats dt {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.legoq-stats dd {
+  margin: 2px 0 0;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+.legoq-stats small {
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.legoq-valid {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--danger);
+}
+.legoq-valid.is-ok {
+  color: var(--ok);
+}
+.legoq-layer {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 16px 18px;
+  display: grid;
+  gap: 10px;
+}
+.legoq-layer label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.legoq-layer input[type='range'] {
+  width: 100%;
+  accent-color: var(--violet);
+  min-height: 32px;
+}
+.legoq-layer p {
+  margin: 0;
+}
+.legoq-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.legoq-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line);
+}
+.legoq-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.legoq-table td:last-child,
+.legoq-table th:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.mono {
+  font-family: var(--mono);
+}
+.legoq-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.legoq-colors span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.legoq-colors i {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+.legoq-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .legoq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ═══ Revelación ═════════════════════════════════════════════════════════ */
 .reveal {
   display: grid;

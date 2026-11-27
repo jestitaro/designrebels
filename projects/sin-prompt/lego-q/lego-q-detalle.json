@@ -1,0 +1,6165 @@
+{
+ "name": "QuartzSales · LEGO Q",
+ "variant": "detalle",
+ "source": "src/assets/iso-qs.svg (isotipo original)",
+ "units": {
+  "stud": 20,
+  "brick": 24,
+  "plate": 8,
+  "note": "Coordenadas en LDU. x: derecha, y: arriba (base de la pieza), z: profundidad."
+ },
+ "grid": {
+  "width": 26,
+  "rows": 23,
+  "depth": 1
+ },
+ "palette": [
+  {
+   "hex": "#3C9FF1",
+   "name": "Celeste QS",
+   "lego": "Dark Azure (aprox.)"
+  },
+  {
+   "hex": "#3F75EA",
+   "name": "Azul QS",
+   "lego": "Medium Blue (aprox.)"
+  },
+  {
+   "hex": "#463DE1",
+   "name": "Índigo QS",
+   "lego": "Medium Bluish Violet (aprox.)"
+  },
+  {
+   "hex": "#5932E0",
+   "name": "Violeta azulado QS",
+   "lego": "Dark Purple (aprox.)"
+  },
+  {
+   "hex": "#7025E0",
+   "name": "Violeta QS",
+   "lego": "Medium Lavender oscuro (aprox.)"
+  }
+ ],
+ "parts": {
+  "3003": {
+   "name": "Brick 2 x 2",
+   "ldraw": "3003.dat"
+  },
+  "3004": {
+   "name": "Brick 1 x 2",
+   "ldraw": "3004.dat"
+  },
+  "3005": {
+   "name": "Brick 1 x 1",
+   "ldraw": "3005.dat"
+  },
+  "3010": {
+   "name": "Brick 1 x 4",
+   "ldraw": "3010.dat"
+  },
+  "3040": {
+   "name": "Slope 45 2 x 1",
+   "ldraw": "3040.dat"
+  },
+  "3665": {
+   "name": "Slope 45 2 x 1 Inverted",
+   "ldraw": "3665.dat"
+  },
+  "35787": {
+   "name": "Tile 2 x 2 Triangular",
+   "ldraw": "35787.dat"
+  },
+  "54200": {
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "ldraw": "54200.dat"
+  }
+ },
+ "pieces": [
+  {
+   "id": "P023",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 70,
+   "y": 0,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 1,
+   "step": 1,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P025",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P024",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 50,
+   "y": 24,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 2,
+   "step": 2,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P001",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P025",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 80,
+   "y": 24,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 2,
+   "step": 3,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P002",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P023",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P026",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P001",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 40,
+   "y": 48,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 3,
+   "step": 4,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P024",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P027",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P028",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P026",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 70,
+   "y": 48,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 3,
+   "step": 5,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P025",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P028",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P002",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 100,
+   "y": 48,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 3,
+   "step": 6,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P025",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P029",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P029",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P027",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 30,
+   "y": 72,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 4,
+   "step": 7,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P003",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P001",
+     "side": "abajo",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P028",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 60,
+   "y": 72,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 4,
+   "step": 8,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P001",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P026",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P032",
+     "side": "arriba",
+     "studX": 50
+    },
+    {
+     "to": "P032",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P029",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 100,
+   "y": 72,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 4,
+   "step": 9,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P004",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P002",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P002",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P033",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P030",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -100,
+   "y": 96,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 5,
+   "step": 10,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P005",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P034",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P035",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P035",
+     "side": "arriba",
+     "studX": -70
+    }
+   ]
+  },
+  {
+   "id": "P031",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -40,
+   "y": 96,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 5,
+   "step": 11,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P035",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P035",
+     "side": "arriba",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P003",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 20,
+   "y": 96,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 5,
+   "step": 12,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P027",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P036",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P036",
+     "side": "arriba",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P032",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 60,
+   "y": 96,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 5,
+   "step": 13,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P028",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P028",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P036",
+     "side": "arriba",
+     "studX": 50
+    },
+    {
+     "to": "P037",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P033",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 90,
+   "y": 96,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 5,
+   "step": 14,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P029",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P037",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P004",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 120,
+   "y": 96,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 5,
+   "step": 15,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P029",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P006",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P038",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P005",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -140,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 6,
+   "step": 16,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P030",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P007",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P039",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P034",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -110,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 6,
+   "step": 17,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P030",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P039",
+     "side": "arriba",
+     "studX": -110
+    }
+   ]
+  },
+  {
+   "id": "P035",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -60,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 6,
+   "step": 18,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P030",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P030",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P031",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P031",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P039",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P039",
+     "side": "arriba",
+     "studX": -70
+    },
+    {
+     "to": "P040",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P040",
+     "side": "arriba",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P036",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 20,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 6,
+   "step": 19,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P003",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P003",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P032",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P040",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P040",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P041",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P041",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P037",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 80,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 6,
+   "step": 20,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P032",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P033",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P041",
+     "side": "arriba",
+     "studX": 70
+    },
+    {
+     "to": "P041",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P038",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 110,
+   "y": 120,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 6,
+   "step": 21,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P004",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P042",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P006",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 140,
+   "y": 120,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 6,
+   "step": 22,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P004",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P008",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P042",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P007",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -160,
+   "y": 144,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 7,
+   "step": 23,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P005",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P043",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P044",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P039",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -100,
+   "y": 144,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 7,
+   "step": 24,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P005",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P034",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P035",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P035",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P044",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P044",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P044",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P045",
+     "side": "arriba",
+     "studX": -70
+    }
+   ]
+  },
+  {
+   "id": "P040",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -20,
+   "y": 144,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 7,
+   "step": 25,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P035",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P035",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P036",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P036",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P045",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P045",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P045",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P046",
+     "side": "arriba",
+     "studX": 10
+    }
+   ]
+  },
+  {
+   "id": "P041",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 60,
+   "y": 144,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 7,
+   "step": 26,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P036",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P036",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P037",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P037",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P046",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P046",
+     "side": "arriba",
+     "studX": 50
+    },
+    {
+     "to": "P046",
+     "side": "arriba",
+     "studX": 70
+    },
+    {
+     "to": "P047",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P042",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 120,
+   "y": 144,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 7,
+   "step": 27,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P038",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P006",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P047",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P048",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P008",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 160,
+   "y": 144,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 7,
+   "step": 28,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P006",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P048",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P049",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P043",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -170,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 8,
+   "step": 29,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P009",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P007",
+     "side": "abajo",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P044",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -120,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 8,
+   "step": 30,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P007",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P039",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P039",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P039",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P050",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P050",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P050",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P050",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P045",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -40,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 8,
+   "step": 31,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P039",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P040",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P040",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P040",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P051",
+     "side": "arriba",
+     "studX": -70
+    },
+    {
+     "to": "P051",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P051",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P051",
+     "side": "arriba",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P046",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 40,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 8,
+   "step": 32,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P040",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P041",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P041",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P041",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P052",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P052",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P052",
+     "side": "arriba",
+     "studX": 50
+    },
+    {
+     "to": "P052",
+     "side": "arriba",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P047",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 100,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 8,
+   "step": 33,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P041",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P042",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P053",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P053",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P048",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 140,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 8,
+   "step": 34,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P042",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P008",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P054",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P054",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P049",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 170,
+   "y": 168,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 8,
+   "step": 35,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P010",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P008",
+     "side": "abajo",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P009",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -180,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 9,
+   "step": 36,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P043",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P011",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P055",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P050",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -120,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 9,
+   "step": 37,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P044",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P044",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P044",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P044",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P056",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P056",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P057",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P057",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P051",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -40,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 9,
+   "step": 38,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P045",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P045",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P045",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P045",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P058",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P059",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P059",
+     "side": "arriba",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P052",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 40,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 9,
+   "step": 39,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P046",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P046",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P046",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P046",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P060",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P060",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P061",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P053",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 100,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 9,
+   "step": 40,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P047",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P047",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P062",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P063",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P054",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 140,
+   "y": 192,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 9,
+   "step": 41,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P048",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P048",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P063",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P064",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P010",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 180,
+   "y": 192,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 9,
+   "step": 42,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P049",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P012",
+     "side": "arriba",
+     "studX": 190
+    },
+    {
+     "to": "P064",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P011",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -200,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 10,
+   "step": 43,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P009",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P065",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P065",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P055",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -170,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 10,
+   "step": 44,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P009",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P065",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P056",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -140,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 10,
+   "step": 45,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P050",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P050",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P065",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P066",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P057",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -100,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 10,
+   "step": 46,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P050",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P050",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P066",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P067",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P058",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -50,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 10,
+   "step": 47,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P051",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P150",
+     "side": "arriba",
+     "studX": -50
+    }
+   ]
+  },
+  {
+   "id": "P059",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -20,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 10,
+   "step": 48,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P051",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P051",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P068",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P068",
+     "side": "arriba",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P060",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 20,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 10,
+   "step": 49,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P052",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P052",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P069",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P069",
+     "side": "arriba",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P061",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 50,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 10,
+   "step": 50,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P052",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P151",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P062",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 90,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 10,
+   "step": 51,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P053",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P070",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P063",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 120,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 10,
+   "step": 52,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P053",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P054",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P070",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P070",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P064",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 216,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 10,
+   "step": 53,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P054",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P010",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P070",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P071",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P012",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 200,
+   "y": 216,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 10,
+   "step": 54,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P010",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P071",
+     "side": "arriba",
+     "studX": 190
+    },
+    {
+     "to": "P072",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P065",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -180,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 11,
+   "step": 55,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P013",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P011",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P011",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P055",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P056",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P073",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P074",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P074",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P066",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -120,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 11,
+   "step": 56,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P056",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P057",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P075",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P075",
+     "side": "arriba",
+     "studX": -110
+    }
+   ]
+  },
+  {
+   "id": "P067",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -90,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 11,
+   "step": 57,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P057",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P152",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P068",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -20,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 11,
+   "step": 58,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P059",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P059",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P076",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P077",
+     "side": "arriba",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P069",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 20,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 11,
+   "step": 59,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P060",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P060",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P077",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P078",
+     "side": "arriba",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P070",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 120,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 11,
+   "step": 60,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P062",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P063",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P063",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P064",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P079",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P080",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P080",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P153",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P071",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 11,
+   "step": 61,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P064",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P012",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P081",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P081",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P072",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 210,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 11,
+   "step": 62,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P014",
+     "side": "arriba",
+     "studX": 210
+    },
+    {
+     "to": "P012",
+     "side": "abajo",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P150",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -50,
+   "y": 240,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 11,
+   "step": 63,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P058",
+     "side": "abajo",
+     "studX": -50
+    }
+   ]
+  },
+  {
+   "id": "P151",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 50,
+   "y": 240,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 11,
+   "step": 64,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P061",
+     "side": "abajo",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P013",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -220,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 12,
+   "step": 65,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P065",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P015",
+     "side": "arriba",
+     "studX": -230
+    },
+    {
+     "to": "P082",
+     "side": "arriba",
+     "studX": -210
+    }
+   ]
+  },
+  {
+   "id": "P073",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -190,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 12,
+   "step": 66,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P065",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P082",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P074",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -160,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 12,
+   "step": 67,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P065",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P065",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P083",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P083",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P075",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -120,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 12,
+   "step": 68,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P066",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P066",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P084",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P154",
+     "side": "arriba",
+     "studX": -110
+    }
+   ]
+  },
+  {
+   "id": "P076",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -30,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 12,
+   "step": 69,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P068",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P155",
+     "side": "arriba",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P077",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 0,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 12,
+   "step": 70,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P068",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P069",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P085",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P085",
+     "side": "arriba",
+     "studX": 10
+    }
+   ]
+  },
+  {
+   "id": "P078",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 30,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 12,
+   "step": 71,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P069",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P156",
+     "side": "arriba",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P079",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 110,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 12,
+   "step": 72,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P070",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P157",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P080",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 140,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 12,
+   "step": 73,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P070",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P070",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P086",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P086",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P081",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 12,
+   "step": 74,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P071",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P071",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P087",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P087",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P014",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 220,
+   "y": 264,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 12,
+   "step": 75,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P072",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P016",
+     "side": "arriba",
+     "studX": 230
+    },
+    {
+     "to": "P088",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P152",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -90,
+   "y": 264,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 12,
+   "step": 76,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P067",
+     "side": "abajo",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P153",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 90,
+   "y": 264,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 12,
+   "step": 77,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P070",
+     "side": "abajo",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P015",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -240,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 13,
+   "step": 78,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P013",
+     "side": "abajo",
+     "studX": -230
+    },
+    {
+     "to": "P089",
+     "side": "arriba",
+     "studX": -250
+    },
+    {
+     "to": "P090",
+     "side": "arriba",
+     "studX": -230
+    }
+   ]
+  },
+  {
+   "id": "P082",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -200,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 13,
+   "step": 79,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P013",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P073",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P090",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P091",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P083",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -160,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 13,
+   "step": 80,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P074",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P074",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P091",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P092",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P084",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -130,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 13,
+   "step": 81,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P075",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P158",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P085",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 0,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 13,
+   "step": 82,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P077",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P077",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P159",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P160",
+     "side": "arriba",
+     "studX": 10
+    }
+   ]
+  },
+  {
+   "id": "P086",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 140,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 13,
+   "step": 83,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P080",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P080",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P093",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P161",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P087",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 13,
+   "step": 84,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P081",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P081",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P094",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P094",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P088",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 210,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 13,
+   "step": 85,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P014",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P095",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P016",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 240,
+   "y": 288,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 13,
+   "step": 86,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P014",
+     "side": "abajo",
+     "studX": 230
+    },
+    {
+     "to": "P095",
+     "side": "arriba",
+     "studX": 230
+    },
+    {
+     "to": "P096",
+     "side": "arriba",
+     "studX": 250
+    }
+   ]
+  },
+  {
+   "id": "P154",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -110,
+   "y": 288,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 13,
+   "step": 87,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P075",
+     "side": "abajo",
+     "studX": -110
+    }
+   ]
+  },
+  {
+   "id": "P155",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -30,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 13,
+   "step": 88,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P076",
+     "side": "abajo",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P156",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 30,
+   "y": 288,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 13,
+   "step": 89,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P078",
+     "side": "abajo",
+     "studX": 30
+    }
+   ]
+  },
+  {
+   "id": "P157",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 110,
+   "y": 288,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 13,
+   "step": 90,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P079",
+     "side": "abajo",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P089",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -250,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 14,
+   "step": 91,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P015",
+     "side": "abajo",
+     "studX": -250
+    },
+    {
+     "to": "P097",
+     "side": "arriba",
+     "studX": -250
+    }
+   ]
+  },
+  {
+   "id": "P090",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -220,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 14,
+   "step": 92,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P015",
+     "side": "abajo",
+     "studX": -230
+    },
+    {
+     "to": "P082",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P097",
+     "side": "arriba",
+     "studX": -230
+    },
+    {
+     "to": "P098",
+     "side": "arriba",
+     "studX": -210
+    }
+   ]
+  },
+  {
+   "id": "P091",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -180,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 14,
+   "step": 93,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P082",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P083",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P098",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P099",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P092",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -150,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 14,
+   "step": 94,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P017",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P083",
+     "side": "abajo",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P093",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 150,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 14,
+   "step": 95,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P018",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P086",
+     "side": "abajo",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P094",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 14,
+   "step": 96,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P087",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P087",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P100",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P100",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P095",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 220,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 14,
+   "step": 97,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P088",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P016",
+     "side": "abajo",
+     "studX": 230
+    },
+    {
+     "to": "P101",
+     "side": "arriba",
+     "studX": 210
+    },
+    {
+     "to": "P101",
+     "side": "arriba",
+     "studX": 230
+    }
+   ]
+  },
+  {
+   "id": "P096",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 250,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#7025E0",
+   "colorName": "Violeta QS",
+   "layer": 14,
+   "step": 98,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P016",
+     "side": "abajo",
+     "studX": 250
+    },
+    {
+     "to": "P102",
+     "side": "arriba",
+     "studX": 250
+    }
+   ]
+  },
+  {
+   "id": "P158",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -130,
+   "y": 312,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 14,
+   "step": 99,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P084",
+     "side": "abajo",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P159",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -10,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 14,
+   "step": 100,
+   "role": "terminación inclinada (pico)",
+   "connections": [
+    {
+     "to": "P085",
+     "side": "abajo",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P160",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 10,
+   "y": 312,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 14,
+   "step": 101,
+   "role": "terminación inclinada (pico)",
+   "connections": [
+    {
+     "to": "P085",
+     "side": "abajo",
+     "studX": 10
+    }
+   ]
+  },
+  {
+   "id": "P161",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 130,
+   "y": 312,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 14,
+   "step": 102,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P086",
+     "side": "abajo",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P097",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -240,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 15,
+   "step": 103,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P089",
+     "side": "abajo",
+     "studX": -250
+    },
+    {
+     "to": "P090",
+     "side": "abajo",
+     "studX": -230
+    },
+    {
+     "to": "P103",
+     "side": "arriba",
+     "studX": -230
+    },
+    {
+     "to": "P162",
+     "side": "arriba",
+     "studX": -250
+    }
+   ]
+  },
+  {
+   "id": "P098",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -200,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 15,
+   "step": 104,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P090",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P091",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P104",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P104",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P099",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -170,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 15,
+   "step": 105,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P091",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P105",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P017",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -140,
+   "y": 336,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 15,
+   "step": 106,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P092",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P105",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P106",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P018",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 140,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 15,
+   "step": 107,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P093",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P107",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P108",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P100",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 15,
+   "step": 108,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P094",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P094",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P108",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P109",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P101",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 220,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 15,
+   "step": 109,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P095",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P095",
+     "side": "abajo",
+     "studX": 230
+    },
+    {
+     "to": "P109",
+     "side": "arriba",
+     "studX": 210
+    },
+    {
+     "to": "P110",
+     "side": "arriba",
+     "studX": 230
+    }
+   ]
+  },
+  {
+   "id": "P102",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 250,
+   "y": 336,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 15,
+   "step": 110,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P096",
+     "side": "abajo",
+     "studX": 250
+    },
+    {
+     "to": "P163",
+     "side": "arriba",
+     "studX": 250
+    }
+   ]
+  },
+  {
+   "id": "P103",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -230,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 16,
+   "step": 111,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P097",
+     "side": "abajo",
+     "studX": -230
+    },
+    {
+     "to": "P111",
+     "side": "arriba",
+     "studX": -230
+    }
+   ]
+  },
+  {
+   "id": "P104",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -200,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 16,
+   "step": 112,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P098",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P098",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P111",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P112",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P105",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -160,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 16,
+   "step": 113,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P099",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P017",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P112",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P113",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P106",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -130,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 16,
+   "step": 114,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P019",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P017",
+     "side": "abajo",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P107",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 130,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 16,
+   "step": 115,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P020",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P018",
+     "side": "abajo",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P108",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 16,
+   "step": 116,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P018",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P100",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P114",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P114",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P109",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 200,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 16,
+   "step": 117,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P100",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P101",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P115",
+     "side": "arriba",
+     "studX": 190
+    },
+    {
+     "to": "P115",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P110",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 230,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 16,
+   "step": 118,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P101",
+     "side": "abajo",
+     "studX": 230
+    },
+    {
+     "to": "P116",
+     "side": "arriba",
+     "studX": 230
+    }
+   ]
+  },
+  {
+   "id": "P162",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -250,
+   "y": 360,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 16,
+   "step": 119,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P097",
+     "side": "abajo",
+     "studX": -250
+    }
+   ]
+  },
+  {
+   "id": "P163",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 250,
+   "y": 360,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 16,
+   "step": 120,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P102",
+     "side": "abajo",
+     "studX": 250
+    }
+   ]
+  },
+  {
+   "id": "P111",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -220,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 17,
+   "step": 121,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P103",
+     "side": "abajo",
+     "studX": -230
+    },
+    {
+     "to": "P104",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P117",
+     "side": "arriba",
+     "studX": -210
+    },
+    {
+     "to": "P164",
+     "side": "arriba",
+     "studX": -230
+    }
+   ]
+  },
+  {
+   "id": "P112",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -180,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 17,
+   "step": 122,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P104",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P105",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P118",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P118",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P113",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -150,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 17,
+   "step": 123,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P105",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P119",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P019",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -120,
+   "y": 384,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 17,
+   "step": 124,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P106",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P021",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P119",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P020",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 120,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 17,
+   "step": 125,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P107",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P022",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P120",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P114",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 17,
+   "step": 126,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P108",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P108",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P121",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P121",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P115",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 200,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 17,
+   "step": 127,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P109",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P109",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P122",
+     "side": "arriba",
+     "studX": 190
+    },
+    {
+     "to": "P122",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P116",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 230,
+   "y": 384,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 17,
+   "step": 128,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P110",
+     "side": "abajo",
+     "studX": 230
+    },
+    {
+     "to": "P165",
+     "side": "arriba",
+     "studX": 230
+    }
+   ]
+  },
+  {
+   "id": "P117",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -210,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 18,
+   "step": 129,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P111",
+     "side": "abajo",
+     "studX": -210
+    },
+    {
+     "to": "P166",
+     "side": "arriba",
+     "studX": -210
+    }
+   ]
+  },
+  {
+   "id": "P118",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -180,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 18,
+   "step": 130,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P112",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P112",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P123",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P123",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P119",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -140,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 18,
+   "step": 131,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P113",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P019",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P123",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P123",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P021",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": -100,
+   "y": 408,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 18,
+   "step": 132,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P019",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P124",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P124",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P022",
+   "part": "3665",
+   "ldraw": "3665.dat",
+   "name": "Slope 45 2 x 1 Inverted",
+   "x": 100,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 18,
+   "step": 133,
+   "role": "diagonal inferior",
+   "connections": [
+    {
+     "to": "P020",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P125",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P125",
+     "side": "arriba",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P120",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 130,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 18,
+   "step": 134,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P020",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P125",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P121",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 18,
+   "step": 135,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P114",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P114",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P125",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P126",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P122",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 200,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 18,
+   "step": 136,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P115",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P115",
+     "side": "abajo",
+     "studX": 210
+    },
+    {
+     "to": "P126",
+     "side": "arriba",
+     "studX": 190
+    },
+    {
+     "to": "P167",
+     "side": "arriba",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P164",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -230,
+   "y": 408,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 18,
+   "step": 137,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P111",
+     "side": "abajo",
+     "studX": -230
+    }
+   ]
+  },
+  {
+   "id": "P165",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 230,
+   "y": 408,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 18,
+   "step": 138,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P116",
+     "side": "abajo",
+     "studX": 230
+    }
+   ]
+  },
+  {
+   "id": "P123",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -160,
+   "y": 432,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 19,
+   "step": 139,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P118",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P118",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P119",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P119",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P127",
+     "side": "arriba",
+     "studX": -190
+    },
+    {
+     "to": "P128",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P128",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P128",
+     "side": "arriba",
+     "studX": -130
+    }
+   ]
+  },
+  {
+   "id": "P124",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": -100,
+   "y": 432,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 19,
+   "step": 140,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P021",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P021",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P128",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P129",
+     "side": "arriba",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P125",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 120,
+   "y": 432,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 19,
+   "step": 141,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P022",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P022",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P120",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P121",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P131",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P131",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P131",
+     "side": "arriba",
+     "studX": 130
+    },
+    {
+     "to": "P132",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P126",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 180,
+   "y": 432,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 19,
+   "step": 142,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P121",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P122",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P132",
+     "side": "arriba",
+     "studX": 170
+    },
+    {
+     "to": "P133",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P166",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -210,
+   "y": 432,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 19,
+   "step": 143,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P117",
+     "side": "abajo",
+     "studX": -210
+    }
+   ]
+  },
+  {
+   "id": "P167",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 210,
+   "y": 432,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#5932E0",
+   "colorName": "Violeta azulado QS",
+   "layer": 19,
+   "step": 144,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P122",
+     "side": "abajo",
+     "studX": 210
+    }
+   ]
+  },
+  {
+   "id": "P127",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -190,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 20,
+   "step": 145,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P123",
+     "side": "abajo",
+     "studX": -190
+    },
+    {
+     "to": "P168",
+     "side": "arriba",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P128",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -140,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 20,
+   "step": 146,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P123",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P123",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P123",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P124",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P134",
+     "side": "arriba",
+     "studX": -170
+    },
+    {
+     "to": "P134",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P134",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P134",
+     "side": "arriba",
+     "studX": -110
+    }
+   ]
+  },
+  {
+   "id": "P129",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -60,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 20,
+   "step": 147,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P124",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P135",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P135",
+     "side": "arriba",
+     "studX": -70
+    },
+    {
+     "to": "P135",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P135",
+     "side": "arriba",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P130",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 20,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 20,
+   "step": 148,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P136",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P136",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P136",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P136",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P131",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 100,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 20,
+   "step": 149,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P125",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P125",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P125",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P137",
+     "side": "arriba",
+     "studX": 70
+    },
+    {
+     "to": "P137",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P137",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P137",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P132",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 20,
+   "step": 150,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P125",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P126",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P138",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P138",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P133",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 190,
+   "y": 456,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 20,
+   "step": 151,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P126",
+     "side": "abajo",
+     "studX": 190
+    },
+    {
+     "to": "P169",
+     "side": "arriba",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P134",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -140,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 21,
+   "step": 152,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P128",
+     "side": "abajo",
+     "studX": -170
+    },
+    {
+     "to": "P128",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P128",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P128",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P139",
+     "side": "arriba",
+     "studX": -150
+    },
+    {
+     "to": "P140",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P140",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P170",
+     "side": "arriba",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P135",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -60,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 21,
+   "step": 153,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P129",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P129",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P129",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P129",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P140",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P140",
+     "side": "arriba",
+     "studX": -70
+    },
+    {
+     "to": "P141",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P141",
+     "side": "arriba",
+     "studX": -30
+    }
+   ]
+  },
+  {
+   "id": "P136",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 20,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 21,
+   "step": 154,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P130",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P130",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P130",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P130",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P141",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P141",
+     "side": "arriba",
+     "studX": 10
+    },
+    {
+     "to": "P142",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P142",
+     "side": "arriba",
+     "studX": 50
+    }
+   ]
+  },
+  {
+   "id": "P137",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 100,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 21,
+   "step": 155,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P131",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P131",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P131",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P131",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P142",
+     "side": "arriba",
+     "studX": 70
+    },
+    {
+     "to": "P142",
+     "side": "arriba",
+     "studX": 90
+    },
+    {
+     "to": "P143",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P143",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P138",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 160,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 21,
+   "step": 156,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P132",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P132",
+     "side": "abajo",
+     "studX": 170
+    },
+    {
+     "to": "P144",
+     "side": "arriba",
+     "studX": 150
+    },
+    {
+     "to": "P171",
+     "side": "arriba",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P168",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -190,
+   "y": 480,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 21,
+   "step": 157,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P127",
+     "side": "abajo",
+     "studX": -190
+    }
+   ]
+  },
+  {
+   "id": "P169",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 190,
+   "y": 480,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 21,
+   "step": 158,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P133",
+     "side": "abajo",
+     "studX": 190
+    }
+   ]
+  },
+  {
+   "id": "P139",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": -150,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 22,
+   "step": 159,
+   "role": "traba",
+   "connections": [
+    {
+     "to": "P134",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P145",
+     "side": "arriba",
+     "studX": -150
+    }
+   ]
+  },
+  {
+   "id": "P140",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -100,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 22,
+   "step": 160,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P134",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P134",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P135",
+     "side": "abajo",
+     "studX": -90
+    },
+    {
+     "to": "P135",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P145",
+     "side": "arriba",
+     "studX": -130
+    },
+    {
+     "to": "P145",
+     "side": "arriba",
+     "studX": -110
+    },
+    {
+     "to": "P145",
+     "side": "arriba",
+     "studX": -90
+    },
+    {
+     "to": "P146",
+     "side": "arriba",
+     "studX": -70
+    }
+   ]
+  },
+  {
+   "id": "P141",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -20,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 22,
+   "step": 161,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P135",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P135",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P136",
+     "side": "abajo",
+     "studX": -10
+    },
+    {
+     "to": "P136",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P146",
+     "side": "arriba",
+     "studX": -50
+    },
+    {
+     "to": "P146",
+     "side": "arriba",
+     "studX": -30
+    },
+    {
+     "to": "P146",
+     "side": "arriba",
+     "studX": -10
+    },
+    {
+     "to": "P147",
+     "side": "arriba",
+     "studX": 10
+    }
+   ]
+  },
+  {
+   "id": "P142",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 60,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 22,
+   "step": 162,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P136",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P136",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P137",
+     "side": "abajo",
+     "studX": 70
+    },
+    {
+     "to": "P137",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P147",
+     "side": "arriba",
+     "studX": 30
+    },
+    {
+     "to": "P147",
+     "side": "arriba",
+     "studX": 50
+    },
+    {
+     "to": "P147",
+     "side": "arriba",
+     "studX": 70
+    },
+    {
+     "to": "P148",
+     "side": "arriba",
+     "studX": 90
+    }
+   ]
+  },
+  {
+   "id": "P143",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 120,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 22,
+   "step": 163,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P137",
+     "side": "abajo",
+     "studX": 110
+    },
+    {
+     "to": "P137",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P148",
+     "side": "arriba",
+     "studX": 110
+    },
+    {
+     "to": "P149",
+     "side": "arriba",
+     "studX": 130
+    }
+   ]
+  },
+  {
+   "id": "P144",
+   "part": "3005",
+   "ldraw": "3005.dat",
+   "name": "Brick 1 x 1",
+   "x": 150,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 22,
+   "step": 164,
+   "role": "vértice / detalle",
+   "connections": [
+    {
+     "to": "P138",
+     "side": "abajo",
+     "studX": 150
+    },
+    {
+     "to": "P149",
+     "side": "arriba",
+     "studX": 150
+    }
+   ]
+  },
+  {
+   "id": "P170",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": -170,
+   "y": 504,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 22,
+   "step": 165,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P134",
+     "side": "abajo",
+     "studX": -170
+    }
+   ]
+  },
+  {
+   "id": "P171",
+   "part": "54200",
+   "ldraw": "54200.dat",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "x": 170,
+   "y": 504,
+   "z": 0,
+   "rotationY": 180,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 22,
+   "step": 166,
+   "role": "terminación inclinada",
+   "connections": [
+    {
+     "to": "P138",
+     "side": "abajo",
+     "studX": 170
+    }
+   ]
+  },
+  {
+   "id": "P145",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -120,
+   "y": 528,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 23,
+   "step": 167,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P139",
+     "side": "abajo",
+     "studX": -150
+    },
+    {
+     "to": "P140",
+     "side": "abajo",
+     "studX": -130
+    },
+    {
+     "to": "P140",
+     "side": "abajo",
+     "studX": -110
+    },
+    {
+     "to": "P140",
+     "side": "abajo",
+     "studX": -90
+    }
+   ]
+  },
+  {
+   "id": "P146",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": -40,
+   "y": 528,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3C9FF1",
+   "colorName": "Celeste QS",
+   "layer": 23,
+   "step": 168,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P140",
+     "side": "abajo",
+     "studX": -70
+    },
+    {
+     "to": "P141",
+     "side": "abajo",
+     "studX": -50
+    },
+    {
+     "to": "P141",
+     "side": "abajo",
+     "studX": -30
+    },
+    {
+     "to": "P141",
+     "side": "abajo",
+     "studX": -10
+    }
+   ]
+  },
+  {
+   "id": "P147",
+   "part": "3010",
+   "ldraw": "3010.dat",
+   "name": "Brick 1 x 4",
+   "x": 40,
+   "y": 528,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 23,
+   "step": 169,
+   "role": "tramo recto",
+   "connections": [
+    {
+     "to": "P141",
+     "side": "abajo",
+     "studX": 10
+    },
+    {
+     "to": "P142",
+     "side": "abajo",
+     "studX": 30
+    },
+    {
+     "to": "P142",
+     "side": "abajo",
+     "studX": 50
+    },
+    {
+     "to": "P142",
+     "side": "abajo",
+     "studX": 70
+    }
+   ]
+  },
+  {
+   "id": "P148",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 100,
+   "y": 528,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#3F75EA",
+   "colorName": "Azul QS",
+   "layer": 23,
+   "step": 170,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P142",
+     "side": "abajo",
+     "studX": 90
+    },
+    {
+     "to": "P143",
+     "side": "abajo",
+     "studX": 110
+    }
+   ]
+  },
+  {
+   "id": "P149",
+   "part": "3004",
+   "ldraw": "3004.dat",
+   "name": "Brick 1 x 2",
+   "x": 140,
+   "y": 528,
+   "z": 0,
+   "rotationY": 0,
+   "color": "#463DE1",
+   "colorName": "Índigo QS",
+   "layer": 23,
+   "step": 171,
+   "role": "estructura",
+   "connections": [
+    {
+     "to": "P143",
+     "side": "abajo",
+     "studX": 130
+    },
+    {
+     "to": "P144",
+     "side": "abajo",
+     "studX": 150
+    }
+   ]
+  }
+ ],
+ "validation": {
+  "ok": true,
+  "errors": [],
+  "pieces": 171,
+  "components": 1
+ },
+ "inventory": [
+  {
+   "part": "3004",
+   "name": "Brick 1 x 2",
+   "color": "Celeste QS",
+   "hex": "#3C9FF1",
+   "n": 9
+  },
+  {
+   "part": "3004",
+   "name": "Brick 1 x 2",
+   "color": "Azul QS",
+   "hex": "#3F75EA",
+   "n": 11
+  },
+  {
+   "part": "3004",
+   "name": "Brick 1 x 2",
+   "color": "Índigo QS",
+   "hex": "#463DE1",
+   "n": 13
+  },
+  {
+   "part": "3004",
+   "name": "Brick 1 x 2",
+   "color": "Violeta azulado QS",
+   "hex": "#5932E0",
+   "n": 12
+  },
+  {
+   "part": "3004",
+   "name": "Brick 1 x 2",
+   "color": "Violeta QS",
+   "hex": "#7025E0",
+   "n": 13
+  },
+  {
+   "part": "3005",
+   "name": "Brick 1 x 1",
+   "color": "Celeste QS",
+   "hex": "#3C9FF1",
+   "n": 7
+  },
+  {
+   "part": "3005",
+   "name": "Brick 1 x 1",
+   "color": "Azul QS",
+   "hex": "#3F75EA",
+   "n": 6
+  },
+  {
+   "part": "3005",
+   "name": "Brick 1 x 1",
+   "color": "Índigo QS",
+   "hex": "#463DE1",
+   "n": 9
+  },
+  {
+   "part": "3005",
+   "name": "Brick 1 x 1",
+   "color": "Violeta azulado QS",
+   "hex": "#5932E0",
+   "n": 6
+  },
+  {
+   "part": "3005",
+   "name": "Brick 1 x 1",
+   "color": "Violeta QS",
+   "hex": "#7025E0",
+   "n": 11
+  },
+  {
+   "part": "3010",
+   "name": "Brick 1 x 4",
+   "color": "Celeste QS",
+   "hex": "#3C9FF1",
+   "n": 9
+  },
+  {
+   "part": "3010",
+   "name": "Brick 1 x 4",
+   "color": "Azul QS",
+   "hex": "#3F75EA",
+   "n": 6
+  },
+  {
+   "part": "3010",
+   "name": "Brick 1 x 4",
+   "color": "Índigo QS",
+   "hex": "#463DE1",
+   "n": 5
+  },
+  {
+   "part": "3010",
+   "name": "Brick 1 x 4",
+   "color": "Violeta azulado QS",
+   "hex": "#5932E0",
+   "n": 9
+  },
+  {
+   "part": "3010",
+   "name": "Brick 1 x 4",
+   "color": "Violeta QS",
+   "hex": "#7025E0",
+   "n": 1
+  },
+  {
+   "part": "3665",
+   "name": "Slope 45 2 x 1 Inverted",
+   "color": "Celeste QS",
+   "hex": "#3C9FF1",
+   "n": 3
+  },
+  {
+   "part": "3665",
+   "name": "Slope 45 2 x 1 Inverted",
+   "color": "Azul QS",
+   "hex": "#3F75EA",
+   "n": 3
+  },
+  {
+   "part": "3665",
+   "name": "Slope 45 2 x 1 Inverted",
+   "color": "Índigo QS",
+   "hex": "#463DE1",
+   "n": 6
+  },
+  {
+   "part": "3665",
+   "name": "Slope 45 2 x 1 Inverted",
+   "color": "Violeta QS",
+   "hex": "#7025E0",
+   "n": 10
+  },
+  {
+   "part": "54200",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "color": "Celeste QS",
+   "hex": "#3C9FF1",
+   "n": 5
+  },
+  {
+   "part": "54200",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "color": "Azul QS",
+   "hex": "#3F75EA",
+   "n": 3
+  },
+  {
+   "part": "54200",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "color": "Índigo QS",
+   "hex": "#463DE1",
+   "n": 8
+  },
+  {
+   "part": "54200",
+   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
+   "color": "Violeta azulado QS",
+   "hex": "#5932E0",
+   "n": 6
+  }
+ ]
+}

@@ -15,6 +15,7 @@ import TreeScreen from './screens/TreeScreen.jsx';
 import Game from './screens/Game.jsx';
 import Gallery from './screens/Gallery.jsx';
 import Mailbox from './screens/Mailbox.jsx';
+import LegoQ from './screens/LegoQ.jsx';
 
 const DARK = ['/arbol', '/recibidas'];
 // En producción todo requiere sesión; en demo, árbol y galería se pueden mirar sin identificarse.
@@ -31,6 +32,7 @@ function screenFor(path) {
     case '/juego': return <Game />;
     case '/galeria': return <Gallery />;
     case '/recibidas': return <Mailbox />;
+    case '/lego-q': return <LegoQ />;
     default: return <Intro />;
   }
 }
@@ -60,7 +62,7 @@ export default function App() {
   useEffect(() => {
     const titles = {
       '/arbol': 'El árbol', '/juego': 'Armá el árbol', '/galeria': 'Galería', '/recibidas': 'Recibidas',
-      '/destino': 'El destino decide', '/elegir': 'Ahora elegís vos', '/recorrido': 'Tu recorrido',
+      '/destino': 'El destino decide', '/elegir': 'Ahora elegís vos', '/recorrido': 'Tu recorrido', '/lego-q': 'La Q en ladrillos',
     };
     document.title = (titles[key] ? titles[key] + ' · ' : '') + 'Este año, sin prompt · QuartzSales';
   }, [key]);

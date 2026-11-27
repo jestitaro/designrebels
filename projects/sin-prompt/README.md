@@ -30,6 +30,10 @@ En demo nada se comparte entre personas. No es una simulación de datos comparti
 
 Nav persistente para volver a galería, recibidas o juego en cualquier momento. El progreso y los borradores sobreviven a recargar.
 
+## LEGO Q
+
+El hero muestra el isotipo armado con piezas LEGO reales (generado por `source/scripts/build-q.mjs`): el hover lo desarma, un click en una pieza arma el arbolito, otro click vuelve a la Q. El manual interactivo está en `#/lego-q`, y los entregables (JSON, `.ldr`, inventario, manual por capas, vistas) en [`lego-q/`](./lego-q/).
+
 ## Desarrollo
 
 ```bash
@@ -37,6 +41,7 @@ cd source
 npm install
 npm run dev      # desarrollo
 npm run build    # genera dist/ y copia el index.html autocontenido a ../index.html
+npm run build:q  # regenera la LEGO Q (modelos, .ldr, inventarios, manuales)
 ```
 
 Para conectar Supabase: copiá `source/.env.example` a `source/.env`, completá las variables y volvé a buildear. Pasos de base de datos en [`supabase/README.md`](./supabase/README.md).
