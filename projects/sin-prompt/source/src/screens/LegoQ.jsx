@@ -105,12 +105,12 @@ export default function LegoQ() {
         <div>
           <p className="eyebrow">Manual de armado</p>
           <h1 id="lq-h" className="h1">La Q, en ladrillos.</h1>
-          <p className="lead">El isotipo de QuartzSales construido solo con piezas LEGO reales: ladrillos 1×1, 1×2 y 1×4, cheese slopes e inverted slopes. Sin piezas inventadas ni deformadas.</p>
+          <p className="lead">El isotipo de QuartzSales construido solo con piezas LEGO reales: ladrillos 2×2, 1×2, 1×1 y 1×4, cheese slopes e inverted slopes. Sin piezas inventadas ni deformadas.</p>
         </div>
         <div className="seg" role="radiogroup" aria-label="Variante">
           {Object.keys(Q_MODELS).map((v) => (
             <button key={v} type="button" role="radio" aria-checked={variant === v} onClick={() => setVariant(v)}>
-              {v === 'compacta' ? 'Compacta' : 'Detalle'}
+              {v === 'volumen' ? 'Volumen' : 'Detalle'}
               <span className="mono-label">{Q_MODELS[v].pieces.length} piezas</span>
             </button>
           ))}

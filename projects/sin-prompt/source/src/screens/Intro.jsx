@@ -244,9 +244,6 @@ export default function Intro({ gateMessage }) {
                 <a className="link" href="#/galeria" onClick={(e) => { e.preventDefault(); navigate('/galeria'); }}>
                   Ver la galería
                 </a>
-                <a className="link" href="#/lego-q" onClick={(e) => { e.preventDefault(); navigate('/lego-q'); }}>
-                  Cómo se arma la Q
-                </a>
               </div>
             </motion.div>
           </div>

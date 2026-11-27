@@ -10,7 +10,7 @@ export default function DemoBadge() {
     <>
       <button type="button" className="demo-badge" onClick={() => setOpen(true)}>
         <span className="demo-dot" aria-hidden="true" />
-        Modo demo
+        <span className="demo-long">Modo </span>demo
       </button>
       <Dialog open={open} onClose={() => setOpen(false)} labelledBy="demo-title" wide>
         <p className="eyebrow">Prototipo</p>

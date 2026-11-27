@@ -5,7 +5,6 @@ import { useStore } from './lib/store.jsx';
 import { IS_DEMO } from './lib/api/index.js';
 import Nav from './components/Nav.jsx';
 import Toasts from './components/Toasts.jsx';
-import DemoBadge from './components/DemoBadge.jsx';
 import Intro from './screens/Intro.jsx';
 import Journey from './screens/Journey.jsx';
 import Reveal from './screens/Reveal.jsx';
@@ -98,7 +97,6 @@ export default function App() {
         </motion.main>
       </AnimatePresence>
       <Toasts />
-      <DemoBadge />
     </div>
   );
 }

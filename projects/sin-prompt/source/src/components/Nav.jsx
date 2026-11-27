@@ -6,6 +6,7 @@ import { firstName, initials } from '../config/participants.js';
 import Icon from './Icon.jsx';
 import Dialog from './Dialog.jsx';
 import iso from '../assets/iso-qs.svg';
+import DemoBadge from './DemoBadge.jsx';
 
 const LINKS = [
   { to: '/recorrido', label: 'Recorrido', n: '01' },
@@ -43,6 +44,7 @@ export default function Nav({ path, dark }) {
             Sin prompt<em>.</em>
           </span>
         </a>
+        <DemoBadge />
 
         <nav className="nav-links" aria-label="Secciones">
           {LINKS.map((l) => (

@@ -22,7 +22,6 @@ const LAYER_TONES = [
 ];
 const ORNAMENT = '#3C9FF1';
 const HIDE = [0.001, 0.001, 0.001];
-const Q180 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI);
 
 function buildTree() {
   const rnd = mulberry32(2026);
@@ -59,7 +58,8 @@ export function qBricks(rnd, { treeCenterY = 6, explodeScale = 1, model = Q_MODE
   return pcs.map((p) => {
     const x = p.x / LDU;
     const y = p.y / LDU;
-    const q = p.rotationY === 180 ? [Q180.x, Q180.y, Q180.z, Q180.w] : [0, 0, 0, 1];
+    const qq = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), ((p.rotationY || 0) * Math.PI) / 180);
+    const q = [qq.x, qq.y, qq.z, qq.w];
     const dy = y + 0.6 - midY;
     const len = Math.hypot(x, dy) || 1;
     // la explosión escala con el tamaño del modelo (compacta o detalle)
@@ -74,7 +74,7 @@ export function qBricks(rnd, { treeCenterY = 6, explodeScale = 1, model = Q_MODE
       maxStep,
       meta: p,
       states: {
-        logo: { p: [x, y, 0], q, color: p.color },
+        logo: { p: [x, y, (p.z || 0) / LDU], q, color: p.color },
         explode: { p: [x + (x / len) * dist, Math.max(0, y + (dy / len) * dist * 0.7), (rnd() - 0.5) * W * 0.27 * explodeScale], q: randomQuat(rnd, Math.PI * 0.9), color: p.color },
         tree: { p: [x * 0.25, treeCenterY + y * 0.15, 0], q, s: HIDE, color: p.color },
       },
@@ -127,7 +127,7 @@ export default function LegoHero({ dropIn = false, variant }) {
         scene.moveStar([0, top + 0.9, 0], 1, 1000);
         state.busyUntil = now + 1200;
       } else {
-        scene.faceFront(true);
+        scene.faceFront(true, -0.35); // tres cuartos: se ve el espesor
         scene.fitTo('logo');
         scene.moveStar([0, top + 6, 0], 0.001);
         // montaje: pieza por pieza, en el orden del manual
@@ -140,7 +140,7 @@ export default function LegoHero({ dropIn = false, variant }) {
       scene = new LegoScene(ref.current, {
         reduceMotion: !!reduce,
         autoRotate: true,
-        tilt: 0.28,
+        tilt: 0.36,
         fit: 'logo',
         onHover: (b, e) => {
           if (e.type === 'pointerleave') {
@@ -163,9 +163,15 @@ export default function LegoHero({ dropIn = false, variant }) {
       return undefined; // sin WebGL: el hero queda solo con la tipografía
     }
 
-    scene.setBricks(bricks, 'logo');
-    scene.angle = 0;
-    scene.faceFront(true);
+    try {
+      scene.setBricks(bricks, 'logo');
+    } catch (err) {
+      console.warn('LegoHero: no se pudo armar la Q', err);
+      scene.dispose();
+      return undefined;
+    }
+    scene.angle = -0.35;
+    scene.faceFront(true, -0.35); // tres cuartos: se ve el espesor
     scene.setStar([0, top + 6, 0], false);
     if (dropIn && !reduce) {
       const order = [...qb].sort((a, b) => a.step - b.step).map((b) => b.id);

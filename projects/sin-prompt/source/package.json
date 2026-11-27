@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build && cp dist/index.html ../index.html",
     "preview": "vite preview",
-    "build:q": "node scripts/build-q.mjs 26 detalle && node scripts/build-q.mjs 12 compacta"
+    "build:q": "node scripts/build-q.mjs 10 2 volumen && node scripts/build-q.mjs 26 1 detalle"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.1.1",

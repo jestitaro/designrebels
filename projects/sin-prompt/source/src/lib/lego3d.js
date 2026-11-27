@@ -133,7 +133,7 @@ export class LegoScene {
       b._i = t.list.length;
       t.list.push(b);
       b.w = b.w || PART_LEN[b.type];
-      b.d = b.d || 1;
+      b.d = b.d || (b.type === '3003' ? 2 : 1);
       b.h = b.h || PART_HEIGHT[b.type];
     });
     for (const [type, t] of this.typed) {
@@ -327,8 +327,9 @@ export class LegoScene {
     this.bricks.forEach((b) => (b.states[name] = fn(b)));
   }
 
-  faceFront(on) {
-    this.targetAngle = on ? Math.round(this.angle / (Math.PI * 2)) * Math.PI * 2 : null;
+  faceFront(on, offset = 0) {
+    this.sway = true;
+    this.targetAngle = on ? Math.round(this.angle / (Math.PI * 2)) * Math.PI * 2 + offset : null;
   }
 
   // ── Cámara ───────────────────────────────────────────────────────────────
@@ -472,7 +473,7 @@ export class LegoScene {
     }
     if (this.targetAngle != null) {
       // de frente, con un vaivén leve para que se note el volumen
-      const sway = this.reduce || this.sway === false ? 0 : Math.sin(t * 0.0007) * 0.22;
+      const sway = this.reduce || this.sway === false ? 0 : Math.sin(t * 0.0007) * 0.16;
       this.angle += (this.targetAngle + sway - this.angle) * Math.min(1, dt * 0.006);
     }
     else if (this.autoRotate && !this.paused) this.angle += dt * 0.00018;

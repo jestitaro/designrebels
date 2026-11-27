@@ -6,7 +6,7 @@
   "stud": 20,
   "brick": 24,
   "plate": 8,
-  "note": "Coordenadas en LDU. x: derecha, y: arriba (base de la pieza), z: profundidad."
+  "note": "Coordenadas en LDU. x: derecha, y: arriba (base de la pieza), z: profundidad (centro del modelo en 0)."
  },
  "grid": {
   "width": 26,
@@ -93,7 +93,8 @@
     {
      "to": "P025",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -115,7 +116,8 @@
     {
      "to": "P001",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -137,17 +139,20 @@
     {
      "to": "P002",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P023",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P026",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -169,17 +174,20 @@
     {
      "to": "P024",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P027",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P028",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -201,12 +209,14 @@
     {
      "to": "P025",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P028",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -228,17 +238,20 @@
     {
      "to": "P025",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P029",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P029",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -260,12 +273,14 @@
     {
      "to": "P003",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P001",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     }
    ]
   },
@@ -287,22 +302,26 @@
     {
      "to": "P001",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P026",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P032",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P032",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -324,22 +343,26 @@
     {
      "to": "P004",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P002",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P002",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P033",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -361,22 +384,26 @@
     {
      "to": "P005",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P034",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     }
    ]
   },
@@ -398,12 +425,14 @@
     {
      "to": "P035",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     }
    ]
   },
@@ -425,17 +454,20 @@
     {
      "to": "P027",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     }
    ]
   },
@@ -457,22 +489,26 @@
     {
      "to": "P028",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P028",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P037",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -494,12 +530,14 @@
     {
      "to": "P029",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P037",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -521,17 +559,20 @@
     {
      "to": "P029",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P006",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P038",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -553,17 +594,20 @@
     {
      "to": "P030",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P007",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -585,12 +629,14 @@
     {
      "to": "P030",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     }
    ]
   },
@@ -612,42 +658,50 @@
     {
      "to": "P030",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P030",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P031",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P031",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     }
    ]
   },
@@ -669,37 +723,44 @@
     {
      "to": "P003",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P003",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P032",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -721,22 +782,26 @@
     {
      "to": "P032",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P033",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -758,12 +823,14 @@
     {
      "to": "P004",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P042",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -785,17 +852,20 @@
     {
      "to": "P004",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P008",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P042",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -817,17 +887,20 @@
     {
      "to": "P005",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P043",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -849,42 +922,50 @@
     {
      "to": "P005",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P034",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     }
    ]
   },
@@ -906,42 +987,50 @@
     {
      "to": "P035",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P035",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     }
    ]
   },
@@ -963,42 +1052,50 @@
     {
      "to": "P036",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P036",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P037",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P037",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P047",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -1020,22 +1117,26 @@
     {
      "to": "P038",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P006",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P047",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P048",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -1057,17 +1158,20 @@
     {
      "to": "P006",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P048",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P049",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -1089,12 +1193,14 @@
     {
      "to": "P009",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P007",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -1116,42 +1222,50 @@
     {
      "to": "P007",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P039",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -1173,42 +1287,50 @@
     {
      "to": "P039",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P040",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P051",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P051",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P051",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P051",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     }
    ]
   },
@@ -1230,42 +1352,50 @@
     {
      "to": "P040",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P041",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P052",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P052",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P052",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P052",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -1287,22 +1417,26 @@
     {
      "to": "P041",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P042",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P053",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P053",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -1324,22 +1458,26 @@
     {
      "to": "P042",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P008",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P054",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P054",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -1361,12 +1499,14 @@
     {
      "to": "P010",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P008",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -1388,17 +1528,20 @@
     {
      "to": "P043",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P011",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P055",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -1420,42 +1563,50 @@
     {
      "to": "P044",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P044",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P056",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P056",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P057",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P057",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -1477,37 +1628,44 @@
     {
      "to": "P045",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P045",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P058",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P059",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P059",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     }
    ]
   },
@@ -1529,37 +1687,44 @@
     {
      "to": "P046",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P046",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P060",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P060",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P061",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -1581,22 +1746,26 @@
     {
      "to": "P047",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P047",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P062",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P063",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -1618,22 +1787,26 @@
     {
      "to": "P048",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P048",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P063",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P064",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -1655,17 +1828,20 @@
     {
      "to": "P049",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P012",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P064",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -1687,17 +1863,20 @@
     {
      "to": "P009",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P065",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P065",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -1719,12 +1898,14 @@
     {
      "to": "P009",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P065",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -1746,22 +1927,26 @@
     {
      "to": "P050",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P065",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P066",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -1783,22 +1968,26 @@
     {
      "to": "P050",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P050",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P066",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P067",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -1820,12 +2009,8 @@
     {
      "to": "P051",
      "side": "abajo",
-     "studX": -50
-    },
-    {
-     "to": "P146",
-     "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     }
    ]
   },
@@ -1847,22 +2032,26 @@
     {
      "to": "P051",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P051",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P068",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P068",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     }
    ]
   },
@@ -1884,22 +2073,26 @@
     {
      "to": "P052",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P052",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P069",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P069",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     }
    ]
   },
@@ -1921,12 +2114,8 @@
     {
      "to": "P052",
      "side": "abajo",
-     "studX": 50
-    },
-    {
-     "to": "P147",
-     "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -1948,12 +2137,14 @@
     {
      "to": "P053",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P070",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -1975,22 +2166,26 @@
     {
      "to": "P053",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P054",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P070",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P070",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -2012,22 +2207,26 @@
     {
      "to": "P054",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P010",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P070",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P071",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -2049,17 +2248,20 @@
     {
      "to": "P010",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P071",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P072",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -2081,42 +2283,50 @@
     {
      "to": "P013",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P011",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P011",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P055",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P056",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P073",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P074",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P074",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -2138,22 +2348,26 @@
     {
      "to": "P056",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P057",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P075",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P075",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     }
    ]
   },
@@ -2175,12 +2389,14 @@
     {
      "to": "P057",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
-     "to": "P148",
+     "to": "P146",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -2202,12 +2418,14 @@
     {
      "to": "P059",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P059",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     }
    ]
   },
@@ -2229,12 +2447,14 @@
     {
      "to": "P060",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P060",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     }
    ]
   },
@@ -2256,42 +2476,50 @@
     {
      "to": "P062",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P063",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P063",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P064",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P076",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P077",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P077",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
-     "to": "P149",
+     "to": "P147",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -2313,22 +2541,26 @@
     {
      "to": "P064",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P012",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P078",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P078",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -2350,56 +2582,14 @@
     {
      "to": "P014",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P012",
      "side": "abajo",
-     "studX": 210
-    }
-   ]
-  },
-  {
-   "id": "P146",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": -50,
-   "y": 240,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 11,
-   "step": 63,
-   "role": "terminación inclinada",
-   "connections": [
-    {
-     "to": "P058",
-     "side": "abajo",
-     "studX": -50
-    }
-   ]
-  },
-  {
-   "id": "P147",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": 50,
-   "y": 240,
-   "z": 0,
-   "rotationY": 180,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 11,
-   "step": 64,
-   "role": "terminación inclinada",
-   "connections": [
-    {
-     "to": "P061",
-     "side": "abajo",
-     "studX": 50
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -2415,23 +2605,26 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 65,
+   "step": 63,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P065",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P015",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P079",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     }
    ]
   },
@@ -2447,18 +2640,20 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 66,
+   "step": 64,
    "role": "traba",
    "connections": [
     {
      "to": "P065",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P079",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -2474,28 +2669,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 67,
+   "step": 65,
    "role": "estructura",
    "connections": [
     {
      "to": "P065",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P065",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P080",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P080",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -2511,28 +2710,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 68,
+   "step": 66,
    "role": "estructura",
    "connections": [
     {
      "to": "P066",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P066",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P081",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
-     "to": "P150",
+     "to": "P148",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     }
    ]
   },
@@ -2548,18 +2751,20 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 69,
+   "step": 67,
    "role": "traba",
    "connections": [
     {
      "to": "P070",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
-     "to": "P151",
+     "to": "P149",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -2575,28 +2780,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 70,
+   "step": 68,
    "role": "estructura",
    "connections": [
     {
      "to": "P070",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P070",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P082",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P082",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -2612,28 +2821,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 71,
+   "step": 69,
    "role": "estructura",
    "connections": [
     {
      "to": "P071",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P071",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P083",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P083",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -2649,28 +2862,31 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 12,
-   "step": 72,
+   "step": 70,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P072",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P016",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P084",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P148",
+   "id": "P146",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2681,18 +2897,19 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 73,
+   "step": 71,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P067",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P149",
+   "id": "P147",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2703,13 +2920,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 74,
+   "step": 72,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P070",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -2725,23 +2943,26 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 75,
+   "step": 73,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P013",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P085",
      "side": "arriba",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     },
     {
      "to": "P086",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     }
    ]
   },
@@ -2757,28 +2978,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 76,
+   "step": 74,
    "role": "estructura",
    "connections": [
     {
      "to": "P013",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P073",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P086",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P087",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -2794,28 +3019,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 77,
+   "step": 75,
    "role": "estructura",
    "connections": [
     {
      "to": "P074",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P074",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P087",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P088",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -2831,18 +3060,20 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 78,
+   "step": 76,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P075",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
-     "to": "P152",
+     "to": "P150",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -2858,28 +3089,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 13,
-   "step": 79,
+   "step": 77,
    "role": "estructura",
    "connections": [
     {
      "to": "P077",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P077",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P089",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
-     "to": "P153",
+     "to": "P151",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -2895,28 +3130,32 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 80,
+   "step": 78,
    "role": "estructura",
    "connections": [
     {
      "to": "P078",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P078",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P090",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P090",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -2932,18 +3171,20 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 81,
+   "step": 79,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P014",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P091",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -2959,28 +3200,31 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 82,
+   "step": 80,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P014",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P091",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P092",
      "side": "arriba",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P150",
+   "id": "P148",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2991,18 +3235,19 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 83,
+   "step": 81,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P075",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P151",
+   "id": "P149",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3013,13 +3258,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 13,
-   "step": 84,
+   "step": 82,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P076",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -3035,18 +3281,20 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 85,
+   "step": 83,
    "role": "traba",
    "connections": [
     {
      "to": "P015",
      "side": "abajo",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     },
     {
      "to": "P093",
      "side": "arriba",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     }
    ]
   },
@@ -3062,28 +3310,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 86,
+   "step": 84,
    "role": "estructura",
    "connections": [
     {
      "to": "P015",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P079",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P093",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P094",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     }
    ]
   },
@@ -3099,28 +3351,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 87,
+   "step": 85,
    "role": "estructura",
    "connections": [
     {
      "to": "P079",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P080",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P094",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P095",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -3136,18 +3392,20 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 88,
+   "step": 86,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P017",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P080",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -3163,18 +3421,20 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 89,
+   "step": 87,
    "role": "traba",
    "connections": [
     {
      "to": "P018",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P082",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -3190,28 +3450,32 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 90,
+   "step": 88,
    "role": "estructura",
    "connections": [
     {
      "to": "P083",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P083",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P096",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P096",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -3227,28 +3491,32 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 91,
+   "step": 89,
    "role": "estructura",
    "connections": [
     {
      "to": "P084",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P016",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P097",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P097",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     }
    ]
   },
@@ -3264,23 +3532,25 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 92,
+   "step": 90,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P016",
      "side": "abajo",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     },
     {
      "to": "P098",
      "side": "arriba",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P152",
+   "id": "P150",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3291,18 +3561,19 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 93,
+   "step": 91,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P081",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P153",
+   "id": "P151",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3313,13 +3584,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 14,
-   "step": 94,
+   "step": 92,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P082",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -3335,28 +3607,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 95,
+   "step": 93,
    "role": "estructura",
    "connections": [
     {
      "to": "P085",
      "side": "abajo",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     },
     {
      "to": "P086",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P099",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
-     "to": "P154",
+     "to": "P152",
      "side": "arriba",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     }
    ]
   },
@@ -3372,28 +3648,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 96,
+   "step": 94,
    "role": "estructura",
    "connections": [
     {
      "to": "P086",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P087",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P100",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P100",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -3409,18 +3689,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 97,
+   "step": 95,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P087",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P101",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -3436,23 +3718,26 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 98,
+   "step": 96,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P088",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P101",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P102",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -3468,23 +3753,26 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 15,
-   "step": 99,
+   "step": 97,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P089",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P103",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P104",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -3500,28 +3788,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 100,
+   "step": 98,
    "role": "estructura",
    "connections": [
     {
      "to": "P090",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P090",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P104",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P105",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -3537,28 +3829,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 101,
+   "step": 99,
    "role": "estructura",
    "connections": [
     {
      "to": "P091",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P091",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P105",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P106",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     }
    ]
   },
@@ -3574,18 +3870,20 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 102,
+   "step": 100,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P092",
      "side": "abajo",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     },
     {
-     "to": "P155",
+     "to": "P153",
      "side": "arriba",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     }
    ]
   },
@@ -3601,18 +3899,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 103,
+   "step": 101,
    "role": "traba",
    "connections": [
     {
      "to": "P093",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P107",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     }
    ]
   },
@@ -3628,28 +3928,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 104,
+   "step": 102,
    "role": "estructura",
    "connections": [
     {
      "to": "P094",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P094",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P107",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P108",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -3665,28 +3969,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 105,
+   "step": 103,
    "role": "estructura",
    "connections": [
     {
      "to": "P095",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P017",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P108",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P109",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -3702,18 +4010,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 106,
+   "step": 104,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P019",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P017",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -3729,18 +4039,20 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 16,
-   "step": 107,
+   "step": 105,
    "role": "traba",
    "connections": [
     {
      "to": "P020",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P018",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -3756,28 +4068,32 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 16,
-   "step": 108,
+   "step": 106,
    "role": "estructura",
    "connections": [
     {
      "to": "P018",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P096",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P110",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P110",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -3793,28 +4109,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 109,
+   "step": 107,
    "role": "estructura",
    "connections": [
     {
      "to": "P096",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P097",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P111",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P111",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -3830,23 +4150,25 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 110,
+   "step": 108,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P097",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
      "to": "P112",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P154",
+   "id": "P152",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3857,18 +4179,19 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 111,
+   "step": 109,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P093",
      "side": "abajo",
-     "studX": -250
+     "studX": -250,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P155",
+   "id": "P153",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3879,13 +4202,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 112,
+   "step": 110,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P098",
      "side": "abajo",
-     "studX": 250
+     "studX": 250,
+     "studZ": 0
     }
    ]
   },
@@ -3901,28 +4225,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 113,
+   "step": 111,
    "role": "estructura",
    "connections": [
     {
      "to": "P099",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     },
     {
      "to": "P100",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
      "to": "P113",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
-     "to": "P156",
+     "to": "P154",
      "side": "arriba",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     }
    ]
   },
@@ -3938,28 +4266,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 114,
+   "step": 112,
    "role": "estructura",
    "connections": [
     {
      "to": "P100",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P101",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P114",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P114",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -3975,18 +4307,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 115,
+   "step": 113,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P101",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P115",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -4002,23 +4336,26 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 116,
+   "step": 114,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P102",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P021",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P115",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -4034,23 +4371,26 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 17,
-   "step": 117,
+   "step": 115,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P103",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P022",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P116",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -4066,28 +4406,32 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 17,
-   "step": 118,
+   "step": 116,
    "role": "estructura",
    "connections": [
     {
      "to": "P104",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P104",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P117",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P117",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -4103,28 +4447,32 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 17,
-   "step": 119,
+   "step": 117,
    "role": "estructura",
    "connections": [
     {
      "to": "P105",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P105",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P118",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P118",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -4140,18 +4488,20 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 17,
-   "step": 120,
+   "step": 118,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P106",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     },
     {
-     "to": "P157",
+     "to": "P155",
      "side": "arriba",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     }
    ]
   },
@@ -4167,18 +4517,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 121,
+   "step": 119,
    "role": "traba",
    "connections": [
     {
      "to": "P107",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     },
     {
-     "to": "P158",
+     "to": "P156",
      "side": "arriba",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     }
    ]
   },
@@ -4194,28 +4546,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 122,
+   "step": 120,
    "role": "estructura",
    "connections": [
     {
      "to": "P108",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P108",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -4231,28 +4587,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 123,
+   "step": 121,
    "role": "estructura",
    "connections": [
     {
      "to": "P109",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P019",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -4268,23 +4628,26 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 124,
+   "step": 122,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P019",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P120",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P120",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -4300,23 +4663,26 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 125,
+   "step": 123,
    "role": "diagonal inferior",
    "connections": [
     {
      "to": "P020",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -4332,18 +4698,20 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 126,
+   "step": 124,
    "role": "traba",
    "connections": [
     {
      "to": "P020",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -4359,28 +4727,32 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 127,
+   "step": 125,
    "role": "estructura",
    "connections": [
     {
      "to": "P110",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P110",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P122",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -4396,33 +4768,37 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 18,
-   "step": 128,
+   "step": 126,
    "role": "estructura",
    "connections": [
     {
      "to": "P111",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P111",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     },
     {
      "to": "P122",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
-     "to": "P159",
+     "to": "P157",
      "side": "arriba",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P156",
+   "id": "P154",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4433,18 +4809,19 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 129,
+   "step": 127,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P107",
      "side": "abajo",
-     "studX": -230
+     "studX": -230,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P157",
+   "id": "P155",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4455,13 +4832,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 18,
-   "step": 130,
+   "step": 128,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P112",
      "side": "abajo",
-     "studX": 230
+     "studX": 230,
+     "studZ": 0
     }
    ]
   },
@@ -4477,48 +4855,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 131,
+   "step": 129,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P114",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P114",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P115",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P115",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P123",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     }
    ]
   },
@@ -4534,28 +4920,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 132,
+   "step": 130,
    "role": "estructura",
    "connections": [
     {
      "to": "P021",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P021",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P125",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -4571,48 +4961,56 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 19,
-   "step": 133,
+   "step": 131,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P022",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P022",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P116",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P117",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P128",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
@@ -4628,33 +5026,37 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 19,
-   "step": 134,
+   "step": 132,
    "role": "estructura",
    "connections": [
     {
      "to": "P117",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P118",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
      "to": "P128",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P129",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P158",
+   "id": "P156",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4665,18 +5067,19 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 135,
+   "step": 133,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P113",
      "side": "abajo",
-     "studX": -210
+     "studX": -210,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P159",
+   "id": "P157",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4687,13 +5090,14 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 19,
-   "step": 136,
+   "step": 134,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P118",
      "side": "abajo",
-     "studX": 210
+     "studX": 210,
+     "studZ": 0
     }
    ]
   },
@@ -4709,18 +5113,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 137,
+   "step": 135,
    "role": "traba",
    "connections": [
     {
      "to": "P119",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     },
     {
-     "to": "P160",
+     "to": "P158",
      "side": "arriba",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
@@ -4736,48 +5142,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 138,
+   "step": 136,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P119",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P119",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P120",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P130",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P130",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P130",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P130",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     }
    ]
   },
@@ -4793,33 +5207,38 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 139,
+   "step": 137,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P120",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     }
    ]
   },
@@ -4835,28 +5254,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 20,
-   "step": 140,
+   "step": 138,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P132",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -4872,43 +5295,50 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 141,
+   "step": 139,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P121",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P121",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -4924,28 +5354,32 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 142,
+   "step": 140,
    "role": "estructura",
    "connections": [
     {
      "to": "P121",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P122",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P134",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P134",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -4961,18 +5395,20 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 143,
+   "step": 141,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P122",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     },
     {
-     "to": "P161",
+     "to": "P159",
      "side": "arriba",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -4988,48 +5424,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 144,
+   "step": 142,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P124",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P124",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P135",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
-     "to": "P162",
+     "to": "P160",
      "side": "arriba",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
@@ -5045,48 +5489,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 145,
+   "step": 143,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P125",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P125",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P125",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P125",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     }
    ]
   },
@@ -5102,48 +5554,56 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 21,
-   "step": 146,
+   "step": 144,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P126",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P126",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P126",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P126",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     }
    ]
   },
@@ -5159,48 +5619,56 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 21,
-   "step": 147,
+   "step": 145,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P127",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P127",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P139",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P139",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -5216,33 +5684,37 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 21,
-   "step": 148,
+   "step": 146,
    "role": "estructura",
    "connections": [
     {
      "to": "P128",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P128",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     },
     {
      "to": "P140",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
-     "to": "P163",
+     "to": "P161",
      "side": "arriba",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P160",
+   "id": "P158",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5253,18 +5725,19 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 149,
+   "step": 147,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P123",
      "side": "abajo",
-     "studX": -190
+     "studX": -190,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P161",
+   "id": "P159",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5275,13 +5748,14 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 21,
-   "step": 150,
+   "step": 148,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P129",
      "side": "abajo",
-     "studX": 190
+     "studX": 190,
+     "studZ": 0
     }
    ]
   },
@@ -5297,18 +5771,20 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 151,
+   "step": 149,
    "role": "traba",
    "connections": [
     {
      "to": "P130",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P141",
      "side": "arriba",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     }
    ]
   },
@@ -5324,48 +5800,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 152,
+   "step": 150,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P130",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P130",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P141",
      "side": "arriba",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P141",
      "side": "arriba",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P141",
      "side": "arriba",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     },
     {
      "to": "P142",
      "side": "arriba",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     }
    ]
   },
@@ -5381,48 +5865,56 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 153,
+   "step": 151,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P131",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P131",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P142",
      "side": "arriba",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P142",
      "side": "arriba",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P142",
      "side": "arriba",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     },
     {
      "to": "P143",
      "side": "arriba",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     }
    ]
   },
@@ -5438,48 +5930,56 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 22,
-   "step": 154,
+   "step": 152,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P132",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P132",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P143",
      "side": "arriba",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P143",
      "side": "arriba",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P143",
      "side": "arriba",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     },
     {
      "to": "P144",
      "side": "arriba",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     }
    ]
   },
@@ -5495,28 +5995,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 22,
-   "step": 155,
+   "step": 153,
    "role": "estructura",
    "connections": [
     {
      "to": "P133",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P133",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P144",
      "side": "arriba",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     },
     {
      "to": "P145",
      "side": "arriba",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     }
    ]
   },
@@ -5532,23 +6036,25 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 22,
-   "step": 156,
+   "step": 154,
    "role": "vértice / detalle",
    "connections": [
     {
      "to": "P134",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     },
     {
      "to": "P145",
      "side": "arriba",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P162",
+   "id": "P160",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5559,18 +6065,19 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 157,
+   "step": 155,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P130",
      "side": "abajo",
-     "studX": -170
+     "studX": -170,
+     "studZ": 0
     }
    ]
   },
   {
-   "id": "P163",
+   "id": "P161",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5581,13 +6088,14 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 22,
-   "step": 158,
+   "step": 156,
    "role": "terminación inclinada",
    "connections": [
     {
      "to": "P134",
      "side": "abajo",
-     "studX": 170
+     "studX": 170,
+     "studZ": 0
     }
    ]
   },
@@ -5603,28 +6111,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 23,
-   "step": 159,
+   "step": 157,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P135",
      "side": "abajo",
-     "studX": -150
+     "studX": -150,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "abajo",
-     "studX": -130
+     "studX": -130,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "abajo",
-     "studX": -110
+     "studX": -110,
+     "studZ": 0
     },
     {
      "to": "P136",
      "side": "abajo",
-     "studX": -90
+     "studX": -90,
+     "studZ": 0
     }
    ]
   },
@@ -5640,28 +6152,32 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 23,
-   "step": 160,
+   "step": 158,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P136",
      "side": "abajo",
-     "studX": -70
+     "studX": -70,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "abajo",
-     "studX": -50
+     "studX": -50,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "abajo",
-     "studX": -30
+     "studX": -30,
+     "studZ": 0
     },
     {
      "to": "P137",
      "side": "abajo",
-     "studX": -10
+     "studX": -10,
+     "studZ": 0
     }
    ]
   },
@@ -5677,28 +6193,32 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 23,
-   "step": 161,
+   "step": 159,
    "role": "tramo recto",
    "connections": [
     {
      "to": "P137",
      "side": "abajo",
-     "studX": 10
+     "studX": 10,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "abajo",
-     "studX": 30
+     "studX": 30,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "abajo",
-     "studX": 50
+     "studX": 50,
+     "studZ": 0
     },
     {
      "to": "P138",
      "side": "abajo",
-     "studX": 70
+     "studX": 70,
+     "studZ": 0
     }
    ]
   },
@@ -5714,18 +6234,20 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 23,
-   "step": 162,
+   "step": 160,
    "role": "estructura",
    "connections": [
     {
      "to": "P138",
      "side": "abajo",
-     "studX": 90
+     "studX": 90,
+     "studZ": 0
     },
     {
      "to": "P139",
      "side": "abajo",
-     "studX": 110
+     "studX": 110,
+     "studZ": 0
     }
    ]
   },
@@ -5741,18 +6263,20 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 23,
-   "step": 163,
+   "step": 161,
    "role": "estructura",
    "connections": [
     {
      "to": "P139",
      "side": "abajo",
-     "studX": 130
+     "studX": 130,
+     "studZ": 0
     },
     {
      "to": "P140",
      "side": "abajo",
-     "studX": 150
+     "studX": 150,
+     "studZ": 0
     }
    ]
   }
@@ -5760,7 +6284,7 @@
  "validation": {
   "ok": true,
   "errors": [],
-  "pieces": 163,
+  "pieces": 161,
   "components": 1
  },
  "inventory": [
@@ -5916,7 +6440,7 @@
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
    "color": "Índigo QS",
    "hex": "#463DE1",
-   "n": 4
+   "n": 2
   },
   {
    "part": "54200",

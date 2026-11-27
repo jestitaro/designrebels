@@ -392,6 +392,9 @@ code {
   letter-spacing: -0.02em;
   min-height: 44px;
 }
+.nav-brand span {
+  white-space: nowrap;
+}
 .nav-brand em {
   font-style: normal;
   color: var(--violet);
@@ -547,26 +550,33 @@ code {
   color: var(--lilac);
 }
 
-/* Demo */
+/* Demo: chip dentro de la barra (no tapa contenido) */
 .demo-badge {
-  position: fixed;
-  left: 16px;
-  bottom: 16px;
-  z-index: 50;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 14px;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 10px;
+  margin-right: auto;
+  margin-left: 4px;
   border-radius: 999px;
   border: 1px dashed var(--violet);
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.7);
   color: var(--violet);
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
+  white-space: nowrap;
+}
+.nav.is-dark .demo-badge {
+  color: var(--lilac);
+  border-color: var(--lilac);
+  background: rgba(255, 255, 255, 0.06);
+}
+.nav.is-dark .demo-dot {
+  background: var(--lilac);
 }
 .demo-dot {
   width: 8px;
@@ -3223,9 +3233,7 @@ a.jrow:hover {
   .demo-cols {
     grid-template-columns: 1fr;
   }
-  .stepper .mono-label + * {
-    display: none;
-  }
+
 }
 
 @media (max-width: 560px) {
@@ -3248,6 +3256,12 @@ a.jrow:hover {
   .stepper li {
     padding: 6px 10px;
     font-size: 0.78rem;
+  }
+  .stepper li:not(.is-current) .step-label {
+    display: none;
+  }
+  .demo-long {
+    display: none;
   }
   .creator-head {
     flex-direction: column;
@@ -3277,14 +3291,13 @@ a.jrow:hover {
     padding: 0 1.4em;
   }
   .toasts {
-    bottom: 68px;
+    bottom: 16px;
   }
-  .demo-badge {
-    left: 10px;
-    bottom: 10px;
-    min-height: 32px;
-    padding: 0 10px;
-    font-size: 0.6rem;
+}
+
+@media (max-width: 420px) {
+  .nav-brand span {
+    display: none;
   }
 }
 

@@ -26,7 +26,7 @@ function Stepper({ step }) {
     <ol className="stepper" aria-label="Pasos">
       {STEPS.map(([id, label], i) => (
         <li key={id} className={i < idx ? 'is-done' : i === idx ? 'is-current' : ''} aria-current={i === idx ? 'step' : undefined}>
-          <span className="mono-label">0{i + 1}</span> {label}
+          <span className="mono-label">0{i + 1}</span> <span className="step-label">{label}</span>
         </li>
       ))}
     </ol>

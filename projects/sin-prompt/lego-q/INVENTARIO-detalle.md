@@ -1,6 +1,6 @@
-# LEGO Q · Inventario (detalle, 26 studs de ancho)
+# LEGO Q · Inventario (detalle: 26 × 1 studs)
 
-Generado desde el modelo (163 piezas). No editar a mano: correr `node scripts/build-q.mjs`.
+Generado desde el modelo (161 piezas). No editar a mano: `npm run build:q`.
 
 | Ref. | Pieza | Color | Cantidad |
 |---|---|---|---:|
@@ -25,7 +25,7 @@ Generado desde el modelo (163 piezas). No editar a mano: correr `node scripts/bu
 | 3665 | Slope 45 2 x 1 Inverted | Violeta QS `#7025E0` | 10 |
 | 54200 | Slope 30 1 x 1 x 2/3 (cheese) | Celeste QS `#3C9FF1` | 5 |
 | 54200 | Slope 30 1 x 1 x 2/3 (cheese) | Azul QS `#3F75EA` | 3 |
-| 54200 | Slope 30 1 x 1 x 2/3 (cheese) | Índigo QS `#463DE1` | 4 |
+| 54200 | Slope 30 1 x 1 x 2/3 (cheese) | Índigo QS `#463DE1` | 2 |
 | 54200 | Slope 30 1 x 1 x 2/3 (cheese) | Violeta azulado QS `#5932E0` | 6 |
 
 **Totales por pieza**
@@ -34,11 +34,11 @@ Generado desde el modelo (163 piezas). No editar a mano: correr `node scripts/bu
 - 3005 Brick 1 x 1: 37
 - 3010 Brick 1 x 4: 30
 - 3665 Slope 45 2 x 1 Inverted: 22
-- 54200 Slope 30 1 x 1 x 2/3 (cheese): 18
+- 54200 Slope 30 1 x 1 x 2/3 (cheese): 16
 
-Permitidas pero no usadas en esta versión: 3003 (Brick 2 x 2), 3040 (Slope 45 2 x 1), 35787 (Tile 2 x 2 Triangular).
+Permitidas pero no usadas en esta variante: 3003 (Brick 2 x 2), 3040 (Slope 45 2 x 1), 35787 (Tile 2 x 2 Triangular).
 
-**Colores.** Son los de QuartzSales en sólido. Para armarla física, la equivalencia LEGO es aproximada:
+**Colores.** Los de QuartzSales en sólido. Equivalencia LEGO aproximada:
 
 - Celeste QS `#3C9FF1` → Dark Azure (aprox.)
 - Azul QS `#3F75EA` → Medium Blue (aprox.)

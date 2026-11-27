@@ -24,11 +24,11 @@ function stud(x, y, z = 0) {
   return clean(g);
 }
 
-function brick(len) {
-  const body = new RoundedBoxGeometry(len - GAP, H - GAP, 1 - GAP, 2, 0.045);
+function brick(len, dep = 1) {
+  const body = new RoundedBoxGeometry(len - GAP, H - GAP, dep - GAP, 2, 0.045);
   body.translate(0, H / 2, 0);
   const parts = [clean(body)];
-  for (let i = 0; i < len; i++) parts.push(stud(-len / 2 + 0.5 + i, H - GAP / 2));
+  for (let i = 0; i < len; i++) for (let j = 0; j < dep; j++) parts.push(stud(-len / 2 + 0.5 + i, H - GAP / 2, -dep / 2 + 0.5 + j));
   return mergeGeometries(parts);
 }
 
@@ -50,6 +50,8 @@ const BUILDERS = {
   3005: () => brick(1),
   3004: () => brick(2),
   3010: () => brick(4),
+  // Brick 2 × 2
+  3003: () => brick(2, 2),
   // Slope 45 2 × 1: parte alta (con 1 perilla) en +X, baja hacia -X con labio de 4 LDU
   3040: () =>
     profile(
@@ -95,5 +97,5 @@ export function partGeometry(part) {
   return cache.get(id);
 }
 
-export const PART_HEIGHT = { 3005: H, 3004: H, 3010: H, 3040: H, 3665: H, 54200: 0.8 };
-export const PART_LEN = { 3005: 1, 3004: 2, 3010: 4, 3040: 2, 3665: 2, 54200: 1 };
+export const PART_HEIGHT = { 3003: H, 3005: H, 3004: H, 3010: H, 3040: H, 3665: H, 54200: 0.8 };
+export const PART_LEN = { 3003: 2, 3005: 1, 3004: 2, 3010: 4, 3040: 2, 3665: 2, 54200: 1 };
