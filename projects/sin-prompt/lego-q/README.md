@@ -11,7 +11,7 @@ cd ../source && npm run build:q    # regenera modelos, .ldr, inventarios y manua
 | | Compacta (por defecto) | Detalle |
 |---|---|---|
 | Ancho | 12 studs | 26 studs |
-| Piezas | 48 | 171 |
+| Piezas | 47 | 163 |
 | Capas | 11 | 23 |
 | Uso | Hero, piezas grandes, lectura de juguete | Diagonales y saliente más definidos |
 
@@ -33,7 +33,7 @@ El modelo 3D funcional y la animación de armado y desarmado están en la app: h
 2. **Ladrillos.** Cada fila se arma con 3005 / 3004 / 3010, trabada con la fila de abajo (filas alternas arrancan con 1×1). Los cortes no siguen el color: cada pieza toma el color mayoritario de sus celdas, así las juntas no quedan alineadas.
 3. **Diagonales inferiores.** Donde una fila sobresale 1 stud sobre la de abajo, la punta de esa fila es un **3665** (inverted slope 2×1), que encastra con su único tubo sobre la fila inferior.
 4. **Escalones superiores.** Donde queda un stud expuesto junto a la fila de arriba, va una **54200** (cheese slope) apoyada en ese stud. Si fueran dos studs, iría una **3040**: en esta silueta las diagonales suben de a un stud, así que no hizo falta.
-5. **Picos.** Un remate de 2 a 4 studs sin nada encima (el saliente interior de la Q) lleva una cheese slope de cada lado: termina en punta sin pirámides.
+5. **Saliente interior.** En el logo es un triángulo bajo que nace del borde inferior del anillo; al rasterizarlo quedaba como una torre angosta, así que se limita a sus filas más bajas (1 en la compacta, 2 en la de detalle). Si el remate tiene 2 studs, lleva una cheese slope de cada lado.
 6. **Conectividad.** Si alguna parte queda suelta, el generador cambia la traba fila por fila hasta que todo es una sola estructura.
 
 ## Validación (automática, en cada build)

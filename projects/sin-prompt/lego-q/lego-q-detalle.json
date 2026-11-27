@@ -1823,7 +1823,7 @@
      "studX": -50
     },
     {
-     "to": "P150",
+     "to": "P146",
      "side": "arriba",
      "studX": -50
     }
@@ -1924,7 +1924,7 @@
      "studX": 50
     },
     {
-     "to": "P151",
+     "to": "P147",
      "side": "arriba",
      "studX": 50
     }
@@ -2178,7 +2178,7 @@
      "studX": -90
     },
     {
-     "to": "P152",
+     "to": "P148",
      "side": "arriba",
      "studX": -90
     }
@@ -2208,16 +2208,6 @@
      "to": "P059",
      "side": "abajo",
      "studX": -10
-    },
-    {
-     "to": "P076",
-     "side": "arriba",
-     "studX": -30
-    },
-    {
-     "to": "P077",
-     "side": "arriba",
-     "studX": -10
     }
    ]
   },
@@ -2244,16 +2234,6 @@
     {
      "to": "P060",
      "side": "abajo",
-     "studX": 30
-    },
-    {
-     "to": "P077",
-     "side": "arriba",
-     "studX": 10
-    },
-    {
-     "to": "P078",
-     "side": "arriba",
      "studX": 30
     }
    ]
@@ -2294,22 +2274,22 @@
      "studX": 150
     },
     {
-     "to": "P079",
+     "to": "P076",
      "side": "arriba",
      "studX": 110
     },
     {
-     "to": "P080",
+     "to": "P077",
      "side": "arriba",
      "studX": 130
     },
     {
-     "to": "P080",
+     "to": "P077",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P153",
+     "to": "P149",
      "side": "arriba",
      "studX": 90
     }
@@ -2341,12 +2321,12 @@
      "studX": 190
     },
     {
-     "to": "P081",
+     "to": "P078",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P081",
+     "to": "P078",
      "side": "arriba",
      "studX": 190
     }
@@ -2380,7 +2360,7 @@
    ]
   },
   {
-   "id": "P150",
+   "id": "P146",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2402,7 +2382,7 @@
    ]
   },
   {
-   "id": "P151",
+   "id": "P147",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2449,7 +2429,7 @@
      "studX": -230
     },
     {
-     "to": "P082",
+     "to": "P079",
      "side": "arriba",
      "studX": -210
     }
@@ -2476,7 +2456,7 @@
      "studX": -190
     },
     {
-     "to": "P082",
+     "to": "P079",
      "side": "arriba",
      "studX": -190
     }
@@ -2508,12 +2488,12 @@
      "studX": -150
     },
     {
-     "to": "P083",
+     "to": "P080",
      "side": "arriba",
      "studX": -170
     },
     {
-     "to": "P083",
+     "to": "P080",
      "side": "arriba",
      "studX": -150
     }
@@ -2545,12 +2525,12 @@
      "studX": -110
     },
     {
-     "to": "P084",
+     "to": "P081",
      "side": "arriba",
      "studX": -130
     },
     {
-     "to": "P154",
+     "to": "P150",
      "side": "arriba",
      "studX": -110
     }
@@ -2561,97 +2541,6 @@
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
-   "x": -30,
-   "y": 264,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 12,
-   "step": 69,
-   "role": "traba",
-   "connections": [
-    {
-     "to": "P068",
-     "side": "abajo",
-     "studX": -30
-    },
-    {
-     "to": "P155",
-     "side": "arriba",
-     "studX": -30
-    }
-   ]
-  },
-  {
-   "id": "P077",
-   "part": "3004",
-   "ldraw": "3004.dat",
-   "name": "Brick 1 x 2",
-   "x": 0,
-   "y": 264,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 12,
-   "step": 70,
-   "role": "estructura",
-   "connections": [
-    {
-     "to": "P068",
-     "side": "abajo",
-     "studX": -10
-    },
-    {
-     "to": "P069",
-     "side": "abajo",
-     "studX": 10
-    },
-    {
-     "to": "P085",
-     "side": "arriba",
-     "studX": -10
-    },
-    {
-     "to": "P085",
-     "side": "arriba",
-     "studX": 10
-    }
-   ]
-  },
-  {
-   "id": "P078",
-   "part": "3005",
-   "ldraw": "3005.dat",
-   "name": "Brick 1 x 1",
-   "x": 30,
-   "y": 264,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 12,
-   "step": 71,
-   "role": "vértice / detalle",
-   "connections": [
-    {
-     "to": "P069",
-     "side": "abajo",
-     "studX": 30
-    },
-    {
-     "to": "P156",
-     "side": "arriba",
-     "studX": 30
-    }
-   ]
-  },
-  {
-   "id": "P079",
-   "part": "3005",
-   "ldraw": "3005.dat",
-   "name": "Brick 1 x 1",
    "x": 110,
    "y": 264,
    "z": 0,
@@ -2659,7 +2548,7 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 72,
+   "step": 69,
    "role": "traba",
    "connections": [
     {
@@ -2668,14 +2557,14 @@
      "studX": 110
     },
     {
-     "to": "P157",
+     "to": "P151",
      "side": "arriba",
      "studX": 110
     }
    ]
   },
   {
-   "id": "P080",
+   "id": "P077",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -2686,7 +2575,7 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 73,
+   "step": 70,
    "role": "estructura",
    "connections": [
     {
@@ -2700,19 +2589,19 @@
      "studX": 150
     },
     {
-     "to": "P086",
+     "to": "P082",
      "side": "arriba",
      "studX": 130
     },
     {
-     "to": "P086",
+     "to": "P082",
      "side": "arriba",
      "studX": 150
     }
    ]
   },
   {
-   "id": "P081",
+   "id": "P078",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -2723,7 +2612,7 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 74,
+   "step": 71,
    "role": "estructura",
    "connections": [
     {
@@ -2737,12 +2626,12 @@
      "studX": 190
     },
     {
-     "to": "P087",
+     "to": "P083",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P087",
+     "to": "P083",
      "side": "arriba",
      "studX": 190
     }
@@ -2760,7 +2649,7 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 12,
-   "step": 75,
+   "step": 72,
    "role": "diagonal inferior",
    "connections": [
     {
@@ -2774,14 +2663,14 @@
      "studX": 230
     },
     {
-     "to": "P088",
+     "to": "P084",
      "side": "arriba",
      "studX": 210
     }
    ]
   },
   {
-   "id": "P152",
+   "id": "P148",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2792,7 +2681,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 12,
-   "step": 76,
+   "step": 73,
    "role": "terminación inclinada",
    "connections": [
     {
@@ -2803,7 +2692,7 @@
    ]
   },
   {
-   "id": "P153",
+   "id": "P149",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -2814,7 +2703,7 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 12,
-   "step": 77,
+   "step": 74,
    "role": "terminación inclinada",
    "connections": [
     {
@@ -2836,7 +2725,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 78,
+   "step": 75,
    "role": "diagonal inferior",
    "connections": [
     {
@@ -2845,19 +2734,19 @@
      "studX": -230
     },
     {
-     "to": "P089",
+     "to": "P085",
      "side": "arriba",
      "studX": -250
     },
     {
-     "to": "P090",
+     "to": "P086",
      "side": "arriba",
      "studX": -230
     }
    ]
   },
   {
-   "id": "P082",
+   "id": "P079",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -2868,7 +2757,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 79,
+   "step": 76,
    "role": "estructura",
    "connections": [
     {
@@ -2882,19 +2771,19 @@
      "studX": -190
     },
     {
-     "to": "P090",
+     "to": "P086",
      "side": "arriba",
      "studX": -210
     },
     {
-     "to": "P091",
+     "to": "P087",
      "side": "arriba",
      "studX": -190
     }
    ]
   },
   {
-   "id": "P083",
+   "id": "P080",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -2905,7 +2794,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 80,
+   "step": 77,
    "role": "estructura",
    "connections": [
     {
@@ -2919,19 +2808,19 @@
      "studX": -150
     },
     {
-     "to": "P091",
+     "to": "P087",
      "side": "arriba",
      "studX": -170
     },
     {
-     "to": "P092",
+     "to": "P088",
      "side": "arriba",
      "studX": -150
     }
    ]
   },
   {
-   "id": "P084",
+   "id": "P081",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -2942,7 +2831,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 81,
+   "step": 78,
    "role": "vértice / detalle",
    "connections": [
     {
@@ -2951,51 +2840,14 @@
      "studX": -130
     },
     {
-     "to": "P158",
+     "to": "P152",
      "side": "arriba",
      "studX": -130
     }
    ]
   },
   {
-   "id": "P085",
-   "part": "3004",
-   "ldraw": "3004.dat",
-   "name": "Brick 1 x 2",
-   "x": 0,
-   "y": 288,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 13,
-   "step": 82,
-   "role": "estructura",
-   "connections": [
-    {
-     "to": "P077",
-     "side": "abajo",
-     "studX": -10
-    },
-    {
-     "to": "P077",
-     "side": "abajo",
-     "studX": 10
-    },
-    {
-     "to": "P159",
-     "side": "arriba",
-     "studX": -10
-    },
-    {
-     "to": "P160",
-     "side": "arriba",
-     "studX": 10
-    }
-   ]
-  },
-  {
-   "id": "P086",
+   "id": "P082",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3006,33 +2858,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 13,
-   "step": 83,
+   "step": 79,
    "role": "estructura",
    "connections": [
     {
-     "to": "P080",
+     "to": "P077",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P080",
+     "to": "P077",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P093",
+     "to": "P089",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P161",
+     "to": "P153",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P087",
+   "id": "P083",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3043,33 +2895,33 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 84,
+   "step": 80,
    "role": "estructura",
    "connections": [
     {
-     "to": "P081",
+     "to": "P078",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P081",
+     "to": "P078",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P094",
+     "to": "P090",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P094",
+     "to": "P090",
      "side": "arriba",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P088",
+   "id": "P084",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3080,7 +2932,7 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 85,
+   "step": 81,
    "role": "vértice / detalle",
    "connections": [
     {
@@ -3089,7 +2941,7 @@
      "studX": 210
     },
     {
-     "to": "P095",
+     "to": "P091",
      "side": "arriba",
      "studX": 210
     }
@@ -3107,7 +2959,7 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 13,
-   "step": 86,
+   "step": 82,
    "role": "diagonal inferior",
    "connections": [
     {
@@ -3116,19 +2968,19 @@
      "studX": 230
     },
     {
-     "to": "P095",
+     "to": "P091",
      "side": "arriba",
      "studX": 230
     },
     {
-     "to": "P096",
+     "to": "P092",
      "side": "arriba",
      "studX": 250
     }
    ]
   },
   {
-   "id": "P154",
+   "id": "P150",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3139,7 +2991,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 13,
-   "step": 87,
+   "step": 83,
    "role": "terminación inclinada",
    "connections": [
     {
@@ -3150,51 +3002,7 @@
    ]
   },
   {
-   "id": "P155",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": -30,
-   "y": 288,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 13,
-   "step": 88,
-   "role": "terminación inclinada",
-   "connections": [
-    {
-     "to": "P076",
-     "side": "abajo",
-     "studX": -30
-    }
-   ]
-  },
-  {
-   "id": "P156",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": 30,
-   "y": 288,
-   "z": 0,
-   "rotationY": 180,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 13,
-   "step": 89,
-   "role": "terminación inclinada",
-   "connections": [
-    {
-     "to": "P078",
-     "side": "abajo",
-     "studX": 30
-    }
-   ]
-  },
-  {
-   "id": "P157",
+   "id": "P151",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3205,18 +3013,18 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 13,
-   "step": 90,
+   "step": 84,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P079",
+     "to": "P076",
      "side": "abajo",
      "studX": 110
     }
    ]
   },
   {
-   "id": "P089",
+   "id": "P085",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3227,7 +3035,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 91,
+   "step": 85,
    "role": "traba",
    "connections": [
     {
@@ -3236,14 +3044,14 @@
      "studX": -250
     },
     {
-     "to": "P097",
+     "to": "P093",
      "side": "arriba",
      "studX": -250
     }
    ]
   },
   {
-   "id": "P090",
+   "id": "P086",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3254,7 +3062,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 92,
+   "step": 86,
    "role": "estructura",
    "connections": [
     {
@@ -3263,24 +3071,24 @@
      "studX": -230
     },
     {
-     "to": "P082",
+     "to": "P079",
      "side": "abajo",
      "studX": -210
     },
     {
-     "to": "P097",
+     "to": "P093",
      "side": "arriba",
      "studX": -230
     },
     {
-     "to": "P098",
+     "to": "P094",
      "side": "arriba",
      "studX": -210
     }
    ]
   },
   {
-   "id": "P091",
+   "id": "P087",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3291,33 +3099,33 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 93,
+   "step": 87,
    "role": "estructura",
    "connections": [
     {
-     "to": "P082",
+     "to": "P079",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P083",
+     "to": "P080",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P098",
+     "to": "P094",
      "side": "arriba",
      "studX": -190
     },
     {
-     "to": "P099",
+     "to": "P095",
      "side": "arriba",
      "studX": -170
     }
    ]
   },
   {
-   "id": "P092",
+   "id": "P088",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3328,7 +3136,7 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 94,
+   "step": 88,
    "role": "vértice / detalle",
    "connections": [
     {
@@ -3337,14 +3145,14 @@
      "studX": -150
     },
     {
-     "to": "P083",
+     "to": "P080",
      "side": "abajo",
      "studX": -150
     }
    ]
   },
   {
-   "id": "P093",
+   "id": "P089",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3355,7 +3163,7 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 95,
+   "step": 89,
    "role": "traba",
    "connections": [
     {
@@ -3364,14 +3172,14 @@
      "studX": 150
     },
     {
-     "to": "P086",
+     "to": "P082",
      "side": "abajo",
      "studX": 150
     }
    ]
   },
   {
-   "id": "P094",
+   "id": "P090",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3382,33 +3190,33 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 96,
+   "step": 90,
    "role": "estructura",
    "connections": [
     {
-     "to": "P087",
+     "to": "P083",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P087",
+     "to": "P083",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P100",
+     "to": "P096",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P100",
+     "to": "P096",
      "side": "arriba",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P095",
+   "id": "P091",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3419,11 +3227,11 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 97,
+   "step": 91,
    "role": "estructura",
    "connections": [
     {
-     "to": "P088",
+     "to": "P084",
      "side": "abajo",
      "studX": 210
     },
@@ -3433,19 +3241,19 @@
      "studX": 230
     },
     {
-     "to": "P101",
+     "to": "P097",
      "side": "arriba",
      "studX": 210
     },
     {
-     "to": "P101",
+     "to": "P097",
      "side": "arriba",
      "studX": 230
     }
    ]
   },
   {
-   "id": "P096",
+   "id": "P092",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3456,7 +3264,7 @@
    "color": "#7025E0",
    "colorName": "Violeta QS",
    "layer": 14,
-   "step": 98,
+   "step": 92,
    "role": "vértice / detalle",
    "connections": [
     {
@@ -3465,14 +3273,14 @@
      "studX": 250
     },
     {
-     "to": "P102",
+     "to": "P098",
      "side": "arriba",
      "studX": 250
     }
    ]
   },
   {
-   "id": "P158",
+   "id": "P152",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3483,62 +3291,18 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 14,
-   "step": 99,
+   "step": 93,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P084",
+     "to": "P081",
      "side": "abajo",
      "studX": -130
     }
    ]
   },
   {
-   "id": "P159",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": -10,
-   "y": 312,
-   "z": 0,
-   "rotationY": 0,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 14,
-   "step": 100,
-   "role": "terminación inclinada (pico)",
-   "connections": [
-    {
-     "to": "P085",
-     "side": "abajo",
-     "studX": -10
-    }
-   ]
-  },
-  {
-   "id": "P160",
-   "part": "54200",
-   "ldraw": "54200.dat",
-   "name": "Slope 30 1 x 1 x 2/3 (cheese)",
-   "x": 10,
-   "y": 312,
-   "z": 0,
-   "rotationY": 180,
-   "color": "#463DE1",
-   "colorName": "Índigo QS",
-   "layer": 14,
-   "step": 101,
-   "role": "terminación inclinada (pico)",
-   "connections": [
-    {
-     "to": "P085",
-     "side": "abajo",
-     "studX": 10
-    }
-   ]
-  },
-  {
-   "id": "P161",
+   "id": "P153",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -3549,18 +3313,18 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 14,
-   "step": 102,
+   "step": 94,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P086",
+     "to": "P082",
      "side": "abajo",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P097",
+   "id": "P093",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3571,33 +3335,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 103,
+   "step": 95,
    "role": "estructura",
    "connections": [
     {
-     "to": "P089",
+     "to": "P085",
      "side": "abajo",
      "studX": -250
     },
     {
-     "to": "P090",
+     "to": "P086",
      "side": "abajo",
      "studX": -230
     },
     {
-     "to": "P103",
+     "to": "P099",
      "side": "arriba",
      "studX": -230
     },
     {
-     "to": "P162",
+     "to": "P154",
      "side": "arriba",
      "studX": -250
     }
    ]
   },
   {
-   "id": "P098",
+   "id": "P094",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3608,33 +3372,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 104,
+   "step": 96,
    "role": "estructura",
    "connections": [
     {
-     "to": "P090",
+     "to": "P086",
      "side": "abajo",
      "studX": -210
     },
     {
-     "to": "P091",
+     "to": "P087",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P104",
+     "to": "P100",
      "side": "arriba",
      "studX": -210
     },
     {
-     "to": "P104",
+     "to": "P100",
      "side": "arriba",
      "studX": -190
     }
    ]
   },
   {
-   "id": "P099",
+   "id": "P095",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3645,16 +3409,16 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 105,
+   "step": 97,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P091",
+     "to": "P087",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P105",
+     "to": "P101",
      "side": "arriba",
      "studX": -170
     }
@@ -3672,21 +3436,21 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 15,
-   "step": 106,
+   "step": 98,
    "role": "diagonal inferior",
    "connections": [
     {
-     "to": "P092",
+     "to": "P088",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P105",
+     "to": "P101",
      "side": "arriba",
      "studX": -150
     },
     {
-     "to": "P106",
+     "to": "P102",
      "side": "arriba",
      "studX": -130
     }
@@ -3704,28 +3468,28 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 15,
-   "step": 107,
+   "step": 99,
    "role": "diagonal inferior",
    "connections": [
     {
-     "to": "P093",
+     "to": "P089",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P107",
+     "to": "P103",
      "side": "arriba",
      "studX": 130
     },
     {
-     "to": "P108",
+     "to": "P104",
      "side": "arriba",
      "studX": 150
     }
    ]
   },
   {
-   "id": "P100",
+   "id": "P096",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3736,33 +3500,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 108,
+   "step": 100,
    "role": "estructura",
    "connections": [
     {
-     "to": "P094",
+     "to": "P090",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P094",
+     "to": "P090",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P108",
+     "to": "P104",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P109",
+     "to": "P105",
      "side": "arriba",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P101",
+   "id": "P097",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3773,33 +3537,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 109,
+   "step": 101,
    "role": "estructura",
    "connections": [
     {
-     "to": "P095",
+     "to": "P091",
      "side": "abajo",
      "studX": 210
     },
     {
-     "to": "P095",
+     "to": "P091",
      "side": "abajo",
      "studX": 230
     },
     {
-     "to": "P109",
+     "to": "P105",
      "side": "arriba",
      "studX": 210
     },
     {
-     "to": "P110",
+     "to": "P106",
      "side": "arriba",
      "studX": 230
     }
    ]
   },
   {
-   "id": "P102",
+   "id": "P098",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3810,23 +3574,23 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 15,
-   "step": 110,
+   "step": 102,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P096",
+     "to": "P092",
      "side": "abajo",
      "studX": 250
     },
     {
-     "to": "P163",
+     "to": "P155",
      "side": "arriba",
      "studX": 250
     }
    ]
   },
   {
-   "id": "P103",
+   "id": "P099",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3837,23 +3601,23 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 111,
+   "step": 103,
    "role": "traba",
    "connections": [
     {
-     "to": "P097",
+     "to": "P093",
      "side": "abajo",
      "studX": -230
     },
     {
-     "to": "P111",
+     "to": "P107",
      "side": "arriba",
      "studX": -230
     }
    ]
   },
   {
-   "id": "P104",
+   "id": "P100",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3864,33 +3628,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 112,
+   "step": 104,
    "role": "estructura",
    "connections": [
     {
-     "to": "P098",
+     "to": "P094",
      "side": "abajo",
      "studX": -210
     },
     {
-     "to": "P098",
+     "to": "P094",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P111",
+     "to": "P107",
      "side": "arriba",
      "studX": -210
     },
     {
-     "to": "P112",
+     "to": "P108",
      "side": "arriba",
      "studX": -190
     }
    ]
   },
   {
-   "id": "P105",
+   "id": "P101",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3901,11 +3665,11 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 113,
+   "step": 105,
    "role": "estructura",
    "connections": [
     {
-     "to": "P099",
+     "to": "P095",
      "side": "abajo",
      "studX": -170
     },
@@ -3915,19 +3679,19 @@
      "studX": -150
     },
     {
-     "to": "P112",
+     "to": "P108",
      "side": "arriba",
      "studX": -170
     },
     {
-     "to": "P113",
+     "to": "P109",
      "side": "arriba",
      "studX": -150
     }
    ]
   },
   {
-   "id": "P106",
+   "id": "P102",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3938,7 +3702,7 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 114,
+   "step": 106,
    "role": "vértice / detalle",
    "connections": [
     {
@@ -3954,7 +3718,7 @@
    ]
   },
   {
-   "id": "P107",
+   "id": "P103",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -3965,7 +3729,7 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 16,
-   "step": 115,
+   "step": 107,
    "role": "traba",
    "connections": [
     {
@@ -3981,7 +3745,7 @@
    ]
   },
   {
-   "id": "P108",
+   "id": "P104",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -3992,7 +3756,7 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 16,
-   "step": 116,
+   "step": 108,
    "role": "estructura",
    "connections": [
     {
@@ -4001,24 +3765,24 @@
      "studX": 150
     },
     {
-     "to": "P100",
+     "to": "P096",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P114",
+     "to": "P110",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P114",
+     "to": "P110",
      "side": "arriba",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P109",
+   "id": "P105",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4029,33 +3793,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 117,
+   "step": 109,
    "role": "estructura",
    "connections": [
     {
-     "to": "P100",
+     "to": "P096",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P101",
+     "to": "P097",
      "side": "abajo",
      "studX": 210
     },
     {
-     "to": "P115",
+     "to": "P111",
      "side": "arriba",
      "studX": 190
     },
     {
-     "to": "P115",
+     "to": "P111",
      "side": "arriba",
      "studX": 210
     }
    ]
   },
   {
-   "id": "P110",
+   "id": "P106",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4066,23 +3830,23 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 118,
+   "step": 110,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P101",
+     "to": "P097",
      "side": "abajo",
      "studX": 230
     },
     {
-     "to": "P116",
+     "to": "P112",
      "side": "arriba",
      "studX": 230
     }
    ]
   },
   {
-   "id": "P162",
+   "id": "P154",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4093,18 +3857,18 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 16,
-   "step": 119,
+   "step": 111,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P097",
+     "to": "P093",
      "side": "abajo",
      "studX": -250
     }
    ]
   },
   {
-   "id": "P163",
+   "id": "P155",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4115,18 +3879,18 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 16,
-   "step": 120,
+   "step": 112,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P102",
+     "to": "P098",
      "side": "abajo",
      "studX": 250
     }
    ]
   },
   {
-   "id": "P111",
+   "id": "P107",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4137,33 +3901,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 121,
+   "step": 113,
    "role": "estructura",
    "connections": [
     {
-     "to": "P103",
+     "to": "P099",
      "side": "abajo",
      "studX": -230
     },
     {
-     "to": "P104",
+     "to": "P100",
      "side": "abajo",
      "studX": -210
     },
     {
-     "to": "P117",
+     "to": "P113",
      "side": "arriba",
      "studX": -210
     },
     {
-     "to": "P164",
+     "to": "P156",
      "side": "arriba",
      "studX": -230
     }
    ]
   },
   {
-   "id": "P112",
+   "id": "P108",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4174,33 +3938,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 122,
+   "step": 114,
    "role": "estructura",
    "connections": [
     {
-     "to": "P104",
+     "to": "P100",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P105",
+     "to": "P101",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P118",
+     "to": "P114",
      "side": "arriba",
      "studX": -190
     },
     {
-     "to": "P118",
+     "to": "P114",
      "side": "arriba",
      "studX": -170
     }
    ]
   },
   {
-   "id": "P113",
+   "id": "P109",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4211,16 +3975,16 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 123,
+   "step": 115,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P105",
+     "to": "P101",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P119",
+     "to": "P115",
      "side": "arriba",
      "studX": -150
     }
@@ -4238,11 +4002,11 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 17,
-   "step": 124,
+   "step": 116,
    "role": "diagonal inferior",
    "connections": [
     {
-     "to": "P106",
+     "to": "P102",
      "side": "abajo",
      "studX": -130
     },
@@ -4252,7 +4016,7 @@
      "studX": -110
     },
     {
-     "to": "P119",
+     "to": "P115",
      "side": "arriba",
      "studX": -130
     }
@@ -4270,11 +4034,11 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 17,
-   "step": 125,
+   "step": 117,
    "role": "diagonal inferior",
    "connections": [
     {
-     "to": "P107",
+     "to": "P103",
      "side": "abajo",
      "studX": 130
     },
@@ -4284,14 +4048,14 @@
      "studX": 110
     },
     {
-     "to": "P120",
+     "to": "P116",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P114",
+   "id": "P110",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4302,33 +4066,33 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 17,
-   "step": 126,
+   "step": 118,
    "role": "estructura",
    "connections": [
     {
-     "to": "P108",
+     "to": "P104",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P108",
+     "to": "P104",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P121",
+     "to": "P117",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P121",
+     "to": "P117",
      "side": "arriba",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P115",
+   "id": "P111",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4339,33 +4103,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 17,
-   "step": 127,
+   "step": 119,
    "role": "estructura",
    "connections": [
     {
-     "to": "P109",
+     "to": "P105",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P109",
+     "to": "P105",
      "side": "abajo",
      "studX": 210
     },
     {
-     "to": "P122",
+     "to": "P118",
      "side": "arriba",
      "studX": 190
     },
     {
-     "to": "P122",
+     "to": "P118",
      "side": "arriba",
      "studX": 210
     }
    ]
   },
   {
-   "id": "P116",
+   "id": "P112",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4376,23 +4140,23 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 17,
-   "step": 128,
+   "step": 120,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P110",
+     "to": "P106",
      "side": "abajo",
      "studX": 230
     },
     {
-     "to": "P165",
+     "to": "P157",
      "side": "arriba",
      "studX": 230
     }
    ]
   },
   {
-   "id": "P117",
+   "id": "P113",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4403,23 +4167,23 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 129,
+   "step": 121,
    "role": "traba",
    "connections": [
     {
-     "to": "P111",
+     "to": "P107",
      "side": "abajo",
      "studX": -210
     },
     {
-     "to": "P166",
+     "to": "P158",
      "side": "arriba",
      "studX": -210
     }
    ]
   },
   {
-   "id": "P118",
+   "id": "P114",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4430,33 +4194,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 130,
+   "step": 122,
    "role": "estructura",
    "connections": [
     {
-     "to": "P112",
+     "to": "P108",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P112",
+     "to": "P108",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "arriba",
      "studX": -190
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "arriba",
      "studX": -170
     }
    ]
   },
   {
-   "id": "P119",
+   "id": "P115",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4467,11 +4231,11 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 131,
+   "step": 123,
    "role": "estructura",
    "connections": [
     {
-     "to": "P113",
+     "to": "P109",
      "side": "abajo",
      "studX": -150
     },
@@ -4481,12 +4245,12 @@
      "studX": -130
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "arriba",
      "studX": -150
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "arriba",
      "studX": -130
     }
@@ -4504,7 +4268,7 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 132,
+   "step": 124,
    "role": "diagonal inferior",
    "connections": [
     {
@@ -4513,12 +4277,12 @@
      "studX": -110
     },
     {
-     "to": "P124",
+     "to": "P120",
      "side": "arriba",
      "studX": -110
     },
     {
-     "to": "P124",
+     "to": "P120",
      "side": "arriba",
      "studX": -90
     }
@@ -4536,7 +4300,7 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 133,
+   "step": 125,
    "role": "diagonal inferior",
    "connections": [
     {
@@ -4545,19 +4309,19 @@
      "studX": 110
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "arriba",
      "studX": 90
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "arriba",
      "studX": 110
     }
    ]
   },
   {
-   "id": "P120",
+   "id": "P116",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4568,7 +4332,7 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 134,
+   "step": 126,
    "role": "traba",
    "connections": [
     {
@@ -4577,14 +4341,14 @@
      "studX": 130
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P121",
+   "id": "P117",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4595,33 +4359,33 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 18,
-   "step": 135,
+   "step": 127,
    "role": "estructura",
    "connections": [
     {
-     "to": "P114",
+     "to": "P110",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P114",
+     "to": "P110",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P126",
+     "to": "P122",
      "side": "arriba",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P122",
+   "id": "P118",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4632,33 +4396,33 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 18,
-   "step": 136,
+   "step": 128,
    "role": "estructura",
    "connections": [
     {
-     "to": "P115",
+     "to": "P111",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P115",
+     "to": "P111",
      "side": "abajo",
      "studX": 210
     },
     {
-     "to": "P126",
+     "to": "P122",
      "side": "arriba",
      "studX": 190
     },
     {
-     "to": "P167",
+     "to": "P159",
      "side": "arriba",
      "studX": 210
     }
    ]
   },
   {
-   "id": "P164",
+   "id": "P156",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4669,18 +4433,18 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 18,
-   "step": 137,
+   "step": 129,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P111",
+     "to": "P107",
      "side": "abajo",
      "studX": -230
     }
    ]
   },
   {
-   "id": "P165",
+   "id": "P157",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4691,18 +4455,18 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 18,
-   "step": 138,
+   "step": 130,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P116",
+     "to": "P112",
      "side": "abajo",
      "studX": 230
     }
    ]
   },
   {
-   "id": "P123",
+   "id": "P119",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -4713,53 +4477,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 139,
+   "step": 131,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P118",
+     "to": "P114",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P118",
+     "to": "P114",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P119",
+     "to": "P115",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P119",
+     "to": "P115",
      "side": "abajo",
      "studX": -130
     },
     {
-     "to": "P127",
+     "to": "P123",
      "side": "arriba",
      "studX": -190
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "arriba",
      "studX": -170
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "arriba",
      "studX": -150
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "arriba",
      "studX": -130
     }
    ]
   },
   {
-   "id": "P124",
+   "id": "P120",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4770,7 +4534,7 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 140,
+   "step": 132,
    "role": "estructura",
    "connections": [
     {
@@ -4784,19 +4548,19 @@
      "studX": -90
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "arriba",
      "studX": -110
     },
     {
-     "to": "P129",
+     "to": "P125",
      "side": "arriba",
      "studX": -90
     }
    ]
   },
   {
-   "id": "P125",
+   "id": "P121",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -4807,7 +4571,7 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 19,
-   "step": 141,
+   "step": 133,
    "role": "tramo recto",
    "connections": [
     {
@@ -4821,39 +4585,39 @@
      "studX": 110
     },
     {
-     "to": "P120",
+     "to": "P116",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P121",
+     "to": "P117",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "arriba",
      "studX": 90
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "arriba",
      "studX": 110
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "arriba",
      "studX": 130
     },
     {
-     "to": "P132",
+     "to": "P128",
      "side": "arriba",
      "studX": 150
     }
    ]
   },
   {
-   "id": "P126",
+   "id": "P122",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -4864,33 +4628,33 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 19,
-   "step": 142,
+   "step": 134,
    "role": "estructura",
    "connections": [
     {
-     "to": "P121",
+     "to": "P117",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P122",
+     "to": "P118",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P132",
+     "to": "P128",
      "side": "arriba",
      "studX": 170
     },
     {
-     "to": "P133",
+     "to": "P129",
      "side": "arriba",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P166",
+   "id": "P158",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4901,18 +4665,18 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 19,
-   "step": 143,
+   "step": 135,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P117",
+     "to": "P113",
      "side": "abajo",
      "studX": -210
     }
    ]
   },
   {
-   "id": "P167",
+   "id": "P159",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -4923,18 +4687,18 @@
    "color": "#5932E0",
    "colorName": "Violeta azulado QS",
    "layer": 19,
-   "step": 144,
+   "step": 136,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P122",
+     "to": "P118",
      "side": "abajo",
      "studX": 210
     }
    ]
   },
   {
-   "id": "P127",
+   "id": "P123",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -4945,23 +4709,23 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 145,
+   "step": 137,
    "role": "traba",
    "connections": [
     {
-     "to": "P123",
+     "to": "P119",
      "side": "abajo",
      "studX": -190
     },
     {
-     "to": "P168",
+     "to": "P160",
      "side": "arriba",
      "studX": -190
     }
    ]
   },
   {
-   "id": "P128",
+   "id": "P124",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -4972,53 +4736,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 146,
+   "step": 138,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P123",
+     "to": "P119",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P123",
+     "to": "P119",
      "side": "abajo",
      "studX": -130
     },
     {
-     "to": "P124",
+     "to": "P120",
      "side": "abajo",
      "studX": -110
     },
     {
-     "to": "P134",
+     "to": "P130",
      "side": "arriba",
      "studX": -170
     },
     {
-     "to": "P134",
+     "to": "P130",
      "side": "arriba",
      "studX": -150
     },
     {
-     "to": "P134",
+     "to": "P130",
      "side": "arriba",
      "studX": -130
     },
     {
-     "to": "P134",
+     "to": "P130",
      "side": "arriba",
      "studX": -110
     }
    ]
   },
   {
-   "id": "P129",
+   "id": "P125",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5029,38 +4793,38 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 20,
-   "step": 147,
+   "step": 139,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P124",
+     "to": "P120",
      "side": "abajo",
      "studX": -90
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "arriba",
      "studX": -90
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "arriba",
      "studX": -70
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "arriba",
      "studX": -50
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "arriba",
      "studX": -30
     }
    ]
   },
   {
-   "id": "P130",
+   "id": "P126",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5071,33 +4835,33 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 20,
-   "step": 148,
+   "step": 140,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P136",
+     "to": "P132",
      "side": "arriba",
      "studX": -10
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "arriba",
      "studX": 10
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "arriba",
      "studX": 30
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "arriba",
      "studX": 50
     }
    ]
   },
   {
-   "id": "P131",
+   "id": "P127",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5108,48 +4872,48 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 149,
+   "step": 141,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P125",
+     "to": "P121",
      "side": "abajo",
      "studX": 90
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "abajo",
      "studX": 110
     },
     {
-     "to": "P125",
+     "to": "P121",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "arriba",
      "studX": 70
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "arriba",
      "studX": 90
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "arriba",
      "studX": 110
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P132",
+   "id": "P128",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -5160,33 +4924,33 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 150,
+   "step": 142,
    "role": "estructura",
    "connections": [
     {
-     "to": "P125",
+     "to": "P121",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P126",
+     "to": "P122",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P138",
+     "to": "P134",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P138",
+     "to": "P134",
      "side": "arriba",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P133",
+   "id": "P129",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -5197,23 +4961,23 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 20,
-   "step": 151,
+   "step": 143,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P126",
+     "to": "P122",
      "side": "abajo",
      "studX": 190
     },
     {
-     "to": "P169",
+     "to": "P161",
      "side": "arriba",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P134",
+   "id": "P130",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5224,53 +4988,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 152,
+   "step": 144,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P128",
+     "to": "P124",
      "side": "abajo",
      "studX": -170
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "abajo",
      "studX": -130
     },
     {
-     "to": "P128",
+     "to": "P124",
      "side": "abajo",
      "studX": -110
     },
     {
-     "to": "P139",
+     "to": "P135",
      "side": "arriba",
      "studX": -150
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "arriba",
      "studX": -130
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "arriba",
      "studX": -110
     },
     {
-     "to": "P170",
+     "to": "P162",
      "side": "arriba",
      "studX": -170
     }
    ]
   },
   {
-   "id": "P135",
+   "id": "P131",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5281,53 +5045,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 153,
+   "step": 145,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P129",
+     "to": "P125",
      "side": "abajo",
      "studX": -90
     },
     {
-     "to": "P129",
+     "to": "P125",
      "side": "abajo",
      "studX": -70
     },
     {
-     "to": "P129",
+     "to": "P125",
      "side": "abajo",
      "studX": -50
     },
     {
-     "to": "P129",
+     "to": "P125",
      "side": "abajo",
      "studX": -30
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "arriba",
      "studX": -90
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "arriba",
      "studX": -70
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "arriba",
      "studX": -50
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "arriba",
      "studX": -30
     }
    ]
   },
   {
-   "id": "P136",
+   "id": "P132",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5338,53 +5102,53 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 21,
-   "step": 154,
+   "step": 146,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P130",
+     "to": "P126",
      "side": "abajo",
      "studX": -10
     },
     {
-     "to": "P130",
+     "to": "P126",
      "side": "abajo",
      "studX": 10
     },
     {
-     "to": "P130",
+     "to": "P126",
      "side": "abajo",
      "studX": 30
     },
     {
-     "to": "P130",
+     "to": "P126",
      "side": "abajo",
      "studX": 50
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "arriba",
      "studX": -10
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "arriba",
      "studX": 10
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "arriba",
      "studX": 30
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "arriba",
      "studX": 50
     }
    ]
   },
   {
-   "id": "P137",
+   "id": "P133",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5395,53 +5159,53 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 21,
-   "step": 155,
+   "step": 147,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P131",
+     "to": "P127",
      "side": "abajo",
      "studX": 70
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "abajo",
      "studX": 90
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "abajo",
      "studX": 110
     },
     {
-     "to": "P131",
+     "to": "P127",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "arriba",
      "studX": 70
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "arriba",
      "studX": 90
     },
     {
-     "to": "P143",
+     "to": "P139",
      "side": "arriba",
      "studX": 110
     },
     {
-     "to": "P143",
+     "to": "P139",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P138",
+   "id": "P134",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -5452,33 +5216,33 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 21,
-   "step": 156,
+   "step": 148,
    "role": "estructura",
    "connections": [
     {
-     "to": "P132",
+     "to": "P128",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P132",
+     "to": "P128",
      "side": "abajo",
      "studX": 170
     },
     {
-     "to": "P144",
+     "to": "P140",
      "side": "arriba",
      "studX": 150
     },
     {
-     "to": "P171",
+     "to": "P163",
      "side": "arriba",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P168",
+   "id": "P160",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5489,18 +5253,18 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 21,
-   "step": 157,
+   "step": 149,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P127",
+     "to": "P123",
      "side": "abajo",
      "studX": -190
     }
    ]
   },
   {
-   "id": "P169",
+   "id": "P161",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5511,18 +5275,18 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 21,
-   "step": 158,
+   "step": 150,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P133",
+     "to": "P129",
      "side": "abajo",
      "studX": 190
     }
    ]
   },
   {
-   "id": "P139",
+   "id": "P135",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -5533,23 +5297,23 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 159,
+   "step": 151,
    "role": "traba",
    "connections": [
     {
-     "to": "P134",
+     "to": "P130",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P145",
+     "to": "P141",
      "side": "arriba",
      "studX": -150
     }
    ]
   },
   {
-   "id": "P140",
+   "id": "P136",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5560,53 +5324,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 160,
+   "step": 152,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P134",
+     "to": "P130",
      "side": "abajo",
      "studX": -130
     },
     {
-     "to": "P134",
+     "to": "P130",
      "side": "abajo",
      "studX": -110
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "abajo",
      "studX": -90
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "abajo",
      "studX": -70
     },
     {
-     "to": "P145",
+     "to": "P141",
      "side": "arriba",
      "studX": -130
     },
     {
-     "to": "P145",
+     "to": "P141",
      "side": "arriba",
      "studX": -110
     },
     {
-     "to": "P145",
+     "to": "P141",
      "side": "arriba",
      "studX": -90
     },
     {
-     "to": "P146",
+     "to": "P142",
      "side": "arriba",
      "studX": -70
     }
    ]
   },
   {
-   "id": "P141",
+   "id": "P137",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5617,53 +5381,53 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 161,
+   "step": 153,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P135",
+     "to": "P131",
      "side": "abajo",
      "studX": -50
     },
     {
-     "to": "P135",
+     "to": "P131",
      "side": "abajo",
      "studX": -30
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "abajo",
      "studX": -10
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "abajo",
      "studX": 10
     },
     {
-     "to": "P146",
+     "to": "P142",
      "side": "arriba",
      "studX": -50
     },
     {
-     "to": "P146",
+     "to": "P142",
      "side": "arriba",
      "studX": -30
     },
     {
-     "to": "P146",
+     "to": "P142",
      "side": "arriba",
      "studX": -10
     },
     {
-     "to": "P147",
+     "to": "P143",
      "side": "arriba",
      "studX": 10
     }
    ]
   },
   {
-   "id": "P142",
+   "id": "P138",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5674,53 +5438,53 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 22,
-   "step": 162,
+   "step": 154,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P136",
+     "to": "P132",
      "side": "abajo",
      "studX": 30
     },
     {
-     "to": "P136",
+     "to": "P132",
      "side": "abajo",
      "studX": 50
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "abajo",
      "studX": 70
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "abajo",
      "studX": 90
     },
     {
-     "to": "P147",
+     "to": "P143",
      "side": "arriba",
      "studX": 30
     },
     {
-     "to": "P147",
+     "to": "P143",
      "side": "arriba",
      "studX": 50
     },
     {
-     "to": "P147",
+     "to": "P143",
      "side": "arriba",
      "studX": 70
     },
     {
-     "to": "P148",
+     "to": "P144",
      "side": "arriba",
      "studX": 90
     }
    ]
   },
   {
-   "id": "P143",
+   "id": "P139",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -5731,33 +5495,33 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 22,
-   "step": 163,
+   "step": 155,
    "role": "estructura",
    "connections": [
     {
-     "to": "P137",
+     "to": "P133",
      "side": "abajo",
      "studX": 110
     },
     {
-     "to": "P137",
+     "to": "P133",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P148",
+     "to": "P144",
      "side": "arriba",
      "studX": 110
     },
     {
-     "to": "P149",
+     "to": "P145",
      "side": "arriba",
      "studX": 130
     }
    ]
   },
   {
-   "id": "P144",
+   "id": "P140",
    "part": "3005",
    "ldraw": "3005.dat",
    "name": "Brick 1 x 1",
@@ -5768,23 +5532,23 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 22,
-   "step": 164,
+   "step": 156,
    "role": "vértice / detalle",
    "connections": [
     {
-     "to": "P138",
+     "to": "P134",
      "side": "abajo",
      "studX": 150
     },
     {
-     "to": "P149",
+     "to": "P145",
      "side": "arriba",
      "studX": 150
     }
    ]
   },
   {
-   "id": "P170",
+   "id": "P162",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5795,18 +5559,18 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 22,
-   "step": 165,
+   "step": 157,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P134",
+     "to": "P130",
      "side": "abajo",
      "studX": -170
     }
    ]
   },
   {
-   "id": "P171",
+   "id": "P163",
    "part": "54200",
    "ldraw": "54200.dat",
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
@@ -5817,18 +5581,18 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 22,
-   "step": 166,
+   "step": 158,
    "role": "terminación inclinada",
    "connections": [
     {
-     "to": "P138",
+     "to": "P134",
      "side": "abajo",
      "studX": 170
     }
    ]
   },
   {
-   "id": "P145",
+   "id": "P141",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5839,33 +5603,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 23,
-   "step": 167,
+   "step": 159,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P139",
+     "to": "P135",
      "side": "abajo",
      "studX": -150
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "abajo",
      "studX": -130
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "abajo",
      "studX": -110
     },
     {
-     "to": "P140",
+     "to": "P136",
      "side": "abajo",
      "studX": -90
     }
    ]
   },
   {
-   "id": "P146",
+   "id": "P142",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5876,33 +5640,33 @@
    "color": "#3C9FF1",
    "colorName": "Celeste QS",
    "layer": 23,
-   "step": 168,
+   "step": 160,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P140",
+     "to": "P136",
      "side": "abajo",
      "studX": -70
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "abajo",
      "studX": -50
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "abajo",
      "studX": -30
     },
     {
-     "to": "P141",
+     "to": "P137",
      "side": "abajo",
      "studX": -10
     }
    ]
   },
   {
-   "id": "P147",
+   "id": "P143",
    "part": "3010",
    "ldraw": "3010.dat",
    "name": "Brick 1 x 4",
@@ -5913,33 +5677,33 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 23,
-   "step": 169,
+   "step": 161,
    "role": "tramo recto",
    "connections": [
     {
-     "to": "P141",
+     "to": "P137",
      "side": "abajo",
      "studX": 10
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "abajo",
      "studX": 30
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "abajo",
      "studX": 50
     },
     {
-     "to": "P142",
+     "to": "P138",
      "side": "abajo",
      "studX": 70
     }
    ]
   },
   {
-   "id": "P148",
+   "id": "P144",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -5950,23 +5714,23 @@
    "color": "#3F75EA",
    "colorName": "Azul QS",
    "layer": 23,
-   "step": 170,
+   "step": 162,
    "role": "estructura",
    "connections": [
     {
-     "to": "P142",
+     "to": "P138",
      "side": "abajo",
      "studX": 90
     },
     {
-     "to": "P143",
+     "to": "P139",
      "side": "abajo",
      "studX": 110
     }
    ]
   },
   {
-   "id": "P149",
+   "id": "P145",
    "part": "3004",
    "ldraw": "3004.dat",
    "name": "Brick 1 x 2",
@@ -5977,16 +5741,16 @@
    "color": "#463DE1",
    "colorName": "Índigo QS",
    "layer": 23,
-   "step": 171,
+   "step": 163,
    "role": "estructura",
    "connections": [
     {
-     "to": "P143",
+     "to": "P139",
      "side": "abajo",
      "studX": 130
     },
     {
-     "to": "P144",
+     "to": "P140",
      "side": "abajo",
      "studX": 150
     }
@@ -5996,7 +5760,7 @@
  "validation": {
   "ok": true,
   "errors": [],
-  "pieces": 171,
+  "pieces": 163,
   "components": 1
  },
  "inventory": [
@@ -6019,7 +5783,7 @@
    "name": "Brick 1 x 2",
    "color": "Índigo QS",
    "hex": "#463DE1",
-   "n": 13
+   "n": 11
   },
   {
    "part": "3004",
@@ -6054,7 +5818,7 @@
    "name": "Brick 1 x 1",
    "color": "Índigo QS",
    "hex": "#463DE1",
-   "n": 9
+   "n": 7
   },
   {
    "part": "3005",
@@ -6152,7 +5916,7 @@
    "name": "Slope 30 1 x 1 x 2/3 (cheese)",
    "color": "Índigo QS",
    "hex": "#463DE1",
-   "n": 8
+   "n": 4
   },
   {
    "part": "54200",

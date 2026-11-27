@@ -84,6 +84,32 @@ for (let r = 0; r < ROWS; r++) {
 }
 const filled = (c, r) => r >= 0 && r < ROWS && c >= 0 && c < W && grid[r][c] >= 0;
 
+// Saliente interior: en el logo es un triángulo bajo que nace del borde inferior
+// del anillo. Al rasterizar queda como torre angosta y alta (se malinterpreta),
+// así que se limita su altura a las filas más bajas, como un bulto ancho.
+const SALIENTE_ROWS = Math.max(1, Math.round(ROWS * 0.09));
+{
+  const rowRuns = (r) => {
+    const out = [];
+    let c = 0;
+    while (c < W) {
+      if (!filled(c, r)) { c++; continue; }
+      const a = c;
+      while (c < W && filled(c, r)) c++;
+      out.push([a, c - 1]);
+    }
+    return out;
+  };
+  let kept = 0;
+  for (let r = 0; r < ROWS; r++) {
+    const runs = rowRuns(r);
+    if (runs.length < 3) continue; // solo filas con anillo izq. + saliente + anillo der.
+    const interior = runs.slice(1, -1);
+    if (kept < SALIENTE_ROWS) { kept++; continue; }
+    interior.forEach(([a, b]) => { for (let c = a; c <= b; c++) grid[r][c] = -1; });
+  }
+}
+
 // ── 2. Piezas por fila ──────────────────────────────────────────────────────
 const pieces = [];
 const occ = new Map(); // "c,r" → id de pieza
@@ -221,6 +247,7 @@ for (let r = 0; r < ROWS - 1; r++) {
       let empty0 = true;
       for (let c = a; c <= b; c++) if (filled(c, r + 1)) empty0 = false;
       if (empty0 && len0 >= 2 && len0 <= 4) {
+        if (len0 !== 2) continue; // picos más anchos quedan planos (con dos cheese parecían orejas)
         if (isTopSupported(a, r) && isTopSupported(b, r)) {
           add(54200, a, r + 1, 'L', grid[r][a], 'terminación inclinada (pico)');
           add(54200, b, r + 1, 'R', grid[r][b], 'terminación inclinada (pico)');

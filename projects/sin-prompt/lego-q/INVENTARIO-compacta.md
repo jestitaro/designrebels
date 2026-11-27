@@ -1,12 +1,12 @@
 # LEGO Q · Inventario (compacta, 12 studs de ancho)
 
-Generado desde el modelo (48 piezas). No editar a mano: correr `node scripts/build-q.mjs`.
+Generado desde el modelo (47 piezas). No editar a mano: correr `node scripts/build-q.mjs`.
 
 | Ref. | Pieza | Color | Cantidad |
 |---|---|---|---:|
 | 3004 | Brick 1 x 2 | Celeste QS `#3C9FF1` | 2 |
 | 3004 | Brick 1 x 2 | Azul QS `#3F75EA` | 2 |
-| 3004 | Brick 1 x 2 | Índigo QS `#463DE1` | 3 |
+| 3004 | Brick 1 x 2 | Índigo QS `#463DE1` | 2 |
 | 3004 | Brick 1 x 2 | Violeta azulado QS `#5932E0` | 1 |
 | 3004 | Brick 1 x 2 | Violeta QS `#7025E0` | 3 |
 | 3005 | Brick 1 x 1 | Celeste QS `#3C9FF1` | 4 |
@@ -27,7 +27,7 @@ Generado desde el modelo (48 piezas). No editar a mano: correr `node scripts/bui
 
 **Totales por pieza**
 
-- 3004 Brick 1 x 2: 11
+- 3004 Brick 1 x 2: 10
 - 3005 Brick 1 x 1: 16
 - 3010 Brick 1 x 4: 4
 - 3665 Slope 45 2 x 1 Inverted: 7

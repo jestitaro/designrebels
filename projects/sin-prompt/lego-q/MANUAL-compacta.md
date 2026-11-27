@@ -1,6 +1,6 @@
 # LEGO Q · Manual de montaje (compacta, 12 studs de ancho)
 
-48 piezas en 11 capas, de la punta inferior al cierre superior. Una capa = una fila de ladrillos (24 LDU). Las cheese slopes y slopes 45° se apoyan sobre el escalón de la capa anterior.
+47 piezas en 11 capas, de la punta inferior al cierre superior. Una capa = una fila de ladrillos (24 LDU). Las cheese slopes y slopes 45° se apoyan sobre el escalón de la capa anterior.
 
 Validación: sin colisiones, todas las piezas conectadas, una sola estructura.
 
@@ -56,30 +56,29 @@ Piezas: 2× 3665 Slope 45 2 x 1 Inverted · 2× 3005 Brick 1 x 1 · 1× 3004 Bri
 
 ## Capa 6
 
-Piezas: 2× 3665 Slope 45 2 x 1 Inverted · 2× 3005 Brick 1 x 1 · 1× 3004 Brick 1 x 2 · 2× 54200 Slope 30 1 x 1 x 2/3 (cheese)
+Piezas: 2× 3665 Slope 45 2 x 1 Inverted · 2× 3005 Brick 1 x 1 · 4× 54200 Slope 30 1 x 1 x 2/3 (cheese)
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
 | 16 | P004 | 3665 | Azul QS | -100 | 120 | 0° | P002 |
 | 17 | P020 | 3005 | Azul QS | -70 | 120 | 0° | P002 |
-| 18 | P021 | 3004 | Índigo QS | 0 | 120 | 0° | P018, P018 |
-| 19 | P022 | 3005 | Violeta azulado QS | 70 | 120 | 0° | P003 |
-| 20 | P005 | 3665 | Violeta QS | 100 | 120 | 180° | P003 |
-| 21 | P039 | 54200 | Azul QS | -50 | 120 | 180° | P017 |
-| 22 | P040 | 54200 | Violeta azulado QS | 50 | 120 | 0° | P019 |
+| 18 | P021 | 3005 | Violeta azulado QS | 70 | 120 | 0° | P003 |
+| 19 | P005 | 3665 | Violeta QS | 100 | 120 | 180° | P003 |
+| 20 | P038 | 54200 | Azul QS | -50 | 120 | 180° | P017 |
+| 21 | P039 | 54200 | Índigo QS | -10 | 120 | 0° | P018 |
+| 22 | P040 | 54200 | Índigo QS | 10 | 120 | 180° | P018 |
+| 23 | P041 | 54200 | Violeta azulado QS | 50 | 120 | 0° | P019 |
 
 ## Capa 7
 
-Piezas: 2× 3004 Brick 1 x 2 · 2× 3005 Brick 1 x 1 · 2× 54200 Slope 30 1 x 1 x 2/3 (cheese)
+Piezas: 2× 3004 Brick 1 x 2 · 2× 3005 Brick 1 x 1
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
-| 23 | P023 | 3004 | Celeste QS | -100 | 144 | 0° | P004, P004 |
-| 24 | P024 | 3005 | Celeste QS | -70 | 144 | 0° | P020 |
-| 25 | P025 | 3004 | Violeta azulado QS | 80 | 144 | 0° | P022, P005 |
-| 26 | P026 | 3005 | Violeta azulado QS | 110 | 144 | 0° | P005 |
-| 27 | P041 | 54200 | Índigo QS | -10 | 144 | 0° | P021 |
-| 28 | P042 | 54200 | Índigo QS | 10 | 144 | 180° | P021 |
+| 24 | P022 | 3004 | Celeste QS | -100 | 144 | 0° | P004, P004 |
+| 25 | P023 | 3005 | Celeste QS | -70 | 144 | 0° | P020 |
+| 26 | P024 | 3004 | Violeta azulado QS | 80 | 144 | 0° | P021, P005 |
+| 27 | P025 | 3005 | Violeta azulado QS | 110 | 144 | 0° | P005 |
 
 ## Capa 8
 
@@ -87,12 +86,12 @@ Piezas: 2× 3005 Brick 1 x 1 · 2× 3665 Slope 45 2 x 1 Inverted · 2× 54200 Sl
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
-| 29 | P027 | 3005 | Celeste QS | -90 | 168 | 0° | P023 |
-| 30 | P006 | 3665 | Celeste QS | -60 | 168 | 180° | P024 |
-| 31 | P007 | 3665 | Índigo QS | 60 | 168 | 0° | P025 |
-| 32 | P028 | 3005 | Violeta azulado QS | 90 | 168 | 0° | P025 |
-| 33 | P043 | 54200 | Celeste QS | -110 | 168 | 0° | P023 |
-| 34 | P044 | 54200 | Violeta azulado QS | 110 | 168 | 180° | P026 |
+| 28 | P026 | 3005 | Celeste QS | -90 | 168 | 0° | P022 |
+| 29 | P006 | 3665 | Celeste QS | -60 | 168 | 180° | P023 |
+| 30 | P007 | 3665 | Índigo QS | 60 | 168 | 0° | P024 |
+| 31 | P027 | 3005 | Violeta azulado QS | 90 | 168 | 0° | P024 |
+| 32 | P042 | 54200 | Celeste QS | -110 | 168 | 0° | P022 |
+| 33 | P043 | 54200 | Violeta azulado QS | 110 | 168 | 180° | P025 |
 
 ## Capa 9
 
@@ -100,10 +99,10 @@ Piezas: 2× 3004 Brick 1 x 2 · 2× 3005 Brick 1 x 1
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
-| 35 | P029 | 3004 | Celeste QS | -80 | 192 | 0° | P027, P006 |
-| 36 | P030 | 3005 | Celeste QS | -50 | 192 | 0° | P006 |
-| 37 | P031 | 3004 | Índigo QS | 60 | 192 | 0° | P007, P007 |
-| 38 | P032 | 3005 | Índigo QS | 90 | 192 | 0° | P028 |
+| 34 | P028 | 3004 | Celeste QS | -80 | 192 | 0° | P026, P006 |
+| 35 | P029 | 3005 | Celeste QS | -50 | 192 | 0° | P006 |
+| 36 | P030 | 3004 | Índigo QS | 60 | 192 | 0° | P007, P007 |
+| 37 | P031 | 3005 | Índigo QS | 90 | 192 | 0° | P027 |
 
 ## Capa 10
 
@@ -111,12 +110,12 @@ Piezas: 2× 3005 Brick 1 x 1 · 1× 3010 Brick 1 x 4 · 1× 3004 Brick 1 x 2 · 
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
-| 39 | P033 | 3005 | Celeste QS | -70 | 216 | 0° | P029 |
-| 40 | P034 | 3010 | Celeste QS | -20 | 216 | 0° | P030 |
-| 41 | P035 | 3004 | Azul QS | 40 | 216 | 0° | P031 |
-| 42 | P036 | 3005 | Índigo QS | 70 | 216 | 0° | P031 |
-| 43 | P045 | 54200 | Celeste QS | -90 | 216 | 0° | P029 |
-| 44 | P046 | 54200 | Índigo QS | 90 | 216 | 180° | P032 |
+| 38 | P032 | 3005 | Celeste QS | -70 | 216 | 0° | P028 |
+| 39 | P033 | 3010 | Celeste QS | -20 | 216 | 0° | P029 |
+| 40 | P034 | 3004 | Azul QS | 40 | 216 | 0° | P030 |
+| 41 | P035 | 3005 | Índigo QS | 70 | 216 | 0° | P030 |
+| 42 | P044 | 54200 | Celeste QS | -90 | 216 | 0° | P028 |
+| 43 | P045 | 54200 | Índigo QS | 90 | 216 | 180° | P031 |
 
 ## Capa 11
 
@@ -124,7 +123,7 @@ Piezas: 1× 3010 Brick 1 x 4 · 1× 3004 Brick 1 x 2 · 2× 54200 Slope 30 1 x 1
 
 | Paso | ID | Ref. | Color | X | Y | Rot. | Encastra con |
 |---:|---|---|---|---:|---:|---:|---|
-| 45 | P037 | 3010 | Celeste QS | -20 | 240 | 0° | P034, P034, P034, P034 |
-| 46 | P038 | 3004 | Azul QS | 40 | 240 | 0° | P035, P035 |
-| 47 | P047 | 54200 | Celeste QS | -70 | 240 | 0° | P033 |
-| 48 | P048 | 54200 | Índigo QS | 70 | 240 | 180° | P036 |
+| 44 | P036 | 3010 | Celeste QS | -20 | 240 | 0° | P033, P033, P033, P033 |
+| 45 | P037 | 3004 | Azul QS | 40 | 240 | 0° | P034, P034 |
+| 46 | P046 | 54200 | Celeste QS | -70 | 240 | 0° | P032 |
+| 47 | P047 | 54200 | Índigo QS | 70 | 240 | 180° | P035 |
