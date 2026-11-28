@@ -18,6 +18,10 @@ cd ../source && npm run build:q    # node scripts/build-q.mjs <ancho> <fondo> <v
 
 La variante volumen sigue la dirección de la imagen de referencia (Q con espesor, saliente bajo con perillas), pero con piezas y encastres válidos: la punta es de inverted slopes, no una pirámide.
 
+## Q ↔ arbolito con las mismas piezas
+
+En el hero, la Q (variante volumen) se desarma y con **las mismas 41 piezas** se arma un arbolito: maceta, tronco, tres pisos de ramas con inverted slopes en las puntas y cheese slopes en los escalones, y un 1×2 de remate. Mismo inventario exacto (16× 3003, 5× 3004, 12× 3665, 8× 54200), sin colisiones. Cada pieza conserva su color (un ladrillo real no cambia de color): se asignan para que los celestes queden arriba y los violetas abajo. La disposición del árbol está en `source/src/lib/legoTree.js`. La estrella de la punta es un adorno de la animación, no una pieza LEGO.
+
 ## Entregables
 
 | Archivo | Qué es |

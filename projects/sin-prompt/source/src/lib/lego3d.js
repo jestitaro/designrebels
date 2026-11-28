@@ -363,7 +363,7 @@ export class LegoScene {
       box.expandByPoint(new THREE.Vector3(g.p[0] - g.w / 2, g.p[1] - BRICK_H / 2, g.p[2] - g.d / 2));
       box.expandByPoint(new THREE.Vector3(g.p[0] + g.w / 2, g.p[1] + BRICK_H / 2, g.p[2] + g.d / 2));
     });
-    if (this.star && this.fitMode === 'tree') box.expandByPoint(this.starHome.clone().add(new THREE.Vector3(0, 1.1, 0)));
+    if (this.star && this.fitMode === 'tree') box.expandByPoint((this.starAnim ? this.starAnim.toP : this.star.position).clone().add(new THREE.Vector3(0, 1.1, 0)));
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     const aspect = this.camera.aspect;

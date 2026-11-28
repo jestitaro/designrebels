@@ -32,7 +32,7 @@ Nav persistente para volver a galería, recibidas o juego en cualquier momento. 
 
 ## LEGO Q
 
-El hero muestra el isotipo armado con piezas LEGO reales (variante volumen, generada por `source/scripts/build-q.mjs`): el hover lo desarma, un click en una pieza arma el arbolito, otro click vuelve a la Q. El manual interactivo está en `#/lego-q` (sin link desde la home), y los entregables (JSON, `.ldr`, inventario, manual por capas, vistas) en [`lego-q/`](./lego-q/).
+El hero muestra el isotipo armado con piezas LEGO reales (variante volumen, generada por `source/scripts/build-q.mjs`): el hover lo desarma, un click en una pieza arma el arbolito con esas mismas 41 piezas, otro click vuelve a la Q. El manual interactivo está en `#/lego-q` (sin link desde la home), y los entregables (JSON, `.ldr`, inventario, manual por capas, vistas) en [`lego-q/`](./lego-q/).
 
 ## Desarrollo
 

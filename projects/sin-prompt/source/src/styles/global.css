@@ -1053,7 +1053,7 @@ code {
 .lego-hero {
   width: 100%;
   height: min(620px, 72svh);
-  min-height: 420px;
+  min-height: 380px;
   touch-action: pan-y;
 }
 .lego-hero canvas {
@@ -3295,9 +3295,16 @@ a.jrow:hover {
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 520px) {
   .nav-brand span {
     display: none;
+  }
+  .lego-hero {
+    height: 400px;
+    min-height: 0;
+  }
+  .hero-visual {
+    min-height: 0;
   }
 }
 
