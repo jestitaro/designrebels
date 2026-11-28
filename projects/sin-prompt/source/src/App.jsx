@@ -2,7 +2,6 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { useRoute, navigate } from './lib/router.js';
 import { useStore } from './lib/store.jsx';
-import { IS_DEMO } from './lib/api/index.js';
 import Nav from './components/Nav.jsx';
 import Toasts from './components/Toasts.jsx';
 import Intro from './screens/Intro.jsx';
@@ -10,15 +9,13 @@ import Journey from './screens/Journey.jsx';
 import Reveal from './screens/Reveal.jsx';
 import Choose from './screens/Choose.jsx';
 import Creator from './screens/Creator.jsx';
-import TreeScreen from './screens/TreeScreen.jsx';
 import Game from './screens/Game.jsx';
-import Gallery from './screens/Gallery.jsx';
 import Mailbox from './screens/Mailbox.jsx';
 import LegoQ from './screens/LegoQ.jsx';
 
-const DARK = ['/arbol', '/recibidas'];
+const DARK = ['/recibidas'];
 // En producción todo requiere sesión; en demo, árbol y galería se pueden mirar sin identificarse.
-const NEEDS_ME = ['/recorrido', '/destino', '/elegir', '/crear/destino', '/crear/eleccion', '/juego', '/recibidas', ...(IS_DEMO ? [] : ['/arbol', '/galeria'])];
+const NEEDS_ME = ['/recorrido', '/destino', '/elegir', '/crear/destino', '/crear/eleccion', '/juego', '/recibidas'];
 
 function screenFor(path) {
   switch (path) {
@@ -27,9 +24,7 @@ function screenFor(path) {
     case '/elegir': return <Choose />;
     case '/crear/destino': return <Creator slot="destino" />;
     case '/crear/eleccion': return <Creator slot="eleccion" />;
-    case '/arbol': return <TreeScreen />;
     case '/juego': return <Game />;
-    case '/galeria': return <Gallery />;
     case '/recibidas': return <Mailbox />;
     case '/lego-q': return <LegoQ />;
     default: return <Intro />;
@@ -60,7 +55,7 @@ export default function App() {
   // Título de la pestaña acompaña la pantalla.
   useEffect(() => {
     const titles = {
-      '/arbol': 'El árbol', '/juego': 'Armá el árbol', '/galeria': 'Galería', '/recibidas': 'Recibidas',
+      '/juego': 'Armá el árbol', '/recibidas': 'Recibidas',
       '/destino': 'El destino decide', '/elegir': 'Ahora elegís vos', '/recorrido': 'Tu recorrido', '/lego-q': 'La Q en ladrillos',
     };
     document.title = (titles[key] ? titles[key] + ' · ' : '') + 'Este año, sin prompt · QuartzSales';

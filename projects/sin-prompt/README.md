@@ -1,6 +1,6 @@
 # Este año, sin prompt · QuartzSales 2026
 
-Saludo de fin de año de QuartzSales. Cada persona escribe dos postales (una que asigna el destino, otra que elige), cada postal suma una pieza a un árbol colectivo, y hay un minijuego con ranking para armar el árbol contra reloj.
+Saludo de fin de año de QuartzSales. Cada persona escribe dos postales (una que asigna el destino, otra que elige), que llegan como cartas a quien las recibe, y hay un minijuego con ranking para armar el árbol contra reloj.
 
 Publicado en `projects/sin-prompt/` (un solo `index.html` autocontenido: también se puede descargar y abrir sin servidor).
 
@@ -22,11 +22,10 @@ En demo nada se comparte entre personas. No es una simulación de datos comparti
 
 1. Bienvenida: un prompt se escribe y se borra (“Mejor no.”), el título se arma con bloques. Identificación.
 2. El destino decide: revelación del destinatario asignado (fijo).
-3. Creador: elegir postal (14 diseños por rol + neutrales, carrusel con vista ampliada) o dibujar (lápiz, goma, texto, colores QS, grosores, deshacer/rehacer, limpiar con confirmación, PNG; mouse, touch y lápiz con presión). Mensaje propio, vista previa con dorso, privada/pública, envío con sobre.
+3. Creador: elegir postal (14 diseños por rol + neutrales, carrusel con vista ampliada) o dibujar (lápiz, goma, texto, colores QS, grosores, deshacer/rehacer, limpiar con confirmación, PNG; mouse, touch y lápiz con presión). Mensaje propio, vista previa con dorso, envío con sobre. Todas las postales son privadas: solo las lee quien las recibe.
 4. Vos elegís: buscador de personas, cualquier destinatario salvo vos.
-5. Árbol colectivo en CSS 3D: girable (arrastre o flechas), cada pieza es una postal; las privadas no muestran nombres. Vista de lista accesible.
-6. Minijuego “Armá el árbol”: 14 piezas, encastre por snap, error con rebote, cronómetro, mejor tiempo por persona.
-7. Galería (solo públicas) y Recibidas (sobre que se abre, postal que se da vuelta, descarga PNG).
+6. Minijuego “Armá el árbol”: 16 piezas y un molde sin marcas por fila (hay que deducir qué combinación de ladrillos completa cada una), encastre por snap, cronómetro, mejor tiempo por persona y acceso directo al ranking desde el resultado.
+7. Recibidas (sobre que se abre, postal que se da vuelta, descarga PNG).
 
 Nav persistente para volver a galería, recibidas o juego en cualquier momento. El progreso y los borradores sobreviven a recargar.
 

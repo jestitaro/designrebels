@@ -31,9 +31,9 @@ export default function Choose() {
       <section className="screen center wrap">
         <p className="eyebrow">03 / Saludo 2 · Vos elegís</p>
         <h1 className="h1">Listo: le escribiste a {firstName(progress.eleccion.recipient?.name)}.</h1>
-        <p className="lead">Dos postales, dos piezas. Ahora mirá cómo va el árbol.</p>
+        <p className="lead">Las dos postales ya salieron. Ahora, un recreo: armá el árbol contra reloj.</p>
         <div className="row">
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/arbol')}>Ver el árbol <Icon name="arrow" /></button>
+          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/juego')}>Ir al juego <Icon name="arrow" /></button>
         </div>
       </section>
     );

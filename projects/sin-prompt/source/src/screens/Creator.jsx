@@ -196,7 +196,7 @@ function Write({ draft, recipient, me, onChange, onDone, onBack }) {
 }
 
 // ── Previsualizar + privacidad ──────────────────────────────────────────────
-function Preview({ draft, recipient, me, onVisibility, onBack, onSend, sending }) {
+function Preview({ draft, recipient, me, onBack, onSend, sending }) {
   const [flipped, setFlipped] = useState(false);
   const reduce = useReducedMotion();
   useEffect(() => {
@@ -222,25 +222,13 @@ function Preview({ draft, recipient, me, onVisibility, onBack, onSend, sending }
         </button>
       </div>
       <div className="preview-side">
-        <fieldset className="privacy">
-          <legend>¿Quién la puede ver?</legend>
-          <label className={`priv-opt ${draft.visibility === 'private' ? 'is-on' : ''}`}>
-            <input type="radio" name="vis" value="private" checked={draft.visibility === 'private'} onChange={() => onVisibility('private')} />
-            <Icon name="lock" />
-            <span>
-              <strong>Privada</strong>
-              <span>Solo la ve {firstName(recipient.name)}.</span>
-            </span>
-          </label>
-          <label className={`priv-opt ${draft.visibility === 'public' ? 'is-on' : ''}`}>
-            <input type="radio" name="vis" value="public" checked={draft.visibility === 'public'} onChange={() => onVisibility('public')} />
-            <Icon name="globe" />
-            <span>
-              <strong>Pública</strong>
-              <span>Además puede aparecer en la galería del equipo.</span>
-            </span>
-          </label>
-        </fieldset>
+        <div className="mail-note">
+          <Icon name="lock" />
+          <p>
+            <strong>Va directo a {firstName(recipient.name)}.</strong>
+            <span>Como una carta: nadie más la lee.</span>
+          </p>
+        </div>
         <p className="muted small">Una vez enviada no se puede editar. Como las cartas de verdad.</p>
         <div className="step-actions column">
           <button type="button" className="btn btn-primary btn-lg" onClick={onSend} disabled={sending}>
@@ -300,17 +288,19 @@ function Sent({ slot, recipient, msg }) {
       <p className="eyebrow">{slot === 'destino' ? 'Saludo 1 de 2' : 'Saludo 2 de 2'} · Enviado</p>
       <h1 className="h1">Enviada.</h1>
       <p className="lead">
-        {firstName(recipient.name)} la va a encontrar cuando entre. Y vos acabás de sumar una pieza al árbol de QuartzSales.
+        {firstName(recipient.name)} la va a encontrar cuando entre. Ya está en camino.
       </p>
-      <p className="muted">{msg.visibility === 'public' ? 'Es pública: también puede aparecer en la galería.' : 'Es privada: solo la ve quien la recibe.'}</p>
       <div className="row">
         {slot === 'destino' ? (
           <>
             <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/elegir')}>Seguir con el saludo 2 <Icon name="arrow" /></button>
-            <button type="button" className="btn btn-ghost" onClick={() => navigate('/arbol')}>Ver mi pieza en el árbol</button>
+            <button type="button" className="btn btn-ghost" onClick={() => navigate('/recorrido')}>Ver mis saludos</button>
           </>
         ) : (
-          <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/arbol')}>Ver el árbol <Icon name="arrow" /></button>
+          <>
+            <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/juego')}>Ir al juego <Icon name="arrow" /></button>
+            <button type="button" className="btn btn-ghost" onClick={() => navigate('/recorrido')}>Ver mis saludos</button>
+          </>
         )}
       </div>
     </motion.div>
@@ -379,7 +369,7 @@ export default function Creator({ slot }) {
         designId: draft.kind === 'design' ? draft.designId : null,
         drawing: draft.kind === 'drawing' ? draft.drawing : null,
         body: draft.body,
-        visibility: draft.visibility,
+        visibility: 'private',
       });
       await pending.current;
     } catch (e) {
@@ -466,7 +456,6 @@ export default function Creator({ slot }) {
               me={me}
               recipient={recipient}
               sending={sending}
-              onVisibility={(v) => set({ visibility: v })}
               onBack={() => set({ step: 'write' })}
               onSend={send}
             />

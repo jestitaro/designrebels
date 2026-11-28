@@ -677,13 +677,15 @@ code {
 }
 .toasts {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
+  left: 50%;
+  top: 84px;
+  transform: translateX(-50%);
+  width: max-content;
   z-index: 120;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-end;
+  align-items: center;
   pointer-events: none;
   max-width: calc(100vw - 32px);
 }
@@ -691,8 +693,9 @@ code {
   display: flex;
   gap: 10px;
   align-items: center;
-  background: var(--navy);
-  color: var(--white);
+  background: var(--white);
+  color: var(--navy);
+  border: 1px solid rgba(112, 37, 224, 0.25);
   padding: 12px 18px;
   border-radius: 16px;
   font-size: 0.92rem;
@@ -702,8 +705,15 @@ code {
 .toast.is-error {
   background: var(--danger);
 }
-.toast.is-success svg {
-  color: var(--lilac);
+.toast svg {
+  color: var(--violet);
+  flex: none;
+}
+.toast.is-error {
+  color: #fff;
+}
+.toast.is-error svg {
+  color: #fff;
 }
 
 /* ── Formularios ────────────────────────────────────────────────────────── */
@@ -824,6 +834,7 @@ code {
 .person-txt span {
   font-size: 0.8rem;
   color: var(--muted);
+  line-height: 1.35;
 }
 .person-check {
   width: 24px;
@@ -997,7 +1008,7 @@ code {
 .hero-meta {
   grid-area: meta;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid var(--line);
   margin: 40px 0 0;
 }
@@ -2090,6 +2101,31 @@ a.jrow:hover {
   color: var(--violet);
 }
 
+/* Nota de envío (reemplaza privacidad) */
+.mail-note {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--white);
+  margin-bottom: 14px;
+}
+.mail-note > svg {
+  color: var(--violet);
+  flex: none;
+  margin-top: 2px;
+}
+.mail-note p {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.mail-note span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* Sobre */
 .envelope {
   position: relative;
@@ -2579,15 +2615,82 @@ a.jrow:hover {
 
 /* ═══ Juego ══════════════════════════════════════════════════════════════ */
 .game-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: flex-end;
-  flex-wrap: wrap;
   margin-bottom: 28px;
+  max-width: 760px;
 }
 .game-head .lead {
   margin-bottom: 0;
+}
+.game-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  z-index: 20;
+}
+.game-bar .hud {
+  background: var(--paper);
+  border-radius: 16px;
+  padding: 8px 14px;
+  display: grid;
+  min-width: 112px;
+}
+.game-bar .hud .mono-label {
+  color: var(--violet);
+}
+.game-bar .hud-n {
+  font-size: 1.35rem;
+  color: var(--navy);
+}
+.game-bar .hud-n .muted {
+  color: var(--muted);
+}
+.game-play {
+  margin-left: auto;
+}
+@media (max-width: 520px) {
+  .game-bar {
+    flex-wrap: wrap;
+  }
+  .game-bar .hud {
+    flex: 1;
+    min-width: 0;
+  }
+  .game-play {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+.rank-name .tag {
+  display: block;
+  width: max-content;
+  margin: 2px 0 0;
+  font-size: 0.55rem;
+}
+.game-hint {
+  margin: -4px 0 14px;
+}
+/* mientras se juega, el cronómetro queda a la vista */
+.game-bar.is-playing {
+  position: sticky;
+  top: 76px;
+  background: var(--white);
+  padding: 6px 0;
+}
+.rank-list li.is-flash {
+  animation: rankflash 2s var(--ease);
+  border-radius: 10px;
+}
+@keyframes rankflash {
+  0%, 60% {
+    background: rgba(161, 114, 255, 0.35);
+  }
+  100% {
+    background: transparent;
+  }
+}
+.slot-row {
+  border-radius: 6px;
 }
 .game-hud {
   display: flex;
@@ -2614,6 +2717,12 @@ a.jrow:hover {
 .hud-n .muted {
   color: rgba(255, 255, 255, 0.5);
 }
+.game-grid > *,
+.legoq-grid > *,
+.journey-list,
+.mailbox > * {
+  min-width: 0;
+}
 .game-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
@@ -2629,7 +2738,7 @@ a.jrow:hover {
 .stage {
   position: relative;
   width: 100%;
-  touch-action: none;
+  touch-action: pan-y; /* se puede scrollear; solo las piezas capturan el toque */
   user-select: none;
   -webkit-user-select: none;
 }
@@ -2823,6 +2932,7 @@ a.jrow:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.25;
 }
 .rank-time {
   font-family: var(--mono);
@@ -3185,7 +3295,7 @@ a.jrow:hover {
     grid-area: cta;
   }
   .game-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .ranking {
     position: static;
@@ -3201,9 +3311,7 @@ a.jrow:hover {
   .hero-visual {
     min-height: 360px;
   }
-  .hero-meta {
-    grid-template-columns: repeat(2, 1fr);
-  }
+
   .choose,
   .write,
   .preview,
@@ -3291,7 +3399,28 @@ a.jrow:hover {
     padding: 0 1.4em;
   }
   .toasts {
+    top: auto;
     bottom: 16px;
+    width: calc(100vw - 24px);
+  }
+  .toast {
+    width: 100%;
+  }
+}
+
+@media (max-width: 860px) {
+  .picker-list {
+    max-height: none;
+    overflow: visible;
+  }
+  .identify-actions {
+    position: sticky;
+    bottom: 12px;
+    z-index: 5;
+  }
+  .identify-actions .btn {
+    width: 100%;
+    box-shadow: 0 16px 40px -12px rgba(19, 13, 93, 0.55);
   }
 }
 

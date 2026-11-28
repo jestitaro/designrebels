@@ -171,7 +171,7 @@ function Identify({ onDone }) {
             }
           }}
         >
-          {busy ? 'Un segundo…' : sel ? `Soy ${firstName(participants.find((p) => p.id === sel)?.name)}` : 'Elegí tu nombre'}
+          {busy ? 'Un segundo…' : sel ? 'Continuar' : 'Elegí tu nombre'}
           <Icon name="arrow" />
         </button>
       </div>
@@ -241,9 +241,6 @@ export default function Intro({ gateMessage }) {
                   {me ? `Seguir, ${firstName(me.name)}` : 'Empezar'}
                   <Icon name="arrow" />
                 </button>
-                <a className="link" href="#/galeria" onClick={(e) => { e.preventDefault(); navigate('/galeria'); }}>
-                  Ver la galería
-                </a>
               </div>
             </motion.div>
           </div>
@@ -255,7 +252,6 @@ export default function Intro({ gateMessage }) {
           <motion.dl className="hero-meta" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: seen ? 0.2 : 1.6 }}>
             <div><dt>Personas</dt><dd>{participants.length}</dd></div>
             <div><dt>Postales</dt><dd>{total}</dd></div>
-            <div><dt>Piezas colocadas</dt><dd>{tree?.placed ?? 0}</dd></div>
             <div><dt>Prompts</dt><dd>0</dd></div>
           </motion.dl>
         </div>

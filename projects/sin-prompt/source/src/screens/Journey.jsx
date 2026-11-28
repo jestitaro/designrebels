@@ -10,15 +10,13 @@ import Postcard from '../components/Postcard.jsx';
 import Dialog from '../components/Dialog.jsx';
 
 export default function Journey() {
-  const { me, api, assignment, progress, tree, messages } = useStore();
+  const { me, api, assignment, progress, messages } = useStore();
   const [best, setBest] = useState(null);
-  const [galleryCount, setGalleryCount] = useState(null);
   const [view, setView] = useState(null);
   const [flip, setFlip] = useState(false);
 
   useEffect(() => {
     api.getLeaderboard().then((b) => setBest(b.find((r) => r.participant.id === me.id && !r.isSample)?.ms ?? null));
-    api.getGallery().then((g) => setGalleryCount(g.length));
   }, [api, me.id]);
 
   const pending = (progress.destino ? 0 : 1) + (progress.eleccion ? 0 : 1);
@@ -33,10 +31,8 @@ export default function Journey() {
       status: progress.eleccion ? 'Enviada' : progress.destino ? 'Pendiente' : 'Después del 01', done: !!progress.eleccion,
       to: progress.eleccion ? null : '/elegir', cta: 'Elegir',
     },
-    { n: '03', title: 'El árbol colectivo', meta: tree ? `${tree.placed} de ${tree.total} piezas` : '—', status: 'Compartido', to: '/arbol', cta: 'Ver' },
-    { n: '04', title: 'Armá el árbol', meta: best != null ? `Tu mejor tiempo: ${formatTime(best)}` : 'Sin partidas todavía', status: 'Ranking', to: '/juego', cta: 'Jugar' },
-    { n: '05', title: 'Galería', meta: galleryCount != null ? plural(galleryCount, 'postal pública', 'postales públicas') : '—', status: 'Explorar', to: '/galeria', cta: 'Explorar' },
-    { n: '06', title: 'Recibidas', meta: plural(messages.received.length, 'postal', 'postales'), status: messages.received.some((m) => !m.read) ? 'Sin abrir' : 'Al día', to: '/recibidas', cta: 'Abrir' },
+    { n: '03', title: 'Armá el árbol', meta: best != null ? `Tu mejor tiempo: ${formatTime(best)}` : 'Sin partidas todavía', status: 'Ranking', to: '/juego', cta: 'Jugar' },
+    { n: '04', title: 'Recibidas', meta: plural(messages.received.length, 'postal', 'postales'), status: messages.received.some((m) => !m.read) ? 'Sin abrir' : 'Al día', to: '/recibidas', cta: 'Abrir' },
   ];
 
   return (
@@ -46,7 +42,7 @@ export default function Journey() {
         <h1 id="journey-h" className="h1">
           {pending === 0 ? `Hiciste todo, ${firstName(me.name)}. Gracias.` : pending === 1 ? 'Te queda un saludo.' : 'Dos saludos te esperan.'}
         </h1>
-        <p className="lead">{pending === 0 ? 'Tus dos piezas ya están en el árbol. Ahora: jugar, mirar y leer.' : 'No hay apuro, pero tampoco hay prompt. Escribilos vos.'}</p>
+        <p className="lead">{pending === 0 ? 'Las dos salieron. Ahora: jugar un rato y leer lo que te llegue.' : 'No hay apuro, pero tampoco hay prompt. Escribilos vos.'}</p>
       </header>
 
       <ol className="journey-list">
@@ -72,7 +68,7 @@ export default function Journey() {
             {messages.sent.map((m) => (
               <button key={m.id} type="button" className="sent-card" onClick={() => { setFlip(false); setView(m); }}>
                 <PostcardArt designId={m.designId} drawing={m.drawing} />
-                <span>Para {m.recipient?.name} · {m.visibility === 'public' ? 'Pública' : 'Privada'}</span>
+                <span>Para {m.recipient?.name}</span>
               </button>
             ))}
           </div>

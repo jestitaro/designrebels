@@ -9,10 +9,8 @@ import iso from '../assets/iso-qs.svg';
 import DemoBadge from './DemoBadge.jsx';
 
 const LINKS = [
-  { to: '/recorrido', label: 'Recorrido', n: '01' },
-  { to: '/arbol', label: 'Árbol', n: '02' },
-  { to: '/juego', label: 'Juego', n: '03' },
-  { to: '/galeria', label: 'Galería', n: '04' },
+  { to: '/recorrido', label: 'Mis saludos', n: '01' },
+  { to: '/juego', label: 'Juego', n: '02' },
 ];
 
 export default function Nav({ path, dark }) {
@@ -88,7 +86,7 @@ export default function Nav({ path, dark }) {
             transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
           >
             <nav aria-label="Secciones">
-              {[...LINKS, ...(me ? [{ to: '/recibidas', label: unread ? `Recibidas (${unread})` : 'Recibidas', n: '05' }] : [])].map((l, i) => (
+              {[...LINKS, ...(me ? [{ to: '/recibidas', label: unread ? `Recibidas (${unread})` : 'Recibidas', n: '03' }] : [])].map((l, i) => (
                 <motion.a
                   key={l.to}
                   href={`#${l.to}`}
